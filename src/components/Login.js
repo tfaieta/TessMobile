@@ -14,8 +14,7 @@ export  default class Login extends Component{
                     style={styles.logo}
                     source={require('tess/src/images/logo.png')}
                 />
-
-                    <Text style={styles.title}>Audio Reimagined</Text>
+                    <Text style={styles.title }>Audio Reimagined</Text>
                 </View>
                 <View style={styles.formContainer}>
                     <LoginForm/>
@@ -28,23 +27,27 @@ export  default class Login extends Component{
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'rgb(129,104,210)',
+        backgroundColor: '#595bc8',
     },
     logoContainer: {
         alignItems: 'center',
         flexGrow: 1,
     },
     logo: {
-        marginTop:2,
-        width: 200,
-        height: 200
+        marginTop:40,
+        width: 250,
+        height: 250
     },
     title: {
         color: '#ffffff',
-        marginTop: -40,
-        width: 160,
+        marginTop: -10,
+
+        width: 200,
         textAlign: 'center',
-        opacity: 0.85
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Futura',
+        fontSize: 16
     }
 
 
