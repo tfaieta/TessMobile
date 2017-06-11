@@ -4,11 +4,18 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Image, Text, KeyboardAvoidingView} from 'react-native';
 import LoginForm from './LoginForm';
+import LinearGradient from 'react-native-linear-gradient';
 
 export  default class Login extends Component{
     render() {
         return (
-            <KeyboardAvoidingView behavior="padding" style={styles.container}>
+            <LinearGradient
+                behavior="padding"
+                start={{x: 1, y: 0.25}} end={{x: 0.5, y: 1.2}}
+                locations={[0,1]}
+                colors={['#804cc8', '#595bc8']}
+                style={styles.container}>
+
                 <View style={styles.logoContainer}>
                 <Image
                     style={styles.logo}
@@ -19,7 +26,7 @@ export  default class Login extends Component{
                 <View style={styles.formContainer}>
                     <LoginForm/>
                 </View>
-            </KeyboardAvoidingView>
+            </LinearGradient>
         );
     }
 }
@@ -47,7 +54,8 @@ const styles = StyleSheet.create({
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Futura',
-        fontSize: 16
+        fontSize: 16,
+        backgroundColor: 'transparent'
     }
 
 
