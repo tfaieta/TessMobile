@@ -1,0 +1,178 @@
+index.ios.js
+
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ * @flow
+ */
+
+import React, { Component } from 'react';
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native';
+
+import Login from './src/components/Login.js';
+
+export default class tess extends Component {
+  render() {
+    return (
+        <Login />
+
+
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
+  },
+});
+
+AppRegistry.registerComponent('tess', () => tess);
+
+Login.js
+/**
+ * Created by nickruspantini on 6/6/17.
+ */
+import React, {Component} from 'react';
+import {StyleSheet, View, Image, Text, KeyboardAvoidingView} from 'react-native';
+import LoginForm from './LoginForm';
+import LinearGradient from 'react-native-linear-gradient';
+
+export  default class Login extends Component{
+    render() {
+        return (
+            <LinearGradient
+                behavior="padding"
+                start={{x: 1, y: 0.25}} end={{x: 0.5, y: 1.2}}
+                locations={[0,1]}
+                colors={['#804cc8', '#595bc8']}
+                style={styles.container}>
+
+                <View style={styles.logoContainer}>
+                <Image
+                    style={styles.logo}
+                    source={require('tess/src/images/logo.png')}
+                />
+                    <Text style={styles.title }>Audio Reimagined</Text>
+                </View>
+                <View style={styles.formContainer}>
+                    <LoginForm/>
+                </View>
+            </LinearGradient>
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#595bc8',
+    },
+    logoContainer: {
+        alignItems: 'center',
+        flexGrow: 1,
+    },
+    logo: {
+        marginTop:40,
+        width: 250,
+        height: 250
+    },
+    title: {
+        color: '#ffffff',
+        marginTop: -10,
+
+        width: 200,
+        textAlign: 'center',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Futura',
+        fontSize: 16,
+        backgroundColor: 'transparent'
+    }
+
+
+});
+
+LoginForm.js
+/**
+ * Created by nickruspantini on 6/7/17.
+ */
+import React, { Component } from 'react';
+import { StyleSheet, View, TextInput, TouchableOpacity, Text, StatusBar } from 'react-native';
+
+export default class LoginForm extends Component {
+    render() {
+        return (
+        <View style={styles.container}>
+        <StatusBar
+            barStyle="light-content"
+            />
+            <TextInput
+            placeholder = "username or email"
+            placeholderTextColor="rgba(255,255,255,0.8)"
+            returnKeyType='next'
+            onSubmitEditing={() => this.passwordInput.focus()}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+            style ={styles.input}
+            />
+             <TextInput
+             placeholder= "password"
+             placeholderTextColor="rgba(255,255,255,0.8)"
+             returnKeyType="go"
+             secureTextEntry
+             style ={styles.input}
+             ref={(input) => this.passwordInput = input}
+             />
+
+
+             <TouchableOpacity style={styles.buttonContainer}>
+                <Text style ={styles.buttonText}>LOGIN</Text>
+             </TouchableOpacity>
+
+        </View>
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+container: {
+    padding: 20
+
+    },
+    input: {
+        height: 40,
+        backgroundColor: 'rgba(170,170,170,0.5)',
+        marginBottom: 10,
+        color: '#FFF',
+        paddingHorizontal: 10
+    },
+    buttonContainer: {
+        backgroundColor: '#4b2eaa',
+        paddingVertical: 15
+    },
+    buttonText: {
+        textAlign: 'center',
+        color: '#FFFFFF',
+        fontWeight: '700'
+     }
+});
