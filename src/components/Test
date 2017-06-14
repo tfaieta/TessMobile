@@ -1,12 +1,20 @@
+THIS IS STYLE FOR LOGIN
+
 /**
  * Created by nickruspantini on 6/6/17.
  */
 import React, {Component} from 'react';
 import {StyleSheet, View, Image, Text, KeyboardAvoidingView} from 'react-native';
+
 import LoginForm from './LoginForm';
+
 import LinearGradient from 'react-native-linear-gradient';
 
-export  default class Login extends Component{
+
+export default class Login extends Component{
+
+
+
     render() {
         return (
             <LinearGradient
@@ -60,3 +68,5 @@ const styles = StyleSheet.create({
 
 
 });
+
+END
