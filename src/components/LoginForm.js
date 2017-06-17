@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, TextInput, View  } from 'react-native';
 import firebase from 'firebase';
 import { Button, Card, CardSection, Input, Spinner } from './common';
+import LinearGradient from 'react-native-linear-gradient';
 
 
 class LoginForm extends Component {
@@ -22,7 +23,7 @@ class LoginForm extends Component {
   }
 
   onLoginFail() {
-    this.setState({ error: 'Username or Password Incorrect', loading: false });
+    this.setState({ error: 'Incorrect Username or Password', loading: false });
   }
 
   onLoginSuccess() {
@@ -48,7 +49,12 @@ class LoginForm extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <LinearGradient
+
+                      start={{x: 1, y: 0.25}} end={{x: 0.5, y: 1.2}}
+                      locations={[0,1]}
+                      colors={['#804cc8', '#595bc8']}
+                      style={styles.container}>
 
 
            <TextInput style ={styles.input}
@@ -85,7 +91,7 @@ class LoginForm extends Component {
           {this.renderButton()}
         </CardSection>
 
-     </View>
+     </LinearGradient>
     );
   }
 }
@@ -98,7 +104,9 @@ const styles = {
   },
 
   container: {
-      padding: 20
+      flex: 1,
+      backgroundColor: '#595bc8',
+      padding: 20,
       },
 
       input: {

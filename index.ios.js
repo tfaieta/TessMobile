@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import firebase from 'firebase';
 import StartUp from './src/components/StartUp';
+import Router from './src/Router';
 
 export default class tess extends Component {
     componentWillMount() {
@@ -29,7 +30,7 @@ export default class tess extends Component {
   render() {
     return (
 
-        <StartUp />
+        <Router />
 
 
     );
