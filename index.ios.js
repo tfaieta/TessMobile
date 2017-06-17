@@ -10,12 +10,26 @@ import {
   Text,
   View
 } from 'react-native';
-import app from './src/app';
+import firebase from 'firebase';
+import StartUp from './src/components/StartUp';
 
 export default class tess extends Component {
+    componentWillMount() {
+        firebase.initializeApp({
+            apiKey: 'AIzaSyCMCsGc-foyjeiknZt9Nw5Sh8NrC2azZUg',
+            authDomain: 'tess-36c94.firebaseapp.com',
+            databaseURL: 'https://tess-36c94.firebaseio.com',
+            projectId: 'tess-36c94',
+            storageBucket: 'tess-36c94.appspot.com',
+            messagingSenderId: '1071246914359'
+
+        });
+    }
+
   render() {
     return (
-        <app />
+
+        <StartUp />
 
 
     );
@@ -24,4 +38,4 @@ export default class tess extends Component {
 
 
 
-AppRegistry.registerComponent('tess', () => app);
+AppRegistry.registerComponent('tess', () => tess);

@@ -2,10 +2,11 @@
  * Created by nickruspantini on 6/13/17.
  */
 import React, {Component} from 'react';
-import { View} from 'react-native';
+import { View, StyleSheet} from 'react-native';
 import firebase from 'firebase';
 import { Header } from './components/common';
 import LoginForm from './components/LoginForm';
+import StartUp from './components/StartUp';
 
 
 
@@ -25,8 +26,7 @@ class App extends Component {
         return(
             <View>
 
-                <Header headerText="Tess" />
-                <LoginForm/>
+                <StartUp/>
 
 
             </View>
@@ -36,5 +36,23 @@ class App extends Component {
 
 }
 
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F5FCFF',
+    },
+    welcome: {
+        fontSize: 20,
+        textAlign: 'center',
+        margin: 10,
+    },
+    instructions: {
+        textAlign: 'center',
+        color: '#333333',
+        marginBottom: 5,
+    },
+});
 
 export default App;

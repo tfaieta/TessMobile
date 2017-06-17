@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native';
+import { Text, TextInput, View  } from 'react-native';
 import firebase from 'firebase';
 import { Button, Card, CardSection, Input, Spinner } from './common';
 
@@ -22,7 +22,7 @@ class LoginForm extends Component {
   }
 
   onLoginFail() {
-    this.setState({ error: 'Authentication Failed', loading: false });
+    this.setState({ error: 'Username or Password Incorrect', loading: false });
   }
 
   onLoginSuccess() {
@@ -48,25 +48,34 @@ class LoginForm extends Component {
 
   render() {
     return (
-      <Card>
-        <CardSection>
-          <Input
-            placeholder="user@gmail.com"
-            label="Email"
-            value={this.state.email}
-            onChangeText={email => this.setState({ email })}
-          />
-        </CardSection>
+      <View style={styles.container}>
 
-        <CardSection>
-          <Input
+
+           <TextInput style ={styles.input}
+               placeholder = "username or email"
+               placeholderTextColor="rgba(255,255,255,0.8)"
+               returnKeyType='next'
+               onSubmitEditing={() => this.passwordInput.focus()}
+               keyboardType="email-address"
+               autoCapitalize="none"
+               autoCorrect={false}
+                label="Email"
+                value={this.state.email}
+                onChangeText={email => this.setState({ email })}
+          />
+
+
+
+          <TextInput style ={styles.input}
             secureTextEntry
             placeholder="password"
             label="Password"
+            placeholderTextColor="rgba(255,255,255,0.8)"
+            returnKeyType="go"
             value={this.state.password}
             onChangeText={password => this.setState({ password })}
           />
-        </CardSection>
+
 
         <Text style={styles.errorTextStyle}>
           {this.state.error}
@@ -75,7 +84,8 @@ class LoginForm extends Component {
         <CardSection>
           {this.renderButton()}
         </CardSection>
-      </Card>
+
+     </View>
     );
   }
 }
@@ -84,8 +94,31 @@ const styles = {
   errorTextStyle: {
     fontSize: 20,
     alignSelf: 'center',
-    color: 'red'
-  }
+    color: 'rgba(300,10,10,1)'
+  },
+
+  container: {
+      padding: 20
+      },
+
+      input: {
+          height: 40,
+          backgroundColor: 'rgba(170,170,170,0.5)',
+          marginBottom: 10,
+          color: '#FFF',
+          paddingHorizontal: 10
+      },
+
+      buttonContainer: {
+          backgroundColor: '#4b2eaa',
+          paddingVertical: 15
+      },
+
+      buttonText: {
+          textAlign: 'center',
+          color: '#FFFFFF',
+          fontWeight: '700'
+       }
 };
 
 export default LoginForm;
