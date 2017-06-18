@@ -3,6 +3,7 @@ import { Text, TextInput, View  } from 'react-native';
 import firebase from 'firebase';
 import { Button, Card, CardSection, Input, Spinner } from './common';
 import LinearGradient from 'react-native-linear-gradient';
+import { Actions } from 'react-native-router-flux';
 
 
 class LoginForm extends Component {
@@ -31,8 +32,9 @@ class LoginForm extends Component {
       email: '',
       password: '',
       loading: false,
-      error: ''
+      error: '',
     });
+    Actions.Main();
   }
 
   renderButton() {

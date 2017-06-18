@@ -2,20 +2,103 @@
  * Created by nickruspantini on 6/17/17.
  */
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import {Scene, Router} from 'react-native-router-flux';
+import {StyleSheet, TabBarIOS, Text} from 'react-native';
+import {Scene, Router, TabBar, TabBarProps} from 'react-native-router-flux';
 import StartUp from './components/StartUp';
 import LoginForm from './components/LoginForm';
 import CreateAccount from './components/CreateAccount';
+import Home from './components/Home';
+import Account from './components/Account';
+import Discover from './components/Discover';
+import Library from './components/Library';
+import Record from './components/Record';
+
+
+const TabIcon = ({selected, title}) => {
+    return (
+        <Text style={{color: selected ? 'white' : '#d3d3d3'}}>{title}</Text>
+    );
+
+};
 
 
 const RouterComponent = () => {
     return (
         <Router headerStyle={styles.header} navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} barButtonTextStyle={styles.barButtonTextStyle} barButtonIconStyle={styles.barButtonIconStyle}>
 
-            <Scene key = "StartUp" component={StartUp} title="Welcome to Tess" hideNavBar={true} initial  />
+            <Scene key = "StartUp" component={StartUp} hideNavBar={true} initial  />
             <Scene key = "LoginForm" component={LoginForm} title = "Login" hideNavBar={false} />
             <Scene key = "CreateAccount" component={CreateAccount} title = "Create Account" hideNavBar={false}  />
+
+            <Scene key="Main" >
+
+            <Scene
+                key="tabbar"
+                tabs
+                tabBarStyle={{backgroundColor:'#804cc8'}}
+            >
+
+                <Scene key="Tab1" title="Home" icon={TabIcon} >
+                    <Scene
+                        key="Home"
+                        component={Home}
+                        title="Home"
+                        initial
+                        hideNavBar={false}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                    />
+                </Scene>
+
+
+                <Scene key="Tab2" title="Discover" icon={TabIcon}>
+                    <Scene
+                        key="discover"
+                        component={Discover}
+                        title="Account"
+                        hideNavBar={false}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                    />
+                </Scene>
+
+
+                <Scene key="Tab3" title="Record" icon={TabIcon}>
+                    <Scene
+                        key="record"
+                        component={Record}
+                        title="Record"
+                        hideNavBar={false}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                    />
+                </Scene>
+
+
+                <Scene key="Tab4" title="Library" icon={TabIcon}>
+                    <Scene
+                        key="library"
+                        component={Library}
+                        title="Library"
+                        hideNavBar={false}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                    />
+                </Scene>
+
+
+                <Scene key="Tab5" title="Account" icon={TabIcon}>
+                    <Scene
+                        key="account"
+                        component={Account}
+                        title="Account"
+                        hideNavBar={false}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        />
+                </Scene>
+
+
+
+            </Scene>
+
+            </Scene>
+
 
         </Router>
     )
@@ -24,13 +107,16 @@ const RouterComponent = () => {
 
 const styles = StyleSheet.create({
     header: {
-      color: 'red'
+      color: 'blue'
     },
     navBar: {
         backgroundColor:'transparent'
     },
+    navBarMain: {
+        backgroundColor:'#804cc8'
+    },
     navBarTitle:{
-        color:'transparent',
+        color:'white',
         opacity: 0.2
     },
     barButtonTextStyle:{
@@ -39,6 +125,15 @@ const styles = StyleSheet.create({
     },
     barButtonIconStyle:{
         tintColor:'rgb(255,255,255)'
+    },
+    tabBarStyle: {
+        borderTopWidth : .5,
+        borderColor    : '#b7b7b7',
+        backgroundColor: '#804cc8',
+        opacity        : 1
+    },
+    tabBarSelectedItemStyle: {
+        backgroundColor: '#fff',
     },
 
 }
