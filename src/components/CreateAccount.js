@@ -136,6 +136,7 @@ const styles = {
         flex: 1,
         backgroundColor: '#595bc8',
         padding: 20,
+        paddingTop: 80
     },
 
     input: {
