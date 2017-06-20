@@ -79,33 +79,34 @@ export  default class Login extends Component{
 
                 </View>
 
+                <StatusBar
+                    barStyle="light-content"
+                />
 
                 <View style={styles.formContainer}>
-
-                    <StatusBar
-                        barStyle="light-content"
-                    />
-
-
-                    <Button
-                        title="Login"
-                        color="white"
-                        onPress={this._handleButtonPressLogin}
-                    />
-
-                    <Button
-                        title="Create New Account"
-                        color="white"
-                        onPress={this._handleButtonPressCreate}
-                    />
-
-                    <Button
-                        title="Login with Facebook"
-                        color="white"
-                        onPress={this._handleButtonPressFB}
-                    />
-
+                    <TouchableOpacity onPress={this._handleButtonPressLogin} style={styles.buttonContainer}>
+                        <Text style={styles.textStyle}>
+                            Login
+                        </Text>
+                    </TouchableOpacity>
                 </View>
+
+                <View style={styles.formContainer2}>
+                    <TouchableOpacity onPress={this._handleButtonPressCreate} style={styles.buttonContainer}>
+                        <Text style={styles.textStyle}>
+                            Create New Account
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.formContainer3}>
+                    <TouchableOpacity onPress={this._handleButtonPressFB} style={styles.buttonContainer}>
+                        <Text style={styles.textStyle}>
+                            Login with Facebook
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+
 
             </LinearGradient>
         );
@@ -129,7 +130,6 @@ const styles = StyleSheet.create({
     title: {
         color: '#ffffff',
         marginTop: -10,
-
         width: 200,
         textAlign: 'center',
         opacity: 2,
@@ -146,15 +146,47 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10
     },
     buttonContainer: {
-        backgroundColor: '#856cff',
-        paddingVertical: 15,
-        paddingHorizontal: 15,
+        backgroundColor: 'transparent',
+        paddingVertical: 5,
+        paddingHorizontal: 5,
         marginBottom:5
     },
     buttonText: {
         textAlign: 'center',
         color: '#FFFFFF',
         fontWeight: '700'
+    },
+    textStyle: {
+        textAlign: 'center',
+        color: '#fff',
+        fontStyle: 'normal',
+        fontFamily: 'Futura',
+        fontSize: 25,
+    },
+    formContainer: {
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: '#856cff',
+
+    },
+    formContainer2: {
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: 'rgba(1,170,170,1)',
+
+    },
+    formContainer3: {
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: '#3B5998',
+
+    },
+    textStyle: {
+        textAlign: 'center',
+        color: '#fff',
+        fontStyle: 'normal',
+        fontFamily: 'Futura',
+        fontSize: 20,
     }
 
 

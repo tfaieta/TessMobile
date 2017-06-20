@@ -12,7 +12,8 @@
 		"npm": "^5.0.3",
 		"react": "16.0.0-alpha.6",
 		"react-native": "^0.44.3",
-		"react-native-linear-gradient": "^2.0.0"
+		"react-native-linear-gradient": "^2.0.0",
+		"react-native-router-flux": "^3.40.1"
 	},
 	"devDependencies": {
 		"babel-jest": "20.0.3",

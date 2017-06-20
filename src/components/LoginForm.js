@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View  } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity  } from 'react-native';
 import firebase from 'firebase';
 import { Button, Card, CardSection, Input, Spinner } from './common';
 import LinearGradient from 'react-native-linear-gradient';
@@ -16,11 +16,8 @@ class LoginForm extends Component {
 
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(this.onLoginSuccess.bind(this))
-      .catch(() => {
-        firebase.auth().createUserWithEmailAndPassword(email, password)
-          .then(this.onLoginSuccess.bind(this))
-          .catch(this.onLoginFail.bind(this));
-      });
+      .catch(this.onLoginFail.bind(this));
+
   }
 
   onLoginFail() {
@@ -43,9 +40,11 @@ class LoginForm extends Component {
     }
 
     return (
-      <Button onPress={this.onButtonPress.bind(this)}>
-        Log in
-      </Button>
+       <TouchableOpacity onPress={this.onButtonPress.bind(this)} style={styles.buttonContainer}>
+          <Text style={styles.textStyle}>
+          Sign in
+          </Text>
+      </TouchableOpacity>
     );
   }
 
@@ -89,9 +88,9 @@ class LoginForm extends Component {
           {this.state.error}
         </Text>
 
-        <CardSection>
-          {this.renderButton()}
-        </CardSection>
+        <View >
+            {this.renderButton()}
+        </View>
 
      </LinearGradient>
     );
@@ -121,14 +120,30 @@ const styles = {
       },
 
       buttonContainer: {
-          backgroundColor: '#4b2eaa',
-          paddingVertical: 15
+          paddingVertical: 15,
+          paddingHorizontal: 15,
+          marginBottom:5,
+          backgroundColor: '#856cff'
       },
 
       buttonText: {
           textAlign: 'center',
           color: '#FFFFFF',
           fontWeight: '700'
+       },
+
+       formContainer4: {
+       paddingTop: 10,
+       paddingBottom: 10,
+       backgroundColor: '#3B5998'
+       },
+
+       textStyle: {
+           textAlign: 'center',
+           color: '#fff',
+           fontStyle: 'normal',
+           fontFamily: 'Futura',
+           fontSize: 25,
        }
 };
 

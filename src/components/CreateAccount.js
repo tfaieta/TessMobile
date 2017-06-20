@@ -2,31 +2,29 @@
  * Created by nickruspantini on 6/17/17.
  */
 import React, { Component } from 'react';
-import { Text, TextInput, View  } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity  } from 'react-native';
 import firebase from 'firebase';
 import { Button, Card, CardSection, Input, Spinner } from './common';
 import LinearGradient from 'react-native-linear-gradient';
+import { Actions } from 'react-native-router-flux';
 
 
 class CreateAccount extends Component {
-    state = { email: '', password: '', error: '', loading: false };
+    state = { email: '', password: '', confirmPassword: '', error: '', loading: false };
 
     onButtonPress() {
-        const { email, password } = this.state;
+        const { email, password, confirmPassword } = this.state;
 
         this.setState({ error: '', loading: true });
 
-        firebase.auth().signInWithEmailAndPassword(email, password)
-            .then(this.onLoginSuccess.bind(this))
-            .catch(() => {
-                firebase.auth().createUserWithEmailAndPassword(email, password)
-                    .then(this.onLoginSuccess.bind(this))
-                    .catch(this.onLoginFail.bind(this));
-            });
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then(this.onLoginSuccess.bind(this))
+                .catch(this.onLoginFail.bind(this));
+
     }
 
     onLoginFail() {
-        this.setState({ error: 'Incorrect Username or Password', loading: false });
+        this.setState({ error: 'Cannot Create Account', loading: false });
     }
 
     onLoginSuccess() {
@@ -36,18 +34,23 @@ class CreateAccount extends Component {
             loading: false,
             error: ''
         });
+
+        Actions.Main();
     }
 
     renderButton() {
         if (this.state.loading) {
             return <Spinner size="small" />;
         }
+        return(
 
-        return (
-            <Button onPress={this.onButtonPress.bind(this)}>
-                Log in
-            </Button>
+            <TouchableOpacity onPress={this.onButtonPress.bind(this)} style={styles.buttonContainer}>
+                <Text style={styles.textStyle}>
+                Sign Up
+                </Text>
+            </TouchableOpacity>
         );
+
     }
 
     render() {
@@ -59,22 +62,6 @@ class CreateAccount extends Component {
                 colors={['#804cc8', '#595bc8']}
                 style={styles.container}>
 
-
-                <TextInput style ={styles.input}
-                           placeholder = "first name"
-                           placeholderTextColor="rgba(255,255,255,0.8)"
-                           returnKeyType='next'
-                           autoCorrect={false}
-                           label="First Name"
-                />
-
-                <TextInput style ={styles.input}
-                           placeholder = "last name"
-                           placeholderTextColor="rgba(255,255,255,0.8)"
-                           returnKeyType='next'
-                           autoCorrect={false}
-                           label="Last Name"
-                />
 
 
                 <TextInput style ={styles.input}
@@ -109,6 +96,8 @@ class CreateAccount extends Component {
                            returnKeyType='go'
                            autoCorrect={false}
                            label="Confirm Password"
+                           value={this.state.confirmPassword}
+                           onChangeText={confirmPassword => this.setState({ confirmPassword })}
                 />
 
 
@@ -116,9 +105,10 @@ class CreateAccount extends Component {
                     {this.state.error}
                 </Text>
 
-                <CardSection>
+                <View >
                     {this.renderButton()}
-                </CardSection>
+                </View>
+
 
             </LinearGradient>
         );
@@ -148,15 +138,35 @@ const styles = {
     },
 
     buttonContainer: {
-        backgroundColor: '#4b2eaa',
-        paddingVertical: 15
+        paddingVertical: 15,
+        paddingHorizontal: 15,
+        marginBottom:5,
+        backgroundColor: 'rgba(1,170,170,1)'
     },
 
     buttonText: {
         textAlign: 'center',
         color: '#FFFFFF',
         fontWeight: '700'
+    },
+
+    formContainer: {
+        paddingTop: 15,
+        paddingBottom: 15,
+        borderBottomWidth: 1,
+        padding: 5,
+        backgroundColor: '#fff',
+    },
+
+    textStyle: {
+        textAlign: 'center',
+        color: '#fff',
+        fontStyle: 'normal',
+        fontFamily: 'Futura',
+        fontSize: 25,
     }
+
+
 };
 
 export default CreateAccount;
