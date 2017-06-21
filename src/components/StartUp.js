@@ -3,12 +3,18 @@
  */
 import React, {Component} from 'react';
 import {StyleSheet, View, Image, Text, StatusBar, TextInput, TouchableOpacity, Alert, Button, KeyboardAvoidingView} from 'react-native';
+import FBSDK, { LoginManager } from 'react-native-fbsdk';
 import LoginForm from './LoginForm';
 import CreateAccount from './CreateAccount';
 import LinearGradient from 'react-native-linear-gradient';
 import { Actions } from 'react-native-router-flux';
 
 export  default class Login extends Component{
+
+
+
+
+
 
     _handleButtonPressLogin = () => {
         Actions.LoginForm();
@@ -19,6 +25,26 @@ export  default class Login extends Component{
     };
 
 
+    _fbAuth = () => {
+        LoginManager.logInWithReadPermissions(['public_profile']).then(function(result) {
+            if (result.isCancelled){
+                console.log('Login cancelled');
+            } else {
+                console.log('Login success: ' + result.grantedPermissions);
+                Actions.Home();
+            }
+
+            
+        }, function (error) {
+            console.log('An error occurred' + error) ;
+        }  )
+    };
+
+
+
+
+
+/*
     _handleButtonPressFB = async () => {
         try {
             const { type, token } = await Facebook.logInWithReadPermissionsAsync(
@@ -58,6 +84,7 @@ export  default class Login extends Component{
             );
         }
     };
+    */
 
 
 
@@ -100,7 +127,7 @@ export  default class Login extends Component{
                 </View>
 
                 <View style={styles.formContainer3}>
-                    <TouchableOpacity onPress={this._handleButtonPressFB} style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={this._fbAuth} style={styles.buttonContainer}>
                         <Text style={styles.textStyle}>
                             Login with Facebook
                         </Text>

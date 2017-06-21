@@ -12,6 +12,8 @@
 		"npm": "^5.0.3",
 		"react": "16.0.0-alpha.6",
 		"react-native": "^0.44.3",
+		"react-native-fbsdk": "^0.6.1",
+		"react-native-fbsdklogin": "0.0.8",
 		"react-native-linear-gradient": "^2.0.0",
 		"react-native-router-flux": "^3.40.1"
 	},
