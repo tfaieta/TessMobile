@@ -55,7 +55,7 @@ class CreateAccount extends Component {
 
     render() {
         return (
-            <LinearGradient
+            <View
 
                 start={{x: 1, y: 0.25}} end={{x: 0.5, y: 1.2}}
                 locations={[0,1]}
@@ -110,7 +110,7 @@ class CreateAccount extends Component {
                 </View>
 
 
-            </LinearGradient>
+            </View>
         );
     }
 }
@@ -124,14 +124,14 @@ const styles = {
 
     container: {
         flex: 1,
-        backgroundColor: '#595bc8',
+        backgroundColor: 'rgba(1,170,170,1)',
         padding: 20,
         paddingTop: 80
     },
 
     input: {
         height: 40,
-        backgroundColor: 'rgba(170,170,170,0.5)',
+        backgroundColor: 'rgba(170,170,170,0.7)',
         marginBottom: 10,
         color: '#FFF',
         paddingHorizontal: 10
@@ -141,7 +141,7 @@ const styles = {
         paddingVertical: 15,
         paddingHorizontal: 15,
         marginBottom:5,
-        backgroundColor: 'rgba(1,170,170,1)'
+        backgroundColor: '#856cff'
     },
 
     buttonText: {

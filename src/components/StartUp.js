@@ -31,7 +31,7 @@ export  default class Login extends Component{
                 console.log('Login cancelled');
             } else {
                 console.log('Login success: ' + result.grantedPermissions);
-                Actions.Home();
+                Actions.Main();
             }
 
             

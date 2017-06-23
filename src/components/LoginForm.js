@@ -50,7 +50,7 @@ class LoginForm extends Component {
 
   render() {
     return (
-      <LinearGradient
+      <View
 
                       start={{x: 1, y: 0.25}} end={{x: 0.5, y: 1.2}}
                       locations={[0,1]}
@@ -92,7 +92,7 @@ class LoginForm extends Component {
             {this.renderButton()}
         </View>
 
-     </LinearGradient>
+     </View>
     );
   }
 }
@@ -106,7 +106,7 @@ const styles = {
 
   container: {
       flex: 1,
-      backgroundColor: '#595bc8',
+      backgroundColor: '#856cff',
       padding: 20,
       paddingTop: 80
       },
@@ -123,7 +123,7 @@ const styles = {
           paddingVertical: 15,
           paddingHorizontal: 15,
           marginBottom:5,
-          backgroundColor: '#856cff'
+          backgroundColor: '#595bc8'
       },
 
       buttonText: {
