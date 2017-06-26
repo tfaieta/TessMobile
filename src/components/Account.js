@@ -1,11 +1,23 @@
-import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet,StatusBar} from 'react-native';
-import firebase from 'firebase';
-import { Button, Card, CardSection, Input, Spinner } from './common';
-import LinearGradient from 'react-native-linear-gradient';
+import React, {Component} from 'react';
+import {
+    AppRegistry,
+    StyleSheet,
+    Text,
+    View,
+    Image,
+    StatusBar,
+    Slider
+} from 'react-native';
 
+class Account extends Component {
 
-class Account extends Component{
+    constructor(props) {
+        super(props)
+        this.state = { volume: 20}
+    }
+    getVal(val){
+
+    }
 
     render() {
         return (
@@ -16,7 +28,18 @@ class Account extends Component{
                     barStyle="light-content"
                 />
 
-
+                <View style={styles.barContainer}>
+                    <Slider
+                        style={{ width: 300 }}
+                        step={1}
+                        minimumValue={0}
+                        maximumValue={100}
+                        value={this.state.volume}
+                        onValueChange={val => this.setState({ volume: val })}
+                        onSlidingComplete={ val => this.getVal(val)}
+                    />
+                    <Text style={styles.playingText}>Now Playing...</Text>
+                </View>
 
             </View>
 
@@ -24,6 +47,7 @@ class Account extends Component{
 
         );
     }
+
 }
 
 const styles = StyleSheet.create({
@@ -31,7 +55,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'transparent',
     },
-
     title: {
         color: '#804cc8',
         marginTop: 70,
@@ -42,8 +65,18 @@ const styles = StyleSheet.create({
         fontFamily: 'Futura',
         fontSize: 25,
         backgroundColor: 'transparent'
+    },
+    barContainer:{
+        flex: 1,
+        backgroundColor: '#575757',
+        marginTop: 370,
+        paddingTop: 10
+    },
+    playingText:{
+        color: 'white',
+        fontSize: 15,
+        marginLeft: 10
     }
-
 });
 
 export default Account;

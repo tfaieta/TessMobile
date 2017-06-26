@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet,StatusBar} from 'react-native';
+import { Text, TextInput, View, StyleSheet,StatusBar, ScrollView, Image, TouchableOpacity, Slider} from 'react-native';
 import firebase from 'firebase';
 import { Button, Card, CardSection, Input, Spinner } from './common';
 import LinearGradient from 'react-native-linear-gradient';
@@ -7,19 +7,40 @@ import LinearGradient from 'react-native-linear-gradient';
 
 class Discover extends Component{
 
+    constructor(props) {
+        super(props)
+        this.state = { volume: 20 }
+    }
+    getVal(val){
+
+    }
+
+
     render() {
         return (
             <View
+
                 style={styles.container}>
-                <Text style={styles.title }>Find New Content</Text>
+                <Text style={styles.title }>Discover Audio</Text>
                 <StatusBar
                     barStyle="light-content"
                 />
 
+                <View style={styles.barContainer}>
+                    <Slider
+                        style={{ width: 300 }}
+                        step={1}
+                        minimumValue={0}
+                        maximumValue={100}
+                        value={this.state.volume}
+                        onValueChange={val => this.setState({ volume: val })}
+                        onSlidingComplete={ val => this.getVal(val)}
+                    />
+                    <Text style={styles.playingText}>Now Playing...</Text>
+                </View>
 
 
             </View>
-
 
 
         );
@@ -42,6 +63,17 @@ const styles = StyleSheet.create({
         fontFamily: 'Futura',
         fontSize: 25,
         backgroundColor: 'transparent'
+    },
+    barContainer:{
+        flex: 1,
+        backgroundColor: '#575757',
+        marginTop: 370,
+        paddingTop: 10
+    },
+    playingText:{
+        color: 'white',
+        fontSize: 15,
+        marginLeft: 10
     }
 
 });

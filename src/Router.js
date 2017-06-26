@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import {StyleSheet, TabBarIOS, Text} from 'react-native';
-import {Scene, Router, TabBar, TabBarProps} from 'react-native-router-flux';
+import {Scene, Router, TabBar, TabBarProps, Actions, ActionConst } from 'react-native-router-flux';
 import StartUp from './components/StartUp';
 import LoginForm from './components/LoginForm';
 import CreateAccount from './components/CreateAccount';
@@ -12,6 +12,7 @@ import Account from './components/Account';
 import Discover from './components/Discover';
 import Library from './components/Library';
 import Record from './components/Record';
+import Settings from './components/Settings';
 
 
 const TabIcon = ({selected, title}) => {
@@ -23,19 +24,31 @@ const TabIcon = ({selected, title}) => {
 
 
 const RouterComponent = () => {
+    _pressSettings = () => {
+        Actions.Settings();
+    };
+
     return (
         <Router headerStyle={styles.header} navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} barButtonTextStyle={styles.barButtonTextStyle} barButtonIconStyle={styles.barButtonIconStyle}>
 
             <Scene key = "StartUp" component={StartUp} hideNavBar={true} initial  />
             <Scene key = "LoginForm" component={LoginForm} title = "Login" hideNavBar={false} />
             <Scene key = "CreateAccount" component={CreateAccount} title = "Create Account" hideNavBar={false}  />
+            <Scene
+                key="Settings"
+                component={Settings}
+                title="Settings"
+                hideNavBar={false}
+                navigationBarStyle={{backgroundColor:'#804cc8'}}
+            />
+
 
             <Scene key="Main" >
 
             <Scene
                 key="tabbar"
                 tabs
-                tabBarStyle={{backgroundColor:'#804cc8'}}
+                tabBarStyle={{backgroundColor:'#804cc8', paddingTop: 20}}
             >
 
                 <Scene key="Tab1" title="Home" icon={TabIcon} >
@@ -83,15 +96,18 @@ const RouterComponent = () => {
                 </Scene>
 
 
-                <Scene key="Tab5" title="Account" icon={TabIcon}>
+                <Scene key="Tab5" title="Account" icon={TabIcon} rightButtonTextStyle={styles.header} rightTitle="Settings" onRight={this._pressSettings} >
                     <Scene
                         key="account"
                         component={Account}
                         title="Account"
                         hideNavBar={false}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        initial
                         />
+
                 </Scene>
+
 
 
 
@@ -107,7 +123,7 @@ const RouterComponent = () => {
 
 const styles = StyleSheet.create({
     header: {
-      color: 'blue'
+      color: 'white'
     },
     navBar: {
         backgroundColor:'transparent'
@@ -135,6 +151,9 @@ const styles = StyleSheet.create({
     tabBarSelectedItemStyle: {
         backgroundColor: '#fff',
     },
+    rightButtonStyle: {
+        borderColor: 'white'
+    }
 
 }
 );

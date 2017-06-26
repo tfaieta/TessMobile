@@ -8,9 +8,11 @@ import LoginForm from './LoginForm';
 import CreateAccount from './CreateAccount';
 import LinearGradient from 'react-native-linear-gradient';
 import { Actions } from 'react-native-router-flux';
+import Swiper from 'react-native-swiper'
+
+
 
 export  default class Login extends Component{
-
 
 
 
@@ -90,52 +92,69 @@ export  default class Login extends Component{
 
     render() {
         return (
-            <LinearGradient
-                behavior="padding"
-                start={{x: 1, y: 0.25}} end={{x: 0.5, y: 1.2}}
-                locations={[0,1]}
-                colors={['#804cc8', '#595bc8']}
-                style={styles.container}>
 
-                <View style={styles.logoContainer}>
-                    <Image
-                        style={styles.logo}
-                        source={require('tess/src/images/logo.png')}
-                    />
-                    <Text style={styles.title }>Simplified Audio</Text>
+            <Swiper style={styles.wrapper} showsButtons>
 
+                <View style={styles.slide1}>
+                    <Text style={styles.text}>Welcome to</Text>
+                    <View style={styles.logoContainer}>
+                        <Image
+                            style={styles.logo}
+                            source={require('tess/src/images/logo.png')}
+                        />
+                        <Text style={styles.text }>Swipe to find out more</Text>
+
+                    </View>
                 </View>
 
-                <StatusBar
-                    barStyle="light-content"
-                />
 
-                <View style={styles.formContainer}>
-                    <TouchableOpacity onPress={this._handleButtonPressLogin} style={styles.buttonContainer}>
-                        <Text style={styles.textStyle}>
-                            Login
-                        </Text>
-                    </TouchableOpacity>
+
+                <View style={styles.slide2}>
+                    <Text style={styles.text}>Tess is a podcast platform</Text>
                 </View>
+
+
+                <View style={styles.slide3}>
+                    <Text style={styles.text}>A place to easily listen to or create podcasts</Text>
+                </View>
+
+                
+
+
+                <View style={styles.slide4}>
 
                 <View style={styles.formContainer2}>
                     <TouchableOpacity onPress={this._handleButtonPressCreate} style={styles.buttonContainer}>
-                        <Text style={styles.textStyle}>
-                            Create New Account
+                        <Text style={styles.text}>
+                            Get Started
                         </Text>
                     </TouchableOpacity>
                 </View>
 
+
                 <View style={styles.formContainer3}>
                     <TouchableOpacity onPress={this._fbAuth} style={styles.buttonContainer}>
-                        <Text style={styles.textStyle}>
+                        <Text style={styles.text}>
                             Login with Facebook
                         </Text>
                     </TouchableOpacity>
                 </View>
 
+                <View style={styles.formContainer}>
+                    <Text style={styles.smallText}>Already have an account?</Text>
+                    <TouchableOpacity onPress={this._handleButtonPressLogin} style={styles.buttonContainer}>
+                        <Text style={styles.text}>
+                            Login
+                        </Text>
+                    </TouchableOpacity>
+                </View>
 
-            </LinearGradient>
+
+
+                </View>
+
+
+            </Swiper>
         );
     }
 }
@@ -147,10 +166,10 @@ const styles = StyleSheet.create({
     },
     logoContainer: {
         alignItems: 'center',
-        flexGrow: 2,
+        flex: 1
     },
     logo: {
-        marginTop:70,
+        marginTop:10,
         width: 250,
         height: 200
     },
@@ -193,19 +212,19 @@ const styles = StyleSheet.create({
     formContainer: {
         paddingTop: 10,
         paddingBottom: 10,
-        backgroundColor: '#856cff',
+        backgroundColor: 'transparent',
 
     },
     formContainer2: {
-        paddingTop: 10,
+        paddingTop: 100,
         paddingBottom: 10,
-        backgroundColor: 'rgba(1,170,170,1)',
+        backgroundColor: 'transparent',
 
     },
     formContainer3: {
         paddingTop: 10,
         paddingBottom: 10,
-        backgroundColor: '#3B5998',
+        backgroundColor: 'transparent',
 
     },
     textStyle: {
@@ -214,6 +233,51 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Futura',
         fontSize: 20,
+    },
+
+    wrapper: {
+    },
+
+    slide1: {
+        paddingTop: 160,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#804cc8'
+    },
+    slide2: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#856cff'
+    },
+    slide3: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(1,170,170,1)'
+    },
+    slide4: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#69bbd9'
+    },
+    text: {
+        color: '#fff',
+        fontSize: 30,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginLeft: 30,
+        marginRight: 30,
+    },
+    smallText: {
+        color: '#fff',
+        fontSize: 15,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginLeft: 30,
+        marginRight: 30,
     }
 
 
