@@ -2,7 +2,7 @@
  * Created by nickruspantini on 6/17/17.
  */
 import React from 'react';
-import {StyleSheet, TabBarIOS, Text} from 'react-native';
+import {StyleSheet, TabBarIOS, Text, Image} from 'react-native';
 import {Scene, Router, TabBar, TabBarProps, Actions, ActionConst } from 'react-native-router-flux';
 import StartUp from './components/StartUp';
 import LoginForm from './components/LoginForm';
@@ -14,10 +14,50 @@ import Library from './components/Library';
 import Record from './components/Record';
 import Settings from './components/Settings';
 
+import Icon from 'react-native-vector-icons/Ionicons';
 
-const TabIcon = ({selected, title}) => {
+
+const TabIconHome = ({selected}) => {
     return (
-        <Text style={{color: selected ? 'white' : '#d3d3d3'}}>{title}</Text>
+    <Icon style={{color: selected ? 'white' : '#d3d3d3', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-home">
+        <Text style={{color: selected ? 'white' : '#d3d3d3', textAlign: 'center', fontSize:14,}}> Home </Text>
+    </Icon>
+    );
+
+};
+
+const TabIconDiscover = ({selected}) => {
+    return (
+        <Icon style={{color: selected ? 'white' : '#d3d3d3', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-search">
+            <Text style={{color: selected ? 'white' : '#d3d3d3', textAlign: 'center', fontSize:14,}}> Discover </Text>
+        </Icon>
+    );
+
+};
+
+const TabIconRecord = ({selected}) => {
+    return (
+        <Icon style={{color: selected ? 'white' : '#d3d3d3', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-microphone">
+            <Text style={{color: selected ? 'white' : '#d3d3d3', textAlign: 'center', fontSize:14,}}> Record </Text>
+        </Icon>
+    );
+
+};
+
+const TabIconLibrary = ({selected}) => {
+    return (
+        <Icon style={{color: selected ? 'white' : '#d3d3d3', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-headset">
+            <Text style={{color: selected ? 'white' : '#d3d3d3', textAlign: 'center', fontSize:14,}}> Library </Text>
+        </Icon>
+    );
+
+};
+
+const TabIconAccount = ({selected}) => {
+    return (
+        <Icon style={{color: selected ? 'white' : '#d3d3d3', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-person">
+            <Text style={{color: selected ? 'white' : '#d3d3d3', textAlign: 'center', fontSize:14,}}> Account </Text>
+        </Icon>
     );
 
 };
@@ -51,7 +91,7 @@ const RouterComponent = () => {
                 tabBarStyle={{backgroundColor:'#804cc8', paddingTop: 20}}
             >
 
-                <Scene key="Tab1" title="Home" icon={TabIcon} >
+                <Scene key="Tab1" title="Home" icon={TabIconHome} >
                     <Scene
                         key="Home"
                         component={Home}
@@ -63,7 +103,7 @@ const RouterComponent = () => {
                 </Scene>
 
 
-                <Scene key="Tab2" title="Discover" icon={TabIcon}>
+                <Scene key="Tab2" title="Discover" icon={TabIconDiscover}>
                     <Scene
                         key="discover"
                         component={Discover}
@@ -74,7 +114,7 @@ const RouterComponent = () => {
                 </Scene>
 
 
-                <Scene key="Tab3" title="Record" icon={TabIcon}>
+                <Scene key="Tab3" title="Record" icon={TabIconRecord}>
                     <Scene
                         key="record"
                         component={Record}
@@ -85,7 +125,7 @@ const RouterComponent = () => {
                 </Scene>
 
 
-                <Scene key="Tab4" title="Library" icon={TabIcon}>
+                <Scene key="Tab4" title="Library" icon={TabIconLibrary}>
                     <Scene
                         key="library"
                         component={Library}
@@ -96,7 +136,7 @@ const RouterComponent = () => {
                 </Scene>
 
 
-                <Scene key="Tab5" title="Account" icon={TabIcon} rightButtonTextStyle={styles.header} rightTitle="Settings" onRight={this._pressSettings} >
+                <Scene key="Tab5" title="Account" icon={TabIconAccount} rightButtonTextStyle={styles.header} rightTitle="Settings"  onRight={this._pressSettings} >
                     <Scene
                         key="account"
                         component={Account}

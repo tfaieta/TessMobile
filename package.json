@@ -16,9 +16,11 @@
 		"react-native-fbsdklogin": "0.0.8",
 		"react-native-grid-view": "^0.4.1",
 		"react-native-linear-gradient": "^2.0.0",
+		"react-native-navigation": "^1.1.118",
 		"react-native-router-flux": "^3.40.1",
 		"react-native-settings-list": "^1.6.1",
-		"react-native-swiper": "^1.5.4"
+		"react-native-swiper": "^1.5.4",
+		"react-native-vector-icons": "^4.2.0"
 	},
 	"devDependencies": {
 		"babel-jest": "20.0.3",

@@ -26,6 +26,11 @@ export  default class Login extends Component{
         Actions.CreateAccount();
     };
 
+    _overrideLogin = () => {
+        Actions.Main();
+    };
+
+
 
     _fbAuth = () => {
         LoginManager.logInWithReadPermissions(['public_profile']).then(function(result) {
@@ -36,7 +41,7 @@ export  default class Login extends Component{
                 Actions.Main();
             }
 
-            
+
         }, function (error) {
             console.log('An error occurred' + error) ;
         }  )
@@ -46,53 +51,14 @@ export  default class Login extends Component{
 
 
 
-/*
-    _handleButtonPressFB = async () => {
-        try {
-            const { type, token } = await Facebook.logInWithReadPermissionsAsync(
-                '820280631481558', // Replace with your own app id in standalone app
-                { permissions: ['public_profile'] }
-            );
-
-            switch (type) {
-                case 'success': {
-                    // Get the user's name using Facebook's Graph API
-                    const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
-                    const profile = await response.json();
-                    Alert.alert(
-                        'Logged in!',
-                        `Hi ${profile.name}!`,
-                    );
-                    break;
-                }
-                case 'cancel': {
-                    Alert.alert(
-                        'Cancelled!',
-                        'Login was cancelled!',
-                    );
-                    break;
-                }
-                default: {
-                    Alert.alert(
-                        'Oops!',
-                        'Login failed!',
-                    );
-                }
-            }
-        } catch (e) {
-            Alert.alert(
-                'Oops!',
-                'Login failed!',
-            );
-        }
-    };
-    */
-
 
 
     render() {
         return (
+            <View>
 
+
+                <View style={styles.container}>
             <Swiper style={styles.wrapper} showsButtons>
 
                 <View style={styles.slide1}>
@@ -118,14 +84,24 @@ export  default class Login extends Component{
                     <Text style={styles.text}>A place to easily listen to or create podcasts</Text>
                 </View>
 
-                
-
-
                 <View style={styles.slide4}>
+                    <Text style={styles.text}>Record with the touch of a button</Text>
+                </View>
 
+
+
+
+
+
+            </Swiper>
+                </View>
+
+
+
+            <View style={{marginTop: 500}}>
                 <View style={styles.formContainer2}>
                     <TouchableOpacity onPress={this._handleButtonPressCreate} style={styles.buttonContainer}>
-                        <Text style={styles.text}>
+                        <Text style={styles.smallText}>
                             Get Started
                         </Text>
                     </TouchableOpacity>
@@ -134,27 +110,34 @@ export  default class Login extends Component{
 
                 <View style={styles.formContainer3}>
                     <TouchableOpacity onPress={this._fbAuth} style={styles.buttonContainer}>
-                        <Text style={styles.text}>
+                        <Text style={styles.smallText}>
                             Login with Facebook
                         </Text>
                     </TouchableOpacity>
                 </View>
 
                 <View style={styles.formContainer}>
-                    <Text style={styles.smallText}>Already have an account?</Text>
+                    <Text style={styles.smallerText}>Already have an account?</Text>
                     <TouchableOpacity onPress={this._handleButtonPressLogin} style={styles.buttonContainer}>
-                        <Text style={styles.text}>
+                        <Text style={styles.smallText}>
                             Login
                         </Text>
                     </TouchableOpacity>
                 </View>
 
-
-
+                <View style={styles.formContainer}>
+                    <TouchableOpacity onPress={this._overrideLogin} style={styles.buttonContainer}>
+                        <Text style={styles.smallText}>
+                            Override Login
+                        </Text>
+                    </TouchableOpacity>
                 </View>
 
 
-            </Swiper>
+            </View>
+
+
+            </View>
         );
     }
 }
@@ -207,39 +190,33 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontStyle: 'normal',
         fontFamily: 'Futura',
-        fontSize: 25,
+        fontSize: 20,
     },
     formContainer: {
-        paddingTop: 10,
-        paddingBottom: 10,
+        paddingTop: 0,
+        paddingBottom: 0,
         backgroundColor: 'transparent',
 
     },
     formContainer2: {
-        paddingTop: 100,
-        paddingBottom: 10,
+        paddingTop: 0,
+        paddingBottom: 0,
         backgroundColor: 'transparent',
 
     },
     formContainer3: {
-        paddingTop: 10,
-        paddingBottom: 10,
+        paddingTop: 0,
+        paddingBottom: 0,
         backgroundColor: 'transparent',
 
     },
-    textStyle: {
-        textAlign: 'center',
-        color: '#fff',
-        fontStyle: 'normal',
-        fontFamily: 'Futura',
-        fontSize: 20,
-    },
 
     wrapper: {
+
     },
 
     slide1: {
-        paddingTop: 160,
+        paddingTop: 120,
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
@@ -273,12 +250,20 @@ const styles = StyleSheet.create({
     },
     smallText: {
         color: '#fff',
-        fontSize: 15,
+        fontSize: 16,
         fontWeight: 'bold',
         textAlign: 'center',
         marginLeft: 30,
         marginRight: 30,
-    }
+    },
+    smallerText: {
+        color: '#fff',
+        fontSize: 12,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginLeft: 30,
+        marginRight: 30,
+    },
 
 
 });

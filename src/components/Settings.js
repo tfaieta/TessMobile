@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import SettingsList from 'react-native-settings-list';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 class Settings extends Component {
@@ -38,9 +39,8 @@ class Settings extends Component {
                         />
                         <SettingsList.Item
                             icon={
-                                <View style={styles.imageStyle}>
-                                    <Image style={{alignSelf:'center',height:22, width:22}}/>
-                                </View>
+                                <Icon style={{color: 'rgba(1,170,170,1)', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-image">
+                                </Icon>
                             }
                             hasNavArrow={true}
                             itemWidth={70}
@@ -49,9 +49,8 @@ class Settings extends Component {
                         />
                         <SettingsList.Item
                             icon={
-                                <View style={styles.imageStyle}>
-                                    <Image style={{alignSelf:'center',height:4, width:18}} />
-                                </View>
+                                <Icon style={{color: 'rgba(1,170,170,1)', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-browsers">
+                                </Icon>
                             }
                             title='Details'
                             itemWidth={70}
@@ -68,9 +67,8 @@ class Settings extends Component {
                         />
                         <SettingsList.Item
                             icon={
-                                <View style={styles.imageStyle}>
-                                    <Image style={{alignSelf:'center',height:22, width:22}}/>
-                                </View>
+                                <Icon style={{color: 'rgba(1,170,170,1)', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-desktop">
+                                </Icon>
                             }
                             title='Display'
                             itemWidth={70}
@@ -79,9 +77,8 @@ class Settings extends Component {
                         />
                         <SettingsList.Item
                             icon={
-                                <View style={styles.imageStyle}>
-                                    <Image style={{alignSelf:'center',height:20, width:18}} />
-                                </View>
+                                <Icon style={{color: 'rgba(1,170,170,1)', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-volume-mute">
+                                </Icon>
                             }
                             title='Sounds'
                             itemWidth={70}
@@ -90,9 +87,8 @@ class Settings extends Component {
                         />
                         <SettingsList.Item
                             icon={
-                                <View style={styles.imageStyle}>
-                                    <Image style={{alignSelf:'center',height:22, width:14}} />
-                                </View>
+                                <Icon style={{color: 'rgba(1,170,170,1)', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-notifications">
+                                </Icon>
                             }
                             title='Notifications'
                             itemWidth={70}
@@ -101,9 +97,8 @@ class Settings extends Component {
                         />
                         <SettingsList.Item
                             icon={
-                                <View style={styles.imageStyle}>
-                                    <Image style={{alignSelf:'center',height:14, width:20}}/>
-                                </View>
+                                <Icon style={{color: 'rgba(1,170,170,1)', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-cloud-download">
+                                </Icon>
                             }
                             title='Storage'
                             itemWidth={70}
@@ -112,9 +107,8 @@ class Settings extends Component {
                         />
                         <SettingsList.Item
                             icon={
-                                <View style={styles.imageStyle}>
-                                    <Image style={{alignSelf:'center',height:22, width:14}} />
-                                </View>
+                                <Icon style={{color: 'rgba(1,170,170,1)', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-hammer">
+                                </Icon>
                             }
                             title='Preferences'
                             itemWidth={70}
@@ -123,9 +117,8 @@ class Settings extends Component {
                         />
                         <SettingsList.Item
                             icon={
-                                <View style={styles.imageStyle}>
-                                    <Image style={{alignSelf:'center',height:18, width:20}} />
-                                </View>
+                                <Icon style={{color: 'rgba(1,170,170,1)', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-color-fill">
+                                </Icon>
                             }
                             title='Theme'
                             itemWidth={70}
