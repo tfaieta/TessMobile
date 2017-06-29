@@ -1,34 +1,165 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet,StatusBar, Slider} from 'react-native';
-import firebase from 'firebase';
-import { Button, Card, CardSection, Input, Spinner } from './common';
+import { Text, TextInput, View, StyleSheet,StatusBar, Slider, ScrollView, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/Ionicons';
+
+
+const val=20;
+const volume=20;
 
 class Home extends Component{
 
+
     constructor(props) {
         super(props)
-        this.state = { volume: 20}
+        this.state = { volume: this.getVal(val)}
     }
     getVal(val){
-
+    return val
     }
 
     render() {
     return (
         <View
             style={styles.container}>
-            <Text style={styles.title }>Featured Audio</Text>
+
             <StatusBar
                 barStyle="light-content"
             />
 
+            <ScrollView>
 
 
-            <View style={styles.barContainer}>
+                <Text style={styles.title2}>Featured</Text>
+            <ScrollView horizontal={true}>
+
+                <TouchableOpacity>
+                <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
+                </Icon>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
+                    </Icon>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
+                    </Icon>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
+                    </Icon>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
+                    </Icon>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
+                    </Icon>
+                </TouchableOpacity>
+
+            </ScrollView>
+
+
+
+
+
+                <Text style={styles.title2}>Trending</Text>
+            <ScrollView horizontal={true}>
+
+                <TouchableOpacity>
+                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
+                    </Icon>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
+                    </Icon>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
+                    </Icon>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
+                    </Icon>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
+                    </Icon>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
+                    </Icon>
+                </TouchableOpacity>
+
+            </ScrollView>
+
+
+
+                <Text style={styles.title2}>Recommended</Text>
+                <ScrollView horizontal={true}>
+
+                    <TouchableOpacity>
+                        <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
+                        </Icon>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity>
+                        <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
+                        </Icon>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity>
+                        <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
+                        </Icon>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity>
+                        <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
+                        </Icon>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity>
+                        <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
+                        </Icon>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity>
+                        <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
+                        </Icon>
+                    </TouchableOpacity>
+
+                </ScrollView>
+
+
+
+            </ScrollView>
+
+
+
+
+
+
+
+            <LinearGradient start={{x: 2, y: 0}} end={{x: 2, y: 1.2}}
+                            locations={[0,0.5]}
+                            colors={['#595bc8', '#804cc8']}
+                            style={styles.barContainer}>
                 <Slider
-                    style={{ width: 300 }}
-                    step={1}
+                    minimumTrackTintColor={'rgba(1,170,170,1)'}
+                    maximumTrackTintColor={'rgba(70,70,70,1)'}
+                    style={styles.sliderContainer}
+                    step={2}
                     minimumValue={0}
                     maximumValue={100}
                     value={this.state.volume}
@@ -36,7 +167,7 @@ class Home extends Component{
                     onSlidingComplete={ val => this.getVal(val)}
                 />
                 <Text style={styles.playingText}>Now Playing...</Text>
-            </View>
+            </LinearGradient>
 
 
 
@@ -52,11 +183,12 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: 'transparent',
+        marginTop: 80,
     },
     barContainer:{
         flex: 1,
-        backgroundColor: '#575757',
-        marginTop: 370,
+        backgroundColor: 'transparent',
+        marginTop: -114,
         paddingTop: 10
     },
 
@@ -65,21 +197,32 @@ const styles = StyleSheet.create({
         marginTop: 70,
         flex:1,
         textAlign: 'center',
-        opacity: 2,
         fontStyle: 'normal',
         fontFamily: 'Futura',
         fontSize: 25,
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
+        paddingBottom:10
+    },
+    title2: {
+        color: '#804cc8',
+        flex:1,
+        textAlign: 'center',
     },
     playingText:{
         color: 'white',
         fontSize: 15,
-        marginLeft: 10
+        marginTop:-5,
+        alignSelf: 'center',
+        backgroundColor: 'transparent'
     },
     listView: {
         paddingTop: 20,
         backgroundColor: '#F5FCFF',
     },
+    sliderContainer: {
+        width: 340,
+        alignSelf: 'center'
+    }
 
 });
 

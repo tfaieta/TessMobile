@@ -68,6 +68,10 @@ const RouterComponent = () => {
         Actions.Settings();
     };
 
+    _pressSearch = () => {
+
+    };
+
     return (
         <Router headerStyle={styles.header} navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} barButtonTextStyle={styles.barButtonTextStyle} barButtonIconStyle={styles.barButtonIconStyle}>
 
@@ -91,7 +95,7 @@ const RouterComponent = () => {
                 tabBarStyle={{backgroundColor:'#804cc8', paddingTop: 20}}
             >
 
-                <Scene key="Tab1" title="Home" icon={TabIconHome} >
+                <Scene key="Tab1" title="Home" icon={TabIconHome} rightButtonTextStyle={styles.header} rightTitle={"Search"} onRight={this._pressSearch} >
                     <Scene
                         key="Home"
                         component={Home}
@@ -103,11 +107,11 @@ const RouterComponent = () => {
                 </Scene>
 
 
-                <Scene key="Tab2" title="Discover" icon={TabIconDiscover}>
+                <Scene key="Tab2" title="Discover" icon={TabIconDiscover} rightButtonTextStyle={styles.header} rightTitle={"Search"} onRight={this._pressSearch}>
                     <Scene
                         key="discover"
                         component={Discover}
-                        title="Account"
+                        title="Discover"
                         hideNavBar={false}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                     />
@@ -125,7 +129,7 @@ const RouterComponent = () => {
                 </Scene>
 
 
-                <Scene key="Tab4" title="Library" icon={TabIconLibrary}>
+                <Scene key="Tab4" title="Library" icon={TabIconLibrary} rightButtonTextStyle={styles.header} rightTitle={"Search"} onRight={this._pressSearch}>
                     <Scene
                         key="library"
                         component={Library}

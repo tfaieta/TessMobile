@@ -35,10 +35,15 @@ class Library extends Component{
 
                 </ScrollView>
 
-                <View style={styles.barContainer}>
+                <LinearGradient start={{x: 2, y: 0}} end={{x: 2, y: 1.2}}
+                                locations={[0,0.5]}
+                                colors={['#595bc8', '#804cc8']}
+                                style={styles.barContainer}>
                     <Slider
-                        style={{ width: 300 }}
-                        step={1}
+                        minimumTrackTintColor={'rgba(1,170,170,1)'}
+                        maximumTrackTintColor={'rgba(70,70,70,1)'}
+                        style={styles.sliderContainer}
+                        step={2}
                         minimumValue={0}
                         maximumValue={100}
                         value={this.state.volume}
@@ -46,7 +51,7 @@ class Library extends Component{
                         onSlidingComplete={ val => this.getVal(val)}
                     />
                     <Text style={styles.playingText}>Now Playing...</Text>
-                </View>
+                </LinearGradient>
 
 
             </View>
@@ -93,7 +98,13 @@ const styles = StyleSheet.create({
     playingText:{
         color: 'white',
         fontSize: 15,
-        marginLeft: 10
+        marginTop:-5,
+        alignSelf: 'center',
+        backgroundColor: 'transparent'
+    },
+    sliderContainer: {
+        width: 340,
+        alignSelf: 'center'
     }
 
 });

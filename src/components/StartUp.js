@@ -117,7 +117,7 @@ export  default class Login extends Component{
                 </View>
 
                 <View style={styles.formContainer}>
-                    <Text style={styles.smallerText}>Already have an account?</Text>
+
                     <TouchableOpacity onPress={this._handleButtonPressLogin} style={styles.buttonContainer}>
                         <Text style={styles.smallText}>
                             Login
@@ -125,13 +125,15 @@ export  default class Login extends Component{
                     </TouchableOpacity>
                 </View>
 
-                <View style={styles.formContainer}>
-                    <TouchableOpacity onPress={this._overrideLogin} style={styles.buttonContainer}>
-                        <Text style={styles.smallText}>
-                            Override Login
-                        </Text>
-                    </TouchableOpacity>
-                </View>
+
+                 <View style={styles.formContainer}>
+                 <TouchableOpacity onPress={this._overrideLogin} style={styles.buttonContainer}>
+                 <Text style={styles.smallText}>
+                 Override Login
+                 </Text>
+                 </TouchableOpacity>
+                 </View>
+
 
 
             </View>
@@ -195,19 +197,25 @@ const styles = StyleSheet.create({
     formContainer: {
         paddingTop: 0,
         paddingBottom: 0,
-        backgroundColor: 'transparent',
+        backgroundColor: 'rgba(200,200,200,0.3)',
+        marginLeft: 60,
+        marginRight: 60
 
     },
     formContainer2: {
         paddingTop: 0,
         paddingBottom: 0,
-        backgroundColor: 'transparent',
+        backgroundColor: 'rgba(200,200,200,0.3)',
+        marginLeft: 60,
+        marginRight: 60
 
     },
     formContainer3: {
         paddingTop: 0,
         paddingBottom: 0,
-        backgroundColor: 'transparent',
+        backgroundColor: 'rgba(200,200,200,0.3)',
+        marginLeft: 60,
+        marginRight: 60
 
     },
 
