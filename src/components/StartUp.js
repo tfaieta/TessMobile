@@ -183,17 +183,17 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10
     },
     buttonContainer: {
-        backgroundColor: '#ff7d70',
+        backgroundColor: '#e8952f',
         paddingVertical: 30,
         paddingHorizontal: 5,
     },
     buttonContainer2: {
-        backgroundColor: '#657ED4',
+        backgroundColor: '#657ed4',
         paddingVertical: 30,
         paddingHorizontal: 5,
     },
     buttonContainer3: {
-        backgroundColor: '#fbfbff',
+        backgroundColor: 'rgba(1,170,170,1)',
         paddingVertical: 30,
         paddingHorizontal: 5,
     },
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 150,
         alignItems: 'center',
-        backgroundColor: '#856cff'
+        backgroundColor: '#657ed4'
     },
     slide3: {
         flex: 1,
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
         marginRight: 30,
     },
     smallText2: {
-        color: '#000000',
+        color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
         textAlign: 'center',
