@@ -3,6 +3,7 @@ import { Text, TextInput, View, StyleSheet,StatusBar, ScrollView, TouchableOpaci
 import firebase from 'firebase';
 import { Button, Card, CardSection, Input, Spinner } from './common';
 import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 class Library extends Component{
@@ -26,12 +27,44 @@ class Library extends Component{
                     </TouchableOpacity>
 
                     <TouchableOpacity >
+                        <Text style={styles.contentTitle}>My Queue</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity >
                         <Text style={styles.contentTitle}>Followed Creators</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity >
                         <Text style={styles.contentTitle}>Recently Played</Text>
                     </TouchableOpacity>
+
+                    <TouchableOpacity>
+                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#804cc8' }} name="ios-play">
+                            <Text style={styles.title} >  Play Podcast</Text>
+                        </Icon>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity>
+                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#804cc8' }} name="ios-play">
+                            <Text style={styles.title} >  Play Podcast</Text>
+                        </Icon>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity>
+                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#804cc8' }} name="ios-play">
+                            <Text style={styles.title} >  Play Podcast</Text>
+                        </Icon>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity>
+                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#804cc8' }} name="ios-play">
+                            <Text style={styles.title} >  Play Podcast</Text>
+                        </Icon>
+                    </TouchableOpacity>
+
+
+
+
 
                 </ScrollView>
 
@@ -92,7 +125,7 @@ const styles = StyleSheet.create({
     barContainer:{
         flex: 1,
         backgroundColor: '#575757',
-        marginTop: 210,
+        marginTop: 6,
         paddingTop: 10
     },
     playingText:{

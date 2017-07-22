@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { Text, TextInput, View, StyleSheet,StatusBar, ScrollView, Image, TouchableOpacity, Slider} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
+import ScrollableTabView, {DefaultTabBar, } from 'react-native-scrollable-tab-view';
 import TopCharts from './DiscoverBar/TopCharts';
 import NewPodcasts from './DiscoverBar/NewPodcasts';
 import Categories from './DiscoverBar/Categories';
+import Icon from 'react-native-vector-icons/Ionicons';
+
+import { SearchBar } from 'react-native-elements'
 
 
 class Discover extends Component{
@@ -20,22 +23,45 @@ class Discover extends Component{
 
     render() {
         return (
-            <View
+            <View style={styles.container}>
 
-                style={styles.container}>
 
                 <StatusBar
                     barStyle="light-content"
                 />
 
-                <View style={{marginTop: 70}}>
-                <ScrollableTabView >
+                <View style={styles.backColor}>
+
+
+                    <SearchBar
+                        round
+                        containerStyle= {styles.containerSearch}
+                        placeholder='Search...'
+                        placeholderTextColor = 'rgba(170,170,170,1)'
+                        icon = {{ color: 'rgba(170,170,170,1)', name: 'search' }}
+                        clearIcon = {{ color: 'rgba(170,170,170,1)', name: 'close' }}
+                    />
+                </View>
+
+
+
+
+                <ScrollableTabView
+                    tabBarUnderlineStyle = {styles.underline}
+                    tabBarActiveTextColor = 'white'
+                    tabBarInactiveTextColor = 'rgba(210,210,210,1)'
+                    tabBarBackgroundColor = '#804cc8'
+                    style={{marginTop: 0, }}
+                    renderTabBar={() => <DefaultTabBar />}>
+
                     <TopCharts tabLabel="Top Charts" />
                     <NewPodcasts tabLabel="New" />
                     <Categories tabLabel="Categories" />
 
                 </ScrollableTabView>
-                </View>
+
+
+
 
 
 
@@ -74,7 +100,23 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'transparent',
     },
+    container2:{
+        flex: 1,
+        backgroundColor: '#804cc8' ,
+        marginTop: -90,
 
+    },
+    underline:{
+        backgroundColor: 'rgba(1,170,170,1)'
+    },
+    containerSearch:{
+        marginTop: 20,
+        backgroundColor: '#804cc8',
+
+    },
+    backColor:{
+        backgroundColor:  '#804cc8',
+    },
     title: {
         color: '#804cc8',
         marginTop: 70,
@@ -87,9 +129,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     barContainer:{
-        flex: 1,
+        flex: 0.226,
         backgroundColor: '#575757',
-        marginTop: 478.5,
+        marginTop: 0,
         paddingTop: 10
     },
     playingText:{

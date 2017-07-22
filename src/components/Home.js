@@ -27,6 +27,9 @@ class Home extends Component{
                 barStyle="light-content"
             />
 
+
+
+            <View style={styles.homeContainer}>
             <ScrollView>
 
 
@@ -144,6 +147,7 @@ class Home extends Component{
 
 
             </ScrollView>
+            </View>
 
 
 
@@ -185,10 +189,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         marginTop: 80,
     },
+    homeContainer:{
+        marginTop: -15,
+    },
     barContainer:{
         flex: 1,
         backgroundColor: 'transparent',
-        marginTop: -114,
+        marginTop: -11.5,
         paddingTop: 10
     },
 
@@ -207,6 +214,7 @@ const styles = StyleSheet.create({
         color: '#804cc8',
         flex:1,
         textAlign: 'center',
+        fontSize: 20
     },
     playingText:{
         color: 'white',

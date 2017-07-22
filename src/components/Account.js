@@ -6,9 +6,11 @@ import {
     View,
     Image,
     StatusBar,
-    Slider
+    Slider,
+    ScrollView
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 class Account extends Component {
 
@@ -24,10 +26,36 @@ class Account extends Component {
         return (
             <View
                 style={styles.container}>
-                <Text style={styles.title }>My Account</Text>
+
+
+
+                <ScrollView>
+
+                <Text style={styles.title }>My Name</Text>
                 <StatusBar
                     barStyle="light-content"
                 />
+
+                <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 140,color:'#888784' }} name="md-contact">
+                </Icon>
+
+                    <Text style={styles.title }>Bio</Text>
+                    <Text style={styles.title }>Content</Text>
+
+                </ScrollView>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                 <LinearGradient start={{x: 2, y: 0}} end={{x: 2, y: 1.2}}
                                 locations={[0,0.5]}
@@ -75,7 +103,7 @@ const styles = StyleSheet.create({
     barContainer:{
         flex: 1,
         backgroundColor: '#575757',
-        marginTop: 370,
+        marginTop: -34,
         paddingTop: 10
     },
     playingText:{

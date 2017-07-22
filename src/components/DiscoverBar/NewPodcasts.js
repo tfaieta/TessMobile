@@ -3,6 +3,8 @@
  */
 import React, { Component } from 'react';
 import { Text, TextInput, View, StyleSheet,StatusBar, ScrollView, TouchableOpacity, Slider} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+
 
 
 class NewPodcasts extends Component{
@@ -10,25 +12,74 @@ class NewPodcasts extends Component{
 
     render() {
         return (
-            <View style={styles.container}>
+            <ScrollView style={styles.container}>
 
 
-                <TouchableOpacity >
-                    <Text >Top Charts</Text>
+                <TouchableOpacity>
+                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#888784' }} name="md-albums">
+                        <Text style={styles.title} >    New</Text>
+                    </Icon>
                 </TouchableOpacity>
 
-                <TouchableOpacity >
-                    <Text >Top Charts</Text>
+                <TouchableOpacity>
+                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#888784' }} name="md-albums">
+                        <Text style={styles.title} >    New</Text>
+                    </Icon>
                 </TouchableOpacity>
 
-                <TouchableOpacity >
-                    <Text >Top Charts</Text>
+                <TouchableOpacity>
+                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#888784' }} name="md-albums">
+                        <Text style={styles.title} >    New</Text>
+                    </Icon>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#888784' }} name="md-albums">
+                        <Text style={styles.title} >    New</Text>
+                    </Icon>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#888784' }} name="md-albums">
+                        <Text style={styles.title} >    New</Text>
+                    </Icon>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#888784' }} name="md-albums">
+                        <Text style={styles.title} >    New</Text>
+                    </Icon>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#888784' }} name="md-albums">
+                        <Text style={styles.title} >    New</Text>
+                    </Icon>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#888784' }} name="md-albums">
+                        <Text style={styles.title} >    New</Text>
+                    </Icon>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#888784' }} name="md-albums">
+                        <Text style={styles.title} >    New</Text>
+                    </Icon>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#888784' }} name="md-albums">
+                        <Text style={styles.title} >    New</Text>
+                    </Icon>
                 </TouchableOpacity>
 
 
 
 
-            </View>
+
+            </ScrollView>
 
 
 
@@ -40,13 +91,13 @@ class NewPodcasts extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: 'red',
-        marginTop: 200,
+        backgroundColor: 'transparent',
+        marginTop: 0,
     },
 
     title: {
         color: '#804cc8',
-        marginTop: 70,
+        marginTop: 20,
         flex:1,
         textAlign: 'center',
         opacity: 2,
