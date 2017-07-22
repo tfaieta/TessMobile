@@ -59,16 +59,21 @@ export  default class Login extends Component{
 
 
                 <View style={styles.container}>
-            <Swiper style={styles.wrapper} showsButtons>
+            <Swiper style={styles.wrapper}
+                    showsButtons={false}
+                    autoplay={true}
+                    autoplayTimeout={5}
+                    loop={false}
+            >
 
                 <View style={styles.slide1}>
-                    <Text style={styles.text}>Welcome to</Text>
+                    <Text style={styles.text}></Text>
                     <View style={styles.logoContainer}>
                         <Image
                             style={styles.logo}
                             source={require('tess/src/images/logo.png')}
                         />
-                        <Text style={styles.text }>Swipe to find out more</Text>
+                        <Text style={styles.textforSlide1 }>Swipe to see what we're about</Text>
 
                     </View>
                 </View>
@@ -98,7 +103,7 @@ export  default class Login extends Component{
 
 
 
-            <View style={{marginTop: 500}}>
+            <View style={{marginTop: 430}}>
                 <View style={styles.formContainer2}>
                     <TouchableOpacity onPress={this._handleButtonPressCreate} style={styles.buttonContainer}>
                         <Text style={styles.smallText}>
@@ -109,7 +114,7 @@ export  default class Login extends Component{
 
 
                 <View style={styles.formContainer3}>
-                    <TouchableOpacity onPress={this._fbAuth} style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={this._fbAuth} style={styles.buttonContainer2}>
                         <Text style={styles.smallText}>
                             Login with Facebook
                         </Text>
@@ -118,8 +123,8 @@ export  default class Login extends Component{
 
                 <View style={styles.formContainer}>
 
-                    <TouchableOpacity onPress={this._handleButtonPressLogin} style={styles.buttonContainer}>
-                        <Text style={styles.smallText}>
+                    <TouchableOpacity onPress={this._handleButtonPressLogin} style={styles.buttonContainer3}>
+                        <Text style={styles.smallText2}>
                             Login
                         </Text>
                     </TouchableOpacity>
@@ -128,7 +133,7 @@ export  default class Login extends Component{
 
                  <View style={styles.formContainer}>
                  <TouchableOpacity onPress={this._overrideLogin} style={styles.buttonContainer}>
-                 <Text style={styles.smallText}>
+                 <Text style={styles.smallText2}>
                  Override Login
                  </Text>
                  </TouchableOpacity>
@@ -144,6 +149,7 @@ export  default class Login extends Component{
     }
 }
 
+//noinspection JSAnnotator
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -177,54 +183,60 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10
     },
     buttonContainer: {
-        backgroundColor: 'transparent',
-        paddingVertical: 5,
+        backgroundColor: '#ff7d70',
+        paddingVertical: 30,
         paddingHorizontal: 5,
-        marginBottom:5
+    },
+    buttonContainer2: {
+        backgroundColor: '#657ED4',
+        paddingVertical: 30,
+        paddingHorizontal: 5,
+    },
+    buttonContainer3: {
+        backgroundColor: '#fbfbff',
+        paddingVertical: 30,
+        paddingHorizontal: 5,
     },
     buttonText: {
         textAlign: 'center',
         color: '#FFFFFF',
-        fontWeight: '700'
+        fontWeight: '900'
     },
+
     textStyle: {
         textAlign: 'center',
         color: '#fff',
         fontStyle: 'normal',
         fontFamily: 'Futura',
-        fontSize: 20,
+        fontSize: 30,
     },
     formContainer: {
         paddingTop: 0,
         paddingBottom: 0,
         backgroundColor: 'rgba(200,200,200,0.3)',
-        marginLeft: 60,
-        marginRight: 60
-
+        marginLeft: 0,
+        marginRight: 0,
     },
     formContainer2: {
         paddingTop: 0,
         paddingBottom: 0,
         backgroundColor: 'rgba(200,200,200,0.3)',
-        marginLeft: 60,
-        marginRight: 60
-
+        marginLeft: 0,
+        marginRight: 0,
     },
     formContainer3: {
         paddingTop: 0,
         paddingBottom: 0,
         backgroundColor: 'rgba(200,200,200,0.3)',
-        marginLeft: 60,
-        marginRight: 60
-
+        marginLeft: 0,
+        marginRight: 0,
     },
 
     wrapper: {
-
     },
 
     slide1: {
-        paddingTop: 120,
+        paddingTop: 10,
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
@@ -256,8 +268,26 @@ const styles = StyleSheet.create({
         marginLeft: 30,
         marginRight: 30,
     },
+    textforSlide1: {
+        color: '#fff',
+        fontSize: 30,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginLeft: 30,
+        marginRight: 30,
+        paddingTop: 60,
+
+    },
     smallText: {
         color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginLeft: 30,
+        marginRight: 30,
+    },
+    smallText2: {
+        color: '#000000',
         fontSize: 16,
         fontWeight: 'bold',
         textAlign: 'center',
