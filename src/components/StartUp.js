@@ -236,27 +236,26 @@ const styles = StyleSheet.create({
     },
 
     slide1: {
-        paddingTop: 10,
+        paddingTop: 0,
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#804cc8'
+        backgroundColor: '#e8952f'
     },
     slide2: {
         flex: 1,
-        justifyContent: 'center',
+        paddingTop: 150,
         alignItems: 'center',
         backgroundColor: '#856cff'
     },
     slide3: {
         flex: 1,
-        justifyContent: 'center',
+        paddingTop: 150,
         alignItems: 'center',
         backgroundColor: 'rgba(1,170,170,1)'
     },
     slide4: {
         flex: 1,
-        justifyContent: 'center',
+        paddingTop: 150,
         alignItems: 'center',
         backgroundColor: '#69bbd9'
     },
@@ -266,6 +265,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         marginLeft: 30,
+        paddingBottom:20,
         marginRight: 30,
     },
     textforSlide1: {
