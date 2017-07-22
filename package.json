@@ -12,6 +12,7 @@
 		"npm": "^5.0.3",
 		"react": "16.0.0-alpha.6",
 		"react-native": "^0.44.3",
+		"react-native-elements": "^0.14.0",
 		"react-native-fbsdk": "^0.6.1",
 		"react-native-fbsdklogin": "0.0.8",
 		"react-native-grid-view": "^0.4.1",
@@ -23,6 +24,7 @@
 		"react-native-search-bar": "^3.0.0",
 		"react-native-settings-list": "^1.6.1",
 		"react-native-swiper": "^1.5.4",
+		"react-native-switch": "^1.1.0",
 		"react-native-vector-icons": "^4.2.0"
 	},
 	"devDependencies": {

@@ -95,7 +95,7 @@ const RouterComponent = () => {
                 tabBarStyle={{backgroundColor:'#804cc8', paddingTop: 20}}
             >
 
-                <Scene key="Tab1" title="Home" icon={TabIconHome} rightButtonTextStyle={styles.header} rightTitle={"Search"} onRight={this._pressSearch} >
+                <Scene key="Tab1" title="Home" icon={TabIconHome} >
                     <Scene
                         key="Home"
                         component={Home}
@@ -112,7 +112,7 @@ const RouterComponent = () => {
                         key="discover"
                         component={Discover}
                         title="Discover"
-                        hideNavBar={false}
+                        hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                     />
                 </Scene>
@@ -129,7 +129,7 @@ const RouterComponent = () => {
                 </Scene>
 
 
-                <Scene key="Tab4" title="Library" icon={TabIconLibrary} rightButtonTextStyle={styles.header} rightTitle={"Search"} onRight={this._pressSearch}>
+                <Scene key="Tab4" title="Library" icon={TabIconLibrary} >
                     <Scene
                         key="library"
                         component={Library}
