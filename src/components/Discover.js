@@ -5,12 +5,19 @@ import ScrollableTabView, {DefaultTabBar, } from 'react-native-scrollable-tab-vi
 import TopCharts from './DiscoverBar/TopCharts';
 import NewPodcasts from './DiscoverBar/NewPodcasts';
 import Categories from './DiscoverBar/Categories';
+import { Actions } from 'react-native-router-flux';
+import SearchPage from './SearchPage';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { SearchBar } from 'react-native-elements'
 
 
 class Discover extends Component{
+    static state = { search: ''};
+
+    searchActivate = () => {
+        Actions.SearchPage();
+    };
 
     constructor(props) {
         super(props)
@@ -40,6 +47,12 @@ class Discover extends Component{
                         placeholderTextColor = 'rgba(170,170,170,1)'
                         icon = {{ color: 'rgba(170,170,170,1)', name: 'search' }}
                         clearIcon = {{ color: 'rgba(170,170,170,1)', name: 'close' }}
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        value={this.state.search}
+                        onChangeText={search => this.setState({ search })}
+                        returnKeyType='search'
+                        onSubmitEditing={this.searchActivate}
                     />
                 </View>
 
@@ -112,7 +125,12 @@ const styles = StyleSheet.create({
     containerSearch:{
         marginTop: 20,
         backgroundColor: '#804cc8',
-
+        borderColor:'#804cc8',
+        borderWidth: 1,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderTopColor: '#804cc8',
+        borderBottomColor: '#804cc8',
     },
     backColor:{
         backgroundColor:  '#804cc8',

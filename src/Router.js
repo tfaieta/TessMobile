@@ -13,6 +13,8 @@ import Discover from './components/Discover';
 import Library from './components/Library';
 import Record from './components/Record';
 import Settings from './components/Settings';
+import SearchPage from './components/SearchPage';
+import Queue from './components/Queue';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -68,9 +70,6 @@ const RouterComponent = () => {
         Actions.Settings();
     };
 
-    _pressSearch = () => {
-
-    };
 
     return (
         <Router headerStyle={styles.header} navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} barButtonTextStyle={styles.barButtonTextStyle} barButtonIconStyle={styles.barButtonIconStyle}>
@@ -88,6 +87,7 @@ const RouterComponent = () => {
 
 
             <Scene key="Main" >
+
 
             <Scene
                 key="tabbar"
@@ -107,7 +107,7 @@ const RouterComponent = () => {
                 </Scene>
 
 
-                <Scene key="Tab2" title="Discover" icon={TabIconDiscover} rightButtonTextStyle={styles.header} rightTitle={"Search"} onRight={this._pressSearch}>
+                <Scene key="Tab2" title="Discover" icon={TabIconDiscover}>
                     <Scene
                         key="discover"
                         component={Discover}
@@ -115,6 +115,14 @@ const RouterComponent = () => {
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                     />
+                    <Scene
+                        key="SearchPage"
+                        component={SearchPage}
+                        title="Results"
+                        hideNavBar={false}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                    />
+
                 </Scene>
 
 
@@ -137,6 +145,13 @@ const RouterComponent = () => {
                         hideNavBar={false}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                     />
+                    <Scene
+                        key="Queue"
+                        component={Queue}
+                        title="Queue"
+                        hideNavBar={false}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                    />
                 </Scene>
 
 
@@ -151,7 +166,6 @@ const RouterComponent = () => {
                         />
 
                 </Scene>
-
 
 
 

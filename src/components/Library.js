@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { Text, TextInput, View, StyleSheet,StatusBar, ScrollView, TouchableOpacity, Slider} from 'react-native';
-import firebase from 'firebase';
-import { Button, Card, CardSection, Input, Spinner } from './common';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { Actions } from 'react-native-router-flux';
 
 
 class Library extends Component{
+
+    GoToQueue = () => {
+        Actions.Queue();
+    };
 
     constructor(props) {
         super(props)
@@ -22,46 +25,21 @@ class Library extends Component{
                 style={styles.container}>
                 <ScrollView>
 
-                    <TouchableOpacity >
+                    <TouchableOpacity onPress={this.GoToQueue}>
                         <Text style={styles.contentTitle}>Saved</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity >
+                    <TouchableOpacity onPress={this.GoToQueue}>
                         <Text style={styles.contentTitle}>My Queue</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity >
+                    <TouchableOpacity onPress={this.GoToQueue}>
                         <Text style={styles.contentTitle}>Followed Creators</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity >
+                    <TouchableOpacity onPress={this.GoToQueue}>
                         <Text style={styles.contentTitle}>Recently Played</Text>
                     </TouchableOpacity>
-
-                    <TouchableOpacity>
-                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#804cc8' }} name="ios-play">
-                            <Text style={styles.title} >  Play Podcast</Text>
-                        </Icon>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity>
-                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#804cc8' }} name="ios-play">
-                            <Text style={styles.title} >  Play Podcast</Text>
-                        </Icon>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity>
-                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#804cc8' }} name="ios-play">
-                            <Text style={styles.title} >  Play Podcast</Text>
-                        </Icon>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity>
-                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#804cc8' }} name="ios-play">
-                            <Text style={styles.title} >  Play Podcast</Text>
-                        </Icon>
-                    </TouchableOpacity>
-
 
 
 
@@ -120,12 +98,14 @@ const styles = StyleSheet.create({
         fontSize: 25,
         paddingBottom: 20,
         marginLeft: 20,
+        fontStyle: 'normal',
+        fontFamily: 'Futura',
 
     },
     barContainer:{
         flex: 1,
         backgroundColor: '#575757',
-        marginTop: 6,
+        marginTop: 146,
         paddingTop: 10
     },
     playingText:{

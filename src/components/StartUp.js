@@ -67,7 +67,6 @@ export  default class Login extends Component{
             >
 
                 <View style={styles.slide1}>
-                    <Text style={styles.text}></Text>
                     <View style={styles.logoContainer}>
                         <Image
                             style={styles.logo}

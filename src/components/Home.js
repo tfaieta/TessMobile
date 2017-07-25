@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
         paddingBottom:10
     },
     title2: {
-        color: '#804cc8',
+        color: 'rgba(1,170,170,1)',
         flex:1,
         textAlign: 'center',
         fontSize: 20
