@@ -18,6 +18,7 @@ class Record extends Component{
         recording: false,
         stoppedRecording: false,
         finished: false,
+        playing: false,
         audioPath: AudioUtils.DocumentDirectoryPath + '/test.aac',
         hasPermission: undefined,
     };
@@ -45,7 +46,6 @@ class Record extends Component{
             };
 
             AudioRecorder.onFinished = (data) => {
-                // Android callback comes in the form of a promise instead.
                 if (Platform.OS === 'ios') {
                     this._finishRecording(data.status === "OK", data.audioFileURL);
                 }
@@ -83,10 +83,11 @@ class Record extends Component{
     }
     _renderButtonRecord(title, onPress, active) {
         var style = (active) ? styles.activeButtonText : styles.buttonText;
+        var iconStyle = (active) ? styles.activeIconText : styles.iconText;
 
         return (
             <TouchableOpacity style={styles.button} onPress={onPress}>
-                <Icon style={{textAlign:'center', marginRight:120,marginLeft: 120, marginTop: 50, fontSize: 100,color:'#ea5454' }} name="ios-radio-button-on" onPress={this.recordSound}>
+                <Icon style={iconStyle} name="ios-radio-button-on" onPress={this.recordSound}>
                     <Text style={style}>
                         {title}
                     </Text>
@@ -106,7 +107,7 @@ class Record extends Component{
         try {
             const filePath = await AudioRecorder.pauseRecording();
 
-            // Pause is currently equivalent to stop on Android.
+
             if (Platform.OS === 'android') {
                 this._finishRecording(true, filePath);
             }
@@ -140,8 +141,8 @@ class Record extends Component{
             await this._stop();
         }
 
-        // These timeouts are a hacky workaround for some issues with react-native-sound.
-        // See https://github.com/zmxv/react-native-sound/issues/89.
+        this.setState({playing: true});
+
         setTimeout(() => {
             var sound = new Sound(this.state.audioPath, '', (error) => {
                 if (error) {
@@ -153,6 +154,7 @@ class Record extends Component{
                 sound.play((success) => {
                     if (success) {
                         console.log('successfully finished playing');
+                        this.setState({playing: false});
                     } else {
                         console.log('playback failed due to audio decoding errors');
                     }
@@ -164,7 +166,14 @@ class Record extends Component{
 
     async _record() {
         if (this.state.recording) {
-            console.warn('Already recording!');
+            this.setState({stoppedRecording: true, recording: false});
+
+            try {
+                const filePath = await AudioRecorder.pauseRecording();
+
+            } catch (error) {
+                console.error(error);
+            }
             return;
         }
 
@@ -174,7 +183,7 @@ class Record extends Component{
         }
 
         if(this.state.stoppedRecording){
-            this.prepareRecordingPath(this.state.audioPath);
+            const filePath = await AudioRecorder.startRecording();
         }
 
         this.setState({recording: true});
@@ -199,9 +208,8 @@ class Record extends Component{
                 <View style={styles.container}>
                     <View style={styles.controls}>
                         {this._renderButtonRecord("RECORD", () => {this._record()}, this.state.recording )}
-                        {this._renderButton("PLAY", () => {this._play()} )}
-                        {this._renderButton("STOP", () => {this._stop()} )}
-                        {this._renderButton("PAUSE", () => {this._pause()} )}
+                        {this._renderButton("PLAY", () => {this._play()}, this.state.playing )}
+                        {this._renderButton("DONE", () => {this._stop()} )}
                         <Text style={styles.progressText}>{this.state.currentTime}s</Text>
                     </View>
                 </View>
@@ -279,7 +287,23 @@ const styles = StyleSheet.create({
     },
     activeButtonText: {
         fontSize: 20,
-        color: "#7eb890"
+        color: '#ee617c'
+    },
+    iconText: {
+        textAlign:'center',
+        marginRight:120,
+        marginLeft: 120,
+        marginTop: 50,
+        fontSize: 100,
+        color:'#aba4a4'
+    },
+    activeIconText: {
+        textAlign:'center',
+        marginRight:120,
+        marginLeft: 120,
+        marginTop: 50,
+        fontSize: 100,
+        color: '#ee617c'
     }
 
 });

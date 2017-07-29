@@ -3,7 +3,7 @@ import { Text, TextInput, View, StyleSheet,StatusBar, ScrollView, TouchableOpaci
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
-
+import { volume } from './Home';
 
 class Library extends Component{
 
@@ -13,10 +13,10 @@ class Library extends Component{
 
     constructor(props) {
         super(props)
-        this.state = { volume: 20}
+        this.state = { volume}
     }
-    getVal(val){
-
+    getVolume(volume){
+        return volume;
     }
 
     render() {
@@ -57,9 +57,10 @@ class Library extends Component{
                         step={2}
                         minimumValue={0}
                         maximumValue={100}
-                        value={this.state.volume}
-                        onValueChange={val => this.setState({ volume: val })}
-                        onSlidingComplete={ val => this.getVal(val)}
+                        value={volume}
+                        onValueChange={volume => this.setState({ volume })}
+                        onSlidingComplete={ volume => this.getVolume(volume)}
+
                     />
                     <Text style={styles.playingText}>Now Playing...</Text>
                 </LinearGradient>

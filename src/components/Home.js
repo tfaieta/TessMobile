@@ -3,20 +3,20 @@ import { Text, TextInput, View, StyleSheet,StatusBar, Slider, ScrollView, Toucha
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+export let volume = 20;
 
-const val=20;
-const volume=20;
 
 class Home extends Component{
 
 
     constructor(props) {
         super(props)
-        this.state = { volume: this.getVal(val)}
+        this.state = { volume }
     }
-    getVal(val){
-    return val
+    getVolume(volume){
+        return volume;
     }
+
 
     render() {
     return (
@@ -166,9 +166,9 @@ class Home extends Component{
                     step={2}
                     minimumValue={0}
                     maximumValue={100}
-                    value={this.state.volume}
-                    onValueChange={val => this.setState({ volume: val })}
-                    onSlidingComplete={ val => this.getVal(val)}
+                    value={volume}
+                    onValueChange={volume => this.setState({ volume })}
+                    onSlidingComplete={ volume => this.getVolume(volume)}
                 />
                 <Text style={styles.playingText}>Now Playing...</Text>
             </LinearGradient>

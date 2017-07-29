@@ -15,6 +15,7 @@ import Record from './components/Record';
 import Settings from './components/Settings';
 import SearchPage from './components/SearchPage';
 import Queue from './components/Queue';
+import {searchWord} from './components/Discover';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -118,8 +119,8 @@ const RouterComponent = () => {
                     <Scene
                         key="SearchPage"
                         component={SearchPage}
-                        title="Results"
-                        hideNavBar={false}
+                        title= 'Results'
+                        hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                     />
 

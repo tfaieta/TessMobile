@@ -8,23 +8,26 @@ import Categories from './DiscoverBar/Categories';
 import { Actions } from 'react-native-router-flux';
 import SearchPage from './SearchPage';
 import Icon from 'react-native-vector-icons/Ionicons';
-
 import { SearchBar } from 'react-native-elements'
+import {volume} from './Home';
+
+export let searchWord = '';
 
 
 class Discover extends Component{
     static state = { search: ''};
 
     searchActivate = () => {
+        searchWord = this.state.search;
         Actions.SearchPage();
     };
 
     constructor(props) {
         super(props)
-        this.state = { volume: 20 }
+        this.state = { volume }
     }
-    getVal(val){
-
+    getVolume(volume){
+return volume;
     }
 
 
@@ -93,9 +96,9 @@ class Discover extends Component{
                         step={2}
                         minimumValue={0}
                         maximumValue={100}
-                        value={this.state.volume}
-                        onValueChange={val => this.setState({ volume: val })}
-                        onSlidingComplete={ val => this.getVal(val)}
+                        value={volume}
+                        onValueChange={volume => this.setState({ volume: volume })}
+                        onSlidingComplete={ volume => this.getVolume(volume)}
                     />
                     <Text style={styles.playingText}>Now Playing...</Text>
                 </LinearGradient>
