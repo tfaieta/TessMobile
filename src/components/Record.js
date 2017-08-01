@@ -25,11 +25,11 @@ class Record extends Component{
 
     prepareRecordingPath(audioPath){
         AudioRecorder.prepareRecordingAtPath(audioPath, {
-            SampleRate: 22050,
+            SampleRate: 44100,
             Channels: 1,
-            AudioQuality: "Low",
+            AudioQuality: "high",
             AudioEncoding: "aac",
-            AudioEncodingBitRate: 32000
+            AudioEncodingBitRate: 256000
         });
     }
 
