@@ -64,6 +64,7 @@ export  default class Login extends Component{
                     autoplay={true}
                     autoplayTimeout={5}
                     loop={false}
+                    showsPagination={false}
             >
 
                 <View style={styles.slide1}>

@@ -10,11 +10,13 @@ import SearchPage from './SearchPage';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { SearchBar } from 'react-native-elements'
 import {volume} from './Home';
+import PlayerBottom from './PlayerBottom';
 
 export let searchWord = '';
 
 
 class Discover extends Component{
+
     static state = { search: ''};
 
     searchActivate = () => {
@@ -83,25 +85,7 @@ return volume;
 
 
 
-
-
-                <LinearGradient start={{x: 2, y: 0}} end={{x: 2, y: 1.2}}
-                                locations={[0,0.5]}
-                                colors={['#595bc8', '#804cc8']}
-                                style={styles.barContainer}>
-                    <Slider
-                        minimumTrackTintColor={'rgba(1,170,170,1)'}
-                        maximumTrackTintColor={'rgba(70,70,70,1)'}
-                        style={styles.sliderContainer}
-                        step={2}
-                        minimumValue={0}
-                        maximumValue={100}
-                        value={volume}
-                        onValueChange={volume => this.setState({ volume: volume })}
-                        onSlidingComplete={ volume => this.getVolume(volume)}
-                    />
-                    <Text style={styles.playingText}>Now Playing...</Text>
-                </LinearGradient>
+                <PlayerBottom/>
 
 
             </View>
@@ -149,23 +133,7 @@ const styles = StyleSheet.create({
         fontSize: 25,
         backgroundColor: 'transparent'
     },
-    barContainer:{
-        flex: 0.226,
-        backgroundColor: '#575757',
-        marginTop: 0,
-        paddingTop: 10
-    },
-    playingText:{
-        color: 'white',
-        fontSize: 15,
-        marginTop:-5,
-        alignSelf: 'center',
-        backgroundColor: 'transparent'
-    },
-    sliderContainer: {
-        width: 340,
-        alignSelf: 'center'
-    },
+
 
 });
 

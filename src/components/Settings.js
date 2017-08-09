@@ -10,6 +10,7 @@ import {
 import { Actions } from 'react-native-router-flux';
 import SettingsList from 'react-native-settings-list';
 import Icon from 'react-native-vector-icons/Ionicons';
+import PlayerBottom from './PlayerBottom';
 
 
 class Settings extends Component {
@@ -136,6 +137,11 @@ class Settings extends Component {
                         />
                     </SettingsList>
                 </View>
+
+
+                <PlayerBottom/>
+
+
             </View>
         );
     }

@@ -5,11 +5,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Switch } from 'react-native-switch';
 import Sound from 'react-native-sound';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
+import { Actions } from 'react-native-router-flux';
+import PlayerBottom from './PlayerBottom';
 
 
-
-
-
+export let podFile =  AudioUtils.DocumentDirectoryPath + '/test.aac';
+export var podTime = 0;
 
 class Record extends Component{
 
@@ -95,6 +96,16 @@ class Record extends Component{
             </TouchableOpacity>
         );
     }
+    _renderButtonRecordN(onPress, active) {
+        var iconStyle = (active) ? styles.activeIconText : styles.iconText;
+
+        return (
+            <TouchableOpacity style={styles.button} onPress={onPress}>
+                <Icon style={iconStyle} name="ios-radio-button-on" onPress={this.recordSound}>
+                </Icon>
+            </TouchableOpacity>
+        );
+    }
 
     async _pause() {
         if (!this.state.recording) {
@@ -134,6 +145,15 @@ class Record extends Component{
         } catch (error) {
             console.error(error);
         }
+    }
+
+
+   async _done()  {
+        const filePath = await AudioRecorder.stopRecording();
+        this.setState({stoppedRecording: true, recording: false});
+
+        Actions.RecordInfo();
+
     }
 
     async _play() {
@@ -198,6 +218,7 @@ class Record extends Component{
     _finishRecording(didSucceed, filePath) {
         this.setState({ finished: didSucceed });
         console.log(`Finished recording of duration ${this.state.currentTime} seconds at path: ${filePath}`);
+        podTime = this.state.currentTime;
     }
 
 
@@ -206,24 +227,32 @@ class Record extends Component{
 
 
                 <View style={styles.container}>
+                    <Text style={styles.title4}>Press to Record</Text>
                     <View style={styles.controls}>
-                        {this._renderButtonRecord("RECORD", () => {this._record()}, this.state.recording )}
-                        {this._renderButton("PLAY", () => {this._play()}, this.state.playing )}
-                        {this._renderButton("DONE", () => {this._stop()} )}
+                        {this._renderButtonRecordN(() => {this._record()}, this.state.recording )}
+                        {this._renderButton("DONE", () => {this._done()} )}
                         <Text style={styles.progressText}>{this.state.currentTime}s</Text>
                     </View>
+
+
+                    <PlayerBottom/>
+
+
+
                 </View>
 
 
 
         );
     }
+
 }
 
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: 'transparent',
+        paddingTop: 80,
+        backgroundColor: '#804cc8',
     },
     container2:{
         flex: 1,
@@ -265,15 +294,22 @@ const styles = StyleSheet.create({
         fontSize: 20,
         backgroundColor: 'transparent'
     },
+    title4: {
+        color: '#FFF',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Futura',
+        fontSize: 30,
+    },
     controls: {
         justifyContent: 'center',
         alignItems: 'center',
-        flex: 1,
     },
     progressText: {
         paddingTop: 50,
-        fontSize: 50,
-        color: "#5d88ff"
+        fontSize: 30,
+        fontFamily: 'Futura',
+        color: "#FFF",
     },
     button: {
         padding: 20
@@ -283,7 +319,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontSize: 20,
-        color: "#bc72ff"
+        color: "#FFF",
     },
     activeButtonText: {
         fontSize: 20,
@@ -291,21 +327,19 @@ const styles = StyleSheet.create({
     },
     iconText: {
         textAlign:'center',
-        marginRight:120,
-        marginLeft: 120,
         marginTop: 50,
-        fontSize: 100,
+        fontSize: 140,
         color:'#aba4a4'
     },
     activeIconText: {
         textAlign:'center',
-        marginRight:120,
-        marginLeft: 120,
         marginTop: 50,
-        fontSize: 100,
+        fontSize: 140,
         color: '#ee617c'
-    }
+    },
+
 
 });
+
 
 export default Record;

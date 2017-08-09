@@ -15,15 +15,18 @@ import Record from './components/Record';
 import Settings from './components/Settings';
 import SearchPage from './components/SearchPage';
 import Queue from './components/Queue';
+import Player from './components/Player';
+import RecordInfo from './components/RecordInfo';
 import {searchWord} from './components/Discover';
+
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
 const TabIconHome = ({selected}) => {
     return (
-    <Icon style={{color: selected ? 'white' : '#d3d3d3', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-home">
-        <Text style={{color: selected ? 'white' : '#d3d3d3', textAlign: 'center', fontSize:14,}}> Home </Text>
+    <Icon style={{color: selected ? 'white' : '#afafaf', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-home">
+        <Text style={{color: selected ? 'white' : '#afafaf', textAlign: 'center', fontSize:14,}}> Home </Text>
     </Icon>
     );
 
@@ -31,8 +34,8 @@ const TabIconHome = ({selected}) => {
 
 const TabIconDiscover = ({selected}) => {
     return (
-        <Icon style={{color: selected ? 'white' : '#d3d3d3', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-search">
-            <Text style={{color: selected ? 'white' : '#d3d3d3', textAlign: 'center', fontSize:14,}}> Discover </Text>
+        <Icon style={{color: selected ? 'white' : '#afafaf', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-search">
+            <Text style={{color: selected ? 'white' : '#afafaf', textAlign: 'center', fontSize:14,}}> Discover </Text>
         </Icon>
     );
 
@@ -40,8 +43,8 @@ const TabIconDiscover = ({selected}) => {
 
 const TabIconRecord = ({selected}) => {
     return (
-        <Icon style={{color: selected ? 'white' : '#d3d3d3', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-microphone">
-            <Text style={{color: selected ? 'white' : '#d3d3d3', textAlign: 'center', fontSize:14,}}> Record </Text>
+        <Icon style={{color: selected ? 'white' : '#afafaf', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-microphone">
+            <Text style={{color: selected ? 'white' : '#afafaf', textAlign: 'center', fontSize:14,}}> Record </Text>
         </Icon>
     );
 
@@ -49,8 +52,8 @@ const TabIconRecord = ({selected}) => {
 
 const TabIconLibrary = ({selected}) => {
     return (
-        <Icon style={{color: selected ? 'white' : '#d3d3d3', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-headset">
-            <Text style={{color: selected ? 'white' : '#d3d3d3', textAlign: 'center', fontSize:14,}}> Library </Text>
+        <Icon style={{color: selected ? 'white' : '#afafaf', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-headset">
+            <Text style={{color: selected ? 'white' : '#afafaf', textAlign: 'center', fontSize:14,}}> Library </Text>
         </Icon>
     );
 
@@ -58,8 +61,8 @@ const TabIconLibrary = ({selected}) => {
 
 const TabIconAccount = ({selected}) => {
     return (
-        <Icon style={{color: selected ? 'white' : '#d3d3d3', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-person">
-            <Text style={{color: selected ? 'white' : '#d3d3d3', textAlign: 'center', fontSize:14,}}> Account </Text>
+        <Icon style={{color: selected ? 'white' : '#afafaf', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-person">
+            <Text style={{color: selected ? 'white' : '#afafaf', textAlign: 'center', fontSize:14,}}> Account </Text>
         </Icon>
     );
 
@@ -78,13 +81,7 @@ const RouterComponent = () => {
             <Scene key = "StartUp" component={StartUp} hideNavBar={true} initial  />
             <Scene key = "LoginForm" component={LoginForm} title = "Login" hideNavBar={false} />
             <Scene key = "CreateAccount" component={CreateAccount} title = "Create Account" hideNavBar={false}  />
-            <Scene
-                key="Settings"
-                component={Settings}
-                title="Settings"
-                hideNavBar={false}
-                navigationBarStyle={{backgroundColor:'#804cc8'}}
-            />
+
 
 
             <Scene key="Main" >
@@ -115,6 +112,7 @@ const RouterComponent = () => {
                         title="Discover"
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
                     />
                     <Scene
                         key="SearchPage"
@@ -122,6 +120,7 @@ const RouterComponent = () => {
                         title= 'Results'
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
                     />
 
                 </Scene>
@@ -132,7 +131,15 @@ const RouterComponent = () => {
                         key="record"
                         component={Record}
                         title="Record"
-                        hideNavBar={false}
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
+                    />
+                    <Scene
+                        key="RecordInfo"
+                        component={RecordInfo}
+                        title="RecordInfo"
+                        hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                     />
                 </Scene>
@@ -145,6 +152,7 @@ const RouterComponent = () => {
                         title="Library"
                         hideNavBar={false}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
                     />
                     <Scene
                         key="Queue"
@@ -152,28 +160,47 @@ const RouterComponent = () => {
                         title="Queue"
                         hideNavBar={false}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
                     />
                 </Scene>
 
 
-                <Scene key="Tab5" title="Account" icon={TabIconAccount} rightButtonTextStyle={styles.header} rightTitle="Settings"  onRight={this._pressSettings} >
+                <Scene key="Tab5" title="Account" icon={TabIconAccount}>
                     <Scene
+                        rightButtonTextStyle={styles.header} rightTitle="Settings"  onRight={this._pressSettings}
                         key="account"
                         component={Account}
                         title="Account"
                         hideNavBar={false}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
                         initial
                         />
+                    <Scene
+                        key="Settings"
+                        component={Settings}
+                        title="Settings"
+                        hideNavBar={false}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
+                    />
 
                 </Scene>
 
 
 
-            </Scene>
 
             </Scene>
 
+                <Scene
+                    key="Player"
+                    component={Player}
+                    title="Player"
+                    hideNavBar={true}
+                    navigationBarStyle={{backgroundColor:'#804cc8'}}
+                />
+
+            </Scene>
 
         </Router>
     )
