@@ -20,13 +20,42 @@ var PodcastFile = new Sound(podFile, '', (error) => {
 
 class Player extends Component{
 
+    constructor() {
+        super();
+        this.tick = this.tick.bind(this);
+    }
+
     Close = () => {
         Actions.pop();
     };
 
     state = {
-        isPlaying: false
+        isPlaying: false,
+        currentTime: 0,
     };
+
+
+    tick() {
+        PodcastFile.getCurrentTime((seconds) => {
+            this.setState({
+                currentTime: seconds
+            })
+        })
+    }
+
+    componentWillMount()   {
+
+        PodcastFile = new Sound(podFile, '', (error) => {
+            this.setState({
+                isPlaying: false,
+                currentTime: 0,
+            })
+            if (error) {
+                console.log('failed to load the sound', error);
+            }
+        });
+
+    }
 
 
     play = () =>  {
@@ -38,24 +67,8 @@ class Player extends Component{
         }
         if (this.state.isPlaying == false) {
             this.setState({isPlaying: true});
-            setTimeout(() => {
-                PodcastFile = new Sound(podFile, '', (error) => {
-                    if (error) {
-                        console.log('failed to load the sound', error);
-                    }
-                });
-
-                setTimeout(() => {
-                    PodcastFile.play((success) => {
-                        if (success) {
-                            console.log('successfully finished playing');
-
-                        } else {
-                            console.log('playback failed due to audio decoding errors');
-                        }
-                    });
-                }, 100);
-            }, 100);
+            PodcastFile.play();
+            interval: setInterval(this.tick, 1000)
         }
 
     }
@@ -88,9 +101,14 @@ class Player extends Component{
                 <Text style={styles.podcastText}>{podcastTitle}</Text>
             );
         }
-        else {
+        if (podcastTitle =='') {
             return (
                 <Text style={styles.podcastText}>-</Text>
+            );
+        }
+        else{
+            return (
+                <Text style={styles.podcastText}>{podcastTitle}</Text>
             );
         }
     }
@@ -101,11 +119,17 @@ class Player extends Component{
                 <Text style={styles.podcastText}>Podcast Artist</Text>
             );
         }
-        else {
+        if(podcastTitle == '') {
             return (
                 <Text style={styles.podcastText}>-</Text>
             );
         }
+        else{
+            return (
+                <Text style={styles.podcastText}>Podcast Artist</Text>
+            );
+        }
+
     }
 
 
@@ -115,9 +139,14 @@ class Player extends Component{
                 <Text style={styles.podcastText}>{podTime}</Text>
             );
         }
-        else {
+        if (podcastTitle == '') {
             return (
                 <Text style={styles.podcastText}>-</Text>
+            );
+        }
+        else{
+            return (
+                <Text style={styles.podcastText}>{podTime}</Text>
             );
         }
     }
@@ -125,12 +154,17 @@ class Player extends Component{
     _renderCurrentTime(isPlaying) {
         if (isPlaying) {
             return (
-                <Text style={styles.podcastText}>0</Text>
+                <Text style={styles.podcastText}>{this.state.currentTime}</Text>
             );
         }
-        else {
+        if (podcastTitle == '') {
             return (
                 <Text style={styles.podcastText}>-</Text>
+            );
+        }
+        else{
+            return (
+                <Text style={styles.podcastText}>{this.state.currentTime}</Text>
             );
         }
     }
@@ -201,10 +235,10 @@ render() {
                 minimumTrackTintColor={'rgba(1,170,170,1)'}
                 maximumTrackTintColor={'rgba(70,70,70,1)'}
                 style={styles.sliderContainer}
-                step={2}
+                step={1}
                 minimumValue={0}
-                maximumValue={100}
-                value={20}
+                maximumValue={PodcastFile.getDuration()}
+                value={this.state.currentTime / 100 * 100}
             />
 
 

@@ -20,17 +20,50 @@ var PodcastFile = new Sound(podFile, '', (error) => {
 class PlayerBottom extends Component {
 
 
+    constructor() {
+        super();
+        this.tick = this.tick.bind(this);
+    }
+
     state = {
         isPlaying: false,
         podProgress: 0,
+        currentTime: 0,
     };
 
+
+
+    tick() {
+        PodcastFile.getCurrentTime((seconds) => {
+            this.setState({
+                currentTime: seconds
+            })
+        })
+    }
+
+
+
+
+
+    componentWillMount()   {
+
+                PodcastFile = new Sound(podFile, '', (error) => {
+                    this.setState({
+                        isPlaying: false,
+                        currentTime: 0,
+                    })
+                    if (error) {
+                        console.log('failed to load the sound', error);
+                    }
+                });
+
+        }
 
 
 
 
     play = () =>  {
-console.warn(PodcastFile.getCurrentTime((seconds) => console.log('at ' + seconds)));
+
 
         if (this.state.isPlaying == true) {
             this.setState({isPlaying: false});
@@ -38,27 +71,16 @@ console.warn(PodcastFile.getCurrentTime((seconds) => console.log('at ' + seconds
         }
         if (this.state.isPlaying == false) {
             this.setState({isPlaying: true});
-            setTimeout(() => {
-                PodcastFile = new Sound(podFile, '', (error) => {
-                    if (error) {
-                        console.log('failed to load the sound', error);
-                    }
-                });
-
-                setTimeout(() => {
-                    PodcastFile.play((success) => {
-                        if (success) {
-                            console.log('successfully finished playing');
-
-                        } else {
-                            console.log('playback failed due to audio decoding errors');
-                        }
-                    });
-                }, 100);
-            }, 100);
+            PodcastFile.play();
+            interval: setInterval(this.tick, 1000)
         }
 
     }
+
+
+
+
+
 
 
     _renderPlayButton(isPlaying) {
@@ -103,9 +125,14 @@ console.warn(PodcastFile.getCurrentTime((seconds) => console.log('at ' + seconds
                 <Text style={styles.playingText}>{podcastTitle}</Text>
             )
         }
-        else {
+        if(podcastTitle=='') {
             return (
                 <Text style={styles.playingText}> </Text>
+            )
+        }
+        else{
+            return (
+                <Text style={styles.playingText}>{podcastTitle}</Text>
             )
         }
 
@@ -115,17 +142,27 @@ console.warn(PodcastFile.getCurrentTime((seconds) => console.log('at ' + seconds
         if(isPlaying) {
             return (
                 <View style = {{
-                    width: (PodcastFile.getCurrentTime((seconds) => console.log('at ' + seconds)) / PodcastFile.getDuration()) * 340,
+                    width: (this.state.currentTime / PodcastFile.getDuration()) * 380,
                     height: 8,
                     backgroundColor: 'rgba(1,170,170,1)',}}
                 >
                 </View>
             )
         }
-        else {
+        if (podcastTitle == '') {
             return (
                 <View style = {{
                     width: 340,
+                    height: 8,
+                    backgroundColor: '#575757'}}
+                >
+                </View>
+            )
+        }
+        else{
+            return (
+                <View style = {{
+                    width: (this.state.currentTime / PodcastFile.getDuration()) * 380,
                     height: 8,
                     backgroundColor: 'rgba(1,170,170,1)',}}
                 >
@@ -220,7 +257,7 @@ console.warn(PodcastFile.getCurrentTime((seconds) => console.log('at ' + seconds
         backgroundColor: 'rgba(1,170,170,1)',
     },
     emptyProgress: {
-        width: 340,
+        width: 380,
         height: 8,
         backgroundColor: '#575757',
     },
