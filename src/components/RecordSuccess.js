@@ -7,13 +7,13 @@ import { volume } from './Home';
 import Sound from 'react-native-sound';
 import PlayerBottom from './PlayerBottom';
 import {podFile, podTime} from './Record';
+import {podcastTitle, podcastDescription} from "./RecordInfo";
 
 
 
-export let podcastTitle = '';
-export let podcastDescription = '';
 
-class RecordInfo extends Component{
+
+class RecordSuccess extends Component{
 
     state = {
         title: podcastTitle,
@@ -26,16 +26,9 @@ class RecordInfo extends Component{
     };
 
 
-    Upload = () => {
-        podcastTitle = this.state.title;
-        podcastDescription = this.state.description;
-        Actions.RecordSuccess();
-    };
-
 
     preview = () =>  {
-        podcastTitle = this.state.title;
-        podcastDescription = this.state.description;
+
 
         setTimeout(() => {
             var sound = new Sound(podFile, '', (error) => {
@@ -64,47 +57,29 @@ class RecordInfo extends Component{
             <View
                 style={styles.container}>
 
-                <TextInput
-                    style ={styles.input}
-                    placeholder = "Podcast Title"
-                    placeholderTextColor='#FFF'
-                    returnKeyType='next'
-                    label="Title"
-                    value={this.state.title}
-                    onChangeText={title => this.setState({ title })}
-                />
 
-
-
-                <TextInput
-                    style ={styles.input2}
-                    placeholder = "Podcast Description"
-                    placeholderTextColor='#FFF'
-                    returnKeyType='done'
-                    label="Description"
-                    value={this.state.description}
-                    onChangeText={description => this.setState({ description })}
-                />
 
 
                 <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.buttonPreview}  onPress={this.preview}>
-                    <Icon style={{textAlign:'center', marginTop: 5, fontSize: 35,color:'#804cc8' }} name="ios-play">
-                    <Text  style={styles.contentTitle}> Preview</Text>
-                    </Icon>
-                </TouchableOpacity>
+
+
+                            <Text  style={styles.contentTitle}> Upload Successful</Text>
 
 
 
-                <TouchableOpacity style={styles.buttonUpload} onPress={this.Upload}>
-                <Text  style={styles.contentTitle}>Upload</Text>
-                </TouchableOpacity>
+
+
+                    <TouchableOpacity style={styles.buttonPreview}  onPress={this.preview}>
+                        <Icon style={{textAlign:'center', marginTop: 5, fontSize: 35,color:'#804cc8' }} name="ios-play">
+                            <Text  style={styles.contentTitle}>  {this.state.title}</Text>
+                        </Icon>
+                    </TouchableOpacity>
 
 
 
-                <TouchableOpacity style={styles.buttonCancel} onPress={this.Cancel}>
-                    <Text  style={styles.contentTitle}>Cancel</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonCancel} onPress={this.Cancel}>
+                        <Text  style={styles.contentTitle}>Record More</Text>
+                    </TouchableOpacity>
                 </View>
 
 
@@ -191,4 +166,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default RecordInfo;
+export default RecordSuccess;

@@ -23,12 +23,14 @@ class PlayerBottom extends Component {
     constructor() {
         super();
         this.tick = this.tick.bind(this);
+        this.play=this.play.bind(this);
     }
 
     state = {
         isPlaying: false,
         podProgress: 0,
         currentTime: 0,
+        interval: null
     };
 
 
@@ -51,7 +53,8 @@ class PlayerBottom extends Component {
                     this.setState({
                         isPlaying: false,
                         currentTime: 0,
-                    })
+                    });
+
                     if (error) {
                         console.log('failed to load the sound', error);
                     }
@@ -61,18 +64,26 @@ class PlayerBottom extends Component {
 
 
 
+    componentWillUnmount() {
+        this.setState({
+            interval: clearInterval(this.state.interval)
+        })
+    }
+
+
+
 
     play = () =>  {
 
 
         if (this.state.isPlaying == true) {
-            this.setState({isPlaying: false});
+            this.setState({isPlaying: false, interval: clearInterval(this.state.interval)});
             PodcastFile.pause();
         }
         if (this.state.isPlaying == false) {
-            this.setState({isPlaying: true});
+            this.setState({isPlaying: true, interval: setInterval(this.tick, 1000)});
             PodcastFile.play();
-            interval: setInterval(this.tick, 1000)
+
         }
 
     }

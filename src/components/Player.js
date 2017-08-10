@@ -23,6 +23,7 @@ class Player extends Component{
     constructor() {
         super();
         this.tick = this.tick.bind(this);
+        this.play=this.play.bind(this);
     }
 
     Close = () => {
@@ -31,7 +32,8 @@ class Player extends Component{
 
     state = {
         isPlaying: false,
-        currentTime: 0,
+        currentTime: 0.0,
+        interval: null
     };
 
 
@@ -49,7 +51,8 @@ class Player extends Component{
             this.setState({
                 isPlaying: false,
                 currentTime: 0,
-            })
+            });
+
             if (error) {
                 console.log('failed to load the sound', error);
             }
@@ -58,17 +61,22 @@ class Player extends Component{
     }
 
 
+    componentWillUnmount() {
+        this.setState({
+            interval: clearInterval(this.state.interval)
+        })
+}
+
     play = () =>  {
 
 
         if (this.state.isPlaying == true) {
-            this.setState({isPlaying: false});
+            this.setState({isPlaying: false, interval: clearInterval(this.state.interval)});
             PodcastFile.pause();
         }
         if (this.state.isPlaying == false) {
-            this.setState({isPlaying: true});
+            this.setState({isPlaying: true, interval: setInterval(this.tick, 1000)});
             PodcastFile.play();
-            interval: setInterval(this.tick, 1000)
         }
 
     }
@@ -136,7 +144,7 @@ class Player extends Component{
     _renderEndTime(isPlaying) {
         if (isPlaying) {
             return (
-                <Text style={styles.podcastText}>{podTime}</Text>
+                <Text style={styles.podcastText}>{PodcastFile.getDuration().toFixed(0)}</Text>
             );
         }
         if (podcastTitle == '') {
@@ -146,7 +154,7 @@ class Player extends Component{
         }
         else{
             return (
-                <Text style={styles.podcastText}>{podTime}</Text>
+                <Text style={styles.podcastText}>{PodcastFile.getDuration().toFixed(0)}</Text>
             );
         }
     }
@@ -154,7 +162,7 @@ class Player extends Component{
     _renderCurrentTime(isPlaying) {
         if (isPlaying) {
             return (
-                <Text style={styles.podcastText}>{this.state.currentTime}</Text>
+                <Text style={styles.podcastText}>{this.state.currentTime.toFixed(0)}</Text>
             );
         }
         if (podcastTitle == '') {
@@ -164,7 +172,7 @@ class Player extends Component{
         }
         else{
             return (
-                <Text style={styles.podcastText}>{this.state.currentTime}</Text>
+                <Text style={styles.podcastText}>{this.state.currentTime.toFixed(0)}</Text>
             );
         }
     }
@@ -237,8 +245,8 @@ render() {
                 style={styles.sliderContainer}
                 step={1}
                 minimumValue={0}
-                maximumValue={PodcastFile.getDuration()}
-                value={this.state.currentTime / 100 * 100}
+                maximumValue= {PodcastFile.getDuration()}
+                value={this.state.currentTime}
             />
 
 

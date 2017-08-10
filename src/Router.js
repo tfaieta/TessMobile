@@ -17,6 +17,7 @@ import SearchPage from './components/SearchPage';
 import Queue from './components/Queue';
 import Player from './components/Player';
 import RecordInfo from './components/RecordInfo';
+import RecordSuccess from './components/RecordSuccess';
 import {searchWord} from './components/Discover';
 
 
@@ -139,6 +140,13 @@ const RouterComponent = () => {
                         key="RecordInfo"
                         component={RecordInfo}
                         title="RecordInfo"
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                    />
+                    <Scene
+                        key="RecordSuccess"
+                        component={RecordSuccess}
+                        title="RecordSuccess"
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                     />

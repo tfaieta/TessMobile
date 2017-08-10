@@ -14,16 +14,60 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
 import PlayerBottom from './PlayerBottom';
+import {podcastTitle} from "./RecordInfo";
+import {podFile} from "./Record";
+import Sound from 'react-native-sound';
 
 class Account extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
         this.state = { volume: 20}
     }
-    getVal(val){
+
+
+
+    playPodcast = () =>  {
+
+
+        setTimeout(() => {
+            var sound = new Sound(podFile, '', (error) => {
+                if (error) {
+                    console.log('failed to load the sound', error);
+                }
+            });
+
+            setTimeout(() => {
+                sound.play((success) => {
+                    if (success) {
+                        console.log('successfully finished playing');
+
+                    } else {
+                        console.log('playback failed due to audio decoding errors');
+                    }
+                });
+            }, 100);
+        }, 100);
+    }
+
+
+    _renderPodcast(PodcastTitle){
+        if(PodcastTitle == '') {
+            return (
+                <Text style={styles.playingText}> </Text>
+            )
+        }
+        else{
+            return (
+                <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#804cc8' }} name="ios-play">
+                    <Text style={styles.title} >  {PodcastTitle}</Text>
+                </Icon>
+            )
+        }
 
     }
+
+
 
     render() {
         return (
@@ -45,17 +89,10 @@ class Account extends Component {
                     <Text style={styles.title2 }>Bio</Text>
                     <Text style={styles.title2 }>Content</Text>
 
-                    <TouchableOpacity>
-                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#804cc8' }} name="ios-play">
-                            <Text style={styles.title} >  Play Podcast</Text>
-                        </Icon>
+                    <TouchableOpacity onPress={this.playPodcast}>
+                        {this._renderPodcast(podcastTitle)}
                     </TouchableOpacity>
 
-                    <TouchableOpacity>
-                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#804cc8' }} name="ios-play">
-                            <Text style={styles.title} >  Play Podcast</Text>
-                        </Icon>
-                    </TouchableOpacity>
 
 
                 </ScrollView>
