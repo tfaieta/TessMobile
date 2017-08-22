@@ -88,6 +88,7 @@ const RouterComponent = () => {
             <Scene key="Main" >
 
 
+
             <Scene
                 key="tabbar"
                 tabs

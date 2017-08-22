@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: 'transparent',
+        paddingBottom: 116,
     },
     container2:{
         flex: 1,

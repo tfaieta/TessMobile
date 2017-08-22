@@ -5,6 +5,7 @@ import { Button, Card, CardSection, Input, Spinner } from './common';
 import LinearGradient from 'react-native-linear-gradient';
 import { Actions } from 'react-native-router-flux';
 
+export let profileNameL='';
 
 class LoginForm extends Component {
   state = { email: '', password: '', error: '', loading: false };
@@ -25,12 +26,15 @@ class LoginForm extends Component {
   }
 
   onLoginSuccess() {
+      profileNameL = this.state.email;
+  console.warn("name2: " + profileNameL);
     this.setState({
       email: '',
       password: '',
       loading: false,
       error: '',
     });
+
     Actions.Main();
   }
 

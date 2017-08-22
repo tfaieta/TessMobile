@@ -6,7 +6,7 @@ import { Actions } from 'react-native-router-flux';
 import Sound from 'react-native-sound';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
 import {podFile, podTime} from './Record';
-import {podcastTitle} from './RecordInfo';
+import Variables from './Variables/Variables';
 
 
 var PodcastFile = new Sound(podFile, '', (error) => {
@@ -27,10 +27,10 @@ class PlayerBottom extends Component {
     }
 
     state = {
-        isPlaying: false,
-        podProgress: 0,
-        currentTime: 0,
-        interval: null
+        isPlaying: Variables.isPlaying,
+        podProgress: Variables.podProgress,
+        currentTime: Variables.currentTime,
+        interval: Variables.interval
     };
 
 
@@ -50,15 +50,13 @@ class PlayerBottom extends Component {
     componentWillMount()   {
 
                 PodcastFile = new Sound(podFile, '', (error) => {
-                    this.setState({
-                        isPlaying: false,
-                        currentTime: 0,
-                    });
+
 
                     if (error) {
                         console.log('failed to load the sound', error);
                     }
                 });
+        PodcastFile.setCurrentTime(Variables.currentTime);
 
         }
 
@@ -67,7 +65,11 @@ class PlayerBottom extends Component {
     componentWillUnmount() {
         this.setState({
             interval: clearInterval(this.state.interval)
-        })
+        });
+        Variables.interval = clearInterval(Variables.interval);
+        Variables.currentTime = this.state.currentTime;
+        Variables.isPlaying = this.state.isPlaying;
+        Variables.podProgress = this.state.podProgress;
     }
 
 
@@ -76,17 +78,23 @@ class PlayerBottom extends Component {
     play = () =>  {
 
 
-        if (this.state.isPlaying == true) {
-            this.setState({isPlaying: false, interval: clearInterval(this.state.interval)});
-            PodcastFile.pause();
-        }
-        if (this.state.isPlaying == false) {
-            this.setState({isPlaying: true, interval: setInterval(this.tick, 1000)});
-            PodcastFile.play();
+        Variables.isPlaying = true;
+        Variables.interval = setInterval(this.tick, 1000);
+        this.setState({isPlaying: true, interval: setInterval(this.tick, 1000)});
+        PodcastFile.play();
 
-        }
 
-    }
+    };
+
+    pause = () =>  {
+
+        Variables.isPlaying = false;
+        Variables.interval = clearInterval(Variables.interval);
+        this.setState({isPlaying: false, interval: clearInterval(this.state.interval)});
+        PodcastFile.pause();
+
+
+    };
 
 
 
@@ -98,7 +106,7 @@ class PlayerBottom extends Component {
 
         if (isPlaying) {
             return (
-                <TouchableOpacity onPress={this.play}>
+                <TouchableOpacity onPress={this.pause}>
                     <Icon style={{
                         textAlign: 'right',
                         marginRight: 0,
@@ -133,17 +141,17 @@ class PlayerBottom extends Component {
     _renderPodcastInfo(isPlaying){
         if(isPlaying) {
             return (
-                <Text style={styles.playingText}>{podcastTitle}</Text>
+                <Text style={styles.playingText}>{Variables.podcastTitle}</Text>
             )
         }
-        if(podcastTitle=='') {
+        if(Variables.podcastTitle=='') {
             return (
                 <Text style={styles.playingText}> </Text>
             )
         }
         else{
             return (
-                <Text style={styles.playingText}>{podcastTitle}</Text>
+                <Text style={styles.playingText}>{Variables.podcastTitle}</Text>
             )
         }
 
@@ -160,7 +168,7 @@ class PlayerBottom extends Component {
                 </View>
             )
         }
-        if (podcastTitle == '') {
+        if (Variables.podcastTitle == '') {
             return (
                 <View style = {{
                     width: 340,

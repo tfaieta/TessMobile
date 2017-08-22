@@ -14,15 +14,19 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
 import PlayerBottom from './PlayerBottom';
-import {podcastTitle} from "./RecordInfo";
 import {podFile} from "./Record";
 import Sound from 'react-native-sound';
+import {profileNameL} from './LoginForm.js';
+import {profileName} from './CreateAccount.js';
+import Variables from './Variables/Variables';
+
+
 
 class Account extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { volume: 20}
+        this.state = { volume: 20, profileName: profileName, profileNameL: profileNameL}
     }
 
 
@@ -52,7 +56,7 @@ class Account extends Component {
 
 
     _renderPodcast(PodcastTitle){
-        if(PodcastTitle == '') {
+        if(Variables.podcastTitle == '') {
             return (
                 <Text style={styles.playingText}> </Text>
             )
@@ -62,6 +66,28 @@ class Account extends Component {
                 <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#804cc8' }} name="ios-play">
                     <Text style={styles.title} >  {PodcastTitle}</Text>
                 </Icon>
+            )
+        }
+
+    }
+
+    _renderProfileName(profileName1, profileName2){
+        if(profileName1 != '') {
+            return (
+                <Text style={styles.title2 }>{profileName1}</Text>
+            )
+        }
+        if(profileName2 != '') {
+            return (
+                <Text style={styles.title2 }>{profileName2}</Text>
+            )
+        }
+
+
+        else{
+            return (
+                <Text style={styles.title2} >My Name</Text>
+
             )
         }
 
@@ -78,7 +104,7 @@ class Account extends Component {
 
                 <ScrollView>
 
-                <Text style={styles.title2 }>My Name</Text>
+                    {this._renderProfileName(this.state.profileName, this.state.profileNameL)}
                 <StatusBar
                     barStyle="light-content"
                 />
@@ -90,7 +116,7 @@ class Account extends Component {
                     <Text style={styles.title2 }>Content</Text>
 
                     <TouchableOpacity onPress={this.playPodcast}>
-                        {this._renderPodcast(podcastTitle)}
+                        {this._renderPodcast(Variables.podcastTitle)}
                     </TouchableOpacity>
 
 

@@ -6,7 +6,7 @@ import { Actions } from 'react-native-router-flux';
 import Sound from 'react-native-sound';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
 import {podFile, podTime} from './Record';
-import {podcastTitle, podcastDescription} from './RecordInfo';
+import Variables from './Variables/Variables';
 
 
 
@@ -31,9 +31,9 @@ class Player extends Component{
     };
 
     state = {
-        isPlaying: false,
-        currentTime: 0.0,
-        interval: null
+        isPlaying: Variables.isPlaying,
+        currentTime: Variables.currentTime,
+        interval: Variables.interval
     };
 
 
@@ -47,47 +47,56 @@ class Player extends Component{
 
     componentWillMount()   {
 
+
         PodcastFile = new Sound(podFile, '', (error) => {
-            this.setState({
-                isPlaying: false,
-                currentTime: 0,
-            });
+
 
             if (error) {
                 console.log('failed to load the sound', error);
             }
         });
-
+        PodcastFile.setCurrentTime(Variables.currentTime);
     }
 
 
     componentWillUnmount() {
         this.setState({
             interval: clearInterval(this.state.interval)
-        })
+        });
+        Variables.interval = clearInterval(Variables.interval);
+        Variables.currentTime = this.state.currentTime;
+        Variables.isPlaying = this.state.isPlaying;
+        Variables.podProgress = this.state.podProgress;
 }
 
     play = () =>  {
 
 
-        if (this.state.isPlaying == true) {
-            this.setState({isPlaying: false, interval: clearInterval(this.state.interval)});
-            PodcastFile.pause();
-        }
-        if (this.state.isPlaying == false) {
+            Variables.isPlaying = true;
+            Variables.interval = setInterval(this.tick, 1000);
             this.setState({isPlaying: true, interval: setInterval(this.tick, 1000)});
             PodcastFile.play();
-        }
 
-    }
+
+    };
+
+    pause = () =>  {
+
+        Variables.isPlaying = false;
+        Variables.interval = clearInterval(Variables.interval);
+        this.setState({isPlaying: false, interval: clearInterval(this.state.interval)});
+        PodcastFile.pause();
+
+
+    };
 
 
     _renderPlayButton(isPlaying) {
 
         if (isPlaying) {
             return (
-                <TouchableOpacity onPress={this.play}>
-                    <Icon style={{textAlign:'left', marginRight:0,marginLeft: 0,paddingTop: 0, fontSize: 50,color:'#FFF' }}  name="md-pause">
+                <TouchableOpacity onPress={this.pause}>
+                    <Icon style={{textAlign:'left', marginRight:0,marginLeft: 0,paddingHorizontal: 20, fontSize: 50,color:'#FFF' }}  name="md-pause">
                     </Icon>
                 </TouchableOpacity>
             );
@@ -95,7 +104,7 @@ class Player extends Component{
         else {
             return (
                 <TouchableOpacity onPress={this.play}>
-                    <Icon style={{textAlign:'left', marginRight:0,marginLeft: 0,paddingTop: 0, fontSize: 50,color:'#FFF' }}  name="md-play">
+                    <Icon style={{textAlign:'left', marginRight:0,marginLeft: 0,paddingHorizontal: 20, fontSize: 50,color:'#FFF' }}  name="md-play">
                     </Icon>
                 </TouchableOpacity>
             );
@@ -106,17 +115,17 @@ class Player extends Component{
     _renderPodcastTitle(isPlaying) {
         if (isPlaying) {
             return (
-                <Text style={styles.podcastText}>{podcastTitle}</Text>
+                <Text style={styles.podcastText}>{Variables.podcastTitle}</Text>
             );
         }
-        if (podcastTitle =='') {
+        if (Variables.podcastTitle =='') {
             return (
                 <Text style={styles.podcastText}>-</Text>
             );
         }
         else{
             return (
-                <Text style={styles.podcastText}>{podcastTitle}</Text>
+                <Text style={styles.podcastText}>{Variables.podcastTitle}</Text>
             );
         }
     }
@@ -127,7 +136,7 @@ class Player extends Component{
                 <Text style={styles.podcastText}>Podcast Artist</Text>
             );
         }
-        if(podcastTitle == '') {
+        if(Variables.podcastTitle == '') {
             return (
                 <Text style={styles.podcastText}>-</Text>
             );
@@ -141,38 +150,30 @@ class Player extends Component{
     }
 
 
-    _renderEndTime(isPlaying) {
-        if (isPlaying) {
+    _renderEndTime() {
+
+        if (Variables.podcastTitle == '') {
             return (
-                <Text style={styles.podcastText}>{PodcastFile.getDuration().toFixed(0)}</Text>
-            );
-        }
-        if (podcastTitle == '') {
-            return (
-                <Text style={styles.podcastText}>-</Text>
+                <Text style={styles.podcastTextNum}>-</Text>
             );
         }
         else{
             return (
-                <Text style={styles.podcastText}>{PodcastFile.getDuration().toFixed(0)}</Text>
+                <Text style={styles.podcastTextNum}>{PodcastFile.getDuration().toFixed(0)}</Text>
             );
         }
     }
 
-    _renderCurrentTime(isPlaying) {
-        if (isPlaying) {
+    _renderCurrentTime() {
+
+        if (Variables.podcastTitle == '') {
             return (
-                <Text style={styles.podcastText}>{this.state.currentTime.toFixed(0)}</Text>
-            );
-        }
-        if (podcastTitle == '') {
-            return (
-                <Text style={styles.podcastText}>-</Text>
+                <Text style={styles.podcastTextNum}>-</Text>
             );
         }
         else{
             return (
-                <Text style={styles.podcastText}>{this.state.currentTime.toFixed(0)}</Text>
+                <Text style={styles.podcastTextNum}>{this.state.currentTime.toFixed(0)}</Text>
             );
         }
     }
@@ -229,11 +230,11 @@ render() {
             <View style={styles.centerContainer}>
 
                 <View style={styles.leftContainer}>
-                    {this._renderCurrentTime(this.state.isPlaying)}
+                    {this._renderCurrentTime()}
                 </View>
 
                 <View style={styles.rightContainer}>
-                    {this._renderEndTime(this.state.isPlaying)}
+                    {this._renderEndTime()}
                 </View>
 
             </View>
@@ -255,7 +256,7 @@ render() {
 
                 <View style={styles.leftContainer}>
                     <TouchableOpacity>
-                        <Icon style={{textAlign:'left', marginRight:0,marginLeft: 0,paddingTop: 0, fontSize: 50,color:'#FFF' }} name="ios-skip-backward">
+                        <Icon style={{textAlign:'left', marginRight:0,paddingLeft: 80,paddingTop: 0, fontSize: 50,color:'#FFF' }} name="ios-skip-backward">
                         </Icon>
                     </TouchableOpacity>
                 </View>
@@ -268,7 +269,7 @@ render() {
 
                 <View style={styles.rightContainer}>
                     <TouchableOpacity>
-                        <Icon style={{textAlign:'right', marginRight:0,marginLeft: 0,paddingTop: 0, fontSize: 50,color:'#FFF' }} name="ios-skip-forward">
+                        <Icon style={{textAlign:'right', paddingRight: 80,marginLeft: 0,paddingTop: 0, fontSize: 50,color:'#FFF' }} name="ios-skip-forward">
                         </Icon>
                     </TouchableOpacity>
                 </View>
@@ -331,6 +332,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: 'transparent',
         alignSelf: 'center'
+    },
+    podcastTextNum:{
+        color: 'white',
+        fontSize: 20,
+        marginTop: 5,
+        flexDirection: 'row',
+        backgroundColor: 'transparent',
+        marginHorizontal: 10,
     },
     listView: {
         paddingTop: 20,

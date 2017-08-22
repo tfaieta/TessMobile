@@ -25,7 +25,7 @@ class Settings extends Component {
     }
     render() {
         return (
-            <View style={{backgroundColor:'#f6f6f6',flex:1, paddingTop: 10, paddingBottom: 45}}>
+            <View style={{backgroundColor:'#f6f6f6',flex:1, paddingTop: 10, paddingBottom: 118}}>
                 <View style={{borderBottomWidth:1, backgroundColor:'#263238',borderColor:'#c8c7cc'}}>
                     <Text style={{color:'white',marginTop:15,marginBottom:15, marginLeft:15,fontWeight:'bold',fontSize:20}}>Settings</Text>
                 </View>

@@ -9,6 +9,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Actions } from 'react-native-router-flux';
 
 
+export let profileName='';
+
 class CreateAccount extends Component {
     state = { email: '', password: '', confirmPassword: '', error: '', loading: false };
 
@@ -28,6 +30,7 @@ class CreateAccount extends Component {
     }
 
     onLoginSuccess() {
+        profileName = this.state.email;
         this.setState({
             email: '',
             password: '',

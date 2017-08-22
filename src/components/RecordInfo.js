@@ -7,17 +7,16 @@ import { volume } from './Home';
 import Sound from 'react-native-sound';
 import PlayerBottom from './PlayerBottom';
 import {podFile, podTime} from './Record';
+import Variables from './Variables/Variables';
 
 
 
-export let podcastTitle = '';
-export let podcastDescription = '';
 
 class RecordInfo extends Component{
 
     state = {
-        title: podcastTitle,
-        description: podcastDescription,
+        title: Variables.podcastTitle,
+        description: Variables.podcastDescription,
     };
 
 
@@ -27,15 +26,15 @@ class RecordInfo extends Component{
 
 
     Upload = () => {
-        podcastTitle = this.state.title;
-        podcastDescription = this.state.description;
+        Variables.podcastTitle = this.state.title;
+        Variables.podcastDescription = this.state.description;
         Actions.RecordSuccess();
     };
 
 
     preview = () =>  {
-        podcastTitle = this.state.title;
-        podcastDescription = this.state.description;
+        Variables.podcastTitle = this.state.title;
+        Variables.podcastDescription = this.state.description;
 
         setTimeout(() => {
             var sound = new Sound(podFile, '', (error) => {
@@ -55,7 +54,8 @@ class RecordInfo extends Component{
                 });
             }, 100);
         }, 100);
-    }
+
+    };
 
 
 
