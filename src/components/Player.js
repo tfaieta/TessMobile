@@ -1,21 +1,17 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet,StatusBar, Slider, ScrollView, TouchableOpacity} from 'react-native';
+import { Text, TextInput, View, StyleSheet,StatusBar, ScrollView, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
+import Slider from 'react-native-slider';
 import Sound from 'react-native-sound';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
 import {podFile, podTime} from './Record';
-import Variables from './Variables/Variables';
+import Variables from './Variables';
+import {PodcastFile} from './Variables';
 
 
 
-var PodcastFile = new Sound(podFile, '', (error) => {
-    if (error) {
-        console.log('failed to load the sound', error);
-        return;
-    }
-});
 
 
 class Player extends Component{
@@ -31,9 +27,12 @@ class Player extends Component{
     };
 
     state = {
-        isPlaying: Variables.isPlaying,
-        currentTime: Variables.currentTime,
-        interval: Variables.interval
+        isPlaying: Variables.state.isPlaying,
+        podProgress: Variables.state.podProgress,
+        currentTime: Variables.state.currentTime,
+        interval: Variables.state.interval,
+        podcastTitle: Variables.state.podcastTitle,
+        podcastDescription: Variables.state.podcastDescription,
     };
 
 
@@ -45,18 +44,13 @@ class Player extends Component{
         })
     }
 
-    componentWillMount()   {
-
-
-        PodcastFile = new Sound(podFile, '', (error) => {
-
-
-            if (error) {
-                console.log('failed to load the sound', error);
-            }
-        });
-        PodcastFile.setCurrentTime(Variables.currentTime);
-    }
+componentDidMount(){
+        if (this.state.isPlaying==true){
+            this.setState({
+                interval: setInterval(this.tick, 500)
+            });
+        }
+}
 
 
     componentWillUnmount() {
@@ -64,28 +58,25 @@ class Player extends Component{
             interval: clearInterval(this.state.interval)
         });
         Variables.interval = clearInterval(Variables.interval);
-        Variables.currentTime = this.state.currentTime;
-        Variables.isPlaying = this.state.isPlaying;
-        Variables.podProgress = this.state.podProgress;
 }
 
     play = () =>  {
+        this.setState({
+            isPlaying: true,
+            interval: setInterval(this.tick, 500)
+        });
 
-
-            Variables.isPlaying = true;
-            Variables.interval = setInterval(this.tick, 1000);
-            this.setState({isPlaying: true, interval: setInterval(this.tick, 1000)});
-            PodcastFile.play();
+        Variables.play()
 
 
     };
 
     pause = () =>  {
-
-        Variables.isPlaying = false;
-        Variables.interval = clearInterval(Variables.interval);
-        this.setState({isPlaying: false, interval: clearInterval(this.state.interval)});
-        PodcastFile.pause();
+        this.setState({
+            isPlaying: false,
+            interval: clearInterval(this.state.interval)
+        });
+        Variables.pause();
 
 
     };
@@ -115,17 +106,17 @@ class Player extends Component{
     _renderPodcastTitle(isPlaying) {
         if (isPlaying) {
             return (
-                <Text style={styles.podcastText}>{Variables.podcastTitle}</Text>
+                <Text style={styles.podcastText}>{this.state.podcastTitle}</Text>
             );
         }
-        if (Variables.podcastTitle =='') {
+        if (this.state.podcastTitle =='') {
             return (
                 <Text style={styles.podcastText}>-</Text>
             );
         }
         else{
             return (
-                <Text style={styles.podcastText}>{Variables.podcastTitle}</Text>
+                <Text style={styles.podcastText}>{this.state.podcastTitle}</Text>
             );
         }
     }
@@ -136,7 +127,7 @@ class Player extends Component{
                 <Text style={styles.podcastText}>Podcast Artist</Text>
             );
         }
-        if(Variables.podcastTitle == '') {
+        if(this.state.podcastTitle == '') {
             return (
                 <Text style={styles.podcastText}>-</Text>
             );
@@ -152,7 +143,7 @@ class Player extends Component{
 
     _renderEndTime() {
 
-        if (Variables.podcastTitle == '') {
+        if (this.state.podcastTitle == '') {
             return (
                 <Text style={styles.podcastTextNum}>-</Text>
             );
@@ -166,7 +157,7 @@ class Player extends Component{
 
     _renderCurrentTime() {
 
-        if (Variables.podcastTitle == '') {
+        if (this.state.podcastTitle == '') {
             return (
                 <Text style={styles.podcastTextNum}>-</Text>
             );
@@ -243,11 +234,16 @@ render() {
             <Slider
                 minimumTrackTintColor={'rgba(1,170,170,1)'}
                 maximumTrackTintColor={'rgba(70,70,70,1)'}
+                thumbTintColor={'#804cc8'}
+                thumbTouchSize={{width: 40, height: 40}}
+                animateTransitions = {true}
                 style={styles.sliderContainer}
-                step={1}
+                step={0}
                 minimumValue={0}
                 maximumValue= {PodcastFile.getDuration()}
                 value={this.state.currentTime}
+                onValueChange={currentTime => this.setState({currentTime})}
+
             />
 
 

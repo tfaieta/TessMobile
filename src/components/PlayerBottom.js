@@ -6,20 +6,13 @@ import { Actions } from 'react-native-router-flux';
 import Sound from 'react-native-sound';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
 import {podFile, podTime} from './Record';
-import Variables from './Variables/Variables';
+import Variables from './Variables';
+import {PodcastFile} from './Variables';
 
 
-var PodcastFile = new Sound(podFile, '', (error) => {
-    if (error) {
-        console.log('failed to load the sound', error);
-        return;
-    }
-});
 
 
 class PlayerBottom extends Component {
-
-
     constructor() {
         super();
         this.tick = this.tick.bind(this);
@@ -27,13 +20,28 @@ class PlayerBottom extends Component {
     }
 
     state = {
-        isPlaying: Variables.isPlaying,
-        podProgress: Variables.podProgress,
-        currentTime: Variables.currentTime,
-        interval: Variables.interval
+        isPlaying: Variables.state.isPlaying,
+        podProgress: Variables.state.podProgress,
+        currentTime: Variables.state.currentTime,
+        interval: Variables.state.interval,
+        podcastTitle: Variables.state.podcastTitle,
+        podcastDescription: Variables.state.podcastDescription,
     };
 
+    componentDidMount(){
+        if (this.state.isPlaying==true){
+            this.setState({
+                interval: setInterval(this.tick, 500)
+            });
+        }
+    }
 
+    componentWillUnmount() {
+        this.setState({
+            interval: clearInterval(this.state.interval)
+        });
+        Variables.interval = clearInterval(Variables.interval);
+    }
 
     tick() {
         PodcastFile.getCurrentTime((seconds) => {
@@ -43,63 +51,27 @@ class PlayerBottom extends Component {
         })
     }
 
-
-
-
-
-    componentWillMount()   {
-
-                PodcastFile = new Sound(podFile, '', (error) => {
-
-
-                    if (error) {
-                        console.log('failed to load the sound', error);
-                    }
-                });
-        PodcastFile.setCurrentTime(Variables.currentTime);
-
-        }
-
-
-
-    componentWillUnmount() {
-        this.setState({
-            interval: clearInterval(this.state.interval)
-        });
-        Variables.interval = clearInterval(Variables.interval);
-        Variables.currentTime = this.state.currentTime;
-        Variables.isPlaying = this.state.isPlaying;
-        Variables.podProgress = this.state.podProgress;
-    }
-
-
-
-
     play = () =>  {
+        this.setState({
+            isPlaying: true,
+            interval: setInterval(this.tick, 500)
+        });
 
-
-        Variables.isPlaying = true;
-        Variables.interval = setInterval(this.tick, 1000);
-        this.setState({isPlaying: true, interval: setInterval(this.tick, 1000)});
-        PodcastFile.play();
+        Variables.play()
 
 
     };
+
 
     pause = () =>  {
-
-        Variables.isPlaying = false;
-        Variables.interval = clearInterval(Variables.interval);
-        this.setState({isPlaying: false, interval: clearInterval(this.state.interval)});
-        PodcastFile.pause();
+        this.setState({
+            isPlaying: false,
+            interval: clearInterval(this.state.interval)
+        });
+       Variables.pause();
 
 
     };
-
-
-
-
-
 
 
     _renderPlayButton(isPlaying) {
@@ -141,17 +113,17 @@ class PlayerBottom extends Component {
     _renderPodcastInfo(isPlaying){
         if(isPlaying) {
             return (
-                <Text style={styles.playingText}>{Variables.podcastTitle}</Text>
+                <Text style={styles.playingText}>{this.state.podcastTitle}</Text>
             )
         }
-        if(Variables.podcastTitle=='') {
+        if(this.state.podcastTitle =='') {
             return (
                 <Text style={styles.playingText}> </Text>
             )
         }
         else{
             return (
-                <Text style={styles.playingText}>{Variables.podcastTitle}</Text>
+                <Text style={styles.playingText}>{this.state.podcastTitle}</Text>
             )
         }
 
@@ -168,7 +140,7 @@ class PlayerBottom extends Component {
                 </View>
             )
         }
-        if (Variables.podcastTitle == '') {
+        if (this.state.podcastTitle == '') {
             return (
                 <View style = {{
                     width: 340,

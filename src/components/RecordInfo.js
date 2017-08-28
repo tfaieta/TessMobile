@@ -7,7 +7,7 @@ import { volume } from './Home';
 import Sound from 'react-native-sound';
 import PlayerBottom from './PlayerBottom';
 import {podFile, podTime} from './Record';
-import Variables from './Variables/Variables';
+import Variables from './Variables';
 
 
 
@@ -15,8 +15,8 @@ import Variables from './Variables/Variables';
 class RecordInfo extends Component{
 
     state = {
-        title: Variables.podcastTitle,
-        description: Variables.podcastDescription,
+        title: Variables.state.podcastTitle,
+        description: Variables.state.podcastDescription,
     };
 
 
@@ -26,15 +26,17 @@ class RecordInfo extends Component{
 
 
     Upload = () => {
-        Variables.podcastTitle = this.state.title;
-        Variables.podcastDescription = this.state.description;
+        Variables.setPodcastFile(podFile);
+        Variables.state.podcastTitle = this.state.title;
+        Variables.state.podcastDescription = this.state.description;
         Actions.RecordSuccess();
     };
 
 
     preview = () =>  {
-        Variables.podcastTitle = this.state.title;
-        Variables.podcastDescription = this.state.description;
+        Variables.setPodcastFile(podFile);
+        Variables.state.podcastTitle = this.state.title;
+        Variables.state.podcastDescription = this.state.description;
 
         setTimeout(() => {
             var sound = new Sound(podFile, '', (error) => {

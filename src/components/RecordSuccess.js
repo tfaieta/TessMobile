@@ -7,7 +7,7 @@ import { volume } from './Home';
 import Sound from 'react-native-sound';
 import PlayerBottom from './PlayerBottom';
 import {podFile, podTime} from './Record';
-import Variables from './Variables/Variables';
+import Variables from './Variables';
 
 
 
@@ -16,8 +16,8 @@ import Variables from './Variables/Variables';
 class RecordSuccess extends Component{
 
     state = {
-        title: Variables.podcastTitle,
-        description: Variables.podcastDescription,
+        title: Variables.state.podcastTitle,
+        description: Variables.state.podcastDescription,
     };
 
 

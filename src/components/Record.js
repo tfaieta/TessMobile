@@ -71,6 +71,15 @@ class Record extends Component{
             });
     }
 
+    _renderRecordTitle(isRecording){
+        if (isRecording==true){
+            return <Text style={styles.title4}>Press to Pause Recording</Text>
+        }
+        else{
+            return <Text style={styles.title4}>Press to Record</Text>
+        }
+    }
+
     _renderButton(title, onPress, active) {
         var style = (active) ? styles.activeButtonText : styles.buttonText;
 
@@ -227,7 +236,7 @@ class Record extends Component{
 
 
                 <View style={styles.container}>
-                    <Text style={styles.title4}>Press to Record</Text>
+                    {this._renderRecordTitle(this.state.recording)}
                     <View style={styles.controls}>
                         {this._renderButtonRecordN(() => {this._record()}, this.state.recording )}
                         {this._renderButton("DONE", () => {this._done()} )}

@@ -18,7 +18,7 @@ import {podFile} from "./Record";
 import Sound from 'react-native-sound';
 import {profileNameL} from './LoginForm.js';
 import {profileName} from './CreateAccount.js';
-import Variables from './Variables/Variables';
+import Variables from './Variables';
 
 
 
@@ -56,7 +56,7 @@ class Account extends Component {
 
 
     _renderPodcast(PodcastTitle){
-        if(Variables.podcastTitle == '') {
+        if(Variables.state.podcastTitle == '') {
             return (
                 <Text style={styles.playingText}> </Text>
             )
@@ -116,7 +116,7 @@ class Account extends Component {
                     <Text style={styles.title2 }>Content</Text>
 
                     <TouchableOpacity onPress={this.playPodcast}>
-                        {this._renderPodcast(Variables.podcastTitle)}
+                        {this._renderPodcast(Variables.state.podcastTitle)}
                     </TouchableOpacity>
 
 
