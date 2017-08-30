@@ -47,7 +47,7 @@ class Player extends Component{
 componentDidMount(){
         if (this.state.isPlaying==true){
             this.setState({
-                interval: setInterval(this.tick, 500)
+                interval: setInterval(this.tick, 250)
             });
         }
 }
@@ -63,7 +63,7 @@ componentDidMount(){
     play = () =>  {
         this.setState({
             isPlaying: true,
-            interval: setInterval(this.tick, 500)
+            interval: setInterval(this.tick, 250)
         });
 
         Variables.play()
@@ -142,29 +142,54 @@ componentDidMount(){
 
 
     _renderEndTime() {
+        var num = (PodcastFile.getDuration() / 60).toString();
+        num = num.slice(0,1);
+        Number(num);
+        var num2 = (PodcastFile.getDuration() % 60).toString();
+        num2 = num2.slice(0,2);
+        Number(num2);
 
         if (this.state.podcastTitle == '') {
             return (
                 <Text style={styles.podcastTextNum}>-</Text>
             );
         }
+        else if ((PodcastFile.getDuration() % 60) < 10){
+            return(
+                <Text style={styles.podcastTextNum}>{num}:0{num2.slice(0,1)}</Text>
+            );
+        }
         else{
             return (
-                <Text style={styles.podcastTextNum}>{PodcastFile.getDuration().toFixed(0)}</Text>
+                <Text style={styles.podcastTextNum}>{num.slice(0,1)}:{num2}</Text>
             );
         }
     }
 
     _renderCurrentTime() {
 
+        var num = (this.state.currentTime / 60).toString();
+        num = num.slice(0,1);
+        Number(num);
+        var num2 = (this.state.currentTime % 60).toString();
+        num2 = num2.slice(0,2);
+        Number(num2);
+
+
         if (this.state.podcastTitle == '') {
             return (
                 <Text style={styles.podcastTextNum}>-</Text>
             );
         }
+        else if(this.state.currentTime % 60 < 10){
+
+            return (
+                <Text style={styles.podcastTextNum}>{num}:0{num2.slice(0,1)}</Text>
+            )
+        }
         else{
             return (
-                <Text style={styles.podcastTextNum}>{this.state.currentTime.toFixed(0)}</Text>
+                <Text style={styles.podcastTextNum}>{num.slice(0,1)}:{num2}</Text>
             );
         }
     }

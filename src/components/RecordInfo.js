@@ -8,6 +8,7 @@ import Sound from 'react-native-sound';
 import PlayerBottom from './PlayerBottom';
 import {podFile, podTime} from './Record';
 import Variables from './Variables';
+import {PodcastFile} from './Variables';
 
 
 
@@ -15,6 +16,7 @@ import Variables from './Variables';
 class RecordInfo extends Component{
 
     state = {
+        totalTime: PodcastFile.getDuration(),
         title: Variables.state.podcastTitle,
         description: Variables.state.podcastDescription,
     };
@@ -59,6 +61,30 @@ class RecordInfo extends Component{
 
     };
 
+    _renderTime(){
+        var num = (PodcastFile.getDuration() / 60).toString();
+        num = num.slice(0,1);
+        Number(num);
+        var num2 = (PodcastFile.getDuration() % 60).toString();
+        num2 = num2.slice(0,2);
+        Number(num2);
+        if(PodcastFile.getDuration() < 10){
+            return (
+                <Text style={styles.progressText}>{num2.slice(0,1)}s</Text>
+            )
+        }
+        else if (PodcastFile.getDuration() < 60){
+            return (
+                <Text style={styles.progressText}>{num2}s</Text>
+            )
+        }
+        else {
+            return(
+                <Text style={styles.progressText}>{num}m {num2}s</Text>
+            )
+        }
+    }
+
 
 
     render() {
@@ -88,6 +114,10 @@ class RecordInfo extends Component{
                     onChangeText={description => this.setState({ description })}
                 />
 
+                <View style={styles.timeContainer}>
+                    {this._renderTime()}
+                </View>
+
 
                 <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.buttonPreview}  onPress={this.preview}>
@@ -95,6 +125,7 @@ class RecordInfo extends Component{
                     <Text  style={styles.contentTitle}> Preview</Text>
                     </Icon>
                 </TouchableOpacity>
+
 
 
 
@@ -188,8 +219,20 @@ const styles = StyleSheet.create({
     },
 
     buttonContainer: {
-        marginTop: 100,
-    }
+        marginTop: 50,
+    },
+
+    timeContainer: {
+        alignItems: 'center',
+        marginTop: 20,
+    },
+
+    progressText: {
+        marginTop: 0,
+        fontSize: 20,
+        fontFamily: 'Futura',
+        color: "#FFF",
+    },
 
 });
 

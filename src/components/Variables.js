@@ -66,7 +66,7 @@ class Variables extends Component{
     static play()   {
 
         Variables.state.isPlaying = true;
-        Variables.state.interval = setInterval(this.tick, 500);
+        Variables.state.interval = setInterval(this.tick, 250);
         PodcastFile.play();
 
 
@@ -81,6 +81,13 @@ class Variables extends Component{
 
 
     };
+
+    roundNum(num){
+    num = num.toString()
+
+
+
+    }
 
 
 }

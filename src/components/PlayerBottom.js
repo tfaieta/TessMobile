@@ -8,6 +8,7 @@ import {AudioRecorder, AudioUtils} from 'react-native-audio';
 import {podFile, podTime} from './Record';
 import Variables from './Variables';
 import {PodcastFile} from './Variables';
+import Player from "./Player";
 
 
 
@@ -31,10 +32,12 @@ class PlayerBottom extends Component {
     componentDidMount(){
         if (this.state.isPlaying==true){
             this.setState({
-                interval: setInterval(this.tick, 500)
+                interval: setInterval(this.tick, 250)
             });
         }
+
     }
+
 
     componentWillUnmount() {
         this.setState({
@@ -54,7 +57,7 @@ class PlayerBottom extends Component {
     play = () =>  {
         this.setState({
             isPlaying: true,
-            interval: setInterval(this.tick, 500)
+            interval: setInterval(this.tick, 250)
         });
 
         Variables.play()

@@ -18,7 +18,6 @@ import Queue from './components/Queue';
 import Player from './components/Player';
 import RecordInfo from './components/RecordInfo';
 import RecordSuccess from './components/RecordSuccess';
-import {searchWord} from './components/Discover';
 
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -85,8 +84,8 @@ const RouterComponent = () => {
 
 
 
-            <Scene key="Main" >
 
+            <Scene key="Main" >
 
 
             <Scene
@@ -130,12 +129,13 @@ const RouterComponent = () => {
 
                 <Scene key="Tab3" title="Record" icon={TabIconRecord}>
                     <Scene
-                        key="record"
+                        key="Record"
                         component={Record}
                         title="Record"
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                         duration={1}
+                        hideTabBar={true}
                     />
                     <Scene
                         key="RecordInfo"
@@ -143,6 +143,7 @@ const RouterComponent = () => {
                         title="RecordInfo"
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        hideTabBar={true}
                     />
                     <Scene
                         key="RecordSuccess"
@@ -150,7 +151,9 @@ const RouterComponent = () => {
                         title="RecordSuccess"
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        hideTabBar={false}
                     />
+
                 </Scene>
 
 
@@ -210,6 +213,10 @@ const RouterComponent = () => {
                 />
 
             </Scene>
+
+
+
+
 
         </Router>
     )

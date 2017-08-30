@@ -12,6 +12,7 @@ import PlayerBottom from './PlayerBottom';
 export let podFile =  AudioUtils.DocumentDirectoryPath + '/test.aac';
 export var podTime = 0;
 
+
 class Record extends Component{
 
     state = {
@@ -82,14 +83,15 @@ class Record extends Component{
 
     _renderButton(title, onPress, active) {
         var style = (active) ? styles.activeButtonText : styles.buttonText;
-
-        return (
-            <TouchableOpacity style={styles.button} onPress={onPress}>
-                <Text style={style}>
-                    {title}
-                </Text>
-            </TouchableOpacity>
-        );
+        if (this.state.currentTime > 0) {
+            return (
+                <TouchableOpacity style={styles.button} onPress={onPress}>
+                    <Text style={style}>
+                        {title}
+                    </Text>
+                </TouchableOpacity>
+            );
+        }
     }
     _renderButtonRecord(title, onPress, active) {
         var style = (active) ? styles.activeButtonText : styles.buttonText;
@@ -114,6 +116,23 @@ class Record extends Component{
                 </Icon>
             </TouchableOpacity>
         );
+    }
+
+    _renderTime() {
+        var num = (this.state.currentTime / 60).toString();
+        num = num.slice(0, 1);
+        Number(num);
+        var num2 = (this.state.currentTime % 60).toString();
+        num2 = num2.slice(0, 2);
+        Number(num2);
+        if (this.state.currentTime > 0) {
+            if (this.state.currentTime < 60) {
+                return <Text style={styles.progressText}>{this.state.currentTime}s</Text>
+            }
+            else {
+                return <Text style={styles.progressText}>{num}m {num2}s</Text>
+            }
+        }
     }
 
     async _pause() {
@@ -230,21 +249,35 @@ class Record extends Component{
         podTime = this.state.currentTime;
     }
 
+    Close = () => {
+
+    };
+
 
     render() {
         return (
 
 
                 <View style={styles.container}>
+
+                    <View style={styles.centerContainer}>
+
+                        <View style={styles.leftContainer}>
+                            <TouchableOpacity onPress={this.Close}>
+                                <Icon style={{textAlign:'left', marginRight:0,marginLeft: 0,paddingTop: 0, fontSize: 40,color:'#FFF' }} name="md-close">
+                                </Icon>
+                            </TouchableOpacity>
+                        </View>
+
+
+                    </View>
+
                     {this._renderRecordTitle(this.state.recording)}
                     <View style={styles.controls}>
                         {this._renderButtonRecordN(() => {this._record()}, this.state.recording )}
+                        {this._renderTime()}
                         {this._renderButton("DONE", () => {this._done()} )}
-                        <Text style={styles.progressText}>{this.state.currentTime}s</Text>
                     </View>
-
-
-                    <PlayerBottom/>
 
 
 
@@ -327,11 +360,12 @@ const styles = StyleSheet.create({
         color: '#ee617c'
     },
     buttonText: {
-        fontSize: 20,
+        marginTop:60,
+        fontSize: 25,
         color: "#FFF",
     },
     activeButtonText: {
-        fontSize: 20,
+        fontSize: 25,
         color: '#ee617c'
     },
     iconText: {
@@ -346,7 +380,17 @@ const styles = StyleSheet.create({
         fontSize: 140,
         color: '#ee617c'
     },
-
+    leftContainer: {
+        flex: 1,
+        marginLeft: 10,
+        justifyContent: 'center',
+        alignItems:'flex-start',
+    },
+    centerContainer: {
+        flexDirection: 'row',
+        marginTop: -40,
+        paddingBottom: 20
+    },
 
 });
 
