@@ -6,7 +6,7 @@ import { Actions } from 'react-native-router-flux';
 import { volume } from './Home';
 import Sound from 'react-native-sound';
 import PlayerBottom from './PlayerBottom';
-import {podFile, podTime} from './Record';
+import {podFile, podTime, totalTime} from './Record';
 import Variables from './Variables';
 import {PodcastFile} from './Variables';
 
@@ -16,7 +16,7 @@ import {PodcastFile} from './Variables';
 class RecordInfo extends Component{
 
     state = {
-        totalTime: PodcastFile.getDuration(),
+        totalTime: totalTime,
         title: Variables.state.podcastTitle,
         description: Variables.state.podcastDescription,
     };
@@ -62,18 +62,18 @@ class RecordInfo extends Component{
     };
 
     _renderTime(){
-        var num = (PodcastFile.getDuration() / 60).toString();
+        var num = (this.state.totalTime / 60).toString();
         num = num.slice(0,1);
         Number(num);
-        var num2 = (PodcastFile.getDuration() % 60).toString();
+        var num2 = (this.state.totalTime % 60).toString();
         num2 = num2.slice(0,2);
         Number(num2);
-        if(PodcastFile.getDuration() < 10){
+            if(this.state.totalTime < 10){
             return (
                 <Text style={styles.progressText}>{num2.slice(0,1)}s</Text>
             )
         }
-        else if (PodcastFile.getDuration() < 60){
+        else if (this.state.totalTime < 60){
             return (
                 <Text style={styles.progressText}>{num2}s</Text>
             )
@@ -94,24 +94,27 @@ class RecordInfo extends Component{
 
                 <TextInput
                     style ={styles.input}
-                    placeholder = "Podcast Title"
+                    placeholder = "Podcast Title..."
                     placeholderTextColor='#FFF'
                     returnKeyType='next'
                     label="Title"
                     value={this.state.title}
                     onChangeText={title => this.setState({ title })}
+                    maxLength={50}
                 />
 
 
 
                 <TextInput
                     style ={styles.input2}
-                    placeholder = "Podcast Description"
+                    placeholder = "Podcast Description..."
                     placeholderTextColor='#FFF'
                     returnKeyType='done'
                     label="Description"
                     value={this.state.description}
                     onChangeText={description => this.setState({ description })}
+                    multiline={true}
+                    maxLength={500}
                 />
 
                 <View style={styles.timeContainer}>
@@ -198,6 +201,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         color:'#FFF',
         paddingHorizontal: 10,
+        fontSize: 18,
     },
 
     buttonPreview: {

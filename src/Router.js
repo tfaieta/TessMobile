@@ -16,6 +16,7 @@ import Settings from './components/Settings';
 import SearchPage from './components/SearchPage';
 import Queue from './components/Queue';
 import Player from './components/Player';
+import RecordFirstPage from './components/RecordFirstPage';
 import RecordInfo from './components/RecordInfo';
 import RecordSuccess from './components/RecordSuccess';
 
@@ -129,12 +130,20 @@ const RouterComponent = () => {
 
                 <Scene key="Tab3" title="Record" icon={TabIconRecord}>
                     <Scene
+                        key="RecordFirstPage"
+                        component={RecordFirstPage}
+                        title="RecordFirstPage"
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+
+                        hideTabBar={false}
+                    />
+                    <Scene
                         key="Record"
                         component={Record}
                         title="Record"
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
-                        duration={1}
                         hideTabBar={true}
                     />
                     <Scene

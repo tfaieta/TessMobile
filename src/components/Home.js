@@ -25,11 +25,11 @@ class Home extends Component{
 
 
             <View style={styles.homeContainer}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
 
 
                 <Text style={styles.title2}>Featured</Text>
-            <ScrollView horizontal={true}>
+            <ScrollView horizontal={true} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
 
                 <TouchableOpacity>
                 <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
@@ -68,7 +68,7 @@ class Home extends Component{
 
 
                 <Text style={styles.title2}>Trending</Text>
-            <ScrollView horizontal={true}>
+            <ScrollView horizontal={true} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
 
                 <TouchableOpacity>
                     <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
@@ -105,7 +105,7 @@ class Home extends Component{
 
 
                 <Text style={styles.title2}>Recommended</Text>
-                <ScrollView horizontal={true}>
+                <ScrollView horizontal={true} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
 
                     <TouchableOpacity>
                         <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">

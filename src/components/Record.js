@@ -11,6 +11,7 @@ import PlayerBottom from './PlayerBottom';
 
 export let podFile =  AudioUtils.DocumentDirectoryPath + '/test.aac';
 export var podTime = 0;
+export var totalTime = 0;
 
 
 class Record extends Component{
@@ -179,6 +180,7 @@ class Record extends Component{
    async _done()  {
         const filePath = await AudioRecorder.stopRecording();
         this.setState({stoppedRecording: true, recording: false});
+        totalTime = this.state.currentTime;
 
         Actions.RecordInfo();
 
@@ -250,7 +252,7 @@ class Record extends Component{
     }
 
     Close = () => {
-
+        Actions.pop();
     };
 
 
@@ -354,7 +356,7 @@ const styles = StyleSheet.create({
         color: "#FFF",
     },
     button: {
-        padding: 20
+        padding: 20,
     },
     disabledButtonText: {
         color: '#ee617c'
@@ -362,11 +364,18 @@ const styles = StyleSheet.create({
     buttonText: {
         marginTop:60,
         fontSize: 25,
+        padding: 8,
+        paddingHorizontal: 50,
         color: "#FFF",
+        fontStyle: 'normal',
+        fontFamily: 'Futura',
+        backgroundColor: '#657ed4'
     },
     activeButtonText: {
         fontSize: 25,
-        color: '#ee617c'
+        color: '#ee617c',
+
+        backgroundColor: '#8a66c8'
     },
     iconText: {
         textAlign:'center',

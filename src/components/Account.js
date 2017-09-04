@@ -33,6 +33,8 @@ class Account extends Component {
 
     playPodcast = () =>  {
 
+        Variables.state.isPlaying = true;
+
 
         setTimeout(() => {
             var sound = new Sound(podFile, '', (error) => {
@@ -52,7 +54,7 @@ class Account extends Component {
                 });
             }, 100);
         }, 100);
-    }
+    };
 
 
     _renderPodcast(PodcastTitle){

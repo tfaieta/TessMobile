@@ -121,6 +121,25 @@ componentDidMount(){
         }
     }
 
+
+    _renderDescription(){
+        if (this.state.podcastTitle == ''){
+            return(
+                <ScrollView style={{marginHorizontal: 20, marginBottom: 20}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                    <Text style={{color: '#fff', fontSize: 20, fontFamily: 'Futura', textAlign: 'center'  }}>Select a Podcast to start listening....</Text>
+                </ScrollView>
+            )
+        }
+        else{
+            return(
+                <ScrollView style={{marginHorizontal: 20, marginBottom: 20}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                    <Text style={{color: '#fff', fontSize: 20, fontFamily: 'Futura' }}>{this.state.podcastDescription}</Text>
+                </ScrollView>
+            )
+        }
+    }
+
+
     _renderPodcastArtist(isPlaying) {
         if (isPlaying) {
             return (
@@ -228,9 +247,9 @@ render() {
             </View>
 
 
-            <Icon style={{textAlign:'center', fontSize: 400,color:'#FFF' }} name="md-square">
+            <Icon style={{textAlign:'center', fontSize: 200,color:'#fff' }} name="md-square">
             </Icon>
-
+            {this._renderDescription()}
 
 
             <TouchableOpacity>
