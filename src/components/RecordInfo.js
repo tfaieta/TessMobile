@@ -8,17 +8,24 @@ import Sound from 'react-native-sound';
 import PlayerBottom from './PlayerBottom';
 import {podFile, podTime, totalTime} from './Record';
 import Variables from './Variables';
+import { connect } from 'react-redux';
+import { podcastUpdate} from '../actions';
 import {PodcastFile} from './Variables';
 
+import {podcastCreate} from "../actions/PodcastActions";
 
 
 
 class RecordInfo extends Component{
-
+    constructor(props) {
+        super(props);
+    }
     state = {
         totalTime: totalTime,
-        title: Variables.state.podcastTitle,
-        description: Variables.state.podcastDescription,
+    };
+    props = {
+        podcastTitle: Variables.state.podcastTitle,
+        podcastDescription: Variables.state.podcastDescription,
     };
 
 
@@ -29,16 +36,20 @@ class RecordInfo extends Component{
 
     Upload = () => {
         Variables.setPodcastFile(podFile);
-        Variables.state.podcastTitle = this.state.title;
-        Variables.state.podcastDescription = this.state.description;
-        Actions.RecordSuccess();
+        Variables.state.podcastTitle = this.props.podcastTitle;
+        Variables.state.podcastDescription = this.props.podcastDescription;
+
+
+        const { podcastTitle, podcastDescription} = this.props;
+
+        this.props.podcastCreate({podcastTitle, podcastDescription});
     };
 
 
     preview = () =>  {
         Variables.setPodcastFile(podFile);
-        Variables.state.podcastTitle = this.state.title;
-        Variables.state.podcastDescription = this.state.description;
+        Variables.state.podcastTitle = this.props.podcastTitle;
+        Variables.state.podcastDescription = this.props.podcastDescription;
 
         setTimeout(() => {
             var sound = new Sound(podFile, '', (error) => {
@@ -98,8 +109,8 @@ class RecordInfo extends Component{
                     placeholderTextColor='#FFF'
                     returnKeyType='next'
                     label="Title"
-                    value={this.state.title}
-                    onChangeText={title => this.setState({ title })}
+                    value={this.props.podcastTitle}
+                    onChangeText={text => this.props.podcastUpdate({prop: 'podcastTitle', value: text})}
                     maxLength={50}
                 />
 
@@ -111,8 +122,8 @@ class RecordInfo extends Component{
                     placeholderTextColor='#FFF'
                     returnKeyType='done'
                     label="Description"
-                    value={this.state.description}
-                    onChangeText={description => this.setState({ description })}
+                    value={this.props.podcastDescription}
+                    onChangeText={text => this.props.podcastUpdate({prop: 'podcastDescription', value: text})}
                     multiline={true}
                     maxLength={500}
                 />
@@ -240,4 +251,11 @@ const styles = StyleSheet.create({
 
 });
 
-export default RecordInfo;
+const mapStateToProps = (state) => {
+  const { podcastTitle, podcastDescription} = state.podcastForm;
+
+  return { podcastTitle, podcastDescription}
+};
+
+
+export default connect(mapStateToProps, { podcastUpdate, podcastCreate })(RecordInfo);

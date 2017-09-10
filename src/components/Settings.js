@@ -11,12 +11,15 @@ import { Actions } from 'react-native-router-flux';
 import SettingsList from 'react-native-settings-list';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PlayerBottom from './PlayerBottom';
+import firebase from 'firebase';
 
 
 class Settings extends Component {
 
     _handleButtonPressLogOut = () => {
+        firebase.auth().signOut();
         Actions.StartUp();
+
     };
 
 

@@ -1,18 +1,20 @@
 import React, {Component} from 'react';
+import _ from 'lodash';
 import {
-    AppRegistry,
     StyleSheet,
     Text,
     View,
-    Image,
     StatusBar,
-    Slider,
     ScrollView,
-    TouchableOpacity
+    TouchableOpacity,
+    ListView
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux';
+import { podcastFetch} from "../actions/PodcastActions"
+import ListItem from './ListItem';
 import PlayerBottom from './PlayerBottom';
 import {podFile} from "./Record";
 import Sound from 'react-native-sound';
@@ -23,6 +25,27 @@ import Variables from './Variables';
 
 
 class Account extends Component {
+    componentWillMount(){
+        this.props.podcastFetch();
+
+
+        this.creataDataSource(this.props);
+    }
+
+    componentWillReceiveProps(nextProps) {
+
+        this.creataDataSource(nextProps);
+    }
+
+
+    creataDataSource({ podcast }) {
+        const ds = new ListView.DataSource({
+            rowHasChanged: (r1, r2) => r1 !== r2
+        });
+
+        this.dataSource = ds.cloneWithRows(podcast);
+    }
+
 
     constructor(props) {
         super(props);
@@ -58,6 +81,7 @@ class Account extends Component {
 
 
     _renderPodcast(PodcastTitle){
+
         if(Variables.state.podcastTitle == '') {
             return (
                 <Text style={styles.playingText}> </Text>
@@ -95,6 +119,10 @@ class Account extends Component {
 
     }
 
+    renderRow(podcast) {
+        return <ListItem podcast={podcast} />;
+    }
+
 
 
     render() {
@@ -104,7 +132,7 @@ class Account extends Component {
 
 
 
-                <ScrollView>
+                <ScrollView >
 
                     {this._renderProfileName(this.state.profileName, this.state.profileNameL)}
                 <StatusBar
@@ -117,9 +145,13 @@ class Account extends Component {
                     <Text style={styles.title2 }>Bio</Text>
                     <Text style={styles.title2 }>Content</Text>
 
-                    <TouchableOpacity onPress={this.playPodcast}>
-                        {this._renderPodcast(Variables.state.podcastTitle)}
-                    </TouchableOpacity>
+                    <View style={{paddingBottom: 30}}>
+                    <ListView
+                        enableEmptySections
+                        dataSource={this.dataSource}
+                        renderRow={this.renderRow}
+                    />
+                    </View>
 
 
 
@@ -144,6 +176,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: 'transparent',
+        paddingBottom: 115,
     },
     title: {
         color: '#804cc8',
@@ -169,4 +202,11 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Account;
+const mapStateToProps = state => {
+    const podcast = _.map(state.podcast, (val, uid) => {
+        return { ...val, uid };
+    });
+    return {podcast};
+};
+
+export default connect(mapStateToProps, { podcastFetch })(Account);

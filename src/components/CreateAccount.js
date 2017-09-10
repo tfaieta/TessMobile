@@ -1,49 +1,44 @@
-/**
- * Created by nickruspantini on 6/17/17.
- */
 import React, { Component } from 'react';
 import { Text, TextInput, View, TouchableOpacity  } from 'react-native';
 import firebase from 'firebase';
 import { Button, Card, CardSection, Input, Spinner } from './common';
 import LinearGradient from 'react-native-linear-gradient';
 import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux';
+import { emailChanged, passwordChanged, loginUser, createUser } from '../actions';
 
 
 export let profileName='';
 
 class CreateAccount extends Component {
-    state = { email: '', password: '', confirmPassword: '', error: '', loading: false };
+
+    onEmailChange(text){
+        this.props.emailChanged(text);
+    }
+
+    onPasswordChange(text) {
+        this.props.passwordChanged(text);
+    }
+
 
     onButtonPress() {
-        const { email, password, confirmPassword } = this.state;
+        const { email, password } = this.props;
 
-        this.setState({ error: '', loading: true });
+        this.props.loginUser({ email, password });
 
-            firebase.auth().createUserWithEmailAndPassword(email, password)
-                .then(this.onLoginSuccess.bind(this))
-                .catch(this.onLoginFail.bind(this));
+
 
     }
 
-    onLoginFail() {
-        this.setState({ error: 'Cannot Create Account', loading: false });
-    }
 
-    onLoginSuccess() {
-        profileName = this.state.email;
-        this.setState({
-            email: '',
-            password: '',
-            loading: false,
-            error: ''
-        });
-
-        Actions.Main();
-    }
 
     renderButton() {
-        if (this.state.loading) {
-            return <Spinner size="small" />;
+        if (this.props.loading) {
+            return(
+            <View style={{paddingTop: 30}} >
+                <Spinner size="large" />
+            </View>
+            )
         }
         return(
 
@@ -76,8 +71,8 @@ class CreateAccount extends Component {
                            autoCapitalize="none"
                            autoCorrect={false}
                            label="Email"
-                           value={this.state.email}
-                           onChangeText={email => this.setState({ email })}
+                           value={this.props.email}
+                           onChangeText={this.onEmailChange.bind(this)}
                 />
 
 
@@ -88,8 +83,8 @@ class CreateAccount extends Component {
                            label="Password"
                            placeholderTextColor="rgba(255,255,255,0.8)"
                            returnKeyType="next"
-                           value={this.state.password}
-                           onChangeText={password => this.setState({ password })}
+                           value={this.props.password}
+                           onChangeText={this.onPasswordChange.bind(this)}
                 />
 
                 <TextInput style ={styles.input}
@@ -99,13 +94,13 @@ class CreateAccount extends Component {
                            returnKeyType='go'
                            autoCorrect={false}
                            label="Confirm Password"
-                           value={this.state.confirmPassword}
-                           onChangeText={confirmPassword => this.setState({ confirmPassword })}
+                           value={this.props.password}
+                           onChangeText={this.onPasswordChange.bind(this)}
                 />
 
 
                 <Text style={styles.errorTextStyle}>
-                    {this.state.error}
+                    {this.props.error}
                 </Text>
 
                 <View >
@@ -172,4 +167,10 @@ const styles = {
 
 };
 
-export default CreateAccount;
+const mapStateToProps = ({ auth }) => {
+    const { email, password, error } = auth;
+
+    return { email, password, error};
+};
+
+export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser })(CreateAccount);
