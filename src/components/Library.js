@@ -14,42 +14,56 @@ class Library extends Component{
     };
 
     constructor(props) {
-        super(props)
+        super(props);
         this.state = { volume}
-    }
-    getVolume(volume){
-        return volume;
     }
 
     render() {
         return (
             <View
                 style={styles.container}>
-                <ScrollView>
 
-                    <TouchableOpacity onPress={this.GoToQueue}>
-                        <Text style={styles.contentTitle}>Saved</Text>
-                    </TouchableOpacity>
 
-                    <TouchableOpacity onPress={this.GoToQueue}>
-                        <Text style={styles.contentTitle}>My Queue</Text>
-                    </TouchableOpacity>
 
-                    <TouchableOpacity onPress={this.GoToQueue}>
-                        <Text style={styles.contentTitle}>Followed Creators</Text>
-                    </TouchableOpacity>
 
-                    <TouchableOpacity onPress={this.GoToQueue}>
-                        <Text style={styles.contentTitle}>Recently Played</Text>
+
+
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.buttonPreview}  onPress={this.GoToQueue}>
+                        <Icon style={{textAlign:'center', marginTop: 5, fontSize: 35,color:'#FFF'}} name="ios-bookmark">
+                            <Text  style={styles.contentTitle}>  Saved</Text>
+                        </Icon>
                     </TouchableOpacity>
 
 
 
+                    <TouchableOpacity style={styles.buttonPreview}  onPress={this.GoToQueue}>
+                        <Icon style={{textAlign:'center', marginTop: 5, fontSize: 35,color:'#FFF' }} name="md-time">
+                            <Text  style={styles.contentTitle}>  Recently Played</Text>
+                        </Icon>
+                    </TouchableOpacity>
 
-                </ScrollView>
+                    <TouchableOpacity style={styles.buttonPreview}  onPress={this.GoToQueue}>
+                        <Icon style={{textAlign:'center', marginTop: 5, fontSize: 35,color:'#FFF' }} name="ios-checkmark-circle">
+                            <Text  style={styles.contentTitle}>  Followed Content</Text>
+                        </Icon>
+                    </TouchableOpacity>
+
+
+                    <TouchableOpacity style={styles.buttonPreview}  onPress={this.GoToQueue}>
+                        <Icon style={{textAlign:'center', marginTop: 5, fontSize: 35,color: '#FFF' }} name="md-person">
+                            <Text  style={styles.contentTitle}>  My Content</Text>
+                        </Icon>
+                    </TouchableOpacity>
+
+
+                </View>
+
+
+
+
 
                 <PlayerBottom/>
-
 
             </View>
 
@@ -63,7 +77,7 @@ class Library extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: 'transparent',
+        backgroundColor: '#657ed4',
         paddingTop: 70,
     },
 
@@ -79,14 +93,37 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
 
+
     contentTitle: {
-        color: 'rgba(1,170,170,1)',
+        color: '#FFF',
         fontSize: 25,
         paddingBottom: 20,
-        marginLeft: 20,
+        textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Futura',
 
+    },
+
+    buttonPreview: {
+        backgroundColor: '#657ed4',
+        alignItems: 'center',
+        paddingBottom: 15,
+    },
+
+    buttonUpload: {
+        backgroundColor: '#657ed4',
+        alignItems: 'center',
+        paddingTop: 15,
+    },
+
+    buttonCancel: {
+        backgroundColor: '#69bbd9',
+        alignItems: 'center',
+        paddingTop: 15,
+    },
+
+    buttonContainer: {
+        marginTop: 50,
     },
 
 });

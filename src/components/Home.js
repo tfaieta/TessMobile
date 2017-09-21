@@ -28,7 +28,7 @@ class Home extends Component{
             <ScrollView showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
 
 
-                <Text style={styles.title2}>Featured</Text>
+                <Text style={styles.title}>Featured</Text>
             <ScrollView horizontal={true} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
 
                 <TouchableOpacity>
@@ -67,7 +67,7 @@ class Home extends Component{
 
 
 
-                <Text style={styles.title2}>Trending</Text>
+                <Text style={styles.title}>Trending</Text>
             <ScrollView horizontal={true} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
 
                 <TouchableOpacity>
@@ -104,7 +104,7 @@ class Home extends Component{
 
 
 
-                <Text style={styles.title2}>Recommended</Text>
+                <Text style={styles.title}>Recommended</Text>
                 <ScrollView horizontal={true} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
 
                     <TouchableOpacity>
@@ -181,14 +181,12 @@ const styles = StyleSheet.create({
 
     title: {
         color: '#804cc8',
-        marginTop: 70,
         flex:1,
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Futura',
         fontSize: 25,
         backgroundColor: 'transparent',
-        paddingBottom:10
     },
     title2: {
         color: 'rgba(1,170,170,1)',

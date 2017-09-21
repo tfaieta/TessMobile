@@ -171,8 +171,8 @@ const RouterComponent = () => {
                         key="library"
                         component={Library}
                         title="Library"
-                        hideNavBar={false}
-                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#657ed4'}}
                         duration={1}
                     />
                     <Scene
@@ -180,7 +180,7 @@ const RouterComponent = () => {
                         component={Queue}
                         title="Queue"
                         hideNavBar={false}
-                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        navigationBarStyle={{backgroundColor:'#657ed4'}}
                         duration={1}
                     />
                 </Scene>

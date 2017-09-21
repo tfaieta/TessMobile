@@ -16,25 +16,25 @@ class Queue extends Component{
                 <ScrollView>
 
                     <TouchableOpacity>
-                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#804cc8' }} name="ios-play">
+                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#657ed4' }} name="ios-play">
                             <Text style={styles.title} >  Play Podcast</Text>
                         </Icon>
                     </TouchableOpacity>
 
                     <TouchableOpacity>
-                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#804cc8' }} name="ios-play">
+                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#657ed4' }} name="ios-play">
                             <Text style={styles.title} >  Play Podcast</Text>
                         </Icon>
                     </TouchableOpacity>
 
                     <TouchableOpacity>
-                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#804cc8' }} name="ios-play">
+                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#657ed4' }} name="ios-play">
                             <Text style={styles.title} >  Play Podcast</Text>
                         </Icon>
                     </TouchableOpacity>
 
                     <TouchableOpacity>
-                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#804cc8' }} name="ios-play">
+                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#657ed4' }} name="ios-play">
                             <Text style={styles.title} >  Play Podcast</Text>
                         </Icon>
                     </TouchableOpacity>
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        color: '#804cc8',
+        color: '#657ed4',
         marginTop: 70,
         flex:1,
         textAlign: 'center',
