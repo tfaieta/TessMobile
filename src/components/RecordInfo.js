@@ -6,14 +6,17 @@ import { Actions } from 'react-native-router-flux';
 import { volume } from './Home';
 import Sound from 'react-native-sound';
 import PlayerBottom from './PlayerBottom';
-import {podFile, podTime, totalTime} from './Record';
+import {podTime, totalTime} from './Record';
 import Variables from './Variables';
 import { connect } from 'react-redux';
 import { podcastUpdate} from '../actions';
-import {PodcastFile} from './Variables';
+import {AudioUtils} from 'react-native-audio';
 
 import {podcastCreate} from "../actions/PodcastActions";
 
+
+
+let podFile = AudioUtils.DocumentDirectoryPath + '/test.aac';
 
 
 class RecordInfo extends Component{
@@ -44,6 +47,8 @@ class RecordInfo extends Component{
 
         this.props.podcastCreate({podcastTitle, podcastDescription});
     };
+
+
 
 
     preview = () =>  {

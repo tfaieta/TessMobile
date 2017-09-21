@@ -11,6 +11,11 @@ import { emailChanged, passwordChanged, loginUser, createUser } from '../actions
 export let profileName='';
 
 class CreateAccount extends Component {
+    state = {
+        confirmPassword: '',
+        confirmPasswordError: ''
+    };
+
 
     onEmailChange(text){
         this.props.emailChanged(text);
@@ -20,12 +25,22 @@ class CreateAccount extends Component {
         this.props.passwordChanged(text);
     }
 
+    onConfirmPasswordChange(text) {
+        this.setState({ confirmPassword: text})
+    }
+
 
     onButtonPress() {
         const { email, password } = this.props;
+        this.setState({ confirmPasswordError: 'Passwords do not match.' });
+
+        if ( this.state.confirmPassword == password){
+            this.setState({ confirmPasswordError: '' })
+        }else{
+            this.setState({ confirmPasswordError: 'Passwords do not match.' })
+        }
 
         this.props.loginUser({ email, password });
-
 
 
     }
@@ -94,13 +109,16 @@ class CreateAccount extends Component {
                            returnKeyType='go'
                            autoCorrect={false}
                            label="Confirm Password"
-                           value={this.props.password}
-                           onChangeText={this.onPasswordChange.bind(this)}
+                           value={this.state.confirmPassword}
+                           onChangeText={this.onConfirmPasswordChange.bind(this)}
                 />
 
 
                 <Text style={styles.errorTextStyle}>
                     {this.props.error}
+                </Text>
+                <Text style={styles.errorTextStyle}>
+                    {this.state.confirmPasswordError}
                 </Text>
 
                 <View >
