@@ -116,17 +116,17 @@ class PlayerBottom extends Component {
     _renderPodcastInfo(isPlaying){
         if(isPlaying) {
             return (
-                <Text style={styles.playingText}>{this.state.podcastTitle}</Text>
+                <Text style={styles.playingText}>{Variables.state.podcastTitle}</Text>
             )
         }
-        if(this.state.podcastTitle =='') {
+        if(Variables.state.podcastTitle =='') {
             return (
                 <Text style={styles.playingText}> </Text>
             )
         }
         else{
             return (
-                <Text style={styles.playingText}>{this.state.podcastTitle}</Text>
+                <Text style={styles.playingText}>{Variables.state.podcastTitle}</Text>
             )
         }
 
@@ -143,7 +143,7 @@ class PlayerBottom extends Component {
                 </View>
             )
         }
-        if (this.state.podcastTitle == '') {
+        if (Variables.state.podcastTitle == '') {
             return (
                 <View style = {{
                     width: 340,
@@ -182,7 +182,7 @@ class PlayerBottom extends Component {
                             style={styles.barContainer}>
 
                 <View style={styles.audioProgress}>
-                    {this._renderFillBar(this.state.isPlaying)}
+                    {this._renderFillBar(Variables.state.isPlaying)}
                     <View style={styles.emptyProgress}>
                     </View>
                 </View>
@@ -197,11 +197,11 @@ class PlayerBottom extends Component {
                         </TouchableOpacity>
                     </View>
 
-                    {this._renderPodcastInfo(this.state.isPlaying)}
+                    {this._renderPodcastInfo(Variables.state.isPlaying)}
 
                     <View style={styles.rightContainer}>
                         <TouchableOpacity>
-                            {this._renderPlayButton(this.state.isPlaying)}
+                            {this._renderPlayButton(Variables.state.isPlaying)}
                         </TouchableOpacity>
                     </View>
 

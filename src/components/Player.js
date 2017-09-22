@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import { Text, TextInput, View, StyleSheet,StatusBar, ScrollView, TouchableOpacity} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
 import Slider from 'react-native-slider';
-import Sound from 'react-native-sound';
-import {AudioRecorder, AudioUtils} from 'react-native-audio';
-import {podFile, podTime} from './Record';
 import Variables from './Variables';
 import {PodcastFile} from './Variables';
-
 
 
 

@@ -49,7 +49,7 @@ class Account extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { volume: 20, profileName: profileName, profileNameL: profileNameL}
+        this.state = { bio: "Tell others about yourself...", profileName: profileName, profileNameL: profileNameL}
     }
 
 
@@ -122,6 +122,7 @@ class Account extends Component {
     renderRow(podcast) {
         return <ListItem podcast={podcast} />;
     }
+    
 
 
 
@@ -130,19 +131,22 @@ class Account extends Component {
             <View
                 style={styles.container}>
 
+                <StatusBar
+                    barStyle="light-content"
+                />
 
 
                 <ScrollView >
 
                     {this._renderProfileName(this.state.profileName, this.state.profileNameL)}
-                <StatusBar
-                    barStyle="light-content"
-                />
 
-                <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 140,color:'#888784' }} name="md-contact">
+
+                <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 140,color:'#FFF' }} name="md-contact">
                 </Icon>
 
                     <Text style={styles.title2 }>Bio</Text>
+                    <Text style={styles.titleBio} >{this.state.bio}</Text>
+
                     <Text style={styles.title2 }>Content</Text>
 
                     <View style={{paddingBottom: 30}}>
@@ -175,7 +179,7 @@ class Account extends Component {
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: 'transparent',
+        backgroundColor: '#69bbd9',
         paddingBottom: 115,
     },
     title: {
@@ -190,7 +194,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     title2: {
-        color: 'rgba(1,170,170,1)',
+        color: '#FFF',
         marginTop: 70,
         flex:1,
         textAlign: 'center',
@@ -198,6 +202,17 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Futura',
         fontSize: 25,
+        backgroundColor: 'transparent'
+    },
+    titleBio: {
+        color: '#FFF',
+        marginVertical: 10,
+        flex:1,
+        textAlign: 'center',
+        opacity: 2,
+        fontStyle: 'normal',
+        fontFamily: 'Futura',
+        fontSize: 15,
         backgroundColor: 'transparent'
     },
 });

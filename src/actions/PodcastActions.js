@@ -22,7 +22,6 @@ export const podcastUpdate = ({prop, value}) => {
 
 export const podcastCreate = ({ podcastTitle, podcastDescription, podcastURL }) => {
     const {currentUser} = firebase.auth();
-    let downloadUrl = "";
     this.state = {
         loading: false,
         dp: null

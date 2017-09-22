@@ -193,7 +193,7 @@ const RouterComponent = () => {
                         component={Account}
                         title="Account"
                         hideNavBar={false}
-                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        navigationBarStyle={{backgroundColor:'#69bbd9'}}
                         duration={1}
                         initial
                         />
