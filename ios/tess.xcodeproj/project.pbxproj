@@ -589,6 +589,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				EDBAF64E1EFB061100783B86 /* Frameworks */,
 				144CE995D1D24D6DAC9EEA02 /* Resources */,
+				EDF9F6311F75DAB700B57D9F /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -662,6 +663,18 @@
 				EDE28D691F05BD9B004B0041 /* libRNVectorIcons.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		EDF9F6311F75DAB700B57D9F /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				C362D12B0DBF41BD8E0ABEC1 /* libBVLinearGradient.a */,
+				20F5B867DB5642A4A6DF1BED /* libRCTFBSDK.a */,
+				FD0A5EAD43FF43D4AC16ED80 /* libRNVectorIcons.a */,
+				3FB806780CAB43A19FAD2F0F /* libRNAudio.a */,
+				9B502D915AC44D6295E24DD4 /* libRNSound.a */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

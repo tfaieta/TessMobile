@@ -13,6 +13,7 @@
 		"npm": "^5.0.3",
 		"react": "16.0.0-alpha.6",
 		"react-native": "^0.44.3",
+		"react-native-app-intro": "^1.1.5",
 		"react-native-audio": "^3.2.2",
 		"react-native-button": "^2.1.0",
 		"react-native-elements": "^0.14.0",

@@ -4,16 +4,14 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Image, Text, StatusBar, TextInput, TouchableOpacity, Alert, Button, KeyboardAvoidingView} from 'react-native';
 import FBSDK, { LoginManager } from 'react-native-fbsdk';
-import LoginForm from './LoginForm';
-import CreateAccount from './CreateAccount';
-import LinearGradient from 'react-native-linear-gradient';
 import { Actions } from 'react-native-router-flux';
 import Swiper from 'react-native-swiper'
+import AppIntro from 'react-native-app-intro';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 
 export  default class Login extends Component{
-
 
 
 
@@ -59,7 +57,7 @@ export  default class Login extends Component{
 
 
                 <View style={styles.container}>
-            <Swiper style={styles.wrapper}
+            <AppIntro style={styles.wrapper}
                     showsButtons={false}
                     autoplay={true}
                     autoplayTimeout={5}
@@ -68,29 +66,50 @@ export  default class Login extends Component{
             >
 
                 <View style={styles.slide1}>
-                    <View style={styles.logoContainer}>
+                    <View level={20} style={styles.logoContainer}>
                         <Image
                             style={styles.logo}
                             source={require('tess/src/images/logo.png')}
                         />
-                        <Text style={styles.textforSlide1 }>Swipe to see what we're about</Text>
 
+                    </View>
+                    <View level = {-20} style={styles.textContainer}>
+                        <Text style={styles.textforSlide1 }>Swipe to see what we're about</Text>
                     </View>
                 </View>
 
 
 
                 <View style={styles.slide2}>
+                    <View level = {20}>
+                        <Icon style={{textAlign:'center', fontSize: 80,color:'#FFF' }} name="md-microphone">
+                        </Icon>
+                    </View>
+                    <View level={-20}>
                     <Text style={styles.text}>Tess is a podcast platform</Text>
+                    </View>
                 </View>
 
 
                 <View style={styles.slide3}>
+                    <View level = {20}>
+                        <Icon style={{textAlign:'center', fontSize: 80,color:'#FFF' }} name="md-headset">
+                        </Icon>
+                    </View>
+                    <View level = {-20}>
                     <Text style={styles.text}>A place to easily listen to or create podcasts</Text>
+                    </View>
                 </View>
+
 
                 <View style={styles.slide4}>
+                    <View level = {20}>
+                        <Icon style={{textAlign:'center', fontSize: 80,color:'#FFF' }} name="ios-radio-button-on">
+                        </Icon>
+                    </View>
+                    <View level = {-20}>
                     <Text style={styles.text}>Record with the touch of a button</Text>
+                    </View>
                 </View>
 
 
@@ -98,7 +117,7 @@ export  default class Login extends Component{
 
 
 
-            </Swiper>
+            </AppIntro>
                 </View>
 
 
@@ -157,6 +176,9 @@ const styles = StyleSheet.create({
     },
     logoContainer: {
         alignItems: 'center',
+
+    },
+    textContainer: {
         flex: 1
     },
     logo: {
