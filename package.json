@@ -34,6 +34,7 @@
 		"react-native-swiper": "^1.5.4",
 		"react-native-switch": "^1.1.0",
 		"react-native-testkit": "^0.1.4",
+		"react-native-textinput-effects": "^0.4.0",
 		"react-native-vector-icons": "^4.2.0",
 		"react-native-video": "^1.2.0",
 		"react-redux": "^5.0.6",

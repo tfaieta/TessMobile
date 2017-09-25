@@ -6,6 +6,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser, createUser } from '../actions';
+import {Sae } from 'react-native-textinput-effects';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 export let profileName='';
@@ -32,15 +34,8 @@ class CreateAccount extends Component {
 
     onButtonPress() {
         const { email, password } = this.props;
-        this.setState({ confirmPasswordError: 'Passwords do not match.' });
 
-        if ( this.state.confirmPassword == password){
-            this.setState({ confirmPasswordError: '' })
-        }else{
-            this.setState({ confirmPasswordError: 'Passwords do not match.' })
-        }
-
-        this.props.loginUser({ email, password });
+        this.props.createUser({ email, password });
 
 
     }
@@ -77,41 +72,62 @@ class CreateAccount extends Component {
 
 
 
-                <TextInput style ={styles.input}
-                           placeholder = "username or email"
-                           placeholderTextColor="rgba(255,255,255,0.8)"
-                           returnKeyType='next'
-                           onSubmitEditing={() => this.passwordInput.focus()}
-                           keyboardType="email-address"
-                           autoCapitalize="none"
-                           autoCorrect={false}
-                           label="Email"
-                           value={this.props.email}
-                           onChangeText={this.onEmailChange.bind(this)}
+
+
+                <Sae
+                    label={'Email Address'}
+                    labelStyle={{ color: '#FFF' }}
+                    iconClass={Icon}
+                    iconName={'md-mail'}
+                    iconColor={'white'}
+                    inputStyle={{ color: '#FFF' }}
+                    // TextInput props
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    returnKeyType='next'
+                    keyboardType="email-address"
+                    value={this.props.email}
+                    onChangeText={this.onEmailChange.bind(this)}
+                />
+
+
+                <Sae
+                    label={'Password'}
+                    labelStyle={{ color: '#FFF' }}
+                    iconClass={Icon}
+                    iconName={'md-lock'}
+                    iconColor={'white'}
+                    inputStyle={{ color: '#FFF' }}
+                    // TextInput props
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    secureTextEntry
+                    returnKeyType="next"
+                    value={this.props.password}
+                    onChangeText={this.onPasswordChange.bind(this)}
+                />
+
+
+                <Sae
+                    label={'Confirm Password'}
+                    labelStyle={{ color: '#FFF' }}
+                    iconClass={Icon}
+                    iconName={'md-lock'}
+                    iconColor={'white'}
+                    inputStyle={{ color: '#FFF' }}
+                    // TextInput props
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    secureTextEntry
+                    returnKeyType='go'
+                    value={this.state.confirmPassword}
+                    onChangeText={this.onConfirmPasswordChange.bind(this)}
+                    onSubmitEditing={() => this.onButtonPress()}
+
                 />
 
 
 
-                <TextInput style ={styles.input}
-                           secureTextEntry
-                           placeholder="password"
-                           label="Password"
-                           placeholderTextColor="rgba(255,255,255,0.8)"
-                           returnKeyType="next"
-                           value={this.props.password}
-                           onChangeText={this.onPasswordChange.bind(this)}
-                />
-
-                <TextInput style ={styles.input}
-                           secureTextEntry
-                           placeholder = "confirm password"
-                           placeholderTextColor="rgba(255,255,255,0.8)"
-                           returnKeyType='go'
-                           autoCorrect={false}
-                           label="Confirm Password"
-                           value={this.state.confirmPassword}
-                           onChangeText={this.onConfirmPasswordChange.bind(this)}
-                />
 
 
                 <Text style={styles.errorTextStyle}>
@@ -153,10 +169,16 @@ const styles = {
         paddingHorizontal: 10
     },
 
+
     buttonContainer: {
         paddingVertical: 15,
         paddingHorizontal: 15,
         marginBottom:5,
+        marginTop: 10,
+        borderWidth: 2,
+        borderStyle: 'solid',
+        borderRadius: 100,
+        borderColor: '#FFF',
         backgroundColor: '#856cff'
     },
 
@@ -191,4 +213,4 @@ const mapStateToProps = ({ auth }) => {
     return { email, password, error};
 };
 
-export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser })(CreateAccount);
+export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser, createUser })(CreateAccount);

@@ -5,7 +5,8 @@ import {
     PASSWORD_CHANGED,
     LOGIN_USER_SUCCESS,
     LOGIN_USER_FAIL,
-    LOGIN_USER
+    LOGIN_USER,
+    USER_CREATE
 } from "./types"
 
 
@@ -45,9 +46,16 @@ export const loginUser = ({email, password}) => {
 
 export const createUser = ({email, password}) => {
     return (dispatch) => {
+        dispatch({ type: USER_CREATE});
+
+
         firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then(user =>
-                loginUserSuccess(dispatch, user))
+            .then(user => {
+                loginUserSuccess(dispatch, user);
+                Actions.Main();
+            })
+
+
             .catch(() => loginUserFail(dispatch));
     };
 };

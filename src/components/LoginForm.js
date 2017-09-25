@@ -6,6 +6,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
+import {Sae } from 'react-native-textinput-effects';
+import Icon from 'react-native-vector-icons/Ionicons';
+
 
 export let profileNameL='';
 
@@ -60,30 +63,40 @@ class LoginForm extends Component {
                       style={styles.container}>
 
 
-           <TextInput style ={styles.input}
-               placeholder = "username or email"
-               placeholderTextColor="rgba(255,255,255,0.8)"
-               returnKeyType='next'
-               onSubmitEditing={() => this.passwordInput.focus()}
-               keyboardType="email-address"
-               autoCapitalize="none"
-               autoCorrect={false}
-                label="Email"
-                value={this.props.email}
-                onChangeText={this.onEmailChange.bind(this)}
-          />
+           <Sae
+                               label={'Email Address'}
+                               labelStyle={{ color: '#FFF' }}
+                               iconClass={Icon}
+                               iconName={'md-mail'}
+                               iconColor={'white'}
+                               inputStyle={{ color: '#FFF' }}
+                               // TextInput props
+                               autoCapitalize={'none'}
+                               autoCorrect={false}
+                               returnKeyType='next'
+                               keyboardType="email-address"
+                               value={this.props.email}
+                               onChangeText={this.onEmailChange.bind(this)}
+                           />
 
 
+                           <Sae
+                               label={'Password'}
+                               iconClass={Icon}
+                               labelStyle={{ color: '#FFF' }}
+                               iconName={'md-lock'}
+                               iconColor={'white'}
+                               inputStyle={{ color: '#FFF' }}
+                               // TextInput props
+                               autoCapitalize={'none'}
+                               autoCorrect={false}
+                               secureTextEntry
+                               returnKeyType="next"
+                               value={this.props.password}
+                               onChangeText={this.onPasswordChange.bind(this)}
+                               onSubmitEditing={() => this.onButtonPress()}
 
-          <TextInput style ={styles.input}
-            secureTextEntry
-            placeholder="password"
-            label="Password"
-            placeholderTextColor="rgba(255,255,255,0.8)"
-            returnKeyType="go"
-            value={this.props.password}
-            onChangeText={this.onPasswordChange.bind(this)}
-          />
+                           />
 
 
         <Text style={styles.errorTextStyle}>
@@ -124,7 +137,12 @@ const styles = {
       buttonContainer: {
           paddingVertical: 15,
           paddingHorizontal: 15,
+          marginTop: 30,
           marginBottom:5,
+          borderWidth: 2,
+                  borderStyle: 'solid',
+                  borderRadius: 100,
+                  borderColor: '#FFF',
           backgroundColor: '#595bc8'
       },
 

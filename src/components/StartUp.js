@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 
 
+
 export  default class Login extends Component{
 
 
@@ -63,6 +64,9 @@ export  default class Login extends Component{
                     autoplayTimeout={5}
                     loop={false}
                     showsPagination={false}
+                      showDoneButton={false}
+                      showDots={false}
+                      showSkipButton={false}
             >
 
                 <View style={styles.slide1}>
@@ -149,14 +153,6 @@ export  default class Login extends Component{
                     </TouchableOpacity>
                 </View>
 
-
-                 <View style={styles.formContainer}>
-                 <TouchableOpacity onPress={this._overrideLogin} style={styles.buttonContainer}>
-                 <Text style={styles.smallText2}>
-                 Override Login
-                 </Text>
-                 </TouchableOpacity>
-                 </View>
 
 
 
