@@ -24,6 +24,7 @@
 		"react-native-icons": "^0.7.1",
 		"react-native-linear-gradient": "^2.0.0",
 		"react-native-navigation": "^1.1.118",
+		"react-native-popup-dialog": "^0.9.35",
 		"react-native-redux-router": "^1.0.7",
 		"react-native-router-flux": "^3.40.1",
 		"react-native-scrollable-tab-view": "^0.6.7",

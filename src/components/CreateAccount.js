@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { Text, TextInput, View, TouchableOpacity  } from 'react-native';
-import firebase from 'firebase';
-import { Button, Card, CardSection, Input, Spinner } from './common';
-import LinearGradient from 'react-native-linear-gradient';
-import { Actions } from 'react-native-router-flux';
+import { Spinner } from './common';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser, createUser } from '../actions';
 import {Sae } from 'react-native-textinput-effects';
@@ -88,10 +85,14 @@ class CreateAccount extends Component {
                     keyboardType="email-address"
                     value={this.props.email}
                     onChangeText={this.onEmailChange.bind(this)}
+                    onSubmitEditing={(event) => {
+                        this.refs.SecondInput.focus();
+                    }}
                 />
 
 
                 <Sae
+                    ref='SecondInput'
                     label={'Password'}
                     labelStyle={{ color: '#FFF' }}
                     iconClass={Icon}
@@ -105,10 +106,14 @@ class CreateAccount extends Component {
                     returnKeyType="next"
                     value={this.props.password}
                     onChangeText={this.onPasswordChange.bind(this)}
+                    onSubmitEditing={(event) => {
+                        this.refs.ThirdInput.focus();
+                    }}
                 />
 
 
                 <Sae
+                    ref='ThirdInput'
                     label={'Confirm Password'}
                     labelStyle={{ color: '#FFF' }}
                     iconClass={Icon}
@@ -149,9 +154,12 @@ class CreateAccount extends Component {
 
 const styles = {
     errorTextStyle: {
-        fontSize: 20,
+        fontStyle: 'normal',
+        fontFamily: 'Futura',
+        fontSize: 25,
         alignSelf: 'center',
-        color: 'rgba(300,10,10,1)'
+        color: 'rgba(300,10,10,1)',
+        marginTop: 15,
     },
 
     container: {
