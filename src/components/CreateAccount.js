@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { Text, TextInput, View, TouchableOpacity  } from 'react-native';
 import { Spinner } from './common';
 import { connect } from 'react-redux';
-import { emailChanged, passwordChanged, loginUser, createUser } from '../actions';
+import { emailChanged, passwordChanged, loginUser, createUser, usernameChanged } from '../actions';
 import {Sae } from 'react-native-textinput-effects';
 import Icon from 'react-native-vector-icons/Ionicons';
+import firebase from 'firebase';
 
 
 export let profileName='';
@@ -12,9 +13,13 @@ export let profileName='';
 class CreateAccount extends Component {
     state = {
         confirmPassword: '',
-        confirmPasswordError: ''
+        confirmPasswordError: '',
     };
 
+
+    onUsernameChange(text){
+        this.props.usernameChanged(text);
+    }
 
     onEmailChange(text){
         this.props.emailChanged(text);
@@ -30,9 +35,11 @@ class CreateAccount extends Component {
 
 
     onButtonPress() {
-        const { email, password } = this.props;
 
-        this.props.createUser({ email, password });
+        const { email, password, username } = this.props;
+
+        this.props.createUser({ email, password, username });
+
 
 
     }
@@ -68,10 +75,28 @@ class CreateAccount extends Component {
                 style={styles.container}>
 
 
+                <Sae
+                    label={'Username'}
+                    labelStyle={{ color: '#FFF' }}
+                    iconClass={Icon}
+                    iconName={'md-person'}
+                    iconColor={'white'}
+                    inputStyle={{ color: '#FFF' }}
+                    // TextInput props
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    returnKeyType='next'
+                    value={this.props.username}
+                    onChangeText={this.onUsernameChange.bind(this)}
+                    onSubmitEditing={(event) => {
+                        this.refs.FirstInput.focus();
+                    }}
+                />
 
 
 
                 <Sae
+                    ref='FirstInput'
                     label={'Email Address'}
                     labelStyle={{ color: '#FFF' }}
                     iconClass={Icon}
@@ -216,9 +241,9 @@ const styles = {
 };
 
 const mapStateToProps = ({ auth }) => {
-    const { email, password, error } = auth;
+    const { email, password, username, error } = auth;
 
-    return { email, password, error};
+    return { email, password, username, error};
 };
 
-export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser, createUser })(CreateAccount);
+export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser, createUser, usernameChanged })(CreateAccount);

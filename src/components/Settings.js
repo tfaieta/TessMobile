@@ -6,6 +6,9 @@ import {
     Text,
     View,
     Image,
+    Modal,
+    TouchableOpacity,
+    TextInput,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import SettingsList from 'react-native-settings-list';
@@ -22,10 +25,24 @@ class Settings extends Component {
 
     };
 
+    _handleButtonPressChangeUsername = () => {
+        this.setModalVisible(true)
+    };
+
+
+    setModalVisible(visible) {
+        this.setState({modalVisible: visible});
+    }
+
 
     constructor(){
         super();
     }
+    state = {
+        modalVisible: false,
+        username: ''
+    };
+
     render() {
         return (
             <View style={{backgroundColor:'#f6f6f6',flex:1, paddingTop: 10, paddingBottom: 118}}>
@@ -49,14 +66,25 @@ class Settings extends Component {
                             hasNavArrow={true}
                             itemWidth={70}
                             titleStyle={{color:'black', fontSize: 16}}
-                            title='Profile Image'
+                            title='Change Profile Image'
+                        />
+                        <SettingsList.Item
+                            icon={
+                                <Icon style={{color: 'rgba(1,170,170,1)', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-person">
+                                </Icon>
+                            }
+                            hasNavArrow={true}
+                            itemWidth={70}
+                            titleStyle={{color:'black', fontSize: 16}}
+                            title='Change Username'
+                            onPress={this._handleButtonPressChangeUsername}
                         />
                         <SettingsList.Item
                             icon={
                                 <Icon style={{color: 'rgba(1,170,170,1)', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-browsers">
                                 </Icon>
                             }
-                            title='Details'
+                            title='Change Bio'
                             itemWidth={70}
                             titleStyle={{color:'black', fontSize: 16}}
                             hasNavArrow={true}
@@ -142,6 +170,53 @@ class Settings extends Component {
                 </View>
 
 
+
+                <Modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={this.state.modalVisible}
+                    onRequestClose={() => {alert("Modal has been closed.")}}
+                >
+                    <View style={styles.container}>
+                        <View>
+                            <TextInput
+                                autoCapitalize={'none'}
+                                style={styles.inputStyle}
+                                returnKeyType='done'
+                                autoCorrect={false}
+                                value={this.state.username}
+                                placeholder = "New Username"
+                                placeholderTextColor='#FFF'
+                                onChangeText={text => this.setState({username: text})}
+                                onSubmitEditing={(event) => {
+                                    firebase.auth().currentUser.updateProfile({
+                                        displayName: this.state.username
+                                    });
+                                    this.setModalVisible(!this.state.modalVisible)
+                                }}
+                           />
+
+                            <TouchableOpacity onPress={() => {
+                                firebase.auth().currentUser.updateProfile({
+                                    displayName: this.state.username
+                                });
+                                this.setModalVisible(!this.state.modalVisible)
+                            }}>
+                                <Text style={styles.buttonStyle}>Done</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={() => {
+                                this.setModalVisible(!this.state.modalVisible)
+                            }}>
+                                <Text style={styles.buttonStyle}>Cancel</Text>
+                            </TouchableOpacity>
+
+                        </View>
+                    </View>
+
+                </Modal>
+
+
                 <PlayerBottom/>
 
 
@@ -158,6 +233,35 @@ const styles = StyleSheet.create({
         width:20,
         height:24,
         justifyContent:'center'
+    },
+    container:{
+        flex: 1,
+        backgroundColor: '#0887c8',
+    },
+    buttonStyle:{
+        paddingVertical: 15,
+        paddingHorizontal: 15,
+        marginBottom:5,
+        marginTop: 10,
+        borderWidth: 2,
+        borderStyle: 'solid',
+        borderRadius: 0,
+        borderColor: '#FFF',
+        backgroundColor: '#856cff',
+        alignItems: 'center',
+        textAlign: 'center',
+        color: '#fff',
+        fontStyle: 'normal',
+        fontFamily: 'Futura',
+        fontSize: 25,
+    },
+    inputStyle:{
+        marginTop: 50,
+        height: 40,
+        backgroundColor: '#0777b2',
+        marginBottom: 10,
+        color: '#FFF',
+        paddingHorizontal: 10,
     }
 });
 

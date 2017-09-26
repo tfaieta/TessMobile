@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from './Variables';
 import {PodcastFile} from './Variables';
 import Slider from 'react-native-slider';
+import firebase from 'firebase';
 
 
 
@@ -112,9 +113,11 @@ class PlayerBottom extends Component {
 
 
     _renderPodcastInfo(isPlaying){
+        let profileName = firebase.auth().currentUser.displayName;
+
         if(isPlaying) {
             return (
-                <Text style={styles.playingText}>{Variables.state.podcastTitle}</Text>
+                <Text style={styles.playingText}>{Variables.state.podcastTitle} • {profileName}</Text>
             )
         }
         if(Variables.state.podcastTitle =='') {
@@ -124,7 +127,7 @@ class PlayerBottom extends Component {
         }
         else{
             return (
-                <Text style={styles.playingText}>{Variables.state.podcastTitle}</Text>
+                <Text style={styles.playingText}>{Variables.state.podcastTitle} • {profileName}</Text>
             )
         }
 
@@ -224,14 +227,14 @@ class PlayerBottom extends Component {
     _renderDescription(){
         if (Variables.state.podcastTitle == ''){
             return(
-                <ScrollView style={{marginHorizontal: 20, marginBottom: 20}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                <ScrollView style={{marginHorizontal: 20, marginBottom: 20, backgroundColor: '#0997de', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
                     <Text style={{color: '#fff', fontSize: 20, fontFamily: 'Futura', textAlign: 'center'  }}>Select a Podcast to start listening....</Text>
                 </ScrollView>
             )
         }
         else{
             return(
-                <ScrollView style={{marginHorizontal: 20, marginBottom: 20}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                <ScrollView style={{marginHorizontal: 20, marginBottom: 20, backgroundColor: '#0997de', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
                     <Text style={{color: '#fff', fontSize: 20, fontFamily: 'Futura' }}>{Variables.state.podcastDescription}</Text>
                 </ScrollView>
             )
@@ -240,9 +243,11 @@ class PlayerBottom extends Component {
 
 
     _renderPodcastArtist(isPlaying) {
+        let profileName = firebase.auth().currentUser.displayName;
+
         if (isPlaying) {
             return (
-                <Text style={styles.podcastText}>Podcast Artist</Text>
+                <Text style={styles.podcastText}>{profileName}</Text>
             );
         }
         if(Variables.state.podcastTitle == '') {
@@ -252,7 +257,7 @@ class PlayerBottom extends Component {
         }
         else{
             return (
-                <Text style={styles.podcastText}>Podcast Artist</Text>
+                <Text style={styles.podcastText}>{profileName}</Text>
             );
         }
 

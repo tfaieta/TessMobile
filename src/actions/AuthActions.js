@@ -3,6 +3,7 @@ import { Actions } from 'react-native-router-flux';
 import {
     EMAIL_CHANGED,
     PASSWORD_CHANGED,
+    USERNAME_CHANGED,
     LOGIN_USER_SUCCESS,
     LOGIN_USER_FAIL,
     LOGIN_USER,
@@ -27,6 +28,14 @@ export const passwordChanged = (text) => {
 
 };
 
+export const usernameChanged = (text) => {
+    return {
+        type: USERNAME_CHANGED,
+        payload: text
+    };
+
+};
+
 export const loginUser = ({email, password}) => {
     return (dispatch) => {
         dispatch({ type: LOGIN_USER});
@@ -44,7 +53,7 @@ export const loginUser = ({email, password}) => {
     };
 };
 
-export const createUser = ({email, password}) => {
+export const createUser = ({email, password, username}) => {
     return (dispatch) => {
         dispatch({ type: USER_CREATE});
 
@@ -52,12 +61,37 @@ export const createUser = ({email, password}) => {
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then(user => {
                 loginUserSuccess(dispatch, user);
-                Actions.Main();
+                firebase.auth().signInWithEmailAndPassword(email, password)
+                .then(() => {
+
+
+                    let curUser = firebase.auth().currentUser;
+                    curUser.updateProfile({
+                        displayName: username
+
+                    });
+
+
+                    Actions.Main();
+
+
+                })
+
+
+
+
+
             })
 
-
             .catch(() => loginUserFail(dispatch));
+
+
+
+
+
     };
+
+
 };
 
 const loginUserFail = (dispatch) => {

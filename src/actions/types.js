@@ -4,7 +4,7 @@ export const LOGIN_USER_SUCCESS = 'login_user_success';
 export const LOGIN_USER_FAIL = 'login_user_fail';
 export const LOGIN_USER = 'login_user';
 export const USER_CREATE = 'create_user';
-
+export const USERNAME_CHANGED = 'username_changed';
 export const PODCAST_UPDATE ='podcast_update';
 export const PODCAST_CREATE = 'podcast_create';
 export const PODCAST_FETCH_SUCCESS = 'podcast_fetch_success';

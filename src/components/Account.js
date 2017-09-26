@@ -21,6 +21,7 @@ import Sound from 'react-native-sound';
 import {profileNameL} from './LoginForm.js';
 import {profileName} from './CreateAccount.js';
 import Variables from './Variables';
+import firebase from 'firebase';
 
 
 
@@ -97,25 +98,14 @@ class Account extends Component {
 
     }
 
-    _renderProfileName(profileName1, profileName2){
-        if(profileName1 != '') {
-            return (
-                <Text style={styles.title2 }>{profileName1}</Text>
-            )
-        }
-        if(profileName2 != '') {
-            return (
-                <Text style={styles.title2 }>{profileName2}</Text>
-            )
-        }
+    _renderProfileName(){
 
+        let profileName = firebase.auth().currentUser.displayName;
 
-        else{
             return (
-                <Text style={styles.title2} >My Name</Text>
+                <Text style={styles.title2} >{profileName}</Text>
 
             )
-        }
 
     }
 
@@ -138,7 +128,7 @@ class Account extends Component {
 
                 <ScrollView >
 
-                    {this._renderProfileName(this.state.profileName, this.state.profileNameL)}
+                    {this._renderProfileName()}
 
 
                 <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 140,color:'#FFF' }} name="md-contact">
@@ -196,6 +186,7 @@ const styles = StyleSheet.create({
     title2: {
         color: '#FFF',
         marginTop: 70,
+        marginBottom: 5,
         flex:1,
         textAlign: 'center',
         opacity: 2,

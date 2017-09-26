@@ -68,16 +68,33 @@ class ListItem extends Component {
 
     render() {
         const { podcastTitle } = this.props.podcast;
+        let profileName = firebase.auth().currentUser.displayName;
 
         return (
             <TouchableOpacity onPress={this.onRowPress.bind(this)}>
                 <View style={styles.container}>
 
-                    <Icon style={{textAlign:'left', marginLeft: 20,paddingRight: 8, fontSize: 35,color:'#be8eff' }} name="ios-play">
-                        <Text style={styles.title}>   {podcastTitle}</Text>
-                    </Icon>
 
-                    {this.renderDescription()}
+                    <View style={styles.leftContainer}>
+                        <Icon style={{textAlign:'left', marginLeft: 20,paddingRight: 8, fontSize: 70,color:'#FFF' }} name="md-square">
+                        </Icon>
+                    </View>
+
+
+                    <View style={styles.middleContainer}>
+                        <Text style={styles.title}>   {podcastTitle}</Text>
+                        <Text style={styles.artistTitle}>{profileName}</Text>
+                    </View>
+
+
+                    <View style={styles.rightContainer}>
+                        <Icon style={{textAlign:'left', marginLeft: 20,paddingRight: 8, fontSize: 35,color:'#be8eff' }} name="ios-play">
+                        </Icon>
+                    </View>
+
+
+
+
                 </View>
             </TouchableOpacity>
 
@@ -90,28 +107,64 @@ class ListItem extends Component {
 const styles = {
     title: {
         color: '#FFF',
-        marginTop: 20,
+        marginTop: 0,
         flex:1,
-        textAlign: 'left',
-        paddingLeft: 10,
+        textAlign: 'center',
+        paddingLeft: 0,
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Futura',
-        fontSize: 25,
+        fontSize: 20,
+        backgroundColor: 'transparent'
+    },
+    artistTitle: {
+        color: '#FFF',
+        marginTop: 2,
+        flex:1,
+        textAlign: 'center',
+        paddingLeft: 2,
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Futura',
+        fontSize: 15,
         backgroundColor: 'transparent'
     },
     container: {
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        marginVertical: 3,
-        marginHorizontal: 25,
+        paddingHorizontal: 0,
+        paddingVertical: 0,
+        marginVertical: 0,
+        marginHorizontal: 0,
         backgroundColor: '#804cc8',
         opacity: 1,
         borderColor: '#FFF',
         borderWidth: 0.5,
         borderRadius: 10,
-        borderStyle: 'solid'
-    }
+        borderStyle: 'solid',
+        flexDirection: 'row',
+    },
+    centerContainer: {
+        flexDirection: 'row'
+    },
+    leftContainer: {
+        flex: 1,
+        paddingLeft: 2,
+        justifyContent: 'center',
+        alignItems:'flex-start',
+    },
+    rightContainer: {
+        flex: 1,
+        paddingRight: 2,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+
+    },
+    middleContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 5,
+        paddingHorizontal: -50,
+    },
 };
 
 
