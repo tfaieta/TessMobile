@@ -131,7 +131,7 @@ class Account extends Component {
                     {this._renderProfileName()}
 
 
-                <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 140,color:'#FFF' }} name="md-contact">
+                <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 140,color:'#804cc8' }} name="md-contact">
                 </Icon>
 
                     <Text style={styles.title2 }>Bio</Text>
@@ -169,7 +169,7 @@ class Account extends Component {
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#69bbd9',
+        backgroundColor: '#FFF',
         paddingBottom: 115,
     },
     title: {
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     title2: {
-        color: '#FFF',
+        color: '#804cc8',
         marginTop: 70,
         marginBottom: 5,
         flex:1,
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     titleBio: {
-        color: '#FFF',
+        color: '#804cc8',
         marginVertical: 10,
         flex:1,
         textAlign: 'center',

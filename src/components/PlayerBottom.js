@@ -227,14 +227,14 @@ class PlayerBottom extends Component {
     _renderDescription(){
         if (Variables.state.podcastTitle == ''){
             return(
-                <ScrollView style={{marginHorizontal: 20, marginBottom: 20, backgroundColor: '#0997de', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                <ScrollView style={{marginHorizontal: 20, marginBottom: 20, backgroundColor: '#6e89e7', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
                     <Text style={{color: '#fff', fontSize: 20, fontFamily: 'Futura', textAlign: 'center'  }}>Select a Podcast to start listening....</Text>
                 </ScrollView>
             )
         }
         else{
             return(
-                <ScrollView style={{marginHorizontal: 20, marginBottom: 20, backgroundColor: '#0997de', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                <ScrollView style={{marginHorizontal: 20, marginBottom: 20, backgroundColor: '#6e89e7', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
                     <Text style={{color: '#fff', fontSize: 20, fontFamily: 'Futura' }}>{Variables.state.podcastDescription}</Text>
                 </ScrollView>
             )
@@ -430,9 +430,9 @@ class PlayerBottom extends Component {
 
 
                         <Slider
-                            minimumTrackTintColor='#804cc8'
+                            minimumTrackTintColor='rgba(1,170,170,1)'
                             maximumTrackTintColor='#575757'
-                            thumbTintColor='#9f5ff8'
+                            thumbTintColor='rgba(60,230,230,1)'
                             thumbTouchSize={{width: 40, height: 40}}
                             animateTransitions = {true}
                             style={styles.sliderContainer}
@@ -505,7 +505,7 @@ class PlayerBottom extends Component {
         paddingBottom: 20,
     },
     playingText:{
-        color: 'white',
+        color: '#FFF',
         fontSize: 15,
         paddingTop:5,
         flexDirection: 'row',
@@ -553,7 +553,7 @@ class PlayerBottom extends Component {
 
         container:{
             flex: 1,
-            backgroundColor: '#0887c8',
+            backgroundColor: '#657ed4',
             marginTop: 0,
         },
         homeContainer:{

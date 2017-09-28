@@ -32,6 +32,7 @@
 		"react-native-settings-list": "^1.6.1",
 		"react-native-slider": "^0.10.0",
 		"react-native-sound": "^0.10.3",
+		"react-native-swipeout": "^2.2.2",
 		"react-native-swiper": "^1.5.4",
 		"react-native-switch": "^1.1.0",
 		"react-native-testkit": "^0.1.4",

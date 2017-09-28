@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Text, TouchableOpacity, View, LayoutAnimation } from 'react-native';
+import { Text, View, LayoutAnimation, TouchableHighlight } from 'react-native';
 import { CardSection } from "./common/CardSection";
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import {AudioUtils} from 'react-native-audio';
 import Variables from "./Variables";
 import RNFetchBlob from 'react-native-fetch-blob';
+import Swipeout from 'react-native-swipeout';
 
 
 class ListItem extends Component {
@@ -66,17 +67,31 @@ class ListItem extends Component {
         }
     }
 
+
+
     render() {
         const { podcastTitle } = this.props.podcast;
         let profileName = firebase.auth().currentUser.displayName;
 
+        var swipeoutBtns = [
+            {
+                text: 'Save',
+                backgroundColor: '#7ae4e7'
+            },
+            {
+                text: 'Remove',
+                backgroundColor: '#e35e5e'
+            }
+        ];
+
         return (
-            <TouchableOpacity onPress={this.onRowPress.bind(this)}>
+<Swipeout right={swipeoutBtns}>
+            <TouchableHighlight underlayColor="white" onPress={this.onRowPress.bind(this)}>
                 <View style={styles.container}>
 
 
                     <View style={styles.leftContainer}>
-                        <Icon style={{textAlign:'left', marginLeft: 20,paddingRight: 8, fontSize: 70,color:'#FFF' }} name="md-square">
+                        <Icon style={{textAlign:'left', marginLeft: 20,paddingRight: 8, fontSize: 35,color:'#be8eff' }} name="ios-play">
                         </Icon>
                     </View>
 
@@ -88,7 +103,7 @@ class ListItem extends Component {
 
 
                     <View style={styles.rightContainer}>
-                        <Icon style={{textAlign:'left', marginLeft: 20,paddingRight: 8, fontSize: 35,color:'#be8eff' }} name="ios-play">
+                        <Icon style={{textAlign:'left', marginLeft: 20,paddingRight: 8, fontSize: 35,color:'#be8eff' }} name="ios-arrow-dropright">
                         </Icon>
                     </View>
 
@@ -96,7 +111,8 @@ class ListItem extends Component {
 
 
                 </View>
-            </TouchableOpacity>
+            </TouchableHighlight>
+</Swipeout>
 
         );
     }
@@ -106,7 +122,7 @@ class ListItem extends Component {
 
 const styles = {
     title: {
-        color: '#FFF',
+        color: '#804cc8',
         marginTop: 0,
         flex:1,
         textAlign: 'center',
@@ -118,8 +134,8 @@ const styles = {
         backgroundColor: 'transparent'
     },
     artistTitle: {
-        color: '#FFF',
-        marginTop: 2,
+        color: '#804cc8',
+        marginTop: 0,
         flex:1,
         textAlign: 'center',
         paddingLeft: 2,
@@ -134,11 +150,11 @@ const styles = {
         paddingVertical: 0,
         marginVertical: 0,
         marginHorizontal: 0,
-        backgroundColor: '#804cc8',
+        backgroundColor: '#FFF',
         opacity: 1,
         borderColor: '#FFF',
         borderWidth: 0.5,
-        borderRadius: 10,
+        borderRadius: 0,
         borderStyle: 'solid',
         flexDirection: 'row',
     },
@@ -162,8 +178,8 @@ const styles = {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 5,
-        paddingHorizontal: -50,
+        marginTop: 3,
+        marginHorizontal: -100,
     },
 };
 

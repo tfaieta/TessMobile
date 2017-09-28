@@ -180,7 +180,7 @@ const RouterComponent = () => {
                         component={Queue}
                         title="Queue"
                         hideNavBar={false}
-                        navigationBarStyle={{backgroundColor:'#657ed4'}}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
                         duration={1}
                     />
                 </Scene>
@@ -193,7 +193,7 @@ const RouterComponent = () => {
                         component={Account}
                         title="Account"
                         hideNavBar={false}
-                        navigationBarStyle={{backgroundColor:'#69bbd9'}}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
                         duration={1}
                         initial
                         />

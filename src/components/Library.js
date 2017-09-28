@@ -77,7 +77,7 @@ class Library extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#657ed4',
+        backgroundColor: '#804cc8',
         paddingTop: 70,
     },
 
@@ -105,19 +105,19 @@ const styles = StyleSheet.create({
     },
 
     buttonPreview: {
-        backgroundColor: '#657ed4',
+        backgroundColor: '#804cc8',
         alignItems: 'center',
         paddingBottom: 15,
     },
 
     buttonUpload: {
-        backgroundColor: '#657ed4',
+        backgroundColor: '#804cc8',
         alignItems: 'center',
         paddingTop: 15,
     },
 
     buttonCancel: {
-        backgroundColor: '#69bbd9',
+        backgroundColor: '#804cc8',
         alignItems: 'center',
         paddingTop: 15,
     },
