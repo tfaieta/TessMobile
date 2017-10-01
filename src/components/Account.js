@@ -6,12 +6,9 @@ import {
     View,
     StatusBar,
     ScrollView,
-    TouchableOpacity,
     ListView
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { podcastFetch} from "../actions/PodcastActions"
 import ListItem from './ListItem';
@@ -50,7 +47,7 @@ class Account extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { bio: "Tell others about yourself...", profileName: profileName, profileNameL: profileNameL}
+        this.state = { bio: "Tell others about yourself...", category: '', profileName: profileName, profileNameL: profileNameL}
     }
 
 
@@ -109,6 +106,128 @@ class Account extends Component {
 
     }
 
+
+    _renderBio(){
+
+
+        firebase.database().ref(`users/${firebase.auth().currentUser.uid}/bio/bio`).on("value", (snapshot) =>{
+            this.setState({ bio: snapshot});
+        });
+
+        if (this.state.bio == null || this.state.bio == ''){
+            return(
+            <Text style={styles.titleBio} >Tell others about yourself</Text>
+            )
+        }
+
+        return (
+            <Text style={styles.titleBio} >{this.state.bio}</Text>
+
+        )
+
+    }
+
+
+    _renderCategory(){
+
+        var currentUser = firebase.auth();
+        var ref = firebase.database().ref(`/users/${currentUser.uid}/category/category`);
+
+        ref.on("value", function (snapshot) {
+
+            console.warn(snapshot.valueOf());
+
+        });
+
+
+
+        if(this.state.podcastCategory == '' || this.state.podcastCategory == null){
+            return(
+            <Text style={styles.titleBio} >Too hard to choose</Text>
+            )
+        }
+
+        if (this.state.podcastCategory == 'fitness'){
+            return(
+                <Icon style={{textAlign:'center', fontSize: 40,color:'#6cff52' }} name="ios-body">
+                    <Text style={{color:'#6cff52', fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> fitness</Text>
+                </Icon>
+            )
+        }
+        if (this.state.podcastCategory == 'current'){
+            return(
+                <Icon style={{textAlign:'center', fontSize: 40,color:'#64fffc' }} name="md-bookmarks">
+                    <Text style={{color:'#64fffc', fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> current event</Text>
+                </Icon>
+            )
+        }
+        if (this.state.podcastCategory == 'politics'){
+            return(
+                <Icon style={{textAlign:'center', fontSize: 40,color:'#ffd038' }} name="md-megaphone">
+                    <Text style={{color:'#ffd038', fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> politics</Text>
+                </Icon>
+            )
+        }
+        if (this.state.podcastCategory == 'gaming'){
+            return(
+                <Icon style={{textAlign:'center', fontSize: 40,color:'#ff5442' }} name="md-game-controller-b">
+                    <Text style={{color:'#ff5442', fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> gaming</Text>
+                </Icon>
+            )
+        }
+        if (this.state.podcastCategory == 'sports'){
+            return(
+                <Icon style={{textAlign:'center', fontSize: 40,color:'#7fa5ff' }} name="ios-football">
+                    <Text style={{color:'#7fa5ff', fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> sports</Text>
+                </Icon>
+            )
+        }
+        if (this.state.podcastCategory == 'entertainment'){
+            return(
+                <Icon style={{textAlign:'center', fontSize: 40,color:'#fdff53' }} name="ios-musical-notes">
+                    <Text style={{color:'#fdff53', fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> entertainment</Text>
+                </Icon>
+            )
+        }
+        if (this.state.podcastCategory == 'life'){
+            return(
+                <Icon style={{textAlign:'center', fontSize: 40,color:'#3aff97' }} name="ios-body">
+                    <Text style={{color:'#3aff97', fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> life</Text>
+                </Icon>
+            )
+        }
+        if (this.state.podcastCategory == 'fashion'){
+            return(
+                <Icon style={{textAlign:'center', fontSize: 40,color:'#ff5e95' }} name="ios-shirt">
+                    <Text style={{color:'#ff5e95', fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> fashion</Text>
+                </Icon>
+            )
+        }
+        if (this.state.podcastCategory == 'trends'){
+            return(
+                <Icon style={{textAlign:'center', fontSize: 40,color:'#bd59ff' }} name="md-trending-up">
+                    <Text style={{color:'#bd59ff', fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> trends</Text>
+                </Icon>
+            )
+        }
+        if (this.state.podcastCategory == 'cars'){
+            return(
+                <Icon style={{textAlign:'center', fontSize: 40,color:'#ff861c' }} name="ios-car">
+                    <Text style={{color:'#ff861c' , fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> cars</Text>
+                </Icon>
+            )
+        }
+        if (this.state.podcastCategory == 'misc'){
+            return(
+                <Icon style={{textAlign:'center', fontSize: 40,color:'#aeb1a7' }} name="md-code-working">
+                    <Text style={{color:'#aeb1a7', fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> misc</Text>
+                </Icon>
+            )
+        }
+
+    }
+
+
     renderRow(podcast) {
         return <ListItem podcast={podcast} />;
     }
@@ -135,7 +254,11 @@ class Account extends Component {
                 </Icon>
 
                     <Text style={styles.title2 }>Bio</Text>
-                    <Text style={styles.titleBio} >{this.state.bio}</Text>
+                    {this._renderBio()}
+
+
+                    <Text style={styles.title2 }>Favorite Category</Text>
+                    {this._renderCategory()}
 
                     <Text style={styles.title2 }>Content</Text>
 

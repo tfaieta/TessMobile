@@ -1,7 +1,6 @@
 import React, { Component  } from 'react';
 import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
-import { Text } from 'react-native';
 import RNFetchBlob from 'react-native-fetch-blob';
 import {AudioUtils} from 'react-native-audio';
 import {
@@ -20,7 +19,7 @@ export const podcastUpdate = ({prop, value}) => {
     };
 };
 
-export const podcastCreate = ({ podcastTitle, podcastDescription, podcastURL }) => {
+export const podcastCreate = ({ podcastTitle, podcastDescription, podcastCategory }) => {
     const {currentUser} = firebase.auth();
     this.state = {
         loading: false,
@@ -64,7 +63,7 @@ export const podcastCreate = ({ podcastTitle, podcastDescription, podcastURL }) 
 
 
         firebase.database().ref(`/users/${currentUser.uid}/podcast`)
-            .push({podcastTitle, podcastDescription})
+            .push({podcastTitle, podcastDescription, podcastCategory})
             .then(() => {
                 dispatch({type: PODCAST_CREATE});
                 Actions.RecordSuccess();

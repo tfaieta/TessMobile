@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet,StatusBar, ScrollView, TouchableOpacity, Slider} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { Text, TextInput, View, StyleSheet, TouchableOpacity, Picker} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
-import { volume } from './Home';
 import Sound from 'react-native-sound';
-import PlayerBottom from './PlayerBottom';
 import {podTime, totalTime} from './Record';
 import Variables from './Variables';
 import { connect } from 'react-redux';
@@ -25,10 +22,12 @@ class RecordInfo extends Component{
     }
     state = {
         totalTime: totalTime,
+        podcastCategory: ''
     };
     props = {
         podcastTitle: Variables.state.podcastTitle,
         podcastDescription: Variables.state.podcastDescription,
+        podcastCategory: Variables.state.podcastCategory
     };
 
 
@@ -41,11 +40,13 @@ class RecordInfo extends Component{
         Variables.setPodcastFile(podFile);
         Variables.state.podcastTitle = this.props.podcastTitle;
         Variables.state.podcastDescription = this.props.podcastDescription;
+        Variables.state.podcastCategory = this.props.podcastCategory;
 
 
-        const { podcastTitle, podcastDescription} = this.props;
 
-        this.props.podcastCreate({podcastTitle, podcastDescription});
+        const { podcastTitle, podcastDescription, podcastCategory} = this.props;
+
+        this.props.podcastCreate({podcastTitle, podcastDescription, podcastCategory});
     };
 
 
@@ -55,6 +56,7 @@ class RecordInfo extends Component{
         Variables.setPodcastFile(podFile);
         Variables.state.podcastTitle = this.props.podcastTitle;
         Variables.state.podcastDescription = this.props.podcastDescription;
+        Variables.state.podcastCategory = this.props.podcastCategory;
 
         setTimeout(() => {
             var sound = new Sound(podFile, '', (error) => {
@@ -133,15 +135,29 @@ class RecordInfo extends Component{
                     maxLength={500}
                 />
 
-                <View style={styles.timeContainer}>
-                    {this._renderTime()}
-                </View>
+                <Picker style = {{ marginTop: -20, flex:1}} selectedValue={this.props.podcastCategory} onValueChange={itemValue => this.props.podcastUpdate({prop: 'podcastCategory', value: itemValue})}>
+                    <Picker.Item color= "white" label="Select a category..." value="none" />
+                    <Picker.Item color= '#64fffc' label="Current Events" value="current" />
+                    <Picker.Item color= '#6cff52' label="Fitness" value="fitness" />
+                    <Picker.Item color= '#ffd038' label="Politics" value="politics" />
+                    <Picker.Item color= '#ff5442' label="Gaming" value="gaming" />
+                    <Picker.Item color= '#7fa5ff' label="Sports" value="sports" />
+                    <Picker.Item color= '#fdff53' label="Entertainment" value="entertainment" />
+                    <Picker.Item color= '#3aff97' label="Life" value="life" />
+                    <Picker.Item color= '#ff5e95' label="Fashion" value="fashion" />
+                    <Picker.Item color= '#bd59ff' label="Trends" value="trends" />
+                    <Picker.Item color= '#ff861c' label="Cars" value="cars" />
+                    <Picker.Item color= '#aeb1a7' label="Misc" value="misc" />
+                </Picker>
+
+
 
 
                 <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.buttonPreview}  onPress={this.preview}>
                     <Icon style={{textAlign:'center', marginTop: 5, fontSize: 35,color:'#804cc8' }} name="ios-play">
-                    <Text  style={styles.contentTitle}> Preview</Text>
+                    <Text  style={styles.contentTitle}> Preview  {this._renderTime()}</Text>
+
                     </Icon>
                 </TouchableOpacity>
 
@@ -159,11 +175,6 @@ class RecordInfo extends Component{
                 </TouchableOpacity>
                 </View>
 
-
-
-
-
-                <PlayerBottom/>
 
             </View>
 
@@ -205,7 +216,7 @@ const styles = StyleSheet.create({
 
     input: {
         height: 40,
-        backgroundColor: 'rgba(170,170,170,0.4)',
+        backgroundColor: 'rgba(170,170,170,0.2)',
         marginBottom: 10,
         color: '#FFF',
         paddingHorizontal: 10,
@@ -213,7 +224,7 @@ const styles = StyleSheet.create({
 
     input2: {
         height: 120,
-        backgroundColor: 'rgba(170,170,170,0.4)',
+        backgroundColor: 'rgba(170,170,170,0.2)',
         marginBottom: 10,
         color:'#FFF',
         paddingHorizontal: 10,
@@ -243,8 +254,8 @@ const styles = StyleSheet.create({
     },
 
     timeContainer: {
+        flex:1,
         alignItems: 'center',
-        marginTop: 20,
     },
 
     progressText: {
@@ -257,9 +268,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  const { podcastTitle, podcastDescription} = state.podcastForm;
+  const { podcastTitle, podcastDescription, podcastCategory} = state.podcastForm;
 
-  return { podcastTitle, podcastDescription}
+  return { podcastTitle, podcastDescription, podcastCategory}
 };
 
 

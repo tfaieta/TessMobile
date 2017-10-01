@@ -25,6 +25,7 @@ class Variables extends Component{
         interval: null,
         podcastTitle: '',
         podcastDescription: '',
+        podcastCategory: '',
 };
 
 
