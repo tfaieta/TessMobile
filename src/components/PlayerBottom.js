@@ -27,31 +27,37 @@ class PlayerBottom extends Component {
         podcastDescription: Variables.state.podcastDescription,
 
         modalVisible: false
-    };
+    }
 
-    componentDidMount(){
-        if (Variables.state.isPlaying==true){
+
+
+    componentWillMount(){
+        if(this.state.isPlaying){
             this.setState({
                 interval: setInterval(this.tick, 250)
             });
         }
-
+        else {
+            this.setState({
+                interval: clearInterval(this.state.interval)
+            });
+            Variables.pause();
+        }
     }
-
 
     componentWillUnmount() {
         this.setState({
             interval: clearInterval(this.state.interval)
         });
-        Variables.interval = clearInterval(Variables.interval);
     }
 
     tick() {
         PodcastFile.getCurrentTime((seconds) => {
             this.setState({
                 currentTime: seconds
-            })
+            });
         })
+
     }
 
     play = () =>  {
@@ -158,7 +164,7 @@ class PlayerBottom extends Component {
         else{
             return (
                 <View style = {{
-                    width: (Variables.state.currentTime / PodcastFile.getDuration()) * 380,
+                    width: (this.state.currentTime / PodcastFile.getDuration()) * 380,
                     height: 8,
                     backgroundColor: 'rgba(1,170,170,1)',}}
                 >
@@ -374,10 +380,10 @@ class PlayerBottom extends Component {
 
     _renderCurrentTime() {
 
-        var num = (Variables.state.currentTime / 60).toString();
+        var num = (this.state.currentTime / 60).toString();
         num = num.slice(0,1);
         Number(num);
-        var num2 = (Variables.state.currentTime % 60).toString();
+        var num2 = (this.state.currentTime % 60).toString();
         num2 = num2.slice(0,2);
         Number(num2);
 
@@ -573,8 +579,9 @@ class PlayerBottom extends Component {
                             step={0}
                             minimumValue={0}
                             maximumValue= { Math.abs( PodcastFile.getDuration())}
-                            value={Variables.state.currentTime}
-                            onValueChange={currentTime => Variables.state.currentTime}
+                            value={ this.state.currentTime }
+                            onValueChange={currentTime => PodcastFile.setCurrentTime(currentTime)}
+
 
                         />
 
