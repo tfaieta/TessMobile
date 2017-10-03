@@ -66,14 +66,9 @@ export const podcastCreate = ({ podcastTitle, podcastDescription, podcastCategor
             .push({podcastTitle, podcastDescription, podcastCategory})
             .then(() => {
                 dispatch({type: PODCAST_CREATE});
-            });
-
-        firebase.database().ref('/podcast')
-            .push({podcastTitle, podcastDescription, podcastCategory})
-            .then(() => {
-                dispatch({type: PODCAST_CREATE});
                 Actions.RecordSuccess();
             });
+
     }
 };
 

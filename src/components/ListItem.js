@@ -54,14 +54,6 @@ class ListItem extends Component {
     }
 
 
-    deletePodcast = () =>{
-        const {currentUser} = firebase.auth();
-        const { podcastTitle } = this.props.podcast;
-        const { podcastDescription } = this.props.podcast;
-        const { podcastCategory } = this.props.podcast;
-        firebase.database().ref(`/users/${currentUser.uid}/podcast/${podcastTitle}`).remove();
-    };
-
 
     render() {
         const { podcastTitle } = this.props.podcast;
@@ -75,7 +67,6 @@ class ListItem extends Component {
             {
                 text: 'Remove',
                 backgroundColor: '#e35e5e',
-                onPress: this.deletePodcast()
             }
         ];
 

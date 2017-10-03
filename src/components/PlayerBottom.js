@@ -673,11 +673,11 @@ class PlayerBottom extends Component {
         flexDirection: 'row',
         paddingTop: 5,
     },
-        centerContainerButtons: {
-            flexDirection: 'row',
-            paddingTop: 2,
-            paddingBottom: 5
-        },
+    centerContainerButtons: {
+        flexDirection: 'row',
+        paddingTop: 2,
+        paddingBottom: 5
+    },
     rightContainer: {
         flex: 1,
         paddingRight: 10,
