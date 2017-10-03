@@ -66,9 +66,14 @@ export const podcastCreate = ({ podcastTitle, podcastDescription, podcastCategor
             .push({podcastTitle, podcastDescription, podcastCategory})
             .then(() => {
                 dispatch({type: PODCAST_CREATE});
-                Actions.RecordSuccess();
             });
 
+        firebase.database().ref('/podcast')
+            .push({podcastTitle, podcastDescription, podcastCategory})
+            .then(() => {
+                dispatch({type: PODCAST_CREATE});
+                Actions.RecordSuccess();
+            });
     }
 };
 
@@ -79,6 +84,17 @@ export const podcastFetch = () => {
 
     return (dispatch) => {
         firebase.database().ref(`/users/${currentUser.uid}/podcast`)
+            .on('value', snapshot => {
+                dispatch({ type: PODCAST_FETCH_SUCCESS, payload: snapshot.val() });
+            });
+    };
+};
+
+
+export const podcastFetchNew = () => {
+
+    return (dispatch) => {
+        firebase.database().ref(`/users`).child("podcast")
             .on('value', snapshot => {
                 dispatch({ type: PODCAST_FETCH_SUCCESS, payload: snapshot.val() });
             });

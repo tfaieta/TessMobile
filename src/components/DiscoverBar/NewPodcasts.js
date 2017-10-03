@@ -1,13 +1,42 @@
-/**
- * Created by nickruspantini on 6/29/17.
- */
+import _ from 'lodash';
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet,StatusBar, ScrollView, TouchableOpacity, Slider} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { ListView, StyleSheet, ScrollView} from 'react-native';
+import { connect } from 'react-redux';
+import ListItem from '../ListItem';
+import { podcastFetchNew} from "../../actions/PodcastActions";
 
 
 
 class NewPodcasts extends Component{
+
+    componentWillMount(){
+        this.props.podcastFetchNew();
+
+
+        this.creataDataSource(this.props);
+    }
+
+    componentWillReceiveProps(nextProps) {
+
+        this.creataDataSource(nextProps);
+    }
+
+
+    creataDataSource({ podcast }) {
+        const ds = new ListView.DataSource({
+            rowHasChanged: (r1, r2) => r1 !== r2
+        });
+
+        this.dataSource = ds.cloneWithRows(podcast);
+    }
+
+
+    renderRow(podcast) {
+        return <ListItem podcast={podcast} />;
+    }
+
+
+
 
 
     render() {
@@ -15,65 +44,11 @@ class NewPodcasts extends Component{
             <ScrollView style={styles.container}>
 
 
-                <TouchableOpacity>
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#888784' }} name="md-albums">
-                        <Text style={styles.title} >    New</Text>
-                    </Icon>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#888784' }} name="md-albums">
-                        <Text style={styles.title} >    New</Text>
-                    </Icon>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#888784' }} name="md-albums">
-                        <Text style={styles.title} >    New</Text>
-                    </Icon>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#888784' }} name="md-albums">
-                        <Text style={styles.title} >    New</Text>
-                    </Icon>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#888784' }} name="md-albums">
-                        <Text style={styles.title} >    New</Text>
-                    </Icon>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#888784' }} name="md-albums">
-                        <Text style={styles.title} >    New</Text>
-                    </Icon>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#888784' }} name="md-albums">
-                        <Text style={styles.title} >    New</Text>
-                    </Icon>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#888784' }} name="md-albums">
-                        <Text style={styles.title} >    New</Text>
-                    </Icon>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#888784' }} name="md-albums">
-                        <Text style={styles.title} >    New</Text>
-                    </Icon>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#888784' }} name="md-albums">
-                        <Text style={styles.title} >    New</Text>
-                    </Icon>
-                </TouchableOpacity>
+                <ListView
+                    enableEmptySections
+                    dataSource={this.dataSource}
+                    renderRow={this.renderRow}
+                />
 
 
 
@@ -109,4 +84,12 @@ const styles = StyleSheet.create({
 
 });
 
-export default NewPodcasts;
+
+const mapStateToProps = state => {
+    const podcast = _.map(state.podcast, (val, uid) => {
+        return { ...val, uid };
+    });
+    return {podcast};
+};
+
+export default connect(mapStateToProps, {podcastFetchNew}) (NewPodcasts);

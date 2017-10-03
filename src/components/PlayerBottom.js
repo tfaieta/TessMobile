@@ -10,6 +10,7 @@ import firebase from 'firebase';
 
 
 
+
 class PlayerBottom extends Component {
     constructor() {
         super();

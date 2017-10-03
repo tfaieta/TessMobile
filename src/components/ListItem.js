@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Text, View, LayoutAnimation, TouchableHighlight } from 'react-native';
-import { CardSection } from "./common/CardSection";
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import {AudioUtils} from 'react-native-audio';
@@ -55,20 +54,13 @@ class ListItem extends Component {
     }
 
 
-    renderDescription(){
-        const { podcasts, expanded } = this.props;
-
-        if (expanded) {
-            return (
-                <CardSection>
-                <Text style={{ flex: 1 }}>
-                    {podcasts.podcastDescription}
-                </Text>
-                </CardSection>
-            );
-        }
-    }
-
+    deletePodcast = () =>{
+        const {currentUser} = firebase.auth();
+        const { podcastTitle } = this.props.podcast;
+        const { podcastDescription } = this.props.podcast;
+        const { podcastCategory } = this.props.podcast;
+        firebase.database().ref(`/users/${currentUser.uid}/podcast/${podcastTitle}`).remove();
+    };
 
 
     render() {
@@ -82,7 +74,8 @@ class ListItem extends Component {
             },
             {
                 text: 'Remove',
-                backgroundColor: '#e35e5e'
+                backgroundColor: '#e35e5e',
+                onPress: this.deletePodcast()
             }
         ];
 
