@@ -25,9 +25,9 @@ class PlayerBottom extends Component {
         interval: Variables.state.interval,
         podcastTitle: Variables.state.podcastTitle,
         podcastDescription: Variables.state.podcastDescription,
-
+        comment: '',
         modalVisible: false
-    }
+    };
 
 
 
@@ -252,79 +252,101 @@ class PlayerBottom extends Component {
 
         if (Variables.state.podcastCategory == 'fitness'){
             return(
+                <TouchableOpacity>
                 <Icon style={{textAlign:'center', fontSize: 40,color:'#6cff52' }} name="ios-body">
                     <Text style={{color:'#6cff52', fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> fitness</Text>
                 </Icon>
+                </TouchableOpacity>
             )
         }
         if (Variables.state.podcastCategory == 'current'){
             return(
+                <TouchableOpacity>
                 <Icon style={{textAlign:'center', fontSize: 40,color:'#64fffc' }} name="md-bookmarks">
-                    <Text style={{color:'#64fffc', fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> current event</Text>
+                    <Text style={{color:'#64fffc', fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> current events</Text>
                 </Icon>
+                </TouchableOpacity>
             )
         }
         if (Variables.state.podcastCategory == 'politics'){
             return(
+                <TouchableOpacity>
                 <Icon style={{textAlign:'center', fontSize: 40,color:'#ffd038' }} name="md-megaphone">
                     <Text style={{color:'#ffd038', fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> politics</Text>
                 </Icon>
+                </TouchableOpacity>
             )
         }
         if (Variables.state.podcastCategory == 'gaming'){
             return(
+                <TouchableOpacity>
                 <Icon style={{textAlign:'center', fontSize: 40,color:'#ff5442' }} name="md-game-controller-b">
                     <Text style={{color:'#ff5442', fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> gaming</Text>
                 </Icon>
+                </TouchableOpacity>
             )
         }
         if (Variables.state.podcastCategory == 'sports'){
             return(
+                <TouchableOpacity>
                 <Icon style={{textAlign:'center', fontSize: 40,color:'#7fa5ff' }} name="ios-football">
                     <Text style={{color:'#7fa5ff', fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> sports</Text>
                 </Icon>
+                </TouchableOpacity>
             )
         }
         if (Variables.state.podcastCategory == 'entertainment'){
             return(
+                <TouchableOpacity>
                 <Icon style={{textAlign:'center', fontSize: 40,color:'#fdff53' }} name="ios-musical-notes">
                     <Text style={{color:'#fdff53', fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> entertainment</Text>
                 </Icon>
+                </TouchableOpacity>
             )
         }
         if (Variables.state.podcastCategory == 'life'){
             return(
+                <TouchableOpacity>
                 <Icon style={{textAlign:'center', fontSize: 40,color:'#3aff97' }} name="ios-body">
                     <Text style={{color:'#3aff97', fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> life</Text>
                 </Icon>
+                </TouchableOpacity>
             )
         }
         if (Variables.state.podcastCategory == 'fashion'){
             return(
+                <TouchableOpacity>
                 <Icon style={{textAlign:'center', fontSize: 40,color:'#ff5e95' }} name="ios-shirt">
                     <Text style={{color:'#ff5e95', fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> fashion</Text>
                 </Icon>
+                </TouchableOpacity>
             )
         }
         if (Variables.state.podcastCategory == 'trends'){
             return(
+                <TouchableOpacity>
                 <Icon style={{textAlign:'center', fontSize: 40,color:'#bd59ff' }} name="md-trending-up">
                     <Text style={{color:'#bd59ff', fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> trends</Text>
                 </Icon>
+                </TouchableOpacity>
             )
         }
         if (Variables.state.podcastCategory == 'cars'){
             return(
+                <TouchableOpacity>
                 <Icon style={{textAlign:'center', fontSize: 40,color:'#ff861c' }} name="ios-car">
                     <Text style={{color:'#ff861c' , fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> cars</Text>
                 </Icon>
+                </TouchableOpacity>
             )
         }
         if (Variables.state.podcastCategory == 'misc'){
             return(
+                <TouchableOpacity>
                 <Icon style={{textAlign:'center', fontSize: 40,color:'#aeb1a7' }} name="md-code-working">
                     <Text style={{color:'#aeb1a7', fontSize: 22, marginTop: 5, flexDirection: 'row', backgroundColor: 'transparent', alignSelf: 'center' }}> misc</Text>
                 </Icon>
+                </TouchableOpacity>
             )
         }
 
@@ -407,6 +429,12 @@ class PlayerBottom extends Component {
     }
 
 
+    onCommentSubmit(){
+        const comment = this.state.comment;
+        const currentUser = firebase.auth().uid;
+        firebase.database().ref(`${Variables.state.currentRef}/comments`).push(comment, currentUser);
+        this.state.comment = '';
+    }
 
 
 
@@ -511,9 +539,11 @@ class PlayerBottom extends Component {
                         </Icon>
 
 
+                        <TouchableOpacity>
                         <Icon style={{textAlign:'center', fontSize: 40,color:'#ffff00', marginTop: -10 }} name="md-happy">
                             <Text style={styles.podcastTextLikes}> 58</Text>
                         </Icon>
+                        </TouchableOpacity>
 
 
                         {this._renderCategory()}
@@ -542,7 +572,11 @@ class PlayerBottom extends Component {
                                     <TextInput style={styles.input}
                                                placeholder = "write a comment..."
                                                placeholderTextColor='#FFF'
+                                               returnKeyType='send'
                                                multiline={true}
+                                               onChangeText={text => this.setState({ comment: text})}
+                                               onSubmitEditing={() => this.onCommentSubmit()}
+
                                     />
                             </View>
 

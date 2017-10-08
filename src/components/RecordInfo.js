@@ -17,6 +17,8 @@ let podFile = AudioUtils.DocumentDirectoryPath + '/test.aac';
 
 
 class RecordInfo extends Component{
+
+
     constructor(props) {
         super(props);
     }
@@ -27,7 +29,8 @@ class RecordInfo extends Component{
     props = {
         podcastTitle: Variables.state.podcastTitle,
         podcastDescription: Variables.state.podcastDescription,
-        podcastCategory: Variables.state.podcastCategory
+        podcastCategory: Variables.state.podcastCategory,
+        podcastArtist: Variables.state.podcastArtist
     };
 
 
@@ -37,6 +40,7 @@ class RecordInfo extends Component{
 
 
     Upload = () => {
+
         Variables.setPodcastFile(podFile);
         Variables.state.podcastTitle = this.props.podcastTitle;
         Variables.state.podcastDescription = this.props.podcastDescription;
@@ -44,9 +48,9 @@ class RecordInfo extends Component{
 
 
 
-        const { podcastTitle, podcastDescription, podcastCategory} = this.props;
+        const { podcastTitle, podcastDescription, podcastCategory, podcastArtist} = this.props;
 
-        this.props.podcastCreate({podcastTitle, podcastDescription, podcastCategory});
+        this.props.podcastCreate({podcastTitle, podcastDescription, podcastCategory, podcastArtist});
     };
 
 
@@ -111,6 +115,7 @@ class RecordInfo extends Component{
                 style={styles.container}>
 
                 <TextInput
+                    ref='input1'
                     style ={styles.input}
                     placeholder = "Podcast Title..."
                     placeholderTextColor='#FFF'
@@ -119,11 +124,15 @@ class RecordInfo extends Component{
                     value={this.props.podcastTitle}
                     onChangeText={text => this.props.podcastUpdate({prop: 'podcastTitle', value: text})}
                     maxLength={50}
+                    onSubmitEditing={(event) => {
+                        this.refs.input2.focus();
+                    }}
                 />
 
 
 
                 <TextInput
+                    ref='input2'
                     style ={styles.input2}
                     placeholder = "Podcast Description..."
                     placeholderTextColor='#FFF'
@@ -268,9 +277,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  const { podcastTitle, podcastDescription, podcastCategory} = state.podcastForm;
+  const { podcastTitle, podcastDescription, podcastCategory, podcastArtist} = state.podcastForm;
 
-  return { podcastTitle, podcastDescription, podcastCategory}
+  return { podcastTitle, podcastDescription, podcastCategory, podcastArtist}
 };
 
 

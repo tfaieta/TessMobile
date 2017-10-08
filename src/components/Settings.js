@@ -36,6 +36,11 @@ class Settings extends Component {
         this.setCategoryModalVisible(true)
     };
 
+    _handleButtonPressChangeImage = () => {
+
+
+    };
+
 
     setModalVisible(visible) {
         this.setState({modalVisible: visible});
@@ -62,7 +67,8 @@ class Settings extends Component {
         categoryModalVisible: false,
         username: '',
         bio: '',
-        category: ''
+        category: '',
+        image: ''
     };
 
     render() {
@@ -89,6 +95,7 @@ class Settings extends Component {
                             itemWidth={70}
                             titleStyle={{color:'black', fontSize: 16}}
                             title='Change Profile Image'
+                            onPress={this._handleButtonPressChangeImage}
                         />
                         <SettingsList.Item
                             icon={

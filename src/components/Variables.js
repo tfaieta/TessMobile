@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Sound from 'react-native-sound';
 import {podFile, podTime} from './Record';
+import firebase from 'firebase';
 
 
 export var PodcastFile = new Sound(podFile, '', (error) => {
@@ -26,8 +27,10 @@ class Variables extends Component{
         podcastTitle: '',
         podcastDescription: '',
         podcastCategory: '',
+        podcastArtist: '',
         bio: '',
-        favCategory: ''
+        favCategory: '',
+        currentRef: ''
 };
 
 
@@ -38,6 +41,7 @@ class Variables extends Component{
     }
 
     static setPodcastFile(podFile){
+        Variables.state.podcastArtist = firebase.auth().currentUser.uid;
         PodcastFile = new Sound(podFile, '', (error) => {
             if (error) {
                 console.log('failed to load the sound', error);
@@ -47,7 +51,10 @@ class Variables extends Component{
     }
 
 
+
+
     componentWillMount()   {
+
 
         PodcastFile = new Sound(podFile, '', (error) => {
 
@@ -70,7 +77,14 @@ class Variables extends Component{
 
         Variables.state.isPlaying = true;
         Variables.state.interval = setInterval(this.tick, 250);
-        PodcastFile.play();
+        PodcastFile.play((success) => {
+            if (success) {
+                Variables.state.isPlaying = false;
+                Variables.state.interval = clearInterval(Variables.state.interval);
+            }else {
+                console.log('playback error');
+            }
+        });
 
 
     };

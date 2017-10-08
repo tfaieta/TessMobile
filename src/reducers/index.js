@@ -6,6 +6,7 @@ import PodcastReducer from './PodcastReducer';
 export default combineReducers({
     auth: AuthReducer,
     podcastForm: PodcastFormReducer,
-    podcast: PodcastReducer
+    podcast: PodcastReducer,
+    podcasts: PodcastReducer
 });
 

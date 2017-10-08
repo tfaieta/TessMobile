@@ -1,15 +1,35 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet,StatusBar, Slider, ScrollView, TouchableOpacity} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { Text, View, StyleSheet,StatusBar, ScrollView, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Actions } from 'react-native-router-flux';
 import PlayerBottom from './PlayerBottom';
-
-export let volume = 20;
+import Variables from './Variables';
+import firebase from 'firebase';
 
 
 
 class Home extends Component{
+    componentWillMount(){
+        const {currentUser} = firebase.auth();
+
+        firebase.database().ref(`/users/${currentUser.uid}/bio`).orderByChild("bio").on("value", function(snap) {
+            if(snap.val()){
+                Variables.state.bio = snap.val().bio;
+
+            }
+            else {
+                Variables.state.bio = "Tell others about yourself"
+            }
+        });
+        firebase.database().ref(`/users/${currentUser.uid}/favCategory`).orderByChild("favCategory").on("value", function(snap) {
+            if(snap.val()){
+                Variables.state.favCategory = snap.val().favCategory;
+
+            }
+            else {
+                Variables.state.favCategory = "Tell others about yourself"
+            }
+        });
+    }
 
 
 

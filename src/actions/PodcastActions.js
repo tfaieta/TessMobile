@@ -6,7 +6,7 @@ import {AudioUtils} from 'react-native-audio';
 import {
     PODCAST_UPDATE,
     PODCAST_CREATE,
-    PODCAST_FETCH_SUCCESS
+    PODCAST_FETCH_SUCCESS, PODCAST_FETCH_SUCCESS_NEW
 } from './types';
 
 let podFile = AudioUtils.DocumentDirectoryPath + '/test.aac';
@@ -19,8 +19,9 @@ export const podcastUpdate = ({prop, value}) => {
     };
 };
 
-export const podcastCreate = ({ podcastTitle, podcastDescription, podcastCategory }) => {
+export const podcastCreate = ({ podcastTitle, podcastDescription, podcastCategory, podcastArtist }) => {
     const {currentUser} = firebase.auth();
+    const {user} = currentUser.uid;
     this.state = {
         loading: false,
         dp: null
@@ -62,11 +63,26 @@ export const podcastCreate = ({ podcastTitle, podcastDescription, podcastCategor
             });
 
 
+        let userID = currentUser.uid;
+        let likes = 0;
+        podcastUpdate(podcastArtist, userID);
+
+
         firebase.database().ref(`/users/${currentUser.uid}/podcast`)
-            .push({podcastTitle, podcastDescription, podcastCategory})
+            .push({podcastTitle, podcastDescription, podcastCategory, userID, likes })
             .then(() => {
                 dispatch({type: PODCAST_CREATE});
-                Actions.RecordSuccess();
+
+
+                    firebase.database().ref(`/podcasts`)
+                        .push({podcastTitle, podcastDescription, podcastCategory, userID, likes})
+                        .then(() => {
+                            Actions.RecordSuccess();
+                        });
+
+
+
+
             });
 
     }
@@ -87,11 +103,11 @@ export const podcastFetch = () => {
 
 
 export const podcastFetchNew = () => {
-
+    const { currentUser } = firebase.auth();
     return (dispatch) => {
-        firebase.database().ref(`/users`).child("podcast")
+        firebase.database().ref(`/users/${currentUser.uid}/podcast`)
             .on('value', snapshot => {
-                dispatch({ type: PODCAST_FETCH_SUCCESS, payload: snapshot.val() });
+                dispatch({ type: PODCAST_FETCH_SUCCESS_NEW, payload: snapshot.val() });
             });
     };
 };

@@ -8,3 +8,4 @@ export const USERNAME_CHANGED = 'username_changed';
 export const PODCAST_UPDATE ='podcast_update';
 export const PODCAST_CREATE = 'podcast_create';
 export const PODCAST_FETCH_SUCCESS = 'podcast_fetch_success';
+export const PODCAST_FETCH_SUCCESS_NEW = 'podcast_fetch_success_new';

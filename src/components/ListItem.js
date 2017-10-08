@@ -18,6 +18,7 @@ class ListItem extends Component {
         const { podcastTitle } = this.props.podcast;
         const { podcastDescription } = this.props.podcast;
         const { podcastCategory } = this.props.podcast;
+        const { podcastArtist } = this.props.podcast;
         let localPath =  AudioUtils.DocumentDirectoryPath + '/local.aac';
 
         firebase.storage().ref(`/users/${currentUser.uid}/${podcastTitle}`).getDownloadURL()
@@ -41,6 +42,7 @@ class ListItem extends Component {
                         Variables.state.podcastTitle = podcastTitle;
                         Variables.state.podcastDescription = podcastDescription;
                         Variables.state.podcastCategory = podcastCategory;
+                        Variables.state.podcastArtist = podcastArtist;
 
                     });
 

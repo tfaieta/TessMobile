@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
-import { podcastFetch} from "../actions/PodcastActions"
+import { podcastFetch } from "../actions/PodcastActions"
 import ListItem from './ListItem';
 import PlayerBottom from './PlayerBottom';
 import {podFile} from "./Record";
@@ -28,27 +28,6 @@ class Account extends Component {
 
 
         this.creataDataSource(this.props);
-
-        const {currentUser} = firebase.auth();
-
-        firebase.database().ref(`/users/${currentUser.uid}/bio`).orderByChild("bio").on("value", function(snap) {
-            if(snap.val()){
-                Variables.state.bio = snap.val().bio;
-
-            }
-            else {
-                Variables.state.bio = "Tell others about yourself"
-            }
-        });
-        firebase.database().ref(`/users/${currentUser.uid}/favCategory`).orderByChild("favCategory").on("value", function(snap) {
-            if(snap.val()){
-                Variables.state.favCategory = snap.val().favCategory;
-
-            }
-            else {
-                Variables.state.favCategory = "Tell others about yourself"
-            }
-        });
 
 
 

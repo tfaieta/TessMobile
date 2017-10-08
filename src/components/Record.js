@@ -363,13 +363,12 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         marginTop:60,
-        fontSize: 25,
+        fontSize: 35,
         padding: 8,
         paddingHorizontal: 50,
         color: "#FFF",
         fontStyle: 'normal',
         fontFamily: 'Futura',
-        backgroundColor: '#657ed4'
     },
     activeButtonText: {
         fontSize: 25,

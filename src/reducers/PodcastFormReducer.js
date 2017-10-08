@@ -6,7 +6,8 @@ import {
 const INITIAL_STATE = {
     podcastTitle: '',
     podcastDescription: '',
-    podcastCategory: ''
+    podcastCategory: '',
+    podcastArtist: '',
 };
 
 export default (state = INITIAL_STATE, action) => {

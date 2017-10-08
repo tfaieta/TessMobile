@@ -1,5 +1,5 @@
-import _ from 'lodash';
 import React, { Component } from 'react';
+import _ from 'lodash';
 import { ListView, StyleSheet, ScrollView} from 'react-native';
 import { connect } from 'react-redux';
 import ListItem from '../ListItem';
@@ -13,25 +13,29 @@ class NewPodcasts extends Component{
         this.props.podcastFetchNew();
 
 
-        this.creataDataSource(this.props);
+        this.creataDataSourceNewPodcasts(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
 
-        this.creataDataSource(nextProps);
+        this.creataDataSourceNewPodcasts(nextProps);
     }
 
 
-    creataDataSource({ podcast }) {
+    creataDataSourceNewPodcasts({ podcast }) {
         const ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2
         });
 
-        this.dataSource = ds.cloneWithRows(podcast);
+        this.dataSourceNewPodcasts = ds.cloneWithRows(podcast);
+    }
+
+    constructor(props) {
+        super(props);
     }
 
 
-    renderRow(podcast) {
+    renderRowNewPodcasts(podcast) {
         return <ListItem podcast={podcast} />;
     }
 
@@ -46,8 +50,8 @@ class NewPodcasts extends Component{
 
                 <ListView
                     enableEmptySections
-                    dataSource={this.dataSource}
-                    renderRow={this.renderRow}
+                    dataSource={this.dataSourceNewPodcasts}
+                    renderRow={this.renderRowNewPodcasts}
                 />
 
 
