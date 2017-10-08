@@ -30,7 +30,9 @@ class Variables extends Component{
         podcastArtist: '',
         bio: '',
         favCategory: '',
-        currentRef: ''
+        currentRef: '',
+        username: '',
+        currentUsername: ''
 };
 
 

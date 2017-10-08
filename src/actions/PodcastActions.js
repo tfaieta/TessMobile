@@ -65,17 +65,16 @@ export const podcastCreate = ({ podcastTitle, podcastDescription, podcastCategor
 
         let userID = currentUser.uid;
         let likes = 0;
-        podcastUpdate(podcastArtist, userID);
 
 
         firebase.database().ref(`/users/${currentUser.uid}/podcast`)
-            .push({podcastTitle, podcastDescription, podcastCategory, userID, likes })
+            .push({podcastTitle, podcastDescription, podcastCategory, podcastArtist, likes })
             .then(() => {
                 dispatch({type: PODCAST_CREATE});
 
 
                     firebase.database().ref(`/podcasts`)
-                        .push({podcastTitle, podcastDescription, podcastCategory, userID, likes})
+                        .push({podcastTitle, podcastDescription, podcastCategory, podcastArtist, likes})
                         .then(() => {
                             Actions.RecordSuccess();
                         });
@@ -103,9 +102,9 @@ export const podcastFetch = () => {
 
 
 export const podcastFetchNew = () => {
-    const { currentUser } = firebase.auth();
+
     return (dispatch) => {
-        firebase.database().ref(`/users/${currentUser.uid}/podcast`)
+        firebase.database().ref('/podcasts')
             .on('value', snapshot => {
                 dispatch({ type: PODCAST_FETCH_SUCCESS_NEW, payload: snapshot.val() });
             });

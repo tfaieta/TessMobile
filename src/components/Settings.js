@@ -230,17 +230,15 @@ class Settings extends Component {
                                 placeholderTextColor='#FFF'
                                 onChangeText={text => this.setState({username: text})}
                                 onSubmitEditing={(event) => {
-                                    firebase.auth().currentUser.updateProfile({
-                                        displayName: this.state.username
-                                    });
+                                    firebase.database().ref(`users/${firebase.auth().currentUser.uid}`).child('/username')
+                                        .update({   username: this.state.username });
                                     this.setModalVisible(!this.state.modalVisible)
                                 }}
                            />
 
                             <TouchableOpacity onPress={() => {
-                                firebase.auth().currentUser.updateProfile({
-                                    displayName: this.state.username
-                                });
+                                firebase.database().ref(`users/${firebase.auth().currentUser.uid}`).child('/username')
+                                    .update({   username: this.state.username });
                                 this.setModalVisible(!this.state.modalVisible)
                             }}>
                                 <Text style={styles.buttonStyle}>Done</Text>

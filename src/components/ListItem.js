@@ -9,6 +9,7 @@ import Swipeout from 'react-native-swipeout';
 
 
 class ListItem extends Component {
+
     componentWillUpdate() {
         LayoutAnimation.spring();
     }
@@ -21,7 +22,7 @@ class ListItem extends Component {
         const { podcastArtist } = this.props.podcast;
         let localPath =  AudioUtils.DocumentDirectoryPath + '/local.aac';
 
-        firebase.storage().ref(`/users/${currentUser.uid}/${podcastTitle}`).getDownloadURL()
+        firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
             .then(function(url) {
 
                 RNFetchBlob
@@ -35,6 +36,16 @@ class ListItem extends Component {
 
                     })
                     .then((res) => {
+                        
+                        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
+                            if(snap.val()){
+                                Variables.state.currentUsername = snap.val().username;
+
+                            }
+                            else {
+                                Variables.state.currentUsername = podcastArtist;
+                            }
+                        });
 
                         Variables.pause();
                         Variables.setPodcastFile(res.path());
@@ -59,7 +70,17 @@ class ListItem extends Component {
 
     render() {
         const { podcastTitle } = this.props.podcast;
-        let profileName = firebase.auth().currentUser.displayName;
+        const { podcastArtist } = this.props.podcast;
+        let profileName = podcastArtist;
+        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
+            if(snap.val()){
+                profileName = snap.val().username;
+
+            }
+            else {
+                profileName = podcastArtist;
+            }
+        });
 
         var swipeoutBtns = [
             {

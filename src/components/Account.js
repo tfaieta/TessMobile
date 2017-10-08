@@ -50,7 +50,7 @@ class Account extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { bio: "Tell others about yourself...", category: '', profileName: profileName, profileNameL: profileNameL}
+        this.state = { username: 'none' , bio: "Tell others about yourself...", category: '', profileName: profileName, profileNameL: profileNameL}
     }
 
 
@@ -100,10 +100,8 @@ class Account extends Component {
 
     _renderProfileName(){
 
-        let profileName = firebase.auth().currentUser.displayName;
-
             return (
-                <Text style={styles.title2} >{profileName}</Text>
+                <Text style={styles.title2} >{Variables.state.username}</Text>
 
             )
 

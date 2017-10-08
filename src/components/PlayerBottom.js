@@ -120,7 +120,7 @@ class PlayerBottom extends Component {
 
 
     _renderPodcastInfo(isPlaying){
-        let profileName = firebase.auth().currentUser.displayName;
+        let profileName = Variables.state.currentUsername;
 
         if(isPlaying) {
             return (
@@ -354,7 +354,7 @@ class PlayerBottom extends Component {
 
 
     _renderPodcastArtist(isPlaying) {
-        let profileName = firebase.auth().currentUser.displayName;
+        let profileName = Variables.state.currentUsername;
 
         if (isPlaying) {
             return (

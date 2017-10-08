@@ -26,7 +26,16 @@ class Home extends Component{
 
             }
             else {
-                Variables.state.favCategory = "Tell others about yourself"
+                Variables.state.favCategory = "Too hard to choose"
+            }
+        });
+        firebase.database().ref(`/users/${currentUser.uid}/username`).orderByChild("username").on("value", function(snap) {
+            if(snap.val()){
+                Variables.state.username = snap.val().username;
+
+            }
+            else {
+                Variables.state.username = "None"
             }
         });
     }

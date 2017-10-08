@@ -8,7 +8,7 @@ import Variables from './Variables';
 import { connect } from 'react-redux';
 import { podcastUpdate} from '../actions';
 import {AudioUtils} from 'react-native-audio';
-
+import firebase from 'firebase';
 import {podcastCreate} from "../actions/PodcastActions";
 
 
@@ -18,20 +18,24 @@ let podFile = AudioUtils.DocumentDirectoryPath + '/test.aac';
 
 class RecordInfo extends Component{
 
-
     constructor(props) {
+        const {currentUser} = firebase.auth();
+        let userID = currentUser.uid;
         super(props);
+        props = {
+            podcastTitle: Variables.state.podcastTitle,
+            podcastDescription: Variables.state.podcastDescription,
+            podcastCategory: Variables.state.podcastCategory,
+            podcastArtist: userID
+        };
+        this.props.podcastUpdate({prop: 'podcastArtist', value: userID});
     }
+
     state = {
         totalTime: totalTime,
         podcastCategory: ''
     };
-    props = {
-        podcastTitle: Variables.state.podcastTitle,
-        podcastDescription: Variables.state.podcastDescription,
-        podcastCategory: Variables.state.podcastCategory,
-        podcastArtist: Variables.state.podcastArtist
-    };
+
 
 
     Cancel = () => {
