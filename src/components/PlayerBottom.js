@@ -26,7 +26,9 @@ class PlayerBottom extends Component {
         podcastTitle: Variables.state.podcastTitle,
         podcastDescription: Variables.state.podcastDescription,
         comment: '',
-        modalVisible: false
+        modalVisible: false,
+        liked: false,
+        likes: 12
     };
 
 
@@ -234,16 +236,22 @@ class PlayerBottom extends Component {
     _renderDescription(){
         if (Variables.state.podcastTitle == ''){
             return(
+                <View style={{ marginTop: 20}}>
+                    <Text style={styles.podcastText}> description </Text>
                 <ScrollView style={{marginHorizontal: 20, marginBottom: 20, backgroundColor: '#6e89e7', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
                     <Text style={{color: '#fff', fontSize: 20, fontFamily: 'Futura', textAlign: 'center'  }}>Select a Podcast to start listening....</Text>
                 </ScrollView>
+                </View>
             )
         }
         else{
             return(
+                <View style={{ marginTop: 20}}>
+                    <Text style={styles.podcastText}> description </Text>
                 <ScrollView style={{marginHorizontal: 20, marginBottom: 20, backgroundColor: '#6e89e7', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
                     <Text style={{color: '#fff', fontSize: 20, fontFamily: 'Futura' }}>{Variables.state.podcastDescription}</Text>
                 </ScrollView>
+                </View>
             )
         }
     }
@@ -375,6 +383,71 @@ class PlayerBottom extends Component {
     }
 
 
+    _renderLikes(){
+        if(Variables.state.podcastTitle == ''){
+            return;
+        }
+        if (this.state.liked) {
+            return (
+                <TouchableOpacity style = {{marginVertical: 10}} onPress = {this.pressLike}>
+                    <Icon style={{textAlign: 'center', fontSize: 40, color: '#ffff00', marginTop: -10}} name="md-happy">
+                        <Text style={styles.podcastTextLikes}>   {this.state.likes}</Text>
+                    </Icon>
+                </TouchableOpacity>
+            )
+        }
+        else if (!this.state.liked){
+            return(
+                <TouchableOpacity  style = {{marginVertical: 10}} onPress = {this.pressLike}>
+                    <Icon style={{textAlign: 'center', fontSize: 40, color: '#9c9c9c', marginTop: -10}} name="md-happy">
+                        <Text style={styles.podcastTextLikes}>   {this.state.likes}</Text>
+                    </Icon>
+                </TouchableOpacity>
+            )
+        }
+    }
+
+    _renderComments(){
+        if(Variables.state.podcastTitle == ''){
+            return;
+        }
+
+        return(
+            <View>
+                <Text style={styles.podcastText}> comments </Text>
+
+
+                <View style={{marginHorizontal: 20, marginBottom: 2, backgroundColor: '#6e89e7', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}}>
+                    <Icon style={{textAlign:'center', fontSize: 40, paddingHorizontal: 10, color:'#fff' }} name="md-contact">
+                        <Text style={styles.podcastText}> nice! </Text>
+                    </Icon>
+                </View>
+
+                <View style={{marginHorizontal: 20, marginBottom: 2, backgroundColor: '#6e89e7', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}}>
+                    <Icon style={{textAlign:'center', fontSize: 40, paddingHorizontal: 10, color:'#fff' }} name="md-contact">
+                        <Text style={styles.podcastText}> i love you </Text>
+                    </Icon>
+                </View>
+
+                <View style={{marginHorizontal: 20, marginBottom: 2, backgroundColor: '#6e89e7', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}}>
+                    <TextInput style={styles.input}
+                               placeholder = "write a comment..."
+                               placeholderTextColor='#FFF'
+                               returnKeyType='send'
+                               multiline={true}
+                               onChangeText={text => this.setState({ comment: text})}
+                               onSubmitEditing={() => this.onCommentSubmit()}
+
+                    />
+                </View>
+            </View>
+
+        )
+
+
+    }
+
+
     _renderEndTime() {
         var num = (PodcastFile.getDuration() / 60).toString();
         num = num.slice(0,1);
@@ -434,6 +507,15 @@ class PlayerBottom extends Component {
         const currentUser = firebase.auth().uid;
         firebase.database().ref(`${Variables.state.currentRef}/comments`).push(comment, currentUser);
         this.state.comment = '';
+    }
+
+    pressLike(){
+        if(this.state.liked){
+            this.setState({ liked: false, likes: this.state.likes+1})
+        }
+        else if (!this.state.liked){
+            this.setState({ liked: true, likes: this.state.likes-1})
+        }
     }
 
 
@@ -531,54 +613,29 @@ class PlayerBottom extends Component {
 
 
                         <ScrollView showsVerticalScrollIndicator= {false}>
-                            <LinearGradient start={{x: 0, y: 0}} end={{x: 3, y: 3}}
+
+                            <Icon style={{textAlign:'center', fontSize: 250,color:'#fff' }} name="md-contact">
+                            </Icon>
+
+                            {this._renderLikes()}
+
+                            {this._renderCategory()}
+
+
+                            <LinearGradient start={{x: 1, y: 2}} end={{x: 5, y: 5}}
                                             locations={[0,2]}
                                             colors={['#657ed4', '#804cc8']}>
-
-                        <Icon style={{textAlign:'center', fontSize: 200,color:'#fff' }} name="md-square">
-                        </Icon>
-
-
-                        <TouchableOpacity>
-                        <Icon style={{textAlign:'center', fontSize: 40,color:'#ffff00', marginTop: -10 }} name="md-happy">
-                            <Text style={styles.podcastTextLikes}> 58</Text>
-                        </Icon>
-                        </TouchableOpacity>
-
-
-                        {this._renderCategory()}
 
 
 
 
                         {this._renderDescription()}
 
-                            <Text style={styles.podcastText}> comments </Text>
+                        {this._renderComments()}
 
 
-                            <View style={{marginHorizontal: 20, marginBottom: 2, backgroundColor: '#6e89e7', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}}>
-                                <Icon style={{textAlign:'center', fontSize: 40, paddingHorizontal: 10, color:'#fff' }} name="md-contact">
-                                    <Text style={styles.podcastText}> nice! </Text>
-                                </Icon>
-                            </View>
 
-                            <View style={{marginHorizontal: 20, marginBottom: 2, backgroundColor: '#6e89e7', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}}>
-                                <Icon style={{textAlign:'center', fontSize: 40, paddingHorizontal: 10, color:'#fff' }} name="md-contact">
-                                    <Text style={styles.podcastText}> i love you </Text>
-                                </Icon>
-                            </View>
 
-                            <View style={{marginHorizontal: 20, marginBottom: 2, backgroundColor: '#6e89e7', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}}>
-                                    <TextInput style={styles.input}
-                                               placeholder = "write a comment..."
-                                               placeholderTextColor='#FFF'
-                                               returnKeyType='send'
-                                               multiline={true}
-                                               onChangeText={text => this.setState({ comment: text})}
-                                               onSubmitEditing={() => this.onCommentSubmit()}
-
-                                    />
-                            </View>
 
                             </LinearGradient>
 
