@@ -110,3 +110,15 @@ export const podcastFetchNew = () => {
             });
     };
 };
+
+
+export const podcastFetchUser = (podcastArtist) => {
+    console.warn(podcastArtist);
+
+    return (dispatch) => {
+        firebase.database().ref(`/users/${podcastArtist}/podcast`)
+            .on('value', snapshot => {
+                dispatch({ type: PODCAST_FETCH_SUCCESS_NEW, payload: snapshot.val() });
+            });
+    };
+};

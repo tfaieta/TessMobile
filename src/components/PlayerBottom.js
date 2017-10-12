@@ -6,6 +6,7 @@ import Variables from './Variables';
 import {PodcastFile} from './Variables';
 import Slider from 'react-native-slider';
 import firebase from 'firebase';
+import {Actions} from 'react-native-router-flux';
 
 
 
@@ -121,10 +122,10 @@ class PlayerBottom extends Component {
 
 
 
-    _renderPodcastInfo(isPlaying){
+    _renderPodcastInfo(){
         let profileName = Variables.state.currentUsername;
 
-        if(isPlaying) {
+        if(Variables.state.podcastTitle != '') {
             return (
                 <Text style={styles.playingText}>{Variables.state.podcastTitle} • {profileName}</Text>
             )
@@ -141,6 +142,7 @@ class PlayerBottom extends Component {
         }
 
 }
+
 
     _renderFillBar(isPlaying){
         if(isPlaying) {
@@ -366,7 +368,7 @@ class PlayerBottom extends Component {
 
         if (isPlaying) {
             return (
-                <Text style={styles.podcastTextArtist}>{profileName}</Text>
+                <Text onPress = {this.onProfilePress} style={styles.podcastTextArtist}>{profileName}</Text>
             );
         }
         if(Variables.state.podcastTitle == '') {
@@ -376,7 +378,7 @@ class PlayerBottom extends Component {
         }
         else{
             return (
-                <Text style={styles.podcastTextArtist}>{profileName}</Text>
+                <Text onPress = {this.onProfilePress} style={styles.podcastTextArtist}>{profileName}</Text>
             );
         }
 
@@ -509,6 +511,11 @@ class PlayerBottom extends Component {
         this.state.comment = '';
     }
 
+    onProfilePress = () => {
+        this.setModalVisible(!this.state.modalVisible);
+        Actions.UserProfile();
+    };
+
     pressLike(){
         if(this.state.liked){
             this.setState({ liked: false, likes: this.state.likes+1})
@@ -547,7 +554,7 @@ class PlayerBottom extends Component {
                         </TouchableOpacity>
                     </View>
 
-                    {this._renderPodcastInfo(Variables.state.isPlaying)}
+                    {this._renderPodcastInfo()}
 
                     <View style={styles.rightContainer}>
                         <TouchableOpacity>

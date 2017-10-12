@@ -305,7 +305,7 @@ class Account extends Component {
                     {this._renderProfileName()}
 
 
-                <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 140,color:'#804cc8' }} name="md-contact">
+                <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 200,color:'#804cc8' }} name="md-contact">
                 </Icon>
 
                     <Text style={styles.title2 }>Bio</Text>

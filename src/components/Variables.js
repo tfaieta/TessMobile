@@ -32,7 +32,9 @@ class Variables extends Component{
         favCategory: '',
         currentRef: '',
         username: '',
-        currentUsername: ''
+        currentUsername: '',
+        currentBio: '',
+        currentFavCategory: ''
 };
 
 

@@ -19,9 +19,12 @@ import Player from './components/Player';
 import RecordFirstPage from './components/RecordFirstPage';
 import RecordInfo from './components/RecordInfo';
 import RecordSuccess from './components/RecordSuccess';
+import UserProfile from "./components/UserProfile";
 
 
 import Icon from 'react-native-vector-icons/Ionicons';
+import Variables from "./components/Variables";
+
 
 
 const TabIconHome = ({selected}) => {
@@ -204,6 +207,14 @@ const RouterComponent = () => {
                         hideNavBar={false}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                         duration={1}
+                    />
+
+                    <Scene
+                        key="UserProfile"
+                        component={UserProfile}
+                        title={Variables.state.podcastArtist}
+                        hideNavBar={false}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
                     />
 
                 </Scene>
