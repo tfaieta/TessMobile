@@ -6,7 +6,8 @@ import {
     View,
     StatusBar,
     ScrollView,
-    ListView
+    ListView,
+    TouchableOpacity
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
@@ -19,6 +20,7 @@ import {profileNameL} from './LoginForm.js';
 import {profileName} from './CreateAccount.js';
 import Variables from './Variables';
 import firebase from 'firebase';
+import {Actions} from 'react-native-router-flux';
 
 
 
@@ -34,20 +36,15 @@ class UserProfile extends Component {
         firebase.database().ref(`/users/${Variables.state.podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
             if(snap.val()){
                 Variables.state.currentUsername = snap.val().username;
-                console.warn(Variables.state.currentUsername);
-
             }
             else {
                 Variables.state.currentUsername = Variables.state.podcastArtist;
-                console.warn(Variables.state.currentUsername);
             }
         });
 
         firebase.database().ref(`/users/${Variables.state.podcastArtist}/favCategory`).orderByChild("favCategory").on("value", function(snap) {
             if(snap.val()){
                 Variables.state.currentFavCategory = snap.val().favCategory;
-                console.warn(Variables.state.currentFavCategory);
-
             }
             else {
                 Variables.state.currentFavCategory = "Too hard to choose"
@@ -57,13 +54,14 @@ class UserProfile extends Component {
         firebase.database().ref(`/users/${Variables.state.podcastArtist}/bio`).orderByChild("bio").on("value", function(snap) {
             if(snap.val()){
                 Variables.state.currentBio = snap.val().bio;
-                console.warn(Variables.state.currentBio);
-
+                Actions.refresh();
             }
             else {
-                Variables.state.currentBio = "Tell others about yourself"
+                Variables.state.currentBio = "Tell others about yourself";
+                Actions.refresh();
             }
         });
+
 
 
     }
@@ -85,7 +83,7 @@ class UserProfile extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { username: 'none' , bio: "Tell others about yourself...", category: '', profileName: profileName, profileNameL: profileNameL}
+        this.state = { username: 'none' , bio: "Tell others about yourself...", category: '', profileName: profileName, following: false, profileNameL: profileNameL}
     }
 
 
@@ -318,9 +316,42 @@ class UserProfile extends Component {
     };
 
 
+
+    _renderFollowButton = () => {
+
+        if(this.state.following) {
+            return (
+                <TouchableOpacity onPress={this.pressFollowButton} style={{backgroundColor: 'rgba(1,220,220,1)', paddingVertical: 10, marginHorizontal: 20}}>
+                    <Text style={styles.titleFollow}>Unfollow</Text>
+                </TouchableOpacity>
+            )
+        }
+        else{
+            return (
+                <TouchableOpacity onPress={this.pressFollowButton} style={{backgroundColor: 'rgba(1,170,170,1)', paddingVertical: 10, marginHorizontal: 20}}>
+                    <Text style={styles.titleFollow}>Follow</Text>
+                </TouchableOpacity>
+            )
+        }
+
+    };
+
+    pressFollowButton =() => {
+        if(this.state.following){
+            this.setState({following: false})
+        }
+        else if (!this.state.following){
+            this.setState({ following: true})
+        }
+    };
+
+
+
     renderRow(podcast) {
         return <ListItem podcast={podcast} />;
     }
+
+
 
 
 
@@ -342,6 +373,7 @@ class UserProfile extends Component {
 
                     <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 200,color:'#804cc8' }} name="md-contact">
                     </Icon>
+                    {this._renderFollowButton()}
 
                     <Text style={styles.title2 }>Bio</Text>
                     {this._renderBio()}
@@ -417,6 +449,17 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Futura',
         fontSize: 15,
+        backgroundColor: 'transparent'
+    },
+    titleFollow: {
+        color: '#fff',
+        marginVertical: 5,
+        flex:1,
+        textAlign: 'center',
+        opacity: 2,
+        fontStyle: 'normal',
+        fontFamily: 'Futura',
+        fontSize: 22,
         backgroundColor: 'transparent'
     },
 });

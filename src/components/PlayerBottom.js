@@ -391,20 +391,24 @@ class PlayerBottom extends Component {
         }
         if (this.state.liked) {
             return (
+                <View>
                 <TouchableOpacity style = {{marginVertical: 10}} onPress = {this.pressLike}>
-                    <Icon style={{textAlign: 'center', fontSize: 40, color: '#ffff00', marginTop: -10}} name="md-happy">
-                        <Text style={styles.podcastTextLikes}>   {this.state.likes}</Text>
+                    <Icon style={{textAlign: 'center', fontSize: 90, color: '#ffff00', marginTop: -10}} name="md-happy">
                     </Icon>
                 </TouchableOpacity>
+                <Text style={styles.podcastTextLikes}>   {this.state.likes}</Text>
+                </View>
             )
         }
         else if (!this.state.liked){
             return(
+                <View>
                 <TouchableOpacity  style = {{marginVertical: 10}} onPress = {this.pressLike}>
-                    <Icon style={{textAlign: 'center', fontSize: 40, color: '#9c9c9c', marginTop: -10}} name="md-happy">
-                        <Text style={styles.podcastTextLikes}>   {this.state.likes}</Text>
+                    <Icon style={{textAlign: 'center', fontSize: 90, color: '#c9c900', marginTop: -10}} name="md-happy">
                     </Icon>
                 </TouchableOpacity>
+                    <Text style={styles.podcastTextLikes}>   {this.state.likes}</Text>
+                </View>
             )
         }
     }
@@ -516,14 +520,14 @@ class PlayerBottom extends Component {
         Actions.UserProfile();
     };
 
-    pressLike(){
+    pressLike = () => {
         if(this.state.liked){
-            this.setState({ liked: false, likes: this.state.likes+1})
+            this.setState({ liked: false, likes: this.state.likes-1})
         }
         else if (!this.state.liked){
-            this.setState({ liked: true, likes: this.state.likes-1})
+            this.setState({ liked: true, likes: this.state.likes+1})
         }
-    }
+    };
 
 
 
@@ -843,15 +847,15 @@ class PlayerBottom extends Component {
         podcastTextLikes:{
             color: '#ffff00',
             fontSize: 25,
-            flexDirection: 'row',
             backgroundColor: 'transparent',
             alignSelf: 'center',
+            marginLeft: -15,
             marginTop: -5
         },
         podcastTextArtist:{
             color: 'white',
-            fontSize: 20,
             marginTop: -5,
+            fontSize: 20,
             paddingBottom: 8,
             flexDirection: 'row',
             backgroundColor: 'transparent',

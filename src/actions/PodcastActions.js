@@ -113,7 +113,6 @@ export const podcastFetchNew = () => {
 
 
 export const podcastFetchUser = (podcastArtist) => {
-    console.warn(podcastArtist);
 
     return (dispatch) => {
         firebase.database().ref(`/users/${podcastArtist}/podcast`)

@@ -18,7 +18,6 @@ import Sound from 'react-native-sound';
 import {profileNameL} from './LoginForm.js';
 import {profileName} from './CreateAccount.js';
 import Variables from './Variables';
-import firebase from 'firebase';
 
 
 
@@ -28,8 +27,6 @@ class Account extends Component {
 
 
         this.creataDataSource(this.props);
-
-
 
     }
 
