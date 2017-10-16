@@ -20,10 +20,12 @@ import RecordFirstPage from './components/RecordFirstPage';
 import RecordInfo from './components/RecordInfo';
 import RecordSuccess from './components/RecordSuccess';
 import UserProfile from "./components/UserProfile";
-
+import FollowedContent from "./components/FollowedContent";
+import MyContent from "./components/MyContent";
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "./components/Variables";
+
 
 
 
@@ -182,6 +184,22 @@ const RouterComponent = () => {
                         key="Queue"
                         component={Queue}
                         title="Queue"
+                        hideNavBar={false}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
+                    />
+                    <Scene
+                        key="FollowedContent"
+                        component={FollowedContent}
+                        title="Followed Content"
+                        hideNavBar={false}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
+                    />
+                    <Scene
+                        key="MyContent"
+                        component={MyContent}
+                        title="My Content"
                         hideNavBar={false}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                         duration={1}

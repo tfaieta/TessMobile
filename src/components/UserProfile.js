@@ -62,9 +62,21 @@ class UserProfile extends Component {
             }
         });
 
+        const {currentUser} = firebase.auth();
+        if( firebase.database().ref(`users/${currentUser.uid}/following/`).child(Variables.state.podcastArtist)){
+            Variables.state.following = true;
+        }
+        else{
+            Variables.state.following = false;
+        }
+
+
+
 
 
     }
+
+
 
     componentWillReceiveProps(nextProps) {
 
@@ -83,7 +95,7 @@ class UserProfile extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { username: 'none' , bio: "Tell others about yourself...", category: '', profileName: profileName, following: false, profileNameL: profileNameL}
+        this.state = { username: 'none' , bio: "Tell others about yourself...", category: '', profileName: profileName, following: Variables.state.following, profileNameL: profileNameL}
     }
 
 
@@ -319,7 +331,7 @@ class UserProfile extends Component {
 
     _renderFollowButton = () => {
 
-        if(this.state.following) {
+        if(Variables.state.following) {
             return (
                 <TouchableOpacity onPress={this.pressFollowButton} style={{backgroundColor: 'rgba(1,220,220,1)', paddingVertical: 10, marginHorizontal: 20}}>
                     <Text style={styles.titleFollow}>Unfollow</Text>
@@ -338,10 +350,16 @@ class UserProfile extends Component {
 
     pressFollowButton =() => {
         if(this.state.following){
-            this.setState({following: false})
+            const {currentUser} = firebase.auth();
+            firebase.database().ref(`users/${currentUser.uid}/following/${Variables.state.podcastArtist}`).remove();
+            this.setState({following: false});
+            Variables.state.following = false;
         }
         else if (!this.state.following){
-            this.setState({ following: true})
+            const {currentUser} = firebase.auth();
+            firebase.database().ref(`users/${currentUser.uid}/following`).child(Variables.state.podcastArtist).push(Variables.state.podcastArtist);
+            this.setState({ following: true});
+            Variables.state.following = true;
         }
     };
 

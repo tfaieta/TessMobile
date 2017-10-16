@@ -13,6 +13,14 @@ class Library extends Component{
         Actions.Queue();
     };
 
+    GoToFollowedContent = () => {
+        Actions.FollowedContent();
+    };
+
+    GoToMyContent = () => {
+        Actions.MyContent();
+    };
+
     constructor(props) {
         super(props);
         this.state = { volume}
@@ -43,14 +51,14 @@ class Library extends Component{
                         </Icon>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.buttonPreview}  onPress={this.GoToQueue}>
+                    <TouchableOpacity style={styles.buttonPreview}  onPress={this.GoToFollowedContent}>
                         <Icon style={{textAlign:'center', marginTop: 5, fontSize: 35,color:'#FFF' }} name="ios-checkmark-circle">
                             <Text  style={styles.contentTitle}>  Followed Content</Text>
                         </Icon>
                     </TouchableOpacity>
 
 
-                    <TouchableOpacity style={styles.buttonPreview}  onPress={this.GoToQueue}>
+                    <TouchableOpacity style={styles.buttonPreview}  onPress={this.GoToMyContent}>
                         <Icon style={{textAlign:'center', marginTop: 5, fontSize: 35,color: '#FFF' }} name="md-person">
                             <Text  style={styles.contentTitle}>  My Content</Text>
                         </Icon>
