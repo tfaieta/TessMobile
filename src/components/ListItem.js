@@ -5,7 +5,7 @@ import firebase from 'firebase';
 import {AudioUtils} from 'react-native-audio';
 import Variables from "./Variables";
 import RNFetchBlob from 'react-native-fetch-blob';
-import Swipeout from 'react-native-swipeout';
+
 
 
 class ListItem extends Component {
@@ -67,13 +67,24 @@ class ListItem extends Component {
     }
 
 
+    onGarbagePress(){
+        console.warn("delete")
+    }
+
+    onAddPress(){
+        console.warn("add")
+    }
+
+
 
     render() {
-        const { podcastTitle } = this.props.podcast;
-        const { podcastArtist } = this.props.podcast;
+        const {podcastTitle} = this.props.podcast;
+        const {podcastArtist} = this.props.podcast;
+        const {currentUser} = firebase.auth();
+
         let profileName = podcastArtist;
-        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
-            if(snap.val()){
+        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
+            if (snap.val()) {
                 profileName = snap.val().username;
 
             }
@@ -82,48 +93,98 @@ class ListItem extends Component {
             }
         });
 
-        var swipeoutBtns = [
-            {
-                text: 'Save',
-                backgroundColor: '#7ae4e7'
-            },
-            {
-                text: 'Remove',
-                backgroundColor: '#e35e5e',
-            }
-        ];
 
-        return (
-<Swipeout right={swipeoutBtns}>
-            <TouchableHighlight underlayColor="white" onPress={this.onRowPress.bind(this)}>
-                <View style={styles.container}>
+        if (currentUser.uid == podcastArtist) {
+            return (
+
+                <TouchableHighlight underlayColor='#804cc8' onPress={this.onRowPress.bind(this)}>
+                    <View style={styles.container}>
 
 
-                    <View style={styles.leftContainer}>
-                        <Icon style={{textAlign:'left', marginLeft: 20,paddingRight: 8, fontSize: 35,color:'#be8eff' }} name="ios-play">
-                        </Icon>
+                        <View style={styles.leftContainer}>
+                            <Icon style={{
+                                textAlign: 'left',
+                                marginLeft: 20,
+                                paddingRight: 8,
+                                fontSize: 35,
+                                color: '#be8eff'
+                            }} name="ios-play">
+                            </Icon>
+                        </View>
+
+
+                        <View style={styles.middleContainer}>
+                            <Text style={styles.title}>   {podcastTitle}</Text>
+                            <Text style={styles.artistTitle}>{profileName}</Text>
+                        </View>
+
+
+                        <View style={styles.rightContainer}>
+                            <Icon onPress={this.onGarbagePress} style={{
+                                textAlign: 'left',
+                                marginLeft: 20,
+                                paddingRight: 8,
+                                fontSize: 35,
+                                color: '#be8eff'
+                            }} name="md-trash">
+                            </Icon>
+                        </View>
+
+
                     </View>
+                </TouchableHighlight>
+
+            );
+        }
 
 
-                    <View style={styles.middleContainer}>
-                        <Text style={styles.title}>   {podcastTitle}</Text>
-                        <Text style={styles.artistTitle}>{profileName}</Text>
+        else{
+            return (
+
+                <TouchableHighlight underlayColor='#804cc8' onPress={this.onRowPress.bind(this)}>
+                    <View style={styles.container}>
+
+
+                        <View style={styles.leftContainer}>
+                            <Icon style={{
+                                textAlign: 'left',
+                                marginLeft: 20,
+                                paddingRight: 8,
+                                fontSize: 35,
+                                color: '#be8eff'
+                            }} name="ios-play">
+                            </Icon>
+                        </View>
+
+
+                        <View style={styles.middleContainer}>
+                            <Text style={styles.title}>   {podcastTitle}</Text>
+                            <Text style={styles.artistTitle}>{profileName}</Text>
+                        </View>
+
+
+                        <View style={styles.rightContainer} onPress={this.onAddPress}>
+                            <Icon onPress={this.onAddPress} style={{
+                                textAlign: 'left',
+                                marginLeft: 20,
+                                paddingRight: 8,
+                                fontSize: 35,
+                                color: '#be8eff'
+                            }} name="md-add">
+                            </Icon>
+                        </View>
+
+
                     </View>
+                </TouchableHighlight>
 
-
-                    <View style={styles.rightContainer}>
-                        <Icon style={{textAlign:'left', marginLeft: 20,paddingRight: 8, fontSize: 35,color:'#be8eff' }} name="ios-arrow-dropright">
-                        </Icon>
-                    </View>
-
+            );
+        }
 
 
 
-                </View>
-            </TouchableHighlight>
-</Swipeout>
 
-        );
+
     }
 
 
