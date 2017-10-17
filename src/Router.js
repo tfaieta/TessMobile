@@ -22,6 +22,7 @@ import RecordSuccess from './components/RecordSuccess';
 import UserProfile from "./components/UserProfile";
 import FollowedContent from "./components/FollowedContent";
 import MyContent from "./components/MyContent";
+import Favorites from "./components/Favorites";
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "./components/Variables";
@@ -184,6 +185,14 @@ const RouterComponent = () => {
                         key="Queue"
                         component={Queue}
                         title="Queue"
+                        hideNavBar={false}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
+                    />
+                    <Scene
+                        key="Favorites"
+                        component={Favorites}
+                        title="Favorites"
                         hideNavBar={false}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                         duration={1}

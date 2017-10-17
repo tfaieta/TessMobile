@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, LayoutAnimation, TouchableHighlight } from 'react-native';
+import { Text, View, LayoutAnimation, TouchableHighlight, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import {AudioUtils} from 'react-native-audio';
@@ -7,8 +7,27 @@ import Variables from "./Variables";
 import RNFetchBlob from 'react-native-fetch-blob';
 
 
-
 class ListItem extends Component {
+
+    state = {
+        favorite: false,
+        keyID: 0,
+    };
+
+    componentWillMount(){
+        const { podcastTitle } = this.props.podcast;
+        const {currentUser} = firebase.auth();
+        if(!firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle)){
+            this.setState({
+                favorite: true
+            });
+        }
+        else{
+            this.setState({
+                interval: false
+            });
+        }
+    }
 
     componentWillUpdate() {
         LayoutAnimation.spring();
@@ -40,7 +59,6 @@ class ListItem extends Component {
                         firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
                             if(snap.val()){
                                 Variables.state.currentUsername = snap.val().username;
-
                             }
                             else {
                                 Variables.state.currentUsername = podcastArtist;
@@ -68,12 +86,73 @@ class ListItem extends Component {
 
 
     onGarbagePress(){
-        console.warn("delete")
+        Alert.alert(
+            'Are you sure you want to delete?',
+            '',
+            [
+                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                {text: 'Yes', onPress: () => console.log('g')
+                },
+            ],
+            { cancelable: false }
+        )
     }
 
-    onAddPress(){
-        console.warn("add")
-    }
+
+
+    onAddPress=()=>{
+        const {currentUser} = firebase.auth();
+        const { podcastTitle } = this.props.podcast;
+        const {podcastArtist} = this.props.podcast;
+
+
+            if(!this.state.favorite) {
+
+                Alert.alert(
+                    'Add to favorites?',
+                    '',
+                    [
+                        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                        {
+                            text: 'Yes', onPress: () => {
+                            firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle).push(podcastArtist);
+                                this.setState({favorite: true})
+                        }
+                        },
+                    ],
+                    {cancelable: false}
+                )
+
+            }
+            else{
+                Alert.alert(
+                    'Remove from favorites?',
+                    '',
+                    [
+                        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                        {
+                            text: 'Yes', onPress: () => {
+                            firebase.database().ref(`users/${currentUser.uid}/favorites/${podcastTitle}`).remove()
+                            this.setState({favorite: false})
+                        }
+                        },
+                    ],
+                    {cancelable: false}
+                )
+
+            }
+
+
+
+
+    };
+
+
+
+
+
+
+
 
 
 
@@ -86,7 +165,6 @@ class ListItem extends Component {
         firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
             if (snap.val()) {
                 profileName = snap.val().username;
-
             }
             else {
                 profileName = podcastArtist;

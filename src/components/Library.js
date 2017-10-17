@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet,StatusBar, ScrollView, TouchableOpacity, Slider} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
-import { volume } from './Home';
 import PlayerBottom from './PlayerBottom';
 
 class Library extends Component{
@@ -11,6 +9,10 @@ class Library extends Component{
 
     GoToQueue = () => {
         Actions.Queue();
+    };
+
+    GoToFavs = () => {
+        Actions.Favorites();
     };
 
     GoToFollowedContent = () => {
@@ -23,7 +25,6 @@ class Library extends Component{
 
     constructor(props) {
         super(props);
-        this.state = { volume}
     }
 
     render() {
@@ -37,9 +38,9 @@ class Library extends Component{
 
 
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.buttonPreview}  onPress={this.GoToQueue}>
+                    <TouchableOpacity style={styles.buttonPreview}  onPress={this.GoToFavs}>
                         <Icon style={{textAlign:'center', marginTop: 5, fontSize: 35,color:'#FFF'}} name="ios-bookmark">
-                            <Text  style={styles.contentTitle}>  Saved</Text>
+                            <Text  style={styles.contentTitle}>  Favorites</Text>
                         </Icon>
                     </TouchableOpacity>
 

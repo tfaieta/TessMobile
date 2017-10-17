@@ -132,3 +132,14 @@ export const podcastFetchFollowed = (podcastArtist) => {
             });
     };
 };
+
+
+export const podcastFetchFavs = (podcastArtist) => {
+
+    return (dispatch) => {
+        firebase.database().ref(`/users/${podcastArtist}/podcast`)
+            .on('value', snapshot => {
+                dispatch({ type: PODCAST_FETCH_SUCCESS_NEW, payload: snapshot.val() });
+            });
+    };
+};
