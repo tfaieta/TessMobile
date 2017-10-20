@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Text, View, LayoutAnimation, TouchableHighlight, } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
+import {AudioUtils} from 'react-native-audio';
+import Variables from "./Variables";
+import RNFetchBlob from 'react-native-fetch-blob';
 
 
 class ListItemUsers extends Component {
@@ -21,7 +24,7 @@ class ListItemUsers extends Component {
         }
         else {
             this.setState({
-                interval: false
+                favorite: false
             });
         }
     }
@@ -30,7 +33,53 @@ class ListItemUsers extends Component {
         LayoutAnimation.spring();
     }
 
-    onRowPress() {
+    onRowPress(){
+        const {currentUser} = firebase.auth();
+        const { podcastTitle } = this.props.podcast;
+        const { podcastDescription } = this.props.podcast;
+        const { podcastCategory } = this.props.podcast;
+        const { podcastArtist } = this.props.podcast;
+        let localPath =  AudioUtils.DocumentDirectoryPath + '/local.aac';
+
+        firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
+            .then(function(url) {
+
+                RNFetchBlob
+                    .config({
+                        Authorization: currentUser.uid,
+                        fileCache: true,
+                        appendExt: podcastTitle + '.aac'
+
+                    })
+                    .fetch('GET', url.toString(), {
+
+                    })
+                    .then((res) => {
+
+                        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
+                            if(snap.val()){
+                                Variables.state.currentUsername = snap.val().username;
+                            }
+                            else {
+                                Variables.state.currentUsername = podcastArtist;
+                            }
+                        });
+
+                        Variables.pause();
+                        Variables.setPodcastFile(res.path());
+                        Variables.state.isPlaying = false;
+                        Variables.state.podcastTitle = podcastTitle;
+                        Variables.state.podcastDescription = podcastDescription;
+                        Variables.state.podcastCategory = podcastCategory;
+                        Variables.state.podcastArtist = podcastArtist;
+
+                    });
+
+
+            }).catch(function(error) {
+            //
+        });
+
 
 
     }
@@ -63,7 +112,7 @@ class ListItemUsers extends Component {
                             textAlign: 'left',
                             marginLeft: 20,
                             paddingRight: 8,
-                            fontSize: 35,
+                            fontSize: 70,
                             color: '#be8eff'
                         }} name="md-contact">
                         </Icon>
@@ -75,17 +124,6 @@ class ListItemUsers extends Component {
                         <Text style={styles.artistTitle}>{profileName}</Text>
                     </View>
 
-
-                    <View style={styles.rightContainer}>
-                        <Icon onPress={this.onGarbagePress} style={{
-                            textAlign: 'left',
-                            marginLeft: 20,
-                            paddingRight: 8,
-                            fontSize: 35,
-                            color: '#be8eff'
-                        }} name="md-trash">
-                        </Icon>
-                    </View>
 
 
                 </View>
@@ -100,14 +138,12 @@ class ListItemUsers extends Component {
 const styles = {
     title: {
         color: '#804cc8',
-        marginTop: 0,
         flex:1,
         textAlign: 'center',
-        paddingLeft: 0,
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Futura',
-        fontSize: 20,
+        fontSize: 25,
         backgroundColor: 'transparent'
     },
     artistTitle: {
@@ -115,14 +151,15 @@ const styles = {
         marginTop: 0,
         flex:1,
         textAlign: 'center',
-        paddingLeft: 2,
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Futura',
-        fontSize: 15,
-        backgroundColor: 'transparent'
+        fontSize: 20,
+        backgroundColor: 'transparent',
+        marginHorizontal: -300,
     },
     container: {
+        flex: 1,
         paddingHorizontal: 0,
         paddingVertical: 0,
         marginVertical: 0,
@@ -135,28 +172,15 @@ const styles = {
         borderStyle: 'solid',
         flexDirection: 'row',
     },
-    centerContainer: {
-        flexDirection: 'row'
-    },
-    leftContainer: {
-        flex: 1,
-        paddingLeft: 2,
-        justifyContent: 'center',
-        alignItems:'flex-start',
-    },
-    rightContainer: {
-        flex: 1,
-        paddingRight: 2,
-        justifyContent: 'center',
-        alignItems: 'flex-end',
 
+    leftContainer: {
+        flex:1
     },
+
     middleContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        flex: 9,
         marginTop: 3,
-        marginHorizontal: -100,
+        marginHorizontal: -200,
     },
 };
 

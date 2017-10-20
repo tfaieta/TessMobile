@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet,StatusBar, ScrollView, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import _ from 'lodash';
+import { Text, View, StyleSheet,StatusBar, ListView} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import Variables from './Variables';
 import firebase from 'firebase';
+import { podcastFetchNew} from "../actions/PodcastActions";
+import { connect } from 'react-redux';
+import ListItemUsers from '../components/ListItemUsers';
+import Swiper from 'react-native-swiper';
 
 
 
@@ -38,6 +42,42 @@ class Home extends Component{
                 Variables.state.username = "None"
             }
         });
+
+
+        this.props.podcastFetchNew();
+
+
+        this.creataDataSourceNewPodcasts(this.props);
+
+    }
+
+
+
+    componentWillReceiveProps(nextProps) {
+
+        this.creataDataSourceNewPodcasts(nextProps);
+    }
+
+
+    creataDataSourceNewPodcasts({ podcast }) {
+        const ds = new ListView.DataSource({
+            rowHasChanged: (r1, r2) => r1 !== r2
+        });
+
+        this.dataSourceNewPodcasts = ds.cloneWithRows(podcast);
+    }
+
+
+    constructor(props) {
+        super(props);
+    }
+
+
+
+
+
+    renderRowNewPodcasts(podcast) {
+        return <ListItemUsers podcast={podcast} />;
     }
 
 
@@ -51,129 +91,44 @@ class Home extends Component{
                 barStyle="light-content"
             />
 
+            <Swiper showsButtons buttonWrapperStyle = {{backgroundColor: 'transparent', flexDirection: 'row', position: 'absolute', top: -320, left: 0, flex: 1, paddingHorizontal: 10, paddingVertical: 10, justifyContent: 'space-between', alignItems: 'center'}}>
 
 
-            <View style={styles.homeContainer}>
-            <ScrollView showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+
+                    <View style={{flex:1}}>
+                    <Text style={styles.title}>New</Text>
 
 
-                <Text style={styles.title}>Featured</Text>
-            <ScrollView horizontal={true} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                    <ListView
+                        enableEmptySections
+                        dataSource={this.dataSourceNewPodcasts}
+                        renderRow={this.renderRowNewPodcasts}
+                    />
+                    </View>
 
-                <TouchableOpacity>
-                <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
-                </Icon>
-                </TouchableOpacity>
 
-                <TouchableOpacity>
-                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
-                    </Icon>
-                </TouchableOpacity>
+                <View>
+                    <Text style={styles.title}>From Tess</Text>
+                    <Text style={styles.title2}>Hey Everyone! Thank you for downloading Tess, your feedback is important. We look forward to hearing from you! Check out our updates on the beta below. </Text>
+                </View>
 
-                <TouchableOpacity>
-                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
-                    </Icon>
-                </TouchableOpacity>
 
-                <TouchableOpacity>
-                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
-                    </Icon>
-                </TouchableOpacity>
 
-                <TouchableOpacity>
-                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
-                    </Icon>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
-                    </Icon>
-                </TouchableOpacity>
-
-            </ScrollView>
+                <View>
+                    <Text style={styles.title}>Selected by Tess</Text>
+                </View>
 
 
 
 
 
-                <Text style={styles.title}>Trending</Text>
-            <ScrollView horizontal={true} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
-
-                <TouchableOpacity>
-                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
-                    </Icon>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
-                    </Icon>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
-                    </Icon>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
-                    </Icon>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
-                    </Icon>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
-                    </Icon>
-                </TouchableOpacity>
-
-            </ScrollView>
 
 
 
-                <Text style={styles.title}>Recommended</Text>
-                <ScrollView horizontal={true} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
-
-                    <TouchableOpacity>
-                        <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
-                        </Icon>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity>
-                        <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
-                        </Icon>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity>
-                        <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
-                        </Icon>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity>
-                        <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
-                        </Icon>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity>
-                        <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
-                        </Icon>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity>
-                        <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 120,color:'#888784' }} name="md-albums">
-                        </Icon>
-                    </TouchableOpacity>
-
-                </ScrollView>
 
 
 
-            </ScrollView>
-            </View>
-
-
+            </Swiper>
 
 
 
@@ -200,7 +155,9 @@ const styles = StyleSheet.create({
         marginTop: 80,
     },
     homeContainer:{
+        flex:1,
         marginTop: -15,
+
     },
     barContainer:{
         flex: 1,
@@ -210,21 +167,28 @@ const styles = StyleSheet.create({
 
     title: {
         color: '#804cc8',
-        flex:1,
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Futura',
-        fontSize: 25,
+        fontSize: 30,
+        paddingBottom: 10,
         backgroundColor: 'transparent',
     },
     title2: {
-        color: 'rgba(1,170,170,1)',
-        flex:1,
+        color: '#804cc8',
         textAlign: 'center',
-        fontSize: 20
+        fontSize: 18
     },
 
 
 });
 
-export default Home;
+
+const mapStateToProps = state => {
+    const podcast = _.map(state.podcast, (val, uid) => {
+        return { ...val, uid };
+    });
+    return {podcast};
+};
+
+export default connect(mapStateToProps, {podcastFetchNew}) (Home);

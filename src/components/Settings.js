@@ -130,74 +130,7 @@ class Settings extends Component {
                             title='Change Favorite Category'
                             onPress={this._handleButtonPressChangeCategory}
                         />
-                        <SettingsList.Header headerStyle={{marginTop:-5}}/>
-                        <SettingsList.Item
-                            hasNavArrow={false}
-                            title='Settings'
-                            titleStyle={{color:'rgba(1,170,170,1)', marginBottom:10, fontWeight:'bold'}}
-                            itemWidth={70}
-                            borderHide={'Both'}
-                        />
-                        <SettingsList.Item
-                            icon={
-                                <Icon style={{color: 'rgba(1,170,170,1)', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-desktop">
-                                </Icon>
-                            }
-                            title='Display'
-                            itemWidth={70}
-                            titleStyle={{color:'black', fontSize: 16}}
-                            hasNavArrow={true}
-                        />
-                        <SettingsList.Item
-                            icon={
-                                <Icon style={{color: 'rgba(1,170,170,1)', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-volume-mute">
-                                </Icon>
-                            }
-                            title='Sounds'
-                            itemWidth={70}
-                            titleStyle={{color:'black', fontSize: 16}}
-                            hasNavArrow={true}
-                        />
-                        <SettingsList.Item
-                            icon={
-                                <Icon style={{color: 'rgba(1,170,170,1)', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-notifications">
-                                </Icon>
-                            }
-                            title='Notifications'
-                            itemWidth={70}
-                            titleStyle={{color:'black', fontSize: 16}}
-                            hasNavArrow={true}
-                        />
-                        <SettingsList.Item
-                            icon={
-                                <Icon style={{color: 'rgba(1,170,170,1)', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-cloud-download">
-                                </Icon>
-                            }
-                            title='Storage'
-                            itemWidth={70}
-                            titleStyle={{color:'black', fontSize: 16}}
-                            hasNavArrow={true}
-                        />
-                        <SettingsList.Item
-                            icon={
-                                <Icon style={{color: 'rgba(1,170,170,1)', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-hammer">
-                                </Icon>
-                            }
-                            title='Preferences'
-                            itemWidth={70}
-                            titleStyle={{color:'black', fontSize: 16}}
-                            hasNavArrow={true}
-                        />
-                        <SettingsList.Item
-                            icon={
-                                <Icon style={{color: 'rgba(1,170,170,1)', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-color-fill">
-                                </Icon>
-                            }
-                            title='Theme'
-                            itemWidth={70}
-                            titleStyle={{color:'black', fontSize: 16}}
-                            hasNavArrow={true}
-                        />
+
                         <SettingsList.Header headerStyle={{marginTop: -5}}/>
                         <SettingsList.Item
                             hasNavArrow={true}

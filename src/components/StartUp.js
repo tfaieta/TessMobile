@@ -2,10 +2,10 @@
  * Created by nickruspantini on 6/6/17.
  */
 import React, {Component} from 'react';
-import {StyleSheet, View, Image, Text, StatusBar, TextInput, TouchableOpacity, Alert, Button, KeyboardAvoidingView} from 'react-native';
+import {StyleSheet, View, Image, Text, TouchableOpacity,} from 'react-native';
 import FBSDK, { LoginManager } from 'react-native-fbsdk';
 import { Actions } from 'react-native-router-flux';
-import Swiper from 'react-native-swiper'
+
 import AppIntro from 'react-native-app-intro';
 import Icon from 'react-native-vector-icons/Ionicons';
 

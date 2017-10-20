@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { View, StyleSheet, ListView, Text, TouchableHighlight} from 'react-native';
+import { View, StyleSheet, ListView, Text, TouchableOpacity} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { connect } from 'react-redux';
 import { podcastFetchFollowed } from "../actions/PodcastActions"
 import Variables from "./Variables";
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
+import {Actions} from 'react-native-router-flux';
 
 
 
@@ -16,9 +17,20 @@ class FollowedContent extends Component{
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed)
+            dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed),
+            loading: true
         }
     }
+
+    state={
+        loading: true
+    };
+
+
+    onProfilePress = () => {
+        Actions.UserProfile();
+        console.warn("helloooo")
+    };
 
 
 
@@ -28,8 +40,6 @@ class FollowedContent extends Component{
         firebase.database().ref(`/users/${rowData}/username`).orderByChild("username").on("value", function (snap) {
             if (snap.val()) {
                 profileName = snap.val().username;
-                console.warn(snap.val().username);
-                console.warn(rowData)
             }
             else {
                 profileName = rowData;
@@ -37,9 +47,11 @@ class FollowedContent extends Component{
         });
 
 
-        return(
-            <TouchableHighlight underlayColor='#804cc8'>
-                <View style={styles.container2}>
+
+
+        return (
+            <TouchableOpacity>
+                <View style={styles.container2} onPress={this.onProfilePress}>
 
 
                     <View style={styles.leftContainer}>
@@ -59,10 +71,10 @@ class FollowedContent extends Component{
                     </View>
 
 
-
                 </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
         )
+
     }
 
 
@@ -136,7 +148,7 @@ const styles = StyleSheet.create({
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Futura',
-        fontSize: 35,
+        fontSize: 30,
         backgroundColor: 'transparent'
     },
 

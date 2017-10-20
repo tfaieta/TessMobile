@@ -11,16 +11,18 @@ import firebase from 'firebase';
 class Library extends Component{
 
     componentWillMount(){
+        Variables.state.usersFollowed = [];
 
         const { currentUser } = firebase.auth();
         const ref = firebase.database().ref(`users/${currentUser.uid}/following`);
         ref.orderByChild('following').on("value", function (snapshot) {
             snapshot.forEach(function (data) {
-                Variables.state.usersFollowed = [Variables.state.usersFollowed, data.key];
+                Variables.state.usersFollowed.push(data.key);
             })
         });
 
     }
+
 
 
 
