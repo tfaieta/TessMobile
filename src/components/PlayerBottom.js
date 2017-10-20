@@ -392,7 +392,7 @@ class PlayerBottom extends Component {
             return (
                 <View>
                 <TouchableOpacity style = {{marginVertical: 10}} onPress = {this.pressLike}>
-                    <Icon style={{textAlign: 'center', fontSize: 90, color: '#ffff00', marginTop: -10}} name="md-happy">
+                    <Icon style={{textAlign: 'center', fontSize: 90, color: '#ffff00', marginTop: -10}} name="ios-happy">
                     </Icon>
                 </TouchableOpacity>
                 <Text style={styles.podcastTextLikes}>   {this.state.likes}</Text>
@@ -403,7 +403,7 @@ class PlayerBottom extends Component {
             return(
                 <View>
                 <TouchableOpacity  style = {{marginVertical: 10}} onPress = {this.pressLike}>
-                    <Icon style={{textAlign: 'center', fontSize: 90, color: '#c9c900', marginTop: -10}} name="md-happy">
+                    <Icon style={{textAlign: 'center', fontSize: 90, color: '#c9c900', marginTop: -10}} name="ios-happy">
                     </Icon>
                 </TouchableOpacity>
                     <Text style={styles.podcastTextLikes}>   {this.state.likes}</Text>

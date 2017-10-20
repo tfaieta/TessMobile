@@ -1,66 +1,86 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { View, StyleSheet, ScrollView, ListView} from 'react-native';
+import { View, StyleSheet, ListView, Text, TouchableHighlight} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { connect } from 'react-redux';
 import { podcastFetchFollowed } from "../actions/PodcastActions"
-import ListItem from './ListItem';
+import Variables from "./Variables";
+import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 
 
 
 class FollowedContent extends Component{
 
-    componentWillMount(){
+    constructor(props){
+        super(props);
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.state = {
+            dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed)
+        }
+    }
 
-        const { currentUser } = firebase.auth();
-        const ref = firebase.database().ref(`users/${currentUser.uid}/following`);
-        ref.orderByChild('following').on("value", function (snapshot) {
-            snapshot.forEach(function (data) {
-                console.warn("following: " + data.key + data.val());
-            })
+
+
+    renderRow(rowData){
+
+        let profileName = rowData;
+        firebase.database().ref(`/users/${rowData}/username`).orderByChild("username").on("value", function (snap) {
+            if (snap.val()) {
+                profileName = snap.val().username;
+                console.warn(snap.val().username);
+                console.warn(rowData)
+            }
+            else {
+                profileName = rowData;
+            }
         });
 
-        this.props.podcastFetchFollowed('');
+
+        return(
+            <TouchableHighlight underlayColor='#804cc8'>
+                <View style={styles.container2}>
+
+
+                    <View style={styles.leftContainer}>
+                        <Icon style={{
+                            textAlign: 'left',
+                            marginLeft: 20,
+                            paddingRight: 8,
+                            fontSize: 70,
+                            color: '#be8eff'
+                        }} name="md-contact">
+                        </Icon>
+                    </View>
+
+
+                    <View style={styles.middleContainer}>
+                        <Text style={styles.title2}>   {profileName}</Text>
+                    </View>
 
 
 
-        this.creataDataSource(this.props);
-
+                </View>
+            </TouchableHighlight>
+        )
     }
 
-    componentWillReceiveProps(nextProps) {
 
-        this.creataDataSource(nextProps);
-    }
-
-
-    creataDataSource({ podcast }) {
-        const ds = new ListView.DataSource({
-            rowHasChanged: (r1, r2) => r1 !== r2
-        });
-
-        this.dataSource = ds.cloneWithRows(podcast);
-    }
-
-    renderRow(podcast) {
-        return <ListItem podcast={podcast} />;
-    }
 
 
     render() {
         return (
             <View
                 style={styles.container}>
-                <ScrollView>
+
 
                     <ListView
                         enableEmptySections
-                        dataSource={this.dataSource}
+                        dataSource={this.state.dataSource}
                         renderRow={this.renderRow}
                     />
 
-                </ScrollView>
+
 
 
 
@@ -82,6 +102,19 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         paddingTop: 70,
     },
+    container2: {
+        paddingHorizontal: 0,
+        paddingVertical: 0,
+        marginVertical: 0,
+        marginHorizontal: 0,
+        backgroundColor: '#FFF',
+        opacity: 1,
+        borderColor: '#FFF',
+        borderWidth: 0.5,
+        borderRadius: 0,
+        borderStyle: 'solid',
+        flexDirection: 'row',
+    },
 
     title: {
         color: '#804cc8',
@@ -94,6 +127,18 @@ const styles = StyleSheet.create({
         fontSize: 25,
         backgroundColor: 'transparent'
     },
+    title2: {
+        color: '#804cc8',
+        marginTop: 0,
+        flex:1,
+        textAlign: 'left',
+        paddingLeft: 0,
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Futura',
+        fontSize: 35,
+        backgroundColor: 'transparent'
+    },
 
     contentTitle: {
         color: 'rgba(1,170,170,1)',
@@ -101,6 +146,39 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
         marginLeft: 20,
 
+    },
+    artistTitle: {
+        color: '#804cc8',
+        marginTop: 0,
+        flex:1,
+        textAlign: 'center',
+        paddingLeft: 2,
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Futura',
+        fontSize: 15,
+        backgroundColor: 'transparent'
+    },
+    centerContainer: {
+        flexDirection: 'row'
+    },
+    leftContainer: {
+        paddingLeft: 2,
+        justifyContent: 'center',
+        alignItems:'flex-start',
+    },
+    rightContainer: {
+        flex: 1,
+        paddingRight: 2,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+
+    },
+    middleContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        marginTop: 3,
     },
 
 });

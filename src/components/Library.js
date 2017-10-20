@@ -3,8 +3,25 @@ import { Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
 import PlayerBottom from './PlayerBottom';
+import Variables from "./Variables";
+import firebase from 'firebase';
+
+
 
 class Library extends Component{
+
+    componentWillMount(){
+
+        const { currentUser } = firebase.auth();
+        const ref = firebase.database().ref(`users/${currentUser.uid}/following`);
+        ref.orderByChild('following').on("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+                Variables.state.usersFollowed = [Variables.state.usersFollowed, data.key];
+            })
+        });
+
+    }
+
 
 
     GoToQueue = () => {
@@ -54,7 +71,7 @@ class Library extends Component{
 
                     <TouchableOpacity style={styles.buttonPreview}  onPress={this.GoToFollowedContent}>
                         <Icon style={{textAlign:'center', marginTop: 5, fontSize: 35,color:'#FFF' }} name="ios-checkmark-circle">
-                            <Text  style={styles.contentTitle}>  Followed Content</Text>
+                            <Text  style={styles.contentTitle}>  Followed Creators</Text>
                         </Icon>
                     </TouchableOpacity>
 

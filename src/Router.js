@@ -200,7 +200,7 @@ const RouterComponent = () => {
                     <Scene
                         key="FollowedContent"
                         component={FollowedContent}
-                        title="Followed Content"
+                        title="Followed Creators"
                         hideNavBar={false}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                         duration={1}

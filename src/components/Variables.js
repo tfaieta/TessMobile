@@ -36,6 +36,7 @@ class Variables extends Component{
         currentBio: '',
         currentFavCategory: '',
         following: false,
+        usersFollowed: []
 };
 
 
