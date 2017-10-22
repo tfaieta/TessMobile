@@ -12,12 +12,20 @@ class Library extends Component{
 
     componentWillMount(){
         Variables.state.usersFollowed = [];
+        Variables.state.favPodcasts = [];
 
         const { currentUser } = firebase.auth();
-        const ref = firebase.database().ref(`users/${currentUser.uid}/following`);
-        ref.orderByChild('following').on("value", function (snapshot) {
+        const refFol = firebase.database().ref(`users/${currentUser.uid}/following`);
+        const refFav = firebase.database().ref(`users/${currentUser.uid}/favorites`);
+        refFol.orderByChild('following').on("value", function (snapshot) {
             snapshot.forEach(function (data) {
                 Variables.state.usersFollowed.push(data.key);
+            })
+        });
+
+        refFav.orderByChild('favorites').on("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+                Variables.state.favPodcasts.push(data.val());
             })
         });
 

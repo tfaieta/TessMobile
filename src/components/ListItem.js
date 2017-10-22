@@ -115,7 +115,7 @@ class ListItem extends Component {
                         {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
                         {
                             text: 'Yes', onPress: () => {
-                            firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle).push(podcastArtist);
+                            firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle).update({podcastArtist, podcastTitle});
                                 this.setState({favorite: true})
                         }
                         },
@@ -132,7 +132,7 @@ class ListItem extends Component {
                         {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
                         {
                             text: 'Yes', onPress: () => {
-                            firebase.database().ref(`users/${currentUser.uid}/favorites/${podcastTitle}`).remove()
+                            firebase.database().ref(`users/${currentUser.uid}/favorites/${podcastTitle}`).remove();
                             this.setState({favorite: false})
                         }
                         },

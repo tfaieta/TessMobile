@@ -72,8 +72,8 @@ return volume;
                     style={{marginTop: 0, }}
                     renderTabBar={() => <DefaultTabBar />}>
 
-                    <TopCharts tabLabel="Top Charts" />
                     <NewPodcasts tabLabel="New" />
+                    <TopCharts tabLabel="Top Charts" />
                     <Categories tabLabel="Categories" />
 
                 </ScrollableTabView>

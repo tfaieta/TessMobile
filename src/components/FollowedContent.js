@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
         paddingVertical: 0,
         marginVertical: 0,
         marginHorizontal: 0,
-        backgroundColor: '#FFF',
+        backgroundColor: 'transparent',
         opacity: 1,
         borderColor: '#FFF',
         borderWidth: 0.5,

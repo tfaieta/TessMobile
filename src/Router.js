@@ -92,7 +92,7 @@ const RouterComponent = () => {
 
 
 
-            <Scene key="Main" >
+            <Scene key="Main" panHandlers={null}>
 
 
             <Scene
@@ -109,6 +109,7 @@ const RouterComponent = () => {
                         initial
                         hideNavBar={false}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        panHandlers={null}
                     />
                 </Scene>
 
@@ -121,6 +122,7 @@ const RouterComponent = () => {
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                         duration={1}
+                        panHandlers={null}
                     />
                     <Scene
                         key="SearchPage"
@@ -129,6 +131,7 @@ const RouterComponent = () => {
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                         duration={1}
+                        panHandlers={null}
                     />
 
                 </Scene>
@@ -141,8 +144,8 @@ const RouterComponent = () => {
                         title="RecordFirstPage"
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
-
                         hideTabBar={false}
+                        panHandlers={null}
                     />
                     <Scene
                         key="Record"
@@ -151,6 +154,7 @@ const RouterComponent = () => {
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                         hideTabBar={true}
+                        panHandlers={null}
                     />
                     <Scene
                         key="RecordInfo"
@@ -159,6 +163,7 @@ const RouterComponent = () => {
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                         hideTabBar={true}
+                        panHandlers={null}
                     />
                     <Scene
                         key="RecordSuccess"
@@ -167,6 +172,7 @@ const RouterComponent = () => {
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                         hideTabBar={false}
+                        panHandlers={null}
                     />
 
                 </Scene>
@@ -180,6 +186,7 @@ const RouterComponent = () => {
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#657ed4'}}
                         duration={1}
+                        panHandlers={null}
                     />
                     <Scene
                         key="Queue"
@@ -188,6 +195,7 @@ const RouterComponent = () => {
                         hideNavBar={false}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                         duration={1}
+                        panHandlers={null}
                     />
                     <Scene
                         key="Favorites"
@@ -196,6 +204,7 @@ const RouterComponent = () => {
                         hideNavBar={false}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                         duration={1}
+                        panHandlers={null}
                     />
                     <Scene
                         key="FollowedContent"
@@ -204,6 +213,7 @@ const RouterComponent = () => {
                         hideNavBar={false}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                         duration={1}
+                        panHandlers={null}
                     />
                     <Scene
                         key="MyContent"
@@ -212,6 +222,7 @@ const RouterComponent = () => {
                         hideNavBar={false}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                         duration={1}
+                        panHandlers={null}
                     />
                 </Scene>
 
@@ -226,6 +237,7 @@ const RouterComponent = () => {
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                         duration={1}
                         initial
+                        panHandlers={null}
                         />
                     <Scene
                         key="Settings"
@@ -234,6 +246,7 @@ const RouterComponent = () => {
                         hideNavBar={false}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                         duration={1}
+                        panHandlers={null}
                     />
 
                     <Scene
@@ -242,6 +255,7 @@ const RouterComponent = () => {
                         title={Variables.state.podcastArtist}
                         hideNavBar={false}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        panHandlers={null}
                     />
 
                 </Scene>
@@ -257,6 +271,7 @@ const RouterComponent = () => {
                     title="Player"
                     hideNavBar={true}
                     navigationBarStyle={{backgroundColor:'#804cc8'}}
+                    panHandlers={null}
                 />
 
             </Scene>
