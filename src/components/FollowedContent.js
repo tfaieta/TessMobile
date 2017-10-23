@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { View, StyleSheet, ListView, Text, TouchableOpacity} from 'react-native';
+import { View, StyleSheet, ListView, Text, TouchableHighlight} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { connect } from 'react-redux';
 import { podcastFetchFollowed } from "../actions/PodcastActions"
@@ -19,7 +19,7 @@ class FollowedContent extends Component{
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed),
             loading: true
-        }
+        };
     }
 
     state={
@@ -27,14 +27,10 @@ class FollowedContent extends Component{
     };
 
 
-    onProfilePress = () => {
-        Actions.UserProfile();
-        console.warn("helloooo")
-    };
-
 
 
     renderRow(rowData){
+
 
         let profileName = rowData;
         firebase.database().ref(`/users/${rowData}/username`).orderByChild("username").on("value", function (snap) {
@@ -50,8 +46,11 @@ class FollowedContent extends Component{
 
 
         return (
-            <TouchableOpacity>
-                <View style={styles.container2} onPress={this.onProfilePress}>
+            <TouchableHighlight underlayColor='#804cc8' onPress={() => {
+                Variables.state.podcastArtist = rowData;
+                Actions.UserProfile();
+            }}>
+                <View style={styles.container2}>
 
 
                     <View style={styles.leftContainer}>
@@ -72,7 +71,7 @@ class FollowedContent extends Component{
 
 
                 </View>
-            </TouchableOpacity>
+            </TouchableHighlight>
         )
 
     }

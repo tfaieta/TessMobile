@@ -67,11 +67,12 @@ class ListItemUsers extends Component {
 
                         Variables.pause();
                         Variables.setPodcastFile(res.path());
-                        Variables.state.isPlaying = false;
                         Variables.state.podcastTitle = podcastTitle;
                         Variables.state.podcastDescription = podcastDescription;
                         Variables.state.podcastCategory = podcastCategory;
                         Variables.state.podcastArtist = podcastArtist;
+                        Variables.play();
+                        Variables.state.isPlaying = false;
 
                     });
 

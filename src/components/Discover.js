@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet,StatusBar, ScrollView, Image, TouchableOpacity, Slider} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { View, StyleSheet,StatusBar} from 'react-native';
 import ScrollableTabView, {DefaultTabBar, } from 'react-native-scrollable-tab-view';
 import TopCharts from './DiscoverBar/TopCharts';
 import NewPodcasts from './DiscoverBar/NewPodcasts';
 import Categories from './DiscoverBar/Categories';
 import { Actions } from 'react-native-router-flux';
-import SearchPage from './SearchPage';
-import Icon from 'react-native-vector-icons/Ionicons';
 import { SearchBar } from 'react-native-elements'
 import {volume} from './Home';
 import PlayerBottom from './PlayerBottom';
@@ -25,12 +22,10 @@ class Discover extends Component{
     };
 
     constructor(props) {
-        super(props)
+        super(props);
         this.state = { volume }
     }
-    getVolume(volume){
-return volume;
-    }
+
 
 
     render() {

@@ -330,20 +330,32 @@ class UserProfile extends Component {
 
 
     _renderFollowButton = () => {
+        const {currentUser} = firebase.auth();
 
-        if(Variables.state.following) {
-            return (
-                <TouchableOpacity onPress={this.pressFollowButton} style={{backgroundColor: 'rgba(1,220,220,1)', paddingVertical: 10, marginHorizontal: 20}}>
-                    <Text style={styles.titleFollow}>Unfollow</Text>
-                </TouchableOpacity>
-            )
-        }
-        else{
-            return (
-                <TouchableOpacity onPress={this.pressFollowButton} style={{backgroundColor: 'rgba(1,170,170,1)', paddingVertical: 10, marginHorizontal: 20}}>
-                    <Text style={styles.titleFollow}>Follow</Text>
-                </TouchableOpacity>
-            )
+        if(Variables.state.podcastArtist != currentUser.uid) {
+
+            if (Variables.state.following) {
+                return (
+                    <TouchableOpacity onPress={this.pressFollowButton} style={{
+                        backgroundColor: 'rgba(1,220,220,1)',
+                        paddingVertical: 10,
+                        marginHorizontal: 20
+                    }}>
+                        <Text style={styles.titleFollow}>Unfollow</Text>
+                    </TouchableOpacity>
+                )
+            }
+            else {
+                return (
+                    <TouchableOpacity onPress={this.pressFollowButton} style={{
+                        backgroundColor: 'rgba(1,170,170,1)',
+                        paddingVertical: 10,
+                        marginHorizontal: 20
+                    }}>
+                        <Text style={styles.titleFollow}>Follow</Text>
+                    </TouchableOpacity>
+                )
+            }
         }
 
     };

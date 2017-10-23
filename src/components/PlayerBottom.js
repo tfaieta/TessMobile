@@ -20,7 +20,7 @@ class PlayerBottom extends Component {
     }
 
     state = {
-        isPlaying: Variables.state.isPlaying,
+        isPlaying: true,
         podProgress: Variables.state.podProgress,
         currentTime: Variables.state.currentTime,
         interval: Variables.state.interval,

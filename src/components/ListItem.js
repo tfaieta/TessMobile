@@ -67,11 +67,12 @@ class ListItem extends Component {
 
                         Variables.pause();
                         Variables.setPodcastFile(res.path());
-                        Variables.state.isPlaying = false;
                         Variables.state.podcastTitle = podcastTitle;
                         Variables.state.podcastDescription = podcastDescription;
                         Variables.state.podcastCategory = podcastCategory;
                         Variables.state.podcastArtist = podcastArtist;
+                        Variables.play();
+                        Variables.state.isPlaying = false;
 
                     });
 
@@ -115,7 +116,7 @@ class ListItem extends Component {
                         {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
                         {
                             text: 'Yes', onPress: () => {
-                            firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle).update({podcastArtist, podcastTitle});
+                            firebase.database().ref(`users/${currentUser.uid}/favorites/`).child() .push({podcastArtist, podcastTitle});
                                 this.setState({favorite: true})
                         }
                         },
