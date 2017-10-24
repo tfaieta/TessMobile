@@ -142,6 +142,7 @@ class RecordInfo extends Component{
                     placeholderTextColor='#FFF'
                     returnKeyType='done'
                     label="Description"
+                    blurOnSubmit={true}
                     value={this.props.podcastDescription}
                     onChangeText={text => this.props.podcastUpdate({prop: 'podcastDescription', value: text})}
                     multiline={true}
