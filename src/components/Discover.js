@@ -4,6 +4,7 @@ import ScrollableTabView, {DefaultTabBar, } from 'react-native-scrollable-tab-vi
 import TopCharts from './DiscoverBar/TopCharts';
 import NewPodcasts from './DiscoverBar/NewPodcasts';
 import Categories from './DiscoverBar/Categories';
+import Following from './DiscoverBar/Following';
 import { Actions } from 'react-native-router-flux';
 import { SearchBar } from 'react-native-elements'
 import {volume} from './Home';
@@ -34,19 +35,21 @@ class Discover extends Component{
 
 
                 <StatusBar
-                    barStyle="light-content"
+                    barStyle="dark-content"
                 />
 
                 <View style={styles.backColor}>
 
 
                     <SearchBar
+                        lightTheme
                         round
+                        inputStyle={{backgroundColor: '#fff'}}
                         containerStyle= {styles.containerSearch}
-                        placeholder='Search...'
-                        placeholderTextColor = 'rgba(170,170,170,1)'
-                        icon = {{ color: 'rgba(170,170,170,1)', name: 'search' }}
-                        clearIcon = {{ color: 'rgba(170,170,170,1)', name: 'close' }}
+                        placeholder='  Search...'
+                        placeholderTextColor = '#2A2A30'
+                        icon = {{ color: '#5757FF', name: 'search' }}
+                        clearIcon = {{ color: '#BBBCCD', name: 'close' }}
                         autoCorrect={false}
                         autoCapitalize="none"
                         value={this.state.search}
@@ -61,15 +64,17 @@ class Discover extends Component{
 
                 <ScrollableTabView
                     tabBarUnderlineStyle = {styles.underline}
-                    tabBarActiveTextColor = 'white'
-                    tabBarInactiveTextColor = 'rgba(210,210,210,1)'
-                    tabBarBackgroundColor = '#804cc8'
+                    tabBarActiveTextColor = '#5757FF'
+                    tabBarInactiveTextColor = '#BBBCCD'
+                    tabBarBackgroundColor = '#fff'
                     style={{marginTop: 0, }}
+                    tabBarTextStyle={styles.tabStyle}
                     renderTabBar={() => <DefaultTabBar />}>
 
-                    <NewPodcasts tabLabel="New" />
-                    <TopCharts tabLabel="Top Charts" />
-                    <Categories tabLabel="Categories" />
+                    <Categories tabLabel="CATEGORIES" />
+                    <TopCharts tabLabel="TOP CHARTS" />
+                    <NewPodcasts tabLabel="NEW" />
+                    <Following tabLabel="FOLLOWING" />
 
                 </ScrollableTabView>
 
@@ -93,30 +98,29 @@ class Discover extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: 'transparent',
-        paddingBottom: 116,
+        backgroundColor: '#fff',
     },
     container2:{
         flex: 1,
-        backgroundColor: '#804cc8' ,
+        backgroundColor: '#fff' ,
         marginTop: -90,
 
     },
     underline:{
-        backgroundColor: 'rgba(1,170,170,1)'
+        backgroundColor: '#5757FF'
     },
     containerSearch:{
         marginTop: 20,
-        backgroundColor: '#804cc8',
-        borderColor:'#804cc8',
+        backgroundColor: '#fff',
+        borderColor:'#fff',
         borderWidth: 1,
         borderTopWidth: 1,
         borderBottomWidth: 1,
-        borderTopColor: '#804cc8',
-        borderBottomColor: '#804cc8',
+        borderTopColor: '#fff',
+        borderBottomColor: '#fff',
     },
     backColor:{
-        backgroundColor:  '#804cc8',
+        backgroundColor:  '#fff',
     },
     title: {
         color: '#804cc8',
@@ -130,6 +134,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
 
+    tabStyle: {
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        fontSize: 11,
+        backgroundColor: 'transparent'
+    }
 
 });
 

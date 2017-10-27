@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, LayoutAnimation, TouchableHighlight, } from 'react-native';
+import { Text, View, LayoutAnimation, TouchableOpacity, } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import {AudioUtils} from 'react-native-audio';
@@ -104,31 +104,21 @@ class ListItemUsers extends Component {
 
         return (
 
-            <TouchableHighlight underlayColor='#804cc8' onPress={this.onRowPress.bind(this)}>
-                <View style={styles.container}>
-
-
-                    <View style={styles.leftContainer}>
-                        <Icon style={{
-                            textAlign: 'left',
-                            marginLeft: 20,
-                            paddingRight: 8,
-                            fontSize: 70,
-                            color: '#be8eff'
-                        }} name="md-contact">
-                        </Icon>
-                    </View>
-
-
-                    <View style={styles.middleContainer}>
-                        <Text style={styles.title}>   {podcastTitle}</Text>
-                        <Text style={styles.artistTitle}>{profileName}</Text>
-                    </View>
-
-
-
+            <TouchableOpacity onPress={this.onRowPress.bind(this)}>
+                <View style={{padding: 10}}>
+                <Icon style={{
+                    textAlign: 'left',
+                    marginLeft: 10,
+                    fontSize: 160,
+                    color: 'rgba(130,131,147,0.5)',
+                    marginBottom: -25,
+                    marginTop: -10
+                }} name="md-square">
+                </Icon>
+                <Text style={styles.title}>{podcastTitle}</Text>
+                <Text style={styles.artistTitle}>{profileName}</Text>
                 </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
 
         );
 
@@ -138,26 +128,27 @@ class ListItemUsers extends Component {
 
 const styles = {
     title: {
-        color: '#804cc8',
+        color: '#2A2A30',
         flex:1,
-        textAlign: 'center',
+        textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Futura',
-        fontSize: 25,
+        fontFamily: 'Helvetica',
+        fontSize: 16,
+        marginLeft: 10,
         backgroundColor: 'transparent'
     },
     artistTitle: {
-        color: '#804cc8',
-        marginTop: 0,
+        color: '#9596A3',
         flex:1,
-        textAlign: 'center',
+        textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Futura',
-        fontSize: 20,
+        fontFamily: 'Helvetica',
+        paddingVertical: 5,
+        marginLeft: 10,
+        fontSize: 14,
         backgroundColor: 'transparent',
-        marginHorizontal: -300,
     },
     container: {
         flex: 1,

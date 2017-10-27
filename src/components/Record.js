@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet,StatusBar, TouchableOpacity, TouchableHighlight, Platform} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { Text, View, StyleSheet, TouchableOpacity, StatusBar, Image, Platform} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Switch } from 'react-native-switch';
 import Sound from 'react-native-sound';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
 import { Actions } from 'react-native-router-flux';
-import PlayerBottom from './PlayerBottom';
+
 
 
 export let podFile =  AudioUtils.DocumentDirectoryPath + '/test.aac';
@@ -113,8 +111,8 @@ class Record extends Component{
 
         return (
             <TouchableOpacity style={styles.button} onPress={onPress}>
-                <Icon style={iconStyle} name="ios-radio-button-on" onPress={this.recordSound}>
-                </Icon>
+                <Image style={iconStyle} onPress={this.recordSound} source={require('tess/src/images/record-icon.png')}>
+                </Image>
             </TouchableOpacity>
         );
     }
@@ -262,19 +260,31 @@ class Record extends Component{
 
                 <View style={styles.container}>
 
+                    <StatusBar
+                        barStyle="light-content"
+                    />
+
+                    <Image
+                        style={{width: 375, height:667, position: 'absolute', alignSelf: 'center', opacity: 1}}
+                        source={require('tess/src/images/record-back.png')}
+                    >
+
                     <View style={styles.centerContainer}>
 
                         <View style={styles.leftContainer}>
                             <TouchableOpacity onPress={this.Close}>
-                                <Icon style={{textAlign:'left', marginRight:0,marginLeft: 0,paddingTop: 0, fontSize: 40,color:'#FFF' }} name="md-close">
+                                <Icon style={{textAlign:'left',marginLeft: 10, fontSize: 30,color:'#FFF' }} name="md-arrow-round-back">
                                 </Icon>
                             </TouchableOpacity>
                         </View>
 
+                        <View style={{flex:1,alignItems: 'center', marginLeft: -30}}>
+                            {this._renderRecordTitle(this.state.recording)}
+                        </View>
 
                     </View>
 
-                    {this._renderRecordTitle(this.state.recording)}
+
                     <View style={styles.controls}>
                         {this._renderButtonRecordN(() => {this._record()}, this.state.recording )}
                         {this._renderTime()}
@@ -282,7 +292,7 @@ class Record extends Component{
                     </View>
 
 
-
+                    </Image>
                 </View>
 
 
@@ -296,7 +306,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         paddingTop: 80,
-        backgroundColor: '#804cc8',
+        backgroundColor: 'transparent',
     },
     container2:{
         flex: 1,
@@ -342,8 +352,8 @@ const styles = StyleSheet.create({
         color: '#FFF',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Futura',
-        fontSize: 30,
+        fontFamily: 'Helvetica',
+        fontSize: 24,
     },
     controls: {
         justifyContent: 'center',
@@ -377,26 +387,23 @@ const styles = StyleSheet.create({
         backgroundColor: '#8a66c8'
     },
     iconText: {
-        textAlign:'center',
         marginTop: 50,
-        fontSize: 140,
-        color:'#aba4a4'
+        width: 147,
+        height: 151
     },
     activeIconText: {
-        textAlign:'center',
         marginTop: 50,
-        fontSize: 140,
-        color: '#ee617c'
+        width: 147,
+        height: 151,
+        tintColor: '#ee617c'
     },
     leftContainer: {
-        flex: 1,
-        marginLeft: 10,
         justifyContent: 'center',
         alignItems:'flex-start',
     },
     centerContainer: {
         flexDirection: 'row',
-        marginTop: -40,
+        marginTop: 35,
         paddingBottom: 20
     },
 

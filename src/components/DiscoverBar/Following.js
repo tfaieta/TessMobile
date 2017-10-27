@@ -1,13 +1,10 @@
-/**
- * Created by nickruspantini on 6/29/17.
- */
 import React, { Component } from 'react';
 import { Text, TextInput, View, StyleSheet,StatusBar, ScrollView, TouchableOpacity, Slider} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
 
-class TopCharts extends Component{
+class Following extends Component{
 
 
     render() {
@@ -15,10 +12,13 @@ class TopCharts extends Component{
             <ScrollView style={styles.container}>
 
                 <TouchableOpacity>
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#b5b6cd' }} name="md-square">
-                        <Text style={styles.title} >    TOP CHARTS</Text>
+                    <Icon style={{textAlign:'left', marginLeft: 20, fontSize: 60,color:'#b5b6cd'}} name="md-square">
+                        <Text style={styles.title} >    FOLLOWING</Text>
                     </Icon>
                 </TouchableOpacity>
+
+
+
 
 
 
@@ -54,4 +54,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default TopCharts;
+export default Following;

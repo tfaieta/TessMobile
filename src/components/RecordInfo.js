@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet, TouchableOpacity, Picker} from 'react-native';
+import { Text, TextInput, View, StyleSheet, TouchableOpacity, Picker, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
 import Sound from 'react-native-sound';
@@ -118,10 +118,66 @@ class RecordInfo extends Component{
             <View
                 style={styles.container}>
 
+                <Image
+                    style={{width: 375, height:667, position: 'absolute', alignSelf: 'center', opacity: 1}}
+                    source={require('tess/src/images/record-back.png')}
+                >
+
+
+
+                <View style={{flexDirection: 'row',   }}>
+                    <View style={{marginTop: 30, alignItems: 'flex-start'}}>
+                        <TouchableOpacity onPress={this.Cancel}>
+                            <Icon style={{
+                                textAlign: 'right',
+                                fontSize: 30,
+                                marginLeft: 15,
+                                color: '#fff',
+                                backgroundColor: 'transparent'
+                            }} name="md-arrow-round-back">
+                            </Icon>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{justifyContent: 'center', alignItems: 'center',}}>
+                        <Text style={styles.header}>Upload Podcast</Text>
+                    </View>
+                </View>
+
+
+
+                    <View style={{flexDirection: 'row', paddingBottom: 30, marginTop: 20  }}>
+                        <View style={{marginTop: 15, alignItems: 'flex-start'}}>
+                            <TouchableOpacity onPress={this.preview}>
+                                <Icon style={{
+                                    textAlign: 'right',
+                                    fontSize: 25,
+                                    marginLeft: 40,
+                                    color: '#fff',
+                                    backgroundColor: 'transparent',
+                                }} name="ios-play">
+                                </Icon>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{justifyContent: 'center', alignItems: 'center',}}>
+                            <Image
+                                style={{width: 188, height:31, alignSelf: 'center', opacity: 1, marginLeft: 30, marginTop: 8}}
+                                source={require('tess/src/images/preview-icon.png')}
+                            />
+                        </View>
+                        <View style={{justifyContent: 'center', alignItems: 'flex-end',}}>
+                            <Text  style={styles.contentTime}>{this._renderTime()}</Text>
+                        </View>
+                    </View>
+
+
+
+
+
+                    <Text style={styles.boxHeader}>PODCAST TITLE:</Text>
                 <TextInput
                     ref='input1'
                     style ={styles.input}
-                    placeholder = "Podcast Title..."
+                    placeholder = ""
                     placeholderTextColor='#FFF'
                     returnKeyType='next'
                     label="Title"
@@ -134,11 +190,11 @@ class RecordInfo extends Component{
                 />
 
 
-
+                    <Text style={styles.boxHeader}>DESCRIPTION:</Text>
                 <TextInput
                     ref='input2'
                     style ={styles.input2}
-                    placeholder = "Podcast Description..."
+                    placeholder = ""
                     placeholderTextColor='#FFF'
                     returnKeyType='done'
                     label="Description"
@@ -149,6 +205,10 @@ class RecordInfo extends Component{
                     maxLength={500}
                 />
 
+
+
+
+                    <Text style={styles.boxHeader}>SELECT A CATEGORY:</Text>
                 <Picker style = {{ marginTop: -20, flex:1}} selectedValue={this.props.podcastCategory} onValueChange={itemValue => this.props.podcastUpdate({prop: 'podcastCategory', value: itemValue})}>
                     <Picker.Item color= "white" label="Select a category..." value="none" />
                     <Picker.Item color= '#64fffc' label="Current Events" value="current" />
@@ -168,13 +228,6 @@ class RecordInfo extends Component{
 
 
                 <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.buttonPreview}  onPress={this.preview}>
-                    <Icon style={{textAlign:'center', marginTop: 5, fontSize: 35,color:'#804cc8' }} name="ios-play">
-                    <Text  style={styles.contentTitle}> Preview  {this._renderTime()}</Text>
-
-                    </Icon>
-                </TouchableOpacity>
-
 
 
 
@@ -189,7 +242,7 @@ class RecordInfo extends Component{
                 </TouchableOpacity>
                 </View>
 
-
+                </Image>
             </View>
 
 
@@ -202,7 +255,7 @@ class RecordInfo extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#804cc8',
+        backgroundColor: 'transparent',
         paddingTop: 80,
     },
 
@@ -213,24 +266,35 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Futura',
+        fontFamily: 'Helvetica',
         fontSize: 25,
         backgroundColor: 'transparent'
     },
 
     contentTitle: {
         color: '#FFF',
-        fontSize: 25,
+        fontSize: 18,
         paddingBottom: 20,
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Futura',
+        fontFamily: 'Helvetica',
+
+    },
+
+    contentTime: {
+        color: '#FFF',
+        fontSize: 25,
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        marginLeft: 20,
+        marginTop: 10
 
     },
 
     input: {
         height: 40,
-        backgroundColor: 'rgba(170,170,170,0.2)',
+        backgroundColor: 'transparent',
         marginBottom: 10,
         color: '#FFF',
         paddingHorizontal: 10,
@@ -238,7 +302,7 @@ const styles = StyleSheet.create({
 
     input2: {
         height: 120,
-        backgroundColor: 'rgba(170,170,170,0.2)',
+        backgroundColor: 'transparent',
         marginBottom: 10,
         color:'#FFF',
         paddingHorizontal: 10,
@@ -252,15 +316,23 @@ const styles = StyleSheet.create({
     },
 
     buttonUpload: {
-        backgroundColor: '#657ed4',
+        backgroundColor: '#5757FF',
         alignItems: 'center',
         paddingTop: 15,
+        marginHorizontal: 15,
+        borderWidth:0.1,
+        borderRadius: 10,
+        marginBottom:10
     },
 
     buttonCancel: {
-        backgroundColor: '#69bbd9',
+        backgroundColor: '#ee617c',
         alignItems: 'center',
         paddingTop: 15,
+        marginHorizontal: 15,
+        borderWidth:0.1,
+        borderRadius: 10,
+        marginBottom: 10
     },
 
     buttonContainer: {
@@ -275,9 +347,30 @@ const styles = StyleSheet.create({
     progressText: {
         marginTop: 0,
         fontSize: 20,
-        fontFamily: 'Futura',
+        fontFamily: 'Helvetica',
         color: "#FFF",
     },
+
+    header: {
+        color: '#fff',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        fontSize: 18,
+        backgroundColor: 'transparent',
+        marginTop: 30,
+        marginLeft: 98,
+
+    },
+    boxHeader:{
+        color: '#fff',
+        textAlign: 'left',
+        marginLeft: 15,
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        fontSize: 12,
+        backgroundColor: 'transparent',
+    }
 
 });
 

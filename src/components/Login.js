@@ -1,25 +1,17 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity  } from 'react-native';
+import { Text, View, TouchableOpacity, StatusBar, Image  } from 'react-native';
 import { Spinner } from './common';
 import { connect } from 'react-redux';
-import { emailChanged, passwordChanged, loginUser, createUser, usernameChanged } from '../actions';
+import { emailChanged, passwordChanged, loginUser } from '../actions';
 import {Sae } from 'react-native-textinput-effects';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from "react-native-linear-gradient/index.android";
+import { Actions } from 'react-native-router-flux';
 
 
-export let profileName='';
+export let profileNameL='';
 
-class CreateAccount extends Component {
-    state = {
-        confirmPassword: '',
-        confirmPasswordError: '',
-    };
-
-
-    onUsernameChange(text){
-        this.props.usernameChanged(text);
-    }
+class Login extends Component {
 
     onEmailChange(text){
         this.props.emailChanged(text);
@@ -31,35 +23,37 @@ class CreateAccount extends Component {
 
 
 
+
     onButtonPress() {
+        const { email, password } = this.props;
 
-        const { email, password, username } = this.props;
-
-        this.props.createUser({ email, password, username });
-
+        this.props.loginUser({ email, password });
 
 
     }
+
+    _handleButtonPressCreate = () => {
+        Actions.CreateAccount();
+    };
 
 
 
     renderButton() {
         if (this.props.loading) {
-            return(
-            <View style={{paddingTop: 30}} >
-                <Spinner size="large" />
-            </View>
+            return (
+                <View style={{paddingTop: 30}} >
+                    <Spinner size="large" />
+                </View>
             )
         }
-        return(
 
+        return (
             <TouchableOpacity onPress={this.onButtonPress.bind(this)} style={styles.buttonContainer}>
                 <Text style={styles.textStyle}>
-                Sign Up
+                    Sign in
                 </Text>
             </TouchableOpacity>
         );
-
     }
 
     render() {
@@ -69,50 +63,16 @@ class CreateAccount extends Component {
                 colors={['#5555FF', '#9787FF' ]}
                 style={styles.container}>
 
-                <TouchableOpacity style={{backgroundColor: 'rgba(300,300,300,0.2)', borderRadius: 30, borderWidth: 0.1,  width: 60, height: 60, alignItems: 'center', alignSelf:'center', marginBottom: 20 }}>
-                    <Icon style={{
-                        textAlign: 'center',
-                        marginTop: 12,
-                        fontSize: 30,
-                        color: '#FFF'
-                    }} name="md-camera">
-                    </Icon>
-                </TouchableOpacity>
+                <StatusBar hidden={false} barStyle="light-content" />
 
 
-
-                <View style={styles.inputContainer}>
-                <Sae
-                    label={'Username'}
-                    labelStyle={{
-                        color: 'rgba(300,300,300,0.7)',
-                        fontStyle: 'normal',
-                        fontFamily: 'Helvetica',
-                        fontSize: 15,}}
-                    iconClass={Icon}
-                    iconName={'md-person'}
-                    iconColor={'white'}
-                    inputStyle={{
-                        color: '#FFF',
-                        fontStyle: 'normal',
-                        fontFamily: 'Helvetica',
-                        fontSize: 18,}}
-                    // TextInput props
-                    autoCapitalize={'none'}
-                    autoCorrect={false}
-                    returnKeyType='next'
-                    value={this.props.username}
-                    onChangeText={this.onUsernameChange.bind(this)}
-                    onSubmitEditing={(event) => {
-                        this.refs.FirstInput.focus();
-                    }}
+                <Image
+                    style={{marginTop:-15, width: 137, height: 154, marginBottom: 30, alignSelf: 'center',}}
+                    source={require('tess/src/images/White_Logo.png')}
                 />
-                </View>
 
-
-                <View style={styles.inputContainer}>
+                <View  style={styles.inputContainer}>
                 <Sae
-                    ref='FirstInput'
                     label={'Email Address'}
                     labelStyle={{
                         color: 'rgba(300,300,300,0.7)',
@@ -122,7 +82,7 @@ class CreateAccount extends Component {
                     iconClass={Icon}
                     iconName={'md-mail'}
                     iconColor={'white'}
-                    inputStyle={{
+                    inputStyle= {{
                         color: '#FFF',
                         fontStyle: 'normal',
                         fontFamily: 'Helvetica',
@@ -140,20 +100,19 @@ class CreateAccount extends Component {
                 />
                 </View>
 
-
                 <View style={styles.inputContainer}>
                 <Sae
                     ref='SecondInput'
                     label={'Password'}
+                    iconClass={Icon}
                     labelStyle={{
                         color: 'rgba(300,300,300,0.7)',
                         fontStyle: 'normal',
                         fontFamily: 'Helvetica',
                         fontSize: 15,}}
-                    iconClass={Icon}
                     iconName={'md-lock'}
                     iconColor={'white'}
-                    inputStyle={{
+                    inputStyle= {{
                         color: '#FFF',
                         fontStyle: 'normal',
                         fontFamily: 'Helvetica',
@@ -162,31 +121,25 @@ class CreateAccount extends Component {
                     autoCapitalize={'none'}
                     autoCorrect={false}
                     secureTextEntry
-                    returnKeyType="next"
+                    returnKeyType="go"
                     value={this.props.password}
                     onChangeText={this.onPasswordChange.bind(this)}
-                    onSubmitEditing={(event) => {
-                        this.onButtonPress()
-                    }}
+                    onSubmitEditing={() => this.onButtonPress()}
+
                 />
                 </View>
 
 
-
-
-
-
                 <Text style={styles.errorTextStyle}>
                     {this.props.error}
-                </Text>
-                <Text style={styles.errorTextStyle}>
-                    {this.state.confirmPasswordError}
                 </Text>
 
                 <View >
                     {this.renderButton()}
                 </View>
 
+
+                <Text onPress={this._handleButtonPressCreate} style={styles.textBottomStyle}>Don't have an account? Sign Up</Text>
 
             </LinearGradient>
         );
@@ -206,24 +159,23 @@ const styles = {
 
     container: {
         flex: 1,
-        backgroundColor: 'rgba(1,170,170,1)',
+        backgroundColor: '#856cff',
         padding: 20,
         paddingTop: 80
     },
 
     input: {
         height: 40,
-        backgroundColor: 'rgba(170,170,170,0.7)',
+        backgroundColor: 'rgba(170,170,170,0.5)',
         marginBottom: 10,
         color: '#FFF',
         paddingHorizontal: 10
     },
 
-
     buttonContainer: {
         paddingVertical: 15,
         paddingHorizontal: 15,
-        marginTop: -10,
+        marginTop: 30,
         marginBottom:5,
         borderWidth: 2,
         borderStyle: 'solid',
@@ -234,16 +186,13 @@ const styles = {
 
     buttonText: {
         textAlign: 'center',
-        color: '#FFFFFF',
-        fontWeight: '700'
+        color: '#5555FF',
     },
 
-    formContainer: {
-        paddingTop: 15,
-        paddingBottom: 15,
-        borderBottomWidth: 1,
-        padding: 5,
-        backgroundColor: '#fff',
+    formContainer4: {
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: '#5555FF'
     },
 
     textStyle: {
@@ -253,7 +202,6 @@ const styles = {
         fontFamily: 'Helvetica',
         fontSize: 18,
     },
-
     inputContainer: {
         backgroundColor:"rgba(300,300,300,0.2)",
         marginVertical: 5,
@@ -262,14 +210,23 @@ const styles = {
         borderWidth:0.1,
         borderRadius:10
     },
+    textBottomStyle: {
+        marginTop: 20,
+        textAlign: 'center',
+        color: 'rgba(300,300,300,0.8)',
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        fontSize: 15,
+        backgroundColor: 'transparent'
+    }
 
 
 };
 
 const mapStateToProps = ({ auth }) => {
-    const { email, password, username, error } = auth;
+    const { email, password, error, loading } = auth;
 
-    return { email, password, username, error};
+    return { email, password, error, loading};
 };
 
-export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser, createUser, usernameChanged })(CreateAccount);
+export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser })(Login);

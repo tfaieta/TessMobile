@@ -6,7 +6,8 @@ import {
     View,
     StatusBar,
     ScrollView,
-    ListView
+    ListView,
+    TouchableOpacity
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
@@ -18,6 +19,7 @@ import Sound from 'react-native-sound';
 import {profileNameL} from './LoginForm.js';
 import {profileName} from './CreateAccount.js';
 import Variables from './Variables';
+import { Actions } from 'react-native-router-flux';
 
 
 
@@ -285,6 +287,9 @@ class Account extends Component {
     }
 
 
+    _pressSettings = () => {
+        Actions.Settings();
+    };
 
 
     render() {
@@ -293,26 +298,45 @@ class Account extends Component {
                 style={styles.container}>
 
                 <StatusBar
-                    barStyle="light-content"
+                    barStyle="dark-content"
                 />
+
+                <View style={{flexDirection: 'row', width: 375, height: 70, borderRadius: 10, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
+                    <View style={{flex:1,alignItems: 'flex-start'}}>
+                    </View>
+                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center',}}>
+                        <Text style={styles.header}>Account</Text>
+                    </View>
+
+                    <View style={{flex:1,justifyContent: 'center', alignItems: 'flex-end', marginTop: 20}}>
+                        <TouchableOpacity onPress={this._pressSettings}>
+                        <Icon style={{
+                            textAlign: 'right',
+                            fontSize: 24,
+                            marginRight: 10,
+                            color: '#5757FF'
+                        }} name="md-settings">
+                        </Icon>
+                        </TouchableOpacity>
+                    </View>
+
+                </View>
 
 
                 <ScrollView >
 
+
+                <Icon style={{textAlign:'center', marginTop:20, marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 180,color:'#BBBCCD' }} name="md-square">
+                </Icon>
+
                     {this._renderProfileName()}
 
 
-                <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 200,color:'#804cc8' }} name="md-contact">
-                </Icon>
-
-                    <Text style={styles.title2 }>Bio</Text>
                     {this._renderBio()}
 
 
-                    <Text style={styles.title2 }>Favorite Category</Text>
-                    {this._renderCategory()}
-
-                    <Text style={styles.title2 }>Content</Text>
+                    <Text style={styles.title3 }>Content</Text>
+                    <View style={{height:1, backgroundColor:'#b5b6cd', borderRadius: 10, borderWidth:0.1, marginBottom: 10, marginHorizontal: 30 }} />
 
                     <View style={{paddingBottom: 30}}>
                     <ListView
@@ -322,6 +346,9 @@ class Account extends Component {
                     />
                     </View>
 
+                    <View style={{paddingBottom:120}}>
+
+                    </View>
 
 
                 </ScrollView>
@@ -344,43 +371,62 @@ class Account extends Component {
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#FFF',
-        paddingBottom: 115,
+        backgroundColor: '#FFF'
     },
     title: {
-        color: '#804cc8',
+        color: '#2A2A30',
         marginTop: 70,
         flex:1,
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Futura',
+        fontFamily: 'Helvetica',
         fontSize: 25,
         backgroundColor: 'transparent'
     },
     title2: {
-        color: '#804cc8',
-        marginTop: 70,
-        marginBottom: 5,
+        color: '#2A2A30',
+        marginBottom: 70,
         flex:1,
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Futura',
+        fontFamily: 'Helvetica',
         fontSize: 25,
         backgroundColor: 'transparent'
     },
+    title3: {
+        color: '#2A2A30',
+        marginTop: 80,
+        marginBottom: 5,
+        flex:1,
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        fontSize: 22,
+        backgroundColor: 'transparent'
+    },
     titleBio: {
-        color: '#804cc8',
+        color: '#828393',
         marginVertical: 10,
         flex:1,
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Futura',
+        fontFamily: 'Helvetica',
         fontSize: 15,
         backgroundColor: 'transparent'
     },
+    header: {
+            marginTop:10,
+            color: '#2A2A30',
+            textAlign: 'center',
+            fontStyle: 'normal',
+            fontFamily: 'Helvetica',
+            fontSize: 18,
+            backgroundColor: 'transparent',
+
+    }
 });
 
 const mapStateToProps = state => {

@@ -2,8 +2,8 @@
  * Created by nickruspantini on 6/29/17.
  */
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet,StatusBar, ScrollView, TouchableOpacity, Slider} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Image} from 'react-native';
+
 
 
 class Categories extends Component{
@@ -14,71 +14,53 @@ class Categories extends Component{
             <ScrollView style={styles.container}>
 
 
-                <TouchableOpacity style={styles.container} >
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#804cc8' }} name="md-bookmarks">
-                        <Text style={styles.title} >  Current Events</Text>
-                    </Icon>
-                </TouchableOpacity>
 
-                <TouchableOpacity style={styles.container} >
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#804cc8' }} name="ios-body">
-                        <Text style={styles.title} >  Fitness</Text>
-                    </Icon>
+                <View style={{flexDirection: 'row', flex:1}}>
+                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10}}>
+                    <Image
+                        style={{ width: 130, height:154, alignSelf: 'center', opacity: 1}}
+                        source={require('tess/src/images/currEvents-cat.png')}
+                    />
                 </TouchableOpacity>
+                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: 10}}>
+                    <Image
+                        style={{ width: 128, height:154, alignSelf: 'center', opacity: 1}}
+                        source={require('tess/src/images/fitness-cat.png')}
+                    />
+                </TouchableOpacity>
+                </View>
 
-                <TouchableOpacity style={styles.container} >
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#804cc8' }} name="md-megaphone">
-                        <Text style={styles.title} >  Politics</Text>
-                    </Icon>
-                </TouchableOpacity>
 
-                <TouchableOpacity style={styles.container} >
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#804cc8' }} name="md-game-controller-b">
-                        <Text style={styles.title} >  Gaming</Text>
-                    </Icon>
+                <View style={{flexDirection: 'row', flex:1}}>
+                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingVertical: 10}}>
+                    <Image
+                        style={{ width: 130, height:154, alignSelf: 'center', opacity: 1}}
+                        source={require('tess/src/images/politics-cat.png')}
+                    />
                 </TouchableOpacity>
+                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: 10}}>
+                    <Image
+                        style={{ width: 128, height:154, alignSelf: 'center', opacity: 1}}
+                        source={require('tess/src/images/gaming-cat.png')}
+                    />
+                </TouchableOpacity>
+                </View>
 
-                <TouchableOpacity style={styles.container} >
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#804cc8' }} name="ios-football">
-                        <Text style={styles.title} >  Sports</Text>
-                    </Icon>
-                </TouchableOpacity>
 
-                <TouchableOpacity style={styles.container} >
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#804cc8' }} name="ios-musical-notes">
-                        <Text style={styles.title} >  Entertainment</Text>
-                    </Icon>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.container} >
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#804cc8' }} name="md-people">
-                        <Text style={styles.title} >  Life</Text>
-                    </Icon>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.container} >
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#804cc8' }} name="ios-shirt">
-                        <Text style={styles.title} >  Fashion</Text>
-                    </Icon>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.container} >
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#804cc8' }} name="md-trending-up">
-                        <Text style={styles.title} >  Trends</Text>
-                    </Icon>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.container} >
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#804cc8' }} name="ios-car">
-                        <Text style={styles.title} >  Cars</Text>
-                    </Icon>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.container} >
-                    <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 60,color:'#804cc8' }} name="md-code-working">
-                        <Text style={styles.title} >  Misc</Text>
-                    </Icon>
-                </TouchableOpacity>
+                <View style={{flexDirection: 'row', flex:1}}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10, paddingBottom: 150}}>
+                        <Image
+                            style={{ width: 128, height:154, alignSelf: 'center', opacity: 1}}
+                            source={require('tess/src/images/sports-cat.png')}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: 10}}>
+                        <Image
+                            style={{ width: 130, height:154, alignSelf: 'center', opacity: 1}}
+                            source={require('tess/src/images/entertainment-cat.png')}
+                        />
+                    </TouchableOpacity>
+                </View>
 
 
 
@@ -93,23 +75,12 @@ class Categories extends Component{
 
 const styles = StyleSheet.create({
     container:{
+        paddingTop: 10,
         flex: 1,
         backgroundColor: 'transparent',
-        marginTop: 0,
+
     },
 
-    title: {
-        color: '#804cc8',
-        marginTop: 20,
-        marginLeft: 20,
-        flex:1,
-        textAlign: 'left',
-        opacity: 2,
-        fontStyle: 'normal',
-        fontFamily: 'Futura',
-        fontSize: 25,
-        backgroundColor: 'transparent'
-    },
 
 });
 

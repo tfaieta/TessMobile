@@ -176,7 +176,7 @@ class ListItem extends Component {
         if (currentUser.uid == podcastArtist) {
             return (
 
-                <TouchableHighlight underlayColor='#804cc8' onPress={this.onRowPress.bind(this)}>
+                <TouchableHighlight underlayColor='#5757FF' onPress={this.onRowPress.bind(this)}>
                     <View style={styles.container}>
 
 
@@ -186,7 +186,7 @@ class ListItem extends Component {
                                 marginLeft: 20,
                                 paddingRight: 8,
                                 fontSize: 35,
-                                color: '#be8eff'
+                                color: '#5757FF',
                             }} name="ios-play">
                             </Icon>
                         </View>
@@ -204,7 +204,7 @@ class ListItem extends Component {
                                 marginLeft: 20,
                                 paddingRight: 8,
                                 fontSize: 35,
-                                color: '#be8eff'
+                                color: '#5757FF',
                             }} name="md-trash">
                             </Icon>
                         </View>
@@ -220,7 +220,7 @@ class ListItem extends Component {
         else{
             return (
 
-                <TouchableHighlight underlayColor='#804cc8' onPress={this.onRowPress.bind(this)}>
+                <TouchableHighlight underlayColor='#5757FF' onPress={this.onRowPress.bind(this)}>
                     <View style={styles.container}>
 
 
@@ -230,7 +230,7 @@ class ListItem extends Component {
                                 marginLeft: 20,
                                 paddingRight: 8,
                                 fontSize: 35,
-                                color: '#be8eff'
+                                color: '#5757FF',
                             }} name="ios-play">
                             </Icon>
                         </View>
@@ -248,7 +248,7 @@ class ListItem extends Component {
                                 marginLeft: 20,
                                 paddingRight: 8,
                                 fontSize: 35,
-                                color: '#be8eff'
+                                color: '#5757FF',
                             }} name="md-add">
                             </Icon>
                         </View>
@@ -271,26 +271,26 @@ class ListItem extends Component {
 
 const styles = {
     title: {
-        color: '#804cc8',
+        color: '#2A2A30',
         marginTop: 0,
         flex:1,
         textAlign: 'center',
         paddingLeft: 0,
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Futura',
+        fontFamily: 'Helvetica',
         fontSize: 20,
         backgroundColor: 'transparent'
     },
     artistTitle: {
-        color: '#804cc8',
+        color: '#828393',
         marginTop: 0,
         flex:1,
         textAlign: 'center',
         paddingLeft: 2,
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Futura',
+        fontFamily: 'Helvetica',
         fontSize: 15,
         backgroundColor: 'transparent'
     },

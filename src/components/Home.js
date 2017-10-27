@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Text, View, StyleSheet,StatusBar, ListView} from 'react-native';
+import { Text, View, StyleSheet,StatusBar, ListView, ScrollView, TouchableOpacity, Image} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import Variables from './Variables';
 import firebase from 'firebase';
 import { podcastFetchNew} from "../actions/PodcastActions";
 import { connect } from 'react-redux';
 import ListItemUsers from '../components/ListItemUsers';
-import Swiper from 'react-native-swiper';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 
@@ -88,18 +88,29 @@ class Home extends Component{
             style={styles.container}>
 
             <StatusBar
-                barStyle="light-content"
+                barStyle="dark-content"
             />
 
-            <Swiper showsButtons buttonWrapperStyle = {{backgroundColor: 'transparent', flexDirection: 'row', position: 'absolute', top: -320, left: 0, flex: 1, paddingHorizontal: 10, paddingVertical: 10, justifyContent: 'space-between', alignItems: 'center'}}>
+
+                    <ScrollView>
 
 
-
-                    <View style={{flex:1}}>
-                    <Text style={styles.title}>New</Text>
+                    <View>
+                        <View style={{flexDirection:'row'}}>
+                            <View style={{alignSelf:'flex-start'}}>
+                            <Text style={styles.title}>New Releases</Text>
+                            </View>
+                            <View style={{alignSelf:'flex-end'}}>
+                                <TouchableOpacity style={{marginLeft: 150}}>
+                                    <Text style={styles.viewAll}>View all</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
 
 
                     <ListView
+                        showsHorizontalScrollIndicator={false}
+                        horizontal={true}
                         enableEmptySections
                         dataSource={this.dataSourceNewPodcasts}
                         renderRow={this.renderRowNewPodcasts}
@@ -107,28 +118,81 @@ class Home extends Component{
                     </View>
 
 
-                <View>
+
+                    <ScrollView style={{height: 122, marginVertical: 20}} horizontal={true} showsHorizontalScrollIndicator={false}>
+                        <TouchableOpacity style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, borderRadius: 10, borderWidth: 0.1}}>
+                            <Image
+                                style={{width: 218, height:122, position: 'absolute', alignSelf: 'center', opacity: 0.9, borderRadius: 10, borderWidth: 0.1}}
+                                source={require('tess/src/images/fitness.png')}
+                            >
+                                <Icon style={{
+                                    textAlign: 'center',
+                                    marginTop: 30,
+                                    fontSize: 30,
+                                    backgroundColor: 'transparent',
+                                    color: '#FFF'
+                                }} name="ios-flash">
+                                </Icon>
+                                <Text style={styles.catTitle}>Fitness</Text>
+                            </Image>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, borderRadius: 10, borderWidth: 0.1}}>
+                            <Image
+                                style={{width: 218, height:122, position: 'absolute', alignSelf: 'center', opacity: 0.9, borderRadius: 10, borderWidth: 0.1}}
+                                source={require('tess/src/images/worldNews.png')}
+                            >
+                                <Icon style={{
+                                    textAlign: 'center',
+                                    marginTop: 30,
+                                    fontSize: 30,
+                                    backgroundColor: 'transparent',
+                                    color: '#FFF'
+                                }} name="md-globe">
+                                </Icon>
+                                <Text style={styles.catTitle}>World News</Text>
+                            </Image>
+                        </TouchableOpacity>
+                    </ScrollView>
+
+
+
+            <View>
+                <View style={{flexDirection:'row'}}>
+                    <View style={{alignSelf:'flex-start'}}>
+                        <Text style={styles.title}>Selected by Tess</Text>
+                    </View>
+                    <View style={{alignSelf:'flex-end'}}>
+                        <TouchableOpacity style={{marginLeft: 130}}>
+                            <Text style={styles.viewAll}>View all</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                </View>
+                <ListView
+                    showsHorizontalScrollIndicator={false}
+                    horizontal={true}
+                    enableEmptySections
+                    dataSource={this.dataSourceNewPodcasts}
+                    renderRow={this.renderRowNewPodcasts}
+                />
+            </View>
+
+
+                <View style={{paddingBottom: 150}}>
                     <Text style={styles.title}>From Tess</Text>
                     <Text style={styles.title2}>Hey Everyone! Thank you for downloading Tess, your feedback is important. We look forward to hearing from you! Check out our updates on the beta below. </Text>
                 </View>
 
 
 
-                <View>
-                    <Text style={styles.title}>Selected by Tess</Text>
-                </View>
 
 
 
 
 
+                </ScrollView>
 
-
-
-
-
-
-            </Swiper>
 
 
 
@@ -152,7 +216,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: 'transparent',
-        marginTop: 80,
+        marginTop: 20,
     },
     homeContainer:{
         flex:1,
@@ -166,19 +230,47 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        color: '#804cc8',
-        textAlign: 'center',
+        color: '#2A2A30',
+        textAlign: 'left',
         fontStyle: 'normal',
-        fontFamily: 'Futura',
-        fontSize: 30,
-        paddingBottom: 10,
+        fontFamily: 'Helvetica',
+        fontSize: 20,
+        marginTop: 20,
+        paddingLeft: 20,
         backgroundColor: 'transparent',
     },
     title2: {
-        color: '#804cc8',
-        textAlign: 'center',
-        fontSize: 18
+        color: '#9496A3',
+        textAlign: 'left',
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        fontSize: 16,
+        marginTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 20,
+        backgroundColor: 'transparent',
     },
+
+    viewAll: {
+        color: '#5757FF',
+        textAlign: 'right',
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        fontSize: 16,
+        marginTop: 20,
+        paddingBottom: 10,
+        backgroundColor: 'transparent',
+    },
+
+    catTitle: {
+        fontSize: 18,
+        color: 'white',
+        marginTop: 5,
+        textAlign: 'center',
+        backgroundColor: 'transparent',
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+    }
 
 
 });

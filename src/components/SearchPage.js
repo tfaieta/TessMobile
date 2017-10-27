@@ -30,26 +30,24 @@ class SearchPage extends Component{
             <View style={styles.container}>
 
 
-                <StatusBar
-                    barStyle="light-content"
-                />
-
                 <View style={styles.backColor}>
 
                     <View style={styles.backButtonContainer}>
                         <TouchableOpacity onPress={this.Back}>
-                            <Icon style={{textAlign:'left', marginRight:0,marginLeft: 0,paddingTop: 0, fontSize: 30,color:'#FFF' }} name="ios-arrow-back">
+                            <Icon style={{textAlign:'left', marginRight:0,marginLeft: 0,paddingTop: 0, fontSize: 30,color:'#BBBCCD' }} name="ios-arrow-back">
                             </Icon>
                         </TouchableOpacity>
                     </View>
 
                     <SearchBar
+                        lightTheme
                         round
+                        inputStyle={{backgroundColor: '#fff'}}
                         containerStyle= {styles.containerSearch}
                         placeholder={this.state.search}
-                        placeholderTextColor = 'rgba(170,170,170,1)'
-                        icon = {{ color: 'rgba(170,170,170,1)', name: 'search' }}
-                        clearIcon = {{ color: 'rgba(170,170,170,1)', name: 'close' }}
+                        placeholderTextColor = '#2A2A30'
+                        icon = {{ color: '#5757FF', name: 'search' }}
+                        clearIcon = {{ color: '#BBBCCD', name: 'close' }}
                         autoCorrect={false}
                         autoCapitalize="none"
                         value={this.state.search}
@@ -116,7 +114,7 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        color: '#804cc8',
+        color: '#2A2A30',
         marginTop: 20,
         marginLeft: 20,
         flex:1,
@@ -128,7 +126,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     backColor:{
-        backgroundColor:  '#804cc8',
+        backgroundColor:  '#fff',
         flexDirection: 'row',
     },
 
@@ -136,13 +134,13 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         marginTop: 20,
         width: 343.5,
-        backgroundColor: '#804cc8',
-        borderColor:'#804cc8',
+        backgroundColor: '#fff',
+        borderColor:'#fff',
         borderWidth: 1,
         borderTopWidth: 1,
         borderBottomWidth: 1,
-        borderTopColor: '#804cc8',
-        borderBottomColor: '#804cc8',
+        borderTopColor: '#fff',
+        borderBottomColor: '#fff',
     },
     backButtonContainer:{
         paddingTop: 28,

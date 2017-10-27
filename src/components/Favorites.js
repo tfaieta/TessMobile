@@ -9,6 +9,7 @@ import Variables from "./Variables";
 import Icon from 'react-native-vector-icons/Ionicons';
 import {AudioUtils} from 'react-native-audio';
 import RNFetchBlob from 'react-native-fetch-blob';
+import {Actions} from 'react-native-router-flux';
 
 
 
@@ -78,6 +79,10 @@ class Favorites extends Component{
 
     }
 
+    _pressBack(){
+        Actions.pop();
+    }
+
 
 
     renderRow(rowData) {
@@ -95,7 +100,7 @@ class Favorites extends Component{
 
 
         return (
-            <TouchableOpacity underlayColor='#804cc8' onPress={this.onRowPress}>
+            <TouchableOpacity underlayColor='#5757FF' onPress={this.onRowPress}>
                 <View style={styles.container2}>
 
 
@@ -103,10 +108,9 @@ class Favorites extends Component{
                         <Icon style={{
                             textAlign: 'left',
                             marginLeft: 20,
-                            paddingRight: 8,
                             fontSize: 70,
-                            color: '#be8eff'
-                        }} name="md-contact">
+                            color: '#b5b6cd'
+                        }} name="md-square">
                         </Icon>
                     </View>
 
@@ -129,6 +133,25 @@ class Favorites extends Component{
         return (
             <View
                 style={styles.container}>
+
+                <View style={{flexDirection: 'row', width: 375, height: 70, borderRadius: 10, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
+                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
+                        <TouchableOpacity onPress={this._pressBack}>
+                            <Icon style={{
+                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#9496A3'
+                            }} name="md-arrow-round-back">
+                            </Icon>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
+                        <Text style={styles.header}>Favorites</Text>
+                    </View>
+
+                    <View>
+                    </View>
+
+                </View>
+
 
 
                     <ListView
@@ -156,7 +179,6 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: 'transparent',
-        paddingTop: 70,
     },
 
     title: {
@@ -195,26 +217,26 @@ const styles = StyleSheet.create({
     },
 
     title2: {
-        color: '#804cc8',
+        color: '#2A2A30',
         flex:1,
+        marginTop:20,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Futura',
-        fontSize: 25,
+        fontFamily: 'Helvetica',
+        fontSize: 20,
         backgroundColor: 'transparent'
     },
     artistTitle: {
-        color: '#804cc8',
+        color:  '#9496A3',
         marginTop: 0,
         flex:1,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Futura',
-        fontSize: 20,
+        fontFamily: 'Helvetica',
+        fontSize: 18,
         backgroundColor: 'transparent',
-        marginHorizontal: -300,
     },
 
     leftContainer: {
@@ -226,6 +248,17 @@ const styles = StyleSheet.create({
         marginTop: 3,
         marginHorizontal: -200,
     },
+    header: {
+        marginTop:10,
+        marginLeft: -35,
+        color: '#2A2A30',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        fontSize: 18,
+        backgroundColor: 'transparent',
+
+    }
 
 });
 

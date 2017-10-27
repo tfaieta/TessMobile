@@ -2,37 +2,64 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PlayerBottom from './PlayerBottom';
+import {Actions} from 'react-native-router-flux';
 
 
 class Queue extends Component{
+
+    _pressBack(){
+        Actions.pop();
+    }
 
 
     render() {
         return (
             <View
                 style={styles.container}>
+
+
+                <View style={{flexDirection: 'row', width: 375, height: 70, borderRadius: 10, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
+                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
+                        <TouchableOpacity onPress={this._pressBack}>
+                            <Icon style={{
+                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#9496A3'
+                            }} name="md-arrow-round-back">
+                            </Icon>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
+                        <Text style={styles.header}>Recently Played</Text>
+                    </View>
+
+                    <View>
+                    </View>
+
+                </View>
+
+
+
                 <ScrollView>
 
                     <TouchableOpacity>
-                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#804cc8' }} name="ios-play">
+                        <Icon style={{textAlign:'left', marginLeft: 20,  fontSize: 35,color:'#5757FF' }} name="ios-play">
                             <Text style={styles.title} >  Play Podcast</Text>
                         </Icon>
                     </TouchableOpacity>
 
                     <TouchableOpacity>
-                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#804cc8' }} name="ios-play">
+                        <Icon style={{textAlign:'left', marginLeft: 20, fontSize: 35,color:'#5757FF' }} name="ios-play">
                             <Text style={styles.title} >  Play Podcast</Text>
                         </Icon>
                     </TouchableOpacity>
 
                     <TouchableOpacity>
-                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#804cc8' }} name="ios-play">
+                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#5757FF' }} name="ios-play">
                             <Text style={styles.title} >  Play Podcast</Text>
                         </Icon>
                     </TouchableOpacity>
 
                     <TouchableOpacity>
-                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#804cc8' }} name="ios-play">
+                        <Icon style={{textAlign:'left', marginLeft: 20, fontSize: 35,color:'#5757FF' }} name="ios-play">
                             <Text style={styles.title} >  Play Podcast</Text>
                         </Icon>
                     </TouchableOpacity>
@@ -58,18 +85,17 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: 'transparent',
-        paddingTop: 70,
     },
 
     title: {
-        color: '#804cc8',
+        color: '#9496A3',
         marginTop: 70,
         flex:1,
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Futura',
-        fontSize: 25,
+        fontFamily: 'Helvetica',
+        fontSize: 20,
         backgroundColor: 'transparent'
     },
 
@@ -80,6 +106,18 @@ const styles = StyleSheet.create({
         marginLeft: 20,
 
     },
+
+    header: {
+        marginTop:10,
+        marginLeft: -35,
+        color: '#2A2A30',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        fontSize: 18,
+        backgroundColor: 'transparent',
+
+    }
 
 });
 

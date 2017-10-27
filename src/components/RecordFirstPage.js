@@ -1,22 +1,29 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet,StatusBar, ScrollView, TouchableOpacity, Slider} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
 import PlayerBottom from './PlayerBottom';
+import Variables from "./Variables";
 
 
 
 
 class RecordFirstPage extends Component{
 
+    componentWillMount(){
+        Variables.pause();
+        Variables.state.isPlaying = false;
+    }
+
+
+
+
 recordNewPodcast(){
     Actions.Record();
 }
 
-uploadPodcast(){
 
-}
 
     render() {
         return (
@@ -24,24 +31,45 @@ uploadPodcast(){
                 style={styles.container}>
 
 
+                <View style={{flexDirection: 'row', width: 375, height: 70, borderRadius: 10, borderWidth: 2, marginBottom: 20, borderColor: 'rgba(187,188,205,0.3)',   }}>
+                    <View style={{justifyContent: 'center', alignItems: 'center',}}>
+                        <Text style={styles.header}>Create a Podcast</Text>
+                    </View>
+
+                    <View style={{justifyContent: 'center', alignItems: 'flex-end', marginTop: 16}}>
+                        <TouchableOpacity >
+                            <Icon style={{
+                                textAlign: 'right',
+                                fontSize: 24,
+                                marginLeft: 75,
+                                color: '#5757FF'
+                            }} name="md-information-circle">
+                            </Icon>
+                        </TouchableOpacity>
+                    </View>
+
+                </View>
+
+
+                <Image
+                    style={{width: 147, height:151, alignSelf: 'center', opacity: 1}}
+                    source={require('tess/src/images/record-icon.png')}
+                />
+
+                <Text style={styles.title}>Record New Podcast</Text>
+
+                <Text style={styles.title2}>Let people know what you have to say.</Text>
 
 
 
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.buttonPreview}  onPress={this.recordNewPodcast}>
-                        <Icon style={{textAlign:'center', marginTop: 5, fontSize: 35,color:'#804cc8' }} name="md-microphone">
-                            <Text  style={styles.contentTitle}>  Record New Podcast</Text>
-                        </Icon>
+                            <Text style={styles.contentTitle}>Get Started</Text>
                     </TouchableOpacity>
 
 
 
-                    <TouchableOpacity style={styles.buttonPreview}  onPress={this.uploadPodcast}>
-                        <Icon style={{textAlign:'center', marginTop: 5, fontSize: 35,color:'#804cc8' }} name="md-add">
-                            <Text  style={styles.contentTitle}>  Upload Podcast</Text>
-                        </Icon>
-                    </TouchableOpacity>
 
 
 
@@ -50,8 +78,6 @@ uploadPodcast(){
 
 
 
-
-                <PlayerBottom/>
 
             </View>
 
@@ -65,53 +91,65 @@ uploadPodcast(){
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#804cc8',
-        paddingTop: 140,
+        backgroundColor: '#fff',
     },
 
     title: {
-        color: '#804cc8',
-        marginTop: 70,
-        flex:1,
-        textAlign: 'center',
-        opacity: 2,
+        color: '#2A2A30',
+        textAlign: 'left',
         fontStyle: 'normal',
-        fontFamily: 'Futura',
-        fontSize: 25,
-        backgroundColor: 'transparent'
+        fontFamily: 'Helvetica',
+        fontSize: 50,
+        marginTop: 20,
+        paddingLeft: 20,
+        backgroundColor: 'transparent',
+    },
+
+    title2: {
+        color: '#828393',
+        textAlign: 'left',
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        fontSize: 18,
+        marginTop: 20,
+        marginHorizontal: 20,
+        backgroundColor: 'transparent',
     },
 
     contentTitle: {
-        color: '#FFF',
-        fontSize: 25,
-        paddingBottom: 20,
-        textAlign: 'center',
+        color: '#fff',
+        fontSize: 18,
+        paddingVertical: 20,
+        textAlign: 'left',
         fontStyle: 'normal',
-        fontFamily: 'Futura',
+        fontFamily: 'Helvetica',
 
     },
 
     buttonPreview: {
-        backgroundColor: '#e8952f',
+        marginHorizontal: 20,
+        backgroundColor: '#5757FF',
         alignItems: 'center',
-        paddingBottom: 15,
+        borderWidth: 0.1,
+        borderRadius: 10,
     },
 
-    buttonUpload: {
-        backgroundColor: '#657ed4',
-        alignItems: 'center',
-        paddingTop: 15,
-    },
-
-    buttonCancel: {
-        backgroundColor: '#69bbd9',
-        alignItems: 'center',
-        paddingTop: 15,
-    },
 
     buttonContainer: {
         marginTop: 50,
     },
+
+    header: {
+        marginTop:10,
+        marginLeft: 120,
+        color: '#2A2A30',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        fontSize: 18,
+        backgroundColor: 'transparent',
+
+    }
 
 
 });

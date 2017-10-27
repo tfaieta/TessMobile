@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { View, StyleSheet, ScrollView, ListView} from 'react-native';
+import { View, StyleSheet, ScrollView, ListView, Text, TouchableOpacity} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { connect } from 'react-redux';
 import { podcastFetch } from "../actions/PodcastActions"
 import ListItem from './ListItem';
+import {Actions} from 'react-native-router-flux';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 
@@ -39,10 +41,38 @@ class MyContent extends Component{
     }
 
 
+    _pressBack(){
+        Actions.pop();
+    }
+
+
+
     render() {
         return (
             <View
                 style={styles.container}>
+
+                <View style={{flexDirection: 'row', width: 375, height: 70, borderRadius: 10, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
+                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
+                        <TouchableOpacity onPress={this._pressBack}>
+                            <Icon style={{
+                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#9496A3'
+                            }} name="md-arrow-round-back">
+                            </Icon>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
+                        <Text style={styles.header}>My Content</Text>
+                    </View>
+
+                    <View>
+                    </View>
+
+                </View>
+
+
+
+
                 <ScrollView>
 
                     <ListView
@@ -71,7 +101,6 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: 'transparent',
-        paddingTop: 70,
     },
 
     title: {
@@ -93,6 +122,18 @@ const styles = StyleSheet.create({
         marginLeft: 20,
 
     },
+
+    header: {
+        marginTop:10,
+        marginLeft: -35,
+        color: '#2A2A30',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        fontSize: 18,
+        backgroundColor: 'transparent',
+
+    }
 
 });
 

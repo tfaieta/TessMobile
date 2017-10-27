@@ -2,12 +2,12 @@
  * Created by nickruspantini on 6/6/17.
  */
 import React, {Component} from 'react';
-import {StyleSheet, View, Image, Text, TouchableOpacity,} from 'react-native';
+import {StyleSheet, View, Image, Text, TouchableOpacity, StatusBar} from 'react-native';
 import FBSDK, { LoginManager } from 'react-native-fbsdk';
 import { Actions } from 'react-native-router-flux';
-
 import AppIntro from 'react-native-app-intro';
 import Icon from 'react-native-vector-icons/Ionicons';
+import LinearGradient from "react-native-linear-gradient/index.android";
 
 
 
@@ -18,16 +18,9 @@ export  default class Login extends Component{
 
 
     _handleButtonPressLogin = () => {
-        Actions.LoginForm();
+        Actions.Login();
     };
 
-    _handleButtonPressCreate = () => {
-        Actions.CreateAccount();
-    };
-
-    _overrideLogin = () => {
-        Actions.Main();
-    };
 
 
 
@@ -55,30 +48,38 @@ export  default class Login extends Component{
     render() {
         return (
             <View>
+                <StatusBar hidden={true} />
 
-
-                <View style={styles.container}>
-            <AppIntro style={styles.wrapper}
+            <View style={styles.container}>
+            <AppIntro
+                horizontal={false}
                     showsButtons={false}
                     autoplay={true}
                     autoplayTimeout={5}
                     loop={false}
                     showsPagination={false}
                       showDoneButton={false}
-                      showDots={false}
+                      showDots={true}
                       showSkipButton={false}
+                    dotColor='#acadc2'
+                    activeDotColor='#5555ff'
             >
 
                 <View style={styles.slide1}>
-                    <View level={20} style={styles.logoContainer}>
-                        <Image
-                            style={styles.logo}
-                            source={require('tess/src/images/logo.png')}
-                        />
-
+                    <View style={styles.linearGradient} level={0}>
                     </View>
+                    <Image
+                        style={{width: 315, height:310, position: 'absolute', alignSelf: 'flex-end', opacity: 1}}
+                        source={require('tess/src/images/woman-listening-music.png')}
+                    />
+
                     <View level = {-20} style={styles.textContainer}>
-                        <Text style={styles.textforSlide1 }>Swipe to see what we're about</Text>
+                        <View style={{marginLeft:10}}>
+                        <Text style={styles.textforSlide1}>Ready to Create?</Text>
+                        </View>
+                        <View style={{marginLeft:10, marginTop:10}}>
+                        <Text style={styles.smallText}>We make it easy for anyone to record high-quality audio.</Text>
+                        </View>
                     </View>
                 </View>
 
@@ -86,33 +87,33 @@ export  default class Login extends Component{
 
                 <View style={styles.slide2}>
                     <View level = {20}>
-                        <Icon style={{textAlign:'center', fontSize: 80,color:'#FFF' }} name="md-microphone">
+                        <Icon style={{textAlign:'center', fontSize: 80,color:'#9787FF' }} name="md-microphone">
                         </Icon>
                     </View>
                     <View level={-20}>
-                    <Text style={styles.text}>Tess is a podcast platform</Text>
+                    <Text style={styles.smallText}>Tess is a podcast platform</Text>
                     </View>
                 </View>
 
 
                 <View style={styles.slide3}>
                     <View level = {20}>
-                        <Icon style={{textAlign:'center', fontSize: 80,color:'#FFF' }} name="md-headset">
+                        <Icon style={{textAlign:'center', fontSize: 80,color:'#9787FF' }} name="md-headset">
                         </Icon>
                     </View>
                     <View level = {-20}>
-                    <Text style={styles.text}>A place to easily listen to or create podcasts</Text>
+                    <Text style={styles.smallText}>A place to easily listen to or create podcasts</Text>
                     </View>
                 </View>
 
 
                 <View style={styles.slide4}>
                     <View level = {20}>
-                        <Icon style={{textAlign:'center', fontSize: 80,color:'#FFF' }} name="ios-radio-button-on">
+                        <Icon style={{textAlign:'center', fontSize: 80,color:'#9787FF' }} name="ios-radio-button-on">
                         </Icon>
                     </View>
                     <View level = {-20}>
-                    <Text style={styles.text}>Record with the touch of a button</Text>
+                    <Text style={styles.smallText}>Record with the touch of a button</Text>
                     </View>
                 </View>
 
@@ -126,32 +127,17 @@ export  default class Login extends Component{
 
 
 
-            <View style={{marginTop: 430}}>
-                <View style={styles.formContainer2}>
-                    <TouchableOpacity onPress={this._handleButtonPressCreate} style={styles.buttonContainer}>
-                        <Text style={styles.smallText}>
-                            Get Started
-                        </Text>
+            <View style={{marginTop: 550, marginRight: 40}}>
+
+
+
+                    <TouchableOpacity onPress={this._handleButtonPressLogin} style = {{ marginLeft: 275, width: 75, height: 75, backgroundColor: 'rgba(151,135,255,0.16)',borderRadius: 40, borderColor:  'rgba(151,135,255,0)', borderWidth: 2.5, alignItems: 'center'}}>
+                        <Image
+                            style={styles.logo}
+                            source={require('tess/src/images/Circle-button.png')}
+                        />
                     </TouchableOpacity>
-                </View>
 
-
-                <View style={styles.formContainer3}>
-                    <TouchableOpacity onPress={this._fbAuth} style={styles.buttonContainer2}>
-                        <Text style={styles.smallText}>
-                            Login with Facebook
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={styles.formContainer}>
-
-                    <TouchableOpacity onPress={this._handleButtonPressLogin} style={styles.buttonContainer3}>
-                        <Text style={styles.smallText2}>
-                            Login
-                        </Text>
-                    </TouchableOpacity>
-                </View>
 
 
 
@@ -164,23 +150,29 @@ export  default class Login extends Component{
     }
 }
 
-//noinspection JSAnnotator
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#595bc8',
+        backgroundColor: '#fff',
     },
-    logoContainer: {
-        alignItems: 'center',
 
+    linearGradient: {
+        width: 315,
+        height: 310,
+        alignSelf: 'flex-end',
+        backgroundColor: 'transparent'
     },
     textContainer: {
-        flex: 1
+        flex: 1,
+        marginTop:10
     },
     logo: {
-        marginTop:10,
-        width: 250,
-        height: 200
+        marginRight:10,
+        marginTop: 11,
+        width: 49,
+        height: 49,
+        position: 'absolute',
     },
     title: {
         color: '#ffffff',
@@ -189,137 +181,58 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Futura',
+        fontFamily: 'Helvetica',
         fontSize: 25,
         backgroundColor: 'transparent'
-    },
-    input: {
-        height: 40,
-        backgroundColor: 'rgba(170,170,170,0.5)',
-        marginBottom: 10,
-        color: '#FFF',
-        paddingHorizontal: 10
-    },
-    buttonContainer: {
-        backgroundColor: '#e8952f',
-        paddingVertical: 30,
-        paddingHorizontal: 5,
-    },
-    buttonContainer2: {
-        backgroundColor: '#657ed4',
-        paddingVertical: 30,
-        paddingHorizontal: 5,
-    },
-    buttonContainer3: {
-        backgroundColor: 'rgba(1,170,170,1)',
-        paddingVertical: 30,
-        paddingHorizontal: 5,
-    },
-    buttonText: {
-        textAlign: 'center',
-        color: '#FFFFFF',
-        fontWeight: '900'
-    },
-
-    textStyle: {
-        textAlign: 'center',
-        color: '#fff',
-        fontStyle: 'normal',
-        fontFamily: 'Futura',
-        fontSize: 30,
-    },
-    formContainer: {
-        paddingTop: 0,
-        paddingBottom: 0,
-        backgroundColor: 'rgba(200,200,200,0.3)',
-        marginLeft: 0,
-        marginRight: 0,
-    },
-    formContainer2: {
-        paddingTop: 0,
-        paddingBottom: 0,
-        backgroundColor: 'rgba(200,200,200,0.3)',
-        marginLeft: 0,
-        marginRight: 0,
-    },
-    formContainer3: {
-        paddingTop: 0,
-        paddingBottom: 0,
-        backgroundColor: 'rgba(200,200,200,0.3)',
-        marginLeft: 0,
-        marginRight: 0,
-    },
-
-    wrapper: {
     },
 
     slide1: {
         paddingTop: 0,
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#e8952f'
+        backgroundColor: '#fff'
     },
     slide2: {
         flex: 1,
         paddingTop: 150,
         alignItems: 'center',
-        backgroundColor: '#657ed4'
+        backgroundColor: '#fff'
     },
     slide3: {
         flex: 1,
         paddingTop: 150,
         alignItems: 'center',
-        backgroundColor: 'rgba(1,170,170,1)'
+        backgroundColor: '#fff'
     },
     slide4: {
         flex: 1,
         paddingTop: 150,
         alignItems: 'center',
-        backgroundColor: '#69bbd9'
+        backgroundColor: '#fff'
     },
-    text: {
-        color: '#fff',
-        fontSize: 30,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginLeft: 30,
-        paddingBottom:20,
-        marginRight: 30,
-    },
-    textforSlide1: {
-        color: '#fff',
-        fontSize: 30,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginLeft: 30,
-        marginRight: 30,
-        paddingTop: 60,
 
+    textforSlide1: {
+        color: '#2A2A30',
+        fontSize: 45,
+        textAlign: 'left',
+        fontFamily: 'Helvetica',
+        marginLeft: 30,
+        marginRight: 30,
+        paddingTop: 20,
+        marginHorizontal: -250,
+        paddingBottom: 10,
     },
     smallText: {
-        color: '#fff',
+        color: '#828393',
         fontSize: 16,
-        fontWeight: 'bold',
-        textAlign: 'center',
+        textAlign: 'left',
+        fontFamily: 'Helvetica',
         marginLeft: 30,
         marginRight: 30,
     },
-    smallText2: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginLeft: 30,
-        marginRight: 30,
-    },
-    smallerText: {
-        color: '#fff',
-        fontSize: 12,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginLeft: 30,
-        marginRight: 30,
-    },
+
+
+
 
 
 });

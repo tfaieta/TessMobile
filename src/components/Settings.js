@@ -82,51 +82,51 @@ class Settings extends Component {
                         <SettingsList.Item
                             hasNavArrow={false}
                             title='Account'
-                            titleStyle={{color:'rgba(1,170,170,1)', marginBottom:10, fontWeight:'500'}}
+                            titleStyle={{color:'#5757FF', marginBottom:10, fontWeight:'500', fontFamily: 'Helvetica'}}
                             itemWidth={50}
                             borderHide={'Both'}
                         />
                         <SettingsList.Item
                             icon={
-                                <Icon style={{color: 'rgba(1,170,170,1)', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-image">
+                                <Icon style={{color: '#5757FF', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-image">
                                 </Icon>
                             }
                             hasNavArrow={true}
                             itemWidth={70}
-                            titleStyle={{color:'black', fontSize: 16}}
+                            titleStyle={{color:'black', fontSize: 16, fontFamily: 'Helvetica'}}
                             title='Change Profile Image'
                             onPress={this._handleButtonPressChangeImage}
                         />
                         <SettingsList.Item
                             icon={
-                                <Icon style={{color: 'rgba(1,170,170,1)', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-person">
+                                <Icon style={{color: '#5757FF', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-person">
                                 </Icon>
                             }
                             hasNavArrow={true}
                             itemWidth={70}
-                            titleStyle={{color:'black', fontSize: 16}}
+                            titleStyle={{color:'black', fontSize: 16, fontFamily: 'Helvetica'}}
                             title='Change Username'
                             onPress={this._handleButtonPressChangeUsername}
                         />
                         <SettingsList.Item
                             icon={
-                                <Icon style={{color: 'rgba(1,170,170,1)', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-browsers">
+                                <Icon style={{color: '#5757FF', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-browsers">
                                 </Icon>
                             }
                             title='Change Bio'
                             itemWidth={70}
-                            titleStyle={{color:'black', fontSize: 16}}
+                            titleStyle={{color:'black', fontSize: 16, fontFamily: 'Helvetica'}}
                             hasNavArrow={true}
                             onPress={this._handleButtonPressChangeBio}
                         />
                         <SettingsList.Item
                             icon={
-                                <Icon style={{color: 'rgba(1,170,170,1)', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="ios-heart">
+                                <Icon style={{color: '#5757FF', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="ios-heart">
                                 </Icon>
                             }
                             hasNavArrow={true}
                             itemWidth={70}
-                            titleStyle={{color:'black', fontSize: 16}}
+                            titleStyle={{color:'black', fontSize: 16,fontFamily: 'Helvetica'}}
                             title='Change Favorite Category'
                             onPress={this._handleButtonPressChangeCategory}
                         />
@@ -135,7 +135,7 @@ class Settings extends Component {
                         <SettingsList.Item
                             hasNavArrow={true}
                             title='Log Out'
-                            titleStyle={{color:'rgba(1,170,170,1)', marginBottom:10, fontWeight:'bold'}}
+                            titleStyle={{color:'#5757FF', marginBottom:10, fontWeight:'bold',fontFamily: 'Helvetica' }}
                             itemWidth={70}
                             borderHide={'Both'}
                             onPress={this._handleButtonPressLogOut}

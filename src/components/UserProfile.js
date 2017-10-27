@@ -4,7 +4,6 @@ import {
     StyleSheet,
     Text,
     View,
-    StatusBar,
     ScrollView,
     ListView,
     TouchableOpacity
@@ -146,7 +145,7 @@ class UserProfile extends Component {
     _renderProfileName = () => {
 
         return (
-            <Text style={styles.title2} >{Variables.state.currentUsername}</Text>
+            <Text style={styles.title} >{Variables.state.currentUsername}</Text>
 
         )
 
@@ -337,9 +336,12 @@ class UserProfile extends Component {
             if (Variables.state.following) {
                 return (
                     <TouchableOpacity onPress={this.pressFollowButton} style={{
-                        backgroundColor: 'rgba(1,220,220,1)',
+                        backgroundColor: 'rgba(100,220,220,1)',
                         paddingVertical: 10,
-                        marginHorizontal: 20
+                        marginHorizontal: 30,
+                        marginTop: 20,
+                        borderRadius: 10,
+                        borderWidth: 0.1
                     }}>
                         <Text style={styles.titleFollow}>Unfollow</Text>
                     </TouchableOpacity>
@@ -350,7 +352,10 @@ class UserProfile extends Component {
                     <TouchableOpacity onPress={this.pressFollowButton} style={{
                         backgroundColor: 'rgba(1,170,170,1)',
                         paddingVertical: 10,
-                        marginHorizontal: 20
+                        marginHorizontal: 30,
+                        marginTop: 20,
+                        borderRadius: 10,
+                        borderWidth: 0.1
                     }}>
                         <Text style={styles.titleFollow}>Follow</Text>
                     </TouchableOpacity>
@@ -375,6 +380,10 @@ class UserProfile extends Component {
         }
     };
 
+    _pressBack(){
+        Actions.pop();
+    }
+
 
 
     renderRow(podcast) {
@@ -391,30 +400,44 @@ class UserProfile extends Component {
             <View
                 style={styles.container}>
 
-                <StatusBar
-                    barStyle="light-content"
-                />
+
+                <View style={{flexDirection: 'row', width: 375, height: 70, borderRadius: 10, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
+                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
+                        <TouchableOpacity onPress={this._pressBack}>
+                            <Icon style={{
+                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#9496A3'
+                            }} name="md-arrow-round-back">
+                            </Icon>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
+                        <Text style={styles.header}>{Variables.state.currentUsername}</Text>
+                    </View>
+
+                    <View>
+                    </View>
+
+                </View>
 
 
                 <ScrollView >
 
+                    <Icon style={{textAlign:'center', marginTop:20, marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 180,color:'#BBBCCD' }} name="md-square">
+                    </Icon>
+
                     {this._renderProfileName()}
 
 
-                    <Icon style={{textAlign:'center', marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 200,color:'#804cc8' }} name="md-contact">
-                    </Icon>
                     {this._renderFollowButton()}
 
-                    <Text style={styles.title2 }>Bio</Text>
+
                     {this._renderBio()}
 
 
-                    <Text style={styles.title2 }>Favorite Category</Text>
-                    {this._renderCategory()}
+                    <Text style={styles.title3 }>Content</Text>
+                    <View style={{height:1, backgroundColor:'#b5b6cd', borderRadius: 10, borderWidth:0.1, marginBottom: 10, marginHorizontal: 30 }} />
 
-                    <Text style={styles.title2 }>Content</Text>
-
-                    <View style={{paddingBottom: 30}}>
+                    <View style={{paddingBottom: 120}}>
                         <ListView
                             enableEmptySections
                             dataSource={this.dataSource}
@@ -448,36 +471,36 @@ const styles = StyleSheet.create({
         paddingBottom: 115,
     },
     title: {
-        color: '#804cc8',
+        color: '#2A2A30',
         marginTop: 70,
         flex:1,
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Futura',
+        fontFamily: 'Helvetica',
         fontSize: 25,
         backgroundColor: 'transparent'
     },
     title2: {
-        color: '#804cc8',
-        marginTop: 70,
-        marginBottom: 5,
+        color: '#2A2A30',
+        marginBottom: 70,
         flex:1,
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Futura',
+        fontFamily: 'Helvetica',
         fontSize: 25,
         backgroundColor: 'transparent'
     },
     titleBio: {
-        color: '#804cc8',
+        color: '#828393',
         marginVertical: 10,
+        marginTop: 70,
         flex:1,
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Futura',
+        fontFamily: 'Helvetica',
         fontSize: 15,
         backgroundColor: 'transparent'
     },
@@ -488,10 +511,32 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Futura',
+        fontFamily: 'Helvetica',
+        fontSize: 20,
+        backgroundColor: 'transparent'
+    },
+    title3: {
+        color: '#2A2A30',
+        marginTop: 80,
+        marginBottom: 5,
+        flex:1,
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
         fontSize: 22,
         backgroundColor: 'transparent'
     },
+    header: {
+        marginTop:10,
+        marginLeft: -35,
+        color: '#2A2A30',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        fontSize: 18,
+        backgroundColor: 'transparent',
+
+    }
 });
 
 const mapStateToProps = state => {

@@ -5,7 +5,7 @@ import React from 'react';
 import {StyleSheet, TabBarIOS, Text, Image} from 'react-native';
 import {Scene, Router, TabBar, TabBarProps, Actions, ActionConst } from 'react-native-router-flux';
 import StartUp from './components/StartUp';
-import LoginForm from './components/LoginForm';
+import Login from './components/Login';
 import CreateAccount from './components/CreateAccount';
 import Home from './components/Home';
 import Account from './components/Account';
@@ -23,7 +23,6 @@ import UserProfile from "./components/UserProfile";
 import FollowedContent from "./components/FollowedContent";
 import MyContent from "./components/MyContent";
 import Favorites from "./components/Favorites";
-
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "./components/Variables";
 
@@ -32,8 +31,8 @@ import Variables from "./components/Variables";
 
 const TabIconHome = ({selected}) => {
     return (
-    <Icon style={{color: selected ? 'white' : '#afafaf', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-home">
-        <Text style={{color: selected ? 'white' : '#afafaf', textAlign: 'center', fontSize:14,}}> Home </Text>
+    <Icon style={{color: selected ? '#5757FF' : '#BBBCCD', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-home">
+
     </Icon>
     );
 
@@ -41,8 +40,8 @@ const TabIconHome = ({selected}) => {
 
 const TabIconDiscover = ({selected}) => {
     return (
-        <Icon style={{color: selected ? 'white' : '#afafaf', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-search">
-            <Text style={{color: selected ? 'white' : '#afafaf', textAlign: 'center', fontSize:14,}}> Discover </Text>
+        <Icon style={{color: selected ? '#5757FF' : '#BBBCCD', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-search">
+
         </Icon>
     );
 
@@ -50,8 +49,8 @@ const TabIconDiscover = ({selected}) => {
 
 const TabIconRecord = ({selected}) => {
     return (
-        <Icon style={{color: selected ? 'white' : '#afafaf', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-microphone">
-            <Text style={{color: selected ? 'white' : '#afafaf', textAlign: 'center', fontSize:14,}}> Record </Text>
+        <Icon style={{color: selected ? '#5757FF' : '#BBBCCD', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-microphone">
+
         </Icon>
     );
 
@@ -59,8 +58,8 @@ const TabIconRecord = ({selected}) => {
 
 const TabIconLibrary = ({selected}) => {
     return (
-        <Icon style={{color: selected ? 'white' : '#afafaf', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-headset">
-            <Text style={{color: selected ? 'white' : '#afafaf', textAlign: 'center', fontSize:14,}}> Library </Text>
+        <Icon style={{color: selected ? '#5757FF' : '#BBBCCD', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-headset">
+
         </Icon>
     );
 
@@ -68,8 +67,8 @@ const TabIconLibrary = ({selected}) => {
 
 const TabIconAccount = ({selected}) => {
     return (
-        <Icon style={{color: selected ? 'white' : '#afafaf', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-person">
-            <Text style={{color: selected ? 'white' : '#afafaf', textAlign: 'center', fontSize:14,}}> Account </Text>
+        <Icon style={{color: selected ? '#5757FF' : '#BBBCCD', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: -15, fontSize: 25, }} name="md-person">
+
         </Icon>
     );
 
@@ -77,17 +76,14 @@ const TabIconAccount = ({selected}) => {
 
 
 const RouterComponent = () => {
-    _pressSettings = () => {
-        Actions.Settings();
-    };
 
 
     return (
         <Router headerStyle={styles.header} navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} barButtonTextStyle={styles.barButtonTextStyle} barButtonIconStyle={styles.barButtonIconStyle}>
 
             <Scene key = "StartUp" component={StartUp} hideNavBar={true} initial  />
-            <Scene key = "LoginForm" component={LoginForm} title = "Login" hideNavBar={false} />
-            <Scene key = "CreateAccount" component={CreateAccount} title = "Create Account" hideNavBar={false}  />
+            <Scene key = "Login" component={Login} title = "Login" hideNavBar={true} />
+            <Scene key = "CreateAccount" component={CreateAccount} title = "Sign Up" hideNavBar={false}  />
 
 
 
@@ -98,7 +94,7 @@ const RouterComponent = () => {
             <Scene
                 key="tabbar"
                 tabs
-                tabBarStyle={{backgroundColor:'#804cc8', paddingTop: 20}}
+                tabBarStyle={{backgroundColor:'#fff', paddingTop: 25, paddingBottom:10, marginHorizontal: 10, borderRadius: 10, borderWidth:2, borderColor: 'rgba(100,100,100,0.1)'}}
             >
 
                 <Scene key="Tab1" title="Home" icon={TabIconHome} >
@@ -107,7 +103,7 @@ const RouterComponent = () => {
                         component={Home}
                         title="Home"
                         initial
-                        hideNavBar={false}
+                        hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                         panHandlers={null}
                     />
@@ -192,8 +188,10 @@ const RouterComponent = () => {
                         key="Queue"
                         component={Queue}
                         title="Queue"
-                        hideNavBar={false}
-                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#fff'}}
+                        titleStyle={{fontFamily: 'Helvetica', fontSize: 18, backgroundColor: 'transparent',color: '#2A2A30'}}
+                        leftButtonIconStyle = {{ tintColor:'#9496A3'}}
                         duration={1}
                         panHandlers={null}
                     />
@@ -201,8 +199,10 @@ const RouterComponent = () => {
                         key="Favorites"
                         component={Favorites}
                         title="Favorites"
-                        hideNavBar={false}
-                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#fff'}}
+                        titleStyle={{fontFamily: 'Helvetica', fontSize: 18, backgroundColor: 'transparent',color: '#2A2A30'}}
+                        leftButtonIconStyle = {{ tintColor:'#9496A3'}}
                         duration={1}
                         panHandlers={null}
                     />
@@ -210,8 +210,10 @@ const RouterComponent = () => {
                         key="FollowedContent"
                         component={FollowedContent}
                         title="Followed Creators"
-                        hideNavBar={false}
-                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#fff'}}
+                        titleStyle={{fontFamily: 'Helvetica', fontSize: 18, backgroundColor: 'transparent',color: '#2A2A30'}}
+                        leftButtonIconStyle = {{ tintColor:'#9496A3'}}
                         duration={1}
                         panHandlers={null}
                     />
@@ -219,8 +221,10 @@ const RouterComponent = () => {
                         key="MyContent"
                         component={MyContent}
                         title="My Content"
-                        hideNavBar={false}
-                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#fff'}}
+                        titleStyle={{fontFamily: 'Helvetica', fontSize: 18, backgroundColor: 'transparent',color: '#2A2A30'}}
+                        leftButtonIconStyle = {{ tintColor:'#9496A3'}}
                         duration={1}
                         panHandlers={null}
                     />
@@ -229,12 +233,11 @@ const RouterComponent = () => {
 
                 <Scene key="Tab5" title="Account" icon={TabIconAccount}>
                     <Scene
-                        rightButtonTextStyle={styles.header} rightTitle="Settings"  onRight={this._pressSettings}
                         key="account"
                         component={Account}
                         title="Account"
-                        hideNavBar={false}
-                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#fff'}}
                         duration={1}
                         initial
                         panHandlers={null}
@@ -244,7 +247,9 @@ const RouterComponent = () => {
                         component={Settings}
                         title="Settings"
                         hideNavBar={false}
-                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        navigationBarStyle={{backgroundColor:'#fff'}}
+                        titleStyle={{fontFamily: 'Helvetica', fontSize: 18, backgroundColor: 'transparent',color: '#2A2A30'}}
+                        leftButtonIconStyle = {{ tintColor:'#9496A3'}}
                         duration={1}
                         panHandlers={null}
                     />
@@ -253,8 +258,10 @@ const RouterComponent = () => {
                         key="UserProfile"
                         component={UserProfile}
                         title={Variables.state.podcastArtist}
-                        hideNavBar={false}
-                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#fff'}}
+                        titleStyle={{fontFamily: 'Helvetica', fontSize: 18, backgroundColor: 'transparent',color: '#2A2A30'}}
+                        leftButtonIconStyle = {{ tintColor:'#9496A3'}}
                         panHandlers={null}
                     />
 

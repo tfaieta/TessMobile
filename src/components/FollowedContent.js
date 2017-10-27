@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { View, StyleSheet, ListView, Text, TouchableHighlight} from 'react-native';
+import { View, StyleSheet, ListView, Text, TouchableHighlight, TouchableOpacity} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { connect } from 'react-redux';
 import { podcastFetchFollowed } from "../actions/PodcastActions"
@@ -46,7 +46,7 @@ class FollowedContent extends Component{
 
 
         return (
-            <TouchableHighlight underlayColor='#804cc8' onPress={() => {
+            <TouchableHighlight underlayColor='#5757FF' onPress={() => {
                 Variables.state.podcastArtist = rowData;
                 Actions.UserProfile();
             }}>
@@ -59,8 +59,8 @@ class FollowedContent extends Component{
                             marginLeft: 20,
                             paddingRight: 8,
                             fontSize: 70,
-                            color: '#be8eff'
-                        }} name="md-contact">
+                            color: '#b5b6cd'
+                        }} name="md-square">
                         </Icon>
                     </View>
 
@@ -77,12 +77,36 @@ class FollowedContent extends Component{
     }
 
 
+    _pressBack(){
+        Actions.pop();
+    }
+
 
 
     render() {
         return (
             <View
                 style={styles.container}>
+
+
+                <View style={{flexDirection: 'row', width: 375, height: 70, borderRadius: 10, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
+                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
+                        <TouchableOpacity onPress={this._pressBack}>
+                            <Icon style={{
+                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#9496A3'
+                            }} name="md-arrow-round-back">
+                            </Icon>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
+                        <Text style={styles.header}>Followed Creators</Text>
+                    </View>
+
+                    <View>
+                    </View>
+
+                </View>
+
 
 
                     <ListView
@@ -111,7 +135,6 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: 'transparent',
-        paddingTop: 70,
     },
     container2: {
         paddingHorizontal: 0,
@@ -139,15 +162,15 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     title2: {
-        color: '#804cc8',
-        marginTop: 0,
+        color:  '#2A2A30',
+        marginTop: 20,
         flex:1,
         textAlign: 'left',
         paddingLeft: 0,
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Futura',
-        fontSize: 30,
+        fontFamily: 'Helvetica',
+        fontSize: 20,
         backgroundColor: 'transparent'
     },
 
@@ -191,6 +214,18 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         marginTop: 3,
     },
+
+    header: {
+        marginTop:10,
+        marginLeft: -35,
+        color: '#2A2A30',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        fontSize: 18,
+        backgroundColor: 'transparent',
+
+    }
 
 });
 

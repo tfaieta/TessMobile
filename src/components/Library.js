@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Text, View, StyleSheet, Image, TouchableOpacity, StatusBar} from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import PlayerBottom from './PlayerBottom';
 import Variables from "./Variables";
@@ -59,44 +58,47 @@ class Library extends Component{
             <View
                 style={styles.container}>
 
+                <StatusBar
+                    barStyle="dark-content"
+                />
 
 
-
-
-
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.buttonPreview}  onPress={this.GoToFavs}>
-                        <Icon style={{textAlign:'center', marginTop: 5, fontSize: 35,color:'#FFF'}} name="ios-bookmark">
-                            <Text  style={styles.contentTitle}>  Favorites</Text>
-                        </Icon>
-                    </TouchableOpacity>
-
-
-
-                    <TouchableOpacity style={styles.buttonPreview}  onPress={this.GoToQueue}>
-                        <Icon style={{textAlign:'center', marginTop: 5, fontSize: 35,color:'#FFF' }} name="md-time">
-                            <Text  style={styles.contentTitle}>  Recently Played</Text>
-                        </Icon>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.buttonPreview}  onPress={this.GoToFollowedContent}>
-                        <Icon style={{textAlign:'center', marginTop: 5, fontSize: 35,color:'#FFF' }} name="ios-checkmark-circle">
-                            <Text  style={styles.contentTitle}>  Followed Creators</Text>
-                        </Icon>
-                    </TouchableOpacity>
-
-
-                    <TouchableOpacity style={styles.buttonPreview}  onPress={this.GoToMyContent}>
-                        <Icon style={{textAlign:'center', marginTop: 5, fontSize: 35,color: '#FFF' }} name="md-person">
-                            <Text  style={styles.contentTitle}>  My Content</Text>
-                        </Icon>
-                    </TouchableOpacity>
-
-
+                <View style={{flexDirection: 'row', width: 375, height: 70, borderRadius: 10, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
+                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center',}}>
+                        <Text style={styles.header}>Library</Text>
+                    </View>
                 </View>
 
 
+                <Image
+                    style={{width: 260, height:260, alignSelf: 'center', marginTop: 100}}
+                    source={require('tess/src/images/library-nav.png')}
+                >
 
+
+                    <View style={{flexDirection: 'column'}}>
+                    <View style={{flexDirection: 'row'}}>
+                        <TouchableOpacity onPress={this.GoToFavs} style={{flex:1, width: 260, height:130, alignSelf: 'flex-start'}}>
+
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={this.GoToQueue} style={{flex:1, width: 260, height:130, alignSelf: 'flex-start'}}>
+
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={{flexDirection: 'row'}}>
+                        <TouchableOpacity onPress={this.GoToFollowedContent}  style={{flex:1, width: 260, height:130, alignSelf: 'flex-start'}}>
+
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={this.GoToMyContent} style={{flex:1, width: 260, height:130, alignSelf: 'flex-start'}}>
+
+                        </TouchableOpacity>
+                    </View>
+                    </View>
+
+
+
+                </Image>
 
 
                 <PlayerBottom/>
@@ -113,8 +115,7 @@ class Library extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#804cc8',
-        paddingTop: 70,
+        backgroundColor: '#fff',
     },
 
     title: {
@@ -162,6 +163,16 @@ const styles = StyleSheet.create({
         marginTop: 50,
     },
 
+    header: {
+        marginTop:10,
+        color: '#2A2A30',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        fontSize: 18,
+        backgroundColor: 'transparent',
+
+    }
 });
 
 export default Library;
