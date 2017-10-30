@@ -10,10 +10,16 @@ import { podcastUpdate} from '../actions';
 import {AudioUtils} from 'react-native-audio';
 import firebase from 'firebase';
 import {podcastCreate} from "../actions/PodcastActions";
+import SimplePicker from 'react-native-simple-picker';
 
 
 
 let podFile = AudioUtils.DocumentDirectoryPath + '/test.aac';
+
+
+const labels = ['Current Events', 'Fitness', 'Politics', 'Gaming', 'Sports', 'Entertainment', 'Life', 'Fashion', 'Trends', 'Cars', 'Misc'];
+const options = ['Current Events', 'Fitness', 'Politics', 'Gaming', 'Sports', 'Entertainment', 'Life', 'Fashion', 'Trends', 'Cars', 'Misc'];
+
 
 
 class RecordInfo extends Component{
@@ -33,13 +39,13 @@ class RecordInfo extends Component{
 
     state = {
         totalTime: totalTime,
-        podcastCategory: ''
+        podcastCategory: 'Select a Category'
     };
 
 
 
     Cancel = () => {
-        Actions.pop();
+        Actions.RecordFirstPage();
     };
 
 
@@ -54,7 +60,20 @@ class RecordInfo extends Component{
 
         const { podcastTitle, podcastDescription, podcastCategory, podcastArtist} = this.props;
 
-        this.props.podcastCreate({podcastTitle, podcastDescription, podcastCategory, podcastArtist});
+        if(podcastTitle == '' || podcastDescription == '' || podcastCategory == ''){
+            if(podcastTitle == ''){
+                console.warn("Please Enter a Title.")
+            }
+            else if(podcastDescription == ''){
+                console.warn("Please Enter a Description.")
+            }
+            else if(podcastCategory == ''){
+                console.warn("Please Select a Category.")
+            }
+        }else {
+
+            this.props.podcastCreate({podcastTitle, podcastDescription, podcastCategory, podcastArtist});
+        }
     };
 
 
@@ -113,7 +132,9 @@ class RecordInfo extends Component{
 
 
 
+
     render() {
+
         return (
             <View
                 style={styles.container}>
@@ -209,20 +230,59 @@ class RecordInfo extends Component{
 
 
                     <Text style={styles.boxHeader}>SELECT A CATEGORY:</Text>
-                <Picker style = {{ marginTop: -20, flex:1}} selectedValue={this.props.podcastCategory} onValueChange={itemValue => this.props.podcastUpdate({prop: 'podcastCategory', value: itemValue})}>
-                    <Picker.Item color= "white" label="Select a category..." value="none" />
-                    <Picker.Item color= '#64fffc' label="Current Events" value="current" />
-                    <Picker.Item color= '#6cff52' label="Fitness" value="fitness" />
-                    <Picker.Item color= '#ffd038' label="Politics" value="politics" />
-                    <Picker.Item color= '#ff5442' label="Gaming" value="gaming" />
-                    <Picker.Item color= '#7fa5ff' label="Sports" value="sports" />
-                    <Picker.Item color= '#fdff53' label="Entertainment" value="entertainment" />
-                    <Picker.Item color= '#3aff97' label="Life" value="life" />
-                    <Picker.Item color= '#ff5e95' label="Fashion" value="fashion" />
-                    <Picker.Item color= '#bd59ff' label="Trends" value="trends" />
-                    <Picker.Item color= '#ff861c' label="Cars" value="cars" />
-                    <Picker.Item color= '#aeb1a7' label="Misc" value="misc" />
-                </Picker>
+                    <View style={{flexDirection: 'row'}}>
+                        <Icon style={{
+                            textAlign: 'left',
+                            fontSize: 20,
+                            marginLeft: 10,
+                            marginTop:10,
+                            color: '#BBBCCD',
+                            backgroundColor: 'transparent',
+                        }} name="md-folder">
+                        </Icon>
+                        <Text style={{ color: '#fff', marginTop: 10, fontSize: 18, marginLeft: 15, fontFamily: 'Helvetica', }}>Categories</Text>
+                        <Text
+                            style={{ color: '#BBBCCD', marginTop: 10, fontSize: 18, marginLeft: 70, fontFamily: 'Helvetica', }}
+                            onPress={() => {
+                                this.refs.picker1.show();
+                            }}
+                        >
+                            {this.state.podcastCategory}
+                        </Text>
+                        <Icon style={{
+                            flex:1,
+                            textAlign: 'right',
+                            fontSize: 18,
+                            marginRight: 10,
+                            marginTop:10,
+                            color: '#fff',
+                            backgroundColor: 'transparent',
+                        }} name="ios-arrow-forward"
+                              onPress={() => {
+                                  this.refs.picker1.show();
+                              }}>
+                        </Icon>
+                    </View>
+
+
+                    <SimplePicker
+                    ref={'picker1'}
+                    options={options}
+                    labels={labels}
+                    itemStyle={{
+                        fontSize: 22,
+                        color: 'black',
+                        textAlign: 'center',
+                        fontWeight: 'bold',
+                        fontFamily: 'Helvetica',
+                    }}
+                    onSubmit={itemValue => {
+                        this.props.podcastUpdate({prop: 'podcastCategory', value: itemValue});
+                        this.setState({podcastCategory: itemValue})
+                    }}
+                    />
+
+                    <View style={{height:1, marginVertical: 25, backgroundColor: '#fff', marginHorizontal:15, borderRadius:10, borderWidth:0.1}}/>
 
 
 
@@ -336,7 +396,7 @@ const styles = StyleSheet.create({
     },
 
     buttonContainer: {
-        marginTop: 50,
+        marginTop: 0,
     },
 
     timeContainer: {

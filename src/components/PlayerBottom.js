@@ -237,83 +237,11 @@ class PlayerBottom extends Component {
 
     _renderCategory(){
 
-        if (Variables.state.podcastCategory == 'fitness'){
-            return(
-                <TouchableOpacity>
-                    <Text style={styles.podcastTextCat}>Fitness</Text>
-                </TouchableOpacity>
-            )
-        }
-        if (Variables.state.podcastCategory == 'current'){
-            return(
-                <TouchableOpacity>
-                    <Text style={styles.podcastTextCat}>Current Events</Text>
-                </TouchableOpacity>
-            )
-        }
-        if (Variables.state.podcastCategory == 'politics'){
-            return(
-                <TouchableOpacity>
-                    <Text style={styles.podcastTextCat}>Politics</Text>
-                </TouchableOpacity>
-            )
-        }
-        if (Variables.state.podcastCategory == 'gaming'){
-            return(
-                <TouchableOpacity>
-                    <Text style={styles.podcastTextCat}>Gaming</Text>
-                </TouchableOpacity>
-            )
-        }
-        if (Variables.state.podcastCategory == 'sports'){
-            return(
-                <TouchableOpacity>
-                    <Text style={styles.podcastTextCat}>Sports</Text>
-                </TouchableOpacity>
-            )
-        }
-        if (Variables.state.podcastCategory == 'entertainment'){
-            return(
-                <TouchableOpacity>
-                    <Text style={styles.podcastTextCat}>Entertainment</Text>
-                </TouchableOpacity>
-            )
-        }
-        if (Variables.state.podcastCategory == 'life'){
-            return(
-                <TouchableOpacity>
-                    <Text style={styles.podcastTextCat}>Life</Text>
-                </TouchableOpacity>
-            )
-        }
-        if (Variables.state.podcastCategory == 'fashion'){
-            return(
-                <TouchableOpacity>
-                    <Text style={styles.podcastTextCat}>Fashion</Text>
-                </TouchableOpacity>
-            )
-        }
-        if (Variables.state.podcastCategory == 'trends'){
-            return(
-                <TouchableOpacity>
-                    <Text style={styles.podcastTextCat}>Trends</Text>
-                </TouchableOpacity>
-            )
-        }
-        if (Variables.state.podcastCategory == 'cars'){
-            return(
-                <TouchableOpacity>
-                    <Text style={styles.podcastTextCat}>Cars</Text>
-                </TouchableOpacity>
-            )
-        }
-        if (Variables.state.podcastCategory == 'misc'){
-            return(
-                <TouchableOpacity>
-                    <Text style={styles.podcastTextCat}>Misc</Text>
-                </TouchableOpacity>
-            )
-        }
+        return(
+            <TouchableOpacity>
+                <Text style={styles.podcastTextCat}>{Variables.state.podcastCategory}</Text>
+            </TouchableOpacity>
+        );
 
     }
 

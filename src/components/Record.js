@@ -278,7 +278,7 @@ class Record extends Component{
                             </TouchableOpacity>
                         </View>
 
-                        <View style={{flex:1,alignItems: 'center', marginLeft: -30}}>
+                        <View style={{flex:1,alignItems: 'center', marginLeft: 0}}>
                             {this._renderRecordTitle(this.state.recording)}
                         </View>
 

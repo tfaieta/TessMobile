@@ -20,7 +20,7 @@ class RecordSuccess extends Component{
 
 
     Cancel = () => {
-        Actions.pop();
+        Actions.RecordFirstPage();
     };
 
 
