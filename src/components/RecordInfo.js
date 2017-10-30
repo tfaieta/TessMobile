@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet, TouchableOpacity, Picker, Image} from 'react-native';
+import { Text, TextInput, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
 import Sound from 'react-native-sound';
@@ -11,6 +11,7 @@ import {AudioUtils} from 'react-native-audio';
 import firebase from 'firebase';
 import {podcastCreate} from "../actions/PodcastActions";
 import SimplePicker from 'react-native-simple-picker';
+import DropdownAlert from 'react-native-dropdownalert';
 
 
 
@@ -39,7 +40,7 @@ class RecordInfo extends Component{
 
     state = {
         totalTime: totalTime,
-        podcastCategory: 'Select a Category'
+        podcastCategory: 'Select a Category',
     };
 
 
@@ -62,20 +63,19 @@ class RecordInfo extends Component{
 
         if(podcastTitle == '' || podcastDescription == '' || podcastCategory == ''){
             if(podcastTitle == ''){
-                console.warn("Please Enter a Title.")
+                this.dropdown.alertWithType("custom", "", "Please enter a Title.")
             }
             else if(podcastDescription == ''){
-                console.warn("Please Enter a Description.")
+                this.dropdown.alertWithType("custom", "", "Please enter a Description.")
             }
             else if(podcastCategory == ''){
-                console.warn("Please Select a Category.")
+                this.dropdown.alertWithType("custom", "", "Please select a Category.")
             }
         }else {
 
             this.props.podcastCreate({podcastTitle, podcastDescription, podcastCategory, podcastArtist});
         }
     };
-
 
 
 
@@ -303,6 +303,8 @@ class RecordInfo extends Component{
                 </View>
 
                 </Image>
+
+                <DropdownAlert titleStyle={{color:'#fff'}} messageStyle={{color: '#fff'}} containerStyle={{backgroundColor: '#ee5865'}} ref={ref => this.dropdown = ref} showCancel={true} />
             </View>
 
 

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
-
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
-import PlayerBottom from './PlayerBottom';
 import Variables from "./Variables";
+import DropdownAlert from 'react-native-dropdownalert';
 
 
 
@@ -17,11 +16,14 @@ class RecordFirstPage extends Component{
     }
 
 
+    info = () =>{
+        this.dropdown.alertWithType("custom", "", "Just tap 'Get Started' and hit that big button to start your recording. You can pause and resume at anytime.")
+    };
 
 
-recordNewPodcast(){
-    Actions.Record();
-}
+    recordNewPodcast(){
+        Actions.Record();
+    }
 
 
 
@@ -37,7 +39,7 @@ recordNewPodcast(){
                     </View>
 
                     <View style={{justifyContent: 'center', alignItems: 'flex-end', marginTop: 16}}>
-                        <TouchableOpacity >
+                        <TouchableOpacity onPress={this.info} >
                             <Icon style={{
                                 textAlign: 'right',
                                 fontSize: 24,
@@ -79,6 +81,7 @@ recordNewPodcast(){
 
 
 
+                <DropdownAlert titleStyle={{color:'#fff'}} messageStyle={{color: '#fff'}} containerStyle={{backgroundColor: '#5757FF'}} ref={ref => this.dropdown = ref} showCancel={true} />
             </View>
 
 
