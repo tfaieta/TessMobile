@@ -20,7 +20,6 @@ class Favorites extends Component{
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts),
             loading: true,
-            favorite: true
         }
     }
 
@@ -46,10 +45,22 @@ class Favorites extends Component{
         const {currentUser} = firebase.auth();
         const podcastTitle  = rowData.podcastTitle;
         const podcastArtist = rowData.podcastArtist;
+        const ref = firebase.database().ref(`podcasts/`);
+
 
 
         return (
             <TouchableOpacity underlayColor='#5757FF' onPress={() => {
+
+                ref.on("value", function (snapshot) {
+                    snapshot.forEach(function (data) {
+                        if(podcastTitle == data.val().podcastTitle && podcastArtist == data.val().podcastArtist) {
+                            Variables.state.podcastCategory = data.val().podcastCategory;
+                            Variables.state.podcastDescription = data.val().podcastDescription;
+                        }
+                    })
+                });
+
 
                 firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
                     .then(function(url) {
@@ -115,23 +126,6 @@ class Favorites extends Component{
                     <View style={styles.rightContainer}>
                         <Icon
                             onPress={() => {
-                                if(!this.state.favorite) {
-                                    Alert.alert(
-                                        'Add to favorites?',
-                                        '',
-                                        [
-                                            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                                            {
-                                                text: 'Yes', onPress: () => {
-                                                firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle).update({podcastArtist, podcastTitle});
-                                                this.setState({favorite: true})
-                                            }
-                                            },
-                                        ],
-                                        {cancelable: false}
-                                    )
-                                }
-                                else{
                                     Alert.alert(
                                         'Remove from favorites?',
                                         '',
@@ -140,13 +134,12 @@ class Favorites extends Component{
                                             {
                                                 text: 'Yes', onPress: () => {
                                                 firebase.database().ref(`users/${currentUser.uid}/favorites/${podcastTitle}`).remove();
-                                                this.setState({favorite: false})
                                             }
                                             },
                                         ],
                                         {cancelable: false}
                                     )
-                                }
+
                             }}
                             style={{
                             textAlign: 'left',
