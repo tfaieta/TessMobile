@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { ListView, StyleSheet, ScrollView} from 'react-native';
+import { ListView, StyleSheet, ScrollView, View} from 'react-native';
 import { connect } from 'react-redux';
 import ListItem from '../ListItem';
 import { podcastFetchNew} from "../../actions/PodcastActions";
@@ -56,7 +56,7 @@ class NewPodcasts extends Component{
 
 
 
-
+            <View style={{paddingBottom: 200}}/>
 
             </ScrollView>
 

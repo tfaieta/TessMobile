@@ -8,12 +8,15 @@ import { podcastFetchNew} from "../actions/PodcastActions";
 import { connect } from 'react-redux';
 import ListItemUsers from '../components/ListItemUsers';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {Actions} from 'react-native-router-flux';
 
 
 
 class Home extends Component{
     componentWillMount(){
+        Variables.state.myPodcasts = [];
         const {currentUser} = firebase.auth();
+        const refMy = firebase.database().ref(`podcasts/`);
 
         firebase.database().ref(`/users/${currentUser.uid}/bio`).orderByChild("bio").on("value", function(snap) {
             if(snap.val()){
@@ -41,6 +44,14 @@ class Home extends Component{
             else {
                 Variables.state.username = "None"
             }
+        });
+
+        refMy.on("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+                if(currentUser.uid == data.val().podcastArtist) {
+                    Variables.state.myPodcasts.push(data.val());
+                }
+            })
         });
 
 
@@ -80,6 +91,9 @@ class Home extends Component{
         return <ListItemUsers podcast={podcast} />;
     }
 
+    pressFitness(){
+        Actions.Fitness();
+    }
 
 
     render() {
@@ -120,7 +134,7 @@ class Home extends Component{
 
 
                     <ScrollView style={{height: 122, marginVertical: 20}} horizontal={true} showsHorizontalScrollIndicator={false}>
-                        <TouchableOpacity style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, borderRadius: 10, borderWidth: 0.1}}>
+                        <TouchableOpacity style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, borderRadius: 10, borderWidth: 0.1}} onPress={this.pressFitness}>
                             <Image
                                 style={{width: 218, height:122, position: 'absolute', alignSelf: 'center', opacity: 0.9, borderRadius: 10, borderWidth: 0.1}}
                                 source={require('tess/src/images/fitness.png')}

@@ -4,41 +4,127 @@ import { View, StyleSheet, ScrollView, ListView, Text, TouchableOpacity} from 'r
 import PlayerBottom from './PlayerBottom';
 import { connect } from 'react-redux';
 import { podcastFetch } from "../actions/PodcastActions"
-import ListItem from './ListItem';
+import firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/Ionicons';
+import RNFetchBlob from 'react-native-fetch-blob';
+import Variables from "./Variables";
 
 
 
 class MyContent extends Component{
 
-    componentWillMount(){
-
-        this.props.podcastFetch();
-
-
-
-        this.creataDataSource(this.props);
-
-    }
-
-    componentWillReceiveProps(nextProps) {
-
-        this.creataDataSource(nextProps);
+    constructor(props){
+        super(props);
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.state = {
+            dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts),
+            loading: true
+        }
     }
 
 
-    creataDataSource({ podcast }) {
-        const ds = new ListView.DataSource({
-            rowHasChanged: (r1, r2) => r1 !== r2
+    renderRow = (rowData) => {
+
+        let profileName = rowData.podcastArtist;
+        firebase.database().ref(`/users/${rowData.podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
+            if (snap.val()) {
+                profileName = snap.val().username;
+            }
+            else {
+                profileName = rowData.podcastArtist;
+            }
         });
 
-        this.dataSource = ds.cloneWithRows(podcast);
-    }
 
-    renderRow(podcast) {
-        return <ListItem podcast={podcast} />;
-    }
+        const {currentUser} = firebase.auth();
+        const podcastTitle = rowData.podcastTitle;
+        const podcastDescription = rowData.podcastDescription;
+        const podcastCategory = rowData.podcastCategory;
+        const podcastArtist = rowData.podcastArtist;
+
+        return (
+
+            <TouchableOpacity underlayColor='#5757FF' onPress={() =>  {
+
+                firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
+                    .then(function(url) {
+
+                        RNFetchBlob
+                            .config({
+                                Authorization: currentUser.uid,
+                                fileCache: true,
+                                appendExt: podcastTitle + '.aac'
+
+                            })
+                            .fetch('GET', url.toString(), {
+
+                            })
+                            .then((res) => {
+
+                                firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
+                                    if(snap.val()){
+                                        Variables.state.currentUsername = snap.val().username;
+                                    }
+                                    else {
+                                        Variables.state.currentUsername = podcastArtist;
+                                    }
+                                });
+
+                                Variables.pause();
+                                Variables.setPodcastFile(res.path());
+                                Variables.state.isPlaying = false;
+                                Variables.state.podcastTitle = podcastTitle;
+                                Variables.state.podcastDescription = podcastDescription;
+                                Variables.state.podcastCategory = podcastCategory;
+                                Variables.state.podcastArtist = podcastArtist;
+
+                            });
+
+
+                    }).catch(function(error) {
+                    //
+                });
+
+            }}>
+                <View style={styles.container}>
+
+
+                    <View style={styles.leftContainer}>
+                        <Icon style={{
+                            textAlign: 'left',
+                            marginLeft: 20,
+                            paddingRight: 8,
+                            fontSize: 35,
+                            color: '#5757FF',
+                        }} name="ios-play">
+                        </Icon>
+                    </View>
+
+
+                    <View style={styles.middleContainer}>
+                        <Text style={styles.title}>   {rowData.podcastTitle}</Text>
+                        <Text style={styles.artistTitle}>{profileName}</Text>
+                    </View>
+
+
+                    <View style={styles.rightContainer}>
+                        <Icon onPress={this.onGarbagePress} style={{
+                            textAlign: 'left',
+                            marginLeft: 20,
+                            paddingRight: 8,
+                            fontSize: 35,
+                            color: '#5757FF',
+                        }} name="md-trash">
+                        </Icon>
+                    </View>
+
+
+                </View>
+            </TouchableOpacity>
+
+        );
+    };
 
 
     _pressBack(){
@@ -50,7 +136,7 @@ class MyContent extends Component{
     render() {
         return (
             <View
-                style={styles.container}>
+                style={styles.containerMain}>
 
                 <View style={{flexDirection: 'row', width: 375, height: 70, borderRadius: 10, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
@@ -77,7 +163,7 @@ class MyContent extends Component{
 
                     <ListView
                         enableEmptySections
-                        dataSource={this.dataSource}
+                        dataSource={this.state.dataSource}
                         renderRow={this.renderRow}
                     />
 
@@ -98,12 +184,12 @@ class MyContent extends Component{
 }
 
 const styles = StyleSheet.create({
-    container:{
+    containerMain:{
         flex: 1,
         backgroundColor: 'transparent',
     },
 
-    title: {
+    titleMain: {
         color: '#804cc8',
         marginTop: 70,
         flex:1,
@@ -133,7 +219,68 @@ const styles = StyleSheet.create({
         fontSize: 18,
         backgroundColor: 'transparent',
 
-    }
+    },
+
+    title: {
+        color: '#2A2A30',
+        marginTop: 0,
+        flex:1,
+        textAlign: 'center',
+        paddingLeft: 0,
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        fontSize: 20,
+        backgroundColor: 'transparent'
+    },
+    artistTitle: {
+        color: '#828393',
+        marginTop: 0,
+        flex:1,
+        textAlign: 'center',
+        paddingLeft: 2,
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        fontSize: 15,
+        backgroundColor: 'transparent'
+    },
+    container: {
+        paddingHorizontal: 0,
+        paddingVertical: 0,
+        marginVertical: 0,
+        marginHorizontal: 0,
+        backgroundColor: '#FFF',
+        opacity: 1,
+        borderColor: '#FFF',
+        borderWidth: 0.5,
+        borderRadius: 0,
+        borderStyle: 'solid',
+        flexDirection: 'row',
+    },
+    centerContainer: {
+        flexDirection: 'row'
+    },
+    leftContainer: {
+        flex: 1,
+        paddingLeft: 2,
+        justifyContent: 'center',
+        alignItems:'flex-start',
+    },
+    rightContainer: {
+        flex: 1,
+        paddingRight: 2,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+
+    },
+    middleContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 3,
+        marginHorizontal: -100,
+    },
 
 });
 

@@ -1,60 +1,38 @@
-import React, {Component} from 'react';
-import _ from 'lodash';
-import {
-    StyleSheet,
-    Text,
-    View,
-    StatusBar,
-    ScrollView,
-    ListView,
-    TouchableOpacity
-} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { connect } from 'react-redux';
-import { podcastFetch } from "../actions/PodcastActions"
-import PlayerBottom from './PlayerBottom';
-import RNFetchBlob from 'react-native-fetch-blob';
+import React, { Component } from 'react';
+import { View, StyleSheet, ScrollView, ListView, Text, TouchableOpacity} from 'react-native';
+import PlayerBottom from '../PlayerBottom';
 import firebase from 'firebase';
-import Variables from './Variables';
-import { Actions } from 'react-native-router-flux';
+import {Actions} from 'react-native-router-flux';
+import Icon from 'react-native-vector-icons/Ionicons';
+import RNFetchBlob from 'react-native-fetch-blob';
+import Variables from "../Variables";
 
 
 
-class Account extends Component {
+class Fitness extends Component{
+
+    componentWillMount(){
+        Variables.state.currCategory = [];
+        const {currentUser} = firebase.auth();
+        const refCat = firebase.database().ref(`podcasts/`);
+
+        refCat.on("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+                if(data.val().podcastCategory == 'Fitness') {
+                    Variables.state.currCategory.push(data.val());
+                }
+            })
+        });
+    }
 
     constructor(props){
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts),
-            loading: true,
-            username: 'none' ,
-            bio: "Tell others about yourself...",
-            category: '',
+            dataSource: dataSource.cloneWithRows(Variables.state.currCategory),
+            loading: true
         }
     }
-
-
-
-
-    _renderProfileName(){
-
-            return (
-                <Text style={styles.title2} >{Variables.state.username}</Text>
-
-            )
-
-    }
-
-
-    _renderBio() {
-
-        return(
-            <Text style={styles.titleBio} >{Variables.state.bio}</Text>
-        )
-
-    }
-
 
 
     renderRow = (rowData) => {
@@ -120,7 +98,7 @@ class Account extends Component {
                 });
 
             }}>
-                <View style={styles.containerList}>
+                <View style={styles.container}>
 
 
                     <View style={styles.leftContainer}>
@@ -160,133 +138,97 @@ class Account extends Component {
     };
 
 
-    _pressSettings = () => {
-        Actions.Settings();
-    };
+    _pressBack(){
+        Actions.pop();
+    }
+
 
 
     render() {
         return (
             <View
-                style={styles.container}>
-
-                <StatusBar
-                    barStyle="dark-content"
-                />
+                style={styles.containerMain}>
 
                 <View style={{flexDirection: 'row', width: 375, height: 70, borderRadius: 10, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
-                    <View style={{flex:1,alignItems: 'flex-start'}}>
+                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
+                        <TouchableOpacity onPress={this._pressBack}>
+                            <Icon style={{
+                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#9496A3'
+                            }} name="md-arrow-round-back">
+                            </Icon>
+                        </TouchableOpacity>
                     </View>
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center',}}>
-                        <Text style={styles.header}>Account</Text>
+                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
+                        <Text style={styles.header}>Fitness</Text>
                     </View>
 
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'flex-end', marginTop: 20}}>
-                        <TouchableOpacity onPress={this._pressSettings}>
-                        <Icon style={{
-                            textAlign: 'right',
-                            fontSize: 24,
-                            marginRight: 10,
-                            color: '#5757FF'
-                        }} name="md-settings">
-                        </Icon>
-                        </TouchableOpacity>
+                    <View>
                     </View>
 
                 </View>
 
 
-                <ScrollView >
 
 
-                <Icon style={{textAlign:'center', marginTop:20, marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 180,color:'#BBBCCD' }} name="md-square">
-                </Icon>
+                <ScrollView>
 
-                    {this._renderProfileName()}
-
-
-                    {this._renderBio()}
-
-
-                    <Text style={styles.title3 }>Content</Text>
-                    <View style={{height:1, backgroundColor:'#b5b6cd', borderRadius: 10, borderWidth:0.1, marginBottom: 10, marginHorizontal: 30 }} />
-
-                    <View style={{paddingBottom: 30}}>
-                        <ListView
-                            enableEmptySections
-                            dataSource={this.state.dataSource}
-                            renderRow={this.renderRow}
-                        />
-                    </View>
-
-                    <View style={{paddingBottom:120}}>
-
-                    </View>
-
+                    <ListView
+                        enableEmptySections
+                        dataSource={this.state.dataSource}
+                        renderRow={this.renderRow}
+                    />
 
                 </ScrollView>
 
 
 
-
-
                 <PlayerBottom/>
+
 
             </View>
 
 
 
+
         );
     }
-
 }
 
 const styles = StyleSheet.create({
-    container:{
+    containerMain:{
         flex: 1,
-        backgroundColor: '#FFF'
+        backgroundColor: 'transparent',
     },
-    title2: {
-        color: '#2A2A30',
-        marginBottom: 70,
+
+    titleMain: {
+        color: '#804cc8',
+        marginTop: 70,
         flex:1,
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Futura',
         fontSize: 25,
         backgroundColor: 'transparent'
     },
-    title3: {
-        color: '#2A2A30',
-        marginTop: 80,
-        marginBottom: 5,
-        flex:1,
-        textAlign: 'center',
-        fontStyle: 'normal',
-        fontFamily: 'Helvetica',
-        fontSize: 22,
-        backgroundColor: 'transparent'
+
+    contentTitle: {
+        color: 'rgba(1,170,170,1)',
+        fontSize: 25,
+        paddingBottom: 20,
+        marginLeft: 20,
+
     },
-    titleBio: {
-        color: '#828393',
-        marginVertical: 10,
-        flex:1,
-        textAlign: 'center',
-        opacity: 2,
-        fontStyle: 'normal',
-        fontFamily: 'Helvetica',
-        fontSize: 15,
-        backgroundColor: 'transparent'
-    },
+
     header: {
-            marginTop:10,
-            color: '#2A2A30',
-            textAlign: 'center',
-            fontStyle: 'normal',
-            fontFamily: 'Helvetica',
-            fontSize: 18,
-            backgroundColor: 'transparent',
+        marginTop:10,
+        marginLeft: -35,
+        color: '#2A2A30',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        fontSize: 18,
+        backgroundColor: 'transparent',
 
     },
 
@@ -314,7 +256,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         backgroundColor: 'transparent'
     },
-    containerList: {
+    container: {
         paddingHorizontal: 0,
         paddingVertical: 0,
         marginVertical: 0,
@@ -353,11 +295,5 @@ const styles = StyleSheet.create({
 
 });
 
-const mapStateToProps = state => {
-    const podcast = _.map(state.podcast, (val, uid) => {
-        return { ...val, uid };
-    });
-    return {podcast};
-};
 
-export default connect(mapStateToProps, { podcastFetch })(Account);
+export default Fitness;

@@ -7,7 +7,6 @@ import {
     Modal,
     TouchableOpacity,
     TextInput,
-    Picker
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import SettingsList from 'react-native-settings-list';
@@ -32,9 +31,6 @@ class Settings extends Component {
         this.setbioModalVisible(true)
     };
 
-    _handleButtonPressChangeCategory = () => {
-        this.setCategoryModalVisible(true)
-    };
 
     _handleButtonPressChangeImage = () => {
 
@@ -52,10 +48,6 @@ class Settings extends Component {
 
     }
 
-    setCategoryModalVisible(visible) {
-        this.setState({categoryModalVisible: visible});
-
-    }
 
 
     constructor(){
@@ -119,17 +111,6 @@ class Settings extends Component {
                             hasNavArrow={true}
                             onPress={this._handleButtonPressChangeBio}
                         />
-                        <SettingsList.Item
-                            icon={
-                                <Icon style={{color: '#5757FF', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="ios-heart">
-                                </Icon>
-                            }
-                            hasNavArrow={true}
-                            itemWidth={70}
-                            titleStyle={{color:'black', fontSize: 16,fontFamily: 'Helvetica'}}
-                            title='Change Favorite Category'
-                            onPress={this._handleButtonPressChangeCategory}
-                        />
 
                         <SettingsList.Header headerStyle={{marginTop: -5}}/>
                         <SettingsList.Item
@@ -160,7 +141,7 @@ class Settings extends Component {
                                 autoCorrect={false}
                                 value={this.state.username}
                                 placeholder = "New Username"
-                                placeholderTextColor='#FFF'
+                                placeholderTextColor='#2A2A30'
                                 onChangeText={text => this.setState({username: text})}
                                 onSubmitEditing={(event) => {
                                     firebase.database().ref(`users/${firebase.auth().currentUser.uid}`).child('/username')
@@ -206,7 +187,7 @@ class Settings extends Component {
                                 autoCorrect={false}
                                 value={this.state.bio}
                                 placeholder = "New Bio"
-                                placeholderTextColor='#FFF'
+                                placeholderTextColor='#2A2A30'
                                 onChangeText={text => this.setState({bio: text})}
                                 multiline={true}
                                 maxLength={500}
@@ -243,54 +224,6 @@ class Settings extends Component {
 
 
 
-                <Modal
-                    animationType="slide"
-                    transparent={false}
-                    visible={this.state.categoryModalVisible}
-                    onRequestClose={() => {alert("Modal has been closed.")}}
-                >
-                    <View style={styles.container}>
-                        <View>
-                            <Picker selectedValue={this.state.category} onValueChange={itemValue => this.setState({category: itemValue})}>
-                                <Picker.Item color= "white" label="Select a category..." value="none" />
-                                <Picker.Item color= '#64fffc' label="Current Events" value="current" />
-                                <Picker.Item color= '#6cff52' label="Fitness" value="fitness" />
-                                <Picker.Item color= '#ffd038' label="Politics" value="politics" />
-                                <Picker.Item color= '#ff5442' label="Gaming" value="gaming" />
-                                <Picker.Item color= '#7fa5ff' label="Sports" value="sports" />
-                                <Picker.Item color= '#fdff53' label="Entertainment" value="entertainment" />
-                                <Picker.Item color= '#3aff97' label="Life" value="life" />
-                                <Picker.Item color= '#ff5e95' label="Fashion" value="fashion" />
-                                <Picker.Item color= '#bd59ff' label="Trends" value="trends" />
-                                <Picker.Item color= '#ff861c'label="Cars" value="cars" />
-                                <Picker.Item color= '#aeb1a7' label="Misc" value="misc" />
-                            </Picker>
-
-                            <TouchableOpacity onPress={() => {
-
-                                firebase.database().ref(`users/${firebase.auth().currentUser.uid}`).child('/favCategory')
-                                    .update({   favCategory: this.state.category  });
-
-                                this.setCategoryModalVisible(!this.state.categoryModalVisible)
-                            }}>
-                                <Text style={styles.buttonStyle}>Done</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity onPress={() => {
-                                this.setCategoryModalVisible(!this.state.categoryModalVisible)
-                            }}>
-                                <Text style={styles.buttonStyle}>Cancel</Text>
-                            </TouchableOpacity>
-
-                        </View>
-                    </View>
-
-                </Modal>
-
-
-
-
-
 
                 <PlayerBottom/>
 
@@ -311,40 +244,43 @@ const styles = StyleSheet.create({
     },
     container:{
         flex: 1,
-        backgroundColor: '#0887c8',
+        backgroundColor: '#fff',
     },
     buttonStyle:{
         paddingVertical: 10,
         paddingHorizontal: 5,
         marginBottom:5,
+        marginHorizontal: 15,
         marginTop: 5,
-        borderWidth: 2,
-        borderStyle: 'solid',
-        borderRadius: 0,
-        borderColor: '#FFF',
+        borderWidth: 0.1,
+        borderRadius: 10,
+        borderColor: 'transparent',
         backgroundColor: '#856cff',
         alignItems: 'center',
         textAlign: 'center',
         color: '#fff',
         fontStyle: 'normal',
-        fontFamily: 'Futura',
+        fontFamily: 'Helvetica',
         fontSize: 25,
     },
+
     inputStyle:{
+        marginHorizontal: 15,
         marginTop: 50,
         height: 40,
-        backgroundColor: '#0777b2',
-        marginBottom: 10,
-        color: '#FFF',
+        backgroundColor: '#fff',
+        marginBottom: 40,
+        color: '#2A2A30',
         paddingHorizontal: 10,
         fontSize: 20,
     },
     input2: {
+        marginHorizontal: 15,
         marginTop: 50,
         height: 100,
-        backgroundColor: '#0777b2',
-        marginBottom: 10,
-        color: '#FFF',
+        backgroundColor: '#fff',
+        marginBottom: 40,
+        color: '#2A2A30',
         paddingHorizontal: 10,
         fontSize: 20,
     },

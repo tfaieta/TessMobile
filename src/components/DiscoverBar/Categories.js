@@ -1,12 +1,15 @@
-/**
- * Created by nickruspantini on 6/29/17.
- */
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Image} from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity, Image} from 'react-native';
+import {Actions} from 'react-native-router-flux';
 
 
 
 class Categories extends Component{
+
+
+    pressFitness(){
+        Actions.Fitness();
+    }
 
 
     render() {
@@ -22,7 +25,7 @@ class Categories extends Component{
                         source={require('tess/src/images/currEvents-cat.png')}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: 10}}>
+                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: 10}} onPress={this.pressFitness}>
                     <Image
                         style={{ width: 128, height:154, alignSelf: 'center', opacity: 1}}
                         source={require('tess/src/images/fitness-cat.png')}

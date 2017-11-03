@@ -275,8 +275,8 @@ class PlayerBottom extends Component {
         if (this.state.liked) {
             return (
                 <TouchableOpacity onPress = {this.pressLike}>
-                    <Icon style={{textAlign: 'center', fontSize: 20, color: '#BBBCCD'}} name="ios-happy">
-                        <Text style={styles.podcastTextLikes}>   {this.state.likes}</Text>
+                    <Icon style={{textAlign: 'center', fontSize: 28, color: '#5757FF', marginRight: 20}} name="ios-happy-outline">
+                        <Text style={styles.podcastTextLikes}> {this.state.likes}</Text>
                     </Icon>
                 </TouchableOpacity>
             )
@@ -284,8 +284,8 @@ class PlayerBottom extends Component {
         else if (!this.state.liked){
             return(
                 <TouchableOpacity onPress = {this.pressLike}>
-                    <Icon style={{textAlign: 'center', fontSize: 20, color: '#BBBCCD'}} name="ios-happy">
-                        <Text style={styles.podcastTextLikes}>   {this.state.likes}</Text>
+                    <Icon style={{textAlign: 'center', fontSize: 28, color: '#BBBCCD', marginRight: 20}} name="ios-happy-outline">
+                        <Text style={styles.podcastTextLikes}> {this.state.likes}</Text>
                     </Icon>
                 </TouchableOpacity>
             )
@@ -555,11 +555,7 @@ class PlayerBottom extends Component {
                             </View>
 
                             <View style={{alignItems: 'flex-end', flex:1}}>
-                                <TouchableOpacity onPress = {this.pressLike}>
-                                    <Icon style={{textAlign: 'center', fontSize: 28, color: '#BBBCCD', marginRight: 20}} name="ios-happy-outline">
-                                        <Text style={styles.podcastTextLikes}> {this.state.likes}</Text>
-                                    </Icon>
-                                </TouchableOpacity>
+                                {this._renderLikes()}
                             </View>
 
 

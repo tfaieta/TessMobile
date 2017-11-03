@@ -94,7 +94,7 @@ class UserProfile extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { username: 'none' , bio: "Tell others about yourself...", category: '', profileName: profileName, following: Variables.state.following, profileNameL: profileNameL}
+        this.state = { username: 'none' , bio: "Tell others about yourself...", category: '', profileName: profileName, following: false, profileNameL: profileNameL}
     }
 
 

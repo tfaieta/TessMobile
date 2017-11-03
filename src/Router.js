@@ -25,6 +25,7 @@ import MyContent from "./components/MyContent";
 import Favorites from "./components/Favorites";
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "./components/Variables";
+import Fitness from "./components/Categories/Fitness";
 
 
 
@@ -124,6 +125,15 @@ const RouterComponent = () => {
                         key="SearchPage"
                         component={SearchPage}
                         title= 'Results'
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
+                        panHandlers={null}
+                    />
+                    <Scene
+                        key="Fitness"
+                        component={Fitness}
+                        title= 'Fitness'
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                         duration={1}

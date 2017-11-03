@@ -37,7 +37,9 @@ class Variables extends Component{
         currentFavCategory: '',
         following: false,
         usersFollowed: [],
-        favPodcasts: []
+        favPodcasts: [],
+        myPodcasts: [],
+        currCategory: [],
 };
 
 

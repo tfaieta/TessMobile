@@ -16,6 +16,7 @@ class Library extends Component{
         const { currentUser } = firebase.auth();
         const refFol = firebase.database().ref(`users/${currentUser.uid}/following`);
         const refFav = firebase.database().ref(`users/${currentUser.uid}/favorites`);
+
         refFol.orderByChild('following').on("value", function (snapshot) {
             snapshot.forEach(function (data) {
                 Variables.state.usersFollowed.push(data.key);
@@ -27,6 +28,8 @@ class Library extends Component{
                 Variables.state.favPodcasts.push(data.val());
             })
         });
+
+
 
     }
 
