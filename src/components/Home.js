@@ -9,7 +9,12 @@ import { connect } from 'react-redux';
 import ListItemUsers from '../components/ListItemUsers';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Actions} from 'react-native-router-flux';
+import Sound from 'react-native-sound';
 
+Sound.enableInSilenceMode(true);
+Sound.setActive(true);
+Sound.setCategory('Playback', true);
+Sound.setMode('SpokenAudio');
 
 
 class Home extends Component{

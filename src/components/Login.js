@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, StatusBar, Image  } from 'react-native';
+import { Text, View, TouchableOpacity, StatusBar, Image, TextInput } from 'react-native';
 import { Spinner } from './common';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
-import {Sae } from 'react-native-textinput-effects';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from "react-native-linear-gradient/index.android";
 import { Actions } from 'react-native-router-flux';
@@ -72,22 +71,11 @@ class Login extends Component {
                 />
 
                 <View  style={styles.inputContainer}>
-                <Sae
-                    label={'Email Address'}
-                    labelStyle={{
-                        color: 'rgba(300,300,300,0.7)',
-                        fontStyle: 'normal',
-                        fontFamily: 'Helvetica',
-                        fontSize: 15,}}
-                    iconClass={Icon}
-                    iconName={'md-mail'}
-                    iconColor={'white'}
-                    inputStyle= {{
-                        color: '#FFF',
-                        fontStyle: 'normal',
-                        fontFamily: 'Helvetica',
-                        fontSize: 18,}}
-                    // TextInput props
+                <TextInput
+                    style={styles.input}
+                    placeholder={'EMAIL'}
+                    placeholderTextColor='rgba(300,300,300,0.7)'
+
                     autoCapitalize={'none'}
                     autoCorrect={false}
                     returnKeyType='next'
@@ -101,32 +89,28 @@ class Login extends Component {
                 </View>
 
                 <View style={styles.inputContainer}>
-                <Sae
-                    ref='SecondInput'
-                    label={'Password'}
-                    iconClass={Icon}
-                    labelStyle={{
-                        color: 'rgba(300,300,300,0.7)',
-                        fontStyle: 'normal',
-                        fontFamily: 'Helvetica',
-                        fontSize: 15,}}
-                    iconName={'md-lock'}
-                    iconColor={'white'}
-                    inputStyle= {{
-                        color: '#FFF',
-                        fontStyle: 'normal',
-                        fontFamily: 'Helvetica',
-                        fontSize: 18,}}
-                    // TextInput props
-                    autoCapitalize={'none'}
-                    autoCorrect={false}
-                    secureTextEntry
-                    returnKeyType="go"
-                    value={this.props.password}
-                    onChangeText={this.onPasswordChange.bind(this)}
-                    onSubmitEditing={() => this.onButtonPress()}
+                    <View style={{flexDirection:'row'}}>
+                    <View style={{alignItems:'flex-start', flex:3}}>
+                    <TextInput
+                        style={styles.input}
+                        ref='SecondInput'
+                        placeholder={'PASSWORD'}
+                        placeholderTextColor='rgba(300,300,300,0.7)'
 
-                />
+                        autoCapitalize={'none'}
+                        autoCorrect={false}
+                        secureTextEntry
+                        returnKeyType="go"
+                        value={this.props.password}
+                        onChangeText={this.onPasswordChange.bind(this)}
+                        onSubmitEditing={() => this.onButtonPress()}
+
+                    />
+                    </View>
+                    <TouchableOpacity style={{alignItems: 'flex-end', flex:1}}>
+                    <Text style={styles.inputText}>FORGOT</Text>
+                    </TouchableOpacity>
+                    </View>
                 </View>
 
 
@@ -166,10 +150,15 @@ const styles = {
 
     input: {
         height: 40,
-        backgroundColor: 'rgba(170,170,170,0.5)',
-        marginBottom: 10,
-        color: '#FFF',
-        paddingHorizontal: 10
+        backgroundColor: 'transparent',
+        marginTop:10,
+        marginBottom: 5,
+        color: 'rgba(300,300,300,0.9)',
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        fontSize: 14,
+        paddingHorizontal: 10,
+        marginLeft: 10
     },
 
     buttonContainer: {
@@ -202,6 +191,17 @@ const styles = {
         fontFamily: 'Helvetica',
         fontSize: 18,
     },
+
+    inputText: {
+        textAlign: 'center',
+        color: "rgba(300,300,300,0.7)",
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        fontSize: 14,
+        marginTop: 20,
+        marginRight: 10,
+    },
+
     inputContainer: {
         backgroundColor:"rgba(300,300,300,0.2)",
         marginVertical: 5,

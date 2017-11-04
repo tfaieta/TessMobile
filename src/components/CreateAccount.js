@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity  } from 'react-native';
+import { Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { Spinner } from './common';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser, createUser, usernameChanged } from '../actions';
-import {Sae } from 'react-native-textinput-effects';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from "react-native-linear-gradient/index.android";
+import {Input} from "./common/Input";
 
 
 export let profileName='';
@@ -69,11 +69,12 @@ class CreateAccount extends Component {
                 colors={['#5555FF', '#9787FF' ]}
                 style={styles.container}>
 
-                <TouchableOpacity style={{backgroundColor: 'rgba(300,300,300,0.2)', borderRadius: 30, borderWidth: 0.1,  width: 60, height: 60, alignItems: 'center', alignSelf:'center', marginBottom: 20 }}>
+                <TouchableOpacity style={{backgroundColor: 'rgba(300,300,300,0.2)', borderRadius: 120, borderWidth: 0.1,  width: 120, height: 120, alignItems: 'center', alignSelf:'center', marginBottom: 20 }}>
                     <Icon style={{
                         textAlign: 'center',
-                        marginTop: 12,
+                        marginTop: 45,
                         fontSize: 30,
+                        flex:1,
                         color: '#FFF'
                     }} name="md-camera">
                     </Icon>
@@ -82,96 +83,103 @@ class CreateAccount extends Component {
 
 
                 <View style={styles.inputContainer}>
-                <Sae
-                    label={'Username'}
-                    labelStyle={{
-                        color: 'rgba(300,300,300,0.7)',
-                        fontStyle: 'normal',
-                        fontFamily: 'Helvetica',
-                        fontSize: 15,}}
-                    iconClass={Icon}
-                    iconName={'md-person'}
-                    iconColor={'white'}
-                    inputStyle={{
-                        color: '#FFF',
-                        fontStyle: 'normal',
-                        fontFamily: 'Helvetica',
-                        fontSize: 18,}}
-                    // TextInput props
-                    autoCapitalize={'none'}
-                    autoCorrect={false}
-                    returnKeyType='next'
-                    value={this.props.username}
-                    onChangeText={this.onUsernameChange.bind(this)}
-                    onSubmitEditing={(event) => {
-                        this.refs.FirstInput.focus();
-                    }}
-                />
+                    <View style={{flexDirection:'row'}}>
+                        <View style={{alignItems:'flex-start', flex:1,}}>
+                            <Icon style={{
+                                textAlign: 'center',
+                                marginTop: 18,
+                                marginLeft: 10,
+                                fontSize: 22,
+                                color: 'rgba(300,300,300,0.7)'
+                            }} name="md-contact">
+                            </Icon>
+                        </View>
+                        <View style={{alignItems: 'flex-end', flex:8}}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder={'USERNAME'}
+                            placeholderTextColor='rgba(300,300,300,0.7)'
+
+                            autoCapitalize={'none'}
+                            autoCorrect={false}
+                            returnKeyType='next'
+                            value={this.props.username}
+                            onChangeText={this.onUsernameChange.bind(this)}
+                            onSubmitEditing={(event) => {
+                                this.refs.FirstInput.focus();
+                            }}
+                        />
+                        </View>
+                    </View>
                 </View>
 
 
                 <View style={styles.inputContainer}>
-                <Sae
-                    ref='FirstInput'
-                    label={'Email Address'}
-                    labelStyle={{
-                        color: 'rgba(300,300,300,0.7)',
-                        fontStyle: 'normal',
-                        fontFamily: 'Helvetica',
-                        fontSize: 15,}}
-                    iconClass={Icon}
-                    iconName={'md-mail'}
-                    iconColor={'white'}
-                    inputStyle={{
-                        color: '#FFF',
-                        fontStyle: 'normal',
-                        fontFamily: 'Helvetica',
-                        fontSize: 18,}}
-                    // TextInput props
-                    autoCapitalize={'none'}
-                    autoCorrect={false}
-                    returnKeyType='next'
-                    keyboardType="email-address"
-                    value={this.props.email}
-                    onChangeText={this.onEmailChange.bind(this)}
-                    onSubmitEditing={(event) => {
-                        this.refs.SecondInput.focus();
-                    }}
-                />
+                    <View style={{flexDirection:'row'}}>
+                        <View style={{alignItems:'flex-start', flex:1,}}>
+                            <Icon style={{
+                                textAlign: 'center',
+                                marginTop: 18,
+                                marginLeft: 10,
+                                fontSize: 22,
+                                color: 'rgba(300,300,300,0.7)'
+                            }} name="md-mail">
+                            </Icon>
+                        </View>
+                        <View style={{alignItems: 'flex-end', flex:8}}>
+                            <TextInput
+                                ref='FirstInput'
+                                style={styles.input}
+                                placeholder={'EMAIL'}
+                                placeholderTextColor='rgba(300,300,300,0.7)'
+
+                                autoCapitalize={'none'}
+                                autoCorrect={false}
+                                returnKeyType='next'
+                                keyboardType="email-address"
+                                value={this.props.email}
+                                onChangeText={this.onEmailChange.bind(this)}
+                                onSubmitEditing={(event) => {
+                                    this.refs.SecondInput.focus();
+                                }}
+                            />
+                        </View>
+                    </View>
                 </View>
 
 
                 <View style={styles.inputContainer}>
-                <Sae
-                    ref='SecondInput'
-                    label={'Password'}
-                    labelStyle={{
-                        color: 'rgba(300,300,300,0.7)',
-                        fontStyle: 'normal',
-                        fontFamily: 'Helvetica',
-                        fontSize: 15,}}
-                    iconClass={Icon}
-                    iconName={'md-lock'}
-                    iconColor={'white'}
-                    inputStyle={{
-                        color: '#FFF',
-                        fontStyle: 'normal',
-                        fontFamily: 'Helvetica',
-                        fontSize: 18,}}
-                    // TextInput props
-                    autoCapitalize={'none'}
-                    autoCorrect={false}
-                    secureTextEntry
-                    returnKeyType="next"
-                    value={this.props.password}
-                    onChangeText={this.onPasswordChange.bind(this)}
-                    onSubmitEditing={(event) => {
-                        this.onButtonPress()
-                    }}
-                />
+                    <View style={{flexDirection:'row'}}>
+                        <View style={{alignItems:'flex-start', flex:1,}}>
+                            <Icon style={{
+                                textAlign: 'center',
+                                marginTop: 18,
+                                marginLeft: 10,
+                                fontSize: 22,
+                                color: 'rgba(300,300,300,0.7)'
+                            }} name="md-key">
+                            </Icon>
+                        </View>
+                        <View style={{alignItems: 'flex-end', flex:8}}>
+                            <TextInput
+                                ref='SecondInput'
+                                style={styles.input}
+                                placeholder={'PASSWORD'}
+                                placeholderTextColor='rgba(300,300,300,0.7)'
+
+                                autoCapitalize={'none'}
+                                autoCorrect={false}
+                                secureTextEntry
+                                returnKeyType="next"
+                                value={this.props.password}
+                                onChangeText={this.onPasswordChange.bind(this)}
+                                onSubmitEditing={(event) => {
+                                    this.onButtonPress()
+                                }}
+                            />
+                        </View>
+                    </View>
                 </View>
-
-
 
 
 
@@ -213,12 +221,15 @@ const styles = {
 
     input: {
         height: 40,
-        backgroundColor: 'rgba(170,170,170,0.7)',
-        marginBottom: 10,
-        color: '#FFF',
-        paddingHorizontal: 10
+        backgroundColor: 'transparent',
+        marginTop:10,
+        marginBottom: 5,
+        color: 'rgba(300,300,300,0.9)',
+        fontStyle: 'normal',
+        fontFamily: 'Helvetica',
+        fontSize: 14,
+        paddingHorizontal: 10,
     },
-
 
     buttonContainer: {
         paddingVertical: 15,

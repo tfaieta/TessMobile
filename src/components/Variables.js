@@ -50,6 +50,12 @@ class Variables extends Component{
     }
 
     static setPodcastFile(podFile){
+
+        Sound.enableInSilenceMode(true);
+        Sound.setActive(true);
+        Sound.setCategory('Playback', true);
+        Sound.setMode('SpokenAudio');
+
         Variables.state.podcastArtist = firebase.auth().currentUser.uid;
         PodcastFile = new Sound(podFile, '', (error) => {
             if (error) {
@@ -86,6 +92,12 @@ class Variables extends Component{
 
         Variables.state.isPlaying = true;
         Variables.state.interval = setInterval(this.tick, 250);
+
+        Sound.enableInSilenceMode(true);
+        Sound.setActive(true);
+        Sound.setCategory('Playback', true);
+        Sound.setMode('SpokenAudio');
+
         PodcastFile.play((success) => {
             if (success) {
                 Variables.state.isPlaying = false;
