@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     tabStyle: {
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 11,
         backgroundColor: 'transparent'
     }

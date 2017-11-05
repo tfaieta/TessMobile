@@ -477,7 +477,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 25,
         backgroundColor: 'transparent'
     },
@@ -488,7 +488,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 25,
         backgroundColor: 'transparent'
     },
@@ -500,7 +500,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 15,
         backgroundColor: 'transparent'
     },
@@ -511,7 +511,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 20,
         backgroundColor: 'transparent'
     },
@@ -522,7 +522,7 @@ const styles = StyleSheet.create({
         flex:1,
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 22,
         backgroundColor: 'transparent'
     },
@@ -532,7 +532,7 @@ const styles = StyleSheet.create({
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 18,
         backgroundColor: 'transparent',
 

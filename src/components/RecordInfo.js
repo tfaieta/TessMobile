@@ -240,9 +240,9 @@ class RecordInfo extends Component{
                             backgroundColor: 'transparent',
                         }} name="md-folder">
                         </Icon>
-                        <Text style={{ color: '#fff', marginTop: 10, fontSize: 18, marginLeft: 15, fontFamily: 'Helvetica', }}>Categories</Text>
+                        <Text style={{ color: '#fff', marginTop: 10, fontSize: 18, marginLeft: 15, fontFamily: 'Hiragino Sans', }}>Categories</Text>
                         <Text
-                            style={{ color: '#BBBCCD', marginTop: 10, fontSize: 18, marginLeft: 70, fontFamily: 'Helvetica', }}
+                            style={{ color: '#BBBCCD', marginTop: 10, fontSize: 18, marginLeft: 70, fontFamily: 'Hiragino Sans', }}
                             onPress={() => {
                                 this.refs.picker1.show();
                             }}
@@ -274,7 +274,7 @@ class RecordInfo extends Component{
                         color: 'black',
                         textAlign: 'center',
                         fontWeight: 'bold',
-                        fontFamily: 'Helvetica',
+                        fontFamily: 'Hiragino Sans',
                     }}
                     onSubmit={itemValue => {
                         this.props.podcastUpdate({prop: 'podcastCategory', value: itemValue});
@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 25,
         backgroundColor: 'transparent'
     },
@@ -339,7 +339,7 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
 
     },
 
@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
         fontSize: 25,
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         marginLeft: 20,
         marginTop: 10
 
@@ -409,7 +409,7 @@ const styles = StyleSheet.create({
     progressText: {
         marginTop: 0,
         fontSize: 20,
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         color: "#FFF",
     },
 
@@ -417,7 +417,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 18,
         backgroundColor: 'transparent',
         marginTop: 30,
@@ -429,7 +429,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         marginLeft: 15,
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 12,
         backgroundColor: 'transparent',
     }

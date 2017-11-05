@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 18,
         backgroundColor: 'transparent',
 
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
         paddingLeft: 0,
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 20,
         backgroundColor: 'transparent'
     },
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
         paddingLeft: 2,
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 15,
         backgroundColor: 'transparent'
     },

@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         color: '#2A2A30',
         textAlign: 'left',
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 50,
         marginTop: 20,
         paddingLeft: 20,
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
         color: '#828393',
         textAlign: 'left',
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 18,
         marginTop: 20,
         marginHorizontal: 20,
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         textAlign: 'left',
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
 
     },
 
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 18,
         backgroundColor: 'transparent',
 

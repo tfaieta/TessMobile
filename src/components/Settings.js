@@ -74,7 +74,7 @@ class Settings extends Component {
                         <SettingsList.Item
                             hasNavArrow={false}
                             title='Account'
-                            titleStyle={{color:'#5757FF', marginBottom:10, fontWeight:'500', fontFamily: 'Helvetica'}}
+                            titleStyle={{color:'#5757FF', marginBottom:10, fontWeight:'500', fontFamily: 'Hiragino Sans'}}
                             itemWidth={50}
                             borderHide={'Both'}
                         />
@@ -85,7 +85,7 @@ class Settings extends Component {
                             }
                             hasNavArrow={true}
                             itemWidth={70}
-                            titleStyle={{color:'black', fontSize: 16, fontFamily: 'Helvetica'}}
+                            titleStyle={{color:'black', fontSize: 16, fontFamily: 'Hiragino Sans'}}
                             title='Change Profile Image'
                             onPress={this._handleButtonPressChangeImage}
                         />
@@ -96,7 +96,7 @@ class Settings extends Component {
                             }
                             hasNavArrow={true}
                             itemWidth={70}
-                            titleStyle={{color:'black', fontSize: 16, fontFamily: 'Helvetica'}}
+                            titleStyle={{color:'black', fontSize: 16, fontFamily: 'Hiragino Sans'}}
                             title='Change Username'
                             onPress={this._handleButtonPressChangeUsername}
                         />
@@ -107,7 +107,7 @@ class Settings extends Component {
                             }
                             title='Change Bio'
                             itemWidth={70}
-                            titleStyle={{color:'black', fontSize: 16, fontFamily: 'Helvetica'}}
+                            titleStyle={{color:'black', fontSize: 16, fontFamily: 'Hiragino Sans'}}
                             hasNavArrow={true}
                             onPress={this._handleButtonPressChangeBio}
                         />
@@ -116,7 +116,7 @@ class Settings extends Component {
                         <SettingsList.Item
                             hasNavArrow={true}
                             title='Log Out'
-                            titleStyle={{color:'#5757FF', marginBottom:10, fontWeight:'bold',fontFamily: 'Helvetica' }}
+                            titleStyle={{color:'#5757FF', marginBottom:10, fontWeight:'bold',fontFamily: 'Hiragino Sans' }}
                             itemWidth={70}
                             borderHide={'Both'}
                             onPress={this._handleButtonPressLogOut}
@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#fff',
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 25,
     },
 

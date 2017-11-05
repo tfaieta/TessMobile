@@ -204,7 +204,7 @@ class CreateAccount extends Component {
 const styles = {
     errorTextStyle: {
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 18,
         alignSelf: 'center',
         color: 'rgba(300,10,10,1)',
@@ -226,7 +226,7 @@ const styles = {
         marginBottom: 5,
         color: 'rgba(300,300,300,0.9)',
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 14,
         paddingHorizontal: 10,
     },
@@ -261,7 +261,7 @@ const styles = {
         textAlign: 'center',
         color: '#5555FF',
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 18,
     },
 

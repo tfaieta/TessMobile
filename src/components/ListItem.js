@@ -278,7 +278,7 @@ const styles = {
         paddingLeft: 0,
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 20,
         backgroundColor: 'transparent'
     },
@@ -290,7 +290,7 @@ const styles = {
         paddingLeft: 2,
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 15,
         backgroundColor: 'transparent'
     },

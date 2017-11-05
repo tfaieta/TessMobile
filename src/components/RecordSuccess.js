@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
     },
 
     contentTitle: {
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
 
     },
 

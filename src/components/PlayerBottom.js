@@ -603,7 +603,7 @@ class PlayerBottom extends Component {
         flexDirection: 'row',
         backgroundColor: 'transparent',
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 14,
         textAlign: 'left',
         paddingLeft: 10
@@ -614,7 +614,7 @@ class PlayerBottom extends Component {
             flexDirection: 'row',
             backgroundColor: 'transparent',
             fontStyle: 'normal',
-            fontFamily: 'Helvetica',
+            fontFamily: 'Hiragino Sans',
             fontSize: 13,
             textAlign: 'left',
             paddingLeft: 10
@@ -693,7 +693,7 @@ class PlayerBottom extends Component {
             flex:1,
             textAlign: 'center',
             fontStyle: 'normal',
-            fontFamily: 'Helvetica',
+            fontFamily: 'Hiragino Sans',
             fontSize: 25,
             backgroundColor: 'transparent',
             paddingBottom:10
@@ -712,7 +712,7 @@ class PlayerBottom extends Component {
             flexDirection: 'row',
             backgroundColor: 'transparent',
             alignSelf: 'center',
-            fontFamily: 'Helvetica',
+            fontFamily: 'Hiragino Sans',
         },
         podcastTextNum:{
             color: '#BBBCCD',
@@ -721,7 +721,7 @@ class PlayerBottom extends Component {
             flexDirection: 'row',
             backgroundColor: 'transparent',
             marginHorizontal: 10,
-            fontFamily: 'Helvetica',
+            fontFamily: 'Hiragino Sans',
         },
 
         middleContainer: {
@@ -735,7 +735,7 @@ class PlayerBottom extends Component {
             marginLeft: 5,
             backgroundColor: 'transparent',
             alignSelf: 'center',
-            fontFamily: 'Helvetica',
+            fontFamily: 'Hiragino Sans',
         },
         podcastTextArtist:{
             color:'#2A2A30',
@@ -743,7 +743,7 @@ class PlayerBottom extends Component {
             flexDirection: 'row',
             backgroundColor: 'transparent',
             alignSelf: 'center',
-            fontFamily: 'Helvetica',
+            fontFamily: 'Hiragino Sans',
             marginTop: 6,
         },
 
@@ -753,7 +753,7 @@ class PlayerBottom extends Component {
             flexDirection: 'row',
             backgroundColor: 'transparent',
             alignSelf: 'center',
-            fontFamily: 'Helvetica',
+            fontFamily: 'Hiragino Sans',
             marginTop: 6,
         },
 

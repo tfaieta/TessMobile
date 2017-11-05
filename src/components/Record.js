@@ -352,7 +352,7 @@ const styles = StyleSheet.create({
         color: '#FFF',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 24,
     },
     controls: {

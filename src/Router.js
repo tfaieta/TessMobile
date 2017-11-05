@@ -200,7 +200,7 @@ const RouterComponent = () => {
                         title="Queue"
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#fff'}}
-                        titleStyle={{fontFamily: 'Helvetica', fontSize: 18, backgroundColor: 'transparent',color: '#2A2A30'}}
+                        titleStyle={{fontFamily: 'Hiragino Sans', fontSize: 18, backgroundColor: 'transparent',color: '#2A2A30'}}
                         leftButtonIconStyle = {{ tintColor:'#9496A3'}}
                         duration={1}
                         panHandlers={null}
@@ -211,7 +211,7 @@ const RouterComponent = () => {
                         title="Favorites"
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#fff'}}
-                        titleStyle={{fontFamily: 'Helvetica', fontSize: 18, backgroundColor: 'transparent',color: '#2A2A30'}}
+                        titleStyle={{fontFamily: 'Hiragino Sans', fontSize: 18, backgroundColor: 'transparent',color: '#2A2A30'}}
                         leftButtonIconStyle = {{ tintColor:'#9496A3'}}
                         duration={1}
                         panHandlers={null}
@@ -222,7 +222,7 @@ const RouterComponent = () => {
                         title="Followed Creators"
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#fff'}}
-                        titleStyle={{fontFamily: 'Helvetica', fontSize: 18, backgroundColor: 'transparent',color: '#2A2A30'}}
+                        titleStyle={{fontFamily: 'Hiragino Sans', fontSize: 18, backgroundColor: 'transparent',color: '#2A2A30'}}
                         leftButtonIconStyle = {{ tintColor:'#9496A3'}}
                         duration={1}
                         panHandlers={null}
@@ -233,7 +233,7 @@ const RouterComponent = () => {
                         title="My Content"
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#fff'}}
-                        titleStyle={{fontFamily: 'Helvetica', fontSize: 18, backgroundColor: 'transparent',color: '#2A2A30'}}
+                        titleStyle={{fontFamily: 'Hiragino Sans', fontSize: 18, backgroundColor: 'transparent',color: '#2A2A30'}}
                         leftButtonIconStyle = {{ tintColor:'#9496A3'}}
                         duration={1}
                         panHandlers={null}
@@ -258,7 +258,7 @@ const RouterComponent = () => {
                         title="Settings"
                         hideNavBar={false}
                         navigationBarStyle={{backgroundColor:'#fff'}}
-                        titleStyle={{fontFamily: 'Helvetica', fontSize: 18, backgroundColor: 'transparent',color: '#2A2A30'}}
+                        titleStyle={{fontFamily: 'Hiragino Sans', fontSize: 18, backgroundColor: 'transparent',color: '#2A2A30'}}
                         leftButtonIconStyle = {{ tintColor:'#9496A3'}}
                         duration={1}
                         panHandlers={null}
@@ -270,7 +270,7 @@ const RouterComponent = () => {
                         title={Variables.state.podcastArtist}
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#fff'}}
-                        titleStyle={{fontFamily: 'Helvetica', fontSize: 18, backgroundColor: 'transparent',color: '#2A2A30'}}
+                        titleStyle={{fontFamily: 'Hiragino Sans', fontSize: 18, backgroundColor: 'transparent',color: '#2A2A30'}}
                         leftButtonIconStyle = {{ tintColor:'#9496A3'}}
                         panHandlers={null}
                     />

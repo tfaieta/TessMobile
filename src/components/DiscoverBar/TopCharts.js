@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Helvetica',
+        fontFamily: 'Hiragino Sans',
         fontSize: 20,
         backgroundColor: 'transparent'
     },
