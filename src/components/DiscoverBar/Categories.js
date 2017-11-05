@@ -10,6 +10,21 @@ class Categories extends Component{
     pressFitness(){
         Actions.Fitness();
     }
+    pressCurrEvents(){
+        Actions.CurrentEvents();
+    }
+    pressPolitics(){
+        Actions.Politics();
+    }
+    pressGaming(){
+        Actions.Gaming();
+    }
+    pressSports(){
+        Actions.Sports();
+    }
+    pressEntertainment(){
+        Actions.Entertainment();
+    }
 
 
     render() {
@@ -19,7 +34,7 @@ class Categories extends Component{
 
 
                 <View style={{flexDirection: 'row', flex:1}}>
-                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10}}>
+                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10}} onPress={this.pressCurrEvents}>
                     <Image
                         style={{ width: 130, height:154, alignSelf: 'center', opacity: 1}}
                         source={require('tess/src/images/currEvents-cat.png')}
@@ -35,13 +50,13 @@ class Categories extends Component{
 
 
                 <View style={{flexDirection: 'row', flex:1}}>
-                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingVertical: 10}}>
+                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingVertical: 10}} onPress={this.pressPolitics}>
                     <Image
                         style={{ width: 130, height:154, alignSelf: 'center', opacity: 1}}
                         source={require('tess/src/images/politics-cat.png')}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: 10}}>
+                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: 10}} onPress={this.pressGaming}>
                     <Image
                         style={{ width: 128, height:154, alignSelf: 'center', opacity: 1}}
                         source={require('tess/src/images/gaming-cat.png')}
@@ -51,13 +66,13 @@ class Categories extends Component{
 
 
                 <View style={{flexDirection: 'row', flex:1}}>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10, paddingBottom: 150}}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10, paddingBottom: 150}} onPress={this.pressSports}>
                         <Image
                             style={{ width: 128, height:154, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/sports-cat.png')}
                         />
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: 10}}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: 10}} onPress={this.pressEntertainment}>
                         <Image
                             style={{ width: 130, height:154, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/entertainment-cat.png')}

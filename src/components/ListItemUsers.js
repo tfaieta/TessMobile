@@ -133,7 +133,7 @@ const styles = {
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'HiraginoSans-W3',
         fontSize: 16,
         marginLeft: 10,
         backgroundColor: 'transparent'

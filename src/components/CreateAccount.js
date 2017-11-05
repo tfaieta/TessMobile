@@ -97,7 +97,7 @@ class CreateAccount extends Component {
                         <View style={{alignItems: 'flex-end', flex:8}}>
                         <TextInput
                             style={styles.input}
-                            placeholder={'USERNAME'}
+                            placeholder={'Username'}
                             placeholderTextColor='rgba(300,300,300,0.7)'
 
                             autoCapitalize={'none'}
@@ -130,7 +130,7 @@ class CreateAccount extends Component {
                             <TextInput
                                 ref='FirstInput'
                                 style={styles.input}
-                                placeholder={'EMAIL'}
+                                placeholder={'Email'}
                                 placeholderTextColor='rgba(300,300,300,0.7)'
 
                                 autoCapitalize={'none'}
@@ -164,7 +164,7 @@ class CreateAccount extends Component {
                             <TextInput
                                 ref='SecondInput'
                                 style={styles.input}
-                                placeholder={'PASSWORD'}
+                                placeholder={'Password'}
                                 placeholderTextColor='rgba(300,300,300,0.7)'
 
                                 autoCapitalize={'none'}
@@ -263,6 +263,7 @@ const styles = {
         fontStyle: 'normal',
         fontFamily: 'Hiragino Sans',
         fontSize: 18,
+        marginTop: 5,
     },
 
     inputContainer: {

@@ -288,7 +288,7 @@ class Record extends Component{
                     <View style={styles.controls}>
                         {this._renderButtonRecordN(() => {this._record()}, this.state.recording )}
                         {this._renderTime()}
-                        {this._renderButton("DONE", () => {this._done()} )}
+                        {this._renderButton("Done", () => {this._done()} )}
                     </View>
 
 
@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Futura',
+        fontFamily: 'HiraginoSans-W6',
         fontSize: 25,
         backgroundColor: 'transparent'
     },
@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Futura',
+        fontFamily: 'HiraginoSans-W6',
         fontSize: 25,
         backgroundColor: 'transparent'
     },
@@ -344,7 +344,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Futura',
+        fontFamily: 'HiraginoSans-W6',
         fontSize: 20,
         backgroundColor: 'transparent'
     },
@@ -352,8 +352,8 @@ const styles = StyleSheet.create({
         color: '#FFF',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 24,
+        fontFamily: 'HiraginoSans-W6',
+        fontSize: 22,
     },
     controls: {
         justifyContent: 'center',
@@ -378,7 +378,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 50,
         color: "#FFF",
         fontStyle: 'normal',
-        fontFamily: 'Futura',
+        fontFamily: 'HiraginoSans-W6',
     },
     activeButtonText: {
         fontSize: 25,

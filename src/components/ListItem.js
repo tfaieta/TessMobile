@@ -278,7 +278,7 @@ const styles = {
         paddingLeft: 0,
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'HiraginoSans-W6',
         fontSize: 20,
         backgroundColor: 'transparent'
     },

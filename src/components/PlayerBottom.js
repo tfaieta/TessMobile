@@ -603,7 +603,7 @@ class PlayerBottom extends Component {
         flexDirection: 'row',
         backgroundColor: 'transparent',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'HiraginoSans-W3',
         fontSize: 14,
         textAlign: 'left',
         paddingLeft: 10
@@ -712,7 +712,7 @@ class PlayerBottom extends Component {
             flexDirection: 'row',
             backgroundColor: 'transparent',
             alignSelf: 'center',
-            fontFamily: 'Hiragino Sans',
+            fontFamily: 'HiraginoSans-W6',
         },
         podcastTextNum:{
             color: '#BBBCCD',
@@ -743,7 +743,7 @@ class PlayerBottom extends Component {
             flexDirection: 'row',
             backgroundColor: 'transparent',
             alignSelf: 'center',
-            fontFamily: 'Hiragino Sans',
+            fontFamily: 'HiraginoSans-W3',
             marginTop: 6,
         },
 

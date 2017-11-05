@@ -66,52 +66,80 @@ class Login extends Component {
 
 
                 <Image
-                    style={{marginTop:-15, width: 137, height: 154, marginBottom: 30, alignSelf: 'center',}}
+                    style={{marginTop:-15, width: 137, height: 154, marginBottom: 80, alignSelf: 'center'}}
                     source={require('tess/src/images/White_Logo.png')}
                 />
 
-                <View  style={styles.inputContainer}>
-                <TextInput
-                    style={styles.input}
-                    placeholder={'EMAIL'}
-                    placeholderTextColor='rgba(300,300,300,0.7)'
-
-                    autoCapitalize={'none'}
-                    autoCorrect={false}
-                    returnKeyType='next'
-                    keyboardType="email-address"
-                    value={this.props.email}
-                    onChangeText={this.onEmailChange.bind(this)}
-                    onSubmitEditing={(event) => {
-                        this.refs.SecondInput.focus();
-                    }}
-                />
-                </View>
 
                 <View style={styles.inputContainer}>
                     <View style={{flexDirection:'row'}}>
-                    <View style={{alignItems:'flex-start', flex:3}}>
-                    <TextInput
-                        style={styles.input}
-                        ref='SecondInput'
-                        placeholder={'PASSWORD'}
-                        placeholderTextColor='rgba(300,300,300,0.7)'
+                        <View style={{alignItems:'flex-start', flex:1,}}>
+                            <Icon style={{
+                                textAlign: 'center',
+                                marginTop: 18,
+                                marginLeft: 10,
+                                fontSize: 22,
+                                color: 'rgba(300,300,300,0.7)'
+                            }} name="md-mail">
+                            </Icon>
+                        </View>
+                        <View style={{alignItems: 'flex-end', flex:8}}>
+                            <TextInput
+                                style={styles.input}
+                                placeholder={'Email'}
+                                placeholderTextColor='rgba(300,300,300,0.7)'
 
-                        autoCapitalize={'none'}
-                        autoCorrect={false}
-                        secureTextEntry
-                        returnKeyType="go"
-                        value={this.props.password}
-                        onChangeText={this.onPasswordChange.bind(this)}
-                        onSubmitEditing={() => this.onButtonPress()}
-
-                    />
-                    </View>
-                    <TouchableOpacity style={{alignItems: 'flex-end', flex:1}}>
-                    <Text style={styles.inputText}>FORGOT</Text>
-                    </TouchableOpacity>
+                                autoCapitalize={'none'}
+                                autoCorrect={false}
+                                returnKeyType='next'
+                                keyboardType="email-address"
+                                value={this.props.email}
+                                onChangeText={this.onEmailChange.bind(this)}
+                                onSubmitEditing={(event) => {
+                                    this.refs.SecondInput.focus();
+                                }}
+                            />
+                        </View>
                     </View>
                 </View>
+
+
+
+                <View style={styles.inputContainer}>
+                    <View style={{flexDirection:'row'}}>
+                        <View style={{alignItems:'flex-start', flex:1,}}>
+                            <Icon style={{
+                                textAlign: 'center',
+                                marginTop: 18,
+                                marginLeft: 10,
+                                fontSize: 22,
+                                color: 'rgba(300,300,300,0.7)'
+                            }} name="md-key">
+                            </Icon>
+                        </View>
+                        <View style={{alignItems:'center', flex:6, marginLeft: 5}}>
+                            <TextInput
+                                style={styles.input}
+                                ref='SecondInput'
+                                placeholder={'Password'}
+                                placeholderTextColor='rgba(300,300,300,0.7)'
+
+                                autoCapitalize={'none'}
+                                autoCorrect={false}
+                                secureTextEntry
+                                returnKeyType="go"
+                                value={this.props.password}
+                                onChangeText={this.onPasswordChange.bind(this)}
+                                onSubmitEditing={() => this.onButtonPress()}
+
+                            />
+                        </View>
+                        <TouchableOpacity style={{alignItems: 'flex-end', flex:3, marginTop:2}}>
+                            <Text style={styles.inputText}>Forgot</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
 
 
                 <Text style={styles.errorTextStyle}>
@@ -137,7 +165,8 @@ const styles = {
         fontSize: 18,
         alignSelf: 'center',
         color: 'rgba(300,10,10,1)',
-        marginTop: 15,
+        marginTop: 5,
+        marginBottom:5,
         backgroundColor: 'transparent'
     },
 
@@ -164,7 +193,6 @@ const styles = {
     buttonContainer: {
         paddingVertical: 15,
         paddingHorizontal: 15,
-        marginTop: 30,
         marginBottom:5,
         borderWidth: 2,
         borderStyle: 'solid',
@@ -190,6 +218,7 @@ const styles = {
         fontStyle: 'normal',
         fontFamily: 'Hiragino Sans',
         fontSize: 18,
+        marginTop: 5,
     },
 
     inputText: {

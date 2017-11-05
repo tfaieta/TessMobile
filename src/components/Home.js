@@ -96,9 +96,15 @@ class Home extends Component{
         return <ListItemUsers podcast={podcast} />;
     }
 
+
+
     pressFitness(){
         Actions.Fitness();
     }
+    pressCurrEvents(){
+        Actions.CurrentEvents();
+    }
+
 
 
     render() {
@@ -120,7 +126,7 @@ class Home extends Component{
                             <Text style={styles.title}>New Releases</Text>
                             </View>
                             <View style={{alignSelf:'flex-end'}}>
-                                <TouchableOpacity style={{marginLeft: 150}}>
+                                <TouchableOpacity style={{marginLeft: 135}}>
                                     <Text style={styles.viewAll}>View all</Text>
                                 </TouchableOpacity>
                             </View>
@@ -156,7 +162,7 @@ class Home extends Component{
                             </Image>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, borderRadius: 10, borderWidth: 0.1}}>
+                        <TouchableOpacity style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, borderRadius: 10, borderWidth: 0.1}} onPress={this.pressCurrEvents}>
                             <Image
                                 style={{width: 218, height:122, position: 'absolute', alignSelf: 'center', opacity: 0.9, borderRadius: 10, borderWidth: 0.1}}
                                 source={require('tess/src/images/worldNews.png')}
@@ -169,7 +175,7 @@ class Home extends Component{
                                     color: '#FFF'
                                 }} name="md-globe">
                                 </Icon>
-                                <Text style={styles.catTitle}>World News</Text>
+                                <Text style={styles.catTitle}>Current Events</Text>
                             </Image>
                         </TouchableOpacity>
                     </ScrollView>
@@ -182,7 +188,7 @@ class Home extends Component{
                         <Text style={styles.title}>Selected by Tess</Text>
                     </View>
                     <View style={{alignSelf:'flex-end'}}>
-                        <TouchableOpacity style={{marginLeft: 130}}>
+                        <TouchableOpacity style={{marginLeft: 105}}>
                             <Text style={styles.viewAll}>View all</Text>
                         </TouchableOpacity>
                     </View>
@@ -252,7 +258,7 @@ const styles = StyleSheet.create({
         color: '#2A2A30',
         textAlign: 'left',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'HiraginoSans-W6',
         fontSize: 20,
         marginTop: 20,
         paddingLeft: 20,
@@ -262,12 +268,13 @@ const styles = StyleSheet.create({
         color: '#9496A3',
         textAlign: 'left',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'HiraginoSans-W3',
         fontSize: 16,
         marginTop: 10,
         paddingBottom: 10,
         paddingLeft: 20,
         backgroundColor: 'transparent',
+        marginRight: 10
     },
 
     viewAll: {

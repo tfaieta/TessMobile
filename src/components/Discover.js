@@ -71,10 +71,10 @@ class Discover extends Component{
                     tabBarTextStyle={styles.tabStyle}
                     renderTabBar={() => <DefaultTabBar />}>
 
-                    <Categories tabLabel="CATEGORIES" />
-                    <TopCharts tabLabel="TOP CHARTS" />
-                    <NewPodcasts tabLabel="NEW" />
-                    <Following tabLabel="FOLLOWING" />
+                    <Categories tabLabel="Categories" />
+                    <TopCharts tabLabel="Top Charts" />
+                    <NewPodcasts tabLabel="New" />
+                    <Following tabLabel="Following" />
 
                 </ScrollableTabView>
 

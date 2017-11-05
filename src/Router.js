@@ -26,6 +26,11 @@ import Favorites from "./components/Favorites";
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "./components/Variables";
 import Fitness from "./components/Categories/Fitness";
+import CurrentEvents from "./components/Categories/CurrentEvents";
+import Politics from "./components/Categories/Politics";
+import Gaming from "./components/Categories/Gaming";
+import Sports from "./components/Categories/Sports";
+import Entertainment from "./components/Categories/Entertainment";
 
 
 
@@ -139,7 +144,51 @@ const RouterComponent = () => {
                         duration={1}
                         panHandlers={null}
                     />
-
+                    <Scene
+                        key="CurrentEvents"
+                        component={CurrentEvents}
+                        title= 'Current Events'
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
+                        panHandlers={null}
+                    />
+                    <Scene
+                        key="Politics"
+                        component={Politics}
+                        title= 'Politics'
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
+                        panHandlers={null}
+                    />
+                    <Scene
+                        key="Gaming"
+                        component={Gaming}
+                        title= 'Gaming'
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
+                        panHandlers={null}
+                    />
+                    <Scene
+                        key="Sports"
+                        component={Sports}
+                        title= 'Sports'
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
+                        panHandlers={null}
+                    />
+                    <Scene
+                        key="Entertainment"
+                        component={Entertainment}
+                        title= 'Entertainment'
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
+                        panHandlers={null}
+                    />
                 </Scene>
 
 

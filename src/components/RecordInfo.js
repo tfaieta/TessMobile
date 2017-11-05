@@ -417,7 +417,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'HiraginoSans-W6',
         fontSize: 18,
         backgroundColor: 'transparent',
         marginTop: 30,
