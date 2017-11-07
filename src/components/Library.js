@@ -66,7 +66,7 @@ class Library extends Component{
                 />
 
 
-                <View style={{flexDirection: 'row', width: 375, height: 70, borderRadius: 10, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
+                <View style={{flexDirection: 'row',  paddingBottom:5, borderRadius: 10, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
                     <View style={{flex:1,justifyContent: 'center', alignItems: 'center',}}>
                         <Text style={styles.header}>Library</Text>
                     </View>

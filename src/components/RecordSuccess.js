@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet,Image, TouchableOpacity,} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity,} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
 import { volume } from './Home';
 import Sound from 'react-native-sound';
 import {podFile, podTime} from './Record';
 import Variables from './Variables';
+import LinearGradient from "react-native-linear-gradient/index.android";
 
 
 
@@ -52,13 +53,12 @@ class RecordSuccess extends Component{
 
     render() {
         return (
-            <View
+            <LinearGradient
+
+                colors={['#3e279b', '#5d539c' ]}
                 style={styles.container}>
 
-                <Image
-                    style={{width: 375, height:667, position: 'absolute', alignSelf: 'center', opacity: 1}}
-                    source={require('tess/src/images/record-back.png')}
-                >
+
 
 
 
@@ -85,9 +85,8 @@ class RecordSuccess extends Component{
                 </View>
 
 
-                </Image>
 
-            </View>
+            </LinearGradient>
 
 
 
@@ -100,7 +99,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: 'transparent',
-        paddingTop: 80,
+        paddingTop: 10,
     },
 
     title: {

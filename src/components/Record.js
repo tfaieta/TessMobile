@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Sound from 'react-native-sound';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
 import { Actions } from 'react-native-router-flux';
+import LinearGradient from "react-native-linear-gradient/index.android";
 
 
 
@@ -258,22 +259,22 @@ class Record extends Component{
         return (
 
 
-                <View style={styles.container}>
+            <LinearGradient
+
+                colors={['#3e279b', '#5d539c' ]}
+                style={styles.container}>
 
                     <StatusBar
                         barStyle="light-content"
                     />
 
-                    <Image
-                        style={{width: 375, height:667, position: 'absolute', alignSelf: 'center', opacity: 1}}
-                        source={require('tess/src/images/record-back.png')}
-                    >
+
 
                     <View style={styles.centerContainer}>
 
                         <View style={styles.leftContainer}>
                             <TouchableOpacity onPress={this.Close}>
-                                <Icon style={{textAlign:'left',marginLeft: 10, fontSize: 30,color:'#FFF' }} name="md-arrow-round-back">
+                                <Icon style={{textAlign:'left', marginLeft: 10, fontSize: 30,color:'#FFF' }} name="md-arrow-round-back">
                                 </Icon>
                             </TouchableOpacity>
                         </View>
@@ -292,8 +293,7 @@ class Record extends Component{
                     </View>
 
 
-                    </Image>
-                </View>
+            </LinearGradient>
 
 
 
@@ -305,7 +305,7 @@ class Record extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        paddingTop: 80,
+        paddingTop: 10,
         backgroundColor: 'transparent',
     },
     container2:{

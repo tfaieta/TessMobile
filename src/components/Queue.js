@@ -18,7 +18,7 @@ class Queue extends Component{
                 style={styles.container}>
 
 
-                <View style={{flexDirection: 'row', width: 375, height: 70, borderRadius: 10, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
+                <View style={{flexDirection: 'row', paddingVertical:5, borderRadius: 10, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        marginTop:10,
+        marginTop:25,
         marginLeft: -35,
         color: '#2A2A30',
         textAlign: 'center',

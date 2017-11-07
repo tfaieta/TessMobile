@@ -12,6 +12,7 @@ import firebase from 'firebase';
 import {podcastCreate} from "../actions/PodcastActions";
 import SimplePicker from 'react-native-simple-picker';
 import DropdownAlert from 'react-native-dropdownalert';
+import LinearGradient from "react-native-linear-gradient/index.android";
 
 
 
@@ -136,13 +137,10 @@ class RecordInfo extends Component{
     render() {
 
         return (
-            <View
-                style={styles.container}>
+            <LinearGradient
 
-                <Image
-                    style={{width: 375, height:667, position: 'absolute', alignSelf: 'center', opacity: 1}}
-                    source={require('tess/src/images/record-back.png')}
-                >
+                colors={['#3e279b', '#5d539c' ]}
+                style={styles.container}>
 
 
 
@@ -242,7 +240,7 @@ class RecordInfo extends Component{
                         </Icon>
                         <Text style={{ color: '#fff', marginTop: 10, fontSize: 18, marginLeft: 15, fontFamily: 'Hiragino Sans', }}>Categories</Text>
                         <Text
-                            style={{ color: '#BBBCCD', marginTop: 10, fontSize: 18, marginLeft: 70, fontFamily: 'Hiragino Sans', }}
+                            style={{ color: '#BBBCCD', marginTop: 10, fontSize: 18, marginLeft: 50, fontFamily: 'Hiragino Sans', }}
                             onPress={() => {
                                 this.refs.picker1.show();
                             }}
@@ -302,10 +300,10 @@ class RecordInfo extends Component{
                 </TouchableOpacity>
                 </View>
 
-                </Image>
+
 
                 <DropdownAlert titleStyle={{color:'#fff'}} messageStyle={{color: '#fff'}} containerStyle={{backgroundColor: '#ee5865'}} ref={ref => this.dropdown = ref} showCancel={true} />
-            </View>
+            </LinearGradient>
 
 
 
@@ -318,7 +316,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: 'transparent',
-        paddingTop: 80,
+        paddingTop: 10,
     },
 
     title: {

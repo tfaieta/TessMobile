@@ -174,7 +174,7 @@ class Account extends Component {
                     barStyle="dark-content"
                 />
 
-                <View style={{flexDirection: 'row', width: 375, height: 70, borderRadius: 10, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
+                <View style={{flexDirection: 'row', borderRadius: 10, paddingVertical:5, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
                     <View style={{flex:1,alignItems: 'flex-start'}}>
                     </View>
                     <View style={{flex:1,justifyContent: 'center', alignItems: 'center',}}>
