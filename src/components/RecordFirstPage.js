@@ -34,16 +34,15 @@ class RecordFirstPage extends Component{
 
 
                 <View style={{flexDirection: 'row', width: 375, height: 70, borderRadius: 10, borderWidth: 2, marginBottom: 20, borderColor: 'rgba(187,188,205,0.3)',   }}>
-                    <View style={{justifyContent: 'center', alignItems: 'center',}}>
+                    <View style={{justifyContent: 'center', alignItems: 'center', flex:10, marginLeft:30, marginTop:10}}>
                         <Text style={styles.header}>Create a Podcast</Text>
                     </View>
 
-                    <View style={{justifyContent: 'center', alignItems: 'flex-end', marginTop: 16}}>
+                    <View style={{justifyContent: 'center', alignItems: 'flex-end', marginTop: 16, marginRight: 10, flex:1}}>
                         <TouchableOpacity onPress={this.info} >
                             <Icon style={{
                                 textAlign: 'right',
                                 fontSize: 24,
-                                marginLeft: 75,
                                 color: '#5757FF'
                             }} name="md-information-circle">
                             </Icon>
@@ -144,7 +143,6 @@ const styles = StyleSheet.create({
 
     header: {
         marginTop:10,
-        marginLeft: 120,
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',

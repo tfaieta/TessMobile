@@ -251,13 +251,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'HiraginoSans-W3',
         fontSize: 18,
         backgroundColor: 'transparent',
     },
 
     header: {
-        marginTop:10,
+        marginTop:25,
         marginLeft: -35,
         color: '#2A2A30',
         textAlign: 'center',
@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
         paddingLeft: 0,
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'HiraginoSans-W6',
         fontSize: 20,
         backgroundColor: 'transparent'
     },

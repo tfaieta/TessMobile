@@ -238,7 +238,7 @@ class PlayerBottom extends Component {
     _renderCategory(){
 
         return(
-            <TouchableOpacity>
+            <TouchableOpacity onPress={this.onCategoryPress}>
                 <Text style={styles.podcastTextCat}>{Variables.state.podcastCategory}</Text>
             </TouchableOpacity>
         );
@@ -407,6 +407,34 @@ class PlayerBottom extends Component {
             this.setState({ liked: true, likes: this.state.likes+1})
         }
     };
+
+    onCategoryPress = () => {
+        if(Variables.state.podcastCategory == 'Fitness'){
+            this.setModalVisible(!this.state.modalVisible);
+            Actions.Fitness();
+        }
+        else if(Variables.state.podcastCategory == 'Current Events'){
+            this.setModalVisible(!this.state.modalVisible);
+            Actions.CurrentEvents();
+        }
+        else if(Variables.state.podcastCategory == 'Gaming'){
+            this.setModalVisible(!this.state.modalVisible);
+            Actions.Gaming();
+        }
+        else if(Variables.state.podcastCategory == 'Politics'){
+            this.setModalVisible(!this.state.modalVisible);
+            Actions.Politics();
+        }
+        else if(Variables.state.podcastCategory == 'Sports'){
+            this.setModalVisible(!this.state.modalVisible);
+            Actions.Sports();
+        }
+        else if(Variables.state.podcastCategory == 'Entertainment'){
+            this.setModalVisible(!this.state.modalVisible);
+            Actions.Entertainment();
+        }
+        else console.warn("Category not yet supported");
+    }
 
 
 
@@ -599,26 +627,24 @@ class PlayerBottom extends Component {
     },
     playingText:{
         color: '#FFF',
-        marginTop:2,
         flexDirection: 'row',
         backgroundColor: 'transparent',
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W3',
-        fontSize: 14,
+        fontSize: 13,
         textAlign: 'left',
         paddingLeft: 10
     },
-        playingText2:{
-            color: '#FFF',
-            marginTop:2,
-            flexDirection: 'row',
-            backgroundColor: 'transparent',
-            fontStyle: 'normal',
-            fontFamily: 'Hiragino Sans',
-            fontSize: 13,
-            textAlign: 'left',
-            paddingLeft: 10
-        },
+    playingText2:{
+        color: '#FFF',
+        flexDirection: 'row',
+        backgroundColor: 'transparent',
+        fontStyle: 'normal',
+        fontFamily: 'Hiragino Sans',
+        fontSize: 12,
+        textAlign: 'left',
+        paddingLeft: 10
+    },
     listView: {
         paddingTop: 20,
         backgroundColor: '#F5FCFF',

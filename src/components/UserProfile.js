@@ -161,172 +161,6 @@ class UserProfile extends Component {
     };
 
 
-    _renderCategory = () => {
-
-        if (Variables.state.currentFavCategory == 'fitness') {
-            return (
-                <Icon style={{textAlign: 'center', fontSize: 40, color: '#6cff52'}} name="ios-body">
-                    <Text style={{
-                        color: '#6cff52',
-                        fontSize: 22,
-                        marginTop: 5,
-                        flexDirection: 'row',
-                        backgroundColor: 'transparent',
-                        alignSelf: 'center'
-                    }}> fitness</Text>
-                </Icon>
-            )
-        }
-        if (Variables.state.currentFavCategory == 'current') {
-            return (
-                <Icon style={{textAlign: 'center', fontSize: 40, color: '#64fffc'}} name="md-bookmarks">
-                    <Text style={{
-                        color: '#64fffc',
-                        fontSize: 22,
-                        marginTop: 5,
-                        flexDirection: 'row',
-                        backgroundColor: 'transparent',
-                        alignSelf: 'center'
-                    }}> current event</Text>
-                </Icon>
-            )
-        }
-        if (Variables.state.currentFavCategory == 'politics') {
-            return (
-                <Icon style={{textAlign: 'center', fontSize: 40, color: '#ffd038'}} name="md-megaphone">
-                    <Text style={{
-                        color: '#ffd038',
-                        fontSize: 22,
-                        marginTop: 5,
-                        flexDirection: 'row',
-                        backgroundColor: 'transparent',
-                        alignSelf: 'center'
-                    }}> politics</Text>
-                </Icon>
-            )
-        }
-        if (Variables.state.currentFavCategory == 'gaming') {
-            return (
-                <Icon style={{textAlign: 'center', fontSize: 40, color: '#ff5442'}} name="md-game-controller-b">
-                    <Text style={{
-                        color: '#ff5442',
-                        fontSize: 22,
-                        marginTop: 5,
-                        flexDirection: 'row',
-                        backgroundColor: 'transparent',
-                        alignSelf: 'center'
-                    }}> gaming</Text>
-                </Icon>
-            )
-        }
-        if (Variables.state.currentFavCategory == 'sports') {
-            return (
-                <Icon style={{textAlign: 'center', fontSize: 40, color: '#7fa5ff'}} name="ios-football">
-                    <Text style={{
-                        color: '#7fa5ff',
-                        fontSize: 22,
-                        marginTop: 5,
-                        flexDirection: 'row',
-                        backgroundColor: 'transparent',
-                        alignSelf: 'center'
-                    }}> sports</Text>
-                </Icon>
-            )
-        }
-        if (Variables.state.currentFavCategory == 'entertainment') {
-            return (
-                <Icon style={{textAlign: 'center', fontSize: 40, color: '#fdff53'}} name="ios-musical-notes">
-                    <Text style={{
-                        color: '#fdff53',
-                        fontSize: 22,
-                        marginTop: 5,
-                        flexDirection: 'row',
-                        backgroundColor: 'transparent',
-                        alignSelf: 'center'
-                    }}> entertainment</Text>
-                </Icon>
-            )
-        }
-        if (Variables.state.currentFavCategory == 'life') {
-            return (
-                <Icon style={{textAlign: 'center', fontSize: 40, color: '#3aff97'}} name="ios-body">
-                    <Text style={{
-                        color: '#3aff97',
-                        fontSize: 22,
-                        marginTop: 5,
-                        flexDirection: 'row',
-                        backgroundColor: 'transparent',
-                        alignSelf: 'center'
-                    }}> life</Text>
-                </Icon>
-            )
-        }
-        if (Variables.state.currentFavCategory == 'fashion') {
-            return (
-                <Icon style={{textAlign: 'center', fontSize: 40, color: '#ff5e95'}} name="ios-shirt">
-                    <Text style={{
-                        color: '#ff5e95',
-                        fontSize: 22,
-                        marginTop: 5,
-                        flexDirection: 'row',
-                        backgroundColor: 'transparent',
-                        alignSelf: 'center'
-                    }}> fashion</Text>
-                </Icon>
-            )
-        }
-        if (Variables.state.currentFavCategory == 'trends') {
-            return (
-                <Icon style={{textAlign: 'center', fontSize: 40, color: '#bd59ff'}} name="md-trending-up">
-                    <Text style={{
-                        color: '#bd59ff',
-                        fontSize: 22,
-                        marginTop: 5,
-                        flexDirection: 'row',
-                        backgroundColor: 'transparent',
-                        alignSelf: 'center'
-                    }}> trends</Text>
-                </Icon>
-            )
-        }
-        if (Variables.state.currentFavCategory == 'cars') {
-            return (
-                <Icon style={{textAlign: 'center', fontSize: 40, color: '#ff861c'}} name="ios-car">
-                    <Text style={{
-                        color: '#ff861c',
-                        fontSize: 22,
-                        marginTop: 5,
-                        flexDirection: 'row',
-                        backgroundColor: 'transparent',
-                        alignSelf: 'center'
-                    }}> cars</Text>
-                </Icon>
-            )
-        }
-        if (Variables.state.currentFavCategory == 'misc') {
-            return (
-                <Icon style={{textAlign: 'center', fontSize: 40, color: '#aeb1a7'}} name="md-code-working">
-                    <Text style={{
-                        color: '#aeb1a7',
-                        fontSize: 22,
-                        marginTop: 5,
-                        flexDirection: 'row',
-                        backgroundColor: 'transparent',
-                        alignSelf: 'center'
-                    }}> misc</Text>
-                </Icon>
-            )
-        }
-
-        else {
-            return (
-                <Text style={styles.titleBio}>Too hard to choose</Text>
-            )
-        }
-
-    };
-
-
 
     _renderFollowButton = () => {
         const {currentUser} = firebase.auth();
@@ -472,12 +306,12 @@ const styles = StyleSheet.create({
     },
     title: {
         color: '#2A2A30',
-        marginTop: 70,
+        marginTop: 20,
         flex:1,
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'HiraginoSans-W6',
         fontSize: 25,
         backgroundColor: 'transparent'
     },
@@ -496,6 +330,7 @@ const styles = StyleSheet.create({
         color: '#828393',
         marginVertical: 10,
         marginTop: 70,
+        marginHorizontal: 10,
         flex:1,
         textAlign: 'center',
         opacity: 2,
@@ -527,7 +362,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     header: {
-        marginTop:10,
+        marginTop:30,
         marginLeft: -35,
         color: '#2A2A30',
         textAlign: 'center',

@@ -3,17 +3,15 @@
  */
 import React, {Component} from 'react';
 import {StyleSheet, View, Image, Text, TouchableOpacity, StatusBar} from 'react-native';
-import FBSDK, { LoginManager } from 'react-native-fbsdk';
+import { LoginManager } from 'react-native-fbsdk';
 import { Actions } from 'react-native-router-flux';
 import AppIntro from 'react-native-app-intro';
 import Icon from 'react-native-vector-icons/Ionicons';
-import LinearGradient from "react-native-linear-gradient/index.android";
 
 
 
 
 export  default class Login extends Component{
-
 
 
 
@@ -77,7 +75,7 @@ export  default class Login extends Component{
                         <View style={{marginLeft:10}}>
                         <Text style={styles.textforSlide1}>Ready to Create?</Text>
                         </View>
-                        <View style={{marginLeft:10, marginTop:10}}>
+                        <View style={{marginLeft:10}}>
                         <Text style={styles.smallText}>We make it easy for anyone to record high-quality audio.</Text>
                         </View>
                     </View>
@@ -213,9 +211,9 @@ const styles = StyleSheet.create({
 
     textforSlide1: {
         color: '#2A2A30',
-        fontSize: 45,
+        fontSize: 42,
         textAlign: 'left',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'HiraginoSans-W3',
         marginLeft: 30,
         marginRight: 30,
         paddingTop: 20,
@@ -226,7 +224,7 @@ const styles = StyleSheet.create({
         color: '#828393',
         fontSize: 16,
         textAlign: 'left',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'HiraginoSans-W3',
         marginLeft: 30,
         marginRight: 30,
     },

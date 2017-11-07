@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        marginTop:10,
+        marginTop:25,
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
