@@ -10,8 +10,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
-import { podcastFetchUser } from "../actions/PodcastActions"
-import ListItem from './ListItem';
+import { podcastFetchUser } from "../actions/PodcastActions";
 import PlayerBottom from './PlayerBottom';
 import {podFile} from "./Record";
 import Sound from 'react-native-sound';
@@ -20,16 +19,28 @@ import {profileName} from './CreateAccount.js';
 import Variables from './Variables';
 import firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
+import RNFetchBlob from 'react-native-fetch-blob';
 
 
 
 
 class UserProfile extends Component {
     componentWillMount(){
-        this.props.podcastFetchUser(Variables.state.podcastArtist);
+
+        const {currentUser} = firebase.auth();
+
+        Variables.state.userPodcasts = [];
 
 
-        this.creataDataSource(this.props);
+        const ref = firebase.database().ref(`podcasts/`);
+
+        ref.on("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+                if(Variables.state.podcastArtist == data.val().podcastArtist) {
+                    Variables.state.userPodcasts.push(data.val());
+                }
+            })
+        });
 
 
         firebase.database().ref(`/users/${Variables.state.podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
@@ -61,7 +72,6 @@ class UserProfile extends Component {
             }
         });
 
-        const {currentUser} = firebase.auth();
         if( firebase.database().ref(`users/${currentUser.uid}/following/`).child(Variables.state.podcastArtist)){
             Variables.state.following = true;
         }
@@ -71,32 +81,21 @@ class UserProfile extends Component {
 
 
 
-
-
-    }
-
-
-
-    componentWillReceiveProps(nextProps) {
-
-        this.creataDataSource(nextProps);
-    }
-
-
-    creataDataSource({ podcast }) {
-        const ds = new ListView.DataSource({
-            rowHasChanged: (r1, r2) => r1 !== r2
-        });
-
-        this.dataSource = ds.cloneWithRows(podcast);
     }
 
 
     constructor(props) {
         super(props);
-        this.state = { username: 'none' , bio: "Tell others about yourself...", category: '', profileName: profileName, following: false, profileNameL: profileNameL}
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.state = { username: 'none' , bio: "Tell others about yourself...",
+            category: '', profileName: profileName, following: false, profileNameL: profileNameL,
+            dataSource: dataSource.cloneWithRows([]),
+            loading: true
+        };
+        setTimeout(() =>{
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false})
+        },500)
     }
-
 
 
     playPodcast = () =>  {
@@ -220,9 +219,108 @@ class UserProfile extends Component {
 
 
 
-    renderRow(podcast) {
-        return <ListItem podcast={podcast} />;
-    }
+    renderRow = (rowData) => {
+
+        let profileName = rowData.podcastArtist;
+        firebase.database().ref(`/users/${rowData.podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
+            if (snap.val()) {
+                profileName = snap.val().username;
+            }
+            else {
+                profileName = rowData.podcastArtist;
+            }
+        });
+
+
+        const {currentUser} = firebase.auth();
+        const podcastTitle = rowData.podcastTitle;
+        const podcastDescription = rowData.podcastDescription;
+        const podcastCategory = rowData.podcastCategory;
+        const podcastArtist = rowData.podcastArtist;
+
+
+
+        return (
+
+            <TouchableOpacity underlayColor='#5757FF' onPress={() => {
+
+                firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
+                    .then(function (url) {
+
+                        RNFetchBlob
+                            .config({
+                                Authorization: currentUser.uid,
+                                fileCache: true,
+                                appendExt: podcastTitle + '.aac'
+
+                            })
+                            .fetch('GET', url.toString(), {})
+                            .then((res) => {
+
+                                firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
+                                    if (snap.val()) {
+                                        Variables.state.currentUsername = snap.val().username;
+                                    }
+                                    else {
+                                        Variables.state.currentUsername = podcastArtist;
+                                    }
+                                });
+
+                                Variables.pause();
+                                Variables.setPodcastFile(res.path());
+                                Variables.state.isPlaying = false;
+                                Variables.state.podcastTitle = podcastTitle;
+                                Variables.state.podcastDescription = podcastDescription;
+                                Variables.state.podcastCategory = podcastCategory;
+                                Variables.state.podcastArtist = podcastArtist;
+
+                            });
+
+
+                    }).catch(function (error) {
+                    //
+                });
+
+            }}>
+                <View style={styles.container}>
+
+
+                    <View style={styles.leftContainer}>
+                        <Icon style={{
+                            textAlign: 'left',
+                            marginLeft: 20,
+                            paddingRight: 8,
+                            fontSize: 35,
+                            color: '#5757FF',
+                        }} name="ios-play">
+                        </Icon>
+                    </View>
+
+
+                    <View style={styles.middleContainer}>
+                        <Text style={styles.title}>   {rowData.podcastTitle}</Text>
+                        <Text style={styles.artistTitle}>{profileName}</Text>
+                    </View>
+
+
+                    <View style={styles.rightContainer}>
+                        <Icon onPress={this.onGarbagePress} style={{
+                            textAlign: 'left',
+                            marginLeft: 20,
+                            paddingRight: 8,
+                            fontSize: 35,
+                            color: '#5757FF',
+                        }} name="md-trash">
+                        </Icon>
+                    </View>
+
+
+                </View>
+            </TouchableOpacity>
+
+        );
+
+    };
 
 
 
@@ -230,21 +328,30 @@ class UserProfile extends Component {
 
 
     render() {
+
+
         return (
             <View
-                style={styles.container}>
+                style={styles.containerMain}>
 
 
-                <View style={{flexDirection: 'row', width: 375, height: 70, borderRadius: 10, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
+                <View style={{
+                    flexDirection: 'row',
+                    width: 375,
+                    height: 70,
+                    borderRadius: 10,
+                    borderWidth: 2,
+                    borderColor: 'rgba(187,188,205,0.3)',
+                }}>
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
-                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#9496A3'
+                                textAlign: 'left', marginLeft: 10, fontSize: 30, color: '#9496A3'
                             }} name="md-arrow-round-back">
                             </Icon>
                         </TouchableOpacity>
                     </View>
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                         <Text style={styles.header}>{Variables.state.currentUsername}</Text>
                     </View>
 
@@ -254,9 +361,17 @@ class UserProfile extends Component {
                 </View>
 
 
-                <ScrollView >
+                <ScrollView>
 
-                    <Icon style={{textAlign:'center', marginTop:20, marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 180,color:'#BBBCCD' }} name="md-square">
+                    <Icon style={{
+                        textAlign: 'center',
+                        marginTop: 20,
+                        marginRight: 20,
+                        marginLeft: 20,
+                        paddingTop: 10,
+                        fontSize: 180,
+                        color: '#BBBCCD'
+                    }} name="md-square">
                     </Icon>
 
                     {this._renderProfileName()}
@@ -268,23 +383,26 @@ class UserProfile extends Component {
                     {this._renderBio()}
 
 
-                    <Text style={styles.title3 }>Content</Text>
-                    <View style={{height:1, backgroundColor:'#b5b6cd', borderRadius: 10, borderWidth:0.1, marginBottom: 10, marginHorizontal: 30 }} />
+                    <Text style={styles.title3}>Content</Text>
+                    <View style={{
+                        height: 1,
+                        backgroundColor: '#b5b6cd',
+                        borderRadius: 10,
+                        borderWidth: 0.1,
+                        marginBottom: 10,
+                        marginHorizontal: 30
+                    }}/>
 
                     <View style={{paddingBottom: 120}}>
                         <ListView
                             enableEmptySections
-                            dataSource={this.dataSource}
+                            dataSource={this.state.dataSource}
                             renderRow={this.renderRow}
                         />
                     </View>
 
 
-
                 </ScrollView>
-
-
-
 
 
                 <PlayerBottom/>
@@ -294,17 +412,17 @@ class UserProfile extends Component {
 
 
         );
+
     }
 
 }
 
 const styles = StyleSheet.create({
-    container:{
+    containerMain:{
         flex: 1,
         backgroundColor: '#FFF',
-        paddingBottom: 115,
     },
-    title: {
+    titleMain: {
         color: '#2A2A30',
         marginTop: 20,
         flex:1,
@@ -371,7 +489,68 @@ const styles = StyleSheet.create({
         fontSize: 18,
         backgroundColor: 'transparent',
 
-    }
+    },
+
+    title: {
+        color: '#2A2A30',
+        marginTop: 0,
+        flex:1,
+        textAlign: 'center',
+        paddingLeft: 0,
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'HiraginoSans-W6',
+        fontSize: 20,
+        backgroundColor: 'transparent'
+    },
+    artistTitle: {
+        color: '#828393',
+        marginTop: 0,
+        flex:1,
+        textAlign: 'center',
+        paddingLeft: 2,
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'HiraginoSans-W3',
+        fontSize: 15,
+        backgroundColor: 'transparent'
+    },
+    container: {
+        paddingHorizontal: 0,
+        paddingVertical: 0,
+        marginVertical: 0,
+        marginHorizontal: 0,
+        backgroundColor: '#FFF',
+        opacity: 1,
+        borderColor: '#FFF',
+        borderWidth: 0.5,
+        borderRadius: 0,
+        borderStyle: 'solid',
+        flexDirection: 'row',
+    },
+    centerContainer: {
+        flexDirection: 'row'
+    },
+    leftContainer: {
+        flex: 1,
+        paddingLeft: 2,
+        justifyContent: 'center',
+        alignItems:'flex-start',
+    },
+    rightContainer: {
+        flex: 1,
+        paddingRight: 2,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+
+    },
+    middleContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 3,
+        marginHorizontal: -100,
+    },
 });
 
 const mapStateToProps = state => {

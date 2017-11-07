@@ -67,22 +67,13 @@ export const podcastCreate = ({ podcastTitle, podcastDescription, podcastCategor
         let likes = 0;
 
 
-        firebase.database().ref(`/users/${currentUser.uid}/podcast`)
-            .push({podcastTitle, podcastDescription, podcastCategory, podcastArtist, likes })
-            .then(() => {
-                dispatch({type: PODCAST_CREATE});
+            firebase.database().ref(`/podcasts`)
+                .push({podcastTitle, podcastDescription, podcastCategory, podcastArtist, likes})
+                .then(() => {
+                    dispatch({type: PODCAST_CREATE});
+                    Actions.RecordSuccess();
+                });
 
-
-                    firebase.database().ref(`/podcasts`)
-                        .push({podcastTitle, podcastDescription, podcastCategory, podcastArtist, likes})
-                        .then(() => {
-                            Actions.RecordSuccess();
-                        });
-
-
-
-
-            });
 
     }
 };

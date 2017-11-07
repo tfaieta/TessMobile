@@ -39,7 +39,9 @@ class Variables extends Component{
         usersFollowed: [],
         favPodcasts: [],
         myPodcasts: [],
+        userPodcasts: [],
         currCategory: [],
+
 };
 
 
@@ -67,7 +69,6 @@ class Variables extends Component{
 
 
 
-
     componentWillMount()   {
 
 
@@ -79,11 +80,6 @@ class Variables extends Component{
             }
         });
 
-
-    }
-
-
-    componentWillUnmount() {
 
     }
 
@@ -120,12 +116,7 @@ class Variables extends Component{
 
     };
 
-    roundNum(num){
-    num = num.toString()
 
-
-
-    }
 
 
 }

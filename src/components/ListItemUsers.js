@@ -33,6 +33,13 @@ class ListItemUsers extends Component {
         LayoutAnimation.spring();
     }
 
+    constructor(props) {
+        super(props);
+        this.state ={
+           profileName: ''
+        }
+    }
+
     onRowPress(){
         const {currentUser} = firebase.auth();
         const { podcastTitle } = this.props.podcast;
@@ -91,7 +98,12 @@ class ListItemUsers extends Component {
         const {podcastArtist} = this.props.podcast;
         const {currentUser} = firebase.auth();
 
-        let profileName = podcastArtist;
+        let profileName = '';
+        if(this.state.profileName == ''){
+            setTimeout(() =>{
+                this.setState({profileName: profileName})
+            },200);
+        }
         firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
             if (snap.val()) {
                 profileName = snap.val().username;
@@ -100,6 +112,8 @@ class ListItemUsers extends Component {
                 profileName = podcastArtist;
             }
         });
+
+
 
 
         return (
@@ -116,7 +130,7 @@ class ListItemUsers extends Component {
                 }} name="md-square">
                 </Icon>
                 <Text style={styles.title}>{podcastTitle}</Text>
-                <Text style={styles.artistTitle}>{profileName}</Text>
+                <Text style={styles.artistTitle}>{this.state.profileName}</Text>
                 </View>
             </TouchableOpacity>
 

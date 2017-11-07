@@ -29,9 +29,12 @@ class Politics extends Component{
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithRows(Variables.state.currCategory),
+            dataSource: dataSource.cloneWithRows([]),
             loading: true
-        }
+        };
+        setTimeout(() =>{
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.currCategory),loading:false})
+        },500)
     }
 
 
