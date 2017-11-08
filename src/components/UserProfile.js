@@ -337,8 +337,7 @@ class UserProfile extends Component {
 
                 <View style={{
                     flexDirection: 'row',
-                    width: 375,
-                    height: 70,
+                    paddingVertical:5,
                     borderRadius: 10,
                     borderWidth: 2,
                     borderColor: 'rgba(187,188,205,0.3)',

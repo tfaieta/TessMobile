@@ -52,27 +52,25 @@ class RecordFirstPage extends Component{
                 </View>
 
 
-                <Image
-                    style={{width: 147, height:151, alignSelf: 'center', opacity: 1}}
-                    source={require('tess/src/images/record-icon.png')}
-                />
 
-                <Text style={styles.title}>Record New Podcast</Text>
+                <View style={{flex:1}}>
+                    <Image
+                        style={{width: 147, height:151, alignSelf: 'center', opacity: 1}}
+                        source={require('tess/src/images/record-icon.png')}
+                    />
 
-                <Text style={styles.title2}>Let people know what you have to say.</Text>
+                    <Text style={styles.title}>Record New Podcast</Text>
 
-
-
-
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.buttonPreview}  onPress={this.recordNewPodcast}>
-                            <Text style={styles.contentTitle}>Get Started</Text>
-                    </TouchableOpacity>
+                    <Text style={styles.title2}>Let people know what you have to say.</Text>
 
 
 
 
-
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.buttonPreview}  onPress={this.recordNewPodcast}>
+                                <Text style={styles.contentTitle}>Get Started</Text>
+                        </TouchableOpacity>
+                </View>
 
                 </View>
 

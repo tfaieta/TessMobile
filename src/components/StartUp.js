@@ -59,8 +59,8 @@ export  default class Login extends Component{
                       showDoneButton={false}
                       showDots={true}
                       showSkipButton={false}
-                    dotColor='#acadc2'
-                    activeDotColor='#5555ff'
+                    dotColor='#b9bad1'
+                    activeDotColor='#9787FF'
             >
 
                 <View style={styles.slide1}>
@@ -218,7 +218,6 @@ const styles = StyleSheet.create({
         marginRight: 30,
         paddingTop: 20,
         marginHorizontal: -250,
-        paddingBottom: 10,
     },
     smallText: {
         color: '#828393',
@@ -227,6 +226,7 @@ const styles = StyleSheet.create({
         fontFamily: 'HiraginoSans-W3',
         marginLeft: 30,
         marginRight: 30,
+        marginTop:10
     },
 
 
