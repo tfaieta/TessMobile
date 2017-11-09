@@ -120,15 +120,17 @@ class ListItemUsers extends Component {
 
             <TouchableOpacity onPress={this.onRowPress.bind(this)}>
                 <View style={{padding: 10}}>
-                <Icon style={{
-                    textAlign: 'left',
-                    marginLeft: 10,
-                    fontSize: 160,
-                    color: 'rgba(130,131,147,0.5)',
-                    marginBottom: -25,
-                    marginTop: -10
-                }} name="md-square">
-                </Icon>
+                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginBottom:10, height: 130, width: 130, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
+                        <Icon style={{
+                            textAlign: 'center',
+                            fontSize: 90,
+                            color: 'white',
+                            marginTop: 20
+                        }} name="md-person">
+                        </Icon>
+                    </View>
+
+
                 <Text style={styles.title}>{podcastTitle}</Text>
                 <Text style={styles.artistTitle}>{this.state.profileName}</Text>
                 </View>
