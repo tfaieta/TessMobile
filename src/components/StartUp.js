@@ -3,7 +3,6 @@
  */
 import React, {Component} from 'react';
 import {StyleSheet, View, Image, Text, TouchableOpacity, StatusBar} from 'react-native';
-import { LoginManager } from 'react-native-fbsdk';
 import { Actions } from 'react-native-router-flux';
 import AppIntro from 'react-native-app-intro';
 import Icon from 'react-native-vector-icons/Ionicons';

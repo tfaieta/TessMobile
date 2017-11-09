@@ -36,7 +36,6 @@ class RecordInfo extends Component{
             podcastCategory: Variables.state.podcastCategory,
             podcastArtist: userID
         };
-        this.props.podcastUpdate({prop: 'podcastArtist', value: userID});
     }
 
     state = {
@@ -44,6 +43,11 @@ class RecordInfo extends Component{
         podcastCategory: 'Select a Category',
     };
 
+    componentWillMount(){
+        const {currentUser} = firebase.auth();
+        let userID = currentUser.uid;
+        this.props.podcastUpdate({prop: 'podcastArtist', value: userID});
+    }
 
 
     Cancel = () => {
