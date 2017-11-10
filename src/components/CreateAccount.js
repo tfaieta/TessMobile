@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser, createUser, usernameChanged } from '../actions';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from "react-native-linear-gradient/index.android";
-import {Input} from "./common/Input";
+import { Actions } from 'react-native-router-flux';
 
 
 export let profileName='';
@@ -38,9 +38,12 @@ class CreateAccount extends Component {
         this.props.createUser({ email, password, username });
 
 
-
     }
 
+
+    _pressBack(){
+        Actions.pop();
+    }
 
 
     renderButton() {
@@ -68,6 +71,24 @@ class CreateAccount extends Component {
 
                 colors={['#5555FF', '#9787FF' ]}
                 style={styles.container}>
+
+                <View style={{flexDirection: 'row',  paddingVertical:5, marginTop:10, marginBottom: 20   }}>
+                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
+                        <TouchableOpacity onPress={this._pressBack}>
+                            <Icon style={{
+                                textAlign:'left',marginLeft: 10, backgroundColor: 'transparent', fontSize: 30,color:'#fff'
+                            }} name="md-arrow-round-back">
+                            </Icon>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
+                        <Text style={styles.header}>Create Account</Text>
+                    </View>
+
+                    <View>
+                    </View>
+
+                </View>
 
                 <TouchableOpacity style={{backgroundColor: 'rgba(300,300,300,0.2)', borderRadius: 120, borderWidth: 0.1,  width: 120, height: 120, alignItems: 'center', alignSelf:'center', marginBottom: 20 }}>
                     <Icon style={{
@@ -215,8 +236,8 @@ const styles = {
     container: {
         flex: 1,
         backgroundColor: 'rgba(1,170,170,1)',
-        padding: 20,
-        paddingTop: 80
+        paddingBottom:20,
+        paddingHorizontal: 20
     },
 
     input: {
@@ -274,6 +295,18 @@ const styles = {
         borderWidth:0.1,
         borderRadius:10
     },
+    header: {
+        marginTop:25,
+        marginLeft: -35,
+        color: '#fff',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Hiragino Sans',
+        fontSize: 18,
+        backgroundColor: 'transparent',
+
+    },
+
 
 
 };

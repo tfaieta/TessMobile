@@ -9,35 +9,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 
 
-
 export  default class Login extends Component{
-
-
 
     _handleButtonPressLogin = () => {
         Actions.Login();
     };
-
-
-
-
-    _fbAuth = () => {
-        LoginManager.logInWithReadPermissions(['public_profile']).then(function(result) {
-            if (result.isCancelled){
-                console.log('Login cancelled');
-            } else {
-                console.log('Login success: ' + result.grantedPermissions);
-                Actions.Main();
-            }
-
-
-        }, function (error) {
-            console.log('An error occurred' + error) ;
-        }  )
-    };
-
-
-
 
 
 
@@ -227,9 +203,6 @@ const styles = StyleSheet.create({
         marginRight: 30,
         marginTop:10
     },
-
-
-
 
 
 });

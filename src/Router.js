@@ -31,6 +31,7 @@ import Politics from "./components/Categories/Politics";
 import Gaming from "./components/Categories/Gaming";
 import Sports from "./components/Categories/Sports";
 import Entertainment from "./components/Categories/Entertainment";
+import InitialScreen from "./components/InitialScreen";
 
 
 
@@ -87,9 +88,10 @@ const RouterComponent = () => {
     return (
         <Router headerStyle={styles.header} navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} barButtonTextStyle={styles.barButtonTextStyle} barButtonIconStyle={styles.barButtonIconStyle}>
 
-            <Scene key = "StartUp" component={StartUp} hideNavBar={true} initial  />
+            <Scene key = "InitialScreen" component={InitialScreen} hideNavBar={true} initial  />
+            <Scene key = "StartUp" component={StartUp} hideNavBar={true} />
             <Scene key = "Login" component={Login} title = "Login" hideNavBar={true} />
-            <Scene key = "CreateAccount" component={CreateAccount} title = "Sign Up" hideNavBar={false}  />
+            <Scene key = "CreateAccount" component={CreateAccount} title = "Sign Up" hideNavBar={true}  />
 
 
 
