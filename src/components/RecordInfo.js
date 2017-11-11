@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Text, TextInput, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
-import Sound from 'react-native-sound';
 import {podTime, totalTime} from './Record';
 import Variables from './Variables';
 import { connect } from 'react-redux';
@@ -13,7 +12,9 @@ import {podcastCreate} from "../actions/PodcastActions";
 import SimplePicker from 'react-native-simple-picker';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from "react-native-linear-gradient/index.android";
-
+import {
+    Player,
+} from 'react-native-audio-toolkit';
 
 
 let podFile = AudioUtils.DocumentDirectoryPath + '/test.aac';
@@ -47,6 +48,7 @@ class RecordInfo extends Component{
         const {currentUser} = firebase.auth();
         let userID = currentUser.uid;
         this.props.podcastUpdate({prop: 'podcastArtist', value: userID});
+        this.player = null;
     }
 
 
@@ -85,27 +87,25 @@ class RecordInfo extends Component{
 
 
     preview = () =>  {
-        Variables.setPodcastFile(podFile);
+
+        this.player = new Player(podFile, {
+            autoDestroy: false
+        });
+        console.warn(podFile);
+
+
         Variables.state.podcastTitle = this.props.podcastTitle;
         Variables.state.podcastDescription = this.props.podcastDescription;
         Variables.state.podcastCategory = this.props.podcastCategory;
 
         setTimeout(() => {
-            var sound = new Sound(podFile, '', (error) => {
-                if (error) {
-                    console.log('failed to load the sound', error);
-                }
-            });
+           this.player.prepare();
+            console.warn("preparing...");
 
             setTimeout(() => {
-                sound.play((success) => {
-                    if (success) {
-                        console.log('successfully finished playing');
-
-                    } else {
-                        console.log('playback failed due to audio decoding errors');
-                    }
-                });
+                this.player.play();
+                console.warn("Playing....");
+                console.warn(this.player);
             }, 100);
         }, 100);
 

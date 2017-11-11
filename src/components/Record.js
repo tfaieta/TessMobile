@@ -29,9 +29,9 @@ class Record extends Component{
         AudioRecorder.prepareRecordingAtPath(audioPath, {
             SampleRate: 44100,
             Channels: 1,
-            AudioQuality: "high",
+            AudioQuality: "max",
             AudioEncoding: "aac",
-            AudioEncodingBitRate: 256000
+            AudioEncodingBitRate: 96000
         });
     }
 

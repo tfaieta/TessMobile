@@ -83,17 +83,6 @@ class Account extends Component {
                 firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
                     .then(function(url) {
 
-                        RNFetchBlob
-                            .config({
-                                Authorization: currentUser.uid,
-                                fileCache: true,
-                                appendExt: podcastTitle + '.aac'
-
-                            })
-                            .fetch('GET', url.toString(), {
-
-                            })
-                            .then((res) => {
 
                                 firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
                                     if(snap.val()){
@@ -105,19 +94,15 @@ class Account extends Component {
                                 });
 
                                 Variables.pause();
-                                Variables.setPodcastFile(res.path());
+                                Variables.setPodcastFile(url);
                                 Variables.state.isPlaying = false;
                                 Variables.state.podcastTitle = podcastTitle;
-                                Variables.state.podcastDescription = podcastDescription;
-                                Variables.state.podcastCategory = podcastCategory;
                                 Variables.state.podcastArtist = podcastArtist;
+                                Variables.state.podcastCategory = podcastCategory;
+                                Variables.play();
+                                Variables.state.isPlaying = true;
 
                             });
-
-
-                    }).catch(function(error) {
-                    //
-                });
 
             }}>
                 <View style={styles.containerList}>

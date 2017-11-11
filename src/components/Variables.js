@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-import Sound from 'react-native-sound';
 import {podFile, podTime} from './Record';
 import firebase from 'firebase';
+import {
+    Player,
+} from 'react-native-audio-toolkit';
 
 
-export var PodcastFile = new Sound(podFile, '', (error) => {
-    if (error) {
-        console.log('failed to load the sound', error);
-        return;
-    }
-});
+export var podcastPlayer = new Player(podFile, {continuesToPlayInBackground : true});
+podcastPlayer.prepare();
 
 
 
@@ -46,39 +44,21 @@ class Variables extends Component{
 
 
     static tick() {
-        PodcastFile.getCurrentTime((seconds) => {
-            Variables.state.currentTime = seconds;
-        })
+        Variables.state.currentTime = podcastPlayer.currentTime;
     }
 
     static setPodcastFile(podFile){
-
-        Sound.enableInSilenceMode(true);
-        Sound.setActive(true);
-        Sound.setCategory('Playback', true);
-        Sound.setMode('SpokenAudio');
-
         Variables.state.podcastArtist = firebase.auth().currentUser.uid;
-        PodcastFile = new Sound(podFile, '', (error) => {
-            if (error) {
-                console.log('failed to load the sound', error);
-                return;
-            }
-        });
+        podcastPlayer.destroy();
+        podcastPlayer = new Player(podFile, {continuesToPlayInBackground : true, wakeLock: true});
+        podcastPlayer.volume = 1;
     }
 
 
 
     componentWillMount()   {
 
-
-        PodcastFile = new Sound(podFile, '', (error) => {
-
-
-            if (error) {
-                console.log('failed to load the sound', error);
-            }
-        });
+        podcastPlayer = new Player(podFile, {continuesToPlayInBackground : true, wakeLock: true});
 
 
     }
@@ -89,20 +69,7 @@ class Variables extends Component{
         Variables.state.isPlaying = true;
         Variables.state.interval = setInterval(this.tick, 250);
 
-        Sound.enableInSilenceMode(true);
-        Sound.setActive(true);
-        Sound.setCategory('Playback', true);
-        Sound.setMode('SpokenAudio');
-
-        PodcastFile.play((success) => {
-            if (success) {
-                Variables.state.isPlaying = false;
-                Variables.state.interval = clearInterval(Variables.state.interval);
-            }else {
-                console.log('playback error');
-            }
-        });
-
+        podcastPlayer.play();
 
     };
 
@@ -111,7 +78,8 @@ class Variables extends Component{
 
         Variables.state.isPlaying = false;
         Variables.state.interval = clearInterval(Variables.state.interval);
-        PodcastFile.pause();
+
+        podcastPlayer.pause();
 
 
     };

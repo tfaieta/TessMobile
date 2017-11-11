@@ -64,18 +64,6 @@ class Gaming extends Component{
                 firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
                     .then(function(url) {
 
-                        RNFetchBlob
-                            .config({
-                                Authorization: currentUser.uid,
-                                fileCache: true,
-                                appendExt: podcastTitle + '.aac'
-
-                            })
-                            .fetch('GET', url.toString(), {
-
-                            })
-                            .then((res) => {
-
                                 firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
                                     if(snap.val()){
                                         Variables.state.currentUsername = snap.val().username;
@@ -85,20 +73,16 @@ class Gaming extends Component{
                                     }
                                 });
 
-                                Variables.pause();
-                                Variables.setPodcastFile(res.path());
-                                Variables.state.isPlaying = false;
-                                Variables.state.podcastTitle = podcastTitle;
-                                Variables.state.podcastDescription = podcastDescription;
-                                Variables.state.podcastCategory = podcastCategory;
-                                Variables.state.podcastArtist = podcastArtist;
+                        Variables.pause();
+                        Variables.setPodcastFile(url);
+                        Variables.state.isPlaying = false;
+                        Variables.state.podcastTitle = podcastTitle;
+                        Variables.state.podcastArtist = podcastArtist;
+                        Variables.state.podcastCategory = podcastCategory;
+                        Variables.play();
+                        Variables.state.isPlaying = true;
 
                             });
-
-
-                    }).catch(function(error) {
-                    //
-                });
 
             }}>
                 <View style={styles.container}>
@@ -243,7 +227,7 @@ const styles = StyleSheet.create({
         paddingLeft: 0,
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'HiraginoSans-W6',
         fontSize: 20,
         backgroundColor: 'transparent'
     },
