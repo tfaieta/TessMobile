@@ -4,7 +4,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import {AudioUtils} from 'react-native-audio';
 import Variables from "./Variables";
-import RNFetchBlob from 'react-native-fetch-blob';
 
 
 class ListItem extends Component {
@@ -127,9 +126,6 @@ class ListItem extends Component {
                 )
 
             }
-
-
-
 
     };
 

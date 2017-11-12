@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { View, StyleSheet, ScrollView, ListView, Text, TouchableOpacity} from 'react-native';
+import { View, StyleSheet, ScrollView, ListView, Text, TouchableOpacity, Alert} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { connect } from 'react-redux';
 import { podcastFetch } from "../actions/PodcastActions"
 import firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/Ionicons';
-import RNFetchBlob from 'react-native-fetch-blob';
 import Variables from "./Variables";
 
 
@@ -21,6 +20,19 @@ class MyContent extends Component{
             dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts),
             loading: true
         }
+    }
+
+    onGarbagePress(){
+        Alert.alert(
+            'Are you sure you want to delete?',
+            '',
+            [
+                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                {text: 'Yes', onPress: () => console.warn('delete')
+                },
+            ],
+            { cancelable: false }
+        )
     }
 
 

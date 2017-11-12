@@ -7,13 +7,13 @@ import {
     StatusBar,
     ScrollView,
     ListView,
-    TouchableOpacity
+    TouchableOpacity,
+    Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { podcastFetch } from "../actions/PodcastActions"
 import PlayerBottom from './PlayerBottom';
-import RNFetchBlob from 'react-native-fetch-blob';
 import firebase from 'firebase';
 import Variables from './Variables';
 import { Actions } from 'react-native-router-flux';
@@ -53,6 +53,19 @@ class Account extends Component {
             <Text style={styles.titleBio} >{Variables.state.bio}</Text>
         )
 
+    }
+
+    onGarbagePress(){
+        Alert.alert(
+            'Are you sure you want to delete?',
+            '',
+            [
+                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                {text: 'Yes', onPress: () => console.warn('delete')
+                },
+            ],
+            { cancelable: false }
+        )
     }
 
 
@@ -184,8 +197,15 @@ class Account extends Component {
                 <ScrollView >
 
 
-                <Icon style={{textAlign:'center', marginTop:20, marginRight:20,marginLeft: 20,paddingTop: 10, fontSize: 180,color:'#BBBCCD' }} name="md-square">
-                </Icon>
+                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:20, height: 160, width: 160, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
+                        <Icon style={{
+                            textAlign: 'center',
+                            fontSize: 90,
+                            color: 'white',
+                            marginTop: 20
+                        }} name="md-person">
+                        </Icon>
+                    </View>
 
                     {this._renderProfileName()}
 

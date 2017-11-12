@@ -175,7 +175,7 @@ class Home extends Component{
                                     color: '#FFF'
                                 }} name="md-globe">
                                 </Icon>
-                                <Text style={styles.catTitle}>Current Events</Text>
+                                <Text style={styles.catTitle}>News</Text>
                             </Image>
                         </TouchableOpacity>
                     </ScrollView>

@@ -6,7 +6,8 @@ import {
     View,
     ScrollView,
     ListView,
-    TouchableOpacity
+    TouchableOpacity,
+    Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
@@ -19,7 +20,6 @@ import {profileName} from './CreateAccount.js';
 import Variables from './Variables';
 import firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
-import RNFetchBlob from 'react-native-fetch-blob';
 
 
 
@@ -218,6 +218,20 @@ class UserProfile extends Component {
     }
 
 
+    onGarbagePress(){
+        Alert.alert(
+            'Are you sure you want to delete?',
+            '',
+            [
+                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                {text: 'Yes', onPress: () => console.warn('delete')
+                },
+            ],
+            { cancelable: false }
+        )
+    }
+
+
 
     renderRow = (rowData) => {
 
@@ -240,73 +254,176 @@ class UserProfile extends Component {
 
 
 
-        return (
+        if (currentUser.uid == podcastArtist) {
+            return (
 
-            <TouchableOpacity underlayColor='#5757FF' onPress={() => {
+                <TouchableOpacity underlayColor='#5757FF' onPress={() => {
 
-                firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
-                    .then(function (url) {
+                    firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
+                        .then(function (url) {
 
-                                firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
-                                    if (snap.val()) {
-                                        Variables.state.currentUsername = snap.val().username;
-                                    }
-                                    else {
-                                        Variables.state.currentUsername = podcastArtist;
-                                    }
-                                });
 
-                        Variables.pause();
-                        Variables.setPodcastFile(url);
-                        Variables.state.isPlaying = false;
-                        Variables.state.podcastTitle = podcastTitle;
-                        Variables.state.podcastArtist = podcastArtist;
-                        Variables.state.podcastCategory = podcastCategory;
-                        Variables.play();
-                        Variables.state.isPlaying = true;
-
+                            firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
+                                if (snap.val()) {
+                                    Variables.state.currentUsername = snap.val().username;
+                                }
+                                else {
+                                    Variables.state.currentUsername = podcastArtist;
+                                }
                             });
 
+                            Variables.pause();
+                            Variables.setPodcastFile(url);
+                            Variables.state.isPlaying = false;
+                            Variables.state.podcastTitle = podcastTitle;
+                            Variables.state.podcastCategory = podcastCategory;
+                            Variables.state.podcastArtist = podcastArtist;
+                            Variables.play();
+                            Variables.state.isPlaying = true;
+
+                        });
+
+                }}>
+                    <View style={styles.container}>
 
 
-            }}>
-                <View style={styles.container}>
+                        <View style={styles.leftContainer}>
+                            <Icon style={{
+                                textAlign: 'left',
+                                marginLeft: 20,
+                                paddingRight: 8,
+                                fontSize: 35,
+                                color: '#5757FF',
+                            }} name="ios-play">
+                            </Icon>
+                        </View>
 
 
-                    <View style={styles.leftContainer}>
-                        <Icon style={{
-                            textAlign: 'left',
-                            marginLeft: 20,
-                            paddingRight: 8,
-                            fontSize: 35,
-                            color: '#5757FF',
-                        }} name="ios-play">
-                        </Icon>
+                        <View style={styles.middleContainer}>
+                            <Text style={styles.title}>   {rowData.podcastTitle}</Text>
+                            <Text style={styles.artistTitle}>{profileName}</Text>
+                        </View>
+
+
+                        <View style={styles.rightContainer}>
+                            <Icon onPress={this.onGarbagePress} style={{
+                                textAlign: 'left',
+                                marginLeft: 20,
+                                paddingRight: 8,
+                                fontSize: 35,
+                                color: '#5757FF',
+                            }} name="md-trash">
+                            </Icon>
+                        </View>
+
+
                     </View>
+                </TouchableOpacity>
+
+            );
+        }
+        else{
+            return (
+
+                <TouchableOpacity underlayColor='#5757FF' onPress={() => {
+
+                    firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
+                        .then(function (url) {
 
 
-                    <View style={styles.middleContainer}>
-                        <Text style={styles.title}>   {rowData.podcastTitle}</Text>
-                        <Text style={styles.artistTitle}>{profileName}</Text>
+                            firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
+                                if (snap.val()) {
+                                    Variables.state.currentUsername = snap.val().username;
+                                }
+                                else {
+                                    Variables.state.currentUsername = podcastArtist;
+                                }
+                            });
+
+                            Variables.pause();
+                            Variables.setPodcastFile(url);
+                            Variables.state.isPlaying = false;
+                            Variables.state.podcastTitle = podcastTitle;
+                            Variables.state.podcastCategory = podcastCategory;
+                            Variables.state.podcastArtist = podcastArtist;
+                            Variables.play();
+                            Variables.state.isPlaying = true;
+
+                        });
+
+                }}>
+                    <View style={styles.container}>
+
+
+                        <View style={styles.leftContainer}>
+                            <Icon style={{
+                                textAlign: 'left',
+                                marginLeft: 20,
+                                paddingRight: 8,
+                                fontSize: 35,
+                                color: '#5757FF',
+                            }} name="ios-play">
+                            </Icon>
+                        </View>
+
+
+                        <View style={styles.middleContainer}>
+                            <Text style={styles.title}>   {rowData.podcastTitle}</Text>
+                            <Text style={styles.artistTitle}>{profileName}</Text>
+                        </View>
+
+
+                        <View style={styles.rightContainer}>
+                            <Icon onPress={()=>{
+                                if(!this.state.favorite) {
+
+                                    Alert.alert(
+                                        'Add to favorites?',
+                                        '',
+                                        [
+                                            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                                            {
+                                                text: 'Yes', onPress: () => {
+                                                firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle).update({podcastArtist, podcastTitle});
+                                                this.setState({favorite: true})
+                                            }
+                                            },
+                                        ],
+                                        {cancelable: false}
+                                    )
+                                }
+                                else{
+                                    Alert.alert(
+                                        'Remove from favorites?',
+                                        '',
+                                        [
+                                            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                                            {
+                                                text: 'Yes', onPress: () => {
+                                                firebase.database().ref(`users/${currentUser.uid}/favorites/${podcastTitle}`).remove();
+                                                this.setState({favorite: false})
+                                            }
+                                            },
+                                        ],
+                                        {cancelable: false}
+                                    )
+                                }
+                            }} style={{
+                                textAlign: 'left',
+                                marginLeft: 20,
+                                paddingRight: 8,
+                                fontSize: 35,
+                                color: '#5757FF',
+                            }} name="md-add">
+                            </Icon>
+                        </View>
+
+
                     </View>
+                </TouchableOpacity>
 
-
-                    <View style={styles.rightContainer}>
-                        <Icon onPress={this.onGarbagePress} style={{
-                            textAlign: 'left',
-                            marginLeft: 20,
-                            paddingRight: 8,
-                            fontSize: 35,
-                            color: '#5757FF',
-                        }} name="md-trash">
-                        </Icon>
-                    </View>
-
-
-                </View>
-            </TouchableOpacity>
-
-        );
+            );
+        }
 
     };
 
@@ -350,16 +467,15 @@ class UserProfile extends Component {
 
                 <ScrollView>
 
-                    <Icon style={{
-                        textAlign: 'center',
-                        marginTop: 20,
-                        marginRight: 20,
-                        marginLeft: 20,
-                        paddingTop: 10,
-                        fontSize: 180,
-                        color: '#BBBCCD'
-                    }} name="md-square">
-                    </Icon>
+                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:20, height: 160, width: 160, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
+                        <Icon style={{
+                            textAlign: 'center',
+                            fontSize: 90,
+                            color: 'white',
+                            marginTop: 20
+                        }} name="md-person">
+                        </Icon>
+                    </View>
 
                     {this._renderProfileName()}
 

@@ -20,8 +20,8 @@ import {
 let podFile = AudioUtils.DocumentDirectoryPath + '/test.aac';
 
 
-const labels = ['Current Events', 'Fitness', 'Politics', 'Gaming', 'Sports', 'Entertainment', 'Life', 'Fashion', 'Trends', 'Cars', 'Misc'];
-const options = ['Current Events', 'Fitness', 'Politics', 'Gaming', 'Sports', 'Entertainment', 'Life', 'Fashion', 'Trends', 'Cars', 'Misc'];
+const labels = ['News', 'Fitness', 'Gaming', 'Society & Culture', 'Sports', 'Entertainment', 'Comedy', 'Lifestyle', 'Science & Nature', 'Tech', 'Travel', 'Learn Something', 'Storytelling', 'Other'];
+const options = ['News', 'Fitness', 'Gaming', 'Society & Culture', 'Sports', 'Entertainment', 'Comedy', 'Lifestyle', 'Science & Nature', 'Tech', 'Travel', 'Learn Something', 'Storytelling', 'Other'];
 
 
 

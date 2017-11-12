@@ -1,34 +1,40 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
-import { View, StyleSheet, ListView, TouchableOpacity, Text, Alert} from 'react-native';
-import PlayerBottom from './PlayerBottom';
-import { connect } from 'react-redux';
-import { podcastFetchFavs } from "../actions/PodcastActions"
+import { View, StyleSheet, ScrollView, ListView, Text, TouchableOpacity, Alert} from 'react-native';
+import PlayerBottom from '../PlayerBottom';
 import firebase from 'firebase';
-import Variables from "./Variables";
-import Icon from 'react-native-vector-icons/Ionicons';
 import {Actions} from 'react-native-router-flux';
+import Icon from 'react-native-vector-icons/Ionicons';
+import Variables from "../Variables";
 
 
 
-class Favorites extends Component{
+class Comedy extends Component{
+
+    componentWillMount(){
+        Variables.state.currCategory = [];
+        const {currentUser} = firebase.auth();
+        const refCat = firebase.database().ref(`podcasts/`);
+
+        refCat.on("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+                if(data.val().podcastCategory == 'Comedy') {
+                    Variables.state.currCategory.push(data.val());
+                }
+            })
+        });
+    }
 
     constructor(props){
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts),
-            loading: true,
-            favorite: true
-        }
+            dataSource:  dataSource.cloneWithRows([]),
+            loading: true
+        };
+        setTimeout(() =>{
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.currCategory),loading:false})
+        },500)
     }
-
-
-
-    _pressBack(){
-        Actions.pop();
-    }
-
 
 
     onGarbagePress(){
@@ -45,25 +51,25 @@ class Favorites extends Component{
     }
 
 
-    renderRow(rowData) {
+
+    renderRow = (rowData) => {
+
         let profileName = rowData.podcastArtist;
         firebase.database().ref(`/users/${rowData.podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
             if (snap.val()) {
                 profileName = snap.val().username;
             }
             else {
-                profileName = rowData;
+                profileName = rowData.podcastArtist;
             }
         });
 
+
         const {currentUser} = firebase.auth();
-        const podcastTitle  = rowData.podcastTitle;
-        const podcastArtist = rowData.podcastArtist;
+        const podcastTitle = rowData.podcastTitle;
         const podcastDescription = rowData.podcastDescription;
         const podcastCategory = rowData.podcastCategory;
-        const ref = firebase.database().ref(`podcasts/`);
-
-
+        const podcastArtist = rowData.podcastArtist;
 
         if (currentUser.uid == podcastArtist) {
             return (
@@ -186,6 +192,24 @@ class Favorites extends Component{
 
                         <View style={styles.rightContainer}>
                             <Icon onPress={()=>{
+                                if(!this.state.favorite) {
+
+                                    Alert.alert(
+                                        'Add to favorites?',
+                                        '',
+                                        [
+                                            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                                            {
+                                                text: 'Yes', onPress: () => {
+                                                firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle).update({podcastArtist, podcastTitle});
+                                                this.setState({favorite: true})
+                                            }
+                                            },
+                                        ],
+                                        {cancelable: false}
+                                    )
+                                }
+                                else{
                                     Alert.alert(
                                         'Remove from favorites?',
                                         '',
@@ -194,11 +218,13 @@ class Favorites extends Component{
                                             {
                                                 text: 'Yes', onPress: () => {
                                                 firebase.database().ref(`users/${currentUser.uid}/favorites/${podcastTitle}`).remove();
+                                                this.setState({favorite: false})
                                             }
                                             },
                                         ],
                                         {cancelable: false}
                                     )
+                                }
                             }} style={{
                                 textAlign: 'left',
                                 marginLeft: 20,
@@ -215,8 +241,13 @@ class Favorites extends Component{
 
             );
         }
+    };
 
+
+    _pressBack(){
+        Actions.pop();
     }
+
 
 
     render() {
@@ -224,7 +255,7 @@ class Favorites extends Component{
             <View
                 style={styles.containerMain}>
 
-                <View style={{flexDirection: 'row',  paddingVertical:5, borderRadius: 10, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
+                <View style={{flexDirection: 'row', paddingVertical:5, borderRadius: 10, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
@@ -234,7 +265,7 @@ class Favorites extends Component{
                         </TouchableOpacity>
                     </View>
                     <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={styles.header}>Favorites</Text>
+                        <Text style={styles.header}>Comedy</Text>
                     </View>
 
                     <View>
@@ -244,12 +275,16 @@ class Favorites extends Component{
 
 
 
+
+                <ScrollView>
+
                     <ListView
                         enableEmptySections
                         dataSource={this.state.dataSource}
                         renderRow={this.renderRow}
                     />
 
+                </ScrollView>
 
 
 
@@ -271,50 +306,24 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
 
+    titleMain: {
+        color: '#804cc8',
+        marginTop: 70,
+        flex:1,
+        textAlign: 'center',
+        opacity: 2,
+        fontStyle: 'normal',
+        fontFamily: 'Futura',
+        fontSize: 25,
+        backgroundColor: 'transparent'
+    },
+
     contentTitle: {
         color: 'rgba(1,170,170,1)',
         fontSize: 25,
         paddingBottom: 20,
         marginLeft: 20,
 
-    },
-
-    container2: {
-        flex: 1,
-        paddingHorizontal: 0,
-        paddingVertical: 0,
-        marginVertical: 0,
-        marginHorizontal: 0,
-        backgroundColor: '#FFF',
-        opacity: 1,
-        borderColor: '#FFF',
-        borderWidth: 0.5,
-        borderRadius: 0,
-        borderStyle: 'solid',
-        flexDirection: 'row',
-    },
-
-    title2: {
-        color: '#2A2A30',
-        flex:1,
-        marginTop:20,
-        textAlign: 'center',
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 20,
-        backgroundColor: 'transparent'
-    },
-    artistTitle: {
-        color:  '#9496A3',
-        marginTop: 0,
-        flex:1,
-        textAlign: 'center',
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W3',
-        fontSize: 18,
-        backgroundColor: 'transparent',
     },
 
     header: {
@@ -329,6 +338,30 @@ const styles = StyleSheet.create({
 
     },
 
+    title: {
+        color: '#2A2A30',
+        marginTop: 0,
+        flex:1,
+        textAlign: 'center',
+        paddingLeft: 0,
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'HiraginoSans-W6',
+        fontSize: 20,
+        backgroundColor: 'transparent'
+    },
+    artistTitle: {
+        color: '#828393',
+        marginTop: 0,
+        flex:1,
+        textAlign: 'center',
+        paddingLeft: 2,
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Hiragino Sans',
+        fontSize: 15,
+        backgroundColor: 'transparent'
+    },
     container: {
         paddingHorizontal: 0,
         paddingVertical: 0,
@@ -342,7 +375,6 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         flexDirection: 'row',
     },
-
     centerContainer: {
         flexDirection: 'row'
     },
@@ -367,28 +399,7 @@ const styles = StyleSheet.create({
         marginHorizontal: -100,
     },
 
-    title: {
-        color: '#2A2A30',
-        marginTop: 0,
-        flex:1,
-        textAlign: 'center',
-        paddingLeft: 0,
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 20,
-        backgroundColor: 'transparent'
-    },
-
-
 });
 
 
-const mapStateToProps = state => {
-    const podcast = _.map(state.podcast, (val, uid) => {
-        return { ...val, uid };
-    });
-    return {podcast};
-};
-
-export default connect(mapStateToProps, { podcastFetchFavs })(Favorites);
+export default Comedy;

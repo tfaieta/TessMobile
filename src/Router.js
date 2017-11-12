@@ -32,6 +32,14 @@ import Gaming from "./components/Categories/Gaming";
 import Sports from "./components/Categories/Sports";
 import Entertainment from "./components/Categories/Entertainment";
 import InitialScreen from "./components/InitialScreen";
+import Comedy from "./components/Categories/Comedy";
+import LifeStyle from "./components/Categories/LifeStyle";
+import ScienceNature from "./components/Categories/ScienceNature";
+import Travel from "./components/Categories/Travel";
+import LearnSomething from "./components/Categories/LearnSomething";
+import StoryTelling from "./components/Categories/StoryTelling";
+import Tech from "./components/Categories/Tech";
+import SocietyCulture from "./components/Categories/SocietyCulture";
 
 
 
@@ -186,6 +194,78 @@ const RouterComponent = () => {
                         key="Entertainment"
                         component={Entertainment}
                         title= 'Entertainment'
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
+                        panHandlers={null}
+                    />
+                    <Scene
+                        key="Comedy"
+                        component={Comedy}
+                        title= 'Comedy'
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
+                        panHandlers={null}
+                    />
+                    <Scene
+                        key="LifeStyle"
+                        component={LifeStyle}
+                        title= 'LifeStyle'
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
+                        panHandlers={null}
+                    />
+                    <Scene
+                        key="ScienceNature"
+                        component={ScienceNature}
+                        title= 'ScienceNature'
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
+                        panHandlers={null}
+                    />
+                    <Scene
+                        key="Travel"
+                        component={Travel}
+                        title= 'Travel'
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
+                        panHandlers={null}
+                    />
+                    <Scene
+                        key="LearnSomething"
+                        component={LearnSomething}
+                        title= 'LearnSomething'
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
+                        panHandlers={null}
+                    />
+                    <Scene
+                        key="StoryTelling"
+                        component={StoryTelling}
+                        title= 'StoryTelling'
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
+                        panHandlers={null}
+                    />
+                    <Scene
+                        key="Tech"
+                        component={Tech}
+                        title= 'Tech'
+                        hideNavBar={true}
+                        navigationBarStyle={{backgroundColor:'#804cc8'}}
+                        duration={1}
+                        panHandlers={null}
+                    />
+                    <Scene
+                        key="SocietyCulture"
+                        component={SocietyCulture}
+                        title= 'Tech'
                         hideNavBar={true}
                         navigationBarStyle={{backgroundColor:'#804cc8'}}
                         duration={1}
