@@ -11,8 +11,10 @@ import DropdownAlert from 'react-native-dropdownalert';
 class RecordFirstPage extends Component{
 
     componentWillMount(){
-        Variables.pause();
-        Variables.state.isPlaying = false;
+        if(Variables.state.isPlaying){
+            Variables.pause();
+            Variables.state.isPlaying = false;
+        }
     }
 
 
@@ -119,7 +121,8 @@ const styles = StyleSheet.create({
     contentTitle: {
         color: '#fff',
         fontSize: 18,
-        paddingVertical: 20,
+        paddingVertical: 16,
+        marginTop: 10,
         textAlign: 'left',
         fontStyle: 'normal',
         fontFamily: 'Hiragino Sans',

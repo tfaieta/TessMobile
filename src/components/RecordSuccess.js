@@ -7,6 +7,7 @@ import Sound from 'react-native-sound';
 import {podFile, podTime} from './Record';
 import Variables from './Variables';
 import LinearGradient from "react-native-linear-gradient/index.android";
+import PlayerBottom from "./PlayerBottom";
 
 
 
@@ -28,25 +29,9 @@ class RecordSuccess extends Component{
 
     preview = () =>  {
 
+        Variables.play();
+        Variables.state.isPlaying = true;
 
-        setTimeout(() => {
-            var sound = new Sound(podFile, '', (error) => {
-                if (error) {
-                    console.log('failed to load the sound', error);
-                }
-            });
-
-            setTimeout(() => {
-                sound.play((success) => {
-                    if (success) {
-                        console.log('successfully finished playing');
-
-                    } else {
-                        console.log('playback failed due to audio decoding errors');
-                    }
-                });
-            }, 100);
-        }, 100);
     };
 
 
@@ -72,7 +57,7 @@ class RecordSuccess extends Component{
 
 
                     <TouchableOpacity style={styles.buttonPreview}  onPress={this.preview}>
-                        <Icon style={{textAlign:'center', marginTop: 5, fontSize: 35,color:'#fff' }} name="ios-play">
+                        <Icon style={{textAlign:'center', marginTop: 10, fontSize: 35,color:'#fff' }} name="ios-play">
                             <Text  style={styles.contentTitle}>  {this.state.title}</Text>
                         </Icon>
                     </TouchableOpacity>
@@ -84,6 +69,8 @@ class RecordSuccess extends Component{
                     </TouchableOpacity>
                 </View>
 
+
+                <PlayerBottom/>
 
 
             </LinearGradient>

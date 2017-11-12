@@ -74,10 +74,10 @@ class Record extends Component{
 
     _renderRecordTitle(isRecording){
         if (isRecording==true){
-            return <Text style={styles.title4}>Press to Pause Recording</Text>
+            return <Text style={styles.header}>Press to Pause Recording</Text>
         }
         else{
-            return <Text style={styles.title4}>Press to Record</Text>
+            return <Text style={styles.header}>Press to Record</Text>
         }
     }
 
@@ -250,10 +250,6 @@ class Record extends Component{
         podTime = this.state.currentTime;
     }
 
-    Close = () => {
-        Actions.pop();
-    };
-
 
     render() {
         return (
@@ -270,20 +266,11 @@ class Record extends Component{
 
 
 
-                    <View style={styles.centerContainer}>
-
-                        <View style={styles.leftContainer}>
-                            <TouchableOpacity onPress={this.Close}>
-                                <Icon style={{textAlign:'left', marginLeft: 10, fontSize: 30,color:'#FFF' }} name="md-arrow-round-back">
-                                </Icon>
-                            </TouchableOpacity>
-                        </View>
-
-                        <View style={{flex:1,alignItems: 'center', marginLeft: 0}}>
-                            {this._renderRecordTitle(this.state.recording)}
-                        </View>
-
+                <View style={{flexDirection: 'row', paddingVertical:5,  }}>
+                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
+                       {this._renderRecordTitle(this.state.recording)}
                     </View>
+                </View>
 
 
                     <View style={styles.controls}>
@@ -405,6 +392,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 35,
         paddingBottom: 20
+    },
+
+    header: {
+        marginTop:25,
+        color: '#fff',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'HiraginoSans-W6',
+        fontSize: 22,
+        backgroundColor: 'transparent',
     },
 
 });

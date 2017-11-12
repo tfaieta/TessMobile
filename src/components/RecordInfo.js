@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import { Text, TextInput, View, StyleSheet, TouchableOpacity, Slider} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
 import {podTime, totalTime} from './Record';
-import Variables from './Variables';
+import Variables, {podcastPlayer} from './Variables';
 import { connect } from 'react-redux';
 import { podcastUpdate} from '../actions';
 import {AudioUtils} from 'react-native-audio';
@@ -12,9 +12,8 @@ import {podcastCreate} from "../actions/PodcastActions";
 import SimplePicker from 'react-native-simple-picker';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from "react-native-linear-gradient/index.android";
-import {
-    Player,
-} from 'react-native-audio-toolkit';
+
+
 
 
 let podFile = AudioUtils.DocumentDirectoryPath + '/test.aac';
@@ -28,45 +27,95 @@ const options = ['News', 'Fitness', 'Gaming', 'Society & Culture', 'Sports', 'En
 class RecordInfo extends Component{
 
     constructor(props) {
+        super();
+        this.tick = this.tick.bind(this);
+        this.play=this.play.bind(this);
         const {currentUser} = firebase.auth();
         let userID = currentUser.uid;
-        super(props);
         props = {
             podcastTitle: Variables.state.podcastTitle,
             podcastDescription: Variables.state.podcastDescription,
             podcastCategory: Variables.state.podcastCategory,
             podcastArtist: userID
         };
+        Variables.setPodcastFile("test.aac");
     }
 
     state = {
         totalTime: totalTime,
         podcastCategory: 'Select a Category',
+        isPlaying:false,
+        interval: null,
+        currentTime: 0,
     };
 
     componentWillMount(){
         const {currentUser} = firebase.auth();
         let userID = currentUser.uid;
         this.props.podcastUpdate({prop: 'podcastArtist', value: userID});
-        this.player = null;
     }
 
+    componentWillUnmount() {
+        this.setState({
+            interval: clearInterval(this.state.interval)
+        });
+    }
+
+
+    tick() {
+        this.setState({ currentTime: podcastPlayer.currentTime})
+
+    }
 
     Cancel = () => {
         Actions.RecordFirstPage();
     };
 
+    play =()=> {
+        this.setState({
+            isPlaying: true,
+            interval: setInterval(this.tick, 250)
+        });
+        Variables.play();
+    };
+
+
+    pause=()=> {
+        this.setState({
+            isPlaying: false,
+            interval: clearInterval(this.state.interval)
+        });
+        Variables.pause();
+    };
+
 
     Upload = () => {
 
-        Variables.setPodcastFile(podFile);
-        Variables.state.podcastTitle = this.props.podcastTitle;
-        Variables.state.podcastDescription = this.props.podcastDescription;
-        Variables.state.podcastCategory = this.props.podcastCategory;
-
+        Variables.pause();
+        this.setState({
+            isPlaying: false,
+            interval: clearInterval(this.state.interval)
+        });
 
 
         const { podcastTitle, podcastDescription, podcastCategory, podcastArtist} = this.props;
+        const {currentUser} = firebase.auth();
+
+
+        firebase.database().ref(`/users/${currentUser.uid}/username`).orderByChild("username").on("value", function(snap) {
+            if(snap.val()){
+                Variables.state.currentUsername = snap.val().username;
+            }
+            else {
+                Variables.state.currentUsername = podcastArtist;
+            }
+        });
+
+        Variables.state.podcastTitle = podcastTitle;
+        Variables.state.podcastDescription = podcastDescription;
+        Variables.state.podcastCategory = podcastCategory;
+        Variables.state.podcastArtist = podcastArtist;
+
 
         if(podcastTitle == '' || podcastDescription == '' || podcastCategory == ''){
             if(podcastTitle == ''){
@@ -86,44 +135,19 @@ class RecordInfo extends Component{
 
 
 
-    preview = () =>  {
-
-        this.player = new Player(podFile, {
-            autoDestroy: false
-        });
-        console.warn(podFile);
-
-
-        Variables.state.podcastTitle = this.props.podcastTitle;
-        Variables.state.podcastDescription = this.props.podcastDescription;
-        Variables.state.podcastCategory = this.props.podcastCategory;
-
-        setTimeout(() => {
-           this.player.prepare();
-            console.warn("preparing...");
-
-            setTimeout(() => {
-                this.player.play();
-                console.warn("Playing....");
-                console.warn(this.player);
-            }, 100);
-        }, 100);
-
-    };
-
-    _renderTime(){
-        var num = (this.state.totalTime / 60).toString();
+    _renderTime= (podcastPlayer)=>{
+        var num = ((podcastPlayer.duration / 1000) / 60).toString();
         num = num.slice(0,1);
         Number(num);
-        var num2 = (this.state.totalTime % 60).toString();
+        var num2 = ((podcastPlayer.duration /1000) % 60).toString();
         num2 = num2.slice(0,2);
         Number(num2);
-            if(this.state.totalTime < 10){
+            if((podcastPlayer.duration / 1000) < 10){
             return (
                 <Text style={styles.progressText}>{num2.slice(0,1)}s</Text>
             )
         }
-        else if (this.state.totalTime < 60){
+        else if ((podcastPlayer.duration / 1000) < 60){
             return (
                 <Text style={styles.progressText}>{num2}s</Text>
             )
@@ -133,8 +157,53 @@ class RecordInfo extends Component{
                 <Text style={styles.progressText}>{num}m {num2}s</Text>
             )
         }
-    }
+    };
 
+    _renderSlider(currentTime){
+        return(
+            <Slider
+                minimumTrackTintColor='#5757FF'
+                maximumTrackTintColor='#fff'
+                thumbTintColor='#fff'
+                thumbTouchSize={{width: 20, height: 60}}
+                animateTransitions = {true}
+                style={styles.sliderContainer}
+                step={0}
+                minimumValue={0}
+                maximumValue= {podcastPlayer.duration}
+                value={ currentTime }
+                onValueChange={currentTime => podcastPlayer.seek(currentTime)}
+            />
+        )
+    };
+
+
+    _renderPlayButton(isPlaying){
+        if(isPlaying){
+            return(
+                <Icon onPress={this.pause} style={{
+                    textAlign: 'right',
+                    fontSize: 40,
+                    marginLeft: 20,
+                    color: '#fff',
+                    backgroundColor: 'transparent',
+                }} name="ios-pause">
+                </Icon>
+            )
+        }
+        else {
+            return(
+                <Icon onPress={this.play} style={{
+                    textAlign: 'right',
+                    fontSize: 40,
+                    marginLeft: 20,
+                    color: '#fff',
+                    backgroundColor: 'transparent',
+                }} name="ios-play">
+                </Icon>
+            )
+        }
+    }
 
 
 
@@ -148,47 +217,37 @@ class RecordInfo extends Component{
 
 
 
-                <View style={{flexDirection: 'row',   }}>
-                    <View style={{marginTop: 30, alignItems: 'flex-start'}}>
+                <View style={{flexDirection: 'row', paddingVertical:5,  }}>
+                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                         <TouchableOpacity onPress={this.Cancel}>
                             <Icon style={{
-                                textAlign: 'right',
-                                fontSize: 30,
-                                marginLeft: 15,
-                                color: '#fff',
-                                backgroundColor: 'transparent'
+                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#fff'
                             }} name="md-arrow-round-back">
                             </Icon>
                         </TouchableOpacity>
                     </View>
-                    <View style={{justifyContent: 'center', alignItems: 'center',}}>
+                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
                         <Text style={styles.header}>Upload Podcast</Text>
                     </View>
+
+                    <View>
+                    </View>
+
                 </View>
 
 
 
                     <View style={{flexDirection: 'row', paddingBottom: 30, marginTop: 20  }}>
-                        <View style={{marginTop: 15, alignItems: 'flex-start'}}>
-                            <TouchableOpacity onPress={this.preview}>
-                                <Icon style={{
-                                    textAlign: 'right',
-                                    fontSize: 25,
-                                    marginLeft: 40,
-                                    color: '#fff',
-                                    backgroundColor: 'transparent',
-                                }} name="ios-play">
-                                </Icon>
+                        <View style={{marginTop: 10, alignItems: 'flex-start'}}>
+                            <TouchableOpacity>
+                                {this._renderPlayButton(this.state.isPlaying)}
                             </TouchableOpacity>
                         </View>
-                        <View style={{justifyContent: 'center', alignItems: 'center',}}>
-                            <Image
-                                style={{width: 188, height:31, alignSelf: 'center', opacity: 1, marginLeft: 30, marginTop: 8}}
-                                source={require('tess/src/images/preview-icon.png')}
-                            />
+                        <View style={{justifyContent: 'center', alignItems: 'center', marginHorizontal: 20}}>
+                            {this._renderSlider(podcastPlayer.currentTime)}
                         </View>
                         <View style={{justifyContent: 'center', alignItems: 'flex-end',}}>
-                            <Text  style={styles.contentTime}>{this._renderTime()}</Text>
+                            <Text  style={styles.contentTime}>{this._renderTime(podcastPlayer)}</Text>
                         </View>
                     </View>
 
@@ -338,7 +397,8 @@ const styles = StyleSheet.create({
     contentTitle: {
         color: '#FFF',
         fontSize: 18,
-        paddingBottom: 20,
+        marginTop:10,
+        paddingBottom: 16,
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Hiragino Sans',
@@ -351,7 +411,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Hiragino Sans',
-        marginLeft: 20,
+        marginLeft: 10,
         marginTop: 10
 
     },
@@ -416,16 +476,16 @@ const styles = StyleSheet.create({
     },
 
     header: {
+        marginTop:25,
+        marginLeft: -35,
         color: '#fff',
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
         fontSize: 18,
         backgroundColor: 'transparent',
-        marginTop: 30,
-        marginLeft: 98,
-
     },
+
     boxHeader:{
         color: '#fff',
         textAlign: 'left',
@@ -434,7 +494,12 @@ const styles = StyleSheet.create({
         fontFamily: 'Hiragino Sans',
         fontSize: 12,
         backgroundColor: 'transparent',
-    }
+    },
+    sliderContainer: {
+        width: 230,
+        height: 50,
+        alignSelf: 'center'
+    },
 
 });
 
