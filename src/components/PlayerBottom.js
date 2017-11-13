@@ -53,8 +53,9 @@ class PlayerBottom extends Component {
     }
 
     tick() {
-        this.setState({ currentTime: podcastPlayer.currentTime})
-
+        if(podcastPlayer.isPlaying){
+            this.setState({ currentTime: podcastPlayer.currentTime})
+        }
     }
 
     play = () =>  {

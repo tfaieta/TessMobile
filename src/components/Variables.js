@@ -44,7 +44,9 @@ class Variables extends Component{
 
 
     static tick() {
-        Variables.state.currentTime = podcastPlayer.currentTime;
+        if(podcastPlayer.isPlaying){
+            Variables.state.currentTime = podcastPlayer.currentTime;
+        }
     }
 
     static setPodcastFile(podFile){

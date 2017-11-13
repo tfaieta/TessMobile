@@ -97,6 +97,22 @@ class ListItemUsers extends Component {
             }
         });
 
+        var fixedTitle = '';
+        if(podcastTitle.toString().length > 12 ){
+            fixedTitle = (podcastTitle.toString().slice(0,12)+"...")
+        }
+        else{
+            fixedTitle = podcastTitle;
+        }
+
+        var fixedUsername = '';
+        if(this.state.profileName.length > 15){
+            fixedUsername =  (profileName.slice(0,15)+"...");
+        }
+        else{
+            fixedUsername = this.state.profileName;
+        }
+
 
 
 
@@ -115,8 +131,8 @@ class ListItemUsers extends Component {
                     </View>
 
 
-                <Text style={styles.title}>{podcastTitle}</Text>
-                <Text style={styles.artistTitle}>{this.state.profileName}</Text>
+                <Text style={styles.title}>{fixedTitle}</Text>
+                <Text style={styles.artistTitle}>{fixedUsername}</Text>
                 </View>
             </TouchableOpacity>
 

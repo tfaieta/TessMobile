@@ -239,9 +239,7 @@ class RecordInfo extends Component{
 
                     <View style={{flexDirection: 'row', paddingBottom: 30, marginTop: 20  }}>
                         <View style={{marginTop: 10, alignItems: 'flex-start'}}>
-                            <TouchableOpacity>
                                 {this._renderPlayButton(this.state.isPlaying)}
-                            </TouchableOpacity>
                         </View>
                         <View style={{justifyContent: 'center', alignItems: 'center', marginHorizontal: 20}}>
                             {this._renderSlider(podcastPlayer.currentTime)}

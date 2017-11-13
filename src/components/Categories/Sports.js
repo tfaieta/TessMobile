@@ -36,6 +36,18 @@ class Sports extends Component{
         },500)
     }
 
+    onGarbagePress(){
+        Alert.alert(
+            'Are you sure you want to delete?',
+            '',
+            [
+                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                {text: 'Yes', onPress: () => console.warn('delete')
+                },
+            ],
+            { cancelable: false }
+        )
+    }
 
     renderRow = (rowData) => {
 
