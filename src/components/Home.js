@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Text, View, StyleSheet,StatusBar, ListView, ScrollView, TouchableOpacity, Image} from 'react-native';
+import { Text, View, StyleSheet,StatusBar, ListView, ScrollView, TouchableHighlight, Image} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { podcastFetchNew} from "../actions/PodcastActions";
 import { connect } from 'react-redux';
@@ -94,9 +94,9 @@ class Home extends Component{
                             <Text style={styles.title}>New Releases</Text>
                             </View>
                             <View style={{alignSelf:'flex-end'}}>
-                                <TouchableOpacity onPress={this.pressSeeAllNew} style={{marginLeft: 135}}>
+                                <TouchableHighlight onPress={this.pressSeeAllNew} style={{marginLeft: 135}}>
                                     <Text style={styles.viewAll}>View all</Text>
-                                </TouchableOpacity>
+                                </TouchableHighlight>
                             </View>
                         </View>
 
@@ -113,7 +113,7 @@ class Home extends Component{
 
 
                     <ScrollView style={{height: 122, marginVertical: 20}} horizontal={true} showsHorizontalScrollIndicator={false}>
-                        <TouchableOpacity style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, borderRadius: 10, borderWidth: 0.1}} onPress={this.pressFitness}>
+                        <TouchableHighlight style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, borderRadius: 10, borderWidth: 0.1}} onPress={this.pressFitness}>
                             <Image
                                 style={{width: 218, height:122, position: 'absolute', alignSelf: 'center', opacity: 0.9, borderRadius: 10, borderWidth: 0.1}}
                                 source={require('tess/src/images/fitness.png')}
@@ -128,9 +128,9 @@ class Home extends Component{
                                 </Icon>
                                 <Text style={styles.catTitle}>Fitness</Text>
                             </Image>
-                        </TouchableOpacity>
+                        </TouchableHighlight>
 
-                        <TouchableOpacity style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, borderRadius: 10, borderWidth: 0.1}} onPress={this.pressCurrEvents}>
+                        <TouchableHighlight style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, borderRadius: 10, borderWidth: 0.1}} onPress={this.pressCurrEvents}>
                             <Image
                                 style={{width: 218, height:122, position: 'absolute', alignSelf: 'center', opacity: 0.9, borderRadius: 10, borderWidth: 0.1}}
                                 source={require('tess/src/images/worldNews.png')}
@@ -145,7 +145,7 @@ class Home extends Component{
                                 </Icon>
                                 <Text style={styles.catTitle}>News</Text>
                             </Image>
-                        </TouchableOpacity>
+                        </TouchableHighlight>
                     </ScrollView>
 
 
@@ -156,9 +156,9 @@ class Home extends Component{
                         <Text style={styles.title}>Selected by Tess</Text>
                     </View>
                     <View style={{alignSelf:'flex-end'}}>
-                        <TouchableOpacity style={{marginLeft: 105}}>
+                        <TouchableHighlight style={{marginLeft: 105}}>
                             <Text style={styles.viewAll}>View all</Text>
-                        </TouchableOpacity>
+                        </TouchableHighlight>
                     </View>
 
                 </View>

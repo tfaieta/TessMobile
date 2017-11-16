@@ -70,8 +70,8 @@ Navigation.registerComponent('LearnSomething', () => LearnSomething, store, Prov
 Navigation.registerComponent('Lifestyle', () => LifeStyle, store, Provider);
 Navigation.registerComponent('ScienceNature', () => ScienceNature, store, Provider);
 Navigation.registerComponent('SocietyCulture', () => SocietyCulture, store, Provider);
-Navigation.registerComponent('Sport', () => Sports, store, Provider);
-Navigation.registerComponent('StoryTelling', () => StoryTelling, store, Provider);
+Navigation.registerComponent('Sports', () => Sports, store, Provider);
+Navigation.registerComponent('Storytelling', () => StoryTelling, store, Provider);
 Navigation.registerComponent('Tech', () => Tech, store, Provider);
 Navigation.registerComponent('Travel', () => Travel, store, Provider);
 
@@ -108,8 +108,8 @@ firebase.initializeApp(config);
 Navigation.startSingleScreenApp({
     screen:{
         screen: 'Initial',
-        navigatorStyle: {},
-        navigatorButtons: {},
+        navigatorStyle: { screenBackgroundColor: '#fff' },
+        navigatorButtons: {backgroundColor: 'white'},
     },
     appStyle: {
         navBarHidden: true,

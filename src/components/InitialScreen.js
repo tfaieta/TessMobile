@@ -57,6 +57,8 @@ export default class InitialScreen extends Component{
                             right: 0
                         },
                         navBarHidden: true,
+                        navigatorStyle: {},
+                        navigatorButtons: {}
                     },
                     {
                         screen: 'Discover',
@@ -68,7 +70,9 @@ export default class InitialScreen extends Component{
                             bottom: -5,
                             right: 0
                         },
-                        navBarHidden: true
+                        navBarHidden: true,
+                        navigatorStyle: {},
+                        navigatorButtons: {}
                     },
                     {
                         screen: 'RecordFirst',
@@ -80,7 +84,9 @@ export default class InitialScreen extends Component{
                             bottom: -5,
                             right: 0
                         },
-                        navBarHidden: true
+                        navBarHidden: true,
+                        navigatorStyle: {},
+                        navigatorButtons: {}
                     },
                     {
                         screen: 'Library',
@@ -92,7 +98,9 @@ export default class InitialScreen extends Component{
                             bottom: -5,
                             right: 0
                         },
-                        navBarHidden: true
+                        navBarHidden: true,
+                        navigatorStyle: {},
+                        navigatorButtons: {}
                     },
                     {
                         screen: 'Account',
@@ -104,7 +112,9 @@ export default class InitialScreen extends Component{
                             bottom: -5,
                             right: 0
                         },
-                        navBarHidden: true
+                        navBarHidden: true,
+                        navigatorStyle: {},
+                        navigatorButtons: {}
                     }
                 ],
                 tabsStyle: {
@@ -113,7 +123,6 @@ export default class InitialScreen extends Component{
                     tabBarBackgroundColor: '#fff',
                     initialTabIndex: 0,
                     tabBarTextFontFamily: 'HiraginoSans-W3',
-                    paddingTop: 25, paddingBottom:10, marginHorizontal: 10, borderRadius: 10, borderWidth:2, borderColor: 'rgba(100,100,100,0.1)'
                 },
                 appStyle: {
                     navBarHidden: true,
@@ -130,6 +139,8 @@ export default class InitialScreen extends Component{
             Navigation.startSingleScreenApp({
                 screen: {
                     screen: 'Startup',
+                    navigatorStyle: {screenBackgroundColor: '#fff'},
+                    navigatorButtons: {}
                 },
                 appStyle: {
                     navBarHidden: true,
