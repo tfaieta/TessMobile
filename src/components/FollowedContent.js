@@ -1,17 +1,31 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { View, StyleSheet, ListView, Text, TouchableHighlight, TouchableOpacity} from 'react-native';
+import { View, StyleSheet, ListView, Text, TouchableOpacity} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { connect } from 'react-redux';
 import { podcastFetchFollowed } from "../actions/PodcastActions"
 import Variables from "./Variables";
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
-import {Actions} from 'react-native-router-flux';
+
+import { Navigation } from 'react-native-navigation';
 
 
 
 class FollowedContent extends Component{
+    componentWillMount(){
+        Variables.state.usersFollowed = [];
+
+        const { currentUser } = firebase.auth();
+        const refFol = firebase.database().ref(`users/${currentUser.uid}/following`);
+
+        refFol.orderByChild('following').on("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+                Variables.state.usersFollowed.push(data.key);
+            })
+        });
+
+    }
 
     constructor(props){
         super(props);
@@ -20,6 +34,8 @@ class FollowedContent extends Component{
             dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed),
             loading: true
         };
+        const navigator = this.props;
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed)})},500)
     }
 
     state={
@@ -46,21 +62,27 @@ class FollowedContent extends Component{
 
 
         return (
-            <TouchableHighlight underlayColor='#5757FF' onPress={() => {
+            <TouchableOpacity underlayColor='#5757FF' onPress={ () =>{
                 Variables.state.podcastArtist = rowData;
-                Actions.UserProfile();
+                Navigation.showModal({
+                    screen: "UserProfile", // unique ID registered with Navigation.registerScreen
+                    title: "Modal", // title of the screen as appears in the nav bar (optional)
+                    passProps: {}, // simple serializable object that will pass as props to the modal (optional)
+                    navigatorStyle: {}, // override the navigator style for the screen, see "Styling the navigator" below (optional)
+                    navigatorButtons: {}, // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
+                    animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
+                });
             }}>
                 <View style={styles.container2}>
 
 
-                    <View style={styles.leftContainer}>
+                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginBottom:10, marginLeft:10, height: 60, width: 60, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
                         <Icon style={{
-                            textAlign: 'left',
-                            marginLeft: 20,
-                            paddingRight: 8,
-                            fontSize: 70,
-                            color: '#b5b6cd'
-                        }} name="md-square">
+                            textAlign: 'center',
+                            fontSize: 40,
+                            color: 'white',
+                            marginTop: 5
+                        }} name="md-person">
                         </Icon>
                     </View>
 
@@ -71,15 +93,18 @@ class FollowedContent extends Component{
 
 
                 </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
         )
 
     }
 
 
-    _pressBack(){
-        Actions.pop();
-    }
+    _pressBack = () => {
+        this.props.navigator.pop({
+            animated: true,
+            animationType: 'fade',
+        });
+    };
 
 
 
@@ -119,7 +144,7 @@ class FollowedContent extends Component{
 
 
 
-                <PlayerBottom/>
+                <PlayerBottom navigator={this.props.navigator}/>
 
 
             </View>

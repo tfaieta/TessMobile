@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import { View, StyleSheet,StatusBar} from 'react-native';
 import ScrollableTabView, {DefaultTabBar, } from 'react-native-scrollable-tab-view';
 import TopCharts from './DiscoverBar/TopCharts';
 import NewPodcasts from './DiscoverBar/NewPodcasts';
 import Categories from './DiscoverBar/Categories';
 import Following from './DiscoverBar/Following';
-import { Actions } from 'react-native-router-flux';
 import { SearchBar } from 'react-native-elements'
 import {volume} from './Home';
 import PlayerBottom from './PlayerBottom';
+import { connect } from 'react-redux';
 
 export let searchWord = '';
 
@@ -19,7 +20,11 @@ class Discover extends Component{
 
     searchActivate = () => {
         searchWord = this.state.search;
-        Actions.SearchPage();
+        this.props.navigator.push({
+            screen: 'Search',
+            animated: true,
+            animationType: 'fade',
+        });
     };
 
     constructor(props) {
@@ -71,10 +76,10 @@ class Discover extends Component{
                     tabBarTextStyle={styles.tabStyle}
                     renderTabBar={() => <DefaultTabBar />}>
 
-                    <Categories tabLabel="Categories" />
-                    <TopCharts tabLabel="Top Charts" />
-                    <NewPodcasts tabLabel="New" />
-                    <Following tabLabel="Following" />
+                    <Categories tabLabel="Categories" navigator={this.props.navigator} />
+                    <TopCharts tabLabel="Top Charts" navigator={this.props.navigator} />
+                    <NewPodcasts tabLabel="New" navigator={this.props.navigator} />
+                    <Following tabLabel="Following" navigator={this.props.navigator}/>
 
                 </ScrollableTabView>
 
@@ -85,7 +90,7 @@ class Discover extends Component{
 
 
 
-                <PlayerBottom/>
+                <PlayerBottom navigator={this.props.navigator}/>
 
 
             </View>
@@ -144,4 +149,11 @@ const styles = StyleSheet.create({
 
 });
 
-export default Discover;
+const mapStateToProps = state => {
+    const podcast = _.map(state.podcast, (val, uid) => {
+        return { ...val, uid };
+    });
+    return {podcast};
+};
+
+export default connect(mapStateToProps) (Discover);

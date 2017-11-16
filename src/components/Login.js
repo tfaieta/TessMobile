@@ -5,10 +5,7 @@ import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from "react-native-linear-gradient/index.android";
-import { Actions } from 'react-native-router-flux';
 
-
-export let profileNameL='';
 
 class Login extends Component {
 
@@ -32,7 +29,11 @@ class Login extends Component {
     }
 
     _handleButtonPressCreate = () => {
-        Actions.CreateAccount();
+        this.props.navigator.push({
+            screen: 'CreateAccount',
+            animated: true,
+            animationType: 'fade',
+        });
     };
 
 

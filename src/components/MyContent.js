@@ -5,7 +5,6 @@ import PlayerBottom from './PlayerBottom';
 import { connect } from 'react-redux';
 import { podcastFetch } from "../actions/PodcastActions"
 import firebase from 'firebase';
-import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "./Variables";
 
@@ -124,9 +123,12 @@ class MyContent extends Component{
     };
 
 
-    _pressBack(){
-        Actions.pop();
-    }
+    _pressBack = () => {
+        this.props.navigator.pop({
+            animated: true,
+            animationType: 'fade',
+        });
+    };
 
 
 
@@ -172,7 +174,7 @@ class MyContent extends Component{
 
 
 
-                <PlayerBottom/>
+                <PlayerBottom navigator={this.props.navigator}/>
 
 
             </View>

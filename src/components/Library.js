@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity, StatusBar} from 'react-native';
-import { Actions } from 'react-native-router-flux';
 import PlayerBottom from './PlayerBottom';
 import Variables from "./Variables";
 import firebase from 'firebase';
@@ -9,47 +8,36 @@ import firebase from 'firebase';
 
 class Library extends Component{
 
-    componentWillMount(){
-        Variables.state.usersFollowed = [];
-        Variables.state.favPodcasts = [];
-
-        const { currentUser } = firebase.auth();
-        const refFol = firebase.database().ref(`users/${currentUser.uid}/following`);
-        const refFav = firebase.database().ref(`users/${currentUser.uid}/favorites`);
-
-        refFol.orderByChild('following').on("value", function (snapshot) {
-            snapshot.forEach(function (data) {
-                Variables.state.usersFollowed.push(data.key);
-            })
-        });
-
-        refFav.orderByChild('favorites').on("value", function (snapshot) {
-            snapshot.forEach(function (data) {
-                Variables.state.favPodcasts.push(data.val());
-            })
-        });
-
-
-
-    }
-
-
-
-
     GoToQueue = () => {
-        Actions.Queue();
+        this.props.navigator.push({
+            screen: 'Queue',
+            animated: true,
+            animationType: 'fade',
+        });
     };
 
     GoToFavs = () => {
-        Actions.Favorites();
+        this.props.navigator.push({
+            screen: 'Favorites',
+            animated: true,
+            animationType: 'fade',
+        });
     };
 
     GoToFollowedContent = () => {
-        Actions.FollowedContent();
+        this.props.navigator.push({
+            screen: 'Followed',
+            animated: true,
+            animationType: 'fade',
+        });
     };
 
     GoToMyContent = () => {
-        Actions.MyContent();
+        this.props.navigator.push({
+            screen: 'MyContent',
+            animated: true,
+            animationType: 'fade',
+        });
     };
 
     constructor(props) {
@@ -104,7 +92,7 @@ class Library extends Component{
                 </Image>
 
 
-                <PlayerBottom/>
+                <PlayerBottom navigator={this.props.navigator}/>
 
             </View>
 

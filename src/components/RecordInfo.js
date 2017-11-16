@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet, TouchableOpacity, Slider} from 'react-native';
+import { Text, TextInput, View, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Actions } from 'react-native-router-flux';
 import {podTime, totalTime} from './Record';
 import Variables, {podcastPlayer} from './Variables';
 import { connect } from 'react-redux';
@@ -12,6 +11,7 @@ import {podcastCreate} from "../actions/PodcastActions";
 import SimplePicker from 'react-native-simple-picker';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from "react-native-linear-gradient/index.android";
+import Slider from 'react-native-slider';
 
 
 
@@ -68,7 +68,14 @@ class RecordInfo extends Component{
     }
 
     Cancel = () => {
-        Actions.RecordFirstPage();
+        this.props.navigator.push({
+            screen: 'RecordFirst',
+            animated: true,
+            animationType: 'fade',
+            navigatorStyle: {
+                tabBarHidden: false,
+            },
+        });
     };
 
     play =()=> {
@@ -98,7 +105,7 @@ class RecordInfo extends Component{
         });
 
 
-        const { podcastTitle, podcastDescription, podcastCategory, podcastArtist} = this.props;
+        const { podcastTitle, podcastDescription, podcastCategory, podcastArtist, navigator} = this.props;
         const {currentUser} = firebase.auth();
 
 
@@ -129,7 +136,7 @@ class RecordInfo extends Component{
             }
         }else {
 
-            this.props.podcastCreate({podcastTitle, podcastDescription, podcastCategory, podcastArtist});
+            this.props.podcastCreate({podcastTitle, podcastDescription, podcastCategory, podcastArtist, navigator});
         }
     };
 
@@ -165,12 +172,12 @@ class RecordInfo extends Component{
                 minimumTrackTintColor='#5757FF'
                 maximumTrackTintColor='#fff'
                 thumbTintColor='#fff'
-                thumbTouchSize={{width: 20, height: 60}}
+                thumbTouchSize={{width: 10, height: 10}}
                 animateTransitions = {true}
                 style={styles.sliderContainer}
                 step={0}
                 minimumValue={0}
-                maximumValue= {podcastPlayer.duration}
+                maximumValue= { Math.abs( podcastPlayer.duration)}
                 value={ currentTime }
                 onValueChange={currentTime => podcastPlayer.seek(currentTime)}
             />
@@ -181,7 +188,8 @@ class RecordInfo extends Component{
     _renderPlayButton(isPlaying){
         if(isPlaying){
             return(
-                <Icon onPress={this.pause} style={{
+                <TouchableOpacity onPress={this.pause}>
+                <Icon style={{
                     textAlign: 'right',
                     fontSize: 40,
                     marginLeft: 20,
@@ -189,11 +197,13 @@ class RecordInfo extends Component{
                     backgroundColor: 'transparent',
                 }} name="ios-pause">
                 </Icon>
+                </TouchableOpacity>
             )
         }
         else {
             return(
-                <Icon onPress={this.play} style={{
+                <TouchableOpacity onPress={this.play}>
+                <Icon style={{
                     textAlign: 'right',
                     fontSize: 40,
                     marginLeft: 20,
@@ -201,6 +211,7 @@ class RecordInfo extends Component{
                     backgroundColor: 'transparent',
                 }} name="ios-play">
                 </Icon>
+                </TouchableOpacity>
             )
         }
     }

@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser, createUser, usernameChanged } from '../actions';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from "react-native-linear-gradient/index.android";
-import { Actions } from 'react-native-router-flux';
 
 
 export let profileName='';
@@ -41,9 +40,12 @@ class CreateAccount extends Component {
     }
 
 
-    _pressBack(){
-        Actions.pop();
-    }
+    _pressBack = () => {
+        this.props.navigator.pop({
+            animated: true,
+            animationType: 'fade',
+        });
+    };
 
 
     renderButton() {

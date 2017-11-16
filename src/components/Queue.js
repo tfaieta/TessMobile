@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PlayerBottom from './PlayerBottom';
-import {Actions} from 'react-native-router-flux';
 
 
 class Queue extends Component{
 
-    _pressBack(){
-        Actions.pop();
-    }
+    _pressBack = () => {
+        this.props.navigator.pop({
+            animated: true,
+            animationType: 'fade',
+        });
+    };
 
 
     render() {
@@ -69,7 +71,7 @@ class Queue extends Component{
 
 
 
-                <PlayerBottom/>
+                <PlayerBottom navigator={this.props.navigator}/>
 
 
             </View>

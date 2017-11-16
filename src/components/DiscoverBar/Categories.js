@@ -1,51 +1,105 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import { View, StyleSheet, ScrollView, TouchableOpacity, Image, Text} from 'react-native';
-import {Actions} from 'react-native-router-flux';
-
+import { connect } from 'react-redux';
 
 
 class Categories extends Component{
+    constructor(props) {
+        super(props);
+    }
 
-
-    pressFitness(){
-        Actions.Fitness();
-    }
-    pressCurrEvents(){
-        Actions.CurrentEvents();
-    }
-    pressGaming(){
-        Actions.Gaming();
-    }
-    pressSports(){
-        Actions.Sports();
-    }
-    pressEntertainment(){
-        Actions.Entertainment();
-    }
-    pressSci(){
-        Actions.ScienceNature();
-    }
-    pressTravel(){
-        Actions.Travel();
-    }
-    pressLearn(){
-        Actions.LearnSomething();
-    }
-    pressStory(){
-        Actions.StoryTelling();
-    }
-    pressComedy(){
-        Actions.Comedy();
-    }
-    pressLife(){
-        Actions.LifeStyle();
-    }
-    pressSociety(){
-        Actions.SocietyCulture();
-    }
-    pressTech(){
-        Actions.Tech();
-    }
+    pressFitness =()=>{
+        this.props.navigator.push({
+            screen: 'Fitness',
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+    pressCurrEvents = () => {
+        this.props.navigator.push({
+            screen: 'News',
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+    pressGaming =()=>{
+        this.props.navigator.push({
+            screen: 'Gaming',
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+    pressSports =()=>{
+        this.props.navigator.push({
+            screen: 'Sports',
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+    pressEntertainment =()=>{
+        this.props.navigator.push({
+            screen: 'Entertainment',
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+    pressSci =()=>{
+        this.props.navigator.push({
+            screen: 'ScienceNature',
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+    pressTravel =()=>{
+        this.props.navigator.push({
+            screen: 'Travel',
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+    pressLearn =()=>{
+        this.props.navigator.push({
+            screen: 'LearnSomething',
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+    pressStory =()=>{
+        this.props.navigator.push({
+            screen: 'Storytelling',
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+    pressComedy =()=>{
+        this.props.navigator.push({
+            screen: 'Comedy',
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+    pressLife =()=>{
+        this.props.navigator.push({
+            screen: 'Lifestyle',
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+    pressSociety =()=>{
+        this.props.navigator.push({
+            screen: 'SocietyCulture',
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+    pressTech =()=>{
+        this.props.navigator.push({
+            screen: 'Tech',
+            animated: true,
+            animationType: 'fade',
+        });
+    };
 
 
     render() {
@@ -194,4 +248,11 @@ const styles = StyleSheet.create({
 
 });
 
-export default Categories;
+const mapStateToProps = state => {
+    const podcast = _.map(state.podcast, (val, uid) => {
+        return { ...val, uid };
+    });
+    return {podcast};
+};
+
+export default connect(mapStateToProps) (Categories);

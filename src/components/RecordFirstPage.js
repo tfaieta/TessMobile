@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Actions } from 'react-native-router-flux';
 import Variables from "./Variables";
 import DropdownAlert from 'react-native-dropdownalert';
-
 
 
 
 class RecordFirstPage extends Component{
 
     componentWillMount(){
+        this.props.navigator.toggleTabs({
+            to: 'false',
+            animated: true,
+        });
+
         if(Variables.state.isPlaying){
             Variables.pause();
             Variables.state.isPlaying = false;
@@ -23,9 +26,16 @@ class RecordFirstPage extends Component{
     };
 
 
-    recordNewPodcast(){
-        Actions.Record();
-    }
+    recordNewPodcast =() => {
+        this.props.navigator.push({
+            screen: 'Record',
+            animated: true,
+            animationType: 'fade',
+            navigatorStyle: {
+                tabBarHidden: true,
+            },
+        });
+    };
 
 
 

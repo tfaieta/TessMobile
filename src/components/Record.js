@@ -3,7 +3,6 @@ import { Text, View, StyleSheet, TouchableOpacity, StatusBar, Image, Platform} f
 import Icon from 'react-native-vector-icons/Ionicons';
 import Sound from 'react-native-sound';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
-import { Actions } from 'react-native-router-flux';
 import LinearGradient from "react-native-linear-gradient/index.android";
 
 
@@ -181,9 +180,19 @@ class Record extends Component{
         this.setState({stoppedRecording: true, recording: false});
         totalTime = this.state.currentTime;
 
-        Actions.RecordInfo();
-
+        this.next();
     }
+
+    next =() =>{
+        this.props.navigator.push({
+            screen: 'RecordInfo',
+            animated: true,
+            animationType: 'fade',
+            navigatorStyle: {
+                tabBarHidden: true,
+            },
+        });
+    };
 
     async _play() {
         if (this.state.recording) {

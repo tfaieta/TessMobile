@@ -58,6 +58,7 @@
 		D48396A96EC9BEC968CCA976 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F107D65A01D41AB2FBDFBD1 /* CoreMedia.framework */; };
 		EBD71E8384754E3B973F97D0 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A76163A2DFE84DE6BFA35747 /* Octicons.ttf */; };
 		ED04715D1F71CB5B00EE000D /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED04715A1F71CB4F00EE000D /* libRNFetchBlob.a */; };
+		EDA197FE1FBD37B100001991 /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA197F91FBD379400001991 /* libReactNativeNavigation.a */; };
 		EDB1BDB11FB670690047A867 /* libReactNativeAudioToolkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDB1BDAC1FB670290047A867 /* libReactNativeAudioToolkit.a */; };
 		EDBAF62E1EFB059800783B86 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDBAF62A1EFB059800783B86 /* Bolts.framework */; };
 		F350963F63FC4DA8B45AD7E9 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FED8E7F1CB6F4077B3EE2FB7 /* MaterialCommunityIcons.ttf */; };
@@ -281,6 +282,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = BVLinearGradient;
 		};
+		EDA197F81FBD379400001991 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EDA197D91FBD379400001991 /* ReactNativeNavigation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D8AFADBD1BEE6F3F00A4592D;
+			remoteInfo = ReactNativeNavigation;
+		};
 		EDB1BDAB1FB670290047A867 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EDB1BD8D1FB670280047A867 /* ReactNativeAudioToolkit.xcodeproj */;
@@ -346,6 +354,7 @@
 		C7B11C2E37B58D4FAC4AFAFD /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		DA4BFD21FFFC4094BBEF9B13 /* RNSound.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSound.xcodeproj; path = "../node_modules/react-native-sound/RNSound.xcodeproj"; sourceTree = "<group>"; };
 		ED0471391F71CB4F00EE000D /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/react-native-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
+		EDA197D91FBD379400001991 /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
 		EDB1BD8D1FB670280047A867 /* ReactNativeAudioToolkit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeAudioToolkit.xcodeproj; path = "../node_modules/react-native-audio-toolkit/ios/ReactNativeAudioToolkit/ReactNativeAudioToolkit.xcodeproj"; sourceTree = "<group>"; };
 		EDBAF62A1EFB059800783B86 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		EE039E46CE1E446CBC86FCC0 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
@@ -366,6 +375,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDA197FE1FBD37B100001991 /* libReactNativeNavigation.a in Frameworks */,
 				EDB1BDB11FB670690047A867 /* libReactNativeAudioToolkit.a in Frameworks */,
 				ED04715D1F71CB5B00EE000D /* libRNFetchBlob.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -564,6 +574,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				EDA197D91FBD379400001991 /* ReactNativeNavigation.xcodeproj */,
 				EDB1BD8D1FB670280047A867 /* ReactNativeAudioToolkit.xcodeproj */,
 				ED0471391F71CB4F00EE000D /* RNFetchBlob.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
@@ -648,6 +659,14 @@
 			isa = PBXGroup;
 			children = (
 				ED609D371EFAFE2600426213 /* libBVLinearGradient.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EDA197DA1FBD379400001991 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EDA197F91FBD379400001991 /* libReactNativeNavigation.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -862,6 +881,10 @@
 				{
 					ProductGroup = EDB1BD8E1FB670280047A867 /* Products */;
 					ProjectRef = EDB1BD8D1FB670280047A867 /* ReactNativeAudioToolkit.xcodeproj */;
+				},
+				{
+					ProductGroup = EDA197DA1FBD379400001991 /* Products */;
+					ProjectRef = EDA197D91FBD379400001991 /* ReactNativeNavigation.xcodeproj */;
 				},
 				{
 					ProductGroup = ED3A18EC1F2BCDE900ED4DFB /* Products */;
@@ -1094,6 +1117,13 @@
 			remoteRef = ED609D361EFAFE2600426213 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		EDA197F91FBD379400001991 /* libReactNativeNavigation.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libReactNativeNavigation.a;
+			remoteRef = EDA197F81FBD379400001991 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		EDB1BDAC1FB670290047A867 /* libReactNativeAudioToolkit.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1323,6 +1353,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-audio/ios",
 					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
+					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
 				);
 				INFOPLIST_FILE = tess/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1361,6 +1392,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-audio/ios",
 					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
+					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
 				);
 				INFOPLIST_FILE = tess/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

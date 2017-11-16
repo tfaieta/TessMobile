@@ -7,11 +7,22 @@ import { podcastFetchFavs } from "../actions/PodcastActions"
 import firebase from 'firebase';
 import Variables from "./Variables";
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Actions} from 'react-native-router-flux';
 
 
 
 class Favorites extends Component{
+
+    componentWillMount(){
+        Variables.state.favPodcasts = [];
+        const { currentUser } = firebase.auth();
+        const refFav = firebase.database().ref(`users/${currentUser.uid}/favorites`);
+
+        refFav.orderByChild('favorites').on("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+                Variables.state.favPodcasts.push(data.val());
+            })
+        });
+    }
 
     constructor(props){
         super(props);
@@ -20,14 +31,18 @@ class Favorites extends Component{
             dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts),
             loading: true,
             favorite: true
-        }
+        };
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts)})},500)
     }
 
 
 
-    _pressBack(){
-        Actions.pop();
-    }
+    _pressBack = () => {
+        this.props.navigator.pop({
+            animated: true,
+            animationType: 'fade',
+        });
+    };
 
 
 
@@ -253,7 +268,7 @@ class Favorites extends Component{
 
 
 
-                <PlayerBottom/>
+                <PlayerBottom navigator={this.props.navigator}/>
 
 
             </View>

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView, ListView, Text, TouchableOpacity, Alert} from 'react-native';
 import PlayerBottom from '../PlayerBottom';
 import firebase from 'firebase';
-import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "../Variables";
 
@@ -244,7 +243,10 @@ class Politics extends Component{
 
 
     _pressBack(){
-        Actions.pop();
+        this.props.navigator.pop({
+            animated: true,
+            animationType: 'fade',
+        });
     }
 
 

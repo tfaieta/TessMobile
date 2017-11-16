@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     TextInput,
 } from 'react-native';
-import { Actions } from 'react-native-router-flux';
+import { Navigation } from 'react-native-navigation';
 import SettingsList from 'react-native-settings-list';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PlayerBottom from './PlayerBottom';
@@ -19,7 +19,19 @@ class Settings extends Component {
 
     _handleButtonPressLogOut = () => {
         firebase.auth().signOut();
-        Actions.StartUp();
+        Navigation.startSingleScreenApp({
+            screen: {
+                screen: 'Startup',
+            },
+            appStyle: {
+                navBarHidden: true,
+                orientation: 'portrait',
+                bottomTabBadgeTextColor: 'white',
+                bottomTabBadgeBackgroundColor: 'white',
+                hideBackButtonTitle: true/false
+            },
+            animationType: 'slide-down'
+        });
 
     };
 
@@ -48,6 +60,14 @@ class Settings extends Component {
 
     }
 
+    _pressBack = () => {
+        this.props.navigator.pop({
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+
+
 
 
     constructor(){
@@ -65,10 +85,27 @@ class Settings extends Component {
 
     render() {
         return (
-            <View style={{backgroundColor:'#f6f6f6',flex:1, paddingTop: 10, paddingBottom: 118}}>
-                <View style={{borderBottomWidth:1, backgroundColor:'#263238',borderColor:'#c8c7cc'}}>
-                    <Text style={{color:'white',marginTop:15,marginBottom:15, marginLeft:15,fontWeight:'bold',fontSize:20}}>Settings</Text>
+            <View style={{backgroundColor:'#f6f6f6',flex:1, paddingBottom: 118}}>
+
+                <View style={{flexDirection: 'row', paddingVertical:5, borderRadius: 10, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
+                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
+                        <TouchableOpacity onPress={this._pressBack}>
+                            <Icon style={{
+                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#9496A3'
+                            }} name="md-arrow-round-back">
+                            </Icon>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
+                        <Text style={styles.header}>Settings</Text>
+                    </View>
+
+                    <View>
+                    </View>
+
                 </View>
+
+
                 <View style={{backgroundColor:'#f6f6f6',flex:1}}>
                     <SettingsList borderColor='#d6d5d9' defaultItemSize={50}>
                         <SettingsList.Item
@@ -225,7 +262,7 @@ class Settings extends Component {
 
 
 
-                <PlayerBottom/>
+                <PlayerBottom navigator={this.props.navigator}/>
 
 
             </View>
@@ -284,6 +321,18 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         fontSize: 20,
     },
+
+    header: {
+        marginTop:25,
+        marginLeft: -35,
+        color: '#2A2A30',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Hiragino Sans',
+        fontSize: 18,
+        backgroundColor: 'transparent',
+
+    }
 });
 
 export default Settings;

@@ -16,11 +16,44 @@ import { podcastFetch } from "../actions/PodcastActions"
 import PlayerBottom from './PlayerBottom';
 import firebase from 'firebase';
 import Variables from './Variables';
-import { Actions } from 'react-native-router-flux';
 
 
 
 class Account extends Component {
+
+    componentWillMount(){
+        const refMy = firebase.database().ref(`podcasts/`);
+        const {currentUser} = firebase.auth();
+
+        refMy.on("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+                if(currentUser.uid == data.val().podcastArtist) {
+                    Variables.state.myPodcasts.push(data.val());
+                }
+            })
+        });
+
+        firebase.database().ref(`/users/${currentUser.uid}/username`).orderByChild("username").on("value", function(snap) {
+            if(snap.val()){
+                Variables.state.username = snap.val().username;
+
+            }
+            else {
+                Variables.state.username = "None";
+            }
+        });
+
+        firebase.database().ref(`/users/${currentUser.uid}/bio`).orderByChild("bio").on("value", function(snap) {
+            if(snap.val()){
+                Variables.state.bio = snap.val().bio;
+
+            }
+            else {
+                Variables.state.bio = "Tell others about yourself"
+            }
+        });
+
+    }
 
     constructor(props){
         super(props);
@@ -31,7 +64,8 @@ class Account extends Component {
             username: 'none' ,
             bio: "Tell others about yourself...",
             category: '',
-        }
+        };
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username})},1500)
     }
 
 
@@ -40,7 +74,7 @@ class Account extends Component {
     _renderProfileName(){
 
             return (
-                <Text style={styles.title2} >{Variables.state.username}</Text>
+                <Text style={styles.title2} >{this.state.username}</Text>
 
             )
 
@@ -159,7 +193,11 @@ class Account extends Component {
 
 
     _pressSettings = () => {
-        Actions.Settings();
+        this.props.navigator.push({
+            screen: 'Settings',
+            animated: true,
+            animationType: 'fade',
+        });
     };
 
 
@@ -235,7 +273,7 @@ class Account extends Component {
 
 
 
-                <PlayerBottom/>
+                <PlayerBottom navigator={this.props.navigator}/>
 
             </View>
 

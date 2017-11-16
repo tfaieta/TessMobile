@@ -102,7 +102,7 @@ const RouterComponent = () => {
             <Scene key = "CreateAccount" component={CreateAccount} title = "Sign Up" hideNavBar={true}  />
 
 
-
+            <Scene key = "RecordSuccess" component={RecordSuccess} title = "Record Success" hideNavBar={true}  />
 
             <Scene key="Main" panHandlers={null}>
 
@@ -303,7 +303,7 @@ const RouterComponent = () => {
                         panHandlers={null}
                     />
                     <Scene
-                        key="RecordSuccess"
+                        key="RecordSuccesss"
                         component={RecordSuccess}
                         title="RecordSuccess"
                         hideNavBar={true}

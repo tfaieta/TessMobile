@@ -14,6 +14,13 @@ import PlayerBottom from "./PlayerBottom";
 
 
 class RecordSuccess extends Component{
+    componentWillMount(){
+        this.props.navigator.toggleTabs({
+            to: 'true',
+            animated: true,
+            tabBarHidden: false,
+        });
+    }
 
     state = {
         title: Variables.state.podcastTitle,
@@ -22,7 +29,14 @@ class RecordSuccess extends Component{
 
 
     Cancel = () => {
-        Actions.RecordFirstPage();
+        this.props.navigator.push({
+            screen: 'RecordFirst',
+            animated: true,
+            animationType: 'fade',
+            navigatorStyle: {
+                tabBarHidden: false,
+            },
+        });
     };
 
 
@@ -70,7 +84,7 @@ class RecordSuccess extends Component{
                 </View>
 
 
-                <PlayerBottom/>
+                <PlayerBottom navigator={this.props.navigator}/>
 
 
             </LinearGradient>

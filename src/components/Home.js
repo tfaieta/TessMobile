@@ -2,69 +2,18 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { Text, View, StyleSheet,StatusBar, ListView, ScrollView, TouchableOpacity, Image} from 'react-native';
 import PlayerBottom from './PlayerBottom';
-import Variables from './Variables';
-import firebase from 'firebase';
 import { podcastFetchNew} from "../actions/PodcastActions";
 import { connect } from 'react-redux';
 import ListItemUsers from '../components/ListItemUsers';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Actions} from 'react-native-router-flux';
-import Sound from 'react-native-sound';
 
-Sound.enableInSilenceMode(true);
-Sound.setActive(true);
-Sound.setCategory('Playback', true);
-Sound.setMode('SpokenAudio');
-
+import { Navigation } from 'react-native-navigation';
 
 class Home extends Component{
     componentWillMount(){
-        Variables.state.myPodcasts = [];
-        const {currentUser} = firebase.auth();
-        const refMy = firebase.database().ref(`podcasts/`);
-
-        firebase.database().ref(`/users/${currentUser.uid}/bio`).orderByChild("bio").on("value", function(snap) {
-            if(snap.val()){
-                Variables.state.bio = snap.val().bio;
-
-            }
-            else {
-                Variables.state.bio = "Tell others about yourself"
-            }
-        });
-        firebase.database().ref(`/users/${currentUser.uid}/favCategory`).orderByChild("favCategory").on("value", function(snap) {
-            if(snap.val()){
-                Variables.state.favCategory = snap.val().favCategory;
-
-            }
-            else {
-                Variables.state.favCategory = "Too hard to choose"
-            }
-        });
-        firebase.database().ref(`/users/${currentUser.uid}/username`).orderByChild("username").on("value", function(snap) {
-            if(snap.val()){
-                Variables.state.username = snap.val().username;
-
-            }
-            else {
-                Variables.state.username = "None"
-            }
-        });
-
-        refMy.on("value", function (snapshot) {
-            snapshot.forEach(function (data) {
-                if(currentUser.uid == data.val().podcastArtist) {
-                    Variables.state.myPodcasts.push(data.val());
-                }
-            })
-        });
-
-
         this.props.podcastFetchNew();
 
-
         this.creataDataSourceNewPodcasts(this.props);
-
     }
 
 
@@ -98,12 +47,31 @@ class Home extends Component{
 
 
 
-    pressFitness(){
-        Actions.Fitness();
-    }
-    pressCurrEvents(){
-        Actions.CurrentEvents();
-    }
+    pressFitness = () => {
+        this.props.navigator.push({
+            screen: 'Fitness',
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+    pressCurrEvents = () => {
+        this.props.navigator.push({
+            screen: 'News',
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+    pressSeeAllNew = () => {
+        Navigation.showLightBox({
+            screen: "NewPodcasts", // unique ID registered with Navigation.registerScreen
+            style: {
+                backgroundBlur: "light", // 'dark' / 'light' / 'xlight' / 'none' - the type of blur on the background
+                backgroundColor: '#5757FF70', // tint color for the background, you can specify alpha here (optional)
+                tapBackgroundToDismiss: true, // dismisses LightBox on background taps (optional)
+                width: 200
+            }
+        });
+    };
 
 
 
@@ -126,7 +94,7 @@ class Home extends Component{
                             <Text style={styles.title}>New Releases</Text>
                             </View>
                             <View style={{alignSelf:'flex-end'}}>
-                                <TouchableOpacity style={{marginLeft: 135}}>
+                                <TouchableOpacity onPress={this.pressSeeAllNew} style={{marginLeft: 135}}>
                                     <Text style={styles.viewAll}>View all</Text>
                                 </TouchableOpacity>
                             </View>
@@ -223,7 +191,7 @@ class Home extends Component{
 
 
 
-                <PlayerBottom/>
+                <PlayerBottom navigator={this.props.navigator}/>
 
 
 

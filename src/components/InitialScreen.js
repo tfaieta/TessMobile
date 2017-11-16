@@ -1,10 +1,36 @@
-/**
- * Created by nickruspantini on 6/6/17.
- */
 import React, {Component} from 'react';
-import {StyleSheet, View, Image, StatusBar} from 'react-native';
-import { Actions } from 'react-native-router-flux';
+import {View, Image, StatusBar} from 'react-native';
 import firebase from 'firebase';
+import Icon from 'react-native-vector-icons/Ionicons';
+
+import { Navigation } from 'react-native-navigation';
+
+
+var homeIcon;
+Icon.getImageSource('ios-home-outline', 30, '#F5002A').then((source) => { homeIcon = source});
+var homeIconSelected;
+Icon.getImageSource('ios-home', 30, '#F5002A').then((source) => { homeIconSelected = source});
+
+var discoverIcon;
+Icon.getImageSource('ios-search-outline', 30, '#F5002A').then((source) => { discoverIcon = source});
+var discoverIconSelected;
+Icon.getImageSource('ios-search', 30, '#F5002A').then((source) => { discoverIconSelected = source});
+
+var recordIcon;
+Icon.getImageSource('ios-microphone-outline', 30, '#F5002A').then((source) => { recordIcon = source});
+var recordIconSelected;
+Icon.getImageSource('ios-microphone', 30, '#F5002A').then((source) => { recordIconSelected = source});
+
+var libraryIcon;
+Icon.getImageSource('ios-headset-outline', 30, '#F5002A').then((source) => { libraryIcon = source});
+var libraryIconSelected;
+Icon.getImageSource('ios-headset', 30, '#F5002A').then((source) => { libraryIconSelected = source});
+
+var accountIcon;
+Icon.getImageSource('ios-person-outline', 30, '#F5002A').then((source) => { accountIcon = source});
+var accountIconSelected;
+Icon.getImageSource('ios-person', 30, '#F5002A').then((source) => { accountIconSelected = source});
+
 
 
 
@@ -18,10 +44,102 @@ export default class InitialScreen extends Component{
         const {currentUser} = firebase.auth();
 
         if(currentUser){
-            Actions.Main()
+            Navigation.startTabBasedApp({
+                tabs: [
+                    {
+                        screen: 'Home',
+                        icon: homeIcon,
+                        selectedIcon: homeIconSelected,
+                        iconInsets: {
+                            top: 5,
+                            left: 0,
+                            bottom: -5,
+                            right: 0
+                        },
+                        navBarHidden: true,
+                    },
+                    {
+                        screen: 'Discover',
+                        icon: discoverIcon,
+                        selectedIcon: discoverIconSelected,
+                        iconInsets: {
+                            top: 5,
+                            left: 0,
+                            bottom: -5,
+                            right: 0
+                        },
+                        navBarHidden: true
+                    },
+                    {
+                        screen: 'RecordFirst',
+                        icon: recordIcon,
+                        selectedIcon: recordIconSelected,
+                        iconInsets: {
+                            top: 5,
+                            left: 0,
+                            bottom: -5,
+                            right: 0
+                        },
+                        navBarHidden: true
+                    },
+                    {
+                        screen: 'Library',
+                        icon: libraryIcon,
+                        selectedIcon: libraryIconSelected,
+                        iconInsets: {
+                            top: 5,
+                            left: 0,
+                            bottom: -5,
+                            right: 0
+                        },
+                        navBarHidden: true
+                    },
+                    {
+                        screen: 'Account',
+                        icon: accountIcon,
+                        selectedIcon: accountIconSelected,
+                        iconInsets: {
+                            top: 5,
+                            left: 0,
+                            bottom: -5,
+                            right: 0
+                        },
+                        navBarHidden: true
+                    }
+                ],
+                tabsStyle: {
+                    tabBarButtonColor: '#BBBCCD',
+                    tabBarSelectedButtonColor: '#5757FF',
+                    tabBarBackgroundColor: '#fff',
+                    initialTabIndex: 0,
+                    tabBarTextFontFamily: 'HiraginoSans-W3',
+                    paddingTop: 25, paddingBottom:10, marginHorizontal: 10, borderRadius: 10, borderWidth:2, borderColor: 'rgba(100,100,100,0.1)'
+                },
+                appStyle: {
+                    navBarHidden: true,
+                    orientation: 'portrait',
+                    bottomTabBadgeTextColor: 'white',
+                    bottomTabBadgeBackgroundColor: 'white',
+                    hideBackButtonTitle: true/false
+                },
+                passProps: {},
+                animationType: 'slide-down'
+            });
         }
         else{
-            Actions.StartUp();
+            Navigation.startSingleScreenApp({
+                screen: {
+                    screen: 'Startup',
+                },
+                appStyle: {
+                    navBarHidden: true,
+                    orientation: 'portrait',
+                    bottomTabBadgeTextColor: 'white',
+                    bottomTabBadgeBackgroundColor: 'white',
+                    hideBackButtonTitle: true/false
+                },
+                animationType: 'slide-down'
+            });
         }
         
     }
@@ -41,13 +159,3 @@ export default class InitialScreen extends Component{
         );
     }
 }
-
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
-
-
-});

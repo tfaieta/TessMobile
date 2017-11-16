@@ -12,7 +12,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 export  default class Login extends Component{
 
     _handleButtonPressLogin = () => {
-        Actions.Login();
+        this.props.navigator.push({
+            screen: 'Login',
+            animated: true,
+            animationType: 'fade',
+        });
     };
 
 

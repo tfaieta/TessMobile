@@ -13,16 +13,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { podcastFetchUser } from "../actions/PodcastActions";
 import PlayerBottom from './PlayerBottom';
-import {podFile} from "./Record";
-import Sound from 'react-native-sound';
 import {profileNameL} from './LoginForm.js';
 import {profileName} from './CreateAccount.js';
 import Variables from './Variables';
 import firebase from 'firebase';
-import {Actions} from 'react-native-router-flux';
 
 
-
+import { Navigation } from 'react-native-navigation';
 
 class UserProfile extends Component {
     componentWillMount(){
@@ -45,10 +42,10 @@ class UserProfile extends Component {
 
         firebase.database().ref(`/users/${Variables.state.podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
             if(snap.val()){
-                Variables.state.currentUsername = snap.val().username;
+                Variables.state.username = snap.val().username;
             }
             else {
-                Variables.state.currentUsername = Variables.state.podcastArtist;
+                Variables.state.username = Variables.state.podcastArtist;
             }
         });
 
@@ -64,11 +61,9 @@ class UserProfile extends Component {
         firebase.database().ref(`/users/${Variables.state.podcastArtist}/bio`).orderByChild("bio").on("value", function(snap) {
             if(snap.val()){
                 Variables.state.currentBio = snap.val().bio;
-                Actions.refresh();
             }
             else {
                 Variables.state.currentBio = "Tell others about yourself";
-                Actions.refresh();
             }
         });
 
@@ -78,9 +73,6 @@ class UserProfile extends Component {
         else{
             Variables.state.following = false;
         }
-
-
-
     }
 
 
@@ -90,38 +82,14 @@ class UserProfile extends Component {
         this.state = { username: 'none' , bio: "Tell others about yourself...",
             category: '', profileName: profileName, following: false, profileNameL: profileNameL,
             dataSource: dataSource.cloneWithRows([]),
-            loading: true
+            loading: true,
         };
         setTimeout(() =>{
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false})
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
+            username: Variables.state.username, bio: Variables.state.currentBio})
         },500)
     }
 
-
-    playPodcast = () =>  {
-
-        Variables.state.isPlaying = true;
-
-
-        setTimeout(() => {
-            var sound = new Sound(podFile, '', (error) => {
-                if (error) {
-                    console.log('failed to load the sound', error);
-                }
-            });
-
-            setTimeout(() => {
-                sound.play((success) => {
-                    if (success) {
-                        console.log('successfully finished playing');
-
-                    } else {
-                        console.log('playback failed due to audio decoding errors');
-                    }
-                });
-            }, 100);
-        }, 100);
-    };
 
 
     _renderPodcast(PodcastTitle){
@@ -144,7 +112,7 @@ class UserProfile extends Component {
     _renderProfileName = () => {
 
         return (
-            <Text style={styles.title} >{Variables.state.currentUsername}</Text>
+            <Text style={styles.title} >{this.state.username}</Text>
 
         )
 
@@ -154,7 +122,7 @@ class UserProfile extends Component {
     _renderBio = () => {
 
         return(
-            <Text style={styles.titleBio} >{Variables.state.currentBio}</Text>
+            <Text style={styles.titleBio} >{this.state.bio}</Text>
         )
 
     };
@@ -213,9 +181,15 @@ class UserProfile extends Component {
         }
     };
 
-    _pressBack(){
-        Actions.pop();
-    }
+    _pressBack = () => {
+        this.props.navigator.pop({
+            animated: true,
+            animationType: 'fade',
+        });
+        Navigation.dismissModal({
+            animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+        });
+    };
 
 
     onGarbagePress(){
@@ -456,7 +430,7 @@ class UserProfile extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={styles.header}>{Variables.state.currentUsername}</Text>
+                        <Text style={styles.header}>{this.state.username}</Text>
                     </View>
 
                     <View>

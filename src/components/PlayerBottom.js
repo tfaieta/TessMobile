@@ -5,8 +5,6 @@ import Variables from './Variables';
 import {podcastPlayer} from './Variables';
 import Slider from 'react-native-slider';
 import firebase from 'firebase';
-import {Actions} from 'react-native-router-flux';
-
 
 
 
@@ -481,7 +479,11 @@ class PlayerBottom extends Component {
 
     onProfilePress = () => {
         this.setModalVisible(!this.state.modalVisible);
-        Actions.UserProfile();
+        this.props.navigator.push({
+            screen: 'UserProfile',
+            animated: true,
+            animationType: 'fade',
+        });
     };
 
     pressLike = () => {
@@ -493,58 +495,111 @@ class PlayerBottom extends Component {
         }
     };
 
+
     onCategoryPress = () => {
         if(Variables.state.podcastCategory == 'Fitness'){
             this.setModalVisible(!this.state.modalVisible);
-            Actions.Fitness();
+            this.props.navigator.push({
+                screen: 'Fitness',
+                animated: true,
+                animationType: 'fade',
+            });
         }
         else if(Variables.state.podcastCategory == 'News'){
             this.setModalVisible(!this.state.modalVisible);
-            Actions.CurrentEvents();
+            this.props.navigator.push({
+                screen: 'News',
+                animated: true,
+                animationType: 'fade',
+            });
         }
         else if(Variables.state.podcastCategory == 'Gaming'){
             this.setModalVisible(!this.state.modalVisible);
-            Actions.Gaming();
+            this.props.navigator.push({
+                screen: 'Gaming',
+                animated: true,
+                animationType: 'fade',
+            });
         }
         else if(Variables.state.podcastCategory == 'Society & Culture'){
             this.setModalVisible(!this.state.modalVisible);
-            Actions.SocietyCulture();
+            this.props.navigator.push({
+                screen: 'SocietyCulture',
+                animated: true,
+                animationType: 'fade',
+            });
         }
         else if(Variables.state.podcastCategory == 'Sports'){
             this.setModalVisible(!this.state.modalVisible);
-            Actions.Sports();
+            this.props.navigator.push({
+                screen: 'Sports',
+                animated: true,
+                animationType: 'fade',
+            });
         }
         else if(Variables.state.podcastCategory == 'Entertainment'){
             this.setModalVisible(!this.state.modalVisible);
-            Actions.Entertainment();
+            this.props.navigator.push({
+                screen: 'Entertainment',
+                animated: true,
+                animationType: 'fade',
+            });
         }
         else if(Variables.state.podcastCategory == 'Comedy'){
             this.setModalVisible(!this.state.modalVisible);
-            Actions.Comedy();
+            this.props.navigator.push({
+                screen: 'Comedy',
+                animated: true,
+                animationType: 'fade',
+            });
         }
         else if(Variables.state.podcastCategory == 'Learn Something'){
             this.setModalVisible(!this.state.modalVisible);
-            Actions.LearnSomething();
+            this.props.navigator.push({
+                screen: 'LearnSomething',
+                animated: true,
+                animationType: 'fade',
+            });
         }
         else if(Variables.state.podcastCategory == 'Lifestyle'){
             this.setModalVisible(!this.state.modalVisible);
-            Actions.LifeStyle();
+            this.props.navigator.push({
+                screen: 'Lifestyle',
+                animated: true,
+                animationType: 'fade',
+            });
         }
         else if(Variables.state.podcastCategory == 'Science & Nature'){
             this.setModalVisible(!this.state.modalVisible);
-            Actions.ScienceNature();
+            this.props.navigator.push({
+                screen: 'ScienceNature',
+                animated: true,
+                animationType: 'fade',
+            });
         }
         else if(Variables.state.podcastCategory == 'Storytelling'){
             this.setModalVisible(!this.state.modalVisible);
-            Actions.StoryTelling();
+            this.props.navigator.push({
+                screen: 'Storytelling',
+                animated: true,
+                animationType: 'fade',
+            });
         }
         else if(Variables.state.podcastCategory == 'Tech'){
             this.setModalVisible(!this.state.modalVisible);
-            Actions.Tech();
+            this.props.navigator.push({
+                screen: 'Tech',
+                animated: true,
+                animationType: 'fade',
+            });
         }
         else if(Variables.state.podcastCategory == 'Travel'){
             this.setModalVisible(!this.state.modalVisible);
-            Actions.Travel();
+            this.props.navigator.push({
+                screen: 'Travel',
+                animated: true,
+                animationType: 'fade',
+            });
         }
         else console.warn("Category not yet supported");
     };
@@ -787,7 +842,7 @@ class PlayerBottom extends Component {
         position: 'absolute',
         left: 0,
         right: 0,
-        bottom: 50,
+        bottom: 0,
         paddingBottom: 5,
         borderWidth: 0.3,
         borderColor: '#5757FF',

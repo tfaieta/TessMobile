@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet,StatusBar, ScrollView, TouchableOpacity, Slider} from 'react-native';
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity,} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import LinearGradient from 'react-native-linear-gradient';
 import { SearchBar } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import {searchWord} from './Discover';
@@ -22,7 +21,10 @@ class SearchPage extends Component{
     }
 
     Back= () => {
-        Actions.pop();
+        this.props.navigator.pop({
+            animated: true,
+            animationType: 'fade',
+        });
     };
 
     render() {
@@ -94,7 +96,7 @@ class SearchPage extends Component{
             </ScrollView>
 
 
-                <PlayerBottom/>
+                <PlayerBottom navigator={this.props.navigator}/>
 
 
 

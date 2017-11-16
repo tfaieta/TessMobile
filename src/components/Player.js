@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet,StatusBar, ScrollView, TouchableOpacity} from 'react-native';
+import { Text, TextInput, View, StyleSheet,StatusBar, ScrollView, TouchableOpacity, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Actions } from 'react-native-router-flux';
 import Slider from 'react-native-slider';
 import Variables from './Variables';
-import {PodcastFile} from './Variables';
+import {podcastPlayer} from './Variables';
+import firebase from 'firebase';
+import { Navigation } from 'react-native-navigation';
 
 
 
@@ -18,7 +19,9 @@ class Player extends Component{
     }
 
     Close = () => {
-        Actions.pop();
+        Navigation.dismissModal({
+            animationType: 'slide-down'
+        });
     };
 
     state = {
@@ -32,14 +35,12 @@ class Player extends Component{
 
 
     tick() {
-        PodcastFile.getCurrentTime((seconds) => {
-            this.setState({
-                currentTime: seconds
-            })
-        })
+        if(podcastPlayer.isPlaying){
+            this.setState({ currentTime: podcastPlayer.currentTime})
+        }
     }
 
-componentDidMount(){
+    componentDidMount(){
         if (this.state.isPlaying==true){
             this.setState({
                 interval: setInterval(this.tick, 250)
@@ -77,12 +78,42 @@ componentDidMount(){
     };
 
 
-    _renderPlayButton(isPlaying) {
+    setModalVisible(visible) {
+        this.setState({modalVisible: visible});
+    }
+
+
+
+    Close = () => {
+        this.setModalVisible(!this.state.modalVisible)
+    };
+
+
+    _renderSlider(currentTime){
+        return(
+            <Slider
+                minimumTrackTintColor='#5757FF'
+                maximumTrackTintColor='#E7E7F0'
+                thumbTintColor='#5757FF'
+                thumbTouchSize={{width: 20, height: 20}}
+                animateTransitions = {true}
+                style={styles.sliderContainer}
+                step={0}
+                minimumValue={0}
+                maximumValue= { Math.abs( podcastPlayer.duration)}
+                value={ currentTime }
+                onValueChange={currentTime => podcastPlayer.seek(currentTime)}
+            />
+        )
+    }
+
+
+    _renderPlayButton2(isPlaying) {
 
         if (isPlaying) {
             return (
                 <TouchableOpacity onPress={this.pause}>
-                    <Icon style={{textAlign:'left', marginRight:0,marginLeft: 0,paddingHorizontal: 20, fontSize: 50,color:'#FFF' }}  name="md-pause">
+                    <Icon style={{textAlign:'center',paddingHorizontal: 20, fontSize: 50, marginLeft: 20, color:'#2A2A30' }}  name="ios-pause">
                     </Icon>
                 </TouchableOpacity>
             );
@@ -90,7 +121,7 @@ componentDidMount(){
         else {
             return (
                 <TouchableOpacity onPress={this.play}>
-                    <Icon style={{textAlign:'left', marginRight:0,marginLeft: 0,paddingHorizontal: 20, fontSize: 50,color:'#FFF' }}  name="md-play">
+                    <Icon style={{textAlign:'center',paddingHorizontal: 20, fontSize: 50, marginLeft: 20, color:'#2A2A30' }}  name="md-play">
                     </Icon>
                 </TouchableOpacity>
             );
@@ -101,160 +132,468 @@ componentDidMount(){
     _renderPodcastTitle(isPlaying) {
         if (isPlaying) {
             return (
-                <Text style={styles.podcastText}>{this.state.podcastTitle}</Text>
+                <Text style={styles.podcastText}>{Variables.state.podcastTitle}</Text>
             );
         }
-        if (this.state.podcastTitle =='') {
+        if (Variables.state.podcastTitle =='') {
             return (
-                <Text style={styles.podcastText}>-</Text>
+                <Text style={styles.podcastText}>Select a Podcast to start listening....</Text>
             );
         }
         else{
             return (
-                <Text style={styles.podcastText}>{this.state.podcastTitle}</Text>
+                <Text style={styles.podcastText}>{Variables.state.podcastTitle}</Text>
             );
         }
     }
 
 
     _renderDescription(){
-        if (this.state.podcastTitle == ''){
+        if (Variables.state.podcastTitle == ''){
             return(
-                <ScrollView style={{marginHorizontal: 20, marginBottom: 20}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
-                    <Text style={{color: '#fff', fontSize: 20, fontFamily: 'Futura', textAlign: 'center'  }}>Select a Podcast to start listening....</Text>
-                </ScrollView>
+                <View style={{ marginTop: 20}}>
+                    <ScrollView style={{marginHorizontal: 20, marginBottom: 20, backgroundColor: '#6e89e7', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                        <Text style={{color: '#fff', fontSize: 20, fontFamily: 'Futura', textAlign: 'center'  }}>Select a Podcast to start listening....</Text>
+                    </ScrollView>
+                </View>
             )
         }
         else{
             return(
-                <ScrollView style={{marginHorizontal: 20, marginBottom: 20}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
-                    <Text style={{color: '#fff', fontSize: 20, fontFamily: 'Futura' }}>{this.state.podcastDescription}</Text>
-                </ScrollView>
+                <View style={{ marginTop: 20}}>
+                    <Text style={styles.podcastText}> description </Text>
+                    <ScrollView style={{marginHorizontal: 20, marginBottom: 20, backgroundColor: '#6e89e7', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                        <Text style={{color: '#fff', fontSize: 20, fontFamily: 'Futura' }}>{Variables.state.podcastDescription}</Text>
+                    </ScrollView>
+                </View>
             )
         }
     }
 
+    _renderCategory(){
+
+        return(
+            <TouchableOpacity onPress={this.onCategoryPress}>
+                <Text style={styles.podcastTextCat}>{Variables.state.podcastCategory}</Text>
+            </TouchableOpacity>
+        );
+
+    }
+
 
     _renderPodcastArtist(isPlaying) {
-        if (isPlaying) {
+        let profileName = Variables.state.currentUsername;
+        if(Variables.state.podcastTitle == '') {
             return (
-                <Text style={styles.podcastText}>Podcast Artist</Text>
-            );
-        }
-        if(this.state.podcastTitle == '') {
-            return (
-                <Text style={styles.podcastText}>-</Text>
+                <Text style={styles.podcastTextArtist}> </Text>
             );
         }
         else{
             return (
-                <Text style={styles.podcastText}>Podcast Artist</Text>
+                <Text onPress = {this.onProfilePress} style={styles.podcastTextArtist}>by {profileName}</Text>
             );
         }
+
+    }
+
+
+    _renderLikes(){
+        if(Variables.state.podcastTitle == ''){
+            return;
+        }
+        if (this.state.liked) {
+            return (
+                <TouchableOpacity onPress = {this.pressLike}>
+                    <Icon style={{textAlign: 'center', fontSize: 28, color: '#5757FF', marginRight: 20}} name="ios-happy-outline">
+                        <Text style={styles.podcastTextLikesActive}> {this.state.likes}</Text>
+                    </Icon>
+                </TouchableOpacity>
+            )
+        }
+        else if (!this.state.liked){
+            return(
+                <TouchableOpacity onPress = {this.pressLike}>
+                    <Icon style={{textAlign: 'center', fontSize: 28, color: '#BBBCCD', marginRight: 20}} name="ios-happy-outline">
+                        <Text style={styles.podcastTextLikes}> {this.state.likes}</Text>
+                    </Icon>
+                </TouchableOpacity>
+            )
+        }
+    }
+
+    _renderComments(){
+        if(Variables.state.podcastTitle == ''){
+            return;
+        }
+
+        return(
+            <View>
+                <Text style={styles.podcastText}> comments </Text>
+
+
+                <View style={{marginHorizontal: 20, marginBottom: 2, backgroundColor: '#6e89e7', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}}>
+                    <Icon style={{textAlign:'center', fontSize: 40, paddingHorizontal: 10, color:'#fff' }} name="md-contact">
+                        <Text style={styles.podcastText}> nice! </Text>
+                    </Icon>
+                </View>
+
+                <View style={{marginHorizontal: 20, marginBottom: 2, backgroundColor: '#6e89e7', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}}>
+                    <Icon style={{textAlign:'center', fontSize: 40, paddingHorizontal: 10, color:'#fff' }} name="md-contact">
+                        <Text style={styles.podcastText}> i love you </Text>
+                    </Icon>
+                </View>
+
+                <View style={{marginHorizontal: 20, marginBottom: 2, backgroundColor: '#6e89e7', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}}>
+                    <TextInput style={styles.input}
+                               placeholder = "write a comment..."
+                               placeholderTextColor='#FFF'
+                               returnKeyType='send'
+                               multiline={true}
+                               onChangeText={text => this.setState({ comment: text})}
+                               onSubmitEditing={() => this.onCommentSubmit()}
+
+                    />
+                </View>
+            </View>
+
+        )
+
 
     }
 
 
     _renderEndTime() {
-        var num = (PodcastFile.getDuration() / 60).toString();
-        num = num.slice(0,1);
-        Number(num);
-        var num2 = (PodcastFile.getDuration() % 60).toString();
-        num2 = num2.slice(0,2);
-        Number(num2);
 
-        if (this.state.podcastTitle == '') {
+        var num = ((podcastPlayer.duration / 1000) % 60).toString();
+        var num2 = ((podcastPlayer.duration / 1000) / 60).toString();
+        var minutes = num2.slice(0,1);
+        Number(minutes.slice(0,1));
+
+
+        if (Variables.state.podcastTitle == '') {
             return (
-                <Text style={styles.podcastTextNum}>-</Text>
+                <Text style={styles.podcastTextNum}></Text>
             );
         }
-        else if ((PodcastFile.getDuration() % 60) < 10){
-            return(
-                <Text style={styles.podcastTextNum}>{num}:0{num2.slice(0,1)}</Text>
-            );
+        else if(Number(num2) < 10){
+            var minutes = num2.slice(0,1);
+            Number(minutes.slice(0,1));
+            if(Number(num) < 10){
+                var seconds = num.slice(0,1);
+                Number(seconds.slice(0,1));
+                return (
+                    <Text style={styles.podcastTextNum}>{minutes}:0{seconds}</Text>
+                )
+            }
+            else{
+                var seconds = num.slice(0,2);
+                Number(seconds.slice(0,2));
+                return (
+                    <Text style={styles.podcastTextNum}>{minutes}:{seconds}</Text>
+                );
+            }
+        }
+        else if(Number(num2) < 100){
+            var minutes = num2.slice(0,2);
+            Number(minutes.slice(0,2));
+            if(Number(num) < 10){
+                var seconds = num.slice(0,1);
+                Number(seconds.slice(0,1));
+                return (
+                    <Text style={styles.podcastTextNum}>{minutes}:0{seconds}</Text>
+                )
+            }
+            else{
+                var seconds = num.slice(0,2);
+                Number(seconds.slice(0,2));
+                return (
+                    <Text style={styles.podcastTextNum}>{minutes}:{seconds}</Text>
+                );
+            }
         }
         else{
-            return (
-                <Text style={styles.podcastTextNum}>{num.slice(0,1)}:{num2}</Text>
-            );
+            var minutes = num2.slice(0,3);
+            Number(minutes.slice(0,3));
+            if(Number(num) < 10){
+                var seconds = num.slice(0,1);
+                Number(seconds.slice(0,1));
+                return (
+                    <Text style={styles.podcastTextNum}>{minutes}:0{seconds}</Text>
+                )
+            }
+            else{
+                var seconds = num.slice(0,2);
+                Number(seconds.slice(0,2));
+                return (
+                    <Text style={styles.podcastTextNum}>{minutes}:{seconds}</Text>
+                );
+            }
         }
+
     }
 
     _renderCurrentTime() {
 
-        var num = (this.state.currentTime / 60).toString();
-        num = num.slice(0,1);
-        Number(num);
-        var num2 = (this.state.currentTime % 60).toString();
-        num2 = num2.slice(0,2);
-        Number(num2);
+        var num = ((podcastPlayer.currentTime / 1000) % 60).toString();
+        var num2 = ((podcastPlayer.currentTime / 1000) / 60).toString();
+        var minutes = num2.slice(0,1);
+        Number(minutes.slice(0,1));
 
 
-        if (this.state.podcastTitle == '') {
+        if (Variables.state.podcastTitle == '') {
             return (
-                <Text style={styles.podcastTextNum}>-</Text>
+                <Text style={styles.podcastTextNum}></Text>
             );
         }
-        else if(this.state.currentTime % 60 < 10){
-
+        else if (podcastPlayer.currentTime == -1){
             return (
-                <Text style={styles.podcastTextNum}>{num}:0{num2.slice(0,1)}</Text>
+                <Text style={styles.podcastTextNum}>0:00</Text>
             )
         }
-        else{
-            return (
-                <Text style={styles.podcastTextNum}>{num.slice(0,1)}:{num2}</Text>
-            );
+        else if(Number(num2) < 10){
+            var minutes = num2.slice(0,1);
+            Number(minutes.slice(0,1));
+            if(Number(num) < 10){
+                var seconds = num.slice(0,1);
+                Number(seconds.slice(0,1));
+                return (
+                    <Text style={styles.podcastTextNum}>{minutes}:0{seconds}</Text>
+                )
+            }
+            else{
+                var seconds = num.slice(0,2);
+                Number(seconds.slice(0,2));
+                return (
+                    <Text style={styles.podcastTextNum}>{minutes}:{seconds}</Text>
+                );
+            }
         }
+        else{
+            var minutes = num2.slice(0,2);
+            Number(minutes.slice(0,2));
+            if(Number(num) < 10){
+                var seconds = num.slice(0,1);
+                Number(seconds.slice(0,1));
+                return (
+                    <Text style={styles.podcastTextNum}>{minutes}:0{seconds}</Text>
+                )
+            }
+            else{
+                var seconds = num.slice(0,2);
+                Number(seconds.slice(0,2));
+                return (
+                    <Text style={styles.podcastTextNum}>{minutes}:{seconds}</Text>
+                );
+            }
+        }
+
+
+
     }
+
+
+    onCommentSubmit(){
+        const comment = this.state.comment;
+        const currentUser = firebase.auth().uid;
+        firebase.database().ref(`${Variables.state.currentRef}/comments`).push(comment, currentUser);
+        this.state.comment = '';
+    }
+
+    onProfilePress = () => {
+        this.setModalVisible(!this.state.modalVisible);
+        this.props.navigator.push({
+            screen: 'UserProfile',
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+
+    pressLike = () => {
+        if(this.state.liked){
+            this.setState({ liked: false, likes: this.state.likes-1})
+        }
+        else if (!this.state.liked){
+            this.setState({ liked: true, likes: this.state.likes+1})
+        }
+    };
+
+    navigateTo = (scene) => {
+        this.props.navigator.push({
+            screen: {scene},
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+
+    onCategoryPress = () => {
+        if(Variables.state.podcastCategory == 'Fitness'){
+            this.setModalVisible(!this.state.modalVisible);
+            this.props.navigator.push({
+                screen: 'Fitness',
+                animated: true,
+                animationType: 'fade',
+            });
+        }
+        else if(Variables.state.podcastCategory == 'News'){
+            this.setModalVisible(!this.state.modalVisible);
+            this.props.navigator.push({
+                screen: 'News',
+                animated: true,
+                animationType: 'fade',
+            });
+        }
+        else if(Variables.state.podcastCategory == 'Gaming'){
+            this.setModalVisible(!this.state.modalVisible);
+            this.navigateTo('Gaming');
+        }
+        else if(Variables.state.podcastCategory == 'Society & Culture'){
+            this.setModalVisible(!this.state.modalVisible);
+            this.props.navigator.push({
+                screen: 'SocietyCulture',
+                animated: true,
+                animationType: 'fade',
+            });
+        }
+        else if(Variables.state.podcastCategory == 'Sports'){
+            this.setModalVisible(!this.state.modalVisible);
+            this.props.navigator.push({
+                screen: 'Sports',
+                animated: true,
+                animationType: 'fade',
+            });
+        }
+        else if(Variables.state.podcastCategory == 'Entertainment'){
+            this.setModalVisible(!this.state.modalVisible);
+            this.props.navigator.push({
+                screen: 'Entertainment',
+                animated: true,
+                animationType: 'fade',
+            });
+        }
+        else if(Variables.state.podcastCategory == 'Comedy'){
+            this.setModalVisible(!this.state.modalVisible);
+            this.props.navigator.push({
+                screen: 'Comedy',
+                animated: true,
+                animationType: 'fade',
+            });
+        }
+        else if(Variables.state.podcastCategory == 'Learn Something'){
+            this.setModalVisible(!this.state.modalVisible);
+            this.props.navigator.push({
+                screen: 'LearnSomething',
+                animated: true,
+                animationType: 'fade',
+            });
+        }
+        else if(Variables.state.podcastCategory == 'Lifestyle'){
+            this.setModalVisible(!this.state.modalVisible);
+            this.props.navigator.push({
+                screen: 'Lifestyle',
+                animated: true,
+                animationType: 'fade',
+            });
+        }
+        else if(Variables.state.podcastCategory == 'Science & Nature'){
+            this.setModalVisible(!this.state.modalVisible);
+            this.props.navigator.push({
+                screen: 'ScienceNature',
+                animated: true,
+                animationType: 'fade',
+            });
+        }
+        else if(Variables.state.podcastCategory == 'Storytelling'){
+            this.setModalVisible(!this.state.modalVisible);
+            this.props.navigator.push({
+                screen: 'Storytelling',
+                animated: true,
+                animationType: 'fade',
+            });
+        }
+        else if(Variables.state.podcastCategory == 'Tech'){
+            this.setModalVisible(!this.state.modalVisible);
+            this.props.navigator.push({
+                screen: 'Tech',
+                animated: true,
+                animationType: 'fade',
+            });
+        }
+        else if(Variables.state.podcastCategory == 'Travel'){
+            this.setModalVisible(!this.state.modalVisible);
+            this.props.navigator.push({
+                screen: 'Travel',
+                animated: true,
+                animationType: 'fade',
+            });
+        }
+        else console.warn("Category not yet supported");
+    };
 
 
 
 render() {
     return (
         <View
-            style={styles.container}>
+            style={styles.containerModal}>
 
             <StatusBar
                 hidden={true}
             />
 
+            <TouchableOpacity onPress={this.Close} style={{alignItems:'center'}}>
+                <Icon style={{textAlign:'center', marginRight:0,marginLeft: 0,paddingTop: 0, fontSize: 35,color:'#BBBCCD' }} name="ios-arrow-dropdown">
+                </Icon>
+            </TouchableOpacity>
 
 
-            <View style={styles.centerContainer}>
 
-                <View style={styles.leftContainer}>
-                    <TouchableOpacity onPress={this.Close}>
-                        <Icon style={{textAlign:'left', marginRight:0,marginLeft: 0,paddingTop: 0, fontSize: 40,color:'#FFF' }} name="md-close">
-                        </Icon>
-                    </TouchableOpacity>
-                </View>
-
-                <Text style={styles.playingText}>Now Playing...</Text>
-
-                <View style={styles.rightContainer}>
-                    <TouchableOpacity>
-                        <Icon style={{textAlign:'right', marginRight:0,marginLeft: 0,paddingTop: 0, fontSize: 40,color:'#FFF' }} name="md-add">
-                        </Icon>
-                    </TouchableOpacity>
-                </View>
-
+            <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, height: 250, width: 250, borderRadius:10, borderWidth:8, borderColor:'rgba(320,320,320,0.8)'  }}>
+                <Icon style={{
+                    textAlign: 'center',
+                    fontSize: 140,
+                    color: 'white',
+                    marginTop: 50
+                }} name="md-person">
+                </Icon>
             </View>
 
 
-            <Icon style={{textAlign:'center', fontSize: 200,color:'#fff' }} name="md-square">
-            </Icon>
-            {this._renderDescription()}
+            <View style={{marginTop: 20}}>
+                {this._renderPodcastTitle(Variables.state.isPlaying)}
+                <TouchableOpacity style={{alignSelf: 'center'}}>
+                    {this._renderPodcastArtist(Variables.state.isPlaying)}
+                </TouchableOpacity>
+                {this._renderCategory()}
+            </View>
 
 
-            <TouchableOpacity>
-                {this._renderPodcastTitle(this.state.isPlaying)}
-            </TouchableOpacity>
 
-            <TouchableOpacity>
-                {this._renderPodcastArtist(this.state.isPlaying)}
-            </TouchableOpacity>
 
+
+            <View style={styles.centerContainerButtons}>
+
+                <View style={styles.leftContainer}>
+                    <TouchableOpacity>
+                        <Icon style={{textAlign:'center', marginRight:0,paddingLeft: 80,paddingTop: 0, fontSize: 25,color:'#2A2A30' }} name="md-rewind">
+                        </Icon>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.middleContainer}>
+                    <TouchableOpacity>
+                        {this._renderPlayButton2(Variables.state.isPlaying)}
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.rightContainer}>
+                    <TouchableOpacity>
+                        <Icon style={{textAlign:'center', paddingRight: 80,marginLeft: 0,paddingTop: 0, fontSize: 25,color:'#2A2A30' }} name="md-fastforward">
+                        </Icon>
+                    </TouchableOpacity>
+                </View>
+
+
+            </View>
 
 
             <View style={styles.centerContainer}>
@@ -270,46 +609,88 @@ render() {
             </View>
 
 
-            <Slider
-                minimumTrackTintColor={'rgba(1,170,170,1)'}
-                maximumTrackTintColor={'rgba(70,70,70,1)'}
-                thumbTintColor={'#804cc8'}
-                thumbTouchSize={{width: 40, height: 40}}
-                animateTransitions = {true}
-                style={styles.sliderContainer}
-                step={0}
-                minimumValue={0}
-                maximumValue= {PodcastFile.getDuration()}
-                value={this.state.currentTime}
-                onValueChange={currentTime => this.setState({currentTime})}
-
-            />
+            {this._renderSlider(podcastPlayer.currentTime)}
 
 
+            <View style={{flexDirection: 'row', flex: 1, marginTop: 10}}>
 
-            <View style={styles.centerContainer}>
-
-                <View style={styles.leftContainer}>
+                <View style={{alignItems:'flex-start', flex:1}}>
                     <TouchableOpacity>
-                        <Icon style={{textAlign:'left', marginRight:0,paddingLeft: 80,paddingTop: 0, fontSize: 50,color:'#FFF' }} name="ios-skip-backward">
+                        <Icon style={{textAlign:'center', fontSize: 28, marginLeft: 20, color:'#BBBCCD' }} name="md-checkmark">
                         </Icon>
                     </TouchableOpacity>
                 </View>
 
-                <View style={styles.middleContainer}>
+                <View style={{alignItems: 'center', flex:1}}>
                     <TouchableOpacity>
-                        {this._renderPlayButton(this.state.isPlaying)}
-                    </TouchableOpacity>
-                </View>
+                        <Icon style={{textAlign:'center', fontSize: 28,color:'#BBBCCD' }} name="md-add" onPress={()=>{
+                            const {currentUser} = firebase.auth();
+                            const podcastTitle = Variables.state.podcastTitle;
+                            const podcastDescription = Variables.state.podcastDescription;
+                            const podcastCategory = Variables.state.podcastCategory;
+                            const podcastArtist = Variables.state.podcastArtist;
+                            if(podcastTitle != ''){
+                                if(podcastArtist != currentUser.uid){
+                                    if(!this.state.favorite) {
 
-                <View style={styles.rightContainer}>
-                    <TouchableOpacity>
-                        <Icon style={{textAlign:'right', paddingRight: 80,marginLeft: 0,paddingTop: 0, fontSize: 50,color:'#FFF' }} name="ios-skip-forward">
+                                        Alert.alert(
+                                            'Add to favorites?',
+                                            '',
+                                            [
+                                                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                                                {
+                                                    text: 'Yes', onPress: () => {
+                                                    firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle).update({podcastArtist, podcastTitle});
+                                                    this.setState({favorite: true})
+                                                }
+                                                },
+                                            ],
+                                            {cancelable: false}
+                                        )
+                                    }
+                                    else{
+                                        Alert.alert(
+                                            'Remove from favorites?',
+                                            '',
+                                            [
+                                                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                                                {
+                                                    text: 'Yes', onPress: () => {
+                                                    firebase.database().ref(`users/${currentUser.uid}/favorites/${podcastTitle}`).remove();
+                                                    this.setState({favorite: false})
+                                                }
+                                                },
+                                            ],
+                                            {cancelable: false}
+                                        )
+                                    }
+                                }
+                                else{
+                                    Alert.alert(
+                                        'Cannot favorite your own podcast',
+                                        '',
+                                        [
+                                            {text: 'OK', onPress: () => console.log('OK Pressed'), style: 'cancel'},
+
+                                        ],
+                                        {cancelable: false}
+                                    )
+                                }
+                            }
+
+                        }}>
                         </Icon>
                     </TouchableOpacity>
                 </View>
+
+                <View style={{alignItems: 'flex-end', flex:1}}>
+                    {this._renderLikes()}
+                </View>
+
 
             </View>
+
+
 
 
         </View>
@@ -324,25 +705,32 @@ render() {
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#0887c8',
+        backgroundColor: '#fff',
         marginTop: 0,
     },
+
+    containerModal:{
+        flex: 1,
+        backgroundColor: '#fff',
+        marginTop: 5,
+        marginHorizontal: 5,
+        borderColor: '#rgba(170,170,170,0.2)',
+        borderRadius: 10,
+        borderWidth: 2
+    },
+
+
     homeContainer:{
         marginTop: -15,
     },
-    barContainer:{
-        flex: 1,
-        backgroundColor: 'transparent',
-        marginTop: -11.5,
-        paddingTop: 10
-    },
+
     title: {
-        color: '#804cc8',
+        color: '#2A2A30',
         marginTop: 70,
         flex:1,
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Futura',
+        fontFamily: 'Hiragino Sans',
         fontSize: 25,
         backgroundColor: 'transparent',
         paddingBottom:10
@@ -353,71 +741,76 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 20
     },
-    playingText:{
-        color: 'white',
-        fontSize: 18,
-        marginTop:5,
-        flexDirection: 'row',
-        backgroundColor: 'transparent',
-    },
+
     podcastText:{
-        color: 'white',
+        color: '#2A2A30',
         fontSize: 20,
         marginTop: 5,
         flexDirection: 'row',
         backgroundColor: 'transparent',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        fontFamily: 'HiraginoSans-W6',
     },
     podcastTextNum:{
-        color: 'white',
-        fontSize: 20,
+        color: '#BBBCCD',
+        fontSize: 12,
         marginTop: 5,
         flexDirection: 'row',
         backgroundColor: 'transparent',
         marginHorizontal: 10,
+        fontFamily: 'Hiragino Sans',
     },
-    listView: {
-        paddingTop: 20,
-        backgroundColor: '#F5FCFF',
-    },
-    sliderContainer: {
-        width: 340,
-        alignSelf: 'center'
-    },
-    audioProgress: {
-        marginTop: -10,
-        flexDirection: 'row'
-    },
-    fillProgress: {
-        width: 340,
-        height: 5,
-        backgroundColor: 'rgba(1,170,170,1)',
-    },
-    emptyProgress: {
-        width: 340,
-        height: 5,
-        backgroundColor: '#575757',
-    },
-    leftContainer: {
-        flex: 1,
-        marginLeft: 10,
-        justifyContent: 'center',
-        alignItems:'flex-start',
-    },
-    centerContainer: {
-        flexDirection: 'row',
-        marginTop: 0,
-    },
+
     middleContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    rightContainer: {
-        flex: 1,
-        marginRight: 10,
-        justifyContent: 'center',
-        alignItems: 'flex-end',
+    podcastTextLikes:{
+        color: '#BBBCCD',
+        fontSize: 12,
+        marginLeft: 5,
+        backgroundColor: 'transparent',
+        alignSelf: 'center',
+        fontFamily: 'Hiragino Sans',
+    },
+    podcastTextLikesActive:{
+        color: '#5757FF',
+        fontSize: 12,
+        marginLeft: 5,
+        backgroundColor: 'transparent',
+        alignSelf: 'center',
+        fontFamily: 'Hiragino Sans',
+    },
+    podcastTextArtist:{
+        color:'#2A2A30',
+        fontSize: 20,
+        flexDirection: 'row',
+        backgroundColor: 'transparent',
+        alignSelf: 'center',
+        fontFamily: 'HiraginoSans-W3',
+        marginTop: 6,
+    },
+
+    podcastTextCat:{
+        color:'#828393',
+        fontSize: 14,
+        flexDirection: 'row',
+        backgroundColor: 'transparent',
+        alignSelf: 'center',
+        fontFamily: 'Hiragino Sans',
+        marginTop: 6,
+    },
+
+    input: {
+        height: 40,
+        width: 300,
+        marginBottom: 10,
+        color:'#FFF',
+        paddingHorizontal: 10,
+        fontSize: 22,
+        alignSelf: 'center',
+        textAlign: 'center'
     },
 
 });

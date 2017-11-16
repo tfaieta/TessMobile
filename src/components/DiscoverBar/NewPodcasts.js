@@ -56,7 +56,7 @@ class NewPodcasts extends Component{
 
 
 
-            <View style={{paddingBottom: 200}}/>
+            <View style={{paddingBottom: 120}}/>
 
             </ScrollView>
 

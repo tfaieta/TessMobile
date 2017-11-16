@@ -19,7 +19,7 @@ export const podcastUpdate = ({prop, value}) => {
     };
 };
 
-export const podcastCreate = ({ podcastTitle, podcastDescription, podcastCategory, podcastArtist }) => {
+export const podcastCreate = ({ podcastTitle, podcastDescription, podcastCategory, podcastArtist, navigator }) => {
     const {currentUser} = firebase.auth();
     const {user} = currentUser.uid;
     this.state = {
@@ -71,7 +71,15 @@ export const podcastCreate = ({ podcastTitle, podcastDescription, podcastCategor
                 .push({podcastTitle, podcastDescription, podcastCategory, podcastArtist, likes})
                 .then(() => {
                     dispatch({type: PODCAST_CREATE});
-                    Actions.RecordSuccess();
+                    navigator.push({
+                        screen: 'RecordSuccess',
+                        animated: true,
+                        animationType: 'fade',
+                        tabBarHidden: false,
+                        navigatorStyle: {
+                            tabBarHidden: false,
+                        },
+                    });
                 });
 
 
