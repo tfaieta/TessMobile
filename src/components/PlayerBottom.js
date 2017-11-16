@@ -97,39 +97,56 @@ class PlayerBottom extends Component {
         )
     }
 
+    _renderPodcastImage(){
+        if(Variables.state.podcastTitle != ''){
+            return(
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: 45, width: 45, borderRadius:4, borderWidth:1, borderColor:'rgba(320,320,320,1)'  }}>
+                    <Icon style={{
+                        textAlign: 'center',
+                        fontSize: 24,
+                        color: 'white',
+                        marginTop: 10
+                    }} name="md-person">
+                    </Icon>
+                </View>
+            )
+        }
+    }
 
     _renderPlayButton(isPlaying) {
+        if(Variables.state.podcastTitle != ''){
+            if (isPlaying) {
+                return (
+                    <TouchableOpacity onPress={this.pause}>
+                        <Icon style={{
+                            textAlign: 'right',
+                            marginRight: 0,
+                            marginLeft: 0,
+                            paddingTop: 0,
+                            fontSize: 30,
+                            color: '#FFF'
+                        }} name="md-pause">
+                        </Icon>
+                    </TouchableOpacity>
+                );
+            }
+            else {
+                return (
+                    <TouchableOpacity onPress={this.play}>
+                        <Icon style={{
+                            textAlign: 'right',
+                            marginRight: 0,
+                            marginLeft: 0,
+                            paddingTop: 0,
+                            fontSize: 30,
+                            color: '#FFF'
+                        }} name="md-play">
+                        </Icon>
+                    </TouchableOpacity>
+                );
+            }
+        }
 
-        if (isPlaying) {
-            return (
-                <TouchableOpacity onPress={this.pause}>
-                    <Icon style={{
-                        textAlign: 'right',
-                        marginRight: 0,
-                        marginLeft: 0,
-                        paddingTop: 0,
-                        fontSize: 30,
-                        color: '#FFF'
-                    }} name="md-pause">
-                    </Icon>
-                </TouchableOpacity>
-            );
-        }
-        else {
-            return (
-                <TouchableOpacity onPress={this.play}>
-                    <Icon style={{
-                        textAlign: 'right',
-                        marginRight: 0,
-                        marginLeft: 0,
-                        paddingTop: 0,
-                        fontSize: 30,
-                        color: '#FFF'
-                    }} name="md-play">
-                    </Icon>
-                </TouchableOpacity>
-            );
-        }
     }
 
 
@@ -619,15 +636,7 @@ class PlayerBottom extends Component {
 
                     <View style={styles.leftContainer}>
                         <TouchableOpacity onPress={this.ExpandPlayer}>
-                            <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: 45, width: 45, borderRadius:4, borderWidth:1, borderColor:'rgba(320,320,320,1)'  }}>
-                                <Icon style={{
-                                    textAlign: 'center',
-                                    fontSize: 24,
-                                    color: 'white',
-                                    marginTop: 10
-                                }} name="md-person">
-                                </Icon>
-                            </View>
+                            {this._renderPodcastImage()}
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity onPress={this.ExpandPlayer}>
