@@ -79,7 +79,7 @@ class UserProfile extends Component {
     constructor(props) {
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
-        this.state = { username: 'none' , bio: "Tell others about yourself...",
+        this.state = { username: '' , bio: '',
             category: '', profileName: profileName, following: false, profileNameL: profileNameL,
             dataSource: dataSource.cloneWithRows([]),
             loading: true,

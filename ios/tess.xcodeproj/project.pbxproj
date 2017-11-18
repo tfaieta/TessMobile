@@ -58,6 +58,11 @@
 		D48396A96EC9BEC968CCA976 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F107D65A01D41AB2FBDFBD1 /* CoreMedia.framework */; };
 		EBD71E8384754E3B973F97D0 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A76163A2DFE84DE6BFA35747 /* Octicons.ttf */; };
 		ED04715D1F71CB5B00EE000D /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED04715A1F71CB4F00EE000D /* libRNFetchBlob.a */; };
+		ED5FFEF11FC0E7CF00488D5D /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED5FFED11FC0E7BA00488D5D /* libimageCropPicker.a */; };
+		ED5FFEF21FC0E7D800488D5D /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED5FFEF31FC0E7D800488D5D /* RSKImageCropper.framework */; };
+		ED5FFEF41FC0E7DF00488D5D /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED5FFEF51FC0E7DF00488D5D /* QBImagePicker.framework */; };
+		ED5FFEF71FC0E82600488D5D /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED5FFEF31FC0E7D800488D5D /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ED5FFEFA1FC0E82A00488D5D /* QBImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED5FFEF51FC0E7DF00488D5D /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EDA197FE1FBD37B100001991 /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA197F91FBD379400001991 /* libReactNativeNavigation.a */; };
 		EDB1BDB11FB670690047A867 /* libReactNativeAudioToolkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDB1BDAC1FB670290047A867 /* libReactNativeAudioToolkit.a */; };
 		EDBAF62E1EFB059800783B86 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDBAF62A1EFB059800783B86 /* Bolts.framework */; };
@@ -275,6 +280,13 @@
 			remoteGlobalIDString = 19825A1E1BD4A89800EE0337;
 			remoteInfo = RNSound;
 		};
+		ED5FFED01FC0E7BA00488D5D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED5FFEC91FC0E7BA00488D5D /* imageCropPicker.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3400A8081CEB54A6008A0BC7;
+			remoteInfo = imageCropPicker;
+		};
 		ED609D361EFAFE2600426213 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 72947EBCB0F54C92A8E6234C /* BVLinearGradient.xcodeproj */;
@@ -304,6 +316,21 @@
 			remoteInfo = RNVectorIcons;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		ED5FFEF81FC0E82600488D5D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				ED5FFEF71FC0E82600488D5D /* RSKImageCropper.framework in Embed Frameworks */,
+				ED5FFEFA1FC0E82A00488D5D /* QBImagePicker.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
@@ -354,6 +381,9 @@
 		C7B11C2E37B58D4FAC4AFAFD /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		DA4BFD21FFFC4094BBEF9B13 /* RNSound.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSound.xcodeproj; path = "../node_modules/react-native-sound/RNSound.xcodeproj"; sourceTree = "<group>"; };
 		ED0471391F71CB4F00EE000D /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/react-native-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
+		ED5FFEC91FC0E7BA00488D5D /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = imageCropPicker.xcodeproj; path = "../node_modules/react-native-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; };
+		ED5FFEF31FC0E7D800488D5D /* RSKImageCropper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED5FFEF51FC0E7DF00488D5D /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDA197D91FBD379400001991 /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
 		EDB1BD8D1FB670280047A867 /* ReactNativeAudioToolkit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeAudioToolkit.xcodeproj; path = "../node_modules/react-native-audio-toolkit/ios/ReactNativeAudioToolkit/ReactNativeAudioToolkit.xcodeproj"; sourceTree = "<group>"; };
 		EDBAF62A1EFB059800783B86 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
@@ -375,6 +405,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED5FFEF41FC0E7DF00488D5D /* QBImagePicker.framework in Frameworks */,
+				ED5FFEF21FC0E7D800488D5D /* RSKImageCropper.framework in Frameworks */,
+				ED5FFEF11FC0E7CF00488D5D /* libimageCropPicker.a in Frameworks */,
 				EDA197FE1FBD37B100001991 /* libReactNativeNavigation.a in Frameworks */,
 				EDB1BDB11FB670690047A867 /* libReactNativeAudioToolkit.a in Frameworks */,
 				ED04715D1F71CB5B00EE000D /* libRNFetchBlob.a in Frameworks */,
@@ -574,6 +607,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				ED5FFEC91FC0E7BA00488D5D /* imageCropPicker.xcodeproj */,
 				EDA197D91FBD379400001991 /* ReactNativeNavigation.xcodeproj */,
 				EDB1BD8D1FB670280047A867 /* ReactNativeAudioToolkit.xcodeproj */,
 				ED0471391F71CB4F00EE000D /* RNFetchBlob.xcodeproj */,
@@ -655,6 +689,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		ED5FFECA1FC0E7BA00488D5D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ED5FFED11FC0E7BA00488D5D /* libimageCropPicker.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		ED609D331EFAFE2600426213 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -682,6 +724,8 @@
 		EDBAF64E1EFB061100783B86 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				ED5FFEF51FC0E7DF00488D5D /* QBImagePicker.framework */,
+				ED5FFEF31FC0E7D800488D5D /* RSKImageCropper.framework */,
 				EDBAF62A1EFB059800783B86 /* Bolts.framework */,
 				2D7B2F6827EA064AF4853E9E /* BuddyBuildSDK.framework */,
 				C4E432C6A570E30B65A06A46 /* AssetsLibrary.framework */,
@@ -744,6 +788,7 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				ED5FFEF81FC0E82600488D5D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -833,6 +878,10 @@
 				{
 					ProductGroup = ED609D331EFAFE2600426213 /* Products */;
 					ProjectRef = 72947EBCB0F54C92A8E6234C /* BVLinearGradient.xcodeproj */;
+				},
+				{
+					ProductGroup = ED5FFECA1FC0E7BA00488D5D /* Products */;
+					ProjectRef = ED5FFEC91FC0E7BA00488D5D /* imageCropPicker.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
@@ -1108,6 +1157,13 @@
 			fileType = archive.ar;
 			path = libRNSound.a;
 			remoteRef = ED3A190F1F2BCDE900ED4DFB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		ED5FFED11FC0E7BA00488D5D /* libimageCropPicker.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libimageCropPicker.a;
+			remoteRef = ED5FFED01FC0E7BA00488D5D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		ED609D371EFAFE2600426213 /* libBVLinearGradient.a */ = {

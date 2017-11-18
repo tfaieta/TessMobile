@@ -13,6 +13,8 @@ import SettingsList from 'react-native-settings-list';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PlayerBottom from './PlayerBottom';
 import firebase from 'firebase';
+import RNFetchBlob from 'react-native-fetch-blob';
+import ImagePicker from 'react-native-image-crop-picker';
 
 
 class Settings extends Component {
@@ -45,8 +47,7 @@ class Settings extends Component {
 
 
     _handleButtonPressChangeImage = () => {
-
-
+        this.setImageModalVisible(true)
     };
 
 
@@ -58,6 +59,10 @@ class Settings extends Component {
     setbioModalVisible(visible) {
         this.setState({bioModalVisible: visible});
 
+    }
+
+    setImageModalVisible(visible) {
+        this.setState({imageModalVisible: visible});
     }
 
     _pressBack = () => {
@@ -76,7 +81,7 @@ class Settings extends Component {
     state = {
         modalVisible: false,
         bioModalVisible: false,
-        categoryModalVisible: false,
+        imageModalVisible: false,
         username: '',
         bio: '',
         category: '',
@@ -84,6 +89,7 @@ class Settings extends Component {
     };
 
     render() {
+
         return (
             <View style={{backgroundColor:'#f6f6f6',flex:1, paddingBottom: 118}}>
 
@@ -187,18 +193,18 @@ class Settings extends Component {
                                 }}
                            />
 
-                            <TouchableOpacity onPress={() => {
+                            <TouchableOpacity style={styles.buttonStyle} onPress={() => {
                                 firebase.database().ref(`users/${firebase.auth().currentUser.uid}`).child('/username')
                                     .update({   username: this.state.username });
                                 this.setModalVisible(!this.state.modalVisible)
                             }}>
-                                <Text style={styles.buttonStyle}>Done</Text>
+                                <Text style={styles.textStyle}>Done</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={() => {
+                            <TouchableOpacity style={styles.buttonStyleCancel} onPress={() => {
                                 this.setModalVisible(!this.state.modalVisible)
                             }}>
-                                <Text style={styles.buttonStyle}>Cancel</Text>
+                                <Text style={styles.textStyleCancel}>Cancel</Text>
                             </TouchableOpacity>
 
                         </View>
@@ -235,7 +241,7 @@ class Settings extends Component {
                                 }}
                             />
 
-                            <TouchableOpacity onPress={() => {
+                            <TouchableOpacity style={styles.buttonStyle} onPress={() => {
 
                                 firebase.database().ref(`users/${firebase.auth().currentUser.uid}`).child('/bio')
                                     .update({   bio: this.state.bio  });
@@ -243,13 +249,13 @@ class Settings extends Component {
 
                                 this.setbioModalVisible(!this.state.bioModalVisible)
                             }}>
-                                <Text style={styles.buttonStyle}>Done</Text>
+                                <Text style={styles.textStyle}>Done</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={() => {
+                            <TouchableOpacity style={styles.buttonStyleCancel} onPress={() => {
                                 this.setbioModalVisible(!this.state.bioModalVisible)
                             }}>
-                                <Text style={styles.buttonStyle}>Cancel</Text>
+                                <Text style={styles.textStyleCancel}>Cancel</Text>
                             </TouchableOpacity>
 
                         </View>
@@ -257,6 +263,136 @@ class Settings extends Component {
 
                 </Modal>
 
+
+
+
+                <Modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={this.state.imageModalVisible}
+                    onRequestClose={() => {alert("Modal has been closed.")}}
+                >
+                    <View style={styles.container}>
+                        <View style ={{marginTop: 100}}>
+
+                            <TouchableOpacity style={styles.buttonStyle} onPress={() => {
+
+                                ImagePicker.openPicker({
+                                    width: 160,
+                                    height: 160,
+                                    cropping: true,
+                                    mediaType: 'photo',
+                                    includeBase64: true,
+                                }).then(image => {
+
+
+                                    const {currentUser} = firebase.auth();
+                                    const storageRef = firebase.storage().ref(`/users/${currentUser.uid}/image-profile-uploaded`);
+                                    const Blob = RNFetchBlob.polyfill.Blob;
+                                    const fs = RNFetchBlob.fs;
+                                    window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+                                    window.Blob = Blob;
+                                    const uid = firebase.auth().uid;
+                                    const imagePath = image.path;
+                                    let uploadBlob = null;
+                                    let mime = image.mime;
+
+
+                                    fs.readFile(imagePath, 'base64')
+                                        .then((data) => {
+                                            return Blob.build(data, {type: `${mime};BASE64`})
+                                        })
+                                        .then((blob) => {
+                                            uploadBlob = blob;
+                                            return storageRef.put(blob, {contentType: mime})
+                                        })
+                                        .then(() => {
+                                            uploadBlob.close();
+                                            return storageRef.getDownloadURL()
+                                        })
+                                        .then((url) => {
+                                            let obj = {};
+                                            obj["loading"] = false;
+                                            obj["dp"] = url;
+                                            this.setState(obj);
+                                            this.setImageModalVisible(!this.state.imageModalVisible);
+                                        })
+                                        .catch((error) => {
+                                            console.log(error);
+                                            this.setImageModalVisible(!this.state.imageModalVisible);
+                                        });
+
+                                });
+
+
+                            }}>
+                                <Text style={styles.textStyle}>Upload Image</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={styles.buttonStyle} onPress={() => {
+
+                                ImagePicker.openCamera({
+                                    width: 160,
+                                    height: 160,
+                                    cropping: true,
+                                    mediaType: 'photo',
+                                    includeBase64: true,
+                                }).then(image => {
+
+                                    const {currentUser} = firebase.auth();
+                                    const storageRef = firebase.storage().ref(`/users/${currentUser.uid}/image-profile-uploaded`);
+                                    const Blob = RNFetchBlob.polyfill.Blob;
+                                    const fs = RNFetchBlob.fs;
+                                    window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+                                    window.Blob = Blob;
+                                    const uid = firebase.auth().uid;
+                                    const imagePath = image.path;
+                                    let uploadBlob = null;
+                                    let mime = image.mime;
+
+
+                                    fs.readFile(imagePath, 'base64')
+                                        .then((data) => {
+                                            return Blob.build(data, {type: `${mime};BASE64`})
+                                        })
+                                        .then((blob) => {
+                                            uploadBlob = blob;
+                                            return storageRef.put(blob, {contentType: mime})
+                                        })
+                                        .then(() => {
+                                            uploadBlob.close();
+                                            return storageRef.getDownloadURL()
+                                        })
+                                        .then((url) => {
+                                            let obj = {};
+                                            obj["loading"] = false;
+                                            obj["dp"] = url;
+                                            this.setState(obj);
+                                            this.setImageModalVisible(!this.state.imageModalVisible);
+                                        })
+                                        .catch((error) => {
+                                            console.log(error);
+                                            this.setImageModalVisible(!this.state.imageModalVisible)
+                                        });
+
+                                });
+
+
+                            }}>
+                                <Text style={styles.textStyle}>Take Photo</Text>
+                            </TouchableOpacity>
+
+
+                            <TouchableOpacity style={styles.buttonStyleCancel} onPress={() => {
+                                this.setImageModalVisible(!this.state.imageModalVisible)
+                            }}>
+                                <Text style={styles.textStyleCancel}>Cancel</Text>
+                            </TouchableOpacity>
+
+                        </View>
+                    </View>
+
+                </Modal>
 
 
 
@@ -284,18 +420,39 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     buttonStyle:{
+        paddingTop:10,
         paddingVertical: 10,
-        paddingHorizontal: 5,
-        marginBottom:5,
         marginHorizontal: 15,
-        marginTop: 5,
-        borderWidth: 0.1,
+        marginVertical: 4,
+        borderWidth: 4,
         borderRadius: 10,
-        borderColor: 'transparent',
-        backgroundColor: '#856cff',
+        borderColor: '#856cff',
+        backgroundColor: '#fff',
         alignItems: 'center',
-        textAlign: 'center',
-        color: '#fff',
+    },
+
+    buttonStyleCancel:{
+        paddingTop:10,
+        paddingVertical: 10,
+        marginBottom:20,
+        marginHorizontal: 15,
+        marginVertical: 4,
+        borderWidth: 4,
+        borderRadius: 10,
+        borderColor: '#ee617c',
+        backgroundColor: '#fff',
+        alignItems: 'center',
+    },
+    textStyle:{
+        marginTop: 10,
+        color: '#856cff',
+        fontStyle: 'normal',
+        fontFamily: 'Hiragino Sans',
+        fontSize: 25,
+    },
+    textStyleCancel:{
+        marginTop: 10,
+        color: '#ee617c',
         fontStyle: 'normal',
         fontFamily: 'Hiragino Sans',
         fontSize: 25,

@@ -27,6 +27,7 @@ class Variables extends Component{
         podcastCategory: '',
         podcastArtist: '',
         bio: '',
+        profileImage: '',
         favCategory: '',
         currentRef: '',
         username: '',

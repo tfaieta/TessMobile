@@ -100,15 +100,17 @@ class PlayerBottom extends Component {
     _renderPodcastImage(){
         if(Variables.state.podcastTitle != ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: 45, width: 45, borderRadius:4, borderWidth:1, borderColor:'rgba(320,320,320,1)'  }}>
-                    <Icon style={{
-                        textAlign: 'center',
-                        fontSize: 24,
-                        color: 'white',
-                        marginTop: 10
-                    }} name="md-person">
-                    </Icon>
-                </View>
+                <TouchableOpacity onPress={this.ExpandPlayer}>
+                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: 45, width: 45, borderRadius:4, borderWidth:1, borderColor:'rgba(320,320,320,1)'  }}>
+                        <Icon style={{
+                            textAlign: 'center',
+                            fontSize: 24,
+                            color: 'white',
+                            marginTop: 10
+                        }} name="md-person">
+                        </Icon>
+                    </View>
+                </TouchableOpacity>
             )
         }
     }
@@ -635,9 +637,7 @@ class PlayerBottom extends Component {
                 <View style={styles.centerContainer}>
 
                     <View style={styles.leftContainer}>
-                        <TouchableOpacity onPress={this.ExpandPlayer}>
-                            {this._renderPodcastImage()}
-                        </TouchableOpacity>
+                        {this._renderPodcastImage()}
                     </View>
                     <TouchableOpacity onPress={this.ExpandPlayer}>
                     {this._renderPodcastInfo()}

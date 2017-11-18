@@ -59,6 +59,10 @@
 	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Tess uses your microphone to create a podcast.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>Tess will need to use your photo library so that you can upload an profile image.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Tess will need to use your camera so that you can take a profile image .</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>

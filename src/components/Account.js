@@ -8,7 +8,8 @@ import {
     ScrollView,
     ListView,
     TouchableOpacity,
-    Alert
+    Alert,
+    Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
@@ -16,14 +17,17 @@ import { podcastFetch } from "../actions/PodcastActions"
 import PlayerBottom from './PlayerBottom';
 import firebase from 'firebase';
 import Variables from './Variables';
+import RNFetchBlob from 'react-native-fetch-blob';
 
 
 
 class Account extends Component {
 
     componentWillMount(){
-        const refMy = firebase.database().ref(`podcasts/`);
         const {currentUser} = firebase.auth();
+        const refMy = firebase.database().ref(`podcasts/`);
+        const storageRef = firebase.storage().ref(`/users/${currentUser.uid}/image-profile-uploaded`);
+
 
         refMy.on("value", function (snapshot) {
             snapshot.forEach(function (data) {
@@ -53,6 +57,21 @@ class Account extends Component {
             }
         });
 
+
+
+
+
+        storageRef.getDownloadURL()
+            .then(function(url) {
+
+               Variables.state.profileImage = url;
+
+            }).catch(function(error) {
+            //
+        });
+
+
+
     }
 
     constructor(props){
@@ -61,11 +80,12 @@ class Account extends Component {
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts),
             loading: true,
-            username: 'none' ,
-            bio: "Tell others about yourself...",
+            username: '' ,
+            bio: '',
             category: '',
+            profileImage: ''
         };
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username})},1500)
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username, profileImage: Variables.state.profileImage})},1500)
     }
 
 
@@ -87,6 +107,32 @@ class Account extends Component {
             <Text style={styles.titleBio} >{Variables.state.bio}</Text>
         )
 
+    }
+
+    _renderProfileImage(){
+        if (this.state.profileImage == ''){
+            return(
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:20, height: 160, width: 160, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
+                    <Icon style={{
+                        textAlign: 'center',
+                        fontSize: 90,
+                        color: 'white',
+                        marginTop: 20
+                    }} name="md-person">
+                    </Icon>
+                </View>
+            )
+        }
+        else{
+            return(
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:20, height: 160, width: 160, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
+                <Image
+                    style={{width: 160, height:160, position: 'absolute', alignSelf: 'center', opacity: 1}}
+                    source={{uri: this.state.profileImage}}
+                />
+                </View>
+            )
+        }
     }
 
     onGarbagePress(){
@@ -235,15 +281,7 @@ class Account extends Component {
                 <ScrollView >
 
 
-                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:20, height: 160, width: 160, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
-                        <Icon style={{
-                            textAlign: 'center',
-                            fontSize: 90,
-                            color: 'white',
-                            marginTop: 20
-                        }} name="md-person">
-                        </Icon>
-                    </View>
+                    {this._renderProfileImage()}
 
                     {this._renderProfileName()}
 
