@@ -7,7 +7,7 @@ import {
     ScrollView,
     ListView,
     TouchableOpacity,
-    Alert
+    Alert, Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
@@ -25,8 +25,10 @@ class UserProfile extends Component {
     componentWillMount(){
 
         const {currentUser} = firebase.auth();
+        const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
 
         Variables.state.userPodcasts = [];
+        Variables.state.userProfileImage = '';
 
 
         const ref = firebase.database().ref(`podcasts/`);
@@ -73,20 +75,31 @@ class UserProfile extends Component {
         else{
             Variables.state.following = false;
         }
+
+        storageRef.getDownloadURL()
+            .then(function(url) {
+
+                Variables.state.userProfileImage = url;
+
+            }).catch(function(error) {
+            //
+        });
+
+
     }
 
 
     constructor(props) {
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
-        this.state = { username: '' , bio: '',
+        this.state = { username: '' , bio: '', profileImage: '',
             category: '', profileName: profileName, following: false, profileNameL: profileNameL,
             dataSource: dataSource.cloneWithRows([]),
             loading: true,
         };
         setTimeout(() =>{
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
-            username: Variables.state.username, bio: Variables.state.currentBio})
+            username: Variables.state.username, bio: Variables.state.currentBio, profileImage: Variables.state.userProfileImage})
         },500)
     }
 
@@ -112,7 +125,7 @@ class UserProfile extends Component {
     _renderProfileName = () => {
 
         return (
-            <Text style={styles.title} >{this.state.username}</Text>
+            <Text style={styles.title2} >{this.state.username}</Text>
 
         )
 
@@ -128,6 +141,32 @@ class UserProfile extends Component {
     };
 
 
+    _renderProfileImage(){
+        if (this.state.profileImage == ''){
+            return(
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:20, height: 160, width: 160, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
+                    <Icon style={{
+                        textAlign: 'center',
+                        fontSize: 90,
+                        color: 'white',
+                        marginTop: 20
+                    }} name="md-person">
+                    </Icon>
+                </View>
+            )
+        }
+        else{
+            return(
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:20, height: 160, width: 160  }}>
+                    <Image
+                        style={{width: 160, height:160, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
+                        source={{uri: this.state.profileImage}}
+                    />
+                </View>
+            )
+        }
+    }
+
 
     _renderFollowButton = () => {
         const {currentUser} = firebase.auth();
@@ -140,7 +179,7 @@ class UserProfile extends Component {
                         backgroundColor: 'rgba(100,220,220,1)',
                         paddingVertical: 10,
                         marginHorizontal: 30,
-                        marginTop: 20,
+                        marginTop: 0,
                         borderRadius: 10,
                         borderWidth: 0.1
                     }}>
@@ -154,7 +193,7 @@ class UserProfile extends Component {
                         backgroundColor: 'rgba(1,170,170,1)',
                         paddingVertical: 10,
                         marginHorizontal: 30,
-                        marginTop: 20,
+                        marginTop: 0,
                         borderRadius: 10,
                         borderWidth: 0.1
                     }}>
@@ -262,18 +301,6 @@ class UserProfile extends Component {
 
 
                         <View style={styles.leftContainer}>
-                            <Icon style={{
-                                textAlign: 'left',
-                                marginLeft: 20,
-                                paddingRight: 8,
-                                fontSize: 35,
-                                color: '#5757FF',
-                            }} name="ios-play">
-                            </Icon>
-                        </View>
-
-
-                        <View style={styles.middleContainer}>
                             <Text style={styles.title}>   {rowData.podcastTitle}</Text>
                             <Text style={styles.artistTitle}>{profileName}</Text>
                         </View>
@@ -330,18 +357,6 @@ class UserProfile extends Component {
 
 
                         <View style={styles.leftContainer}>
-                            <Icon style={{
-                                textAlign: 'left',
-                                marginLeft: 20,
-                                paddingRight: 8,
-                                fontSize: 35,
-                                color: '#5757FF',
-                            }} name="ios-play">
-                            </Icon>
-                        </View>
-
-
-                        <View style={styles.middleContainer}>
                             <Text style={styles.title}>   {rowData.podcastTitle}</Text>
                             <Text style={styles.artistTitle}>{profileName}</Text>
                         </View>
@@ -441,15 +456,7 @@ class UserProfile extends Component {
 
                 <ScrollView>
 
-                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:20, height: 160, width: 160, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
-                        <Icon style={{
-                            textAlign: 'center',
-                            fontSize: 90,
-                            color: 'white',
-                            marginTop: 20
-                        }} name="md-person">
-                        </Icon>
-                    </View>
+                    {this._renderProfileImage()}
 
                     {this._renderProfileName()}
 
@@ -510,17 +517,6 @@ const styles = StyleSheet.create({
         fontSize: 25,
         backgroundColor: 'transparent'
     },
-    title2: {
-        color: '#2A2A30',
-        marginBottom: 70,
-        flex:1,
-        textAlign: 'center',
-        opacity: 2,
-        fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 25,
-        backgroundColor: 'transparent'
-    },
     titleBio: {
         color: '#828393',
         marginVertical: 10,
@@ -567,13 +563,23 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
 
     },
+    title2: {
+        color: '#2A2A30',
+        marginBottom: 70,
+        flex:1,
+        textAlign: 'center',
+        opacity: 2,
+        fontStyle: 'normal',
+        fontFamily: 'HiraginoSans-W6',
+        fontSize: 25,
+        backgroundColor: 'transparent'
+    },
 
     title: {
         color: '#2A2A30',
         marginTop: 0,
         flex:1,
-        textAlign: 'center',
-        paddingLeft: 0,
+        textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
@@ -584,13 +590,13 @@ const styles = StyleSheet.create({
         color: '#828393',
         marginTop: 0,
         flex:1,
-        textAlign: 'center',
-        paddingLeft: 2,
+        textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W3',
+        fontFamily: 'Hiragino Sans',
         fontSize: 15,
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
+        marginLeft: 20,
     },
     container: {
         paddingHorizontal: 0,

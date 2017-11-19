@@ -114,18 +114,6 @@ class Favorites extends Component{
 
 
                         <View style={styles.leftContainer}>
-                            <Icon style={{
-                                textAlign: 'left',
-                                marginLeft: 20,
-                                paddingRight: 8,
-                                fontSize: 35,
-                                color: '#5757FF',
-                            }} name="ios-play">
-                            </Icon>
-                        </View>
-
-
-                        <View style={styles.middleContainer}>
                             <Text style={styles.title}>   {rowData.podcastTitle}</Text>
                             <Text style={styles.artistTitle}>{profileName}</Text>
                         </View>
@@ -182,18 +170,6 @@ class Favorites extends Component{
 
 
                         <View style={styles.leftContainer}>
-                            <Icon style={{
-                                textAlign: 'left',
-                                marginLeft: 20,
-                                paddingRight: 8,
-                                fontSize: 35,
-                                color: '#5757FF',
-                            }} name="ios-play">
-                            </Icon>
-                        </View>
-
-
-                        <View style={styles.middleContainer}>
                             <Text style={styles.title}>   {rowData.podcastTitle}</Text>
                             <Text style={styles.artistTitle}>{profileName}</Text>
                         </View>
@@ -320,16 +296,28 @@ const styles = StyleSheet.create({
         fontSize: 20,
         backgroundColor: 'transparent'
     },
-    artistTitle: {
-        color:  '#9496A3',
+    title: {
+        color: '#2A2A30',
         marginTop: 0,
         flex:1,
-        textAlign: 'center',
+        textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W3',
-        fontSize: 18,
+        fontFamily: 'HiraginoSans-W6',
+        fontSize: 20,
+        backgroundColor: 'transparent'
+    },
+    artistTitle: {
+        color: '#828393',
+        marginTop: 0,
+        flex:1,
+        textAlign: 'left',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Hiragino Sans',
+        fontSize: 15,
         backgroundColor: 'transparent',
+        marginLeft: 20,
     },
 
     header: {
@@ -381,20 +369,6 @@ const styles = StyleSheet.create({
         marginTop: 3,
         marginHorizontal: -100,
     },
-
-    title: {
-        color: '#2A2A30',
-        marginTop: 0,
-        flex:1,
-        textAlign: 'center',
-        paddingLeft: 0,
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 20,
-        backgroundColor: 'transparent'
-    },
-
 
 });
 

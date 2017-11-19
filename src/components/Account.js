@@ -58,9 +58,6 @@ class Account extends Component {
         });
 
 
-
-
-
         storageRef.getDownloadURL()
             .then(function(url) {
 
@@ -82,6 +79,7 @@ class Account extends Component {
             loading: true,
             username: '' ,
             bio: '',
+            profileImage: '',
             category: '',
             profileImage: ''
         };
@@ -125,9 +123,9 @@ class Account extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:20, height: 160, width: 160, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:20, height: 160, width: 160  }}>
                 <Image
-                    style={{width: 160, height:160, position: 'absolute', alignSelf: 'center', opacity: 1}}
+                    style={{width: 160, height:160, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
                     source={{uri: this.state.profileImage}}
                 />
                 </View>
@@ -201,19 +199,8 @@ class Account extends Component {
                 <View style={styles.containerList}>
 
 
+
                     <View style={styles.leftContainer}>
-                        <Icon style={{
-                            textAlign: 'left',
-                            marginLeft: 20,
-                            paddingRight: 8,
-                            fontSize: 35,
-                            color: '#5757FF',
-                        }} name="ios-play">
-                        </Icon>
-                    </View>
-
-
-                    <View style={styles.middleContainer}>
                         <Text style={styles.title}>   {rowData.podcastTitle}</Text>
                         <Text style={styles.artistTitle}>{profileName}</Text>
                     </View>
@@ -375,8 +362,7 @@ const styles = StyleSheet.create({
         color: '#2A2A30',
         marginTop: 0,
         flex:1,
-        textAlign: 'center',
-        paddingLeft: 0,
+        textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
@@ -387,13 +373,13 @@ const styles = StyleSheet.create({
         color: '#828393',
         marginTop: 0,
         flex:1,
-        textAlign: 'center',
-        paddingLeft: 2,
+        textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Hiragino Sans',
         fontSize: 15,
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
+        marginLeft: 20,
     },
     containerList: {
         paddingHorizontal: 0,
@@ -426,8 +412,8 @@ const styles = StyleSheet.create({
     },
     middleContainer: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
         marginTop: 3,
         marginHorizontal: -100,
     },
