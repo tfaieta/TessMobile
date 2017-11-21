@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, LayoutAnimation, TouchableOpacity, } from 'react-native';
+import { Text, View, LayoutAnimation, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import {AudioUtils} from 'react-native-audio';
 import Variables from "./Variables";
-import RNFetchBlob from 'react-native-fetch-blob';
+
 
 
 class ListItemUsers extends Component {
@@ -33,10 +33,56 @@ class ListItemUsers extends Component {
         LayoutAnimation.spring();
     }
 
-    constructor(props) {
-        super(props);
+    constructor(state) {
+        super(state);
         this.state ={
-           profileName: ''
+            profileName: '',
+            profileImage: ''
+        };
+    }
+
+
+    getProfileImageUrl(){
+        const { podcastArtist } = this.props.podcast;
+
+        const storageRef = firebase.storage().ref(`/users/${podcastArtist}/image-profile-uploaded`);
+        storageRef.getDownloadURL()
+            .then(function(url) {
+
+                console.warn("setting to " + url);
+                return url;
+
+            }).catch(function(error) {
+            return '';
+            //
+        });
+    }
+
+
+    _renderProfileImage(){
+
+        if (this.state.profileImage == ''){
+            return(
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom:10, height: 130, width: 130, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
+                    <Icon style={{
+                        textAlign: 'center',
+                        fontSize: 80,
+                        color: 'white',
+                        marginTop: 20
+                    }} name="md-person">
+                    </Icon>
+                </View>
+            )
+        }
+        else{
+            return(
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom:10, height: 130, width: 130  }}>
+                    <Image
+                        style={{width: 130, height:130, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
+                        source={{uri: this.state.profileImage}}
+                    />
+                </View>
+            )
         }
     }
 
@@ -66,20 +112,21 @@ class ListItemUsers extends Component {
                         Variables.state.podcastDescription = podcastDescription;
                         Variables.state.podcastCategory = podcastCategory;
                         Variables.state.podcastArtist = podcastArtist;
+                        Variables.state.userProfileImage = '';
                         Variables.play();
                         Variables.state.isPlaying = true;
 
                     });
 
-
-
-
     }
+
+
 
 
     render() {
         const {podcastTitle} = this.props.podcast;
         const {podcastArtist} = this.props.podcast;
+        let {profileImage} = this.props.podcast;
         const {currentUser} = firebase.auth();
 
         let profileName = '';
@@ -115,21 +162,12 @@ class ListItemUsers extends Component {
 
 
 
-
         return (
 
             <TouchableOpacity onPress={this.onRowPress.bind(this)}>
                 <View style={{padding: 10}}>
-                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginBottom:10, height: 130, width: 130, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
-                        <Icon style={{
-                            textAlign: 'center',
-                            fontSize: 90,
-                            color: 'white',
-                            marginTop: 20
-                        }} name="md-person">
-                        </Icon>
-                    </View>
 
+                    {this._renderProfileImage()}
 
                 <Text style={styles.title}>{fixedTitle}</Text>
                 <Text style={styles.artistTitle}>{fixedUsername}</Text>

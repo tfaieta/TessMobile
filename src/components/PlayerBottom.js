@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet,StatusBar, ScrollView, Modal, TouchableOpacity, Alert} from 'react-native';
+import { Text, TextInput, View, StyleSheet,StatusBar, ScrollView, Modal, TouchableOpacity, Alert, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from './Variables';
 import {podcastPlayer} from './Variables';
@@ -13,6 +13,22 @@ class PlayerBottom extends Component {
         super();
         this.tick = this.tick.bind(this);
         this.play=this.play.bind(this);
+
+        setInterval(() => {
+            this.setState({profileImage: Variables.state.userProfileImage});
+            const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
+            if(storageRef.child('image-profile-uploaded')){
+                storageRef.getDownloadURL()
+                    .then(function(url) {
+                        if(url){
+                            Variables.state.userProfileImage = url;
+                        }
+                    }).catch(function(error) {
+                    //
+                });
+            }
+
+        },500);
     }
 
     state = {
@@ -25,7 +41,8 @@ class PlayerBottom extends Component {
         comment: '',
         modalVisible: false,
         liked: false,
-        likes: 12
+        likes: 12,
+        profileImage: '',
     };
 
 
@@ -99,19 +116,33 @@ class PlayerBottom extends Component {
 
     _renderPodcastImage(){
         if(Variables.state.podcastTitle != ''){
-            return(
-                <TouchableOpacity onPress={this.ExpandPlayer}>
-                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: 45, width: 45, borderRadius:4, borderWidth:1, borderColor:'rgba(320,320,320,1)'  }}>
-                        <Icon style={{
-                            textAlign: 'center',
-                            fontSize: 24,
-                            color: 'white',
-                            marginTop: 10
-                        }} name="md-person">
-                        </Icon>
-                    </View>
-                </TouchableOpacity>
-            )
+
+                if (this.state.profileImage == ''){
+                    return(
+                        <TouchableOpacity onPress={this.ExpandPlayer}>
+                            <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: 45, width: 45, borderRadius:4, borderWidth:1, borderColor:'rgba(320,320,320,1)'}}>
+                                <Icon style={{
+                                    textAlign: 'center',
+                                    fontSize: 24,
+                                    color: 'white',
+                                    marginTop: 10
+                                }} name="md-person">
+                                </Icon>
+                            </View>
+                        </TouchableOpacity>
+                    )
+                }
+                else{
+                    return(
+                        <View style={{backgroundColor:'transparent', alignSelf: 'center', height: 45, width: 45  }}>
+                            <Image
+                                style={{width: 45, height:45, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 5, borderWidth: 0.1, borderColor: 'transparent'}}
+                                source={{uri: this.state.profileImage}}
+                            />
+                        </View>
+                    )
+                }
+
         }
     }
 
@@ -245,12 +276,45 @@ class PlayerBottom extends Component {
     }
 
 
+
+    _renderPodcastImageBig(){
+        if(Variables.state.podcastTitle != ''){
+
+            if (this.state.profileImage == ''){
+                return(
+                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, height: 160, width: 160, borderRadius:10, borderWidth:8, borderColor:'rgba(320,320,320,0.8)'  }}>
+                        <Icon style={{
+                            textAlign: 'center',
+                            fontSize: 100,
+                            color: 'white',
+                            marginTop: 25
+                        }} name="md-person">
+                        </Icon>
+                    </View>
+                )
+            }
+            else{
+                return(
+                    <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop: 20, height: 160, width: 160  }}>
+                        <Image
+                            style={{width: 160, height:160,  alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
+                            source={{uri: this.state.profileImage}}
+                        />
+                    </View>
+                )
+            }
+
+        }
+    }
+
+
+
     _renderDescription(){
         if (Variables.state.podcastTitle == ''){
             return(
                 <View style={{ marginTop: 20}}>
-                <ScrollView style={{marginHorizontal: 20, marginBottom: 20, backgroundColor: '#6e89e7', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
-                    <Text style={{color: '#fff', fontSize: 20, fontFamily: 'Futura', textAlign: 'center'  }}>Select a Podcast to start listening....</Text>
+                <ScrollView style={{marginHorizontal: 20, marginBottom: 20, backgroundColor: '#5757FF', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                    <Text style={{color: '#fff', fontSize: 20, fontFamily: 'HiraginoSans-W3', textAlign: 'center'  }}>Select a Podcast to start listening....</Text>
                 </ScrollView>
                 </View>
             )
@@ -258,9 +322,8 @@ class PlayerBottom extends Component {
         else{
             return(
                 <View style={{ marginTop: 20}}>
-                    <Text style={styles.podcastText}> description </Text>
-                <ScrollView style={{marginHorizontal: 20, marginBottom: 20, backgroundColor: '#6e89e7', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
-                    <Text style={{color: '#fff', fontSize: 20, fontFamily: 'Futura' }}>{Variables.state.podcastDescription}</Text>
+                <ScrollView style={{marginHorizontal: 20, marginBottom: 20, backgroundColor: '#5757FF', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                    <Text style={{color: '#fff', fontSize: 20, fontFamily: 'HiraginoSans-W3' }}>{Variables.state.podcastDescription}</Text>
                 </ScrollView>
                 </View>
             )
@@ -678,16 +741,10 @@ class PlayerBottom extends Component {
                         </TouchableOpacity>
 
 
+                        {this._renderPodcastImageBig()}
 
-                        <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, height: 250, width: 250, borderRadius:10, borderWidth:8, borderColor:'rgba(320,320,320,0.8)'  }}>
-                            <Icon style={{
-                                textAlign: 'center',
-                                fontSize: 140,
-                                color: 'white',
-                                marginTop: 50
-                            }} name="md-person">
-                            </Icon>
-                        </View>
+                        {this._renderDescription()}
+
 
 
                         <View style={{marginTop: 20}}>
@@ -863,7 +920,7 @@ class PlayerBottom extends Component {
         flexDirection: 'row',
         backgroundColor: 'transparent',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W3',
+        fontFamily: 'HiraginoSans-W6',
         fontSize: 13,
         textAlign: 'left',
         paddingLeft: 10
@@ -873,7 +930,7 @@ class PlayerBottom extends Component {
         flexDirection: 'row',
         backgroundColor: 'transparent',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'HiraginoSans-W3',
         fontSize: 12,
         textAlign: 'left',
         paddingLeft: 10

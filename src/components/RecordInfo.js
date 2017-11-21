@@ -479,7 +479,7 @@ const styles = StyleSheet.create({
 
     progressText: {
         marginTop: 0,
-        fontSize: 20,
+        fontSize: 15,
         fontFamily: 'Hiragino Sans',
         color: "#FFF",
     },

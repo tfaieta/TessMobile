@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity, StatusBar} from 'react-native';
 import PlayerBottom from './PlayerBottom';
-import Variables from "./Variables";
-import firebase from 'firebase';
 
 
 

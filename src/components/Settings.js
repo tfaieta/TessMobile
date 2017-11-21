@@ -15,6 +15,7 @@ import PlayerBottom from './PlayerBottom';
 import firebase from 'firebase';
 import RNFetchBlob from 'react-native-fetch-blob';
 import ImagePicker from 'react-native-image-crop-picker';
+import Variables from './Variables';
 
 
 class Settings extends Component {
@@ -315,6 +316,7 @@ class Settings extends Component {
                                             obj["loading"] = false;
                                             obj["dp"] = url;
                                             this.setState(obj);
+                                            Variables.state.profileImage = url;
                                             this.setImageModalVisible(!this.state.imageModalVisible);
                                         })
                                         .catch((error) => {
@@ -368,6 +370,7 @@ class Settings extends Component {
                                             obj["loading"] = false;
                                             obj["dp"] = url;
                                             this.setState(obj);
+                                            Variables.state.profileImage = url;
                                             this.setImageModalVisible(!this.state.imageModalVisible);
                                         })
                                         .catch((error) => {

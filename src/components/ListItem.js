@@ -58,6 +58,7 @@ class ListItem extends Component {
                         Variables.state.podcastDescription = podcastDescription;
                         Variables.state.podcastCategory = podcastCategory;
                         Variables.state.podcastArtist = podcastArtist;
+                        Variables.state.userProfileImage = '';
                         Variables.play();
                         Variables.state.isPlaying = true;
 

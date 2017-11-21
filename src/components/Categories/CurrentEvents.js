@@ -94,6 +94,8 @@ class CurrentEvents extends Component{
                             Variables.state.podcastTitle = podcastTitle;
                             Variables.state.podcastCategory = podcastCategory;
                             Variables.state.podcastArtist = podcastArtist;
+                            Variables.state.podcastDescription = podcastDescription;
+                            Variables.state.userProfileImage = '';
                             Variables.play();
                             Variables.state.isPlaying = true;
 
@@ -104,18 +106,6 @@ class CurrentEvents extends Component{
 
 
                         <View style={styles.leftContainer}>
-                            <Icon style={{
-                                textAlign: 'left',
-                                marginLeft: 20,
-                                paddingRight: 8,
-                                fontSize: 35,
-                                color: '#5757FF',
-                            }} name="ios-play">
-                            </Icon>
-                        </View>
-
-
-                        <View style={styles.middleContainer}>
                             <Text style={styles.title}>   {rowData.podcastTitle}</Text>
                             <Text style={styles.artistTitle}>{profileName}</Text>
                         </View>
@@ -162,6 +152,8 @@ class CurrentEvents extends Component{
                             Variables.state.podcastTitle = podcastTitle;
                             Variables.state.podcastCategory = podcastCategory;
                             Variables.state.podcastArtist = podcastArtist;
+                            Variables.state.podcastDescription = podcastDescription;
+                            Variables.state.userProfileImage = '';
                             Variables.play();
                             Variables.state.isPlaying = true;
 
@@ -172,18 +164,6 @@ class CurrentEvents extends Component{
 
 
                         <View style={styles.leftContainer}>
-                            <Icon style={{
-                                textAlign: 'left',
-                                marginLeft: 20,
-                                paddingRight: 8,
-                                fontSize: 35,
-                                color: '#5757FF',
-                            }} name="ios-play">
-                            </Icon>
-                        </View>
-
-
-                        <View style={styles.middleContainer}>
                             <Text style={styles.title}>   {rowData.podcastTitle}</Text>
                             <Text style={styles.artistTitle}>{profileName}</Text>
                         </View>
@@ -344,8 +324,7 @@ const styles = StyleSheet.create({
         color: '#2A2A30',
         marginTop: 0,
         flex:1,
-        textAlign: 'center',
-        paddingLeft: 0,
+        textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
@@ -356,13 +335,13 @@ const styles = StyleSheet.create({
         color: '#828393',
         marginTop: 0,
         flex:1,
-        textAlign: 'center',
-        paddingLeft: 2,
+        textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Hiragino Sans',
         fontSize: 15,
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
+        marginLeft: 20,
     },
     container: {
         paddingHorizontal: 0,

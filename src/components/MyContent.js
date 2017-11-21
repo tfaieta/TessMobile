@@ -76,6 +76,8 @@ class MyContent extends Component{
                         Variables.state.podcastTitle = podcastTitle;
                         Variables.state.podcastArtist = podcastArtist;
                         Variables.state.podcastCategory = podcastCategory;
+                        Variables.state.podcastDescription = podcastDescription;
+                        Variables.state.userProfileImage = '';
                         Variables.play();
                         Variables.state.isPlaying = true;
 

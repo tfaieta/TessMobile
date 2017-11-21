@@ -104,6 +104,8 @@ class Favorites extends Component{
                             Variables.state.podcastTitle = podcastTitle;
                             Variables.state.podcastCategory = podcastCategory;
                             Variables.state.podcastArtist = podcastArtist;
+                            Variables.state.podcastDescription = podcastDescription;
+                            Variables.state.userProfileImage = '';
                             Variables.play();
                             Variables.state.isPlaying = true;
 
@@ -160,6 +162,8 @@ class Favorites extends Component{
                             Variables.state.podcastTitle = podcastTitle;
                             Variables.state.podcastCategory = podcastCategory;
                             Variables.state.podcastArtist = podcastArtist;
+                            Variables.state.podcastDescription = podcastDescription;
+                            Variables.state.userProfileImage = '';
                             Variables.play();
                             Variables.state.isPlaying = true;
 

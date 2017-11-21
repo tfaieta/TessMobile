@@ -17,7 +17,6 @@ import { podcastFetch } from "../actions/PodcastActions"
 import PlayerBottom from './PlayerBottom';
 import firebase from 'firebase';
 import Variables from './Variables';
-import RNFetchBlob from 'react-native-fetch-blob';
 
 
 
@@ -81,9 +80,8 @@ class Account extends Component {
             bio: '',
             profileImage: '',
             category: '',
-            profileImage: ''
         };
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username, profileImage: Variables.state.profileImage})},1500)
+        setInterval(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username, profileImage: Variables.state.profileImage})},1500)
     }
 
 
@@ -190,6 +188,8 @@ class Account extends Component {
                                 Variables.state.podcastTitle = podcastTitle;
                                 Variables.state.podcastArtist = podcastArtist;
                                 Variables.state.podcastCategory = podcastCategory;
+                                Variables.state.podcastDescription = podcastDescription;
+                                Variables.state.userProfileImage = '';
                                 Variables.play();
                                 Variables.state.isPlaying = true;
 
