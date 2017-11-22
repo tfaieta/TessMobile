@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import ListItemUsers from '../components/ListItemUsers';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { Navigation } from 'react-native-navigation';
 
 class Home extends Component{
     componentWillMount(){
@@ -61,16 +60,22 @@ class Home extends Component{
             animationType: 'fade',
         });
     };
-    pressSeeAllNew = () => {
-        Navigation.showLightBox({
-            screen: "NewPodcasts", // unique ID registered with Navigation.registerScreen
-            style: {
-                backgroundBlur: "light", // 'dark' / 'light' / 'xlight' / 'none' - the type of blur on the background
-                backgroundColor: '#5757FF70', // tint color for the background, you can specify alpha here (optional)
-                tapBackgroundToDismiss: true, // dismisses LightBox on background taps (optional)
-                width: 200
-            }
+    pressTech = () => {
+        this.props.navigator.push({
+            screen: 'Tech',
+            animated: true,
+            animationType: 'fade',
         });
+    };
+    pressTravel = () => {
+        this.props.navigator.push({
+            screen: 'Travel',
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+    pressSeeAllNew = () => {
+
     };
 
 
@@ -130,7 +135,7 @@ class Home extends Component{
                             </Image>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, borderRadius: 10, borderWidth: 0.1}} onPress={this.pressCurrEvents}>
+                        <TouchableOpacity style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, marginRight: 20, borderRadius: 10, borderWidth: 0.1}} onPress={this.pressCurrEvents}>
                             <Image
                                 style={{width: 218, height:122, position: 'absolute', alignSelf: 'center', opacity: 0.9, borderRadius: 10, borderWidth: 0.1}}
                                 source={require('tess/src/images/worldNews.png')}
@@ -170,6 +175,45 @@ class Home extends Component{
                     renderRow={this.renderRowNewPodcasts}
                 />
             </View>
+
+
+                        <ScrollView style={{height: 122, marginVertical: 20}} horizontal={true} showsHorizontalScrollIndicator={false}>
+                            <TouchableOpacity style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, borderRadius: 10, borderWidth: 0.1}} onPress={this.pressTech}>
+                                <Image
+                                    style={{width: 218, height:122, position: 'absolute', alignSelf: 'center', opacity: 0.9, borderRadius: 10, borderWidth: 0.1}}
+                                    source={require('tess/src/images/tech.jpeg')}
+                                >
+                                    <Icon style={{
+                                        textAlign: 'center',
+                                        marginTop: 30,
+                                        fontSize: 30,
+                                        backgroundColor: 'transparent',
+                                        color: '#FFF'
+                                    }} name="md-phone-portrait">
+                                    </Icon>
+                                    <Text style={styles.catTitle}>Tech</Text>
+                                </Image>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, marginRight: 20, borderRadius: 10, borderWidth: 0.1}} onPress={this.pressTravel}>
+                                <Image
+                                    style={{width: 218, height:122, position: 'absolute', alignSelf: 'center', opacity: 0.9, borderRadius: 10, borderWidth: 0.1}}
+                                    source={require('tess/src/images/travel.png')}
+                                >
+                                    <Icon style={{
+                                        textAlign: 'center',
+                                        marginTop: 30,
+                                        fontSize: 30,
+                                        backgroundColor: 'transparent',
+                                        color: '#FFF'
+                                    }} name="md-plane">
+                                    </Icon>
+                                    <Text style={styles.catTitle}>Travel</Text>
+                                </Image>
+                            </TouchableOpacity>
+                        </ScrollView>
+
+
 
 
                 <View style={{paddingBottom: 150}}>

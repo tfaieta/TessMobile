@@ -98,6 +98,19 @@ class Politics extends Component{
                             Variables.play();
                             Variables.state.isPlaying = true;
 
+                            const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
+                            if(storageRef.child('image-profile-uploaded')){
+                                storageRef.getDownloadURL()
+                                    .then(function(url) {
+                                        if(url){
+                                            Variables.state.userProfileImage = url;
+                                        }
+                                    }).catch(function(error) {
+                                    //
+                                });
+                            }
+
+
                         });
 
                 }}>
@@ -156,6 +169,19 @@ class Politics extends Component{
                             Variables.play();
                             Variables.state.isPlaying = true;
 
+                            const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
+                            if(storageRef.child('image-profile-uploaded')){
+                                storageRef.getDownloadURL()
+                                    .then(function(url) {
+                                        if(url){
+                                            Variables.state.userProfileImage = url;
+                                        }
+                                    }).catch(function(error) {
+                                    //
+                                });
+                            }
+
+
                         });
 
                 }}>
@@ -177,7 +203,7 @@ class Politics extends Component{
                                             {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
                                             {
                                                 text: 'Yes', onPress: () => {
-                                                firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle).update({podcastArtist, podcastTitle});
+                                                firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle).update({podcastArtist, podcastTitle, podcastCategory, podcastDescription});
                                                 this.setState({favorite: true})
                                             }
                                             },

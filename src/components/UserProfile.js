@@ -25,33 +25,33 @@ class UserProfile extends Component {
     componentWillMount(){
 
         const {currentUser} = firebase.auth();
-        const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
+        const storageRef = firebase.storage().ref(`/users/${Variables.state.browsingArtist}/image-profile-uploaded`);
 
         Variables.state.userPodcasts = [];
-        Variables.state.userProfileImage = '';
+        Variables.state.onUserProfileImage = '';
 
 
         const ref = firebase.database().ref(`podcasts/`);
 
         ref.on("value", function (snapshot) {
             snapshot.forEach(function (data) {
-                if(Variables.state.podcastArtist == data.val().podcastArtist) {
+                if(Variables.state.browsingArtist == data.val().podcastArtist) {
                     Variables.state.userPodcasts.push(data.val());
                 }
             })
         });
 
 
-        firebase.database().ref(`/users/${Variables.state.podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
+        firebase.database().ref(`/users/${Variables.state.browsingArtist}/username`).orderByChild("username").on("value", function(snap) {
             if(snap.val()){
-                Variables.state.username = snap.val().username;
+                Variables.state.userUsername = snap.val().username;
             }
             else {
-                Variables.state.username = Variables.state.podcastArtist;
+                Variables.state.userUsername = Variables.state.browsingArtist;
             }
         });
 
-        firebase.database().ref(`/users/${Variables.state.podcastArtist}/favCategory`).orderByChild("favCategory").on("value", function(snap) {
+        firebase.database().ref(`/users/${Variables.state.browsingArtist}/favCategory`).orderByChild("favCategory").on("value", function(snap) {
             if(snap.val()){
                 Variables.state.currentFavCategory = snap.val().favCategory;
             }
@@ -60,7 +60,7 @@ class UserProfile extends Component {
             }
         });
 
-        firebase.database().ref(`/users/${Variables.state.podcastArtist}/bio`).orderByChild("bio").on("value", function(snap) {
+        firebase.database().ref(`/users/${Variables.state.browsingArtist}/bio`).orderByChild("bio").on("value", function(snap) {
             if(snap.val()){
                 Variables.state.currentBio = snap.val().bio;
             }
@@ -69,17 +69,20 @@ class UserProfile extends Component {
             }
         });
 
-        if( firebase.database().ref(`users/${currentUser.uid}/following/`).child(Variables.state.podcastArtist)){
-            Variables.state.following = true;
-        }
-        else{
-            Variables.state.following = false;
-        }
+
+        firebase.database().ref(`users/${currentUser.uid}/following/`).orderByChild(Variables.state.browsingArtist).on("value", function (snap){
+            if(snap.hasChild(Variables.state.browsingArtist)){
+                Variables.state.following = true;
+            }
+            else{
+                Variables.state.following = false;
+            }
+        });
 
         storageRef.getDownloadURL()
             .then(function(url) {
 
-                Variables.state.userProfileImage = url;
+                Variables.state.onUserProfileImage = url;
 
             }).catch(function(error) {
             //
@@ -99,7 +102,9 @@ class UserProfile extends Component {
         };
         setTimeout(() =>{
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
-            username: Variables.state.username, bio: Variables.state.currentBio, profileImage: Variables.state.userProfileImage})
+            username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
+                following: Variables.state.following
+            })
         },500)
     }
 
@@ -171,12 +176,12 @@ class UserProfile extends Component {
     _renderFollowButton = () => {
         const {currentUser} = firebase.auth();
 
-        if(Variables.state.podcastArtist != currentUser.uid) {
+        if(Variables.state.browsingArtist != currentUser.uid) {
 
-            if (Variables.state.following) {
+            if (this.state.following) {
                 return (
                     <TouchableOpacity onPress={this.pressFollowButton} style={{
-                        backgroundColor: 'rgba(100,220,220,1)',
+                        backgroundColor: 'rgba(40,240,240,1)',
                         paddingVertical: 10,
                         marginHorizontal: 30,
                         marginTop: 0,
@@ -190,7 +195,7 @@ class UserProfile extends Component {
             else {
                 return (
                     <TouchableOpacity onPress={this.pressFollowButton} style={{
-                        backgroundColor: 'rgba(1,170,170,1)',
+                        backgroundColor: 'rgba(1,180,180,1)',
                         paddingVertical: 10,
                         marginHorizontal: 30,
                         marginTop: 0,
@@ -206,15 +211,15 @@ class UserProfile extends Component {
     };
 
     pressFollowButton =() => {
-        if(this.state.following){
+        if(this.state.following == true){
             const {currentUser} = firebase.auth();
-            firebase.database().ref(`users/${currentUser.uid}/following/${Variables.state.podcastArtist}`).remove();
+            firebase.database().ref(`users/${currentUser.uid}/following/${Variables.state.browsingArtist}`).remove();
             this.setState({following: false});
             Variables.state.following = false;
         }
-        else if (!this.state.following){
+        else if (this.state.following == false){
             const {currentUser} = firebase.auth();
-            firebase.database().ref(`users/${currentUser.uid}/following`).child(Variables.state.podcastArtist).push(Variables.state.podcastArtist);
+            firebase.database().ref(`users/${currentUser.uid}/following`).child(Variables.state.browsingArtist).push(Variables.state.browsingArtist);
             this.setState({ following: true});
             Variables.state.following = true;
         }
@@ -226,7 +231,7 @@ class UserProfile extends Component {
             animationType: 'fade',
         });
         Navigation.dismissModal({
-            animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+            animationType: 'slide-down'
         });
     };
 
@@ -296,6 +301,20 @@ class UserProfile extends Component {
                             Variables.play();
                             Variables.state.isPlaying = true;
 
+
+                            const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
+                            if(storageRef.child('image-profile-uploaded')){
+                                storageRef.getDownloadURL()
+                                    .then(function(url) {
+                                        if(url){
+                                            Variables.state.userProfileImage = url;
+                                        }
+                                    }).catch(function(error) {
+                                    //
+                                });
+                            }
+
+
                         });
 
                 }}>
@@ -354,6 +373,19 @@ class UserProfile extends Component {
                             Variables.play();
                             Variables.state.isPlaying = true;
 
+                            const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
+                            if(storageRef.child('image-profile-uploaded')){
+                                storageRef.getDownloadURL()
+                                    .then(function(url) {
+                                        if(url){
+                                            Variables.state.userProfileImage = url;
+                                        }
+                                    }).catch(function(error) {
+                                    //
+                                });
+                            }
+
+
                         });
 
                 }}>
@@ -377,7 +409,7 @@ class UserProfile extends Component {
                                             {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
                                             {
                                                 text: 'Yes', onPress: () => {
-                                                firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle).update({podcastArtist, podcastTitle});
+                                                firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle).update({podcastArtist, podcastTitle, podcastCategory, podcastDescription});
                                                 this.setState({favorite: true})
                                             }
                                             },
@@ -537,11 +569,12 @@ const styles = StyleSheet.create({
     titleFollow: {
         color: '#fff',
         marginVertical: 5,
+        marginTop: 10,
         flex:1,
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'HiraginoSans-W3',
         fontSize: 20,
         backgroundColor: 'transparent'
     },

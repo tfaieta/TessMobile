@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Sound from 'react-native-sound';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
 import LinearGradient from "react-native-linear-gradient/index.android";
+import Variables from "./Variables";
 
 
 
@@ -35,6 +36,14 @@ class Record extends Component{
     }
 
     componentDidMount() {
+
+        Variables.pause();
+        Variables.state.isPlaying = false;
+        Variables.state.podcastTitle = '';
+        Variables.state.podcastArtist = '';
+        Variables.state.podcastDescription = '';
+        Variables.state.podcastCategory = '';
+
         this._checkPermission().then((hasPermission) => {
             this.setState({ hasPermission });
 

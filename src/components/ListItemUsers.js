@@ -42,23 +42,6 @@ class ListItemUsers extends Component {
     }
 
 
-    getProfileImageUrl(){
-        const { podcastArtist } = this.props.podcast;
-
-        const storageRef = firebase.storage().ref(`/users/${podcastArtist}/image-profile-uploaded`);
-        storageRef.getDownloadURL()
-            .then(function(url) {
-
-                console.warn("setting to " + url);
-                return url;
-
-            }).catch(function(error) {
-            return '';
-            //
-        });
-    }
-
-
     _renderProfileImage(){
 
         if (this.state.profileImage == ''){
@@ -116,6 +99,18 @@ class ListItemUsers extends Component {
                         Variables.play();
                         Variables.state.isPlaying = true;
 
+                const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
+                if(storageRef.child('image-profile-uploaded')){
+                    storageRef.getDownloadURL()
+                        .then(function(url) {
+                            if(url){
+                                Variables.state.userProfileImage = url;
+                            }
+                        }).catch(function(error) {
+                        //
+                    });
+                }
+
                     });
 
     }
@@ -126,7 +121,6 @@ class ListItemUsers extends Component {
     render() {
         const {podcastTitle} = this.props.podcast;
         const {podcastArtist} = this.props.podcast;
-        let {profileImage} = this.props.podcast;
         const {currentUser} = firebase.auth();
 
         let profileName = '';
@@ -159,6 +153,19 @@ class ListItemUsers extends Component {
         else{
             fixedUsername = this.state.profileName;
         }
+
+
+
+
+        let profileImage = '';
+        const storageRef = firebase.storage().ref(`/users/${podcastArtist}/image-profile-uploaded`);
+        storageRef.getDownloadURL()
+            .then(function(url) {
+                profileImage = url;
+            }).catch(function(error) {
+            //
+        });
+        setTimeout(() => {this.setState({profileImage: profileImage})},1000);
 
 
 

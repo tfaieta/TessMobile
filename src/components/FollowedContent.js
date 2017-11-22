@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { View, StyleSheet, ListView, Text, TouchableOpacity} from 'react-native';
+import { View, StyleSheet, ListView, Text, TouchableOpacity, Image} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { connect } from 'react-redux';
 import { podcastFetchFollowed } from "../actions/PodcastActions"
@@ -32,9 +32,10 @@ class FollowedContent extends Component{
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed),
-            loading: true
+            loading: true,
+            profileImage: ''
         };
-        const navigator = this.props;
+
         setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed)})},500)
     }
 
@@ -44,18 +45,54 @@ class FollowedContent extends Component{
 
 
 
+    _renderProfileImage(){
+        if(this.state.profileImage == ''){
+            return(
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginBottom:10, marginLeft:10, height: 60, width: 60, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
+                    <Icon style={{
+                        textAlign: 'center',
+                        fontSize: 40,
+                        color: 'white',
+                        marginTop: 5
+                    }} name="md-person">
+                    </Icon>
+                </View>
+            )
+        }
+        else{
+            return(
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginBottom:10, marginLeft:10, height: 60, width: 60, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
+                    <Image
+                        style={{width: 60, height:60, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 5, borderWidth: 0.1, borderColor: 'transparent'}}
+                        source={{uri: this.state.profileImage}}
+                    />
+                </View>
+            )
+        }
+
+    }
+
+
+
 
     renderRow(rowData){
 
 
-        let profileName = rowData;
+        let profileName =  rowData;
         firebase.database().ref(`/users/${rowData}/username`).orderByChild("username").on("value", function (snap) {
             if (snap.val()) {
                 profileName = snap.val().username;
             }
-            else {
-                profileName = rowData;
-            }
+        });
+
+
+        let profileImage = '';
+        const storageRef = firebase.storage().ref(`/users/${rowData}/image-profile-uploaded`);
+        storageRef.getDownloadURL()
+            .then(function(url) {
+                profileImage = url;
+            }).catch(function(error) {
+            //
         });
 
 
@@ -63,14 +100,14 @@ class FollowedContent extends Component{
 
         return (
             <TouchableOpacity underlayColor='#5757FF' onPress={ () =>{
-                Variables.state.podcastArtist = rowData;
+                Variables.state.browsingArtist = rowData;
                 Navigation.showModal({
-                    screen: "UserProfile", // unique ID registered with Navigation.registerScreen
-                    title: "Modal", // title of the screen as appears in the nav bar (optional)
-                    passProps: {}, // simple serializable object that will pass as props to the modal (optional)
-                    navigatorStyle: {}, // override the navigator style for the screen, see "Styling the navigator" below (optional)
-                    navigatorButtons: {}, // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
-                    animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
+                    screen: "UserProfile",
+                    title: "Modal",
+                    passProps: {},
+                    navigatorStyle: {},
+                    navigatorButtons: {},
+                    animationType: 'slide-up'
                 });
             }}>
                 <View style={styles.container2}>
@@ -109,6 +146,7 @@ class FollowedContent extends Component{
 
 
     render() {
+
         return (
             <View
                 style={styles.container}>

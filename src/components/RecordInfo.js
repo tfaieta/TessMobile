@@ -253,7 +253,7 @@ class RecordInfo extends Component{
                                 {this._renderPlayButton(this.state.isPlaying)}
                         </View>
                         <View style={{justifyContent: 'center', alignItems: 'center', marginHorizontal: 20}}>
-                            {this._renderSlider(podcastPlayer.currentTime)}
+                            {this._renderSlider(Variables.state.currentTime)}
                         </View>
                         <View style={{justifyContent: 'center', alignItems: 'flex-end',}}>
                             <Text  style={styles.contentTime}>{this._renderTime(podcastPlayer)}</Text>

@@ -193,6 +193,18 @@ class Account extends Component {
                                 Variables.play();
                                 Variables.state.isPlaying = true;
 
+                        const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
+                        if(storageRef.child('image-profile-uploaded')){
+                            storageRef.getDownloadURL()
+                                .then(function(url) {
+                                    if(url){
+                                        Variables.state.userProfileImage = url;
+                                    }
+                                }).catch(function(error) {
+                                //
+                            });
+                        }
+
                             });
 
             }}>

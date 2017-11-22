@@ -16,18 +16,6 @@ class PlayerBottom extends Component {
 
         setInterval(() => {
             this.setState({profileImage: Variables.state.userProfileImage});
-            const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
-            if(storageRef.child('image-profile-uploaded')){
-                storageRef.getDownloadURL()
-                    .then(function(url) {
-                        if(url){
-                            Variables.state.userProfileImage = url;
-                        }
-                    }).catch(function(error) {
-                    //
-                });
-            }
-
         },500);
     }
 
@@ -137,7 +125,7 @@ class PlayerBottom extends Component {
                         <View style={{backgroundColor:'transparent', alignSelf: 'center', height: 45, width: 45  }}>
                             <Image
                                 style={{width: 45, height:45, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 5, borderWidth: 0.1, borderColor: 'transparent'}}
-                                source={{uri: this.state.profileImage}}
+                                source={{uri: Variables.state.userProfileImage}}
                             />
                         </View>
                     )
@@ -193,10 +181,29 @@ class PlayerBottom extends Component {
             )
         }
         else{
+
+            var fixedTitle = '';
+            if(Variables.state.podcastTitle.toString().length > 20 ){
+                fixedTitle = (Variables.state.podcastTitle.slice(0,20)+"...")
+            }
+            else{
+                fixedTitle = Variables.state.podcastTitle;
+            }
+
+            var fixedUsername = '';
+            if(profileName > 20){
+                fixedUsername =  (profileName.slice(0,20)+"...");
+            }
+            else{
+                fixedUsername = profileName;
+            }
+
+
+
             return (
                 <View style={{marginTop:6}}>
-                    <Text style={styles.playingText}>{Variables.state.podcastTitle}</Text>
-                    <Text style={styles.playingText2}>by {profileName}</Text>
+                    <Text style={styles.playingText}>{fixedTitle}</Text>
+                    <Text style={styles.playingText2}>by {fixedUsername}</Text>
                 </View>
             )
         }
@@ -313,8 +320,8 @@ class PlayerBottom extends Component {
         if (Variables.state.podcastTitle == ''){
             return(
                 <View style={{ marginTop: 20}}>
-                <ScrollView style={{marginHorizontal: 20, marginBottom: 20, backgroundColor: '#5757FF', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
-                    <Text style={{color: '#fff', fontSize: 20, fontFamily: 'HiraginoSans-W3', textAlign: 'center'  }}>Select a Podcast to start listening....</Text>
+                <ScrollView style={{marginHorizontal: 20, marginBottom: 15, backgroundColor: '#c1cde0', paddingHorizontal: 10, paddingVertical: 10, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                    <Text style={{color: '#fff', fontSize: 16, fontFamily: 'HiraginoSans-W6', textAlign: 'center'  }}>Select a Podcast to start listening....</Text>
                 </ScrollView>
                 </View>
             )
@@ -322,8 +329,8 @@ class PlayerBottom extends Component {
         else{
             return(
                 <View style={{ marginTop: 20}}>
-                <ScrollView style={{marginHorizontal: 20, marginBottom: 20, backgroundColor: '#5757FF', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
-                    <Text style={{color: '#fff', fontSize: 20, fontFamily: 'HiraginoSans-W3' }}>{Variables.state.podcastDescription}</Text>
+                <ScrollView style={{marginHorizontal: 20, marginBottom: 15, backgroundColor: '#c1cde0', paddingHorizontal: 10, paddingVertical: 10, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                    <Text style={{color: '#fff', fontSize: 16, fontFamily: 'HiraginoSans-W6' }}>{Variables.state.podcastDescription}</Text>
                 </ScrollView>
                 </View>
             )
@@ -494,8 +501,8 @@ class PlayerBottom extends Component {
 
     _renderCurrentTime() {
 
-        var num = ((podcastPlayer.currentTime / 1000) % 60).toString();
-        var num2 = ((podcastPlayer.currentTime / 1000) / 60).toString();
+        var num = ((Variables.state.currentTime / 1000) % 60).toString();
+        var num2 = ((Variables.state.currentTime / 1000) / 60).toString();
         var minutes = num2.slice(0,1);
         Number(minutes.slice(0,1));
 
@@ -505,7 +512,7 @@ class PlayerBottom extends Component {
                 <Text style={styles.podcastTextNum}></Text>
             );
         }
-        else if (podcastPlayer.currentTime == -1){
+        else if (Variables.state.currentTime == -1){
             return (
                 <Text style={styles.podcastTextNum}>0:00</Text>
             )
@@ -560,6 +567,7 @@ class PlayerBottom extends Component {
     }
 
     onProfilePress = () => {
+        Variables.state.browsingArtist = Variables.state.podcastArtist;
         this.setModalVisible(!this.state.modalVisible);
         this.props.navigator.push({
             screen: 'UserProfile',
@@ -736,7 +744,7 @@ class PlayerBottom extends Component {
                         />
 
                         <TouchableOpacity onPress={this.Close} style={{alignItems:'center'}}>
-                            <Icon style={{textAlign:'center', marginRight:0,marginLeft: 0,paddingTop: 0, fontSize: 35,color:'#BBBCCD' }} name="ios-arrow-dropdown">
+                            <Icon style={{textAlign:'center', marginRight:0,marginLeft: 0,paddingTop: 0, fontSize: 50,color:'#BBBCCD' }} name="ios-arrow-dropdown">
                             </Icon>
                         </TouchableOpacity>
 
@@ -798,7 +806,7 @@ class PlayerBottom extends Component {
                         </View>
 
 
-                        {this._renderSlider(podcastPlayer.currentTime)}
+                        {this._renderSlider(Variables.state.currentTime)}
 
 
                         <View style={{flexDirection: 'row', flex: 1, marginTop: 10}}>
