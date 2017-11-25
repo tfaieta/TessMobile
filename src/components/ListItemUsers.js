@@ -16,6 +16,7 @@ class ListItemUsers extends Component {
 
     componentWillMount() {
         const {podcastTitle} = this.props.podcast;
+        const {podcastArtist} = this.props.podcast;
         const {currentUser} = firebase.auth();
         if (!firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle)) {
             this.setState({
@@ -27,6 +28,18 @@ class ListItemUsers extends Component {
                 favorite: false
             });
         }
+
+
+
+        let profileImage = '';
+        const storageRef = firebase.storage().ref(`/users/${podcastArtist}/image-profile-uploaded`);
+        storageRef.getDownloadURL()
+            .then(function(url) {
+                profileImage = url;
+            }).catch(function(error) {
+            //
+        });
+        setTimeout(() => {this.setState({profileImage: profileImage})},1000);
     }
 
     componentWillUpdate() {
@@ -153,19 +166,6 @@ class ListItemUsers extends Component {
         else{
             fixedUsername = this.state.profileName;
         }
-
-
-
-
-        let profileImage = '';
-        const storageRef = firebase.storage().ref(`/users/${podcastArtist}/image-profile-uploaded`);
-        storageRef.getDownloadURL()
-            .then(function(url) {
-                profileImage = url;
-            }).catch(function(error) {
-            //
-        });
-        setTimeout(() => {this.setState({profileImage: profileImage})},1000);
 
 
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet, TouchableOpacity} from 'react-native';
+import { Text, TextInput, View, StyleSheet, TouchableOpacity, ActivityIndicator} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {podTime, totalTime} from './Record';
 import Variables, {podcastPlayer} from './Variables';
@@ -47,6 +47,7 @@ class RecordInfo extends Component{
         isPlaying:false,
         interval: null,
         currentTime: 0,
+        loading: false
     };
 
     componentWillMount(){
@@ -136,6 +137,7 @@ class RecordInfo extends Component{
             }
         }else {
 
+            this.setState({loading: true});
             this.props.podcastCreate({podcastTitle, podcastDescription, podcastCategory, podcastArtist, navigator});
         }
     };
@@ -218,6 +220,25 @@ class RecordInfo extends Component{
 
 
 
+    _renderUploadButton(loading){
+        if(loading){
+            return(
+                <TouchableOpacity style={styles.buttonUpload} onPress={this.Upload}>
+                    <ActivityIndicator style={{paddingVertical: 10}} color="#fff" size ="large" />
+                </TouchableOpacity>
+            )
+        }
+        else{
+            return(
+                <TouchableOpacity style={styles.buttonUpload} onPress={this.Upload}>
+                    <Text  style={styles.contentTitle}>Upload</Text>
+                </TouchableOpacity>
+            )
+        }
+    }
+
+
+
     render() {
 
         return (
@@ -293,7 +314,7 @@ class RecordInfo extends Component{
                     value={this.props.podcastDescription}
                     onChangeText={text => this.props.podcastUpdate({prop: 'podcastDescription', value: text})}
                     multiline={true}
-                    maxLength={500}
+                    maxLength={200}
                 />
 
 
@@ -361,9 +382,7 @@ class RecordInfo extends Component{
 
 
 
-                <TouchableOpacity style={styles.buttonUpload} onPress={this.Upload}>
-                <Text  style={styles.contentTitle}>Upload</Text>
-                </TouchableOpacity>
+                    {this._renderUploadButton(this.state.loading)}
 
 
 

@@ -289,7 +289,7 @@ class PlayerBottom extends Component {
 
             if (this.state.profileImage == ''){
                 return(
-                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, height: 160, width: 160, borderRadius:10, borderWidth:8, borderColor:'rgba(320,320,320,0.8)'  }}>
+                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center',  height: 160, width: 160, borderRadius:10, borderWidth:8, borderColor:'rgba(320,320,320,0.8)'  }}>
                         <Icon style={{
                             textAlign: 'center',
                             fontSize: 100,
@@ -302,7 +302,7 @@ class PlayerBottom extends Component {
             }
             else{
                 return(
-                    <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop: 20, height: 160, width: 160  }}>
+                    <View style={{backgroundColor:'transparent', alignSelf: 'center', height: 160, width: 160  }}>
                         <Image
                             style={{width: 160, height:160,  alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
                             source={{uri: this.state.profileImage}}
@@ -320,8 +320,8 @@ class PlayerBottom extends Component {
         if (Variables.state.podcastTitle == ''){
             return(
                 <View style={{ marginTop: 20}}>
-                <ScrollView style={{marginHorizontal: 20, marginBottom: 15, backgroundColor: '#c1cde0', paddingHorizontal: 10, paddingVertical: 10, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
-                    <Text style={{color: '#fff', fontSize: 16, fontFamily: 'HiraginoSans-W6', textAlign: 'center'  }}>Select a Podcast to start listening....</Text>
+                <ScrollView style={{height: 80, marginHorizontal: 20, backgroundColor: '#c1cde0', paddingHorizontal: 10, paddingVertical: 10, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                    <Text style={{color: '#fff', fontSize: 16, paddingBottom: 15, fontFamily: 'HiraginoSans-W6', textAlign: 'center'  }}>Select a Podcast to start listening....</Text>
                 </ScrollView>
                 </View>
             )
@@ -329,8 +329,8 @@ class PlayerBottom extends Component {
         else{
             return(
                 <View style={{ marginTop: 20}}>
-                <ScrollView style={{marginHorizontal: 20, marginBottom: 15, backgroundColor: '#c1cde0', paddingHorizontal: 10, paddingVertical: 10, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
-                    <Text style={{color: '#fff', fontSize: 16, fontFamily: 'HiraginoSans-W6' }}>{Variables.state.podcastDescription}</Text>
+                <ScrollView style={{height: 80, marginHorizontal: 20,  backgroundColor: '#c1cde0', paddingHorizontal: 10, paddingVertical: 10, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                    <Text style={{color: '#fff', fontSize: 16, paddingBottom: 15, fontFamily: 'HiraginoSans-W6' }}>{Variables.state.podcastDescription}</Text>
                 </ScrollView>
                 </View>
             )
@@ -743,7 +743,7 @@ class PlayerBottom extends Component {
                             hidden={true}
                         />
 
-                        <TouchableOpacity onPress={this.Close} style={{alignItems:'center'}}>
+                        <TouchableOpacity onPress={this.Close} style={{alignItems:'center', flex:1}}>
                             <Icon style={{textAlign:'center', marginRight:0,marginLeft: 0,paddingTop: 0, fontSize: 50,color:'#BBBCCD' }} name="ios-arrow-dropdown">
                             </Icon>
                         </TouchableOpacity>
@@ -755,7 +755,7 @@ class PlayerBottom extends Component {
 
 
 
-                        <View style={{marginTop: 20}}>
+                        <View style={{marginTop: 15, flex:1}}>
                                 {this._renderPodcastTitle(Variables.state.isPlaying)}
                                 <TouchableOpacity style={{alignSelf: 'center'}}>
                                     {this._renderPodcastArtist(Variables.state.isPlaying)}
@@ -793,7 +793,7 @@ class PlayerBottom extends Component {
                         </View>
 
 
-                        <View style={styles.centerContainer}>
+                        <View style={styles.centerContainerPlayer}>
 
                             <View style={styles.leftContainer}>
                                 {this._renderCurrentTime()}
@@ -976,11 +976,16 @@ class PlayerBottom extends Component {
         marginTop:5,
         flexDirection: 'row',
     },
+    centerContainerPlayer: {
+
+        flexDirection: 'row',
+    },
     centerContainerButtons: {
+        flex:1,
         flexDirection: 'row',
         paddingTop: 2,
         paddingBottom: 5,
-        marginTop: 30
+        marginTop: 50
     },
     rightContainer: {
         flex: 1,
@@ -998,6 +1003,7 @@ class PlayerBottom extends Component {
 
         containerModal:{
             flex: 1,
+            flexDirection: 'column',
             backgroundColor: '#fff',
             marginTop: 5,
             marginHorizontal: 5,
@@ -1031,11 +1037,12 @@ class PlayerBottom extends Component {
 
         podcastText:{
             color: '#2A2A30',
-            fontSize: 20,
+            fontSize: 18,
             marginTop: 5,
             flexDirection: 'row',
             backgroundColor: 'transparent',
             alignSelf: 'center',
+            textAlign: 'center',
             fontFamily: 'HiraginoSans-W6',
         },
         podcastTextNum:{
@@ -1071,7 +1078,7 @@ class PlayerBottom extends Component {
         },
         podcastTextArtist:{
             color:'#2A2A30',
-            fontSize: 20,
+            fontSize: 18,
             flexDirection: 'row',
             backgroundColor: 'transparent',
             alignSelf: 'center',

@@ -24,10 +24,10 @@ export  default class Login extends Component{
 
     render() {
         return (
-            <View>
+            <View >
                 <StatusBar hidden={true} />
 
-            <View style={styles.container}>
+            <View >
             <AppIntro
                 horizontal={false}
                     showsButtons={false}
@@ -104,22 +104,19 @@ export  default class Login extends Component{
 
 
 
-            <View style={{marginTop: 550, marginRight: 40}}>
+                <View style={{flex:1, flexDirection: 'row', alignItems: 'flex-end'}}>
+
+                    <View style={{flex:1, marginRight: 10 , marginBottom: 10 , flexDirection: 'column', alignItems: 'flex-end'}}>
+                        <TouchableOpacity onPress={this._handleButtonPressLogin} style = {{ width: 75, height: 75, backgroundColor: 'rgba(151,135,255,0.16)',borderRadius: 40, borderColor:  'rgba(151,135,255,0)', borderWidth: 2.5, alignItems: 'center'}}>
+                            <Image
+                                style={styles.logo}
+                                source={require('tess/src/images/Circle-button.png')}
+                            />
+                        </TouchableOpacity>
+                    </View>
 
 
-
-                    <TouchableOpacity onPress={this._handleButtonPressLogin} style = {{ marginLeft: 275, width: 75, height: 75, backgroundColor: 'rgba(151,135,255,0.16)',borderRadius: 40, borderColor:  'rgba(151,135,255,0)', borderWidth: 2.5, alignItems: 'center'}}>
-                        <Image
-                            style={styles.logo}
-                            source={require('tess/src/images/Circle-button.png')}
-                        />
-                    </TouchableOpacity>
-
-
-
-
-
-            </View>
+                </View>
 
 
             </View>

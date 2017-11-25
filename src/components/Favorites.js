@@ -32,7 +32,7 @@ class Favorites extends Component{
             loading: true,
             favorite: true
         };
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts)})},500)
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts)})},1000)
     }
 
 

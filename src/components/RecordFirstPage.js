@@ -149,7 +149,8 @@ const styles = StyleSheet.create({
 
 
     buttonContainer: {
-        marginTop: 50,
+        flex:1,
+        marginTop: 10
     },
 
     header: {

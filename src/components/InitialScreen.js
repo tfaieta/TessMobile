@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {View, Image, StatusBar} from 'react-native';
+import {View, Image, StatusBar, ActivityIndicator} from 'react-native';
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
+
 
 import { Navigation } from 'react-native-navigation';
 
@@ -158,13 +159,15 @@ export default class InitialScreen extends Component{
 
     render() {
         return (
-            <View>
+            <View style={{flex:1, backgroundColor: '#fff'}}>
                 <StatusBar hidden={true} />
 
                 <Image
                     style={{ alignSelf: 'center', height: 700, width:400, opacity: 1}}
                     source={require('tess/src/images/initialScreenSplash.png')}
-                />
+                >
+                <ActivityIndicator style={{marginTop:450}} size="large" color='#856cff'/>
+                </Image>
 
             </View>
         );

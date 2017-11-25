@@ -33,10 +33,9 @@ class FollowedContent extends Component{
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed),
             loading: true,
-            profileImage: ''
         };
 
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed)})},500)
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed)})},1000)
     }
 
     state={
@@ -45,8 +44,8 @@ class FollowedContent extends Component{
 
 
 
-    _renderProfileImage(){
-        if(this.state.profileImage == ''){
+    _renderProfileImage(profileImage){
+        if(profileImage == ''){
             return(
                 <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginBottom:10, marginLeft:10, height: 60, width: 60, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
                     <Icon style={{
@@ -64,7 +63,7 @@ class FollowedContent extends Component{
                 <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginBottom:10, marginLeft:10, height: 60, width: 60, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
                     <Image
                         style={{width: 60, height:60, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 5, borderWidth: 0.1, borderColor: 'transparent'}}
-                        source={{uri: this.state.profileImage}}
+                        source={{uri: profileImage}}
                     />
                 </View>
             )
@@ -77,24 +76,12 @@ class FollowedContent extends Component{
 
     renderRow(rowData){
 
-
         let profileName =  rowData;
         firebase.database().ref(`/users/${rowData}/username`).orderByChild("username").on("value", function (snap) {
             if (snap.val()) {
                 profileName = snap.val().username;
             }
         });
-
-
-        let profileImage = '';
-        const storageRef = firebase.storage().ref(`/users/${rowData}/image-profile-uploaded`);
-        storageRef.getDownloadURL()
-            .then(function(url) {
-                profileImage = url;
-            }).catch(function(error) {
-            //
-        });
-
 
 
 
