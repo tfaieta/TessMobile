@@ -144,6 +144,7 @@ class PlayerBottom extends Component {
                             marginRight: 0,
                             marginLeft: 0,
                             paddingTop: 0,
+                            paddingRight:5,
                             fontSize: 30,
                             color: '#FFF'
                         }} name="md-pause">
@@ -159,6 +160,7 @@ class PlayerBottom extends Component {
                             marginRight: 0,
                             marginLeft: 0,
                             paddingTop: 0,
+                            paddingRight:5,
                             fontSize: 30,
                             color: '#FFF'
                         }} name="md-play">
@@ -183,16 +185,16 @@ class PlayerBottom extends Component {
         else{
 
             var fixedTitle = '';
-            if(Variables.state.podcastTitle.toString().length > 20 ){
-                fixedTitle = (Variables.state.podcastTitle.slice(0,20)+"...")
+            if(Variables.state.podcastTitle.toString().length > 17 ){
+                fixedTitle = (Variables.state.podcastTitle.slice(0,17)+"...")
             }
             else{
                 fixedTitle = Variables.state.podcastTitle;
             }
 
             var fixedUsername = '';
-            if(profileName > 20){
-                fixedUsername =  (profileName.slice(0,20)+"...");
+            if(profileName > 17){
+                fixedUsername =  (profileName.slice(0,17)+"...");
             }
             else{
                 fixedUsername = profileName;
@@ -201,7 +203,7 @@ class PlayerBottom extends Component {
 
 
             return (
-                <View style={{marginTop:6}}>
+                <View style={{marginTop:4}}>
                     <Text style={styles.playingText}>{fixedTitle}</Text>
                     <Text style={styles.playingText2}>by {fixedUsername}</Text>
                 </View>
@@ -248,7 +250,7 @@ class PlayerBottom extends Component {
         if (isPlaying) {
             return (
                 <TouchableOpacity onPress={this.pause}>
-                    <Icon style={{textAlign:'center',paddingHorizontal: 20, fontSize: 50, marginLeft: 20, color:'#2A2A30' }}  name="ios-pause">
+                    <Icon style={{textAlign:'center',paddingHorizontal: 20, fontSize: 50, color:'#2A2A30' }}  name="ios-pause">
                     </Icon>
                 </TouchableOpacity>
             );
@@ -256,7 +258,7 @@ class PlayerBottom extends Component {
         else {
             return (
                 <TouchableOpacity onPress={this.play}>
-                    <Icon style={{textAlign:'center',paddingHorizontal: 20, fontSize: 50, marginLeft: 20, color:'#2A2A30' }}  name="md-play">
+                    <Icon style={{textAlign:'center',paddingHorizontal: 20, fontSize: 50, color:'#2A2A30' }}  name="md-play">
                     </Icon>
                 </TouchableOpacity>
             );
@@ -289,12 +291,12 @@ class PlayerBottom extends Component {
 
             if (this.state.profileImage == ''){
                 return(
-                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center',  height: 160, width: 160, borderRadius:10, borderWidth:8, borderColor:'rgba(320,320,320,0.8)'  }}>
+                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop:10, height: 140, width: 140, borderRadius:10, borderWidth:8, borderColor:'rgba(320,320,320,0.8)'  }}>
                         <Icon style={{
                             textAlign: 'center',
-                            fontSize: 100,
+                            fontSize: 90,
                             color: 'white',
-                            marginTop: 25
+                            marginTop: 20
                         }} name="md-person">
                         </Icon>
                     </View>
@@ -302,9 +304,9 @@ class PlayerBottom extends Component {
             }
             else{
                 return(
-                    <View style={{backgroundColor:'transparent', alignSelf: 'center', height: 160, width: 160  }}>
+                    <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop:10, height: 140, width: 140  }}>
                         <Image
-                            style={{width: 160, height:160,  alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
+                            style={{width: 140, height:140,  alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
                             source={{uri: this.state.profileImage}}
                         />
                     </View>
@@ -319,8 +321,8 @@ class PlayerBottom extends Component {
     _renderDescription(){
         if (Variables.state.podcastTitle == ''){
             return(
-                <View style={{ marginTop: 20}}>
-                <ScrollView style={{height: 80, marginHorizontal: 20, backgroundColor: '#c1cde0', paddingHorizontal: 10, paddingVertical: 10, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                <View style={{ marginTop: 10}}>
+                <ScrollView style={{height: 60, marginHorizontal: 20, backgroundColor: '#c1cde0', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
                     <Text style={{color: '#fff', fontSize: 16, paddingBottom: 15, fontFamily: 'HiraginoSans-W6', textAlign: 'center'  }}>Select a Podcast to start listening....</Text>
                 </ScrollView>
                 </View>
@@ -328,8 +330,8 @@ class PlayerBottom extends Component {
         }
         else{
             return(
-                <View style={{ marginTop: 20}}>
-                <ScrollView style={{height: 80, marginHorizontal: 20,  backgroundColor: '#c1cde0', paddingHorizontal: 10, paddingVertical: 10, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                <View style={{ marginTop: 10}}>
+                <ScrollView style={{height: 60, marginHorizontal: 20,  backgroundColor: '#c1cde0', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
                     <Text style={{color: '#fff', fontSize: 16, paddingBottom: 15, fontFamily: 'HiraginoSans-W6' }}>{Variables.state.podcastDescription}</Text>
                 </ScrollView>
                 </View>
@@ -755,7 +757,7 @@ class PlayerBottom extends Component {
 
 
 
-                        <View style={{marginTop: 15, flex:1}}>
+                        <View style={{marginTop: 10, flex:1}}>
                                 {this._renderPodcastTitle(Variables.state.isPlaying)}
                                 <TouchableOpacity style={{alignSelf: 'center'}}>
                                     {this._renderPodcastArtist(Variables.state.isPlaying)}
@@ -769,9 +771,9 @@ class PlayerBottom extends Component {
 
                         <View style={styles.centerContainerButtons}>
 
-                            <View style={styles.leftContainer}>
+                            <View style={styles.leftContainerP}>
                                 <TouchableOpacity>
-                                    <Icon style={{textAlign:'center', marginRight:0,paddingLeft: 80,paddingTop: 0, fontSize: 25,color:'#2A2A30' }} name="md-rewind">
+                                    <Icon style={{flex:1, textAlign:'center', marginRight:0,paddingLeft: 0,paddingTop: 0, fontSize: 25,color:'#2A2A30' }} name="md-rewind">
                                     </Icon>
                                 </TouchableOpacity>
                             </View>
@@ -782,9 +784,9 @@ class PlayerBottom extends Component {
                                 </TouchableOpacity>
                             </View>
 
-                            <View style={styles.rightContainer}>
-                                <TouchableOpacity>
-                                    <Icon style={{textAlign:'center', paddingRight: 80,marginLeft: 0,paddingTop: 0, fontSize: 25,color:'#2A2A30' }} name="md-fastforward">
+                            <View style={styles.rightContainerP}>
+                                <TouchableOpacity >
+                                    <Icon style={{flex:1, textAlign:'center', paddingRight: 0,marginLeft: 0,paddingTop: 0, fontSize: 25,color:'#2A2A30' }} name="md-fastforward">
                                     </Icon>
                                 </TouchableOpacity>
                             </View>
@@ -809,7 +811,7 @@ class PlayerBottom extends Component {
                         {this._renderSlider(Variables.state.currentTime)}
 
 
-                        <View style={{flexDirection: 'row', flex: 1, marginTop: 10}}>
+                        <View style={{flexDirection: 'row', flex: 1, marginTop: 0}}>
 
                             <View style={{alignItems:'flex-start', flex:1}}>
                                 <TouchableOpacity>
@@ -972,28 +974,41 @@ class PlayerBottom extends Component {
         justifyContent: 'center',
         alignItems:'flex-start',
     },
+        leftContainerP: {
+            flex:1,
+            marginTop:10,
+            paddingLeft: 0,
+            justifyContent: 'center',
+            alignItems:'flex-end',
+        },
     centerContainer: {
         marginTop:5,
         flexDirection: 'row',
     },
-    centerContainerPlayer: {
 
+    centerContainerPlayer: {
         flexDirection: 'row',
     },
     centerContainerButtons: {
         flex:1,
         flexDirection: 'row',
         paddingTop: 2,
-        paddingBottom: 5,
-        marginTop: 50
+        paddingBottom: 2,
+        marginTop: 80
     },
     rightContainer: {
         flex: 1,
-        paddingRight: 10,
+        paddingRight: 0,
         justifyContent: 'center',
         alignItems: 'flex-end',
-
     },
+        rightContainerP: {
+            flex: 1,
+            marginTop:10,
+            paddingRight: 0,
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+        },
 
         container:{
             flex: 1,

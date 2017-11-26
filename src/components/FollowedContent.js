@@ -76,7 +76,7 @@ class FollowedContent extends Component{
 
     renderRow(rowData){
 
-        let profileName =  rowData;
+        let profileName =  'loading...';
         firebase.database().ref(`/users/${rowData}/username`).orderByChild("username").on("value", function (snap) {
             if (snap.val()) {
                 profileName = snap.val().username;

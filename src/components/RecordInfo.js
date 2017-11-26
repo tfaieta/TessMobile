@@ -180,7 +180,7 @@ class RecordInfo extends Component{
                 step={0}
                 minimumValue={0}
                 maximumValue= { Math.abs( podcastPlayer.duration)}
-                value={ currentTime }
+                value={ Math.abs(currentTime) }
                 onValueChange={currentTime => podcastPlayer.seek(currentTime)}
             />
         )
@@ -269,11 +269,11 @@ class RecordInfo extends Component{
 
 
 
-                    <View style={{flexDirection: 'row', paddingBottom: 30, marginTop: 20  }}>
+                    <View style={{flexDirection: 'row', paddingBottom: 30, marginTop: 10  }}>
                         <View style={{marginTop: 10, alignItems: 'flex-start'}}>
                                 {this._renderPlayButton(this.state.isPlaying)}
                         </View>
-                        <View style={{justifyContent: 'center', alignItems: 'center', marginHorizontal: 20}}>
+                        <View style={{justifyContent: 'center', alignItems: 'center', marginHorizontal: 15}}>
                             {this._renderSlider(Variables.state.currentTime)}
                         </View>
                         <View style={{justifyContent: 'center', alignItems: 'flex-end',}}>
@@ -331,9 +331,9 @@ class RecordInfo extends Component{
                             backgroundColor: 'transparent',
                         }} name="md-folder">
                         </Icon>
-                        <Text style={{ color: '#fff', marginTop: 10, fontSize: 18, marginLeft: 15, fontFamily: 'Hiragino Sans', }}>Categories</Text>
+                        <Text style={{ color: '#fff', marginTop: 10, fontSize: 16, marginLeft: 10, fontFamily: 'Hiragino Sans', }}>Categories</Text>
                         <Text
-                            style={{ color: '#BBBCCD', marginTop: 10, fontSize: 18, marginLeft: 50, fontFamily: 'Hiragino Sans', }}
+                            style={{ color: '#BBBCCD', marginTop: 10, fontSize: 16, marginLeft: 30, fontFamily: 'Hiragino Sans', }}
                             onPress={() => {
                                 this.refs.picker1.show();
                             }}
@@ -373,18 +373,14 @@ class RecordInfo extends Component{
                     }}
                     />
 
-                    <View style={{height:1, marginVertical: 25, backgroundColor: '#fff', marginHorizontal:15, borderRadius:10, borderWidth:0.1}}/>
+                    <View style={{height:1, marginVertical: 15, backgroundColor: '#fff', marginHorizontal:15, borderRadius:10, borderWidth:0.1}}/>
 
 
 
 
                 <View style={styles.buttonContainer}>
 
-
-
                     {this._renderUploadButton(this.state.loading)}
-
-
 
                 <TouchableOpacity style={styles.buttonCancel} onPress={this.Cancel}>
                     <Text  style={styles.contentTitle}>Cancel</Text>
@@ -426,7 +422,7 @@ const styles = StyleSheet.create({
         color: '#FFF',
         fontSize: 18,
         marginTop:10,
-        paddingBottom: 16,
+        paddingBottom: 10,
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Hiragino Sans',
@@ -455,7 +451,7 @@ const styles = StyleSheet.create({
     input2: {
         height: 120,
         backgroundColor: 'transparent',
-        marginBottom: 10,
+        marginBottom: 0,
         color:'#FFF',
         paddingHorizontal: 10,
         fontSize: 18,
@@ -470,21 +466,21 @@ const styles = StyleSheet.create({
     buttonUpload: {
         backgroundColor: '#5757FF',
         alignItems: 'center',
-        paddingTop: 15,
+        paddingTop: 5,
         marginHorizontal: 15,
         borderWidth:0.1,
         borderRadius: 10,
-        marginBottom:10
+        marginBottom:5
     },
 
     buttonCancel: {
         backgroundColor: '#ee617c',
         alignItems: 'center',
-        paddingTop: 15,
+        paddingTop: 5,
         marginHorizontal: 15,
         borderWidth:0.1,
         borderRadius: 10,
-        marginBottom: 10
+        marginBottom: 5
     },
 
     buttonContainer: {
@@ -524,7 +520,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     sliderContainer: {
-        width: 230,
+        width: 190,
         height: 50,
         alignSelf: 'center'
     },

@@ -51,7 +51,7 @@ class CreateAccount extends Component {
     renderButton() {
         if (this.props.loading) {
             return(
-            <View style={{paddingTop: 30}} >
+            <View style={{paddingTop: 20}} >
                 <Spinner size="large" />
             </View>
             )
@@ -74,7 +74,7 @@ class CreateAccount extends Component {
                 colors={['#5555FF', '#9787FF' ]}
                 style={styles.container}>
 
-                <View style={{flexDirection: 'row',  paddingVertical:5, marginTop:10, marginBottom: 20   }}>
+                <View style={{flexDirection: 'row',  paddingVertical:5, marginTop:10, marginBottom: 5   }}>
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
@@ -228,10 +228,10 @@ const styles = {
     errorTextStyle: {
         fontStyle: 'normal',
         fontFamily: 'Hiragino Sans',
-        fontSize: 18,
+        fontSize: 16,
         alignSelf: 'center',
         color: 'rgba(300,10,10,1)',
-        marginTop: 15,
+        marginTop: 5,
         backgroundColor: 'transparent'
     },
 
@@ -257,8 +257,6 @@ const styles = {
     buttonContainer: {
         paddingVertical: 15,
         paddingHorizontal: 15,
-        marginTop: -10,
-        marginBottom:5,
         borderWidth: 2,
         borderStyle: 'solid',
         borderRadius: 10,

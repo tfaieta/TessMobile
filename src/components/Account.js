@@ -23,12 +23,14 @@ import Variables from './Variables';
 class Account extends Component {
 
     componentWillMount(){
+        Variables.state.myPodcasts = [];
         const {currentUser} = firebase.auth();
         const refMy = firebase.database().ref(`podcasts/`);
         const storageRef = firebase.storage().ref(`/users/${currentUser.uid}/image-profile-uploaded`);
 
 
         refMy.on("value", function (snapshot) {
+            Variables.state.myPodcasts = [];
             snapshot.forEach(function (data) {
                 if(currentUser.uid == data.val().podcastArtist) {
                     Variables.state.myPodcasts.push(data.val());
@@ -131,13 +133,24 @@ class Account extends Component {
         }
     }
 
-    onGarbagePress(){
+    onGarbagePress(user, title){
         Alert.alert(
             'Are you sure you want to delete?',
             '',
             [
                 {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                {text: 'Yes', onPress: () => console.warn('delete')
+                {text: 'Yes', onPress: () => {
+
+                    firebase.storage().ref(`/users/${user}/${title}`).delete();
+                    firebase.database().ref(`/podcasts`).on("value", function (snapshot) {
+                        snapshot.forEach(function (data) {
+                            if(data.val().podcastTitle == title && data.val().podcastArtist == user){
+                                data.val().delete();
+                            }
+                        })
+
+                    });
+                  }
                 },
             ],
             { cancelable: false }
@@ -148,15 +161,39 @@ class Account extends Component {
 
     renderRow = (rowData) => {
 
+        var fixedUsername = rowData.podcastArtist;
         let profileName = rowData.podcastArtist;
         firebase.database().ref(`/users/${rowData.podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
             if (snap.val()) {
                 profileName = snap.val().username;
+
+                if(profileName > 15){
+                    fixedUsername =  (profileName.slice(0,15)+"...");
+                }
+                else{
+                    fixedUsername = profileName;
+                }
             }
             else {
                 profileName = rowData.podcastArtist;
+
+                if(profileName > 15){
+                    fixedUsername =  (profileName.slice(0,15)+"...");
+                }
+                else{
+                    fixedUsername = profileName;
+                }
             }
         });
+
+
+        var fixedTitle = '';
+        if(rowData.podcastTitle.toString().length > 19 ){
+            fixedTitle = (rowData.podcastTitle.slice(0,19)+"...")
+        }
+        else{
+            fixedTitle = rowData.podcastTitle;
+        }
 
 
         const {currentUser} = firebase.auth();
@@ -213,17 +250,43 @@ class Account extends Component {
 
 
                     <View style={styles.leftContainer}>
-                        <Text style={styles.title}>   {rowData.podcastTitle}</Text>
-                        <Text style={styles.artistTitle}>{profileName}</Text>
+                        <Text style={styles.title}>   {fixedTitle}</Text>
+                        <Text style={styles.artistTitle}>{fixedUsername}</Text>
                     </View>
 
 
                     <View style={styles.rightContainer}>
-                        <Icon onPress={this.onGarbagePress} style={{
+                        <Icon onPress={() => {
+
+                            Alert.alert(
+                                'Are you sure you want to delete?',
+                                '',
+                                [
+                                    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                                    {text: 'Yes', onPress: () => {
+
+                                        firebase.storage().ref(`/users/${rowData.podcastArtist}/${rowData.podcastTitle}`).delete();
+                                        firebase.database().ref(`/podcasts`).on("value", function (snapshot) {
+                                            snapshot.forEach(function (data) {
+                                                if(data.val().podcastTitle == rowData.podcastTitle && data.val().podcastArtist == rowData.podcastArtist){
+                                                    data.ref.remove()
+                                                }
+                                            })
+
+                                        });
+                                    }
+                                    },
+                                ],
+                                { cancelable: false }
+                            )
+
+
+
+                        }} style={{
                             textAlign: 'left',
-                            marginLeft: 20,
+                            marginLeft: 0,
                             paddingRight: 8,
-                            fontSize: 35,
+                            fontSize: 30,
                             color: '#5757FF',
                         }} name="md-trash">
                         </Icon>
@@ -410,7 +473,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     leftContainer: {
-        flex: 1,
+        flex: 7,
         paddingLeft: 2,
         justifyContent: 'center',
         alignItems:'flex-start',

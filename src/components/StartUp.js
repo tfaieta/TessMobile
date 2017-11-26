@@ -46,7 +46,7 @@ export  default class Login extends Component{
                     <View style={styles.linearGradient} level={0}>
                     </View>
                     <Image
-                        style={{width: 315, height:310, position: 'absolute', alignSelf: 'flex-end', opacity: 1}}
+                        style={{width: 294, height:290, position: 'absolute', alignSelf: 'flex-end', opacity: 1}}
                         source={require('tess/src/images/woman-listening-music.png')}
                     />
 
@@ -139,7 +139,6 @@ const styles = StyleSheet.create({
     },
     textContainer: {
         flex: 1,
-        marginTop:10
     },
     logo: {
         marginRight:10,
@@ -187,12 +186,11 @@ const styles = StyleSheet.create({
 
     textforSlide1: {
         color: '#2A2A30',
-        fontSize: 42,
+        fontSize: 38,
         textAlign: 'left',
         fontFamily: 'HiraginoSans-W3',
         marginLeft: 30,
         marginRight: 30,
-        paddingTop: 20,
         marginHorizontal: -250,
     },
     smallText: {
@@ -202,7 +200,6 @@ const styles = StyleSheet.create({
         fontFamily: 'HiraginoSans-W3',
         marginLeft: 30,
         marginRight: 30,
-        marginTop:10
     },
 
 

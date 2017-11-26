@@ -378,7 +378,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         marginTop:60,
-        fontSize: 35,
+        fontSize: 30,
         padding: 8,
         paddingHorizontal: 50,
         color: "#FFF",
@@ -418,7 +418,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
-        fontSize: 22,
+        fontSize: 20,
         backgroundColor: 'transparent',
     },
 

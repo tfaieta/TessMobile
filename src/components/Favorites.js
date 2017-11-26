@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { View, StyleSheet, ListView, TouchableOpacity, Text, Alert} from 'react-native';
+import { View, StyleSheet, ListView, TouchableOpacity, Text, Alert, ScrollView} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { connect } from 'react-redux';
 import { podcastFetchFavs } from "../actions/PodcastActions"
@@ -61,15 +61,39 @@ class Favorites extends Component{
 
 
     renderRow(rowData) {
-        let profileName = rowData.podcastArtist;
+        var fixedUsername = 'loading...';
+        let profileName = 'loading...';
         firebase.database().ref(`/users/${rowData.podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
             if (snap.val()) {
                 profileName = snap.val().username;
+
+                if(profileName > 15){
+                    fixedUsername =  (profileName.slice(0,15)+"...");
+                }
+                else{
+                    fixedUsername = profileName;
+                }
             }
             else {
-                profileName = rowData;
+                profileName = rowData.podcastArtist;
+
+                if(profileName > 15){
+                    fixedUsername =  (profileName.slice(0,15)+"...");
+                }
+                else{
+                    fixedUsername = profileName;
+                }
             }
         });
+
+
+        var fixedTitle = '';
+        if(rowData.podcastTitle.toString().length > 19 ){
+            fixedTitle = (rowData.podcastTitle.slice(0,19)+"...")
+        }
+        else{
+            fixedTitle = rowData.podcastTitle;
+        }
 
         const {currentUser} = firebase.auth();
         const podcastTitle  = rowData.podcastTitle;
@@ -128,7 +152,7 @@ class Favorites extends Component{
 
 
                         <View style={styles.leftContainer}>
-                            <Text style={styles.title}>   {rowData.podcastTitle}</Text>
+                            <Text style={styles.title}>   {fixedTitle}</Text>
                             <Text style={styles.artistTitle}>{profileName}</Text>
                         </View>
 
@@ -136,9 +160,8 @@ class Favorites extends Component{
                         <View style={styles.rightContainer}>
                             <Icon onPress={this.onGarbagePress} style={{
                                 textAlign: 'left',
-                                marginLeft: 20,
                                 paddingRight: 8,
-                                fontSize: 35,
+                                fontSize: 30,
                                 color: '#5757FF',
                             }} name="md-trash">
                             </Icon>
@@ -198,7 +221,7 @@ class Favorites extends Component{
 
 
                         <View style={styles.leftContainer}>
-                            <Text style={styles.title}>   {rowData.podcastTitle}</Text>
+                            <Text style={styles.title}>   {fixedTitle}</Text>
                             <Text style={styles.artistTitle}>{profileName}</Text>
                         </View>
 
@@ -220,9 +243,8 @@ class Favorites extends Component{
                                     )
                             }} style={{
                                 textAlign: 'left',
-                                marginLeft: 20,
                                 paddingRight: 8,
-                                fontSize: 35,
+                                fontSize: 30,
                                 color: '#5757FF',
                             }} name="md-add">
                             </Icon>
@@ -263,11 +285,20 @@ class Favorites extends Component{
 
 
 
+                <ScrollView>
+
                     <ListView
                         enableEmptySections
                         dataSource={this.state.dataSource}
                         renderRow={this.renderRow}
                     />
+
+
+                    <View style={{paddingBottom:120}}>
+
+                    </View>
+
+                </ScrollView>
 
 
 
@@ -378,7 +409,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     leftContainer: {
-        flex: 1,
+        flex: 7,
         paddingLeft: 2,
         justifyContent: 'center',
         alignItems:'flex-start',

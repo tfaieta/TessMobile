@@ -99,7 +99,7 @@ class Home extends Component{
                             <Text style={styles.title}>New Releases</Text>
                             </View>
                             <View style={{alignSelf:'flex-end'}}>
-                                <TouchableOpacity onPress={this.pressSeeAllNew} style={{marginLeft: 135}}>
+                                <TouchableOpacity onPress={this.pressSeeAllNew} style={{marginLeft: 80, marginTop:3}}>
                                     <Text style={styles.viewAll}>View all</Text>
                                 </TouchableOpacity>
                             </View>
@@ -161,7 +161,7 @@ class Home extends Component{
                         <Text style={styles.title}>Selected by Tess</Text>
                     </View>
                     <View style={{alignSelf:'flex-end'}}>
-                        <TouchableOpacity style={{marginLeft: 105}}>
+                        <TouchableOpacity style={{marginLeft: 50, marginTop:3}}>
                             <Text style={styles.viewAll}>View all</Text>
                         </TouchableOpacity>
                     </View>

@@ -67,7 +67,7 @@ class Login extends Component {
 
 
                 <Image
-                    style={{marginTop:-15, width: 137, height: 154, marginBottom: 80, alignSelf: 'center'}}
+                    style={{ width: 137, height: 154, marginBottom: 40, alignSelf: 'center'}}
                     source={require('tess/src/images/White_Logo.png')}
                 />
 
@@ -175,7 +175,7 @@ const styles = {
         flex: 1,
         backgroundColor: '#856cff',
         padding: 20,
-        paddingTop: 80
+        paddingTop: 60
     },
 
     input: {

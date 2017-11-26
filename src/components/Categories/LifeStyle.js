@@ -52,15 +52,39 @@ class LifeStyle extends Component{
 
     renderRow = (rowData) => {
 
+        let fixedUsername = rowData.podcastArtist;
         let profileName = rowData.podcastArtist;
         firebase.database().ref(`/users/${rowData.podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
             if (snap.val()) {
                 profileName = snap.val().username;
+
+                if(profileName > 15){
+                    fixedUsername =  (profileName.slice(0,15)+"...");
+                }
+                else{
+                    fixedUsername = profileName;
+                }
             }
             else {
                 profileName = rowData.podcastArtist;
+
+                if(profileName > 15){
+                    fixedUsername =  (profileName.slice(0,15)+"...");
+                }
+                else{
+                    fixedUsername = profileName;
+                }
             }
         });
+
+
+        var fixedTitle = '';
+        if(rowData.podcastTitle.toString().length > 19 ){
+            fixedTitle = (rowData.podcastTitle.slice(0,19)+"...")
+        }
+        else{
+            fixedTitle = rowData.podcastTitle;
+        }
 
 
         const {currentUser} = firebase.auth();
@@ -98,7 +122,6 @@ class LifeStyle extends Component{
                             Variables.play();
                             Variables.state.isPlaying = true;
 
-
                             const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
                             if(storageRef.child('image-profile-uploaded')){
                                 storageRef.getDownloadURL()
@@ -119,8 +142,8 @@ class LifeStyle extends Component{
 
 
                         <View style={styles.leftContainer}>
-                            <Text style={styles.title}>   {rowData.podcastTitle}</Text>
-                            <Text style={styles.artistTitle}>{profileName}</Text>
+                            <Text style={styles.title}>   {fixedTitle}</Text>
+                            <Text style={styles.artistTitle}>{fixedUsername}</Text>
                         </View>
 
 
@@ -129,7 +152,7 @@ class LifeStyle extends Component{
                                 textAlign: 'left',
                                 marginLeft: 20,
                                 paddingRight: 8,
-                                fontSize: 35,
+                                fontSize: 30,
                                 color: '#5757FF',
                             }} name="md-trash">
                             </Icon>
@@ -164,9 +187,9 @@ class LifeStyle extends Component{
                             Variables.state.isPlaying = false;
                             Variables.state.podcastTitle = podcastTitle;
                             Variables.state.podcastCategory = podcastCategory;
+                            Variables.state.podcastArtist = podcastArtist;
                             Variables.state.podcastDescription = podcastDescription;
                             Variables.state.userProfileImage = '';
-                            Variables.state.podcastArtist = podcastArtist;
                             Variables.play();
                             Variables.state.isPlaying = true;
 
@@ -190,8 +213,8 @@ class LifeStyle extends Component{
 
 
                         <View style={styles.leftContainer}>
-                            <Text style={styles.title}>   {rowData.podcastTitle}</Text>
-                            <Text style={styles.artistTitle}>{profileName}</Text>
+                            <Text style={styles.title}>   {fixedTitle}</Text>
+                            <Text style={styles.artistTitle}>{fixedUsername}</Text>
                         </View>
 
 
@@ -234,7 +257,7 @@ class LifeStyle extends Component{
                                 textAlign: 'left',
                                 marginLeft: 20,
                                 paddingRight: 8,
-                                fontSize: 35,
+                                fontSize: 30,
                                 color: '#5757FF',
                             }} name="md-add">
                             </Icon>
@@ -387,7 +410,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     leftContainer: {
-        flex: 1,
+        flex: 7,
         paddingLeft: 2,
         justifyContent: 'center',
         alignItems:'flex-start',

@@ -383,7 +383,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     leftContainer: {
-        flex: 1,
+        flex: 7,
         paddingLeft: 2,
         justifyContent: 'center',
         alignItems:'flex-start',
