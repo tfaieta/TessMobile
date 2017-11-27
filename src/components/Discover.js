@@ -10,8 +10,8 @@ import { SearchBar } from 'react-native-elements'
 import {volume} from './Home';
 import PlayerBottom from './PlayerBottom';
 import { connect } from 'react-redux';
+import Variables from "./Variables";
 
-export let searchWord = '';
 
 
 class Discover extends Component{
@@ -19,7 +19,7 @@ class Discover extends Component{
     static state = { search: ''};
 
     searchActivate = () => {
-        searchWord = this.state.search;
+        Variables.state.searchWord = this.state.search;
         this.props.navigator.push({
             screen: 'Search',
             animated: true,
@@ -49,12 +49,12 @@ class Discover extends Component{
                     <SearchBar
                         lightTheme
                         round
-                        inputStyle={{backgroundColor: '#fff'}}
+                        inputStyle={{backgroundColor: '#fff', color: '#2A2A30', marginLeft: 20}}
                         containerStyle= {styles.containerSearch}
-                        placeholder='  Search...'
+                        placeholder='Search...'
                         placeholderTextColor = '#2A2A30'
-                        icon = {{ color: '#5757FF', name: 'search' }}
-                        clearIcon = {{ color: '#BBBCCD', name: 'close' }}
+                        icon = {{ color: '#5757FF', name: 'search', paddingRight: 20 }}
+                        clearIcon = {{ color: '#9496A3', name: 'close' }}
                         autoCorrect={false}
                         autoCapitalize="none"
                         value={this.state.search}

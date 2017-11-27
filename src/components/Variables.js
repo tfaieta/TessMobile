@@ -38,12 +38,15 @@ class Variables extends Component{
         currentUsername: '',
         currentBio: '',
         currentFavCategory: '',
+        searchWord: '',
         following: false,
         usersFollowed: [],
         favPodcasts: [],
         myPodcasts: [],
         userPodcasts: [],
         currCategory: [],
+        mySearches: [],
+        followedContent: []
 
 };
 
