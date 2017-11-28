@@ -4,6 +4,7 @@ import PlayerBottom from '../PlayerBottom';
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "../Variables";
+import InvertibleScrollView from 'react-native-invertible-scroll-view';
 
 
 
@@ -287,6 +288,7 @@ class StoryTelling extends Component{
                         enableEmptySections
                         dataSource={this.state.dataSource}
                         renderRow={this.renderRow}
+                        renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
                     />
 
                 </ScrollView>

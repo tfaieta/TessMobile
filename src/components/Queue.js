@@ -43,27 +43,7 @@ class Queue extends Component{
                 <ScrollView>
 
                     <TouchableOpacity>
-                        <Icon style={{textAlign:'left', marginLeft: 20,  fontSize: 35,color:'#5757FF' }} name="ios-play">
-                            <Text style={styles.title} >  Play Podcast</Text>
-                        </Icon>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity>
-                        <Icon style={{textAlign:'left', marginLeft: 20, fontSize: 35,color:'#5757FF' }} name="ios-play">
-                            <Text style={styles.title} >  Play Podcast</Text>
-                        </Icon>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity>
-                        <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#5757FF' }} name="ios-play">
-                            <Text style={styles.title} >  Play Podcast</Text>
-                        </Icon>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity>
-                        <Icon style={{textAlign:'left', marginLeft: 20, fontSize: 35,color:'#5757FF' }} name="ios-play">
-                            <Text style={styles.title} >  Play Podcast</Text>
-                        </Icon>
+                        <Text style={styles.title} >    coming soon...</Text>
                     </TouchableOpacity>
 
 
@@ -90,10 +70,11 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        color: '#9496A3',
-        marginTop: 70,
+        color: '#2A2A30',
+        marginTop:10,
+        marginLeft: 20,
         flex:1,
-        textAlign: 'center',
+        textAlign: 'left',
         opacity: 2,
         fontStyle: 'normal',
         fontFamily: 'Hiragino Sans',

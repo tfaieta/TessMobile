@@ -17,9 +17,10 @@ import {profileNameL} from './LoginForm.js';
 import {profileName} from './CreateAccount.js';
 import Variables from './Variables';
 import firebase from 'firebase';
-
+import InvertibleScrollView from 'react-native-invertible-scroll-view';
 
 import { Navigation } from 'react-native-navigation';
+
 
 class UserProfile extends Component {
     componentWillMount(){
@@ -542,6 +543,7 @@ class UserProfile extends Component {
                             enableEmptySections
                             dataSource={this.state.dataSource}
                             renderRow={this.renderRow}
+                            renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
                         />
                     </View>
 

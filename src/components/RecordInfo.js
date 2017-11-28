@@ -125,7 +125,7 @@ class RecordInfo extends Component{
         Variables.state.podcastArtist = podcastArtist;
 
 
-        if(podcastTitle == '' || podcastDescription == '' || podcastCategory == ''){
+        if(podcastTitle == '' || podcastDescription == '' || podcastCategory == '' || podcastTitle.toString().includes(".") || podcastTitle.toString().includes("#") || podcastTitle.toString().includes("$") || podcastTitle.toString().includes("[") || podcastTitle.toString().includes("]")){
             if(podcastTitle == ''){
                 this.dropdown.alertWithType("custom", "", "Please enter a Title.")
             }
@@ -135,8 +135,12 @@ class RecordInfo extends Component{
             else if(podcastCategory == ''){
                 this.dropdown.alertWithType("custom", "", "Please select a Category.")
             }
-        }else {
+            else{
+                this.dropdown.alertWithType("custom", "", "Title cannot contain: .  #  $  [  ]")
+            }
+        }
 
+        else {
             this.setState({loading: true});
             this.props.podcastCreate({podcastTitle, podcastDescription, podcastCategory, podcastArtist, navigator});
         }

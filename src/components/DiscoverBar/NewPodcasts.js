@@ -4,6 +4,7 @@ import { ListView, StyleSheet, ScrollView, View} from 'react-native';
 import { connect } from 'react-redux';
 import ListItem from '../ListItem';
 import { podcastFetchNew} from "../../actions/PodcastActions";
+import InvertibleScrollView from 'react-native-invertible-scroll-view';
 
 
 
@@ -50,6 +51,7 @@ class NewPodcasts extends Component{
 
                 <ListView
                     enableEmptySections
+                    renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
                     dataSource={this.dataSourceNewPodcasts}
                     renderRow={this.renderRowNewPodcasts}
                 />

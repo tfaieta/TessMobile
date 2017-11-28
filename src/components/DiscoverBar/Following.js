@@ -3,6 +3,7 @@ import { Text, StyleSheet, ScrollView, TouchableOpacity, ListView, View, Alert} 
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "../Variables";
 import firebase from 'firebase';
+import InvertibleScrollView from 'react-native-invertible-scroll-view';
 
 
 class Following extends Component{
@@ -258,6 +259,7 @@ class Following extends Component{
                         enableEmptySections
                         dataSource={this.state.dataSource}
                         renderRow={this.renderRow}
+                        renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
                     />
                 </View>
 

@@ -23,6 +23,7 @@
 		"react-native-grid-view": "^0.4.1",
 		"react-native-icons": "^0.7.1",
 		"react-native-image-crop-picker": "^0.18.1",
+		"react-native-invertible-scroll-view": "^1.1.0",
 		"react-native-linear-gradient": "^2.0.0",
 		"react-native-navigation": "^1.1.275",
 		"react-native-popup-dialog": "^0.9.35",

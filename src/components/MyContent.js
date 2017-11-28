@@ -7,6 +7,7 @@ import { podcastFetch } from "../actions/PodcastActions"
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "./Variables";
+import InvertibleScrollView from 'react-native-invertible-scroll-view';
 
 
 
@@ -190,6 +191,7 @@ class MyContent extends Component{
                         enableEmptySections
                         dataSource={this.state.dataSource}
                         renderRow={this.renderRow}
+                        renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
                     />
 
                     <View style={{paddingBottom:120}}>

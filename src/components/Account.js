@@ -17,6 +17,7 @@ import { podcastFetch } from "../actions/PodcastActions"
 import PlayerBottom from './PlayerBottom';
 import firebase from 'firebase';
 import Variables from './Variables';
+import InvertibleScrollView from 'react-native-invertible-scroll-view';
 
 
 
@@ -359,6 +360,7 @@ class Account extends Component {
                             enableEmptySections
                             dataSource={this.state.dataSource}
                             renderRow={this.renderRow}
+                            renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
                         />
                     </View>
 

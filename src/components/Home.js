@@ -74,9 +74,6 @@ class Home extends Component{
             animationType: 'fade',
         });
     };
-    pressSeeAllNew = () => {
-
-    };
 
 
 
@@ -102,6 +99,7 @@ class Home extends Component{
 
 
                     <ListView
+                        ref={(ref) => this.listView = ref}
                         showsHorizontalScrollIndicator={false}
                         horizontal={true}
                         enableEmptySections

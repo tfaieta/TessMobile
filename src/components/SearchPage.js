@@ -5,7 +5,7 @@ import { SearchBar } from 'react-native-elements';
 import PlayerBottom from './PlayerBottom';
 import Variables from "./Variables";
 import firebase from 'firebase';
-import { Navigation } from 'react-native-navigation';
+import InvertibleScrollView from 'react-native-invertible-scroll-view';
 
 
 class SearchPage extends Component{
@@ -300,13 +300,21 @@ class SearchPage extends Component{
 
                 </View>
 
+                <ScrollView>
                     <View style={{flex:1}}>
                         <ListView
                             enableEmptySections
                             dataSource={this.state.dataSource}
                             renderRow={this.renderRow}
+                            renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
                         />
                     </View>
+
+                    <View style={{paddingBottom:120}}>
+
+                    </View>
+                    
+                </ScrollView>
 
 
 
