@@ -136,7 +136,7 @@ export const loginUser = ({email, password}) => {
                         }
                     ],
                     tabsStyle: {
-                        tabBarButtonColor: '#BBBCCD',
+                        tabBarButtonColor: '#6a6b78',
                         tabBarSelectedButtonColor: '#5757FF',
                         tabBarBackgroundColor: '#fff',
                         initialTabIndex: 0,
@@ -240,7 +240,7 @@ export const createUser = ({email, password, username}) => {
                             }
                         ],
                         tabsStyle: {
-                            tabBarButtonColor: '#BBBCCD',
+                            tabBarButtonColor: '#6a6b78',
                             tabBarSelectedButtonColor: '#5757FF',
                             tabBarBackgroundColor: '#fff',
                             initialTabIndex: 0,

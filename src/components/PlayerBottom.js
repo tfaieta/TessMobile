@@ -84,6 +84,17 @@ class PlayerBottom extends Component {
     };
 
 
+    scrubForward = () => {
+        podcastPlayer.seek(podcastPlayer.currentTime + 15000)
+
+    };
+
+    scrubBackward = () => {
+        podcastPlayer.seek(podcastPlayer.currentTime - 15000)
+
+    };
+
+
     _renderSlider(currentTime){
         return(
             <Slider
@@ -146,7 +157,7 @@ class PlayerBottom extends Component {
                             paddingTop: 0,
                             paddingRight:5,
                             fontSize: 30,
-                            color: '#FFF'
+                            color: '#2A2A30',
                         }} name="md-pause">
                         </Icon>
                     </TouchableOpacity>
@@ -162,7 +173,7 @@ class PlayerBottom extends Component {
                             paddingTop: 0,
                             paddingRight:5,
                             fontSize: 30,
-                            color: '#FFF'
+                            color: '#2A2A30',
                         }} name="md-play">
                         </Icon>
                     </TouchableOpacity>
@@ -178,23 +189,21 @@ class PlayerBottom extends Component {
         let profileName = Variables.state.currentUsername;
 
         if(Variables.state.podcastTitle =='') {
-            return (
-                <Text> </Text>
-            )
+            //return nothing
         }
         else{
 
             var fixedTitle = '';
-            if(Variables.state.podcastTitle.toString().length > 17 ){
-                fixedTitle = (Variables.state.podcastTitle.slice(0,17)+"...")
+            if(Variables.state.podcastTitle.toString().length > 22 ){
+                fixedTitle = (Variables.state.podcastTitle.slice(0,22)+"...")
             }
             else{
                 fixedTitle = Variables.state.podcastTitle;
             }
 
             var fixedUsername = '';
-            if(profileName > 17){
-                fixedUsername =  (profileName.slice(0,17)+"...");
+            if(profileName > 22){
+                fixedUsername =  (profileName.slice(0,22)+"...");
             }
             else{
                 fixedUsername = profileName;
@@ -712,6 +721,7 @@ class PlayerBottom extends Component {
                     <View style={styles.leftContainer}>
                         {this._renderPodcastImage()}
                     </View>
+
                     <TouchableOpacity onPress={this.ExpandPlayer}>
                     {this._renderPodcastInfo()}
                     </TouchableOpacity>
@@ -772,8 +782,8 @@ class PlayerBottom extends Component {
                         <View style={styles.centerContainerButtons}>
 
                             <View style={styles.leftContainerP}>
-                                <TouchableOpacity>
-                                    <Icon style={{flex:1, textAlign:'center', marginRight:0,paddingLeft: 0,paddingTop: 0, fontSize: 25,color:'#2A2A30' }} name="md-rewind">
+                                <TouchableOpacity onPress={this.scrubBackward}>
+                                    <Icon style={{flex:1, textAlign:'center', fontSize: 35,color:'#2A2A30' }} name="ios-undo">
                                     </Icon>
                                 </TouchableOpacity>
                             </View>
@@ -785,8 +795,8 @@ class PlayerBottom extends Component {
                             </View>
 
                             <View style={styles.rightContainerP}>
-                                <TouchableOpacity >
-                                    <Icon style={{flex:1, textAlign:'center', paddingRight: 0,marginLeft: 0,paddingTop: 0, fontSize: 25,color:'#2A2A30' }} name="md-fastforward">
+                                <TouchableOpacity onPress={this.scrubForward}>
+                                    <Icon style={{flex:1, textAlign:'center', fontSize: 35,color:'#2A2A30' }} name="ios-redo">
                                     </Icon>
                                 </TouchableOpacity>
                             </View>
@@ -913,20 +923,22 @@ class PlayerBottom extends Component {
     const styles = StyleSheet.create({
     barContainer:{
         flex: 1,
-        backgroundColor: '#5757FF',
-        marginHorizontal: 30,
+        backgroundColor: '#fff',
         position: 'absolute',
         left: 0,
         right: 0,
         bottom: 0,
         paddingBottom: 5,
-        borderWidth: 0.3,
-        borderColor: '#5757FF',
-        borderTopLeftRadius: 10,
+        borderTopColor: 'rgba(170,170,170,0.3)',
+        borderBottomColor: '#fff',
+        borderRightColor: '#fff',
+        borderLeftColor: '#fff',
         borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
+        borderWidth: 1.5
     },
     playingText:{
-        color: '#FFF',
+        color: '#2A2A30',
         flexDirection: 'row',
         backgroundColor: 'transparent',
         fontStyle: 'normal',
@@ -936,7 +948,7 @@ class PlayerBottom extends Component {
         paddingLeft: 10
     },
     playingText2:{
-        color: '#FFF',
+        color: '#2A2A30',
         flexDirection: 'row',
         backgroundColor: 'transparent',
         fontStyle: 'normal',

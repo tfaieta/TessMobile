@@ -47,7 +47,11 @@ class Variables extends Component{
         currCategory: [],
         mySearches: [],
         followedContent: [],
-        newPodcasts: []
+        newPodcasts: [],
+        myFollowers: [],
+        userFollowers: [],
+        myFollowing: [],
+        userFollowing: []
 
 };
 

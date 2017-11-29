@@ -236,8 +236,8 @@ class ListItem extends Component {
 
 
                         <View style={styles.leftContainer}>
-                            <Text style={styles.title}>   {podcastTitle}</Text>
-                            <Text style={styles.artistTitle}>{profileName}</Text>
+                            <Text style={styles.title}>   {fixedTitle}</Text>
+                            <Text style={styles.artistTitle}>{fixedUsername}</Text>
                         </View>
 
 

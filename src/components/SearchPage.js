@@ -21,12 +21,12 @@ class SearchPage extends Component{
             snapshot.forEach(function (data) {
 
                 firebase.database().ref(`/users/${data.val().podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
-                    if(snap.val().username == Variables.state.searchWord){
+                    if(snap.val().username.toLowerCase().includes(Variables.state.searchWord.toLowerCase())){
                         Variables.state.mySearches.push(data.val())
                     }
                 });
 
-                if(Variables.state.searchWord == data.val().podcastTitle) {
+                if(data.val().podcastTitle.toLowerCase().includes(Variables.state.searchWord.toLowerCase())) {
                     Variables.state.mySearches.push(data.val());
                 }
             })

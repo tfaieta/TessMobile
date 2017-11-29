@@ -49,37 +49,41 @@ export const podcastCreate = ({ podcastTitle, podcastDescription, podcastCategor
             })
             .then(() => {
                 uploadBlob.close();
+
+
+                firebase.database().ref(`/podcasts`)
+                    .push({podcastTitle, podcastDescription, podcastCategory, podcastArtist, likes})
+                    .then(() => {
+                        dispatch({type: PODCAST_CREATE});
+                        navigator.push({
+                            screen: 'RecordSuccess',
+                            animated: true,
+                            animationType: 'fade',
+                            tabBarHidden: false,
+                            navigatorStyle: {
+                                tabBarHidden: false,
+                            },
+                        });
+                    });
+
+
                 return podcastRef.getDownloadURL()
             })
             .then((url) => {
                 let obj = {};
                 obj["loading"] = false;
                 obj["dp"] = url;
-                this.setState(obj);
+
             })
             .catch((error) => {
-                console.log(error)
+                console.log(error);
+                console.warn(error);
             });
 
 
         let userID = currentUser.uid;
         let likes = 0;
 
-
-            firebase.database().ref(`/podcasts`)
-                .push({podcastTitle, podcastDescription, podcastCategory, podcastArtist, likes})
-                .then(() => {
-                    dispatch({type: PODCAST_CREATE});
-                    navigator.push({
-                        screen: 'RecordSuccess',
-                        animated: true,
-                        animationType: 'fade',
-                        tabBarHidden: false,
-                        navigatorStyle: {
-                            tabBarHidden: false,
-                        },
-                    });
-                });
 
 
     }

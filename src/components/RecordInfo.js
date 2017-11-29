@@ -135,8 +135,20 @@ class RecordInfo extends Component{
             else if(podcastCategory == ''){
                 this.dropdown.alertWithType("custom", "", "Please select a Category.")
             }
-            else{
-                this.dropdown.alertWithType("custom", "", "Title cannot contain: .  #  $  [  ]")
+            else if(podcastTitle.includes(".")){
+                this.dropdown.alertWithType("custom", "", "Title cannot contain: .")
+            }
+            else if(podcastTitle.includes("#")){
+                this.dropdown.alertWithType("custom", "", "Title cannot contain: #")
+            }
+            else if(podcastTitle.includes("$")){
+                this.dropdown.alertWithType("custom", "", "Title cannot contain: $")
+            }
+            else if(podcastTitle.includes("[")){
+                this.dropdown.alertWithType("custom", "", "Title cannot contain: [")
+            }
+            else if(podcastTitle.includes("]")){
+                this.dropdown.alertWithType("custom", "", "Title cannot contain: ]")
             }
         }
 

@@ -12,16 +12,16 @@ import { Navigation } from 'react-native-navigation';
 
 
 
-class FollowedContent extends Component{
+class MyFollowersPage extends Component{
     componentWillMount(){
-        Variables.state.usersFollowed = [];
+        Variables.state.myFollowers = [];
 
         const { currentUser } = firebase.auth();
-        const refFol = firebase.database().ref(`users/${currentUser.uid}/following`);
+        const refFol = firebase.database().ref(`users/${currentUser.uid}/followers`);
 
-        refFol.orderByChild('following').on("value", function (snapshot) {
+        refFol.orderByChild('followers').on("value", function (snapshot) {
             snapshot.forEach(function (data) {
-                Variables.state.usersFollowed.push(data.key);
+                Variables.state.myFollowers.push(data.key);
             })
         });
 
@@ -31,11 +31,11 @@ class FollowedContent extends Component{
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed),
+            dataSource: dataSource.cloneWithRows(Variables.state.myFollowers),
             loading: true,
         };
 
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed)})},1000)
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myFollowers)})},1000)
     }
 
     state={
@@ -152,7 +152,7 @@ class FollowedContent extends Component{
                         </TouchableOpacity>
                     </View>
                     <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={styles.header}>Following</Text>
+                        <Text style={styles.header}>Followers</Text>
                     </View>
 
                     <View>
@@ -162,11 +162,11 @@ class FollowedContent extends Component{
 
 
 
-                    <ListView
-                        enableEmptySections
-                        dataSource={this.state.dataSource}
-                        renderRow={this.renderRow}
-                    />
+                <ListView
+                    enableEmptySections
+                    dataSource={this.state.dataSource}
+                    renderRow={this.renderRow}
+                />
 
 
 
@@ -290,4 +290,4 @@ const mapStateToProps = state => {
     return {podcast};
 };
 
-export default connect(mapStateToProps, { podcastFetchFollowed })(FollowedContent);
+export default connect(mapStateToProps, { podcastFetchFollowed })(MyFollowersPage);

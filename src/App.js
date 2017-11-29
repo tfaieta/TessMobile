@@ -42,6 +42,9 @@ import Categories from "./components/DiscoverBar/Categories";
 import Following from "./components/DiscoverBar/Following";
 import NewPodcasts from "./components/DiscoverBar/NewPodcasts";
 import TopCharts from "./components/DiscoverBar/TopCharts";
+import MyFollowersPage from "./components/MyFollowersPage";
+import UserFollowing from "./components/UserFollowing";
+import UserFollowers from "./components/UserFollowers";
 
 
 
@@ -87,6 +90,9 @@ Navigation.registerComponent('MyContent', () => MyContent, store, Provider);
 Navigation.registerComponent('Followed', () => FollowedContent, store, Provider);
 
 Navigation.registerComponent('Account', () => Account, store, Provider);
+Navigation.registerComponent('MyFollowersPage', () => MyFollowersPage, store, Provider);
+Navigation.registerComponent('UserFollowing', () => UserFollowing, store, Provider);
+Navigation.registerComponent('UserFollowers', () => UserFollowers, store, Provider);
 Navigation.registerComponent('Settings', () => Settings, store, Provider);
 
 Navigation.registerComponent('UserProfile', () => UserProfile, store, Provider);

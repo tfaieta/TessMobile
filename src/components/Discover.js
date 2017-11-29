@@ -70,7 +70,7 @@ class Discover extends Component{
                 <ScrollableTabView
                     tabBarUnderlineStyle = {styles.underline}
                     tabBarActiveTextColor = '#5757FF'
-                    tabBarInactiveTextColor = '#BBBCCD'
+                    tabBarInactiveTextColor = '#6a6b78'
                     tabBarBackgroundColor = '#fff'
                     style={{marginTop: 0, }}
                     tabBarTextStyle={styles.tabStyle}
@@ -142,8 +142,8 @@ const styles = StyleSheet.create({
     tabStyle: {
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 11,
+        fontFamily: 'HiraginoSans-W6',
+        fontSize: 13,
         backgroundColor: 'transparent'
     }
 

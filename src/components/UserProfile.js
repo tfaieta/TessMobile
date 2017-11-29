@@ -27,9 +27,13 @@ class UserProfile extends Component {
 
         const {currentUser} = firebase.auth();
         const storageRef = firebase.storage().ref(`/users/${Variables.state.browsingArtist}/image-profile-uploaded`);
+        const refFol = firebase.database().ref(`users/${Variables.state.browsingArtist}/followers`);
+        const refFollowing = firebase.database().ref(`users/${Variables.state.browsingArtist}/following`);
 
         Variables.state.userPodcasts = [];
         Variables.state.onUserProfileImage = '';
+        Variables.state.userFollowers = [];
+        Variables.state.userFollowing = [];
 
 
         const ref = firebase.database().ref(`podcasts/`);
@@ -39,6 +43,20 @@ class UserProfile extends Component {
                 if(Variables.state.browsingArtist == data.val().podcastArtist) {
                     Variables.state.userPodcasts.push(data.val());
                 }
+            })
+        });
+
+        refFol.on("value", function (snapshot) {
+            Variables.state.userFollowers = [];
+            snapshot.forEach(function (data) {
+                Variables.state.userFollowers.push(data.key);
+            })
+        });
+
+        refFollowing.on("value", function (snapshot) {
+            Variables.state.userFollowing = [];
+            snapshot.forEach(function (data) {
+                Variables.state.userFollowing.push(data.key);
             })
         });
 
@@ -174,6 +192,56 @@ class UserProfile extends Component {
     }
 
 
+    onFollowersPress(){
+        Navigation.showModal({
+            screen: "UserFollowers",
+            title: "Modal",
+            passProps: {},
+            navigatorStyle: {},
+            navigatorButtons: {},
+            animationType: 'slide-up'
+        });
+    }
+
+    onFollowingPress(){
+        Navigation.showModal({
+            screen: "UserFollowing",
+            title: "Modal",
+            passProps: {},
+            navigatorStyle: {},
+            navigatorButtons: {},
+            animationType: 'slide-up'
+        });
+    }
+
+
+    _renderProfileNumbers(totalPodcasts, totalFollowers, totalFollowing){
+        return(
+            <View style={{flexDirection: 'row',  paddingBottom: 40, paddingHorizontal: 20}}>
+
+                <View style={{flex: 1, alignSelf: 'flex-start'}}>
+                    <Text style={styles.stats}>podcasts</Text>
+                    <Text style={styles.stats}>{totalPodcasts}</Text>
+
+                </View>
+
+                <TouchableOpacity style={{flex: 1, alignSelf: 'center'}} onPress={this.onFollowersPress}>
+                    <Text style={styles.stats}>followers</Text>
+                    <Text style={styles.stats}>{totalFollowers}</Text>
+
+                </TouchableOpacity>
+
+                <TouchableOpacity style={{flex: 1, alignSelf: 'flex-end'}} onPress={this.onFollowingPress}>
+                    <Text style={styles.stats}>following</Text>
+                    <Text style={styles.stats}>{totalFollowing}</Text>
+
+                </TouchableOpacity>
+
+            </View>
+        )
+    }
+
+
     _renderFollowButton = () => {
         const {currentUser} = firebase.auth();
 
@@ -215,12 +283,14 @@ class UserProfile extends Component {
         if(this.state.following == true){
             const {currentUser} = firebase.auth();
             firebase.database().ref(`users/${currentUser.uid}/following/${Variables.state.browsingArtist}`).remove();
+            firebase.database().ref(`users/${Variables.state.browsingArtist}/followers/${currentUser.uid}`).remove();
             this.setState({following: false});
             Variables.state.following = false;
         }
         else if (this.state.following == false){
             const {currentUser} = firebase.auth();
             firebase.database().ref(`users/${currentUser.uid}/following`).child(Variables.state.browsingArtist).push(Variables.state.browsingArtist);
+            firebase.database().ref(`users/${Variables.state.browsingArtist}/followers/`).child(currentUser.uid).push(currentUser.uid);
             this.setState({ following: true});
             Variables.state.following = true;
         }
@@ -521,6 +591,7 @@ class UserProfile extends Component {
 
                     {this._renderProfileName()}
 
+                    {this._renderProfileNumbers(Variables.state.userPodcasts.length, Variables.state.userFollowers.length, Variables.state.userFollowing.length)}
 
                     {this._renderFollowButton()}
 
@@ -582,8 +653,8 @@ const styles = StyleSheet.create({
     titleBio: {
         color: '#828393',
         marginVertical: 10,
-        marginTop: 70,
-        marginHorizontal: 10,
+        marginTop: 60,
+        marginHorizontal: 20,
         flex:1,
         textAlign: 'center',
         opacity: 2,
@@ -628,7 +699,7 @@ const styles = StyleSheet.create({
     },
     title2: {
         color: '#2A2A30',
-        marginBottom: 70,
+        marginBottom: 40,
         flex:1,
         textAlign: 'center',
         opacity: 2,
@@ -647,6 +718,16 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
         fontSize: 20,
+        backgroundColor: 'transparent'
+    },
+    stats: {
+        color: '#2A2A30',
+        flex:1,
+        textAlign: 'left',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'HiraginoSans-W3',
+        fontSize: 16,
         backgroundColor: 'transparent'
     },
     artistTitle: {

@@ -119,7 +119,7 @@ export default class InitialScreen extends Component{
                     }
                 ],
                 tabsStyle: {
-                    tabBarButtonColor: '#BBBCCD',
+                    tabBarButtonColor: '#6a6b78',
                     tabBarSelectedButtonColor: '#5757FF',
                     tabBarBackgroundColor: '#fff',
                     initialTabIndex: 0,

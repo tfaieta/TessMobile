@@ -19,15 +19,21 @@ import firebase from 'firebase';
 import Variables from './Variables';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
 
+import { Navigation } from 'react-native-navigation';
 
 
 class Account extends Component {
 
     componentWillMount(){
         Variables.state.myPodcasts = [];
+        Variables.state.myFollowers = [];
+        Variables.state.myFollowing = [];
+        Variables.state.profileImage = '';
         const {currentUser} = firebase.auth();
         const refMy = firebase.database().ref(`podcasts/`);
         const storageRef = firebase.storage().ref(`/users/${currentUser.uid}/image-profile-uploaded`);
+        const refFol = firebase.database().ref(`users/${currentUser.uid}/followers`);
+        const refFollowing = firebase.database().ref(`users/${currentUser.uid}/following`);
 
 
         refMy.on("value", function (snapshot) {
@@ -36,6 +42,20 @@ class Account extends Component {
                 if(currentUser.uid == data.val().podcastArtist) {
                     Variables.state.myPodcasts.push(data.val());
                 }
+            })
+        });
+
+        refFol.on("value", function (snapshot) {
+            Variables.state.myFollowers = [];
+            snapshot.forEach(function (data) {
+                Variables.state.myFollowers.push(data.key);
+            })
+        });
+
+        refFollowing.on("value", function (snapshot) {
+            Variables.state.myFollowing = [];
+            snapshot.forEach(function (data) {
+                Variables.state.myFollowing.push(data.key);
             })
         });
 
@@ -133,6 +153,56 @@ class Account extends Component {
             )
         }
     }
+
+
+    onFollowersPress(){
+        Navigation.showModal({
+            screen: "MyFollowersPage",
+            title: "Modal",
+            passProps: {},
+            navigatorStyle: {},
+            navigatorButtons: {},
+            animationType: 'slide-up'
+        });
+    }
+
+    onFollowingPress(){
+        Navigation.showModal({
+            screen: "Followed",
+            title: "Modal",
+            passProps: {},
+            navigatorStyle: {},
+            navigatorButtons: {},
+            animationType: 'slide-up'
+        });
+    }
+
+    _renderProfileNumbers(totalPodcasts, totalFollowers, totalFollowing){
+        return(
+            <View style={{flexDirection: 'row',  paddingBottom: 40, paddingHorizontal: 20 }}>
+
+                <View style={{flex: 1, alignSelf: 'flex-start', padding: 10}}>
+                    <Text style={styles.stats}>podcasts</Text>
+                    <Text style={styles.stats}>{totalPodcasts}</Text>
+
+                </View>
+
+                <TouchableOpacity style={{flex: 1, alignSelf: 'center', padding: 10}} onPress={this.onFollowersPress}>
+                    <Text style={styles.stats}>followers</Text>
+                    <Text style={styles.stats}>{totalFollowers}</Text>
+
+                </TouchableOpacity>
+
+                <TouchableOpacity style={{flex: 1, alignSelf: 'flex-end', padding: 10}} onPress={this.onFollowingPress}>
+                    <Text style={styles.stats}>following</Text>
+                    <Text style={styles.stats}>{totalFollowing}</Text>
+
+                </TouchableOpacity>
+
+            </View>
+        )
+    }
+
 
     onGarbagePress(user, title){
         Alert.alert(
@@ -348,6 +418,7 @@ class Account extends Component {
 
                     {this._renderProfileName()}
 
+                    {this._renderProfileNumbers(Variables.state.myPodcasts.length, Variables.state.myFollowers.length, Variables.state.myFollowing.length)}
 
                     {this._renderBio()}
 
@@ -393,7 +464,7 @@ const styles = StyleSheet.create({
     },
     title2: {
         color: '#2A2A30',
-        marginBottom: 70,
+        marginBottom: 40,
         flex:1,
         textAlign: 'center',
         opacity: 2,
@@ -422,8 +493,8 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Hiragino Sans',
         fontSize: 15,
-        marginHorizontal: 10,
-        backgroundColor: 'transparent'
+        marginHorizontal: 20,
+        backgroundColor: 'transparent',
     },
     header: {
         marginTop:30,
@@ -444,6 +515,16 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
         fontSize: 20,
+        backgroundColor: 'transparent'
+    },
+    stats: {
+        color: '#2A2A30',
+        flex:1,
+        textAlign: 'left',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'HiraginoSans-W3',
+        fontSize: 16,
         backgroundColor: 'transparent'
     },
     artistTitle: {

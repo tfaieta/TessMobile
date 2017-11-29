@@ -63,6 +63,11 @@ class Record extends Component{
         });
     }
 
+    componentWillUnmount(){
+       AudioRecorder.stopRecording();
+       this.setState({stoppedRecording: true, recording: false});
+    }
+
     _checkPermission() {
         if (Platform.OS !== 'android') {
             return Promise.resolve(true);
@@ -268,6 +273,17 @@ class Record extends Component{
         podTime = this.state.currentTime;
     }
 
+    _pressBack = () => {
+
+        AudioRecorder.stopRecording();
+        this.setState({stoppedRecording: true, recording: false});
+
+        this.props.navigator.pop({
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+
 
     render() {
         return (
@@ -283,11 +299,21 @@ class Record extends Component{
                     />
 
 
+                <View style={{flexDirection: 'row', paddingVertical:5}}>
 
-                <View style={{flexDirection: 'row', paddingVertical:5,  }}>
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                       {this._renderRecordTitle(this.state.recording)}
+                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
+                        <TouchableOpacity onPress={this._pressBack}>
+                            <Icon style={{
+                                textAlign:'left',marginLeft: 10, fontSize: 28,color:'#fff'
+                            }} name="md-arrow-round-back">
+                            </Icon>
+                        </TouchableOpacity>
                     </View>
+
+                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
+                        {this._renderRecordTitle(this.state.recording)}
+                    </View>
+
                 </View>
 
 
@@ -418,7 +444,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
-        fontSize: 20,
+        fontSize: 18,
         backgroundColor: 'transparent',
     },
 
