@@ -142,7 +142,7 @@ class FollowedContent extends Component{
                 style={styles.container}>
 
 
-                <View style={{flexDirection: 'row',  paddingVertical:5, borderRadius: 10, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
+                <View style={{flexDirection: 'row',  paddingVertical:5, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     },
     container2: {
         paddingHorizontal: 0,
-        paddingVertical: 0,
+        paddingVertical: 10,
         marginVertical: 0,
         marginHorizontal: 0,
         backgroundColor: 'transparent',
@@ -222,8 +222,8 @@ const styles = StyleSheet.create({
         paddingLeft: 0,
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 20,
+        fontFamily: 'HiraginoSans-W3',
+        fontSize: 18,
         backgroundColor: 'transparent'
     },
 

@@ -28,61 +28,69 @@ export const podcastCreate = ({ podcastTitle, podcastDescription, podcastCategor
 
     return (dispatch) => {
 
+        let userID = currentUser.uid;
+        let likes = 0;
+        let ref = '';
+        let id = '';
 
-        const Blob = RNFetchBlob.polyfill.Blob;
-        const fs = RNFetchBlob.fs;
-        window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
-        window.Blob = Blob;
-        const uid = firebase.auth().uid;
-        const podcastPath = podFile;
-        let uploadBlob = null;
-        const podcastRef = firebase.storage().ref(`/users/${currentUser.uid}/${podcastTitle}`);
-        let mime = 'audio/aac';
+            firebase.database().ref(`/podcasts`)
+            .push({podcastTitle, podcastDescription, podcastCategory, podcastArtist, likes})
+            .then((snap) => {
 
-        fs.readFile(podcastPath, 'base64')
-            .then((data) => {
-                return Blob.build(data, {type: `${mime};BASE64`})
-            })
-            .then((blob) => {
-                uploadBlob = blob;
-                return podcastRef.put(blob, {contentType: mime})
-            })
-            .then(() => {
-                uploadBlob.close();
+                dispatch({type: PODCAST_CREATE});
+                ref = snap.ref;
+                id = snap.key;
 
 
-                firebase.database().ref(`/podcasts`)
-                    .push({podcastTitle, podcastDescription, podcastCategory, podcastArtist, likes})
-                    .then(() => {
-                        dispatch({type: PODCAST_CREATE});
-                        navigator.push({
-                            screen: 'RecordSuccess',
-                            animated: true,
-                            animationType: 'fade',
+            const Blob = RNFetchBlob.polyfill.Blob;
+            const fs = RNFetchBlob.fs;
+            window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+            window.Blob = Blob;
+            const uid = firebase.auth().uid;
+            const podcastPath = podFile;
+            let uploadBlob = null;
+            const podcastRef = firebase.storage().ref(`/users/${currentUser.uid}/${snap.key}`);
+            let mime = 'audio/aac';
+
+            fs.readFile(podcastPath, 'base64')
+                .then((data) => {
+                    return Blob.build(data, {type: `${mime};BASE64`})
+                })
+                .then((blob) => {
+                    uploadBlob = blob;
+                    return podcastRef.put(blob, {contentType: mime})
+                })
+                .then(() => {
+                    uploadBlob.close();
+
+                    ref.update({id});
+
+                    navigator.push({
+                        screen: 'RecordSuccess',
+                        animated: true,
+                        animationType: 'fade',
+                        tabBarHidden: false,
+                        navigatorStyle: {
                             tabBarHidden: false,
-                            navigatorStyle: {
-                                tabBarHidden: false,
-                            },
-                        });
+                        },
                     });
 
 
-                return podcastRef.getDownloadURL()
-            })
-            .then((url) => {
-                let obj = {};
-                obj["loading"] = false;
-                obj["dp"] = url;
+                    return podcastRef.getDownloadURL()
+                })
+                .then((url) => {
+                    let obj = {};
+                    obj["loading"] = false;
+                    obj["dp"] = url;
 
-            })
-            .catch((error) => {
-                console.log(error);
-                console.warn(error);
-            });
+                })
+                .catch((error) => {
+                    console.log(error);
+                    console.warn(error);
+                });
 
 
-        let userID = currentUser.uid;
-        let likes = 0;
+        });
 
 
 
@@ -106,12 +114,13 @@ export const podcastFetch = () => {
 export const podcastFetchNew = () => {
 
     return (dispatch) => {
-        firebase.database().ref('/podcasts')
+        firebase.database().ref('/podcasts').limitToLast(15)
             .on('value', snapshot => {
                 dispatch({ type: PODCAST_FETCH_SUCCESS_NEW, payload: snapshot.val() });
             });
     };
 };
+
 
 
 export const podcastFetchUser = (podcastArtist) => {

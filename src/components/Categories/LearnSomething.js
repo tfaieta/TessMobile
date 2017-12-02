@@ -53,39 +53,16 @@ class LearnSomething extends Component{
 
     renderRow = (rowData) => {
 
-        let fixedUsername = rowData.podcastArtist;
-        let profileName = rowData.podcastArtist;
+        let profileName = 'loading';
         firebase.database().ref(`/users/${rowData.podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
             if (snap.val()) {
                 profileName = snap.val().username;
-
-                if(profileName > 15){
-                    fixedUsername =  (profileName.slice(0,15)+"...");
-                }
-                else{
-                    fixedUsername = profileName;
-                }
             }
             else {
                 profileName = rowData.podcastArtist;
-
-                if(profileName > 15){
-                    fixedUsername =  (profileName.slice(0,15)+"...");
-                }
-                else{
-                    fixedUsername = profileName;
-                }
             }
         });
 
-
-        var fixedTitle = '';
-        if(rowData.podcastTitle.toString().length > 19 ){
-            fixedTitle = (rowData.podcastTitle.slice(0,19)+"...")
-        }
-        else{
-            fixedTitle = rowData.podcastTitle;
-        }
 
 
         const {currentUser} = firebase.auth();
@@ -93,18 +70,20 @@ class LearnSomething extends Component{
         const podcastDescription = rowData.podcastDescription;
         const podcastCategory = rowData.podcastCategory;
         const podcastArtist = rowData.podcastArtist;
-
-        if (currentUser.uid == podcastArtist) {
-            return (
-
-                <TouchableOpacity underlayColor='#5757FF' onPress={() => {
-
-                    firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
-                        .then(function (url) {
+        const id = rowData.id;
 
 
-                            firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
-                                if (snap.val()) {
+        return (
+
+            <TouchableOpacity onPress={() =>  {
+
+                if(id){
+                    firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL()
+                        .then(function(url) {
+
+
+                            firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
+                                if(snap.val()){
                                     Variables.state.currentUsername = snap.val().username;
                                 }
                                 else {
@@ -116,8 +95,8 @@ class LearnSomething extends Component{
                             Variables.setPodcastFile(url);
                             Variables.state.isPlaying = false;
                             Variables.state.podcastTitle = podcastTitle;
-                            Variables.state.podcastCategory = podcastCategory;
                             Variables.state.podcastArtist = podcastArtist;
+                            Variables.state.podcastCategory = podcastCategory;
                             Variables.state.podcastDescription = podcastDescription;
                             Variables.state.userProfileImage = '';
                             Variables.play();
@@ -135,47 +114,15 @@ class LearnSomething extends Component{
                                 });
                             }
 
-
                         });
-
-                }}>
-                    <View style={styles.container}>
-
-
-                        <View style={styles.leftContainer}>
-                            <Text style={styles.title}>   {fixedTitle}</Text>
-                            <Text style={styles.artistTitle}>{fixedUsername}</Text>
-                        </View>
-
-
-                        <View style={styles.rightContainer}>
-                            <Icon onPress={this.onGarbagePress} style={{
-                                textAlign: 'left',
-                                marginLeft: 20,
-                                paddingRight: 8,
-                                fontSize: 30,
-                                color: '#5757FF',
-                            }} name="md-trash">
-                            </Icon>
-                        </View>
-
-
-                    </View>
-                </TouchableOpacity>
-
-            );
-        }
-        else{
-            return (
-
-                <TouchableOpacity underlayColor='#5757FF' onPress={() => {
-
+                }
+                else{
                     firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
-                        .then(function (url) {
+                        .then(function(url) {
 
 
-                            firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
-                                if (snap.val()) {
+                            firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
+                                if(snap.val()){
                                     Variables.state.currentUsername = snap.val().username;
                                 }
                                 else {
@@ -187,8 +134,8 @@ class LearnSomething extends Component{
                             Variables.setPodcastFile(url);
                             Variables.state.isPlaying = false;
                             Variables.state.podcastTitle = podcastTitle;
-                            Variables.state.podcastCategory = podcastCategory;
                             Variables.state.podcastArtist = podcastArtist;
+                            Variables.state.podcastCategory = podcastCategory;
                             Variables.state.podcastDescription = podcastDescription;
                             Variables.state.userProfileImage = '';
                             Variables.play();
@@ -206,70 +153,56 @@ class LearnSomething extends Component{
                                 });
                             }
 
-
                         });
-
-                }}>
-                    <View style={styles.container}>
+                }
 
 
-                        <View style={styles.leftContainer}>
-                            <Text style={styles.title}>   {fixedTitle}</Text>
-                            <Text style={styles.artistTitle}>{fixedUsername}</Text>
-                        </View>
 
 
-                        <View style={styles.rightContainer}>
-                            <Icon onPress={()=>{
-                                if(!this.state.favorite) {
-
-                                    Alert.alert(
-                                        'Add to favorites?',
-                                        '',
-                                        [
-                                            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                                            {
-                                                text: 'Yes', onPress: () => {
-                                                firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle).update({podcastArtist, podcastTitle, podcastCategory, podcastDescription});
-                                                this.setState({favorite: true})
-                                            }
-                                            },
-                                        ],
-                                        {cancelable: false}
-                                    )
-                                }
-                                else{
-                                    Alert.alert(
-                                        'Remove from favorites?',
-                                        '',
-                                        [
-                                            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                                            {
-                                                text: 'Yes', onPress: () => {
-                                                firebase.database().ref(`users/${currentUser.uid}/favorites/${podcastTitle}`).remove();
-                                                this.setState({favorite: false})
-                                            }
-                                            },
-                                        ],
-                                        {cancelable: false}
-                                    )
-                                }
-                            }} style={{
-                                textAlign: 'left',
-                                marginLeft: 20,
-                                paddingRight: 8,
-                                fontSize: 30,
-                                color: '#5757FF',
-                            }} name="md-add">
-                            </Icon>
-                        </View>
+            }}>
+                <View style={styles.container}>
 
 
+
+                    <View style={styles.leftContainer}>
+                        <Text style={styles.title}>{podcastTitle}</Text>
+                        <Text style={styles.artistTitle}>{profileName}</Text>
                     </View>
-                </TouchableOpacity>
 
-            );
-        }
+
+                    <View style={styles.rightContainer}>
+                        <Icon onPress={() => {
+                            const {navigator} = this.props;
+
+                            this.props.navigator.showLightBox({
+                                screen: "PodcastOptions",
+                                passProps: {rowData, navigator},
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#9f60ff",
+                                    tapBackgroundToDismiss: true,
+                                    width: 100,
+                                    height: 200
+                                },
+                            });
+
+
+
+                        }} style={{
+                            textAlign: 'left',
+                            marginLeft: 0,
+                            marginRight: 15,
+                            fontSize: 30,
+                            color: '#5757FF',
+                        }} name="ios-more">
+                        </Icon>
+                    </View>
+
+
+                </View>
+            </TouchableOpacity>
+
+        );
     };
 
 
@@ -380,8 +313,10 @@ const styles = StyleSheet.create({
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
-        fontSize: 20,
-        backgroundColor: 'transparent'
+        fontSize: 15,
+        backgroundColor: 'transparent',
+        marginHorizontal: 20,
+
     },
     artistTitle: {
         color: '#828393',
@@ -397,7 +332,7 @@ const styles = StyleSheet.create({
     },
     container: {
         paddingHorizontal: 0,
-        paddingVertical: 0,
+        paddingVertical: 10,
         marginVertical: 0,
         marginHorizontal: 0,
         backgroundColor: '#FFF',

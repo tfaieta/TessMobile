@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, LayoutAnimation, TouchableHighlight, Alert } from 'react-native';
+import { Text, View, LayoutAnimation, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import {AudioUtils} from 'react-native-audio';
@@ -7,11 +7,6 @@ import Variables from "./Variables";
 
 
 class ListItem extends Component {
-
-    state = {
-        favorite: false,
-        keyID: 0,
-    };
 
     componentWillMount(){
         const { podcastTitle } = this.props.podcast;
@@ -27,6 +22,16 @@ class ListItem extends Component {
             });
         }
     }
+
+    constructor(props) {
+        super(props);
+    }
+
+    state = {
+        favorite: false,
+        keyID: 0,
+    };
+
 
     componentWillUpdate() {
         LayoutAnimation.spring();
@@ -156,108 +161,157 @@ class ListItem extends Component {
     render() {
         const {podcastTitle} = this.props.podcast;
         const {podcastArtist} = this.props.podcast;
+        const {podcastDescription} = this.props.podcast;
+        const {podcastCategory} = this.props.podcast;
+        const {id} = this.props.podcast;
         const {currentUser} = firebase.auth();
 
+        const {podcast} = this.props;
+        const rowData = podcast;
 
-        var fixedUsername = 'loading...';
-        let profileName = 'loading...';
+        let profileName = 'loading';
         firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
             if (snap.val()) {
                 profileName = snap.val().username;
-
-                if(profileName > 15){
-                    fixedUsername =  (profileName.slice(0,15)+"...");
-                }
-                else{
-                    fixedUsername = profileName;
-                }
             }
             else {
                 profileName = podcastArtist;
-
-                if(profileName > 15){
-                    fixedUsername =  (profileName.slice(0,15)+"...");
-                }
-                else{
-                    fixedUsername = profileName;
-                }
             }
         });
 
 
-        var fixedTitle = '';
-        if(podcastTitle.toString().length > 19 ){
-            fixedTitle = (podcastTitle.slice(0,19)+"...")
-        }
-        else{
-            fixedTitle = podcastTitle;
-        }
 
 
 
 
-        if (currentUser.uid == podcastArtist) {
+
             return (
 
-                <TouchableHighlight underlayColor='#5757FF' onPress={this.onRowPress.bind(this)}>
+                <TouchableOpacity onPress={() =>  {
+
+                    if(id){
+                        firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL()
+                            .then(function(url) {
+
+
+                                firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
+                                    if(snap.val()){
+                                        Variables.state.currentUsername = snap.val().username;
+                                    }
+                                    else {
+                                        Variables.state.currentUsername = podcastArtist;
+                                    }
+                                });
+
+                                Variables.pause();
+                                Variables.setPodcastFile(url);
+                                Variables.state.isPlaying = false;
+                                Variables.state.podcastTitle = podcastTitle;
+                                Variables.state.podcastArtist = podcastArtist;
+                                Variables.state.podcastCategory = podcastCategory;
+                                Variables.state.podcastDescription = podcastDescription;
+                                Variables.state.userProfileImage = '';
+                                Variables.play();
+                                Variables.state.isPlaying = true;
+
+                                const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
+                                if(storageRef.child('image-profile-uploaded')){
+                                    storageRef.getDownloadURL()
+                                        .then(function(url) {
+                                            if(url){
+                                                Variables.state.userProfileImage = url;
+                                            }
+                                        }).catch(function(error) {
+                                        //
+                                    });
+                                }
+
+                            });
+                    }
+                    else{
+                        firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
+                            .then(function(url) {
+
+
+                                firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
+                                    if(snap.val()){
+                                        Variables.state.currentUsername = snap.val().username;
+                                    }
+                                    else {
+                                        Variables.state.currentUsername = podcastArtist;
+                                    }
+                                });
+
+                                Variables.pause();
+                                Variables.setPodcastFile(url);
+                                Variables.state.isPlaying = false;
+                                Variables.state.podcastTitle = podcastTitle;
+                                Variables.state.podcastArtist = podcastArtist;
+                                Variables.state.podcastCategory = podcastCategory;
+                                Variables.state.podcastDescription = podcastDescription;
+                                Variables.state.userProfileImage = '';
+                                Variables.play();
+                                Variables.state.isPlaying = true;
+
+                                const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
+                                if(storageRef.child('image-profile-uploaded')){
+                                    storageRef.getDownloadURL()
+                                        .then(function(url) {
+                                            if(url){
+                                                Variables.state.userProfileImage = url;
+                                            }
+                                        }).catch(function(error) {
+                                        //
+                                    });
+                                }
+
+                            });
+                    }
+
+
+
+
+                }}>
                     <View style={styles.container}>
 
 
                         <View style={styles.leftContainer}>
-                            <Text style={styles.title}>   {fixedTitle}</Text>
-                            <Text style={styles.artistTitle}>{fixedUsername}</Text>
+                            <Text style={styles.title}>{podcastTitle}</Text>
+                            <Text style={styles.artistTitle}>{profileName}</Text>
                         </View>
 
 
                         <View style={styles.rightContainer}>
-                            <Icon onPress={this.onGarbagePress} style={{
+                            <Icon onPress={() => {
+                                const {navigator} = this.props;
+
+                                this.props.navigator.showLightBox({
+                                    screen: "PodcastOptions",
+                                    passProps: {rowData, navigator},
+                                    style: {
+                                        backgroundBlur: "light",
+                                        backgroundColor: "#9f60ff",
+                                        tapBackgroundToDismiss: true,
+                                        width: 100,
+                                        height: 200
+                                    },
+                                });
+
+                            }} style={{
                                 textAlign: 'left',
-                                marginLeft: 20,
-                                paddingRight: 8,
+                                marginLeft: 0,
+                                marginRight: 15,
                                 fontSize: 30,
                                 color: '#5757FF',
-                            }} name="md-trash">
+                            }} name="ios-more">
                             </Icon>
                         </View>
 
 
                     </View>
-                </TouchableHighlight>
+                </TouchableOpacity>
 
             );
-        }
-
-
-        else{
-            return (
-
-                <TouchableHighlight underlayColor='#5757FF' onPress={this.onRowPress.bind(this)}>
-                    <View style={styles.container}>
-
-
-                        <View style={styles.leftContainer}>
-                            <Text style={styles.title}>   {fixedTitle}</Text>
-                            <Text style={styles.artistTitle}>{fixedUsername}</Text>
-                        </View>
-
-
-                        <View style={styles.rightContainer} onPress={this.onAddPress}>
-                            <Icon onPress={this.onAddPress} style={{
-                                textAlign: 'left',
-                                marginLeft: 20,
-                                paddingRight: 8,
-                                fontSize: 30,
-                                color: '#5757FF',
-                            }} name="md-add">
-                            </Icon>
-                        </View>
-
-
-                    </View>
-                </TouchableHighlight>
-
-            );
-        }
 
 
 
@@ -277,8 +331,10 @@ const styles = {
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
-        fontSize: 20,
-        backgroundColor: 'transparent'
+        fontSize: 15,
+        backgroundColor: 'transparent',
+        marginHorizontal: 20,
+
     },
     artistTitle: {
         color: '#828393',
@@ -294,7 +350,7 @@ const styles = {
     },
     container: {
         paddingHorizontal: 0,
-        paddingVertical: 0,
+        paddingVertical: 10,
         marginVertical: 0,
         marginHorizontal: 0,
         backgroundColor: '#FFF',

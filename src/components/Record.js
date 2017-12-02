@@ -132,9 +132,7 @@ class Record extends Component{
     }
 
     _renderTime() {
-        var num = (this.state.currentTime / 60).toString();
-        num = num.slice(0, 1);
-        Number(num);
+
         var num2 = (this.state.currentTime % 60).toString();
         num2 = num2.slice(0, 2);
         Number(num2);
@@ -143,7 +141,25 @@ class Record extends Component{
                 return <Text style={styles.progressText}>{this.state.currentTime}s</Text>
             }
             else {
-                return <Text style={styles.progressText}>{num}m {num2}s</Text>
+                if((this.state.currentTime / 60) < 10){
+                    var num = (this.state.currentTime / 60).toString();
+                    num = num.slice(0, 1);
+                    Number(num);
+                    return <Text style={styles.progressText}>{num}m {num2}s</Text>
+                }
+                else if((this.state.currentTime / 60) < 100){
+                    var num = (this.state.currentTime / 60).toString();
+                    num = num.slice(0, 2);
+                    Number(num);
+                    return <Text style={styles.progressText}>{num}m {num2}s</Text>
+                }
+                else{
+                    var num = (this.state.currentTime / 60).toString();
+                    num = num.slice(0, 3);
+                    Number(num);
+                    return <Text style={styles.progressText}>{num}m {num2}s</Text>
+                }
+
             }
         }
     }

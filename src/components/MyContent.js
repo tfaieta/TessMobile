@@ -38,107 +38,148 @@ class MyContent extends Component{
 
     renderRow = (rowData) => {
 
-        var fixedUsername = rowData.podcastArtist;
-        let profileName = rowData.podcastArtist;
+        let profileName = 'loading';
         firebase.database().ref(`/users/${rowData.podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
             if (snap.val()) {
                 profileName = snap.val().username;
-
-                if(profileName > 15){
-                    fixedUsername =  (profileName.slice(0,15)+"...");
-                }
-                else{
-                    fixedUsername = profileName;
-                }
             }
             else {
                 profileName = rowData.podcastArtist;
-
-                if(profileName > 15){
-                    fixedUsername =  (profileName.slice(0,15)+"...");
-                }
-                else{
-                    fixedUsername = profileName;
-                }
             }
         });
 
 
-        var fixedTitle = '';
-        if(rowData.podcastTitle.toString().length > 19 ){
-            fixedTitle = (rowData.podcastTitle.slice(0,19)+"...")
-        }
-        else{
-            fixedTitle = rowData.podcastTitle;
-        }
 
         const {currentUser} = firebase.auth();
         const podcastTitle = rowData.podcastTitle;
         const podcastDescription = rowData.podcastDescription;
         const podcastCategory = rowData.podcastCategory;
         const podcastArtist = rowData.podcastArtist;
+        const id = rowData.id;
+
 
         return (
 
-            <TouchableOpacity underlayColor='#5757FF' onPress={() =>  {
+            <TouchableOpacity onPress={() =>  {
 
-                firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
-                    .then(function(url) {
+                if(id){
+                    firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL()
+                        .then(function(url) {
 
-                                firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
-                                    if(snap.val()){
-                                        Variables.state.currentUsername = snap.val().username;
-                                    }
-                                    else {
-                                        Variables.state.currentUsername = podcastArtist;
-                                    }
+
+                            firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
+                                if(snap.val()){
+                                    Variables.state.currentUsername = snap.val().username;
+                                }
+                                else {
+                                    Variables.state.currentUsername = podcastArtist;
+                                }
+                            });
+
+                            Variables.pause();
+                            Variables.setPodcastFile(url);
+                            Variables.state.isPlaying = false;
+                            Variables.state.podcastTitle = podcastTitle;
+                            Variables.state.podcastArtist = podcastArtist;
+                            Variables.state.podcastCategory = podcastCategory;
+                            Variables.state.podcastDescription = podcastDescription;
+                            Variables.state.userProfileImage = '';
+                            Variables.play();
+                            Variables.state.isPlaying = true;
+
+                            const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
+                            if(storageRef.child('image-profile-uploaded')){
+                                storageRef.getDownloadURL()
+                                    .then(function(url) {
+                                        if(url){
+                                            Variables.state.userProfileImage = url;
+                                        }
+                                    }).catch(function(error) {
+                                    //
                                 });
+                            }
 
-                        Variables.pause();
-                        Variables.setPodcastFile(url);
-                        Variables.state.isPlaying = false;
-                        Variables.state.podcastTitle = podcastTitle;
-                        Variables.state.podcastArtist = podcastArtist;
-                        Variables.state.podcastCategory = podcastCategory;
-                        Variables.state.podcastDescription = podcastDescription;
-                        Variables.state.userProfileImage = '';
-                        Variables.play();
-                        Variables.state.isPlaying = true;
+                        });
+                }
+                else{
+                    firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
+                        .then(function(url) {
 
-                        const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
-                        if(storageRef.child('image-profile-uploaded')){
-                            storageRef.getDownloadURL()
-                                .then(function(url) {
-                                    if(url){
-                                        Variables.state.userProfileImage = url;
-                                    }
-                                }).catch(function(error) {
-                                //
+
+                            firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
+                                if(snap.val()){
+                                    Variables.state.currentUsername = snap.val().username;
+                                }
+                                else {
+                                    Variables.state.currentUsername = podcastArtist;
+                                }
                             });
-                        }
+
+                            Variables.pause();
+                            Variables.setPodcastFile(url);
+                            Variables.state.isPlaying = false;
+                            Variables.state.podcastTitle = podcastTitle;
+                            Variables.state.podcastArtist = podcastArtist;
+                            Variables.state.podcastCategory = podcastCategory;
+                            Variables.state.podcastDescription = podcastDescription;
+                            Variables.state.userProfileImage = '';
+                            Variables.play();
+                            Variables.state.isPlaying = true;
+
+                            const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
+                            if(storageRef.child('image-profile-uploaded')){
+                                storageRef.getDownloadURL()
+                                    .then(function(url) {
+                                        if(url){
+                                            Variables.state.userProfileImage = url;
+                                        }
+                                    }).catch(function(error) {
+                                    //
+                                });
+                            }
+
+                        });
+                }
 
 
-                            });
 
 
             }}>
                 <View style={styles.container}>
 
 
+
                     <View style={styles.leftContainer}>
-                        <Text style={styles.title}>   {fixedTitle}</Text>
-                        <Text style={styles.artistTitle}>{fixedUsername}</Text>
+                        <Text style={styles.title}>{podcastTitle}</Text>
+                        <Text style={styles.artistTitle}>{profileName}</Text>
                     </View>
 
 
                     <View style={styles.rightContainer}>
-                        <Icon onPress={this.onGarbagePress} style={{
+                        <Icon onPress={() => {
+                            const {navigator} = this.props;
+
+                            this.props.navigator.showLightBox({
+                                screen: "PodcastOptions",
+                                passProps: {rowData, navigator},
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#9f60ff",
+                                    tapBackgroundToDismiss: true,
+                                    width: 100,
+                                    height: 200
+                                },
+                            });
+
+
+
+                        }} style={{
                             textAlign: 'left',
-                            marginLeft: 20,
-                            paddingRight: 8,
+                            marginLeft: 0,
+                            marginRight: 15,
                             fontSize: 30,
                             color: '#5757FF',
-                        }} name="md-trash">
+                        }} name="ios-more">
                         </Icon>
                     </View>
 
@@ -164,7 +205,7 @@ class MyContent extends Component{
             <View
                 style={styles.containerMain}>
 
-                <View style={{flexDirection: 'row', paddingVertical:5, borderRadius: 10, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
+                <View style={{flexDirection: 'row', paddingVertical:5, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
@@ -260,8 +301,10 @@ const styles = StyleSheet.create({
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
-        fontSize: 20,
-        backgroundColor: 'transparent'
+        fontSize: 15,
+        backgroundColor: 'transparent',
+        marginHorizontal: 20,
+
     },
     artistTitle: {
         color: '#828393',
@@ -277,7 +320,7 @@ const styles = StyleSheet.create({
     },
     container: {
         paddingHorizontal: 0,
-        paddingVertical: 0,
+        paddingVertical: 10,
         marginVertical: 0,
         marginHorizontal: 0,
         backgroundColor: '#FFF',

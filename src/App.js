@@ -45,6 +45,8 @@ import TopCharts from "./components/DiscoverBar/TopCharts";
 import MyFollowersPage from "./components/MyFollowersPage";
 import UserFollowing from "./components/UserFollowing";
 import UserFollowers from "./components/UserFollowers";
+import PodcastOptions from "./components/PodcastOptions";
+import EditPodcast from "./components/EditPodcast";
 
 
 
@@ -96,6 +98,9 @@ Navigation.registerComponent('UserFollowers', () => UserFollowers, store, Provid
 Navigation.registerComponent('Settings', () => Settings, store, Provider);
 
 Navigation.registerComponent('UserProfile', () => UserProfile, store, Provider);
+
+Navigation.registerComponent('PodcastOptions', () => PodcastOptions, store, Provider);
+Navigation.registerComponent('EditPodcast', () => EditPodcast, store, Provider);
 
 
 const config = {

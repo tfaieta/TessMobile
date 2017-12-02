@@ -107,25 +107,9 @@ class RecordInfo extends Component{
 
 
         const { podcastTitle, podcastDescription, podcastCategory, podcastArtist, navigator} = this.props;
-        const {currentUser} = firebase.auth();
 
 
-        firebase.database().ref(`/users/${currentUser.uid}/username`).orderByChild("username").on("value", function(snap) {
-            if(snap.val()){
-                Variables.state.currentUsername = snap.val().username;
-            }
-            else {
-                Variables.state.currentUsername = podcastArtist;
-            }
-        });
-
-        Variables.state.podcastTitle = podcastTitle;
-        Variables.state.podcastDescription = podcastDescription;
-        Variables.state.podcastCategory = podcastCategory;
-        Variables.state.podcastArtist = podcastArtist;
-
-
-        if(podcastTitle == '' || podcastDescription == '' || podcastCategory == '' || podcastTitle.toString().includes(".") || podcastTitle.toString().includes("#") || podcastTitle.toString().includes("$") || podcastTitle.toString().includes("[") || podcastTitle.toString().includes("]")){
+        if(podcastTitle == '' || podcastDescription == '' || podcastCategory == ''){
             if(podcastTitle == ''){
                 this.dropdown.alertWithType("custom", "", "Please enter a Title.")
             }
@@ -135,24 +119,25 @@ class RecordInfo extends Component{
             else if(podcastCategory == ''){
                 this.dropdown.alertWithType("custom", "", "Please select a Category.")
             }
-            else if(podcastTitle.includes(".")){
-                this.dropdown.alertWithType("custom", "", "Title cannot contain: .")
-            }
-            else if(podcastTitle.includes("#")){
-                this.dropdown.alertWithType("custom", "", "Title cannot contain: #")
-            }
-            else if(podcastTitle.includes("$")){
-                this.dropdown.alertWithType("custom", "", "Title cannot contain: $")
-            }
-            else if(podcastTitle.includes("[")){
-                this.dropdown.alertWithType("custom", "", "Title cannot contain: [")
-            }
-            else if(podcastTitle.includes("]")){
-                this.dropdown.alertWithType("custom", "", "Title cannot contain: ]")
-            }
         }
-
         else {
+
+            const {currentUser} = firebase.auth();
+
+            firebase.database().ref(`/users/${currentUser.uid}/username`).orderByChild("username").on("value", function(snap) {
+                if(snap.val()){
+                    Variables.state.currentUsername = snap.val().username;
+                }
+                else {
+                    Variables.state.currentUsername = podcastArtist;
+                }
+            });
+
+            Variables.state.podcastTitle = podcastTitle;
+            Variables.state.podcastDescription = podcastDescription;
+            Variables.state.podcastCategory = podcastCategory;
+            Variables.state.podcastArtist = podcastArtist;
+
             this.setState({loading: true});
             this.props.podcastCreate({podcastTitle, podcastDescription, podcastCategory, podcastArtist, navigator});
         }
@@ -161,27 +146,54 @@ class RecordInfo extends Component{
 
 
     _renderTime= (podcastPlayer)=>{
-        var num = ((podcastPlayer.duration / 1000) / 60).toString();
-        num = num.slice(0,1);
-        Number(num);
-        var num2 = ((podcastPlayer.duration /1000) % 60).toString();
-        num2 = num2.slice(0,2);
-        Number(num2);
-            if((podcastPlayer.duration / 1000) < 10){
-            return (
-                <Text style={styles.progressText}>{num2.slice(0,1)}s</Text>
-            )
-        }
-        else if ((podcastPlayer.duration / 1000) < 60){
-            return (
-                <Text style={styles.progressText}>{num2}s</Text>
-            )
-        }
-        else {
-            return(
-                <Text style={styles.progressText}>{num}m {num2}s</Text>
-            )
-        }
+
+            if ((podcastPlayer.duration / 1000) < 10) {
+                var num2 = ((podcastPlayer.duration / 1000) % 60).toString();
+                num2 = num2.slice(0, 1);
+                Number(num2);
+
+                return <Text style={styles.progressText}>{num2}s</Text>
+            }
+            else if ((podcastPlayer.duration / 1000) < 60) {
+                var num2 = ((podcastPlayer.duration / 1000) % 60).toString();
+                num2 = num2.slice(0, 2);
+                Number(num2);
+
+                return <Text style={styles.progressText}>{num2}s</Text>
+            }
+            else {
+
+                var num2 = ((podcastPlayer.duration / 1000) % 60).toString();
+                if(num2 < 10){
+                    num2 = num2.slice(0, 1);
+                    Number(num2);
+                }
+                else {
+                    num2 = num2.slice(0, 2);
+                    Number(num2);
+                }
+
+
+                if(((podcastPlayer.duration / 1000) / 60) < 10){
+                    var num = ((podcastPlayer.duration / 1000) / 60).toString();
+                    num = num.slice(0, 1);
+                    Number(num);
+                    return <Text style={styles.progressText}>{num}m {num2}s</Text>
+                }
+                else if(((podcastPlayer.duration / 1000) / 60) < 100){
+                    var num = ((podcastPlayer.duration / 1000) / 60).toString();
+                    num = num.slice(0, 2);
+                    Number(num);
+                    return <Text style={styles.progressText}>{num}m {num2}s</Text>
+                }
+                else{
+                    var num = ((podcastPlayer.duration / 1000) / 60).toString();
+                    num = num.slice(0, 3);
+                    Number(num);
+                    return <Text style={styles.progressText}>{num}m {num2}s</Text>
+                }
+
+            }
     };
 
     _renderSlider(currentTime){
@@ -239,7 +251,7 @@ class RecordInfo extends Component{
     _renderUploadButton(loading){
         if(loading){
             return(
-                <TouchableOpacity style={styles.buttonUpload} onPress={this.Upload}>
+                <TouchableOpacity style={styles.buttonUpload}>
                     <ActivityIndicator style={{paddingVertical: 10}} color="#fff" size ="large" />
                 </TouchableOpacity>
             )
@@ -401,6 +413,7 @@ class RecordInfo extends Component{
                 <TouchableOpacity style={styles.buttonCancel} onPress={this.Cancel}>
                     <Text  style={styles.contentTitle}>Cancel</Text>
                 </TouchableOpacity>
+
                 </View>
 
 

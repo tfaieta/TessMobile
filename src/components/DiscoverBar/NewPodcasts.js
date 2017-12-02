@@ -36,9 +36,9 @@ class NewPodcasts extends Component{
     }
 
 
-    renderRowNewPodcasts(podcast) {
-        return <ListItem podcast={podcast} />;
-    }
+    renderRowNewPodcasts = (podcast) => {
+        return <ListItem podcast={podcast} navigator={this.props.navigator} />;
+    };
 
 
 

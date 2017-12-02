@@ -194,16 +194,16 @@ class PlayerBottom extends Component {
         else{
 
             var fixedTitle = '';
-            if(Variables.state.podcastTitle.toString().length > 22 ){
-                fixedTitle = (Variables.state.podcastTitle.slice(0,22)+"...")
+            if(Variables.state.podcastTitle.toString().length > 25 ){
+                fixedTitle = (Variables.state.podcastTitle.slice(0,25)+"...")
             }
             else{
                 fixedTitle = Variables.state.podcastTitle;
             }
 
             var fixedUsername = '';
-            if(profileName > 22){
-                fixedUsername =  (profileName.slice(0,22)+"...");
+            if(profileName > 25){
+                fixedUsername =  (profileName.slice(0,25)+"...");
             }
             else{
                 fixedUsername = profileName;
@@ -331,8 +331,8 @@ class PlayerBottom extends Component {
         if (Variables.state.podcastTitle == ''){
             return(
                 <View style={{ marginTop: 10}}>
-                <ScrollView style={{height: 60, marginHorizontal: 20, backgroundColor: '#c1cde0', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
-                    <Text style={{color: '#fff', fontSize: 16, paddingBottom: 15, fontFamily: 'HiraginoSans-W6', textAlign: 'center'  }}>Select a Podcast to start listening....</Text>
+                <ScrollView style={{height: 60, marginHorizontal: 20, backgroundColor: '#c1cde0', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10, borderWidth:0.1,}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                    <Text style={{ color:'#fff', fontSize: 16, paddingBottom: 15, fontFamily: 'HiraginoSans-W6', textAlign: 'center'  }}>Select a Podcast to start listening....</Text>
                 </ScrollView>
                 </View>
             )
@@ -340,8 +340,8 @@ class PlayerBottom extends Component {
         else{
             return(
                 <View style={{ marginTop: 10}}>
-                <ScrollView style={{height: 60, marginHorizontal: 20,  backgroundColor: '#c1cde0', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
-                    <Text style={{color: '#fff', fontSize: 16, paddingBottom: 15, fontFamily: 'HiraginoSans-W6' }}>{Variables.state.podcastDescription}</Text>
+                <ScrollView style={{height: 60, marginHorizontal: 20, backgroundColor:'#c1cde0', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10, borderWidth:0.1}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                    <Text style={{ color:'#fff', fontSize: 16, paddingBottom: 15, fontFamily: 'HiraginoSans-W6' }}>{Variables.state.podcastDescription}</Text>
                 </ScrollView>
                 </View>
             )
@@ -383,8 +383,8 @@ class PlayerBottom extends Component {
             return (
                 <TouchableOpacity onPress = {this.pressLike}>
                     <Icon style={{textAlign: 'center', fontSize: 28, color: '#5757FF', marginRight: 20}} name="ios-happy-outline">
-                        <Text style={styles.podcastTextLikesActive}> {this.state.likes}</Text>
                     </Icon>
+                    <Text style={styles.podcastTextLikesActive}> {this.state.likes}</Text>
                 </TouchableOpacity>
             )
         }
@@ -392,8 +392,8 @@ class PlayerBottom extends Component {
             return(
                 <TouchableOpacity onPress = {this.pressLike}>
                     <Icon style={{textAlign: 'center', fontSize: 28, color: '#BBBCCD', marginRight: 20}} name="ios-happy-outline">
-                        <Text style={styles.podcastTextLikes}> {this.state.likes}</Text>
                     </Icon>
+                    <Text style={styles.podcastTextLikes}> {this.state.likes}</Text>
                 </TouchableOpacity>
             )
         }
@@ -928,13 +928,10 @@ class PlayerBottom extends Component {
         left: 0,
         right: 0,
         bottom: 0,
-        paddingBottom: 5,
         borderTopColor: 'rgba(170,170,170,0.3)',
         borderBottomColor: '#fff',
         borderRightColor: '#fff',
         borderLeftColor: '#fff',
-        borderTopRightRadius: 10,
-        borderTopLeftRadius: 10,
         borderWidth: 1.5
     },
     playingText:{
@@ -1034,7 +1031,7 @@ class PlayerBottom extends Component {
             backgroundColor: '#fff',
             marginTop: 5,
             marginHorizontal: 5,
-            borderColor: '#rgba(170,170,170,0.2)',
+            borderColor: 'rgba(170,170,170,0.2)',
             borderRadius: 10,
             borderWidth: 2
         },
@@ -1090,17 +1087,15 @@ class PlayerBottom extends Component {
         podcastTextLikes:{
             color: '#BBBCCD',
             fontSize: 12,
-            marginLeft: 5,
             backgroundColor: 'transparent',
-            alignSelf: 'center',
+            alignSelf: 'flex-start',
             fontFamily: 'Hiragino Sans',
         },
         podcastTextLikesActive:{
             color: '#5757FF',
             fontSize: 12,
-            marginLeft: 5,
             backgroundColor: 'transparent',
-            alignSelf: 'center',
+            alignSelf: 'flex-start',
             fontFamily: 'Hiragino Sans',
         },
         podcastTextArtist:{

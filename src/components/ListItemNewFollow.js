@@ -7,7 +7,7 @@ import Variables from "./Variables";
 
 
 
-class ListItemUsers extends Component {
+class ListItemNewFollow extends Component {
 
     state = {
         favorite: false,
@@ -39,7 +39,7 @@ class ListItemUsers extends Component {
             }).catch(function(error) {
             //
         });
-        setTimeout(() => {this.setState({profileImage: profileImage})},1250);
+        setTimeout(() => {this.setState({profileImage: profileImage})},1000);
     }
 
     componentWillUpdate() {
@@ -88,87 +88,43 @@ class ListItemUsers extends Component {
         const { podcastDescription } = this.props.podcast;
         const { podcastCategory } = this.props.podcast;
         const { podcastArtist } = this.props.podcast;
-        const { id } = this.props.podcast;
         let localPath =  AudioUtils.DocumentDirectoryPath + '/local.aac';
 
-        if(id){
-            firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL()
-                .then(function(url) {
+        firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
+            .then(function(url) {
 
-
-                    firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
-                        if(snap.val()){
-                            Variables.state.currentUsername = snap.val().username;
-                        }
-                        else {
-                            Variables.state.currentUsername = podcastArtist;
-                        }
-                    });
-
-                    Variables.pause();
-                    Variables.setPodcastFile(url);
-                    Variables.state.isPlaying = false;
-                    Variables.state.podcastTitle = podcastTitle;
-                    Variables.state.podcastArtist = podcastArtist;
-                    Variables.state.podcastCategory = podcastCategory;
-                    Variables.state.podcastDescription = podcastDescription;
-                    Variables.state.userProfileImage = '';
-                    Variables.play();
-                    Variables.state.isPlaying = true;
-
-                    const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
-                    if(storageRef.child('image-profile-uploaded')){
-                        storageRef.getDownloadURL()
-                            .then(function(url) {
-                                if(url){
-                                    Variables.state.userProfileImage = url;
-                                }
-                            }).catch(function(error) {
-                            //
-                        });
+                firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
+                    if(snap.val()){
+                        Variables.state.currentUsername = snap.val().username;
                     }
-
-                });
-        }
-        else{
-            firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
-                .then(function(url) {
-
-
-                    firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
-                        if(snap.val()){
-                            Variables.state.currentUsername = snap.val().username;
-                        }
-                        else {
-                            Variables.state.currentUsername = podcastArtist;
-                        }
-                    });
-
-                    Variables.pause();
-                    Variables.setPodcastFile(url);
-                    Variables.state.isPlaying = false;
-                    Variables.state.podcastTitle = podcastTitle;
-                    Variables.state.podcastArtist = podcastArtist;
-                    Variables.state.podcastCategory = podcastCategory;
-                    Variables.state.podcastDescription = podcastDescription;
-                    Variables.state.userProfileImage = '';
-                    Variables.play();
-                    Variables.state.isPlaying = true;
-
-                    const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
-                    if(storageRef.child('image-profile-uploaded')){
-                        storageRef.getDownloadURL()
-                            .then(function(url) {
-                                if(url){
-                                    Variables.state.userProfileImage = url;
-                                }
-                            }).catch(function(error) {
-                            //
-                        });
+                    else {
+                        Variables.state.currentUsername = podcastArtist;
                     }
-
                 });
-        }
+
+                Variables.pause();
+                Variables.setPodcastFile(url);
+                Variables.state.podcastTitle = podcastTitle;
+                Variables.state.podcastDescription = podcastDescription;
+                Variables.state.podcastCategory = podcastCategory;
+                Variables.state.podcastArtist = podcastArtist;
+                Variables.state.userProfileImage = '';
+                Variables.play();
+                Variables.state.isPlaying = true;
+
+                const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
+                if(storageRef.child('image-profile-uploaded')){
+                    storageRef.getDownloadURL()
+                        .then(function(url) {
+                            if(url){
+                                Variables.state.userProfileImage = url;
+                            }
+                        }).catch(function(error) {
+                        //
+                    });
+                }
+
+            });
 
     }
 
@@ -220,8 +176,8 @@ class ListItemUsers extends Component {
 
                     {this._renderProfileImage()}
 
-                <Text style={styles.title}>{fixedTitle}</Text>
-                <Text style={styles.artistTitle}>{fixedUsername}</Text>
+                    <Text style={styles.title}>{fixedTitle}</Text>
+                    <Text style={styles.artistTitle}>{fixedUsername}</Text>
                 </View>
             </TouchableOpacity>
 
@@ -284,4 +240,4 @@ const styles = {
 
 
 
-export default ListItemUsers;
+export default ListItemNewFollow;

@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     },
     container2: {
         paddingHorizontal: 0,
-        paddingVertical: 0,
+        paddingVertical: 10,
         marginVertical: 0,
         marginHorizontal: 0,
         backgroundColor: 'transparent',
@@ -221,8 +221,8 @@ const styles = StyleSheet.create({
         paddingLeft: 0,
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 20,
+        fontFamily: 'HiraginoSans-W3',
+        fontSize: 18,
         backgroundColor: 'transparent'
     },
 
