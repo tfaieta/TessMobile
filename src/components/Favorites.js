@@ -19,7 +19,14 @@ class Favorites extends Component{
 
         refFav.orderByChild('favorites').on("value", function (snapshot) {
             snapshot.forEach(function (data) {
-                Variables.state.favPodcasts.push(data.val());
+                if(data.val().id){
+                    firebase.database().ref(`podcasts/${data.val().id}`).on("value", function (snap) {
+                        Variables.state.favPodcasts.push(snap.val())
+                    })
+                }
+                else{
+                    Variables.state.favPodcasts.push(data.val());
+                }
             })
         });
     }

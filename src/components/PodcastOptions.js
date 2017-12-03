@@ -49,6 +49,8 @@ class PodcastOptions extends Component {
         const id  = rowData.id;
         const podcastArtist = rowData.podcastArtist;
         const podcastTitle = rowData.podcastTitle;
+        const podcastDescription = rowData.podcastDescription;
+        const podcastCategory = rowData.podcastCategory;
 
         let profileName = 'loading';
         firebase.database().ref(`/users/${rowData.podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
@@ -192,7 +194,7 @@ class PodcastOptions extends Component {
                             <TouchableOpacity onPress={() => {
 
 
-                                firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(id).update({podcastArtist, podcastTitle});
+                                firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(id).update({id});
                                 this.setState({favorite: true})
 
 
@@ -273,7 +275,6 @@ class PodcastOptions extends Component {
                             </View>
 
                             <TouchableOpacity onPress={() => {
-
 
                                 firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle).update({podcastArtist, podcastTitle});
                                 this.setState({favorite: true})

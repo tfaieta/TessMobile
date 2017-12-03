@@ -5,6 +5,7 @@ import Variables from './Variables';
 import {podcastPlayer} from './Variables';
 import Slider from 'react-native-slider';
 import firebase from 'firebase';
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 
 
@@ -283,7 +284,7 @@ class PlayerBottom extends Component {
         }
         if (Variables.state.podcastTitle =='') {
             return (
-                <Text style={styles.podcastText}>Select a Podcast to start listening....</Text>
+                <Text style={styles.podcastText}> </Text>
             );
         }
         else{
@@ -706,33 +707,51 @@ class PlayerBottom extends Component {
     };
 
 
+    onSwipeUp(gestureState) {
+        this.setModalVisible(true)
+    }
 
+    onSwipeDown(gestureState) {
+        this.setModalVisible(!this.state.modalVisible)
+    }
 
 
 
     render() {
+        const config = {
+            velocityThreshold: 0.3,
+            directionalOffsetThreshold: 80
+        };
+
         return (
 
             <View style={styles.barContainer}>
 
 
-                <View style={styles.centerContainer}>
+                <GestureRecognizer
+                    onSwipeUp={(state) => this.onSwipeUp(state)}
+                    config={config}
+                >
 
-                    <View style={styles.leftContainer}>
-                        {this._renderPodcastImage()}
-                    </View>
+                    <View style={styles.centerContainer}>
 
-                    <TouchableOpacity onPress={this.ExpandPlayer}>
-                    {this._renderPodcastInfo()}
-                    </TouchableOpacity>
+                        <View style={styles.leftContainer}>
+                            {this._renderPodcastImage()}
+                        </View>
 
-                    <View style={styles.rightContainer}>
-                        <TouchableOpacity style={{marginRight: 10}}>
-                            {this._renderPlayButton(Variables.state.isPlaying)}
+                        <TouchableOpacity onPress={this.ExpandPlayer}>
+                            {this._renderPodcastInfo()}
                         </TouchableOpacity>
+
+                        <View style={styles.rightContainer}>
+                            <TouchableOpacity style={{marginRight: 10}}>
+                                {this._renderPlayButton(Variables.state.isPlaying)}
+                            </TouchableOpacity>
+                        </View>
+
                     </View>
 
-                </View>
+                </GestureRecognizer>
 
 
 
@@ -740,6 +759,10 @@ class PlayerBottom extends Component {
 
 
 
+                <GestureRecognizer
+                    onSwipeDown={(state) => this.onSwipeDown(state)}
+                    config={config}
+                >
 
                 <Modal
                     animationType="slide"
@@ -907,6 +930,8 @@ class PlayerBottom extends Component {
 
 
                 </Modal>
+
+                </GestureRecognizer>
 
 
 

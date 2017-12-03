@@ -6,6 +6,8 @@ import { podcastFetchNew} from "../actions/PodcastActions";
 import { connect } from 'react-redux';
 import ListItemUsers from '../components/ListItemUsers';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Variables from "./Variables";
+import firebase from 'firebase';
 
 
 class Home extends Component{
@@ -13,6 +15,17 @@ class Home extends Component{
         this.props.podcastFetchNew();
 
         this.creataDataSourceNewPodcasts(this.props);
+
+
+        Variables.state.newPodcasts = [];
+        const refNew = firebase.database().ref(`podcasts/`);
+
+        refNew.limitToLast(15).on("value", function (snapshot) {
+            Variables.state.newPodcasts = [];
+            snapshot.forEach(function (data) {
+                Variables.state.newPodcasts.push(data.val());
+            })
+        });
     }
 
 
@@ -34,6 +47,11 @@ class Home extends Component{
 
     constructor(props) {
         super(props);
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.state = {
+            dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts),
+        };
+        setInterval(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},1500)
     }
 
 
@@ -103,7 +121,7 @@ class Home extends Component{
                         showsHorizontalScrollIndicator={false}
                         horizontal={true}
                         enableEmptySections
-                        dataSource={this.dataSourceNewPodcasts}
+                        dataSource={this.state.dataSource}
                         renderRow={this.renderRowNewPodcasts}
                     />
                     </View>
