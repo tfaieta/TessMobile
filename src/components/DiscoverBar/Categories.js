@@ -101,6 +101,14 @@ class Categories extends Component{
         });
     };
 
+    pressMusic =()=>{
+        this.props.navigator.push({
+            screen: 'Music',
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+
 
     render() {
         return (
@@ -217,6 +225,13 @@ class Categories extends Component{
                 </View>
 
                 <View style={{flexDirection: 'row', flex:1}}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: 10}} onPress={this.pressMusic}>
+                        <Image
+                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            source={require('tess/src/images/music-cat.png')}
+                        />
+                        <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Music</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10,  paddingBottom: 150}} onPress={this.pressTech}>
                         <Image
                             style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}

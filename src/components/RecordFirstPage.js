@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Image, StatusBar} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "./Variables";
 import DropdownAlert from 'react-native-dropdownalert';
@@ -44,13 +44,18 @@ class RecordFirstPage extends Component{
             <View
                 style={styles.container}>
 
+                <StatusBar
+                    barStyle="dark-content"
+                />
 
-                <View style={{flexDirection: 'row', paddingVertical:5, borderWidth: 2, marginBottom: 20, borderColor: 'rgba(187,188,205,0.3)',   }}>
+
+
+                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, marginBottom: 10, borderWidth: 2, borderBottomColor: 'rgba(187,188,205,0.3)', borderTopColor: '#fff', borderLeftColor: '#fff', borderRightColor: '#fff'}}>
                     <View style={{justifyContent: 'center', alignItems: 'center', flex:10, marginLeft:30, marginTop:20}}>
                         <Text style={styles.header}>Create a Podcast</Text>
                     </View>
 
-                    <View style={{justifyContent: 'center', alignItems: 'flex-end', marginTop: 16, marginRight: 10, flex:1}}>
+                    <View style={{justifyContent: 'center', alignItems: 'flex-end', marginTop: 26, marginRight: 10, flex:1}}>
                         <TouchableOpacity onPress={this.info} >
                             <Icon style={{
                                 textAlign: 'right',
@@ -121,8 +126,9 @@ const styles = StyleSheet.create({
         color: '#828393',
         textAlign: 'left',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W3',
-        fontSize: 18,
+        fontFamily: 'HiraginoSans-W6',
+        marginBottom: 10,
+        fontSize: 14,
         marginTop: 10,
         marginHorizontal: 20,
         backgroundColor: 'transparent',
@@ -158,8 +164,8 @@ const styles = StyleSheet.create({
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 18,
+        fontFamily: 'HiraginoSans-W6',
+        fontSize: 16,
         backgroundColor: 'transparent',
 
     }

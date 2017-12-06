@@ -58,6 +58,28 @@ class SearchPage extends Component{
         setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches)})},1000)
     }
 
+    _renderResults(mySearches){
+        if(mySearches > 0){
+            return(
+                <View style={{flex:1}}>
+                    <ListView
+                        enableEmptySections
+                        dataSource={this.state.dataSource}
+                        renderRow={this.renderRow}
+                        renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
+                    />
+                </View>
+            )
+        }
+        else{
+           return(
+               <View >
+                   <Text style={styles.title2}>No results found...</Text>
+               </View>
+           )
+        }
+    }
+
 
     renderRow = (rowData) => {
         const {navigator} = this.props;
@@ -256,14 +278,7 @@ class SearchPage extends Component{
                 </View>
 
                 <ScrollView>
-                    <View style={{flex:1}}>
-                        <ListView
-                            enableEmptySections
-                            dataSource={this.state.dataSource}
-                            renderRow={this.renderRow}
-                            renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
-                        />
-                    </View>
+                    {this._renderResults(Variables.state.mySearches.length)}
 
                     <View style={{paddingBottom:120}}>
 

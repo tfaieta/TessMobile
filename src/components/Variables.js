@@ -52,7 +52,9 @@ class Variables extends Component{
         userFollowers: [],
         myFollowing: [],
         userFollowing: [],
-        newFollowedContent: []
+        newFollowedContent: [],
+        homeFollowedContent: [],
+        selectedByTess: []
 
 };
 

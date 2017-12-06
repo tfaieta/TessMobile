@@ -384,6 +384,24 @@ class Account extends Component {
         );
     };
 
+    _renderContent(myContent){
+        if(myContent > 0){
+            return(
+                <ListView
+                    enableEmptySections
+                    dataSource={this.state.dataSource}
+                    renderRow={this.renderRow}
+                    renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
+                />
+            )
+        }
+        else{
+            return(
+                <Text style = {styles.titleBio}>Start recording to share your voice!</Text>
+            )
+        }
+    }
+
 
     _pressSettings = () => {
         this.props.navigator.push({
@@ -403,7 +421,7 @@ class Account extends Component {
                     barStyle="dark-content"
                 />
 
-                <View style={{flexDirection: 'row',paddingVertical:5, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
+                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, borderWidth: 2, borderBottomColor: 'rgba(187,188,205,0.3)', borderTopColor: '#fff', borderLeftColor: '#fff', borderRightColor: '#fff'}}>
                     <View style={{flex:1,alignItems: 'flex-start'}}>
                     </View>
                     <View style={{flex:1,justifyContent: 'center', alignItems: 'center',}}>
@@ -415,7 +433,8 @@ class Account extends Component {
                         <Icon style={{
                             textAlign: 'right',
                             fontSize: 24,
-                            marginRight: 10,
+                            marginRight: 15,
+                            marginTop: 5,
                             color: '#5757FF'
                         }} name="md-settings">
                         </Icon>
@@ -441,12 +460,7 @@ class Account extends Component {
                     <View style={{height:1, backgroundColor:'#b5b6cd', borderRadius: 10, borderWidth:0.1, marginBottom: 10, marginHorizontal: 30 }} />
 
                     <View style={{paddingBottom: 30}}>
-                        <ListView
-                            enableEmptySections
-                            dataSource={this.state.dataSource}
-                            renderRow={this.renderRow}
-                            renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
-                        />
+                        {this._renderContent(Variables.state.myPodcasts.length)}
                     </View>
 
                     <View style={{paddingBottom:120}}>
@@ -515,8 +529,8 @@ const styles = StyleSheet.create({
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 18,
+        fontFamily: 'HiraginoSans-W6',
+        fontSize: 16,
         backgroundColor: 'transparent',
     },
 

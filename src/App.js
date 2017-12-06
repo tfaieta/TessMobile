@@ -47,6 +47,8 @@ import UserFollowing from "./components/UserFollowing";
 import UserFollowers from "./components/UserFollowers";
 import PodcastOptions from "./components/PodcastOptions";
 import EditPodcast from "./components/EditPodcast";
+import ViewAll from "./components/ViewAll";
+import Music from "./components/Categories/Music";
 
 
 
@@ -58,6 +60,7 @@ Navigation.registerComponent('Login', () => Login, store, Provider);
 Navigation.registerComponent('CreateAccount', () => CreateAccount, store, Provider);
 
 Navigation.registerComponent('Home', () => Home, store, Provider);
+Navigation.registerComponent('ViewAll', () => ViewAll, store, Provider);
 
 Navigation.registerComponent('Discover', () => Discover, store, Provider);
 Navigation.registerComponent('Categories', () => Categories, store, Provider);
@@ -79,6 +82,7 @@ Navigation.registerComponent('Sports', () => Sports, store, Provider);
 Navigation.registerComponent('Storytelling', () => StoryTelling, store, Provider);
 Navigation.registerComponent('Tech', () => Tech, store, Provider);
 Navigation.registerComponent('Travel', () => Travel, store, Provider);
+Navigation.registerComponent('Music', () => Music, store, Provider);
 
 Navigation.registerComponent('RecordFirst', () => RecordFirstPage, store, Provider);
 Navigation.registerComponent('Record', () => Record, store, Provider);

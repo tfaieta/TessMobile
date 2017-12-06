@@ -59,7 +59,7 @@ class ListItemUsers extends Component {
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom:10, height: 130, width: 130, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom:10, height: 130, width: 130, borderRadius:5, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
                     <Icon style={{
                         textAlign: 'center',
                         fontSize: 80,
@@ -74,7 +74,7 @@ class ListItemUsers extends Component {
             return(
                 <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom:10, height: 130, width: 130  }}>
                     <Image
-                        style={{width: 130, height:130, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
+                        style={{width: 130, height:130, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 5, borderWidth: 0.1, borderColor: 'transparent'}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -92,7 +92,7 @@ class ListItemUsers extends Component {
         let localPath =  AudioUtils.DocumentDirectoryPath + '/local.aac';
 
         if(id){
-            firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL()
+            firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL().catch( () => {console.warn('not in storage')})
                 .then(function(url) {
 
 
@@ -131,7 +131,7 @@ class ListItemUsers extends Component {
                 });
         }
         else{
-            firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
+            firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL().catch( () => {console.warn('not in storage')})
                 .then(function(url) {
 
 
@@ -196,8 +196,8 @@ class ListItemUsers extends Component {
         });
 
         var fixedTitle = '';
-        if(podcastTitle.toString().length > 12 ){
-            fixedTitle = (podcastTitle.toString().slice(0,12)+"...")
+        if(podcastTitle.toString().length > 13 ){
+            fixedTitle = (podcastTitle.toString().slice(0,13)+"...")
         }
         else{
             fixedTitle = podcastTitle;
@@ -249,10 +249,10 @@ const styles = {
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        paddingVertical: 5,
+        fontFamily: 'HiraginoSans-W6',
+        paddingVertical: 1,
         marginLeft: 10,
-        fontSize: 14,
+        fontSize: 12,
         backgroundColor: 'transparent',
     },
     container: {

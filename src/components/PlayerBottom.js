@@ -158,7 +158,7 @@ class PlayerBottom extends Component {
                             paddingTop: 0,
                             paddingRight:5,
                             fontSize: 30,
-                            color: '#2A2A30',
+                            color: '#fff',
                         }} name="md-pause">
                         </Icon>
                     </TouchableOpacity>
@@ -174,7 +174,7 @@ class PlayerBottom extends Component {
                             paddingTop: 0,
                             paddingRight:5,
                             fontSize: 30,
-                            color: '#2A2A30',
+                            color: '#fff',
                         }} name="md-play">
                         </Icon>
                     </TouchableOpacity>
@@ -195,16 +195,16 @@ class PlayerBottom extends Component {
         else{
 
             var fixedTitle = '';
-            if(Variables.state.podcastTitle.toString().length > 25 ){
-                fixedTitle = (Variables.state.podcastTitle.slice(0,25)+"...")
+            if(Variables.state.podcastTitle.toString().length > 22 ){
+                fixedTitle = (Variables.state.podcastTitle.slice(0,22)+"...")
             }
             else{
                 fixedTitle = Variables.state.podcastTitle;
             }
 
             var fixedUsername = '';
-            if(profileName > 25){
-                fixedUsername =  (profileName.slice(0,25)+"...");
+            if(profileName > 22){
+                fixedUsername =  (profileName.slice(0,22)+"...");
             }
             else{
                 fixedUsername = profileName;
@@ -384,8 +384,8 @@ class PlayerBottom extends Component {
             return (
                 <TouchableOpacity onPress = {this.pressLike}>
                     <Icon style={{textAlign: 'center', fontSize: 28, color: '#5757FF', marginRight: 20}} name="ios-happy-outline">
+                        <Text style={styles.podcastTextLikesActive}> {this.state.likes}</Text>
                     </Icon>
-                    <Text style={styles.podcastTextLikesActive}> {this.state.likes}</Text>
                 </TouchableOpacity>
             )
         }
@@ -393,8 +393,8 @@ class PlayerBottom extends Component {
             return(
                 <TouchableOpacity onPress = {this.pressLike}>
                     <Icon style={{textAlign: 'center', fontSize: 28, color: '#BBBCCD', marginRight: 20}} name="ios-happy-outline">
+                        <Text style={styles.podcastTextLikes}> {this.state.likes}</Text>
                     </Icon>
-                    <Text style={styles.podcastTextLikes}> {this.state.likes}</Text>
                 </TouchableOpacity>
             )
         }
@@ -703,6 +703,14 @@ class PlayerBottom extends Component {
                 animationType: 'fade',
             });
         }
+        else if(Variables.state.podcastCategory == 'Music'){
+            this.setModalVisible(!this.state.modalVisible);
+            this.props.navigator.push({
+                screen: 'Music',
+                animated: true,
+                animationType: 'fade',
+            });
+        }
         else console.warn("Category not yet supported");
     };
 
@@ -771,6 +779,7 @@ class PlayerBottom extends Component {
                     onRequestClose={() => {alert("Modal has been closed.")}}
                 >
 
+                    <View style = {styles.containerOutsideModal}>
                     <View
                         style={styles.containerModal}>
 
@@ -926,6 +935,7 @@ class PlayerBottom extends Component {
 
 
                     </View>
+                    </View>
 
 
 
@@ -948,19 +958,19 @@ class PlayerBottom extends Component {
     const styles = StyleSheet.create({
     barContainer:{
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#5757FF',
         position: 'absolute',
         left: 0,
         right: 0,
         bottom: 0,
-        borderTopColor: 'rgba(170,170,170,0.3)',
-        borderBottomColor: '#fff',
-        borderRightColor: '#fff',
-        borderLeftColor: '#fff',
-        borderWidth: 1.5
+        borderWidth: 0.3,
+        borderColor: '#5757FF',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        marginHorizontal: 30,
     },
     playingText:{
-        color: '#2A2A30',
+        color: '#fff',
         flexDirection: 'row',
         backgroundColor: 'transparent',
         fontStyle: 'normal',
@@ -970,12 +980,12 @@ class PlayerBottom extends Component {
         paddingLeft: 10
     },
     playingText2:{
-        color: '#2A2A30',
+        color: '#fff',
         flexDirection: 'row',
         backgroundColor: 'transparent',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W3',
-        fontSize: 12,
+        fontFamily: 'HiraginoSans-W6',
+        fontSize: 11,
         textAlign: 'left',
         paddingLeft: 10
     },
@@ -1057,8 +1067,15 @@ class PlayerBottom extends Component {
             marginTop: 5,
             marginHorizontal: 5,
             borderColor: 'rgba(170,170,170,0.2)',
-            borderRadius: 10,
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
             borderWidth: 2
+        },
+
+        containerOutsideModal:{
+            flex: 1,
+            backgroundColor: '#5757FF',
+
         },
 
 

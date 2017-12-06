@@ -52,7 +52,7 @@ class Library extends Component{
                 />
 
 
-                <View style={{flexDirection: 'row',  paddingVertical:5, borderWidth: 2, borderColor: 'rgba(187,188,205,0.3)',   }}>
+                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, borderWidth: 2, borderBottomColor: 'rgba(187,188,205,0.3)', borderTopColor: '#fff', borderLeftColor: '#fff', borderRightColor: '#fff'}}>
                     <View style={{flex:1,justifyContent: 'center', alignItems: 'center', marginTop:5}}>
                         <Text style={styles.header}>Library</Text>
                     </View>
@@ -157,8 +157,8 @@ const styles = StyleSheet.create({
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 18,
+        fontFamily: 'HiraginoSans-W6',
+        fontSize: 16,
         backgroundColor: 'transparent',
 
     }

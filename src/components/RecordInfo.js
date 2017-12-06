@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet, TouchableOpacity, ActivityIndicator} from 'react-native';
+import { Text, TextInput, View, StyleSheet, TouchableOpacity, ActivityIndicator, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {podTime, totalTime} from './Record';
 import Variables, {podcastPlayer} from './Variables';
@@ -19,8 +19,8 @@ import Slider from 'react-native-slider';
 let podFile = AudioUtils.DocumentDirectoryPath + '/test.aac';
 
 
-const labels = ['News', 'Fitness', 'Gaming', 'Society & Culture', 'Sports', 'Entertainment', 'Comedy', 'Lifestyle', 'Science & Nature', 'Tech', 'Travel', 'Learn Something', 'Storytelling', 'Other'];
-const options = ['News', 'Fitness', 'Gaming', 'Society & Culture', 'Sports', 'Entertainment', 'Comedy', 'Lifestyle', 'Science & Nature', 'Tech', 'Travel', 'Learn Something', 'Storytelling', 'Other'];
+const labels = ['News', 'Fitness', 'Gaming', 'Society & Culture', 'Sports', 'Entertainment', 'Comedy', 'Music', 'Lifestyle', 'Science & Nature', 'Tech', 'Travel', 'Learn Something', 'Storytelling', 'Other'];
+const options = ['News', 'Fitness', 'Gaming', 'Society & Culture', 'Sports', 'Entertainment', 'Comedy', 'Music', 'Lifestyle', 'Science & Nature', 'Tech', 'Travel', 'Learn Something', 'Storytelling', 'Other'];
 
 
 
@@ -69,14 +69,29 @@ class RecordInfo extends Component{
     }
 
     Cancel = () => {
-        this.props.navigator.push({
-            screen: 'RecordFirst',
-            animated: true,
-            animationType: 'fade',
-            navigatorStyle: {
-                tabBarHidden: false,
-            },
-        });
+
+        Alert.alert(
+            'Are you sure you want to go back?',
+            'All recording progress will be lost.',
+            [
+                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                {text: 'Yes', onPress: () => {
+
+                    this.props.navigator.push({
+                        screen: 'RecordFirst',
+                        animated: true,
+                        animationType: 'fade',
+                        navigatorStyle: {
+                            tabBarHidden: false,
+                        },
+                    });
+
+                }
+                },
+            ],
+            { cancelable: false }
+        );
+
     };
 
     play =()=> {

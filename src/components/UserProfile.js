@@ -250,26 +250,28 @@ class UserProfile extends Component {
             if (this.state.following) {
                 return (
                     <TouchableOpacity onPress={this.pressFollowButton} style={{
-                        backgroundColor: 'rgba(40,240,240,1)',
-                        paddingVertical: 10,
-                        marginHorizontal: 30,
+                        backgroundColor: 'transparent',
+                        paddingVertical: 5,
+                        marginHorizontal: 40,
                         marginTop: 0,
                         borderRadius: 10,
-                        borderWidth: 0.1
+                        borderWidth: 1,
+                        borderColor: '#5757FF',
                     }}>
-                        <Text style={styles.titleFollow}>Unfollow</Text>
+                        <Text style={styles.titleFollowSelected}>Unfollow</Text>
                     </TouchableOpacity>
                 )
             }
             else {
                 return (
                     <TouchableOpacity onPress={this.pressFollowButton} style={{
-                        backgroundColor: 'rgba(1,180,180,1)',
-                        paddingVertical: 10,
-                        marginHorizontal: 30,
+                        backgroundColor: 'transparent',
+                        paddingVertical: 5,
+                        marginHorizontal: 40,
                         marginTop: 0,
                         borderRadius: 10,
-                        borderWidth: 0.1
+                        borderWidth: 1,
+                        borderColor:'#828393',
                     }}>
                         <Text style={styles.titleFollow}>Follow</Text>
                     </TouchableOpacity>
@@ -487,12 +489,7 @@ class UserProfile extends Component {
                 style={styles.containerMain}>
 
 
-                <View style={{
-                    flexDirection: 'row',
-                    paddingVertical:5,
-                    borderWidth: 2,
-                    borderColor: 'rgba(187,188,205,0.3)',
-                }}>
+                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, borderWidth: 2, borderBottomColor: 'rgba(187,188,205,0.3)', borderTopColor: '#fff', borderLeftColor: '#fff', borderRightColor: '#fff'}}>
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
@@ -590,15 +587,25 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     titleFollow: {
-        color: '#fff',
-        marginVertical: 5,
+        color: '#2A2A30',
         marginTop: 10,
         flex:1,
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W3',
-        fontSize: 20,
+        fontSize: 16,
+        backgroundColor: 'transparent'
+    },
+    titleFollowSelected: {
+        color: '#5757FF',
+        marginTop: 10,
+        flex:1,
+        textAlign: 'center',
+        opacity: 2,
+        fontStyle: 'normal',
+        fontFamily: 'HiraginoSans-W3',
+        fontSize: 16,
         backgroundColor: 'transparent'
     },
     title3: {
@@ -618,8 +625,8 @@ const styles = StyleSheet.create({
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 18,
+        fontFamily: 'HiraginoSans-W6',
+        fontSize: 16,
         backgroundColor: 'transparent',
 
     },

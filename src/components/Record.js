@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, StatusBar, Image, Platform} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, StatusBar, Image, Platform, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Sound from 'react-native-sound';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
@@ -291,13 +291,47 @@ class Record extends Component{
 
     _pressBack = () => {
 
-        AudioRecorder.stopRecording();
-        this.setState({stoppedRecording: true, recording: false});
 
-        this.props.navigator.pop({
-            animated: true,
-            animationType: 'fade',
-        });
+        if(this.state.currentTime > 0){
+
+            Alert.alert(
+                'Are you sure you want to go back?',
+                'All recording progress will be lost.',
+                [
+                    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                    {text: 'Yes', onPress: () => {
+
+                        AudioRecorder.stopRecording();
+                        this.setState({stoppedRecording: true, recording: false});
+
+                        this.props.navigator.pop({
+                            animated: true,
+                            animationType: 'fade',
+                        });
+
+                    }
+                    },
+                ],
+                { cancelable: false }
+            );
+
+        }
+        else{
+
+            AudioRecorder.stopRecording();
+            this.setState({stoppedRecording: true, recording: false});
+
+            this.props.navigator.pop({
+                animated: true,
+                animationType: 'fade',
+            });
+
+        }
+
+
+
+
+
     };
 
 

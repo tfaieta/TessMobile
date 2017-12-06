@@ -8,7 +8,7 @@ import InvertibleScrollView from 'react-native-invertible-scroll-view';
 
 
 
-class ScienceNature extends Component{
+class Music extends Component{
 
     componentWillMount(){
         Variables.state.currCategory = [];
@@ -17,7 +17,7 @@ class ScienceNature extends Component{
 
         refCat.on("value", function (snapshot) {
             snapshot.forEach(function (data) {
-                if(data.val().podcastCategory == 'Science & Nature') {
+                if(data.val().podcastCategory == 'Music') {
                     Variables.state.currCategory.push(data.val());
                 }
             })
@@ -230,7 +230,7 @@ class ScienceNature extends Component{
                         </TouchableOpacity>
                     </View>
                     <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={styles.header}>Science & Nature</Text>
+                        <Text style={styles.header}>Music</Text>
                     </View>
 
                     <View>
@@ -304,6 +304,7 @@ const styles = StyleSheet.create({
 
     },
 
+
     title: {
         color: '#2A2A30',
         marginTop: 0,
@@ -369,4 +370,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default ScienceNature;
+export default Music;

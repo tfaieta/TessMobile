@@ -101,6 +101,7 @@ class PodcastOptions extends Component {
                                     if(rowData.id){
                                         firebase.storage().ref(`/users/${rowData.podcastArtist}/${rowData.id}`).delete();
                                         firebase.database().ref(`/podcasts/${rowData.id}`).remove();
+                                        firebase.database().ref(`/users/${rowData.podcastArtist}/podcasts/${rowData.id}`).remove();
                                         navigator.dismissLightBox();
                                     }
                                     else{

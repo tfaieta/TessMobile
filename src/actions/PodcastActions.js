@@ -28,7 +28,6 @@ export const podcastCreate = ({ podcastTitle, podcastDescription, podcastCategor
 
     return (dispatch) => {
 
-        let userID = currentUser.uid;
         let likes = 0;
         let ref = '';
         let id = '';
@@ -40,6 +39,10 @@ export const podcastCreate = ({ podcastTitle, podcastDescription, podcastCategor
                 dispatch({type: PODCAST_CREATE});
                 ref = snap.ref;
                 id = snap.key;
+
+
+                ref.update({id});
+                firebase.database().ref(`/users/${currentUser.uid}`).child('podcasts').child(id).update({id});
 
 
             const Blob = RNFetchBlob.polyfill.Blob;
@@ -62,8 +65,6 @@ export const podcastCreate = ({ podcastTitle, podcastDescription, podcastCategor
                 })
                 .then(() => {
                     uploadBlob.close();
-
-                    ref.update({id});
 
                     navigator.push({
                         screen: 'RecordSuccess',

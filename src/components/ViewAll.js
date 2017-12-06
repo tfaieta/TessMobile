@@ -1,57 +1,42 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView, ListView, Text, TouchableOpacity, Alert} from 'react-native';
-import PlayerBottom from '../PlayerBottom';
+import _ from 'lodash';
+import { View, StyleSheet, ListView, TouchableOpacity, Text, ScrollView} from 'react-native';
+import PlayerBottom from './PlayerBottom';
+import { connect } from 'react-redux';
+import { podcastFetchFavs } from "../actions/PodcastActions"
 import firebase from 'firebase';
+import Variables from "./Variables";
 import Icon from 'react-native-vector-icons/Ionicons';
-import Variables from "../Variables";
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
 
 
 
-class ScienceNature extends Component{
-
-    componentWillMount(){
-        Variables.state.currCategory = [];
-        const {currentUser} = firebase.auth();
-        const refCat = firebase.database().ref(`podcasts/`);
-
-        refCat.on("value", function (snapshot) {
-            snapshot.forEach(function (data) {
-                if(data.val().podcastCategory == 'Science & Nature') {
-                    Variables.state.currCategory.push(data.val());
-                }
-            })
-        });
-    }
+class ViewAll extends Component{
 
     constructor(props){
         super(props);
+        const {data} = this.props;
+
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
-            dataSource:  dataSource.cloneWithRows([]),
-            loading: true
+            dataSource: dataSource.cloneWithRows(data),
         };
-        setTimeout(() =>{
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.currCategory),loading:false})
-        },500)
     }
 
 
-    onGarbagePress(){
-        Alert.alert(
-            'Are you sure you want to delete?',
-            '',
-            [
-                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                {text: 'Yes', onPress: () => console.warn('delete')
-                },
-            ],
-            { cancelable: false }
-        )
-    }
+
+    _pressBack = () => {
+        this.props.navigator.pop({
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+
+
 
 
     renderRow = (rowData) => {
+        const {navigator} = this.props;
 
         let profileName = 'loading';
         firebase.database().ref(`/users/${rowData.podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
@@ -63,19 +48,20 @@ class ScienceNature extends Component{
             }
         });
 
-
-
         const {currentUser} = firebase.auth();
-        const podcastTitle = rowData.podcastTitle;
+        const podcastTitle  = rowData.podcastTitle;
+        const podcastArtist = rowData.podcastArtist;
         const podcastDescription = rowData.podcastDescription;
         const podcastCategory = rowData.podcastCategory;
-        const podcastArtist = rowData.podcastArtist;
+        const ref = firebase.database().ref(`podcasts/`);
         const id = rowData.id;
+
+
 
 
         return (
 
-            <TouchableOpacity onPress={() =>  {
+            <TouchableOpacity underlayColor='#5757FF' onPress={() => {
 
                 if(id){
                     firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL()
@@ -156,12 +142,8 @@ class ScienceNature extends Component{
                         });
                 }
 
-
-
-
             }}>
                 <View style={styles.container}>
-
 
 
                     <View style={styles.leftContainer}>
@@ -172,9 +154,8 @@ class ScienceNature extends Component{
 
                     <View style={styles.rightContainer}>
                         <Icon onPress={() => {
-                            const {navigator} = this.props;
 
-                            this.props.navigator.showLightBox({
+                            navigator.showLightBox({
                                 screen: "PodcastOptions",
                                 passProps: {rowData, navigator},
                                 style: {
@@ -203,19 +184,14 @@ class ScienceNature extends Component{
             </TouchableOpacity>
 
         );
+
     };
-
-
-    _pressBack = () => {
-        this.props.navigator.pop({
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-
 
 
     render() {
+        const {data} = this.props;
+        const {title} = this.props;
+
         return (
             <View
                 style={styles.containerMain}>
@@ -230,14 +206,13 @@ class ScienceNature extends Component{
                         </TouchableOpacity>
                     </View>
                     <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={styles.header}>Science & Nature</Text>
+                        <Text style={styles.header}>{title}</Text>
                     </View>
 
                     <View>
                     </View>
 
                 </View>
-
 
 
 
@@ -250,11 +225,17 @@ class ScienceNature extends Component{
                         renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
                     />
 
+
+                    <View style={{paddingBottom:120}}>
+
+                    </View>
+
                 </ScrollView>
 
 
 
-                <PlayerBottom/>
+
+                <PlayerBottom navigator={this.props.navigator}/>
 
 
             </View>
@@ -272,18 +253,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
 
-    titleMain: {
-        color: '#804cc8',
-        marginTop: 70,
-        flex:1,
-        textAlign: 'center',
-        opacity: 2,
-        fontStyle: 'normal',
-        fontFamily: 'Futura',
-        fontSize: 25,
-        backgroundColor: 'transparent'
-    },
-
     contentTitle: {
         color: 'rgba(1,170,170,1)',
         fontSize: 25,
@@ -292,18 +261,32 @@ const styles = StyleSheet.create({
 
     },
 
-    header: {
-        marginTop:25,
-        marginLeft: -35,
-        color: '#2A2A30',
-        textAlign: 'center',
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
-        backgroundColor: 'transparent',
-
+    container2: {
+        flex: 1,
+        paddingHorizontal: 0,
+        paddingVertical: 10,
+        marginVertical: 0,
+        marginHorizontal: 0,
+        backgroundColor: '#FFF',
+        opacity: 1,
+        borderColor: '#FFF',
+        borderWidth: 0.5,
+        borderRadius: 0,
+        borderStyle: 'solid',
+        flexDirection: 'row',
     },
 
+    title2: {
+        color: '#2A2A30',
+        flex:1,
+        marginTop:20,
+        textAlign: 'center',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Hiragino Sans',
+        fontSize: 20,
+        backgroundColor: 'transparent'
+    },
     title: {
         color: '#2A2A30',
         marginTop: 0,
@@ -329,9 +312,22 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         marginLeft: 20,
     },
+
+    header: {
+        marginTop:25,
+        marginLeft: -35,
+        color: '#2A2A30',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'HiraginoSans-W6',
+        fontSize: 16,
+        backgroundColor: 'transparent',
+
+    },
+
     container: {
         paddingHorizontal: 0,
-        paddingVertical: 10,
+        paddingVertical: 0,
         marginVertical: 0,
         marginHorizontal: 0,
         backgroundColor: '#FFF',
@@ -342,6 +338,7 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         flexDirection: 'row',
     },
+
     centerContainer: {
         flexDirection: 'row'
     },
@@ -369,4 +366,11 @@ const styles = StyleSheet.create({
 });
 
 
-export default ScienceNature;
+const mapStateToProps = state => {
+    const podcast = _.map(state.podcast, (val, uid) => {
+        return { ...val, uid };
+    });
+    return {podcast};
+};
+
+export default connect(mapStateToProps, { podcastFetchFavs })(ViewAll);
