@@ -7,8 +7,8 @@ import { podcastFetchFollowed } from "../actions/PodcastActions"
 import Variables from "./Variables";
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
-
 import { Navigation } from 'react-native-navigation';
+import ListItemFollowed from "./ListItemFollowed";
 
 
 
@@ -73,52 +73,8 @@ class UserFollowers extends Component{
 
 
 
-    renderRow(rowData){
-
-        let profileName =  'loading...';
-        firebase.database().ref(`/users/${rowData}/username`).orderByChild("username").on("value", function (snap) {
-            if (snap.val()) {
-                profileName = snap.val().username;
-            }
-        });
-
-
-
-        return (
-            <TouchableOpacity underlayColor='#5757FF' onPress={ () =>{
-                Variables.state.browsingArtist = rowData;
-                Navigation.showModal({
-                    screen: "UserProfile",
-                    title: "Modal",
-                    passProps: {},
-                    navigatorStyle: {},
-                    navigatorButtons: {},
-                    animationType: 'slide-up'
-                });
-            }}>
-                <View style={styles.container2}>
-
-
-                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginBottom:10, marginLeft:10, height: 60, width: 60, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
-                        <Icon style={{
-                            textAlign: 'center',
-                            fontSize: 40,
-                            color: 'white',
-                            marginTop: 5
-                        }} name="md-person">
-                        </Icon>
-                    </View>
-
-
-                    <View style={styles.middleContainer}>
-                        <Text style={styles.title2}>   {profileName}</Text>
-                    </View>
-
-
-                </View>
-            </TouchableOpacity>
-        )
-
+    renderRow(podcast){
+        return <ListItemFollowed podcast={podcast} />;
     }
 
 
@@ -141,7 +97,7 @@ class UserFollowers extends Component{
                 style={styles.container}>
 
 
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, borderWidth: 2, borderBottomColor: 'rgba(187,188,205,0.3)', borderTopColor: '#fff', borderLeftColor: '#fff', borderRightColor: '#fff'}}>
+                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, borderWidth: 2,borderBottomColor: 'rgba(187,188,205,0.3)', borderTopColor: '#fff', borderLeftColor: '#fff', borderRightColor: '#fff'}}>
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{

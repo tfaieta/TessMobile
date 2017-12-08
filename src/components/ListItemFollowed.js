@@ -1,49 +1,62 @@
 import React, { Component } from 'react';
-import { Text, View, LayoutAnimation, TouchableOpacity, Alert } from 'react-native';
+import { Text, View, TouchableOpacity, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
-import {AudioUtils} from 'react-native-audio';
 import Variables from "./Variables";
+import { Navigation } from 'react-native-navigation';
 
 
 class ListItemFollowed extends Component {
 
-    onRowPress(){
-        const {currentUser} = firebase.auth();
-        const { podcastTitle } = this.props.podcast;
-        const { podcastDescription } = this.props.podcast;
-        const { podcastCategory } = this.props.podcast;
-        const { podcastArtist } = this.props.podcast;
-        let localPath =  AudioUtils.DocumentDirectoryPath + '/local.aac';
+    componentWillMount(){
+        const podcastArtist = this.props.podcast;
 
-        firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
+        let profileImage = '';
+        const storageRef = firebase.storage().ref(`/users/${podcastArtist}/image-profile-uploaded`);
+        storageRef.getDownloadURL()
             .then(function(url) {
+                profileImage = url;
+            }).catch(function(error) {
+            //
+        });
+        setTimeout(() => {this.setState({profileImage: profileImage})},1250);
+    }
 
-                firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
-                    if(snap.val()){
-                        Variables.state.currentUsername = snap.val().username;
-                    }
-                    else {
-                        Variables.state.currentUsername = podcastArtist;
-                    }
-                });
-
-                Variables.pause();
-                Variables.setPodcastFile(url);
-                Variables.state.podcastTitle = podcastTitle;
-                Variables.state.podcastDescription = podcastDescription;
-                Variables.state.podcastCategory = podcastCategory;
-                Variables.state.podcastArtist = podcastArtist;
-                Variables.state.userProfileImage = '';
-                Variables.play();
-                Variables.state.isPlaying = true;
-
-            });
+    constructor(state) {
+        super(state);
+        this.state ={
+            profileName: '',
+            profileImage: ''
+        };
+    }
 
 
 
+    _renderProfileImage(){
 
-
+        if (this.state.profileImage == ''){
+            return(
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginBottom:10, marginLeft: 10, alignSelf: 'center', height: 70, width: 70, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
+                    <Icon style={{
+                        textAlign: 'center',
+                        fontSize: 45,
+                        color: 'white',
+                        marginTop: 10
+                    }} name="md-person">
+                    </Icon>
+                </View>
+            )
+        }
+        else{
+            return(
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom:10, marginLeft: 10, height: 70, width: 70  }}>
+                    <Image
+                        style={{width: 70, height: 70, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
+                        source={{uri: this.state.profileImage}}
+                    />
+                </View>
+            )
+        }
     }
 
 
@@ -51,18 +64,19 @@ class ListItemFollowed extends Component {
 
 
 
+    render() {
 
+        const podcastArtist = this.props.podcast;
 
-    render(rowData) {
-
-        let profileName = rowData;
-        firebase.database().ref(`/users/${rowData}/username`).orderByChild("username").on("value", function (snap) {
+        let profileName = 'loading';
+        setTimeout(() =>{
+            this.setState({profileName: profileName})
+        },200);
+        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
             if (snap.val()) {
                 profileName = snap.val().username;
             }
-            else {
-                profileName = rowData;
-            }
+
         });
 
 
@@ -70,29 +84,24 @@ class ListItemFollowed extends Component {
         return (
 
             <TouchableOpacity underlayColor='#5757FF' onPress={ () =>{
-                Variables.state.podcastArtist = rowData;
-                this.props.navigator.push({
-                    screen: 'UserProfile',
-                    animated: true,
-                    animationType: 'fade',
+                Variables.state.browsingArtist = podcastArtist;
+                Navigation.showModal({
+                    screen: "UserProfile",
+                    title: "Modal",
+                    passProps: {},
+                    navigatorStyle: {},
+                    navigatorButtons: {},
+                    animationType: 'slide-up'
                 });
             }}>
                 <View style={styles.container2}>
 
 
-                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginBottom:10, marginLeft:10, height: 60, width: 60, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
-                        <Icon style={{
-                            textAlign: 'center',
-                            fontSize: 40,
-                            color: 'white',
-                            marginTop: 5
-                        }} name="md-person">
-                        </Icon>
-                    </View>
+                    {this._renderProfileImage()}
 
 
                     <View style={styles.middleContainer}>
-                        <Text style={styles.title2}>   {profileName}</Text>
+                        <Text style={styles.title2}>{this.state.profileName}</Text>
                     </View>
 
 
@@ -143,6 +152,24 @@ const styles = {
         borderStyle: 'solid',
         flexDirection: 'row',
     },
+    container2: {
+        marginVertical: 5,
+        backgroundColor: 'transparent',
+        opacity: 1,
+        flexDirection: 'row'
+    },
+    title2: {
+        color: '#2A2A30',
+        flex:1,
+        textAlign: 'center',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'HiraginoSans-W6',
+        marginTop: 25,
+        marginLeft: 20,
+        fontSize: 16,
+        backgroundColor: 'transparent'
+    },
     centerContainer: {
         flexDirection: 'row'
     },
@@ -161,10 +188,8 @@ const styles = {
     },
     middleContainer: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 3,
-        marginHorizontal: -100,
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
     },
 };
 

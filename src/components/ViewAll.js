@@ -64,7 +64,7 @@ class ViewAll extends Component{
             <TouchableOpacity underlayColor='#5757FF' onPress={() => {
 
                 if(id){
-                    firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL()
+                    firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL().catch(() => {console.warn("file not found")})
                         .then(function(url) {
 
 
@@ -77,6 +77,19 @@ class ViewAll extends Component{
                                 }
                             });
 
+                            firebase.database().ref(`podcasts/${id}/likes`).on("value", function (snap) {
+                                Variables.state.likers = [];
+                                Variables.state.liked = false;
+                                snap.forEach(function (data) {
+                                    if (data.val()) {
+                                        if(data.val().user == currentUser.uid){
+                                            Variables.state.liked = true;
+                                        }
+                                        Variables.state.likers.push(data.val());
+                                    }
+                                });
+                            });
+
                             Variables.pause();
                             Variables.setPodcastFile(url);
                             Variables.state.isPlaying = false;
@@ -84,6 +97,7 @@ class ViewAll extends Component{
                             Variables.state.podcastArtist = podcastArtist;
                             Variables.state.podcastCategory = podcastCategory;
                             Variables.state.podcastDescription = podcastDescription;
+                            Variables.state.podcastID = id;
                             Variables.state.userProfileImage = '';
                             Variables.play();
                             Variables.state.isPlaying = true;
@@ -103,7 +117,7 @@ class ViewAll extends Component{
                         });
                 }
                 else{
-                    firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
+                    firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL().catch(() => {console.warn("file not found")})
                         .then(function(url) {
 
 
@@ -123,6 +137,9 @@ class ViewAll extends Component{
                             Variables.state.podcastArtist = podcastArtist;
                             Variables.state.podcastCategory = podcastCategory;
                             Variables.state.podcastDescription = podcastDescription;
+                            Variables.state.podcastID = '';
+                            Variables.state.liked = false;
+                            Variables.state.likers = [];
                             Variables.state.userProfileImage = '';
                             Variables.play();
                             Variables.state.isPlaying = true;

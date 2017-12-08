@@ -52,7 +52,7 @@ class Library extends Component{
                 />
 
 
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, borderWidth: 2, borderBottomColor: 'rgba(187,188,205,0.3)', borderTopColor: '#fff', borderLeftColor: '#fff', borderRightColor: '#fff'}}>
+                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 6}, shadowOpacity: 0.2, shadowRadius: 10}}>
                     <View style={{flex:1,justifyContent: 'center', alignItems: 'center', marginTop:5}}>
                         <Text style={styles.header}>Library</Text>
                     </View>

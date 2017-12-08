@@ -301,7 +301,7 @@ class PlayerBottom extends Component {
 
             if (this.state.profileImage == ''){
                 return(
-                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop:10, height: 140, width: 140, borderRadius:10, borderWidth:8, borderColor:'rgba(320,320,320,0.8)'  }}>
+                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop:10, height: 140, width: 140, borderRadius:10, borderWidth:8, borderColor:'rgba(320,320,320,0.8)',  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
                         <Icon style={{
                             textAlign: 'center',
                             fontSize: 90,
@@ -314,7 +314,7 @@ class PlayerBottom extends Component {
             }
             else{
                 return(
-                    <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop:10, height: 140, width: 140  }}>
+                    <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop:10, height: 140, width: 140,  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
                         <Image
                             style={{width: 140, height:140,  alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
                             source={{uri: this.state.profileImage}}
@@ -376,28 +376,35 @@ class PlayerBottom extends Component {
     }
 
 
-    _renderLikes(){
+    _renderLikes(likers, liked){
+
         if(Variables.state.podcastTitle == ''){
             return;
         }
-        if (this.state.liked) {
-            return (
-                <TouchableOpacity onPress = {this.pressLike}>
-                    <Icon style={{textAlign: 'center', fontSize: 28, color: '#5757FF', marginRight: 20}} name="ios-happy-outline">
-                        <Text style={styles.podcastTextLikesActive}> {this.state.likes}</Text>
-                    </Icon>
-                </TouchableOpacity>
-            )
+        if(Variables.state.podcastID != ''){
+            const {currentUser} = firebase.auth();
+
+            if (liked) {
+                return (
+                    <TouchableOpacity onPress = {this.pressLike}>
+                        <Icon style={{textAlign: 'center', fontSize: 28, color: '#5757FF', marginRight: 25}} name="ios-happy-outline">
+                            <Text style={styles.podcastTextLikesActive}> {likers.length}</Text>
+                        </Icon>
+                    </TouchableOpacity>
+                )
+            }
+            else{
+                return(
+                    <TouchableOpacity onPress = {this.pressLike}>
+                        <Icon style={{textAlign: 'center', fontSize: 28, color: '#BBBCCD', marginRight: 25}} name="ios-happy-outline">
+                            <Text style={styles.podcastTextLikes}> {likers.length}</Text>
+                        </Icon>
+                    </TouchableOpacity>
+                )
+            }
+
         }
-        else if (!this.state.liked){
-            return(
-                <TouchableOpacity onPress = {this.pressLike}>
-                    <Icon style={{textAlign: 'center', fontSize: 28, color: '#BBBCCD', marginRight: 20}} name="ios-happy-outline">
-                        <Text style={styles.podcastTextLikes}> {this.state.likes}</Text>
-                    </Icon>
-                </TouchableOpacity>
-            )
-        }
+
     }
 
     _renderComments(){
@@ -589,11 +596,25 @@ class PlayerBottom extends Component {
     };
 
     pressLike = () => {
-        if(this.state.liked){
-            this.setState({ liked: false, likes: this.state.likes-1})
-        }
-        else if (!this.state.liked){
-            this.setState({ liked: true, likes: this.state.likes+1})
+        const {currentUser} = firebase.auth();
+        const user = currentUser.uid;
+
+        if(Variables.state.podcastID != ''){
+
+            if(Variables.state.liked){
+
+                firebase.database().ref(`podcasts/${Variables.state.podcastID}/likes/${user}`).remove();
+
+                this.setState({ liked: false, likes: Variables.state.likers.length})
+            }
+            else if (!Variables.state.liked){
+
+                firebase.database().ref(`podcasts/${Variables.state.podcastID}/likes`).child(user).update({user});
+
+
+                this.setState({ liked: true, likes: Variables.state.likers.length})
+            }
+
         }
     };
 
@@ -925,7 +946,7 @@ class PlayerBottom extends Component {
                             </View>
 
                             <View style={{alignItems: 'flex-end', flex:1}}>
-                                {this._renderLikes()}
+                                {this._renderLikes(Variables.state.likers, Variables.state.liked)}
                             </View>
 
 
@@ -1128,14 +1149,14 @@ class PlayerBottom extends Component {
         },
         podcastTextLikes:{
             color: '#BBBCCD',
-            fontSize: 12,
+            fontSize: 10,
             backgroundColor: 'transparent',
             alignSelf: 'flex-start',
             fontFamily: 'Hiragino Sans',
         },
         podcastTextLikesActive:{
             color: '#5757FF',
-            fontSize: 12,
+            fontSize: 10,
             backgroundColor: 'transparent',
             alignSelf: 'flex-start',
             fontFamily: 'Hiragino Sans',

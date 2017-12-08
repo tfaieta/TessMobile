@@ -50,7 +50,7 @@ class RecordFirstPage extends Component{
 
 
 
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, marginBottom: 10, borderWidth: 2, borderBottomColor: 'rgba(187,188,205,0.3)', borderTopColor: '#fff', borderLeftColor: '#fff', borderRightColor: '#fff'}}>
+                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, marginBottom: 10, shadowOffset:{  width: 0,  height: 6}, shadowOpacity: 0.2, shadowRadius: 10}}>
                     <View style={{justifyContent: 'center', alignItems: 'center', flex:10, marginLeft:30, marginTop:20}}>
                         <Text style={styles.header}>Create a Podcast</Text>
                     </View>

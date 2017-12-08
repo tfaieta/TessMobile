@@ -74,7 +74,7 @@ class CreateAccount extends Component {
                 colors={['#5555FF', '#9787FF' ]}
                 style={styles.container}>
 
-                <View style={{flexDirection: 'row',  paddingVertical:5, marginTop:10, marginBottom: 5   }}>
+                <View style={{flexDirection: 'row',  paddingVertical:5, marginTop:10, marginBottom: 30   }}>
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
@@ -91,18 +91,6 @@ class CreateAccount extends Component {
                     </View>
 
                 </View>
-
-                <TouchableOpacity style={{backgroundColor: 'rgba(300,300,300,0.2)', borderRadius: 120, borderWidth: 0.1,  width: 120, height: 120, alignItems: 'center', alignSelf:'center', marginBottom: 20 }}>
-                    <Icon style={{
-                        textAlign: 'center',
-                        marginTop: 45,
-                        fontSize: 30,
-                        flex:1,
-                        color: '#FFF'
-                    }} name="md-camera">
-                    </Icon>
-                </TouchableOpacity>
-
 
 
                 <View style={styles.inputContainer}>

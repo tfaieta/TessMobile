@@ -16,9 +16,25 @@ import firebase from 'firebase';
 import RNFetchBlob from 'react-native-fetch-blob';
 import ImagePicker from 'react-native-image-crop-picker';
 import Variables from './Variables';
+import DropdownAlert from 'react-native-dropdownalert';
 
 
 class Settings extends Component {
+
+
+    constructor(){
+        super();
+        this.state = {
+            modalVisible: false,
+            bioModalVisible: false,
+            imageModalVisible: false,
+            username: '',
+            bio: '',
+            category: '',
+            image: ''
+        };
+    }
+
 
     _handleButtonPressLogOut = () => {
         firebase.auth().signOut();
@@ -73,28 +89,45 @@ class Settings extends Component {
         });
     };
 
+    changeUsername = () => {
+        if(this.state.username != ''){
+
+            firebase.database().ref(`usernames/`).child(this.state.username).once("value", function (snapshot) {
+                if(snapshot.val()){
+                    console.warn(snapshot.val().username + " is taken");
+                    this.dropdown.alertWithType("custom", "", "Username is taken.");
+                    this.setState({modalVisible: false})
+                }
+                else{
+
+                    firebase.database().ref(`users/${firebase.auth().currentUser.uid}`).child('/username').once('value', function (data) {
+
+                        firebase.database().ref(`usernames/${data.val().username}`).remove()
+                    });
+                    firebase.database().ref(`usernames`).child(this.state.username).update({username: this.state.username});
+
+                    firebase.database().ref(`users/${firebase.auth().currentUser.uid}`).child('/username')
+                        .update({   username: this.state.username });
+
+                    this.setState({modalVisible: false})
+
+                }
+            }.bind(this)).catch(() => { console.warn("error")} );
+
+        }
 
 
 
-    constructor(){
-        super();
-    }
-    state = {
-        modalVisible: false,
-        bioModalVisible: false,
-        imageModalVisible: false,
-        username: '',
-        bio: '',
-        category: '',
-        image: ''
     };
+
+
 
     render() {
 
         return (
             <View style={{backgroundColor:'#fff',flex:1, paddingBottom: 118}}>
 
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, borderWidth: 2, borderBottomColor: 'rgba(187,188,205,0.3)', borderTopColor: '#fff', borderLeftColor: '#fff', borderRightColor: '#fff'}}>
+                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 6}, shadowOpacity: 0.2, shadowRadius: 10}}>
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
@@ -194,11 +227,7 @@ class Settings extends Component {
                                 }}
                            />
 
-                            <TouchableOpacity style={styles.buttonStyle} onPress={() => {
-                                firebase.database().ref(`users/${firebase.auth().currentUser.uid}`).child('/username')
-                                    .update({   username: this.state.username });
-                                this.setModalVisible(!this.state.modalVisible)
-                            }}>
+                            <TouchableOpacity style={styles.buttonStyle} onPress={this.changeUsername}>
                                 <Text style={styles.textStyle}>Done</Text>
                             </TouchableOpacity>
 
@@ -404,6 +433,7 @@ class Settings extends Component {
                 <PlayerBottom navigator={this.props.navigator}/>
 
 
+                <DropdownAlert titleStyle={{color:'#fff'}} messageStyle={{color: '#fff'}} containerStyle={{backgroundColor: '#ee5865'}} ref={ref => this.dropdown = ref} showCancel={true} />
             </View>
         );
     }

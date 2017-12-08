@@ -131,7 +131,7 @@ class Account extends Component {
     _renderProfileImage(){
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:20, height: 160, width: 160, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:20, height: 160, width: 160, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'}}>
                     <Icon style={{
                         textAlign: 'center',
                         fontSize: 90,
@@ -144,7 +144,7 @@ class Account extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:20, height: 160, width: 160  }}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:20, height: 160, width: 160}}>
                 <Image
                     style={{width: 160, height:160, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
                     source={{uri: this.state.profileImage}}
@@ -257,7 +257,7 @@ class Account extends Component {
             <TouchableOpacity onPress={() =>  {
 
                 if(id){
-                    firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL()
+                    firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL().catch(() => {console.warn("file not found")})
                         .then(function(url) {
 
 
@@ -270,6 +270,19 @@ class Account extends Component {
                                 }
                             });
 
+                            firebase.database().ref(`podcasts/${id}/likes`).on("value", function (snap) {
+                                Variables.state.likers = [];
+                                Variables.state.liked = false;
+                                snap.forEach(function (data) {
+                                    if (data.val()) {
+                                        if(data.val().user == currentUser.uid){
+                                            Variables.state.liked = true;
+                                        }
+                                        Variables.state.likers.push(data.val());
+                                    }
+                                });
+                            });
+
                             Variables.pause();
                             Variables.setPodcastFile(url);
                             Variables.state.isPlaying = false;
@@ -277,6 +290,7 @@ class Account extends Component {
                             Variables.state.podcastArtist = podcastArtist;
                             Variables.state.podcastCategory = podcastCategory;
                             Variables.state.podcastDescription = podcastDescription;
+                            Variables.state.podcastID = id;
                             Variables.state.userProfileImage = '';
                             Variables.play();
                             Variables.state.isPlaying = true;
@@ -296,7 +310,7 @@ class Account extends Component {
                         });
                 }
                 else{
-                    firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
+                    firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL().catch(() => {console.warn("file not found")})
                         .then(function(url) {
 
 
@@ -316,6 +330,9 @@ class Account extends Component {
                             Variables.state.podcastArtist = podcastArtist;
                             Variables.state.podcastCategory = podcastCategory;
                             Variables.state.podcastDescription = podcastDescription;
+                            Variables.state.podcastID = '';
+                            Variables.state.liked = false;
+                            Variables.state.likers = [];
                             Variables.state.userProfileImage = '';
                             Variables.play();
                             Variables.state.isPlaying = true;
@@ -421,7 +438,7 @@ class Account extends Component {
                     barStyle="dark-content"
                 />
 
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, borderWidth: 2, borderBottomColor: 'rgba(187,188,205,0.3)', borderTopColor: '#fff', borderLeftColor: '#fff', borderRightColor: '#fff'}}>
+                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 6}, shadowOpacity: 0.2, shadowRadius: 10}}>
                     <View style={{flex:1,alignItems: 'flex-start'}}>
                     </View>
                     <View style={{flex:1,justifyContent: 'center', alignItems: 'center',}}>

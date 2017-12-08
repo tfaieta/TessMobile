@@ -72,7 +72,7 @@ class Discover extends Component{
                     tabBarActiveTextColor = '#5757FF'
                     tabBarInactiveTextColor = '#6a6b78'
                     tabBarBackgroundColor = '#fff'
-                    style={{marginTop: 0, }}
+                    style={{marginTop: 0}}
                     tabBarTextStyle={styles.tabStyle}
                     renderTabBar={() => <DefaultTabBar />}>
 
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
 
     },
     underline:{
-        backgroundColor: '#5757FF'
+        backgroundColor: '#5757FF',
     },
     containerSearch:{
         marginTop: 20,
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
         fontSize: 13,
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
     }
 
 });
