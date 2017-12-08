@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser, createUser, usernameChanged } from '../actions';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from "react-native-linear-gradient/index.android";
+import DropdownAlert from 'react-native-dropdownalert';
+import firebase from 'firebase';
 
 
 export let profileName='';
@@ -34,7 +36,24 @@ class CreateAccount extends Component {
 
         const { email, password, username } = this.props;
 
-        this.props.createUser({ email, password, username });
+
+        if(username != ''){
+
+            firebase.database().ref(`usernames/`).child(username.toLowerCase()).once("value", function (snapshot) {
+                if(snapshot.val()){
+                    console.warn(snapshot.val().username + " is taken");
+                    this.dropdown.alertWithType("custom", "", "Username is taken.");
+                    this.setState({modalVisible: false})
+                }
+                else{
+
+                    this.props.createUser({ email, password, username });
+
+                }
+            }.bind(this)).catch(() => { console.warn("error")} );
+
+        }
+
 
 
     }
@@ -110,7 +129,7 @@ class CreateAccount extends Component {
                             style={styles.input}
                             placeholder={'Username'}
                             placeholderTextColor='rgba(300,300,300,0.7)'
-
+                            maxLength={20}
                             autoCapitalize={'none'}
                             autoCorrect={false}
                             returnKeyType='next'
@@ -207,6 +226,7 @@ class CreateAccount extends Component {
                 </View>
 
 
+                <DropdownAlert titleStyle={{color:'#fff'}} messageStyle={{color: '#fff'}} containerStyle={{backgroundColor: '#ee5865'}} ref={ref => this.dropdown = ref} showCancel={true} />
             </LinearGradient>
         );
     }

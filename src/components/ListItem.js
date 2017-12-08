@@ -159,15 +159,8 @@ class ListItem extends Component {
 
 
     render() {
-        const {podcastTitle} = this.props.podcast;
-        const {podcastArtist} = this.props.podcast;
-        const {podcastDescription} = this.props.podcast;
-        const {podcastCategory} = this.props.podcast;
-        const {id} = this.props.podcast;
-        const {currentUser} = firebase.auth();
 
-        const {podcast} = this.props;
-        const rowData = podcast;
+        const {podcastArtist} = this.props.podcast;
 
         let profileName = 'loading';
         firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
@@ -178,6 +171,15 @@ class ListItem extends Component {
                 profileName = podcastArtist;
             }
         });
+
+        const {podcastTitle} = this.props.podcast;
+
+        const {podcastDescription} = this.props.podcast;
+        const {podcastCategory} = this.props.podcast;
+        const {id} = this.props.podcast;
+        const {currentUser} = firebase.auth();
+        const {podcast} = this.props;
+        const rowData = podcast;
 
 
 

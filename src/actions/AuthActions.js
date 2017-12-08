@@ -168,8 +168,16 @@ export const createUser = ({email, password, username}) => {
 
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then(user => {
+
+                firebase.database().ref(`usernames`).child(username.toLowerCase()).update({username: username.toLowerCase()});
+
+                firebase.database().ref(`users/${firebase.auth().currentUser.uid}`).child('/username')
+                    .update({   username: username });
+
+
                 loginUserSuccess(dispatch, user);
                 firebase.auth().signInWithEmailAndPassword(email, password)
+
                 .then(() => {
 
                     firebase.database().ref(`users/${firebase.auth().currentUser.uid}`).child('/username')

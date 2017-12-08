@@ -195,16 +195,16 @@ class PlayerBottom extends Component {
         else{
 
             var fixedTitle = '';
-            if(Variables.state.podcastTitle.toString().length > 22 ){
-                fixedTitle = (Variables.state.podcastTitle.slice(0,22)+"...")
+            if(Variables.state.podcastTitle.toString().length > 18 ){
+                fixedTitle = (Variables.state.podcastTitle.slice(0,18)+"...")
             }
             else{
                 fixedTitle = Variables.state.podcastTitle;
             }
 
             var fixedUsername = '';
-            if(profileName > 22){
-                fixedUsername =  (profileName.slice(0,22)+"...");
+            if(profileName > 18){
+                fixedUsername =  (profileName.slice(0,18)+"...");
             }
             else{
                 fixedUsername = profileName;
@@ -301,7 +301,7 @@ class PlayerBottom extends Component {
 
             if (this.state.profileImage == ''){
                 return(
-                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop:10, height: 140, width: 140, borderRadius:10, borderWidth:8, borderColor:'rgba(320,320,320,0.8)',  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
+                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom: 10, height: 140, width: 140, borderRadius:10, borderWidth:8, borderColor:'rgba(320,320,320,0.8)',  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
                         <Icon style={{
                             textAlign: 'center',
                             fontSize: 90,
@@ -314,7 +314,7 @@ class PlayerBottom extends Component {
             }
             else{
                 return(
-                    <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop:10, height: 140, width: 140,  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
+                    <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom: 10, height: 140, width: 140,  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
                         <Image
                             style={{width: 140, height:140,  alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
                             source={{uri: this.state.profileImage}}
@@ -332,7 +332,7 @@ class PlayerBottom extends Component {
         if (Variables.state.podcastTitle == ''){
             return(
                 <View style={{ marginTop: 10}}>
-                <ScrollView style={{height: 60, marginHorizontal: 20, backgroundColor: '#c1cde0', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10, borderWidth:0.1,}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                <ScrollView style={{height: 70, marginHorizontal: 20, backgroundColor: '#c1cde0', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10, borderWidth:0.1,}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
                     <Text style={{ color:'#fff', fontSize: 16, paddingBottom: 15, fontFamily: 'HiraginoSans-W6', textAlign: 'center'  }}>Select a Podcast to start listening....</Text>
                 </ScrollView>
                 </View>
@@ -341,7 +341,7 @@ class PlayerBottom extends Component {
         else{
             return(
                 <View style={{ marginTop: 10}}>
-                <ScrollView style={{height: 60, marginHorizontal: 20, backgroundColor:'#c1cde0', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10, borderWidth:0.1}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                <ScrollView style={{height: 70, marginHorizontal: 20, backgroundColor:'#c1cde0', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10, borderWidth:0.1}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
                     <Text style={{ color:'#fff', fontSize: 16, paddingBottom: 15, fontFamily: 'HiraginoSans-W6' }}>{Variables.state.podcastDescription}</Text>
                 </ScrollView>
                 </View>
@@ -809,7 +809,7 @@ class PlayerBottom extends Component {
                         />
 
                         <TouchableOpacity onPress={this.Close} style={{alignItems:'center', flex:1}}>
-                            <Icon style={{textAlign:'center', marginRight:0,marginLeft: 0,paddingTop: 0, fontSize: 50,color:'#BBBCCD' }} name="ios-arrow-dropdown">
+                            <Icon style={{textAlign:'center', fontSize: 40,color:'#BBBCCD' }} name="ios-arrow-down">
                             </Icon>
                         </TouchableOpacity>
 

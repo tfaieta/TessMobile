@@ -92,7 +92,7 @@ class Settings extends Component {
     changeUsername = () => {
         if(this.state.username != ''){
 
-            firebase.database().ref(`usernames/`).child(this.state.username).once("value", function (snapshot) {
+            firebase.database().ref(`usernames/`).child(this.state.username.toLowerCase()).once("value", function (snapshot) {
                 if(snapshot.val()){
                     console.warn(snapshot.val().username + " is taken");
                     this.dropdown.alertWithType("custom", "", "Username is taken.");
@@ -104,7 +104,7 @@ class Settings extends Component {
 
                         firebase.database().ref(`usernames/${data.val().username}`).remove()
                     });
-                    firebase.database().ref(`usernames`).child(this.state.username).update({username: this.state.username});
+                    firebase.database().ref(`usernames`).child(this.state.username.toLowerCase()).update({username: this.state.username.toLowerCase()});
 
                     firebase.database().ref(`users/${firebase.auth().currentUser.uid}`).child('/username')
                         .update({   username: this.state.username });
@@ -217,6 +217,7 @@ class Settings extends Component {
                                 returnKeyType='done'
                                 autoCorrect={false}
                                 value={this.state.username}
+                                maxLength={20}
                                 placeholder = "New Username"
                                 placeholderTextColor='#2A2A30'
                                 onChangeText={text => this.setState({username: text})}
@@ -263,7 +264,7 @@ class Settings extends Component {
                                 placeholderTextColor='#2A2A30'
                                 onChangeText={text => this.setState({bio: text})}
                                 multiline={true}
-                                maxLength={500}
+                                maxLength={250}
                                 onSubmitEditing={(event) => {
                                     firebase.database().ref(`users/${firebase.auth().currentUser.uid}`).child('/bio')
                                         .update({   bio: this.state.bio  });

@@ -109,6 +109,17 @@ class Home extends Component{
 
 
 
+        Variables.state.fromTess = [];
+        firebase.database().ref(`users/dlUCIXXnXGTgJZwYLE1KUYWGkQ73/podcasts`).once("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.fromTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
     }
 
 
@@ -135,8 +146,12 @@ class Home extends Component{
             dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts),
             dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent),
             dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess),
+            dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess),
         };
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts), dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent),dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},2000)
+        setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},2200);
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},2600);
+        setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},3000);
+        setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},3400);
     }
 
 
@@ -467,7 +482,20 @@ class Home extends Component{
                                 </View>
 
                                 <View style={{alignSelf:'flex-end', flex:1}}>
-                                    <TouchableOpacity style={{alignSelf:'flex-end', flexDirection:'row', marginTop: 3}}>
+                                    <TouchableOpacity onPress={() => {
+
+                                        let data = Variables.state.fromTess;
+                                        let title = "From Tess";
+
+                                        this.props.navigator.push({
+                                            screen: 'ViewAll',
+                                            animated: true,
+                                            animationType: 'fade',
+                                            passProps: {data, title},
+                                        });
+
+
+                                    }} style={{alignSelf:'flex-end', flexDirection:'row', marginTop: 3}} >
                                         <Text style={styles.viewAll}>View all</Text>
                                         <Icon style={{
                                             fontSize: 14,
@@ -483,6 +511,15 @@ class Home extends Component{
 
                             </View>
                             <Text style={styles.title2}>Hey Everyone! Thank you for downloading Tess, your feedback is important. We look forward to hearing from you! Check out our updates on the beta below. </Text>
+
+                            <ListView
+                                showsHorizontalScrollIndicator={false}
+                                horizontal={true}
+                                enableEmptySections
+                                dataSource={this.state.dataSourceTess}
+                                renderRow={this.renderRowNewPodcasts}
+                            />
+
                         </View>
 
 
