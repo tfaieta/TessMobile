@@ -30,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>FacebookAppID</key>
 	<string>820280631481558</string>
 	<key>FacebookDisplayName</key>
@@ -55,14 +55,14 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Tess will need to use your camera so that you can take a profile image.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Tess uses your microphone to create a podcast.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-    <string>Tess will need to use your photo library so that you can upload an profile image.</string>
-    <key>NSCameraUsageDescription</key>
-    <string>Tess will need to use your camera so that you can take a profile image .</string>
+	<string>Tess will need to use your photo library so that you can upload an profile image.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>

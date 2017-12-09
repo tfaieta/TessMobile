@@ -18,16 +18,7 @@ class ListItemUsers extends Component {
         const {podcastTitle} = this.props.podcast;
         const {podcastArtist} = this.props.podcast;
         const {currentUser} = firebase.auth();
-        if (!firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle)) {
-            this.setState({
-                favorite: true
-            });
-        }
-        else {
-            this.setState({
-                favorite: false
-            });
-        }
+
 
 
 

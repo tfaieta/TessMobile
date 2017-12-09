@@ -20,8 +20,7 @@ class Home extends Component{
         Variables.state.newPodcasts = [];
         const refNew = firebase.database().ref(`podcasts/`);
 
-        refNew.limitToLast(15).once("value", function (snapshot) {
-            Variables.state.newPodcasts = [];
+        refNew.limitToLast(15).on("value", function (snapshot) {
             snapshot.forEach(function (data) {
                 if(data.val()){
                     Variables.state.newPodcasts.push(data.val());
@@ -36,13 +35,12 @@ class Home extends Component{
         const refFol = firebase.database().ref(`users/${currentUser.uid}/following`);
 
         refFol.on("value", function (snapshot) {
-            Variables.state.homeFollowedContent = [];
             snapshot.forEach(function (data) {
 
-                firebase.database().ref(`users/${data.key}/podcasts`).limitToLast(1).once("value", function (snap) {
+                firebase.database().ref(`users/${data.key}/podcasts`).limitToLast(1).on("value", function (snap) {
                     snap.forEach(function (pod) {
 
-                        firebase.database().ref(`podcasts/${pod.key}`).once("value", function (data2) {
+                        firebase.database().ref(`podcasts/${pod.key}`).on("value", function (data2) {
                             if(data2.val()){
                                 Variables.state.homeFollowedContent.push(data2.val())
                             }
@@ -55,9 +53,9 @@ class Home extends Component{
 
 
         Variables.state.selectedByTess = [];
-        firebase.database().ref(`users/pgIx9JAiq9aQWcyUZX8AuIdqNmP2/podcasts`).limitToLast(2).once("value", function (data) {
+        firebase.database().ref(`users/pgIx9JAiq9aQWcyUZX8AuIdqNmP2/podcasts`).limitToLast(2).on("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -65,9 +63,9 @@ class Home extends Component{
             })
         });
 
-        firebase.database().ref(`users/sJsB8XK4XRZ8tNpeGC14JNsa6Jj1/podcasts`).limitToLast(2).once("value", function (data) {
+        firebase.database().ref(`users/sJsB8XK4XRZ8tNpeGC14JNsa6Jj1/podcasts`).limitToLast(2).on("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -75,20 +73,9 @@ class Home extends Component{
             })
         });
 
-        firebase.database().ref(`users/1F1q9gRKWyMQ8cSATXqGT4PnCaK2/podcasts`).limitToLast(2).once("value", function (data) {
+        firebase.database().ref(`users/1F1q9gRKWyMQ8cSATXqGT4PnCaK2/podcasts`).limitToLast(2).on("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-        firebase.database().ref(`users/upwadf76CrOBee8aSwzcCZR4kM33/podcasts`).limitToLast(2).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -97,9 +84,20 @@ class Home extends Component{
         });
 
 
-        firebase.database().ref(`users/3tHL3dIcINUdMeKZn6ckf81e2Sk2/podcasts`).limitToLast(2).once("value", function (data) {
+        firebase.database().ref(`users/upwadf76CrOBee8aSwzcCZR4kM33/podcasts`).limitToLast(2).on("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        firebase.database().ref(`users/3tHL3dIcINUdMeKZn6ckf81e2Sk2/podcasts`).limitToLast(2).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -110,9 +108,9 @@ class Home extends Component{
 
 
         Variables.state.fromTess = [];
-        firebase.database().ref(`users/dlUCIXXnXGTgJZwYLE1KUYWGkQ73/podcasts`).once("value", function (data) {
+        firebase.database().ref(`users/dlUCIXXnXGTgJZwYLE1KUYWGkQ73/podcasts`).on("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.fromTess.push(snapshot.val())
                     }
@@ -148,10 +146,15 @@ class Home extends Component{
             dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess),
             dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess),
         };
-        setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},2200);
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},2600);
-        setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},3000);
-        setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},3400);
+        setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},2000);
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},2400);
+        setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},3800);
+        setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},3200);
+
+        setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},6000);
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},6400);
+        setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},6800);
+        setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},7200);
     }
 
 
