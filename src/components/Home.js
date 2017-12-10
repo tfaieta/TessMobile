@@ -52,7 +52,38 @@ class Home extends Component{
         });
 
 
+
         Variables.state.selectedByTess = [];
+
+
+        firebase.database().ref(`podcasts/-L-7R4hvHhf6eZ7ZErss`).on("value", function (snapshot) {
+            if(snapshot.val()){
+                Variables.state.selectedByTess.push(snapshot.val())
+            }
+        });
+
+        firebase.database().ref(`podcasts/-L-VDoi0ytxbvJobPElM`).on("value", function (snapshot) {
+            if(snapshot.val()){
+                Variables.state.selectedByTess.push(snapshot.val())
+            }
+        });
+
+        firebase.database().ref(`podcasts/-L-7Xln7HPgKIIrIfeVE`).on("value", function (snapshot) {
+            if(snapshot.val()){
+                Variables.state.selectedByTess.push(snapshot.val())
+            }
+        });
+
+        firebase.database().ref(`podcasts/-L-ZW0z6hcwYluDCOjPE`).on("value", function (snapshot) {
+            if(snapshot.val()){
+                Variables.state.selectedByTess.push(snapshot.val())
+            }
+        });
+
+
+
+
+
         firebase.database().ref(`users/pgIx9JAiq9aQWcyUZX8AuIdqNmP2/podcasts`).limitToLast(2).on("value", function (data) {
             data.forEach(function (snap) {
                 firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
