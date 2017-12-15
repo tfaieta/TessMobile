@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, ScrollView, TouchableOpacity, ListView, View, Alert} from 'react-native';
+import { Text, StyleSheet, ScrollView, TouchableOpacity, ListView, View, RefreshControl} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "../Variables";
 import firebase from 'firebase';
@@ -39,11 +39,55 @@ class Following extends Component{
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.followedContent),
+            refreshing: false
         };
 
         setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.followedContent)})},1000)
     }
 
+
+    fetchData(){
+
+        Variables.state.followedContent = [];
+        const { currentUser } = firebase.auth();
+        const refFol = firebase.database().ref(`users/${currentUser.uid}/following`);
+        const ref = firebase.database().ref(`podcasts/`);
+
+        refFol.orderByChild('following').on("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+
+                ref.on("value", function (snapshot) {
+
+                    snapshot.forEach(function (data2) {
+                        if(data.key == data2.val().podcastArtist) {
+                            Variables.state.followedContent.push(data2.val());
+                        }
+                    })
+
+                });
+
+
+            })
+        });
+
+    }
+
+
+    _onRefresh() {
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.setState({refreshing: true});
+        this.setState({dataSource: dataSource.cloneWithRows([])});
+
+        this.fetchData();
+
+        this.setState({
+            refreshing: false,
+        });
+
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.followedContent)})},1000)
+
+
+    }
 
 
     renderRow = (rowData) => {
@@ -109,6 +153,7 @@ class Following extends Component{
                             Variables.state.podcastCategory = podcastCategory;
                             Variables.state.podcastDescription = podcastDescription;
                             Variables.state.podcastID = id;
+                            Variables.state.favorited = false;
                             Variables.state.userProfileImage = '';
                             Variables.play();
                             Variables.state.isPlaying = true;
@@ -124,6 +169,15 @@ class Following extends Component{
                                     //
                                 });
                             }
+
+                            firebase.database().ref(`users/${currentUser.uid}/favorites`).on("value", function (snapshot) {
+                                snapshot.forEach(function (data) {
+                                    if(data.key == id){
+                                        Variables.state.favorited = true;
+                                    }
+                                })
+                            })
+
 
                         });
                 }
@@ -150,6 +204,7 @@ class Following extends Component{
                             Variables.state.podcastDescription = podcastDescription;
                             Variables.state.podcastID = '';
                             Variables.state.liked = false;
+                            Variables.state.favorited = false;
                             Variables.state.likers = [];
                             Variables.state.userProfileImage = '';
                             Variables.play();
@@ -166,6 +221,7 @@ class Following extends Component{
                                     //
                                 });
                             }
+
 
                         });
                 }
@@ -201,7 +257,7 @@ class Following extends Component{
                             textAlign: 'left',
                             marginLeft: 0,
                             marginRight: 15,
-                            fontSize: 30,
+                            fontSize: 40,
                             color: '#5757FF',
                         }} name="ios-more">
                         </Icon>
@@ -221,7 +277,14 @@ class Following extends Component{
 
     render() {
         return (
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this._onRefresh.bind(this)}
+                    />
+                }
+            >
 
                 <View style={{flex:1}}>
                     <ListView

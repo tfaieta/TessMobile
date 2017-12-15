@@ -7,7 +7,8 @@ import {
     ScrollView,
     ListView,
     TouchableOpacity,
-    Alert, Image
+    Alert, Image,
+    RefreshControl
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
@@ -66,7 +67,7 @@ class UserProfile extends Component {
                 Variables.state.userUsername = snap.val().username;
             }
             else {
-                Variables.state.userUsername = Variables.state.browsingArtist;
+                Variables.state.userUsername = "no username"
             }
         });
 
@@ -118,6 +119,7 @@ class UserProfile extends Component {
             category: '', profileName: profileName, following: false, profileNameL: profileNameL,
             dataSource: dataSource.cloneWithRows([]),
             loading: true,
+            refreshing: false
         };
         setTimeout(() =>{
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
@@ -125,6 +127,115 @@ class UserProfile extends Component {
                 following: Variables.state.following
             })
         },500)
+    }
+
+
+    fetchData(){
+
+        const {currentUser} = firebase.auth();
+        const storageRef = firebase.storage().ref(`/users/${Variables.state.browsingArtist}/image-profile-uploaded`);
+        const refFol = firebase.database().ref(`users/${Variables.state.browsingArtist}/followers`);
+        const refFollowing = firebase.database().ref(`users/${Variables.state.browsingArtist}/following`);
+
+        Variables.state.userPodcasts = [];
+        Variables.state.onUserProfileImage = '';
+        Variables.state.userFollowers = [];
+        Variables.state.userFollowing = [];
+
+
+        const ref = firebase.database().ref(`podcasts/`);
+
+        ref.on("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+                if(Variables.state.browsingArtist == data.val().podcastArtist) {
+                    Variables.state.userPodcasts.push(data.val());
+                }
+            })
+        });
+
+        refFol.on("value", function (snapshot) {
+            Variables.state.userFollowers = [];
+            snapshot.forEach(function (data) {
+                Variables.state.userFollowers.push(data.key);
+            })
+        });
+
+        refFollowing.on("value", function (snapshot) {
+            Variables.state.userFollowing = [];
+            snapshot.forEach(function (data) {
+                Variables.state.userFollowing.push(data.key);
+            })
+        });
+
+
+        firebase.database().ref(`/users/${Variables.state.browsingArtist}/username`).orderByChild("username").on("value", function(snap) {
+            if(snap.val()){
+                Variables.state.userUsername = snap.val().username;
+            }
+            else {
+                Variables.state.userUsername = "no username"
+            }
+        });
+
+        firebase.database().ref(`/users/${Variables.state.browsingArtist}/favCategory`).orderByChild("favCategory").on("value", function(snap) {
+            if(snap.val()){
+                Variables.state.currentFavCategory = snap.val().favCategory;
+            }
+            else {
+                Variables.state.currentFavCategory = "Too hard to choose"
+            }
+        });
+
+        firebase.database().ref(`/users/${Variables.state.browsingArtist}/bio`).orderByChild("bio").on("value", function(snap) {
+            if(snap.val()){
+                Variables.state.currentBio = snap.val().bio;
+            }
+            else {
+                Variables.state.currentBio = "Tell others about yourself";
+            }
+        });
+
+
+        firebase.database().ref(`users/${currentUser.uid}/following/`).orderByChild(Variables.state.browsingArtist).on("value", function (snap){
+            if(snap.hasChild(Variables.state.browsingArtist)){
+                Variables.state.following = true;
+            }
+            else{
+                Variables.state.following = false;
+            }
+        });
+
+        storageRef.getDownloadURL()
+            .then(function(url) {
+
+                Variables.state.onUserProfileImage = url;
+
+            }).catch(function(error) {
+            //
+        });
+
+
+    }
+
+
+    _onRefresh() {
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.setState({refreshing: true});
+
+        this.fetchData();
+
+        this.setState({
+            refreshing: false,
+        });
+
+        setTimeout(() =>{
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
+                username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
+                following: Variables.state.following
+            })
+        },1000)
+
+
     }
 
 
@@ -387,6 +498,7 @@ class UserProfile extends Component {
                             Variables.state.podcastCategory = podcastCategory;
                             Variables.state.podcastDescription = podcastDescription;
                             Variables.state.podcastID = id;
+                            Variables.state.favorited = false;
                             Variables.state.userProfileImage = '';
                             Variables.play();
                             Variables.state.isPlaying = true;
@@ -402,6 +514,15 @@ class UserProfile extends Component {
                                     //
                                 });
                             }
+
+                            firebase.database().ref(`users/${currentUser.uid}/favorites`).on("value", function (snapshot) {
+                                snapshot.forEach(function (data) {
+                                    if(data.key == id){
+                                        Variables.state.favorited = true;
+                                    }
+                                })
+                            })
+
 
                         });
                 }
@@ -428,6 +549,7 @@ class UserProfile extends Component {
                             Variables.state.podcastDescription = podcastDescription;
                             Variables.state.podcastID = '';
                             Variables.state.liked = false;
+                            Variables.state.favorited = false;
                             Variables.state.likers = [];
                             Variables.state.userProfileImage = '';
                             Variables.play();
@@ -444,6 +566,7 @@ class UserProfile extends Component {
                                     //
                                 });
                             }
+
 
                         });
                 }
@@ -480,7 +603,7 @@ class UserProfile extends Component {
                             textAlign: 'left',
                             marginLeft: 0,
                             marginRight: 15,
-                            fontSize: 30,
+                            fontSize: 40,
                             color: '#5757FF',
                         }} name="ios-more">
                         </Icon>
@@ -526,7 +649,14 @@ class UserProfile extends Component {
                 </View>
 
 
-                <ScrollView>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                        />
+                    }
+                >
 
                     {this._renderProfileImage()}
 

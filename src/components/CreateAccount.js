@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { Spinner } from './common';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser, createUser, usernameChanged } from '../actions';
@@ -92,6 +92,8 @@ class CreateAccount extends Component {
 
                 colors={['#5555FF', '#9787FF' ]}
                 style={styles.container}>
+
+                <ScrollView   scrollEnabled={false}>
 
                 <View style={{flexDirection: 'row',  paddingVertical:5, marginTop:10, marginBottom: 30   }}>
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
@@ -225,8 +227,10 @@ class CreateAccount extends Component {
                     {this.renderButton()}
                 </View>
 
+                </ScrollView>
 
                 <DropdownAlert titleStyle={{color:'#fff'}} messageStyle={{color: '#fff'}} containerStyle={{backgroundColor: '#ee5865'}} ref={ref => this.dropdown = ref} showCancel={true} />
+
             </LinearGradient>
         );
     }

@@ -97,6 +97,7 @@ class MyContent extends Component{
                             Variables.state.podcastCategory = podcastCategory;
                             Variables.state.podcastDescription = podcastDescription;
                             Variables.state.podcastID = id;
+                            Variables.state.favorited = false;
                             Variables.state.userProfileImage = '';
                             Variables.play();
                             Variables.state.isPlaying = true;
@@ -112,6 +113,15 @@ class MyContent extends Component{
                                     //
                                 });
                             }
+
+                            firebase.database().ref(`users/${currentUser.uid}/favorites`).on("value", function (snapshot) {
+                                snapshot.forEach(function (data) {
+                                    if(data.key == id){
+                                        Variables.state.favorited = true;
+                                    }
+                                })
+                            })
+
 
                         });
                 }
@@ -138,6 +148,7 @@ class MyContent extends Component{
                             Variables.state.podcastDescription = podcastDescription;
                             Variables.state.podcastID = '';
                             Variables.state.liked = false;
+                            Variables.state.favorited = false;
                             Variables.state.likers = [];
                             Variables.state.userProfileImage = '';
                             Variables.play();
@@ -154,6 +165,7 @@ class MyContent extends Component{
                                     //
                                 });
                             }
+
 
                         });
                 }
@@ -194,7 +206,7 @@ class MyContent extends Component{
                             textAlign: 'left',
                             marginLeft: 0,
                             marginRight: 15,
-                            fontSize: 30,
+                            fontSize: 40,
                             color: '#5757FF',
                         }} name="ios-more">
                         </Icon>

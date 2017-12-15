@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { ListView, StyleSheet, ScrollView, View} from 'react-native';
+import { ListView, StyleSheet, ScrollView, View, RefreshControl} from 'react-native';
 import { connect } from 'react-redux';
 import ListItem from '../ListItem';
 import { podcastFetchNew} from "../../actions/PodcastActions";
@@ -33,6 +33,9 @@ class NewPodcasts extends Component{
 
     constructor(props) {
         super(props);
+        this.state = {
+            refreshing: false
+        }
     }
 
 
@@ -40,13 +43,39 @@ class NewPodcasts extends Component{
         return <ListItem podcast={podcast} navigator={this.props.navigator} />;
     };
 
+    fetchData(){
+        this.props.podcastFetchNew();
+
+
+        this.creataDataSourceNewPodcasts(this.props);
+    }
+
+
+    _onRefresh() {
+        this.setState({refreshing: true});
+
+        this.fetchData();
+
+        this.setState({
+            refreshing: false,
+        });
+
+
+    }
 
 
 
 
     render() {
         return (
-            <ScrollView style={styles.container}>
+            <ScrollView style={styles.container}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.refreshing}
+                                onRefresh={this._onRefresh.bind(this)}
+                            />
+                        }
+            >
 
 
                 <ListView

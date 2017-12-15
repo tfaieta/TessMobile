@@ -42,6 +42,7 @@ class Variables extends Component{
         searchWord: '',
         following: false,
         liked: false,
+        favorited: false,
         usersFollowed: [],
         favPodcasts: [],
         myPodcasts: [],

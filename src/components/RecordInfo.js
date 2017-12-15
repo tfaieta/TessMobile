@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet, TouchableOpacity, ActivityIndicator, Alert} from 'react-native';
+import { Text, TextInput, View, StyleSheet, TouchableOpacity, ActivityIndicator, Alert, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {podTime, totalTime} from './Record';
 import Variables, {podcastPlayer} from './Variables';
@@ -291,6 +291,8 @@ class RecordInfo extends Component{
                 style={styles.container}>
 
 
+                <ScrollView   scrollEnabled={false}>
+
 
                 <View style={{flexDirection: 'row', paddingVertical:5,  }}>
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
@@ -432,6 +434,7 @@ class RecordInfo extends Component{
                 </View>
 
 
+                </ScrollView>
 
                 <DropdownAlert titleStyle={{color:'#fff'}} messageStyle={{color: '#fff'}} containerStyle={{backgroundColor: '#ee5865'}} ref={ref => this.dropdown = ref} showCancel={true} />
             </LinearGradient>

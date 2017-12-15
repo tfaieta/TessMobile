@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, StatusBar, Image, TextInput } from 'react-native';
+import { Text, View, TouchableOpacity, StatusBar, Image, TextInput, ScrollView} from 'react-native';
 import { Spinner } from './common';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
@@ -61,7 +61,10 @@ class Login extends Component {
             <LinearGradient
 
                 colors={['#5555FF', '#9787FF' ]}
-                style={styles.container}>
+                style={styles.container}
+            >
+                <ScrollView   scrollEnabled={false}>
+
 
                 <StatusBar hidden={false} barStyle="light-content" />
 
@@ -153,6 +156,8 @@ class Login extends Component {
 
 
                 <Text onPress={this._handleButtonPressCreate} style={styles.textBottomStyle}>Don't have an account? Sign Up</Text>
+
+                </ScrollView>
 
             </LinearGradient>
         );

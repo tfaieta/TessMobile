@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Text, View, StyleSheet,StatusBar, ListView, ScrollView, TouchableOpacity, Image} from 'react-native';
+import { Text, View, StyleSheet,StatusBar, ListView, ScrollView, TouchableOpacity, Image, Linking, RefreshControl} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { podcastFetchNew} from "../actions/PodcastActions";
 import { connect } from 'react-redux';
@@ -176,6 +176,8 @@ class Home extends Component{
             dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent),
             dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess),
             dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess),
+            url: '',
+            refreshing: false,
         };
         setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},2000);
         setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},2400);
@@ -272,6 +274,179 @@ class Home extends Component{
     }
 
 
+    fetchData(){
+
+        this.props.podcastFetchNew();
+
+        this.creataDataSourceNewPodcasts(this.props);
+
+
+        Variables.state.newPodcasts = [];
+        const refNew = firebase.database().ref(`podcasts/`);
+
+        refNew.limitToLast(15).on("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+                if(data.val()){
+                    Variables.state.newPodcasts.push(data.val());
+                }
+            })
+        });
+
+
+
+        Variables.state.homeFollowedContent = [];
+        const {currentUser} = firebase.auth();
+        const refFol = firebase.database().ref(`users/${currentUser.uid}/following`);
+
+        refFol.on("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+
+                firebase.database().ref(`users/${data.key}/podcasts`).limitToLast(1).on("value", function (snap) {
+                    snap.forEach(function (pod) {
+
+                        firebase.database().ref(`podcasts/${pod.key}`).on("value", function (data2) {
+                            if(data2.val()){
+                                Variables.state.homeFollowedContent.push(data2.val())
+                            }
+                        })
+                    });
+                });
+
+            })
+        });
+
+
+
+        Variables.state.selectedByTess = [];
+
+
+        firebase.database().ref(`podcasts/-L-7R4hvHhf6eZ7ZErss`).on("value", function (snapshot) {
+            if(snapshot.val()){
+                Variables.state.selectedByTess.push(snapshot.val())
+            }
+        });
+
+        firebase.database().ref(`podcasts/-L-VDoi0ytxbvJobPElM`).on("value", function (snapshot) {
+            if(snapshot.val()){
+                Variables.state.selectedByTess.push(snapshot.val())
+            }
+        });
+
+        firebase.database().ref(`podcasts/-L-7Xln7HPgKIIrIfeVE`).on("value", function (snapshot) {
+            if(snapshot.val()){
+                Variables.state.selectedByTess.push(snapshot.val())
+            }
+        });
+
+        firebase.database().ref(`podcasts/-L-ZW0z6hcwYluDCOjPE`).on("value", function (snapshot) {
+            if(snapshot.val()){
+                Variables.state.selectedByTess.push(snapshot.val())
+            }
+        });
+
+
+
+
+
+        firebase.database().ref(`users/pgIx9JAiq9aQWcyUZX8AuIdqNmP2/podcasts`).limitToLast(2).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+        firebase.database().ref(`users/sJsB8XK4XRZ8tNpeGC14JNsa6Jj1/podcasts`).limitToLast(2).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+        firebase.database().ref(`users/1F1q9gRKWyMQ8cSATXqGT4PnCaK2/podcasts`).limitToLast(2).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        firebase.database().ref(`users/upwadf76CrOBee8aSwzcCZR4kM33/podcasts`).limitToLast(2).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        firebase.database().ref(`users/3tHL3dIcINUdMeKZn6ckf81e2Sk2/podcasts`).limitToLast(2).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+
+        Variables.state.fromTess = [];
+        firebase.database().ref(`users/dlUCIXXnXGTgJZwYLE1KUYWGkQ73/podcasts`).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.fromTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+    }
+
+
+    _onRefresh() {
+        this.setState({refreshing: true});
+
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+
+        this.setState({
+                dataSourceFol: dataSource.cloneWithRows([]),
+                dataSource: dataSource.cloneWithRows([]),
+                dataSourceSel: dataSource.cloneWithRows([]),
+                dataSourceTess: dataSource.cloneWithRows([])
+            });
+
+
+            this.fetchData();
+            this.setState({
+                refreshing: false,
+            });
+
+            setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},2000);
+            setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},2400);
+            setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},3800);
+            setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},3200);
+
+            setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},6000);
+            setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},6400);
+            setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},6800);
+            setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},7200);
+
+
+    }
+
+
 
     pressFitness = () => {
         this.props.navigator.push({
@@ -303,13 +478,19 @@ class Home extends Component{
     };
 
 
-    pressViewAll(data, title){
-        this.props.navigator.push({
-            screen: 'ViewAll',
-            animated: true,
-            animationType: 'fade',
-            passProps: {data, title},
-        });
+    pressTwit(){
+        const url = 'https://twitter.com/discovertess';
+        Linking.openURL(url).catch(err => console.warn('An error occurred', err));
+    }
+
+    pressInsta = () => {
+        const url = 'https://www.instagram.com/discovertess/';
+        Linking.openURL(url).catch(err => console.warn('An error occurred', err));
+    };
+
+    pressFB(){
+        const url = 'https://www.facebook.com/discovertess/';
+        Linking.openURL(url).catch(err => console.warn('An error occurred', err));
     }
 
 
@@ -325,7 +506,14 @@ class Home extends Component{
                     />
 
 
-                    <ScrollView>
+                    <ScrollView
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.refreshing}
+                                onRefresh={this._onRefresh.bind(this)}
+                            />
+                        }
+                    >
 
 
                         {this._newFromFollow(Variables.state.homeFollowedContent.length)}
@@ -554,6 +742,46 @@ class Home extends Component{
                                 renderRow={this.renderRowNewPodcasts}
                             />
 
+
+
+                            <View style={{marginTop: 30, height: 2, backgroundColor: '#2A2A3040', marginHorizontal: 20}}/>
+                            <Text style={styles.titleMini}>Follow us on social media to stay up to date!</Text>
+                            <View style = {{flex:1, flexDirection: 'row', marginTop:20}}>
+
+                                <TouchableOpacity style={{alignItems:'flex-start', flex: 1}} onPress={this.pressTwit}>
+                                    <Icon style={{
+                                        alignSelf: 'flex-end',
+                                        fontSize: 48,
+                                        backgroundColor: 'transparent',
+                                        color:   "#9f60ff90",
+                                    }} name="logo-twitter">
+                                    </Icon>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={{alignItems:'center', flex: 1}} onPress={this.pressInsta}>
+                                    <Icon style={{
+                                        fontSize: 48,
+                                        backgroundColor: 'transparent',
+                                        color:   "#9f60ff90",
+                                    }} name="logo-instagram">
+                                    </Icon>
+                                </TouchableOpacity>
+
+
+                                <TouchableOpacity style={{alignItems:'flex-end', flex: 1}} onPress={this.pressFB}>
+                                    <Icon style={{
+                                        alignSelf: 'flex-start',
+                                        fontSize: 48,
+                                        backgroundColor: 'transparent',
+                                        color:   "#9f60ff90",
+                                    }} name="logo-facebook">
+                                    </Icon>
+                                </TouchableOpacity>
+
+
+                            </View>
+
+
                         </View>
 
 
@@ -597,6 +825,17 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginTop: 20,
         paddingLeft: 20,
+        backgroundColor: 'transparent',
+    },
+    titleMini: {
+        color: '#2A2A30',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'HiraginoSans-W6',
+        fontSize: 14,
+        marginTop: 30,
+        paddingHorizontal: 20,
+        marginHorizontal: 40,
         backgroundColor: 'transparent',
     },
     title2: {

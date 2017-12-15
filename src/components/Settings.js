@@ -1,4 +1,3 @@
-'use strict';
 import React, {Component} from 'react';
 import {
     StyleSheet,
@@ -7,6 +6,7 @@ import {
     Modal,
     TouchableOpacity,
     TextInput,
+    ScrollView
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import SettingsList from 'react-native-settings-list';
@@ -109,6 +109,7 @@ class Settings extends Component {
                     firebase.database().ref(`users/${firebase.auth().currentUser.uid}`).child('/username')
                         .update({   username: this.state.username });
 
+                    this.dropdown.alertWithType("custom", "", "Username Updated Successfully.");
                     this.setState({modalVisible: false})
 
                 }
@@ -209,6 +210,8 @@ class Settings extends Component {
                     visible={this.state.modalVisible}
                     onRequestClose={() => {alert("Modal has been closed.")}}
                 >
+                    <ScrollView   scrollEnabled={false}>
+
                     <View style={styles.container}>
                         <View>
                             <TextInput
@@ -221,11 +224,7 @@ class Settings extends Component {
                                 placeholder = "New Username"
                                 placeholderTextColor='#2A2A30'
                                 onChangeText={text => this.setState({username: text})}
-                                onSubmitEditing={(event) => {
-                                    firebase.database().ref(`users/${firebase.auth().currentUser.uid}`).child('/username')
-                                        .update({   username: this.state.username });
-                                    this.setModalVisible(!this.state.modalVisible)
-                                }}
+                                onSubmitEditing={this.changeUsername}
                            />
 
                             <TouchableOpacity style={styles.buttonStyle} onPress={this.changeUsername}>
@@ -241,6 +240,8 @@ class Settings extends Component {
                         </View>
                     </View>
 
+                    </ScrollView>
+
                 </Modal>
 
 
@@ -252,6 +253,8 @@ class Settings extends Component {
                     visible={this.state.bioModalVisible}
                     onRequestClose={() => {alert("Modal has been closed.")}}
                 >
+                    <ScrollView   scrollEnabled={false}>
+
                     <View style={styles.container}>
                         <View>
                             <TextInput
@@ -268,6 +271,7 @@ class Settings extends Component {
                                 onSubmitEditing={(event) => {
                                     firebase.database().ref(`users/${firebase.auth().currentUser.uid}`).child('/bio')
                                         .update({   bio: this.state.bio  });
+                                    this.dropdown.alertWithType("custom", "", "Bio Updated Successfully.");
                                     this.setbioModalVisible(!this.state.bioModalVisible)
                                 }}
                             />
@@ -276,8 +280,7 @@ class Settings extends Component {
 
                                 firebase.database().ref(`users/${firebase.auth().currentUser.uid}`).child('/bio')
                                     .update({   bio: this.state.bio  });
-
-
+                                this.dropdown.alertWithType("custom", "", "Bio Updated Successfully.");
                                 this.setbioModalVisible(!this.state.bioModalVisible)
                             }}>
                                 <Text style={styles.textStyle}>Done</Text>
@@ -291,6 +294,7 @@ class Settings extends Component {
 
                         </View>
                     </View>
+                    </ScrollView>
 
                 </Modal>
 
@@ -303,6 +307,7 @@ class Settings extends Component {
                     visible={this.state.imageModalVisible}
                     onRequestClose={() => {alert("Modal has been closed.")}}
                 >
+
                     <View style={styles.container}>
                         <View style ={{marginTop: 100}}>
 
@@ -347,6 +352,7 @@ class Settings extends Component {
                                             obj["dp"] = url;
                                             this.setState(obj);
                                             Variables.state.profileImage = url;
+                                            this.dropdown.alertWithType("custom", "", "Image Uploaded Successfully.");
                                             this.setImageModalVisible(!this.state.imageModalVisible);
                                         })
                                         .catch((error) => {
@@ -401,6 +407,7 @@ class Settings extends Component {
                                             obj["dp"] = url;
                                             this.setState(obj);
                                             Variables.state.profileImage = url;
+                                            this.dropdown.alertWithType("custom", "", "Image Uploaded Successfully.");
                                             this.setImageModalVisible(!this.state.imageModalVisible);
                                         })
                                         .catch((error) => {

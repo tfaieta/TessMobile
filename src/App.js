@@ -49,6 +49,7 @@ import PodcastOptions from "./components/PodcastOptions";
 import EditPodcast from "./components/EditPodcast";
 import ViewAll from "./components/ViewAll";
 import Music from "./components/Categories/Music";
+import PlayerInfo from "./components/PlayerInfo";
 
 
 
@@ -105,6 +106,7 @@ Navigation.registerComponent('UserProfile', () => UserProfile, store, Provider);
 
 Navigation.registerComponent('PodcastOptions', () => PodcastOptions, store, Provider);
 Navigation.registerComponent('EditPodcast', () => EditPodcast, store, Provider);
+Navigation.registerComponent('PlayerInfo', () => PlayerInfo, store, Provider);
 
 
 const config = {

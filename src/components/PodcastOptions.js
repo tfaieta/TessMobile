@@ -29,14 +29,7 @@ class PodcastOptions extends Component {
                 this.setState({favorite: false})
             }
         }
-        else{
-            if (firebase.database().ref(`users/${currentUser.uid}/favorites`).child(rowData.podcastTitle)){
-                this.setState({favorite: true})
-            }
-            else{
-                this.setState({favorite: false})
-            }
-        }
+
     }
 
 
@@ -238,8 +231,10 @@ class PodcastOptions extends Component {
                             <TouchableOpacity onPress={() => {
 
 
+                                /*
                                 firebase.database().ref(`users/${currentUser.uid}/favorites/${podcastTitle}`).remove();
                                 this.setState({favorite: false})
+                                */
 
                             }}>
                                 <Text style={styles.textStyle}>Remove from Favorites</Text>
@@ -277,8 +272,10 @@ class PodcastOptions extends Component {
 
                             <TouchableOpacity onPress={() => {
 
+                                /*
                                 firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle).update({podcastArtist, podcastTitle});
                                 this.setState({favorite: true})
+                                */
 
 
                             }}>

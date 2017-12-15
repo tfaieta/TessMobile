@@ -375,6 +375,134 @@ class PlayerBottom extends Component {
 
     }
 
+    _renderFav(faved){
+        if(Variables.state.podcastID){
+
+            if(faved){
+                return(
+                    <TouchableOpacity>
+                        <Icon style={{textAlign:'center', fontSize: 28,color: '#5757FF' }} name="md-add" onPress={()=>{
+                            const {currentUser} = firebase.auth();
+                            const podcastTitle = Variables.state.podcastTitle;
+                            const podcastDescription = Variables.state.podcastDescription;
+                            const podcastCategory = Variables.state.podcastCategory;
+                            const podcastArtist = Variables.state.podcastArtist;
+                            const id = Variables.state.podcastID;
+
+                            if(podcastTitle != ''){
+                                if(podcastArtist != currentUser.uid){
+                                    if(id){
+
+                                        Alert.alert(
+                                            'Remove from favorites?',
+                                            '',
+                                            [
+                                                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                                                {
+                                                    text: 'Yes', onPress: () => {
+                                                    firebase.database().ref(`users/${currentUser.uid}/favorites/${id}`).remove();
+                                                    Variables.state.favorited = false;
+                                                }
+                                                },
+                                            ],
+                                            {cancelable: false}
+                                        )
+
+                                    }
+                                    else{
+
+                                        Alert.alert(
+                                            'Remove from favorites?',
+                                            '',
+                                            [
+                                                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                                                {
+                                                    text: 'Yes', onPress: () => {
+                                                    firebase.database().ref(`users/${currentUser.uid}/favorites/${podcastTitle}`).remove();
+                                                    Variables.state.favorited = false;
+                                                }
+                                                },
+                                            ],
+                                            {cancelable: false}
+                                        )
+
+                                    }
+
+                                }
+                                else{
+                                    Alert.alert(
+                                        'Cannot favorite your own podcast',
+                                        '',
+                                        [
+                                            {text: 'OK', onPress: () => console.log('OK Pressed'), style: 'cancel'},
+
+                                        ],
+                                        {cancelable: false}
+                                    )
+                                }
+                            }
+
+                        }}>
+                        </Icon>
+                    </TouchableOpacity>
+                )
+            }
+            else{
+                return(
+                    <TouchableOpacity>
+                        <Icon style={{textAlign:'center', fontSize: 28,color:'#BBBCCD' }} name="md-add" onPress={()=>{
+                            const {currentUser} = firebase.auth();
+                            const podcastTitle = Variables.state.podcastTitle;
+                            const podcastDescription = Variables.state.podcastDescription;
+                            const podcastCategory = Variables.state.podcastCategory;
+                            const podcastArtist = Variables.state.podcastArtist;
+                            const id = Variables.state.podcastID;
+
+                            if(podcastTitle != ''){
+                                if(podcastArtist != currentUser.uid){
+                                    if(id){
+
+                                        Alert.alert(
+                                            'Add to favorites?',
+                                            '',
+                                            [
+                                                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                                                {
+                                                    text: 'Yes', onPress: () => {
+                                                    firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(id).update({id});
+                                                    Variables.state.favorited = true;
+                                                }
+                                                },
+                                            ],
+                                            {cancelable: false}
+                                        )
+
+                                    }
+
+
+                                }
+                                else{
+                                    Alert.alert(
+                                        'Cannot favorite your own podcast',
+                                        '',
+                                        [
+                                            {text: 'OK', onPress: () => console.log('OK Pressed'), style: 'cancel'},
+
+                                        ],
+                                        {cancelable: false}
+                                    )
+                                }
+                            }
+
+                        }}>
+                        </Icon>
+                    </TouchableOpacity>
+                )
+            }
+
+        }
+
+    }
 
     _renderLikes(likers, liked){
 
@@ -745,6 +873,21 @@ class PlayerBottom extends Component {
     }
 
 
+    openInfo(){
+        const {navigator} = this.props;
+
+        this.props.navigator.showLightBox({
+            screen: "PodcastOptions",
+            passProps: {navigator},
+            style: {
+                backgroundBlur: "light",
+                backgroundColor: "#9f60ff",
+                tapBackgroundToDismiss: true,
+            },
+        });
+
+    }
+
 
     render() {
         const config = {
@@ -762,15 +905,15 @@ class PlayerBottom extends Component {
                     config={config}
                 >
 
-                    <View style={styles.centerContainer}>
+                    <TouchableOpacity style={styles.centerContainer} onPress={this.ExpandPlayer}>
 
                         <View style={styles.leftContainer}>
                             {this._renderPodcastImage()}
                         </View>
 
-                        <TouchableOpacity onPress={this.ExpandPlayer}>
+                        <View onPress={this.ExpandPlayer}>
                             {this._renderPodcastInfo()}
-                        </TouchableOpacity>
+                        </View>
 
                         <View style={styles.rightContainer}>
                             <TouchableOpacity style={{marginRight: 10}}>
@@ -778,7 +921,7 @@ class PlayerBottom extends Component {
                             </TouchableOpacity>
                         </View>
 
-                    </View>
+                    </TouchableOpacity>
 
                 </GestureRecognizer>
 
@@ -816,7 +959,21 @@ class PlayerBottom extends Component {
 
                         {this._renderPodcastImageBig()}
 
-                        {this._renderDescription()}
+
+                        <TouchableOpacity style={{marginTop:20}} onPress={() => {
+                            const navigator = this.props.navigator;
+
+                            this.props.navigator.showModal({
+                                screen: "PlayerInfo",
+                                passProps: {navigator},
+                            });
+
+                        }}>
+                            <Icon style={{textAlign:'center', fontSize: 16,color:'#5757FF', }} name="md-add-circle">
+                            </Icon>
+                            <Text style={styles.seeMore}>View More</Text>
+
+                        </TouchableOpacity>
 
 
 
@@ -836,8 +993,9 @@ class PlayerBottom extends Component {
 
                             <View style={styles.leftContainerP}>
                                 <TouchableOpacity onPress={this.scrubBackward}>
-                                    <Icon style={{flex:1, textAlign:'center', fontSize: 35,color:'#2A2A30' }} name="ios-undo">
+                                    <Icon style={{flex:1, textAlign:'center', fontSize: 40,color:'#2A2A30' }} name="ios-undo">
                                     </Icon>
+                                    <Text style={{textAlign: 'center',  color: '#2A2A30', fontSize: 10, backgroundColor: 'transparent', fontFamily: 'HiraginoSans-W6',}}>15</Text>
                                 </TouchableOpacity>
                             </View>
 
@@ -849,8 +1007,9 @@ class PlayerBottom extends Component {
 
                             <View style={styles.rightContainerP}>
                                 <TouchableOpacity onPress={this.scrubForward}>
-                                    <Icon style={{flex:1, textAlign:'center', fontSize: 35,color:'#2A2A30' }} name="ios-redo">
+                                    <Icon style={{flex:1, textAlign:'center', fontSize: 40,color:'#2A2A30' }} name="ios-redo">
                                     </Icon>
+                                    <Text style={{textAlign: 'center',  color: '#2A2A30', fontSize: 10, backgroundColor: 'transparent', fontFamily: 'HiraginoSans-W6',}}>15</Text>
                                 </TouchableOpacity>
                             </View>
 
@@ -884,65 +1043,9 @@ class PlayerBottom extends Component {
                             </View>
 
                             <View style={{alignItems: 'center', flex:1}}>
-                                <TouchableOpacity>
-                                    <Icon style={{textAlign:'center', fontSize: 28,color:'#BBBCCD' }} name="md-add" onPress={()=>{
-                                        const {currentUser} = firebase.auth();
-                                        const podcastTitle = Variables.state.podcastTitle;
-                                        const podcastDescription = Variables.state.podcastDescription;
-                                        const podcastCategory = Variables.state.podcastCategory;
-                                        const podcastArtist = Variables.state.podcastArtist;
-                                        if(podcastTitle != ''){
-                                            if(podcastArtist != currentUser.uid){
-                                                if(!this.state.favorite) {
 
-                                                    Alert.alert(
-                                                        'Add to favorites?',
-                                                        '',
-                                                        [
-                                                            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                                                            {
-                                                                text: 'Yes', onPress: () => {
-                                                                firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle).update({podcastArtist, podcastTitle});
-                                                                this.setState({favorite: true})
-                                                            }
-                                                            },
-                                                        ],
-                                                        {cancelable: false}
-                                                    )
-                                                }
-                                                else{
-                                                    Alert.alert(
-                                                        'Remove from favorites?',
-                                                        '',
-                                                        [
-                                                            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                                                            {
-                                                                text: 'Yes', onPress: () => {
-                                                                firebase.database().ref(`users/${currentUser.uid}/favorites/${podcastTitle}`).remove();
-                                                                this.setState({favorite: false})
-                                                            }
-                                                            },
-                                                        ],
-                                                        {cancelable: false}
-                                                    )
-                                                }
-                                            }
-                                            else{
-                                                Alert.alert(
-                                                    'Cannot favorite your own podcast',
-                                                    '',
-                                                    [
-                                                        {text: 'OK', onPress: () => console.log('OK Pressed'), style: 'cancel'},
+                                {this._renderFav(Variables.state.favorited)}
 
-                                                    ],
-                                                    {cancelable: false}
-                                                )
-                                            }
-                                        }
-
-                                    }}>
-                                    </Icon>
-                                </TouchableOpacity>
                             </View>
 
                             <View style={{alignItems: 'flex-end', flex:1}}>
@@ -1126,6 +1229,18 @@ class PlayerBottom extends Component {
             color: '#2A2A30',
             fontSize: 18,
             marginTop: 5,
+            flexDirection: 'row',
+            backgroundColor: 'transparent',
+            alignSelf: 'center',
+            textAlign: 'center',
+            fontFamily: 'HiraginoSans-W6',
+        },
+
+        seeMore:{
+            color: '#5757FF',
+            fontSize: 14,
+            marginTop:5,
+            marginBottom:10,
             flexDirection: 'row',
             backgroundColor: 'transparent',
             alignSelf: 'center',
