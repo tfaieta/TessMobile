@@ -1036,10 +1036,7 @@ class PlayerBottom extends Component {
                         <View style={{flexDirection: 'row', flex: 1, marginTop: 0}}>
 
                             <View style={{alignItems:'flex-start', flex:1}}>
-                                <TouchableOpacity>
-                                    <Icon style={{textAlign:'center', fontSize: 28, marginLeft: 20, color:'#BBBCCD' }} name="md-checkmark">
-                                    </Icon>
-                                </TouchableOpacity>
+                              
                             </View>
 
                             <View style={{alignItems: 'center', flex:1}}>
@@ -1160,9 +1157,9 @@ class PlayerBottom extends Component {
     centerContainerButtons: {
         flex:1,
         flexDirection: 'row',
-        paddingTop: 2,
-        paddingBottom: 2,
-        marginTop: 80
+        paddingTop: 10,
+        paddingBottom: 10,
+        marginTop: 50
     },
     rightContainer: {
         flex: 1,
@@ -1240,7 +1237,7 @@ class PlayerBottom extends Component {
             color: '#5757FF',
             fontSize: 14,
             marginTop:5,
-            marginBottom:10,
+            marginBottom:5,
             flexDirection: 'row',
             backgroundColor: 'transparent',
             alignSelf: 'center',

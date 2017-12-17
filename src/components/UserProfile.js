@@ -449,6 +449,7 @@ class UserProfile extends Component {
         });
 
         const {currentUser} = firebase.auth();
+        const user = currentUser.uid;
         const podcastTitle  = rowData.podcastTitle;
         const podcastArtist = rowData.podcastArtist;
         const podcastDescription = rowData.podcastDescription;
@@ -489,6 +490,8 @@ class UserProfile extends Component {
                                     }
                                 });
                             });
+
+                            firebase.database().ref(`podcasts/${id}/plays`).child(user).update({user});
 
                             Variables.pause();
                             Variables.setPodcastFile(url);

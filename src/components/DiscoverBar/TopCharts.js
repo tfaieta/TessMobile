@@ -1,25 +1,132 @@
-/**
- * Created by nickruspantini on 6/29/17.
- */
 import React, { Component } from 'react';
-import { Text, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
+import { Text, StyleSheet, ScrollView, TouchableOpacity, ListView,  RefreshControl, View} from 'react-native';
+import Variables from "../Variables";
+import firebase from 'firebase';
+import InvertibleScrollView from 'react-native-invertible-scroll-view';
+import ListItem from "../ListItem";
 
 
 
 class TopCharts extends Component{
 
+    componentWillMount(){
+
+        Variables.state.topCharts = [];
+        const { currentUser } = firebase.auth();
+        const ref = firebase.database().ref(`podcasts/`);
+
+        ref.limitToLast(50).on("value", function (snapshot) {
+
+            snapshot.forEach(function (data) {
+                if(data.val().plays){
+
+                    if(!Variables.state.topCharts[data.child("plays").numChildren()]){
+                        Variables.state.topCharts[data.child("plays").numChildren()] = data.val();
+                    }
+                    else{
+                        Variables.state.topCharts[data.child("plays").numChildren() + 1] = data.val();
+                    }
+
+
+                }
+
+            })
+
+        });
+
+
+
+    }
+
+    constructor(props){
+        super(props);
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.state = {
+            dataSource: dataSource.cloneWithRows(Variables.state.topCharts),
+            refreshing: false
+        };
+
+
+
+
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},1000)
+    }
+
+
+
+    fetchData(){
+
+
+        Variables.state.topCharts = [];
+        const { currentUser } = firebase.auth();
+        const ref = firebase.database().ref(`podcasts/`);
+
+        ref.limitToLast(50).on("value", function (snapshot) {
+
+            snapshot.forEach(function (data) {
+                if(data.val().plays){
+
+                    if(!Variables.state.topCharts[data.child("plays").numChildren()]){
+                        Variables.state.topCharts[data.child("plays").numChildren()] = data.val();
+                    }
+                    else{
+                        Variables.state.topCharts[data.child("plays").numChildren() + 1] = data.val();
+                    }
+
+
+                }
+
+            })
+
+        });
+
+    }
+
+
+    _onRefresh() {
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.setState({refreshing: true});
+        this.setState({dataSource: dataSource.cloneWithRows([])});
+
+        this.fetchData();
+
+        this.setState({
+            refreshing: false,
+        });
+
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},1000)
+
+
+    }
+
+
+
+    renderRow = (podcast) => {
+        return <ListItem podcast={podcast} navigator={this.props.navigator} />;
+    };
+
 
     render() {
         return (
-            <ScrollView style={styles.container}>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this._onRefresh.bind(this)}
+                    />
+                }
+            >
 
-                <TouchableOpacity>
-                        <Text style={styles.title} >    coming soon...</Text>
-                </TouchableOpacity>
+                <View style={{flex:1}}>
+                    <ListView
+                        enableEmptySections
+                        dataSource={this.state.dataSource}
+                        renderRow={this.renderRow}
+                        renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
+                    />
+                </View>
 
-
-
-
+                <View style={{paddingBottom: 120}}/>
 
             </ScrollView>
 

@@ -164,11 +164,11 @@ class ListItem extends Component {
         });
 
         const {podcastTitle} = this.props.podcast;
-
         const {podcastDescription} = this.props.podcast;
         const {podcastCategory} = this.props.podcast;
         const {id} = this.props.podcast;
         const {currentUser} = firebase.auth();
+        const user = currentUser.uid;
         const {podcast} = this.props;
         const rowData = podcast;
 
@@ -208,6 +208,8 @@ class ListItem extends Component {
                                         }
                                     });
                                 });
+
+                                firebase.database().ref(`podcasts/${id}/plays`).child(user).update({user});
 
                                 Variables.pause();
                                 Variables.setPodcastFile(url);

@@ -75,6 +75,7 @@ class ListItemUsers extends Component {
 
     onRowPress(){
         const {currentUser} = firebase.auth();
+        const user = currentUser.uid;
         const { podcastTitle } = this.props.podcast;
         const { podcastDescription } = this.props.podcast;
         const { podcastCategory } = this.props.podcast;
@@ -108,6 +109,8 @@ class ListItemUsers extends Component {
                             }
                         });
                     });
+
+                    firebase.database().ref(`podcasts/${id}/plays`).child(user).update({user});
 
                     Variables.pause();
                     Variables.setPodcastFile(url);

@@ -59,7 +59,8 @@ class Variables extends Component{
         newFollowedContent: [],
         homeFollowedContent: [],
         selectedByTess: [],
-        fromTess : []
+        fromTess : [],
+        topCharts: []
 
 };
 

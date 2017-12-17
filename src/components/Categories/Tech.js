@@ -65,6 +65,7 @@ class Tech extends Component{
 
 
         const {currentUser} = firebase.auth();
+        const user = currentUser.uid;
         const podcastTitle = rowData.podcastTitle;
         const podcastDescription = rowData.podcastDescription;
         const podcastCategory = rowData.podcastCategory;
@@ -102,6 +103,8 @@ class Tech extends Component{
                                     }
                                 });
                             });
+
+                            firebase.database().ref(`podcasts/${id}/plays`).child(user).update({user});
 
                             Variables.pause();
                             Variables.setPodcastFile(url);
