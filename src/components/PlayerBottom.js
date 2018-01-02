@@ -6,7 +6,7 @@ import {podcastPlayer} from './Variables';
 import Slider from 'react-native-slider';
 import firebase from 'firebase';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-
+import MusicControl from 'react-native-music-control';
 
 
 class PlayerBottom extends Component {
@@ -33,6 +33,46 @@ class PlayerBottom extends Component {
         likes: 12,
         profileImage: '',
     };
+
+    componentDidMount() {
+        MusicControl.enableBackgroundMode(true);
+
+        MusicControl.handleAudioInterruptions(true);
+
+        MusicControl.on('play', ()=> {
+            MusicControl.updatePlayback({
+                state: MusicControl.STATE_PLAYING,
+                elapsedTime: podcastPlayer.currentTime/1000
+            });
+            this.play();
+        });
+
+        MusicControl.on('pause', ()=> {
+            MusicControl.updatePlayback({
+                state: MusicControl.STATE_PAUSED,
+                elapsedTime: podcastPlayer.currentTime/1000
+            });
+            this.pause();
+        });
+
+        MusicControl.on('skipForward', ()=> {
+
+            MusicControl.updatePlayback({
+                elapsedTime: (podcastPlayer.currentTime + 15000)/1000,
+            });
+            podcastPlayer.seek(podcastPlayer.currentTime + 15000);
+        });
+
+        MusicControl.on('skipBackward', ()=> {
+
+            MusicControl.updatePlayback({
+                elapsedTime: (podcastPlayer.currentTime - 15000)/1000,
+            });
+            podcastPlayer.seek(podcastPlayer.currentTime - 15000);
+
+        });
+
+    }
 
 
 

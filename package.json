@@ -26,6 +26,7 @@
 		"react-native-image-crop-picker": "^0.18.1",
 		"react-native-invertible-scroll-view": "^1.1.0",
 		"react-native-linear-gradient": "^2.0.0",
+		"react-native-music-control": "^0.5.1",
 		"react-native-navigation": "^1.1.275",
 		"react-native-popup-dialog": "^0.9.35",
 		"react-native-redux-router": "^1.0.7",
@@ -42,7 +43,7 @@
 		"react-native-testkit": "^0.1.4",
 		"react-native-textinput-effects": "^0.4.0",
 		"react-native-vector-icons": "^4.2.0",
-		"react-native-video": "^1.2.0",
+		"react-native-video": "^2.0.0",
 		"react-redux": "^5.0.6",
 		"redux": "^3.7.2",
 		"redux-thunk": "^2.2.0"

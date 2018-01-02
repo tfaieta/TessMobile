@@ -4,6 +4,7 @@ import firebase from 'firebase';
 import {
     Player,
 } from 'react-native-audio-toolkit';
+import MusicControl from 'react-native-music-control';
 
 
 export var podcastPlayer = new Player(podFile, {continuesToPlayInBackground : true});
@@ -12,6 +13,8 @@ podcastPlayer.prepare();
 
 
 class Variables extends Component{
+
+
     constructor() {
         super();
         this.tick = this.tick.bind(this);
@@ -74,8 +77,31 @@ class Variables extends Component{
     static setPodcastFile(podFile){
         Variables.state.podcastArtist = firebase.auth().currentUser.uid;
         podcastPlayer.destroy();
+        MusicControl.resetNowPlaying();
         podcastPlayer = new Player(podFile, {continuesToPlayInBackground : true, wakeLock: true});
         podcastPlayer.volume = 1;
+
+        setTimeout(() => {
+            MusicControl.setNowPlaying({
+                title: Variables.state.podcastTitle,
+                artwork: Variables.state.userProfileImage, // URL or RN's image require()
+                artist: Variables.state.currentUsername,
+                album: Variables.state.podcastCategory,
+                genre: Variables.state.podcastCategory,
+
+                state: MusicControl.STATE_PLAYING,
+                speed: 1, // Playback Rate
+                elapsedTime: podcastPlayer.currentTime/1000, // (Seconds)
+                duration: podcastPlayer.duration/1000,
+            });
+            MusicControl.enableControl('play', true);
+            MusicControl.enableControl('pause', true);
+            MusicControl.enableControl('stop', false);
+            MusicControl.enableControl('skipBackward', true, {interval: 15});
+            MusicControl.enableControl('skipForward', true, {interval: 15});
+
+        }, 1000);
+
     }
 
 
@@ -104,7 +130,6 @@ class Variables extends Component{
         Variables.state.interval = clearInterval(Variables.state.interval);
 
         podcastPlayer.pause();
-
 
     };
 
