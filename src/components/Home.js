@@ -18,14 +18,22 @@ class Home extends Component{
 
 
         Variables.state.newPodcasts = [];
+        Variables.state.newPodcastsArtsts = [];
         const refNew = firebase.database().ref(`podcasts/`);
 
-        refNew.limitToLast(15).on("value", function (snapshot) {
+        refNew.limitToLast(50).on("value", function (snapshot) {
             snapshot.forEach(function (data) {
                 if(data.val()){
-                    Variables.state.newPodcasts.push(data.val());
+                    if(Variables.state.newPodcastsArtsts.includes(data.val().podcastArtist)){
+                        Variables.state.newPodcasts[Variables.state.newPodcastsArtsts.indexOf(data.val().podcastArtist)] = data.val()
+                    }
+                    else{
+                        Variables.state.newPodcasts.push(data.val());
+                        Variables.state.newPodcastsArtsts.push(data.val().podcastArtist)
+                    }
                 }
-            })
+            });
+            Variables.state.newPodcasts.reverse();
         });
 
 
@@ -55,56 +63,8 @@ class Home extends Component{
 
         Variables.state.selectedByTess = [];
 
-
-        firebase.database().ref(`podcasts/-L-7R4hvHhf6eZ7ZErss`).on("value", function (snapshot) {
-            if(snapshot.val()){
-                Variables.state.selectedByTess.push(snapshot.val())
-            }
-        });
-
-        firebase.database().ref(`podcasts/-L-VDoi0ytxbvJobPElM`).on("value", function (snapshot) {
-            if(snapshot.val()){
-                Variables.state.selectedByTess.push(snapshot.val())
-            }
-        });
-
-        firebase.database().ref(`podcasts/-L-7Xln7HPgKIIrIfeVE`).on("value", function (snapshot) {
-            if(snapshot.val()){
-                Variables.state.selectedByTess.push(snapshot.val())
-            }
-        });
-
-        firebase.database().ref(`podcasts/-L-ZW0z6hcwYluDCOjPE`).on("value", function (snapshot) {
-            if(snapshot.val()){
-                Variables.state.selectedByTess.push(snapshot.val())
-            }
-        });
-
-
-
-
-
-        firebase.database().ref(`users/pgIx9JAiq9aQWcyUZX8AuIdqNmP2/podcasts`).limitToLast(2).on("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-        firebase.database().ref(`users/sJsB8XK4XRZ8tNpeGC14JNsa6Jj1/podcasts`).limitToLast(2).on("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-        firebase.database().ref(`users/1F1q9gRKWyMQ8cSATXqGT4PnCaK2/podcasts`).limitToLast(2).on("value", function (data) {
+        //TheMaddyIce
+        firebase.database().ref(`users/upwadf76CrOBee8aSwzcCZR4kM33/podcasts`).limitToLast(1).on("value", function (data) {
             data.forEach(function (snap) {
                 firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
                     if(snapshot.val()){
@@ -115,7 +75,8 @@ class Home extends Component{
         });
 
 
-        firebase.database().ref(`users/upwadf76CrOBee8aSwzcCZR4kM33/podcasts`).limitToLast(2).on("value", function (data) {
+        //Two Bros and a Pod
+        firebase.database().ref(`users/JHPYRdcWtOheHCkrddZjJaLXtPg2/podcasts`).limitToLast(1).on("value", function (data) {
             data.forEach(function (snap) {
                 firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
                     if(snapshot.val()){
@@ -126,7 +87,8 @@ class Home extends Component{
         });
 
 
-        firebase.database().ref(`users/3tHL3dIcINUdMeKZn6ckf81e2Sk2/podcasts`).limitToLast(2).on("value", function (data) {
+        //Big Tay
+        firebase.database().ref(`users/1F1q9gRKWyMQ8cSATXqGT4PnCaK2/podcasts`).limitToLast(1).on("value", function (data) {
             data.forEach(function (snap) {
                 firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
                     if(snapshot.val()){
@@ -135,6 +97,103 @@ class Home extends Component{
                 })
             })
         });
+
+
+        //Tim Dulak
+        firebase.database().ref(`users/3tHL3dIcINUdMeKZn6ckf81e2Sk2/podcasts`).limitToLast(1).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //Joey Bradfield
+        firebase.database().ref(`users/gdGuN9v14qU9pSHXSk1KbDGlUsu1/podcasts`).limitToLast(1).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //Dom Gold
+        firebase.database().ref(`users/6px5go2E3USvYvkcNQejkLkJx3H3/podcasts`).limitToLast(1).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //Eat the fruit
+        firebase.database().ref(`users/7ubx6NftyyQbAwufE7BquuSJ6gJ3/podcasts`).limitToLast(1).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //Abbey
+        firebase.database().ref(`users/P2HAtFE3YKXe8uP9Mu1HyCE2cD83/podcasts`).limitToLast(1).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //ShakDaddy
+        firebase.database().ref(`users/u1osicyhjcR5j3EHx6m1SMe2LpJ3/podcasts`).limitToLast(1).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //Nick Ruspy
+        firebase.database().ref(`users/pgIx9JAiq9aQWcyUZX8AuIdqNmP2/podcasts`).limitToLast(1).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //Tony
+        firebase.database().ref(`users/sJsB8XK4XRZ8tNpeGC14JNsa6Jj1/podcasts`).limitToLast(1).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
 
 
 
@@ -282,14 +341,22 @@ class Home extends Component{
 
 
         Variables.state.newPodcasts = [];
+        Variables.state.newPodcastsArtsts = [];
         const refNew = firebase.database().ref(`podcasts/`);
 
-        refNew.limitToLast(15).on("value", function (snapshot) {
+        refNew.limitToLast(50).on("value", function (snapshot) {
             snapshot.forEach(function (data) {
                 if(data.val()){
-                    Variables.state.newPodcasts.push(data.val());
+                    if(Variables.state.newPodcastsArtsts.includes(data.val().podcastArtist)){
+                        Variables.state.newPodcasts[Variables.state.newPodcastsArtsts.indexOf(data.val().podcastArtist)] = data.val()
+                    }
+                    else{
+                        Variables.state.newPodcasts.push(data.val());
+                        Variables.state.newPodcastsArtsts.push(data.val().podcastArtist)
+                    }
                 }
-            })
+            });
+            Variables.state.newPodcasts.reverse();
         });
 
 
@@ -319,56 +386,8 @@ class Home extends Component{
 
         Variables.state.selectedByTess = [];
 
-
-        firebase.database().ref(`podcasts/-L-7R4hvHhf6eZ7ZErss`).on("value", function (snapshot) {
-            if(snapshot.val()){
-                Variables.state.selectedByTess.push(snapshot.val())
-            }
-        });
-
-        firebase.database().ref(`podcasts/-L-VDoi0ytxbvJobPElM`).on("value", function (snapshot) {
-            if(snapshot.val()){
-                Variables.state.selectedByTess.push(snapshot.val())
-            }
-        });
-
-        firebase.database().ref(`podcasts/-L-7Xln7HPgKIIrIfeVE`).on("value", function (snapshot) {
-            if(snapshot.val()){
-                Variables.state.selectedByTess.push(snapshot.val())
-            }
-        });
-
-        firebase.database().ref(`podcasts/-L-ZW0z6hcwYluDCOjPE`).on("value", function (snapshot) {
-            if(snapshot.val()){
-                Variables.state.selectedByTess.push(snapshot.val())
-            }
-        });
-
-
-
-
-
-        firebase.database().ref(`users/pgIx9JAiq9aQWcyUZX8AuIdqNmP2/podcasts`).limitToLast(2).on("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-        firebase.database().ref(`users/sJsB8XK4XRZ8tNpeGC14JNsa6Jj1/podcasts`).limitToLast(2).on("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-        firebase.database().ref(`users/1F1q9gRKWyMQ8cSATXqGT4PnCaK2/podcasts`).limitToLast(2).on("value", function (data) {
+        //TheMaddyIce
+        firebase.database().ref(`users/upwadf76CrOBee8aSwzcCZR4kM33/podcasts`).limitToLast(1).on("value", function (data) {
             data.forEach(function (snap) {
                 firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
                     if(snapshot.val()){
@@ -379,7 +398,8 @@ class Home extends Component{
         });
 
 
-        firebase.database().ref(`users/upwadf76CrOBee8aSwzcCZR4kM33/podcasts`).limitToLast(2).on("value", function (data) {
+        //Two Bros and a Pod
+        firebase.database().ref(`users/JHPYRdcWtOheHCkrddZjJaLXtPg2/podcasts`).limitToLast(1).on("value", function (data) {
             data.forEach(function (snap) {
                 firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
                     if(snapshot.val()){
@@ -390,7 +410,8 @@ class Home extends Component{
         });
 
 
-        firebase.database().ref(`users/3tHL3dIcINUdMeKZn6ckf81e2Sk2/podcasts`).limitToLast(2).on("value", function (data) {
+        //Big Tay
+        firebase.database().ref(`users/1F1q9gRKWyMQ8cSATXqGT4PnCaK2/podcasts`).limitToLast(1).on("value", function (data) {
             data.forEach(function (snap) {
                 firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
                     if(snapshot.val()){
@@ -399,6 +420,103 @@ class Home extends Component{
                 })
             })
         });
+
+
+        //Tim Dulak
+        firebase.database().ref(`users/3tHL3dIcINUdMeKZn6ckf81e2Sk2/podcasts`).limitToLast(1).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //Joey Bradfield
+        firebase.database().ref(`users/gdGuN9v14qU9pSHXSk1KbDGlUsu1/podcasts`).limitToLast(1).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //Dom Gold
+        firebase.database().ref(`users/6px5go2E3USvYvkcNQejkLkJx3H3/podcasts`).limitToLast(1).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //Eat the fruit
+        firebase.database().ref(`users/7ubx6NftyyQbAwufE7BquuSJ6gJ3/podcasts`).limitToLast(1).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //Abbey
+        firebase.database().ref(`users/P2HAtFE3YKXe8uP9Mu1HyCE2cD83/podcasts`).limitToLast(1).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //ShakDaddy
+        firebase.database().ref(`users/u1osicyhjcR5j3EHx6m1SMe2LpJ3/podcasts`).limitToLast(1).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //Nick Ruspy
+        firebase.database().ref(`users/pgIx9JAiq9aQWcyUZX8AuIdqNmP2/podcasts`).limitToLast(1).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //Tony
+        firebase.database().ref(`users/sJsB8XK4XRZ8tNpeGC14JNsa6Jj1/podcasts`).limitToLast(1).on("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
 
 
 
@@ -412,6 +530,7 @@ class Home extends Component{
                 })
             })
         });
+
     }
 
 

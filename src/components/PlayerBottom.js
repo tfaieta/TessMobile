@@ -40,18 +40,10 @@ class PlayerBottom extends Component {
         MusicControl.handleAudioInterruptions(true);
 
         MusicControl.on('play', ()=> {
-            MusicControl.updatePlayback({
-                state: MusicControl.STATE_PLAYING,
-                elapsedTime: podcastPlayer.currentTime/1000
-            });
             this.play();
         });
 
         MusicControl.on('pause', ()=> {
-            MusicControl.updatePlayback({
-                state: MusicControl.STATE_PAUSED,
-                elapsedTime: podcastPlayer.currentTime/1000
-            });
             this.pause();
         });
 
@@ -108,8 +100,12 @@ class PlayerBottom extends Component {
             interval: setInterval(this.tick, 250)
         });
 
-        Variables.play()
+        MusicControl.updatePlayback({
+            state: MusicControl.STATE_PLAYING,
+            elapsedTime: podcastPlayer.currentTime/1000
+        });
 
+        Variables.play()
 
     };
 
@@ -119,8 +115,13 @@ class PlayerBottom extends Component {
             isPlaying: false,
             interval: clearInterval(this.state.interval)
         });
-       Variables.pause();
 
+        MusicControl.updatePlayback({
+            state: MusicControl.STATE_PAUSED,
+            elapsedTime: podcastPlayer.currentTime/1000
+        });
+
+       Variables.pause();
 
     };
 
@@ -346,7 +347,7 @@ class PlayerBottom extends Component {
                             textAlign: 'center',
                             fontSize: 90,
                             color: 'white',
-                            marginTop: 20
+                            marginTop: 20,
                         }} name="md-person">
                         </Icon>
                     </View>
@@ -912,6 +913,16 @@ class PlayerBottom extends Component {
         this.setModalVisible(!this.state.modalVisible)
     }
 
+    onSwipeDelete(gestureState) {
+        Variables.state.podcastTitle = '';
+        Variables.state.podcastCategory = '';
+        Variables.state.podcastArtist = '';
+        Variables.state.podcastDescription = '';
+        Variables.state.podcastCategory = '';
+        podcastPlayer.destroy();
+        MusicControl.resetNowPlaying();
+    }
+
 
     openInfo(){
         const {navigator} = this.props;
@@ -942,6 +953,8 @@ class PlayerBottom extends Component {
 
                 <GestureRecognizer
                     onSwipeUp={(state) => this.onSwipeUp(state)}
+                    onSwipeLeft={(state) => this.onSwipeDelete(state)}
+                    onSwipeRight={(state) => this.onSwipeDelete(state)}
                     config={config}
                 >
 

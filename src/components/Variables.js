@@ -55,6 +55,7 @@ class Variables extends Component{
         likers: [],
         followedContent: [],
         newPodcasts: [],
+        newPodcastsArtsts: [],
         myFollowers: [],
         userFollowers: [],
         myFollowing: [],
@@ -84,14 +85,14 @@ class Variables extends Component{
         setTimeout(() => {
             MusicControl.setNowPlaying({
                 title: Variables.state.podcastTitle,
-                artwork: Variables.state.userProfileImage, // URL or RN's image require()
+                artwork: Variables.state.userProfileImage,
                 artist: Variables.state.currentUsername,
                 album: Variables.state.podcastCategory,
                 genre: Variables.state.podcastCategory,
 
                 state: MusicControl.STATE_PLAYING,
                 speed: 1, // Playback Rate
-                elapsedTime: podcastPlayer.currentTime/1000, // (Seconds)
+                elapsedTime: podcastPlayer.currentTime/1000,
                 duration: podcastPlayer.duration/1000,
             });
             MusicControl.enableControl('play', true);

@@ -115,7 +115,7 @@ export const podcastFetch = () => {
 export const podcastFetchNew = () => {
 
     return (dispatch) => {
-        firebase.database().ref('/podcasts').limitToLast(50)
+        firebase.database().ref('/podcasts').limitToLast(100)
             .on('value', snapshot => {
                 dispatch({ type: PODCAST_FETCH_SUCCESS_NEW, payload: snapshot.val() });
             });
