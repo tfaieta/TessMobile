@@ -50,6 +50,8 @@ import EditPodcast from "./components/EditPodcast";
 import ViewAll from "./components/ViewAll";
 import Music from "./components/Categories/Music";
 import PlayerInfo from "./components/PlayerInfo";
+import PopupCategory from "./components/Categories/PopupCategory";
+import UserProfileModal from "./components/UserProfileModal";
 
 
 
@@ -84,6 +86,7 @@ Navigation.registerComponent('Storytelling', () => StoryTelling, store, Provider
 Navigation.registerComponent('Tech', () => Tech, store, Provider);
 Navigation.registerComponent('Travel', () => Travel, store, Provider);
 Navigation.registerComponent('Music', () => Music, store, Provider);
+Navigation.registerComponent('PopupCategory', () => PopupCategory, store, Provider);
 
 Navigation.registerComponent('RecordFirst', () => RecordFirstPage, store, Provider);
 Navigation.registerComponent('Record', () => Record, store, Provider);
@@ -103,6 +106,7 @@ Navigation.registerComponent('UserFollowers', () => UserFollowers, store, Provid
 Navigation.registerComponent('Settings', () => Settings, store, Provider);
 
 Navigation.registerComponent('UserProfile', () => UserProfile, store, Provider);
+Navigation.registerComponent('UserProfileModal', () => UserProfileModal, store, Provider);
 
 Navigation.registerComponent('PodcastOptions', () => PodcastOptions, store, Provider);
 Navigation.registerComponent('EditPodcast', () => EditPodcast, store, Provider);

@@ -23,7 +23,7 @@ import InvertibleScrollView from 'react-native-invertible-scroll-view';
 import { Navigation } from 'react-native-navigation';
 
 
-class UserProfile extends Component {
+class UserProfileModal extends Component {
     componentWillMount(){
 
         const {currentUser} = firebase.auth();
@@ -123,7 +123,7 @@ class UserProfile extends Component {
         };
         setTimeout(() =>{
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
-            username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
+                username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
                 following: Variables.state.following
             })
         },500)
@@ -410,15 +410,10 @@ class UserProfile extends Component {
     };
 
     _pressBack = () => {
-        const {navigator} = this.props;
         Navigation.dismissModal({
             animationType: 'slide-down'
         });
 
-        navigator.pop({
-            animated: true,
-            animationType: 'fade',
-        });
     };
 
 
@@ -875,4 +870,4 @@ const mapStateToProps = state => {
     return {podcast};
 };
 
-export default connect(mapStateToProps, { podcastFetchUser })(UserProfile);
+export default connect(mapStateToProps, { podcastFetchUser })(UserProfileModal);

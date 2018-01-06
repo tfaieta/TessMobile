@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import Variables from "./Variables";
 
+import { Navigation } from 'react-native-navigation';
+
 
 class PlayerInfo extends Component {
 
@@ -20,26 +22,50 @@ class PlayerInfo extends Component {
 
     render(){
 
-        const navigator = this.props.navigator;
+        if(Variables.state.likers.length > 1){
+            return(
+                <View style={styles.container}>
 
-        return(
-            <View style={styles.container}>
+                    <Text style={styles.title}>Info</Text>
 
-                <Text style={styles.title}>Info</Text>
+                    <View style={{height: 1.5, marginHorizontal: 20, backgroundColor: '#2A2A3060',}} />
+                    <ScrollView style={styles.descriptionBox}>
+                        <Text style={styles.textDescription}>{Variables.state.podcastDescription}</Text>
+                    </ScrollView>
+                    <View style={{height: 1.5, marginHorizontal: 20, backgroundColor: '#2A2A3060',}} />
+                    <Text style={styles.textLike}>{Variables.state.likers.length} likes</Text>
 
-                <View style={{height: 1.5, marginHorizontal: 20, backgroundColor: '#2A2A3060',}} />
-                <ScrollView style={styles.descriptionBox}>
-                    <Text style={styles.textDescription}>{Variables.state.podcastDescription}</Text>
-                </ScrollView>
-                <View style={{height: 1.5, marginHorizontal: 20, backgroundColor: '#2A2A3060',}} />
+                    <TouchableOpacity onPress = {() => {
+                        Navigation.dismissModal();
+                    }}>
+                        <Text style={styles.textClose}>Close</Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+        else{
+            return(
+                <View style={styles.container}>
 
-                <TouchableOpacity onPress = {() => {
-                    navigator.dismissModal();
-                }}>
-                    <Text style={styles.textClose}>Close</Text>
-                </TouchableOpacity>
-            </View>
-        )
+                    <Text style={styles.title}>Info</Text>
+
+                    <View style={{height: 1.5, marginHorizontal: 20, backgroundColor: '#2A2A3060',}} />
+                    <ScrollView style={styles.descriptionBox}>
+                        <Text style={styles.textDescription}>{Variables.state.podcastDescription}</Text>
+                    </ScrollView>
+                    <View style={{height: 1.5, marginHorizontal: 20, backgroundColor: '#2A2A3060',}} />
+                    <Text style={styles.textLike}>{Variables.state.likers.length} like</Text>
+
+                    <TouchableOpacity onPress = {() => {
+                        Navigation.dismissModal();
+                    }}>
+                        <Text style={styles.textClose}>Close</Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+
+
 
 
     }
@@ -87,6 +113,18 @@ const styles = StyleSheet.create({
         fontSize: 16,
         backgroundColor: 'transparent',
         marginBottom: 20,
+        marginHorizontal: 20,
+    },
+    textLike:{
+        color: '#5757FF',
+        flexDirection: 'column',
+        textAlign: 'center',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'HiraginoSans-W6',
+        fontSize: 14,
+        backgroundColor: 'transparent',
+        marginTop: 20,
         marginHorizontal: 20,
     },
     descriptionBox:{

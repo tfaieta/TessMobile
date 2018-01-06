@@ -8,6 +8,9 @@ import firebase from 'firebase';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import MusicControl from 'react-native-music-control';
 
+import { Navigation } from 'react-native-navigation';
+
+
 
 class PlayerBottom extends Component {
     constructor() {
@@ -301,7 +304,7 @@ class PlayerBottom extends Component {
         if (isPlaying) {
             return (
                 <TouchableOpacity onPress={this.pause}>
-                    <Icon style={{textAlign:'center',paddingHorizontal: 20, fontSize: 50, color:'#2A2A30' }}  name="ios-pause">
+                    <Icon style={{textAlign:'center', fontSize: 50, color:'#2A2A30' }}  name="ios-pause">
                     </Icon>
                 </TouchableOpacity>
             );
@@ -309,7 +312,7 @@ class PlayerBottom extends Component {
         else {
             return (
                 <TouchableOpacity onPress={this.play}>
-                    <Icon style={{textAlign:'center',paddingHorizontal: 20, fontSize: 50, color:'#2A2A30' }}  name="md-play">
+                    <Icon style={{textAlign:'center', fontSize: 50, color:'#2A2A30' }}  name="md-play">
                     </Icon>
                 </TouchableOpacity>
             );
@@ -551,13 +554,11 @@ class PlayerBottom extends Component {
             return;
         }
         if(Variables.state.podcastID != ''){
-            const {currentUser} = firebase.auth();
 
             if (liked) {
                 return (
                     <TouchableOpacity onPress = {this.pressLike}>
                         <Icon style={{textAlign: 'center', fontSize: 28, color: '#5757FF', marginRight: 25}} name="ios-happy-outline">
-                            <Text style={styles.podcastTextLikesActive}> {likers.length}</Text>
                         </Icon>
                     </TouchableOpacity>
                 )
@@ -566,7 +567,6 @@ class PlayerBottom extends Component {
                 return(
                     <TouchableOpacity onPress = {this.pressLike}>
                         <Icon style={{textAlign: 'center', fontSize: 28, color: '#BBBCCD', marginRight: 25}} name="ios-happy-outline">
-                            <Text style={styles.podcastTextLikes}> {likers.length}</Text>
                         </Icon>
                     </TouchableOpacity>
                 )
@@ -755,12 +755,13 @@ class PlayerBottom extends Component {
     }
 
     onProfilePress = () => {
+        const {navigator} = this.props;
         Variables.state.browsingArtist = Variables.state.podcastArtist;
-        this.setModalVisible(!this.state.modalVisible);
-        this.props.navigator.push({
-            screen: 'UserProfile',
+        Navigation.showModal({
+            screen: 'UserProfileModal',
             animated: true,
             animationType: 'fade',
+            passProps: {navigator},
         });
     };
 
@@ -789,116 +790,118 @@ class PlayerBottom extends Component {
 
 
     onCategoryPress = () => {
+        const {navigator} = this.props;
+
         if(Variables.state.podcastCategory == 'Fitness'){
-            this.setModalVisible(!this.state.modalVisible);
-            this.props.navigator.push({
-                screen: 'Fitness',
-                animated: true,
-                animationType: 'fade',
+            const category = Variables.state.podcastCategory;
+
+            Navigation.showModal({
+                screen: 'PopupCategory',
+                passProps: {navigator, category},
             });
         }
         else if(Variables.state.podcastCategory == 'News'){
-            this.setModalVisible(!this.state.modalVisible);
-            this.props.navigator.push({
-                screen: 'News',
-                animated: true,
-                animationType: 'fade',
+            const category = Variables.state.podcastCategory;
+
+            Navigation.showModal({
+                screen: 'PopupCategory',
+                passProps: {navigator, category},
             });
         }
         else if(Variables.state.podcastCategory == 'Gaming'){
-            this.setModalVisible(!this.state.modalVisible);
-            this.props.navigator.push({
-                screen: 'Gaming',
-                animated: true,
-                animationType: 'fade',
+            const category = Variables.state.podcastCategory;
+
+            Navigation.showModal({
+                screen: 'PopupCategory',
+                passProps: {navigator, category},
             });
         }
         else if(Variables.state.podcastCategory == 'Society & Culture'){
-            this.setModalVisible(!this.state.modalVisible);
-            this.props.navigator.push({
-                screen: 'SocietyCulture',
-                animated: true,
-                animationType: 'fade',
+            const category = Variables.state.podcastCategory;
+
+            Navigation.showModal({
+                screen: 'PopupCategory',
+                passProps: {navigator, category},
             });
         }
         else if(Variables.state.podcastCategory == 'Sports'){
-            this.setModalVisible(!this.state.modalVisible);
-            this.props.navigator.push({
-                screen: 'Sports',
-                animated: true,
-                animationType: 'fade',
+            const category = Variables.state.podcastCategory;
+
+            Navigation.showModal({
+                screen: 'PopupCategory',
+                passProps: {navigator, category},
             });
         }
         else if(Variables.state.podcastCategory == 'Entertainment'){
-            this.setModalVisible(!this.state.modalVisible);
-            this.props.navigator.push({
-                screen: 'Entertainment',
-                animated: true,
-                animationType: 'fade',
+            const category = Variables.state.podcastCategory;
+
+            Navigation.showModal({
+                screen: 'PopupCategory',
+                passProps: {navigator, category},
             });
         }
         else if(Variables.state.podcastCategory == 'Comedy'){
-            this.setModalVisible(!this.state.modalVisible);
-            this.props.navigator.push({
-                screen: 'Comedy',
-                animated: true,
-                animationType: 'fade',
+            const category = Variables.state.podcastCategory;
+
+            Navigation.showModal({
+                screen: 'PopupCategory',
+                passProps: {navigator, category},
             });
         }
         else if(Variables.state.podcastCategory == 'Learn Something'){
-            this.setModalVisible(!this.state.modalVisible);
-            this.props.navigator.push({
-                screen: 'LearnSomething',
-                animated: true,
-                animationType: 'fade',
+            const category = Variables.state.podcastCategory;
+
+            Navigation.showModal({
+                screen: 'PopupCategory',
+                passProps: {navigator, category},
             });
         }
         else if(Variables.state.podcastCategory == 'Lifestyle'){
-            this.setModalVisible(!this.state.modalVisible);
-            this.props.navigator.push({
-                screen: 'Lifestyle',
-                animated: true,
-                animationType: 'fade',
+            const category = Variables.state.podcastCategory;
+
+            Navigation.showModal({
+                screen: 'PopupCategory',
+                passProps: {navigator, category},
             });
         }
         else if(Variables.state.podcastCategory == 'Science & Nature'){
-            this.setModalVisible(!this.state.modalVisible);
-            this.props.navigator.push({
-                screen: 'ScienceNature',
-                animated: true,
-                animationType: 'fade',
+            const category = Variables.state.podcastCategory;
+
+            Navigation.showModal({
+                screen: 'PopupCategory',
+                passProps: {navigator, category},
             });
         }
         else if(Variables.state.podcastCategory == 'Storytelling'){
-            this.setModalVisible(!this.state.modalVisible);
-            this.props.navigator.push({
-                screen: 'Storytelling',
-                animated: true,
-                animationType: 'fade',
+            const category = Variables.state.podcastCategory;
+
+            Navigation.showModal({
+                screen: 'PopupCategory',
+                passProps: {navigator, category},
             });
         }
         else if(Variables.state.podcastCategory == 'Tech'){
-            this.setModalVisible(!this.state.modalVisible);
-            this.props.navigator.push({
-                screen: 'Tech',
-                animated: true,
-                animationType: 'fade',
+            const category = Variables.state.podcastCategory;
+
+            Navigation.showModal({
+                screen: 'PopupCategory',
+                passProps: {navigator, category},
             });
         }
         else if(Variables.state.podcastCategory == 'Travel'){
-            this.setModalVisible(!this.state.modalVisible);
-            this.props.navigator.push({
-                screen: 'Travel',
-                animated: true,
-                animationType: 'fade',
+            const category = Variables.state.podcastCategory;
+
+            Navigation.showModal({
+                screen: 'PopupCategory',
+                passProps: {navigator, category},
             });
         }
         else if(Variables.state.podcastCategory == 'Music'){
-            this.setModalVisible(!this.state.modalVisible);
-            this.props.navigator.push({
-                screen: 'Music',
-                animated: true,
-                animationType: 'fade',
+            const category = Variables.state.podcastCategory;
+
+            Navigation.showModal({
+                screen: 'PopupCategory',
+                passProps: {navigator, category},
             });
         }
         else console.warn("Category not yet supported");
@@ -923,21 +926,6 @@ class PlayerBottom extends Component {
         MusicControl.resetNowPlaying();
     }
 
-
-    openInfo(){
-        const {navigator} = this.props;
-
-        this.props.navigator.showLightBox({
-            screen: "PodcastOptions",
-            passProps: {navigator},
-            style: {
-                backgroundBlur: "light",
-                backgroundColor: "#9f60ff",
-                tapBackgroundToDismiss: true,
-            },
-        });
-
-    }
 
 
     render() {
@@ -1016,7 +1004,7 @@ class PlayerBottom extends Component {
                         <TouchableOpacity style={{marginTop:20}} onPress={() => {
                             const navigator = this.props.navigator;
 
-                            this.props.navigator.showModal({
+                            Navigation.showModal({
                                 screen: "PlayerInfo",
                                 passProps: {navigator},
                             });
@@ -1046,7 +1034,7 @@ class PlayerBottom extends Component {
 
                             <View style={styles.leftContainerP}>
                                 <TouchableOpacity onPress={this.scrubBackward}>
-                                    <Icon style={{flex:1, textAlign:'center', fontSize: 40,color:'#2A2A30' }} name="ios-undo">
+                                    <Icon style={{flex:1, textAlign:'center', fontSize: 50,color:'#2A2A30' }} name="ios-undo">
                                     </Icon>
                                     <Text style={{textAlign: 'center',  color: '#2A2A30', fontSize: 10, backgroundColor: 'transparent', fontFamily: 'HiraginoSans-W6',}}>15</Text>
                                 </TouchableOpacity>
@@ -1060,7 +1048,7 @@ class PlayerBottom extends Component {
 
                             <View style={styles.rightContainerP}>
                                 <TouchableOpacity onPress={this.scrubForward}>
-                                    <Icon style={{flex:1, textAlign:'center', fontSize: 40,color:'#2A2A30' }} name="ios-redo">
+                                    <Icon style={{flex:1, textAlign:'center', fontSize: 50,color:'#2A2A30' }} name="ios-redo">
                                     </Icon>
                                     <Text style={{textAlign: 'center',  color: '#2A2A30', fontSize: 10, backgroundColor: 'transparent', fontFamily: 'HiraginoSans-W6',}}>15</Text>
                                 </TouchableOpacity>
@@ -1272,13 +1260,14 @@ class PlayerBottom extends Component {
             color: 'rgba(1,170,170,1)',
             flex:1,
             textAlign: 'center',
-            fontSize: 20
+            fontSize: 20,
         },
 
         podcastText:{
             color: '#2A2A30',
-            fontSize: 18,
+            fontSize: 15,
             marginTop: 5,
+            marginHorizontal: 10,
             flexDirection: 'row',
             backgroundColor: 'transparent',
             alignSelf: 'center',
@@ -1314,21 +1303,20 @@ class PlayerBottom extends Component {
         },
         podcastTextLikes:{
             color: '#BBBCCD',
-            fontSize: 10,
+            fontSize: 14,
             backgroundColor: 'transparent',
-            alignSelf: 'flex-start',
-            fontFamily: 'Hiragino Sans',
+            textAlign: 'center'
         },
         podcastTextLikesActive:{
-            color: '#5757FF',
-            fontSize: 10,
+            color: '#BBBCCD',
+            fontSize: 14,
             backgroundColor: 'transparent',
-            alignSelf: 'flex-start',
-            fontFamily: 'Hiragino Sans',
+            textAlign: 'center'
         },
         podcastTextArtist:{
             color:'#2A2A30',
-            fontSize: 18,
+            fontSize: 15,
+            marginHorizontal: 10,
             flexDirection: 'row',
             backgroundColor: 'transparent',
             alignSelf: 'center',

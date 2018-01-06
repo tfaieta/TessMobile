@@ -36,7 +36,7 @@ class ListItemFollowed extends Component {
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginBottom:10, marginLeft: 10, alignSelf: 'center', height: 70, width: 70, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)'  }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginBottom:10, marginLeft: 10, alignSelf: 'center', height: 70, width: 70, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)', shadowOffset:{  width: 0,  height: 5}, shadowOpacity: 0.5, shadowRadius: 4,   }}>
                     <Icon style={{
                         textAlign: 'center',
                         fontSize: 45,
@@ -49,7 +49,7 @@ class ListItemFollowed extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom:10, marginLeft: 10, height: 70, width: 70  }}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom:10, marginLeft: 10, height: 70, width: 70, shadowOffset:{  width: 0,  height: 5}, shadowOpacity: 0.5, shadowRadius: 4,   }}>
                     <Image
                         style={{width: 70, height: 70, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
                         source={{uri: this.state.profileImage}}

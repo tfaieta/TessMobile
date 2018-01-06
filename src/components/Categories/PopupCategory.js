@@ -1,22 +1,24 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView, ListView, Text, TouchableOpacity, Alert} from 'react-native';
+import { View, StyleSheet, ScrollView, ListView, Text, TouchableOpacity} from 'react-native';
 import PlayerBottom from '../PlayerBottom';
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "../Variables";
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
 
+import { Navigation } from 'react-native-navigation';
 
-class CurrentEvents extends Component{
+
+class PopupCategory extends Component{
 
     componentWillMount(){
+        const category = this.props.category;
         Variables.state.currCategory = [];
-        const {currentUser} = firebase.auth();
         const refCat = firebase.database().ref(`podcasts/`);
 
         refCat.on("value", function (snapshot) {
             snapshot.forEach(function (data) {
-                if(data.val().podcastCategory == 'News') {
+                if(data.val().podcastCategory == category) {
                     Variables.state.currCategory.push(data.val());
                 }
             })
@@ -35,19 +37,6 @@ class CurrentEvents extends Component{
         },500)
     }
 
-
-    onGarbagePress(){
-        Alert.alert(
-            'Are you sure you want to delete?',
-            '',
-            [
-                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                {text: 'Yes', onPress: () => console.warn('delete')
-                },
-            ],
-            { cancelable: false }
-        )
-    }
 
 
 
@@ -239,15 +228,16 @@ class CurrentEvents extends Component{
 
 
     _pressBack = () => {
-        this.props.navigator.pop({
-            animated: true,
-            animationType: 'fade',
+        Navigation.dismissModal({
+            animationType: 'slide-down'
         });
     };
 
 
 
     render() {
+        const category = this.props.category;
+
         return (
             <View
                 style={styles.containerMain}>
@@ -262,7 +252,7 @@ class CurrentEvents extends Component{
                         </TouchableOpacity>
                     </View>
                     <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={styles.header}>News</Text>
+                        <Text style={styles.header}>{category}</Text>
                     </View>
 
                     <View>
@@ -401,4 +391,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default CurrentEvents;
+export default PopupCategory;
