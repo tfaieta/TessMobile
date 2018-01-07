@@ -560,6 +560,10 @@ class PlayerBottom extends Component {
                     <TouchableOpacity onPress = {this.pressLike}>
                         <Icon style={{textAlign: 'center', fontSize: 28, color: '#5757FF', marginRight: 25}} name="ios-happy-outline">
                         </Icon>
+                        <View style={{flex:1}}>
+                            <Text style={styles.podcastTextLikes}> {likers.length}</Text>
+                        </View>
+
                     </TouchableOpacity>
                 )
             }
@@ -568,6 +572,9 @@ class PlayerBottom extends Component {
                     <TouchableOpacity onPress = {this.pressLike}>
                         <Icon style={{textAlign: 'center', fontSize: 28, color: '#BBBCCD', marginRight: 25}} name="ios-happy-outline">
                         </Icon>
+                        <View style={{flex:1}}>
+                            <Text style={styles.podcastTextLikes}> {likers.length}</Text>
+                        </View>
                     </TouchableOpacity>
                 )
             }

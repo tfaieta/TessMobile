@@ -7,7 +7,7 @@ import {podcastPlayer} from './Variables';
 import firebase from 'firebase';
 import { Navigation } from 'react-native-navigation';
 
-
+//currently not in use, Player is in PlayerBottom
 
 
 class Player extends Component{

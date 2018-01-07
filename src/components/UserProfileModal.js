@@ -488,6 +488,17 @@ class UserProfileModal extends Component {
                                 });
                             });
 
+
+                            firebase.database().ref(`podcasts/${id}/plays`).on("value", function (snap) {
+                                Variables.state.podcastsPlays = 0;
+                                snap.forEach(function (data) {
+                                    if (data.val()) {
+                                        Variables.state.podcastsPlays++;
+                                    }
+                                });
+                            });
+
+
                             firebase.database().ref(`podcasts/${id}/plays`).child(user).update({user});
 
                             Variables.pause();

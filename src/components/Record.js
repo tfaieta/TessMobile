@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, StatusBar, Image, Platform, Alert} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, StatusBar, Image, Platform, Alert, Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Sound from 'react-native-sound';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
@@ -106,20 +106,7 @@ class Record extends Component{
             );
         }
     }
-    _renderButtonRecord(title, onPress, active) {
-        var style = (active) ? styles.activeButtonText : styles.buttonText;
-        var iconStyle = (active) ? styles.activeIconText : styles.iconText;
 
-        return (
-            <TouchableOpacity style={styles.button} onPress={onPress}>
-                <Icon style={iconStyle} name="ios-radio-button-on" onPress={this.recordSound}>
-                    <Text style={style}>
-                        {title}
-                    </Text>
-                </Icon>
-            </TouchableOpacity>
-        );
-    }
     _renderButtonRecordN(onPress, active) {
         var iconStyle = (active) ? styles.activeIconText : styles.iconText;
 
@@ -162,6 +149,22 @@ class Record extends Component{
 
             }
         }
+    }
+
+    _renderProgress(){
+        var {height, width} = Dimensions.get('window');
+
+        if(this.state.currentTime%10 == 0 && this.state.currentTime>0){
+            return(
+                <View style={{height: 10, width: width, backgroundColor: 'white', marginTop: 10}} />
+            )
+        }
+        else{
+            return(
+                <View style={{height:10, width: (this.state.currentTime*(width/10))%width, backgroundColor: 'white', marginTop: 10}} />
+            )
+        }
+
     }
 
     async _pause() {
@@ -360,11 +363,10 @@ class Record extends Component{
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                        {this._renderRecordTitle(this.state.recording)}
-                    </View>
-
                 </View>
+
+                    {this._renderRecordTitle(this.state.recording)}
+
 
 
                     <View style={styles.controls}>
