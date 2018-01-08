@@ -7,13 +7,15 @@ import {
     ScrollView,
     ListView,
     TextInput,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Alert
 } from 'react-native';
 import Variables from "./Variables";
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { Navigation } from 'react-native-navigation';
+import ListItemComment from "./ListItemComment";
 
 
 class PlayerInfo extends Component {
@@ -58,47 +60,9 @@ class PlayerInfo extends Component {
 
     renderRow = (rowData) => {
 
-        let profileName = 'loading';
-        firebase.database().ref(`/users/${rowData.user}/username`).orderByChild("username").on("value", function (snap) {
-            if (snap.val()) {
-                profileName = snap.val().username;
-            }
-            else {
-                profileName = rowData.user;
-            }
-        });
-
-
-
-        const {currentUser} = firebase.auth();
-        const user = currentUser.uid;
-
-        if(rowData.user == user){
-
-            return (
-                <View style={{marginHorizontal: 60}}>
-                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center', marginHorizontal: 10}}>
-                    <Text style={styles.textCommentName}>{profileName}:</Text>
-                    <Text style={styles.textComment}>{rowData.comment}</Text>
-                </TouchableOpacity>
-                </View>
-
-            );
-
-        }
-        else{
-            return (
-                <View style={{marginHorizontal: 60}}>
-                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center', marginHorizontal: 10}}>
-                    <Text style={styles.textCommentName}>{profileName}:</Text>
-                    <Text style={styles.textComment}>{rowData.comment}</Text>
-                </TouchableOpacity>
-                </View>
-
-            );
-        }
-
-
+        return(
+            <ListItemComment rowData = {rowData} />
+        )
 
     };
 
@@ -172,6 +136,7 @@ class PlayerInfo extends Component {
                             this.scrollView.scrollToEnd( { animated: true } )
                         }}
                     />
+                    <View style={{height: 1.5, marginHorizontal: 20, backgroundColor: '#2A2A3060',}} />
 
                 </View>
 
