@@ -96,7 +96,7 @@ class ListItemComment extends Component {
                     <TouchableOpacity onPress={() => {
 
                         const {navigator} = this.props;
-                        Variables.state.browsingArtist = Variables.state.podcastArtist;
+                        Variables.state.browsingArtist = user;
                         Navigation.showModal({
                             screen: 'UserProfileModal',
                             animated: true,
@@ -150,7 +150,7 @@ class ListItemComment extends Component {
                     <TouchableOpacity onPress={() => {
 
                         const {navigator} = this.props;
-                        Variables.state.browsingArtist = Variables.state.podcastArtist;
+                        Variables.state.browsingArtist = user;
                         Navigation.showModal({
                             screen: 'UserProfileModal',
                             animated: true,
@@ -160,8 +160,10 @@ class ListItemComment extends Component {
 
                     }} style={{flexDirection: 'row', alignSelf: 'center', marginHorizontal: 10}}>
 
+                        {this._renderProfileImage()}
+
                         <Text style={styles.textCommentName}>{profileName}:</Text>
-                        <Text style={styles.textComment}>{rowData.comment}</Text>
+                        <Text style={styles.textComment}>{comment}</Text>
                     </TouchableOpacity>
                 </View>
 

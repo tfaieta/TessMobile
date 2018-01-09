@@ -30,7 +30,8 @@ class ListItemUsers extends Component {
             }).catch(function(error) {
             //
         });
-        setTimeout(() => {this.setState({profileImage: profileImage})},1250);
+        setTimeout(() => {this.setState({profileImage: profileImage})},1200);
+        setTimeout(() => {this.setState({profileImage: profileImage})},3400);
     }
 
     componentWillUpdate() {
@@ -65,7 +66,7 @@ class ListItemUsers extends Component {
             return(
                 <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom:20, height: 130, width: 130, shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 4,  }}>
                     <Image
-                        style={{width: 130, height:130, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 5, borderWidth: 0.1, borderColor: 'transparent'}}
+                        style={{width: 130, height:130, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 5, borderWidth: 0.5, borderColor: 'rgba(200,200,200,0.8)'}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -122,6 +123,10 @@ class ListItemUsers extends Component {
 
 
                     firebase.database().ref(`podcasts/${id}/plays`).child(user).update({user});
+
+
+                    firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed/${id}`).remove();
+                    firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed/${id}`).push(id);
 
                     Variables.pause();
                     Variables.setPodcastFile(url);

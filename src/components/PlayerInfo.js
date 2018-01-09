@@ -133,7 +133,9 @@ class PlayerInfo extends Component {
                         dataSource={this.state.dataSource}
                         renderRow={this.renderRow}
                         onContentSizeChange={ () => {
-                            this.scrollView.scrollToEnd( { animated: true } )
+                            if(Variables.state.comments.length > 4){
+                                this.scrollView.scrollToEnd( { animated: true } )
+                            }
                         }}
                     />
                     <View style={{height: 1.5, marginHorizontal: 20, backgroundColor: '#2A2A3060',}} />

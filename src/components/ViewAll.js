@@ -3,11 +3,9 @@ import _ from 'lodash';
 import { View, StyleSheet, ListView, TouchableOpacity, Text, ScrollView} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { connect } from 'react-redux';
-import { podcastFetchFavs } from "../actions/PodcastActions"
-import firebase from 'firebase';
-import Variables from "./Variables";
+import { podcastFetchFavs } from "../actions/PodcastActions";
 import Icon from 'react-native-vector-icons/Ionicons';
-import InvertibleScrollView from 'react-native-invertible-scroll-view';
+import ListItem from "./ListItem";
 
 
 
@@ -36,188 +34,9 @@ class ViewAll extends Component{
 
 
     renderRow = (rowData) => {
-        const {navigator} = this.props;
-
-        let profileName = 'loading';
-        firebase.database().ref(`/users/${rowData.podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
-            if (snap.val()) {
-                profileName = snap.val().username;
-            }
-            else {
-                profileName = rowData.podcastArtist;
-            }
-        });
-
-        const {currentUser} = firebase.auth();
-        const user = currentUser.uid;
-        const podcastTitle  = rowData.podcastTitle;
-        const podcastArtist = rowData.podcastArtist;
-        const podcastDescription = rowData.podcastDescription;
-        const podcastCategory = rowData.podcastCategory;
-        const ref = firebase.database().ref(`podcasts/`);
-        const id = rowData.id;
-
-
-
-
-        return (
-
-            <TouchableOpacity underlayColor='#5757FF' onPress={() => {
-
-                if(id){
-                    firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL().catch(() => {console.warn("file not found")})
-                        .then(function(url) {
-
-
-                            firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
-                                if(snap.val()){
-                                    Variables.state.currentUsername = snap.val().username;
-                                }
-                                else {
-                                    Variables.state.currentUsername = podcastArtist;
-                                }
-                            });
-
-                            firebase.database().ref(`podcasts/${id}/likes`).on("value", function (snap) {
-                                Variables.state.likers = [];
-                                Variables.state.liked = false;
-                                snap.forEach(function (data) {
-                                    if (data.val()) {
-                                        if(data.val().user == currentUser.uid){
-                                            Variables.state.liked = true;
-                                        }
-                                        Variables.state.likers.push(data.val());
-                                    }
-                                });
-                            });
-
-                            firebase.database().ref(`podcasts/${id}/plays`).child(user).update({user});
-
-                            Variables.pause();
-                            Variables.setPodcastFile(url);
-                            Variables.state.isPlaying = false;
-                            Variables.state.podcastTitle = podcastTitle;
-                            Variables.state.podcastArtist = podcastArtist;
-                            Variables.state.podcastCategory = podcastCategory;
-                            Variables.state.podcastDescription = podcastDescription;
-                            Variables.state.podcastID = id;
-                            Variables.state.favorited = false;
-                            Variables.state.userProfileImage = '';
-                            Variables.play();
-                            Variables.state.isPlaying = true;
-
-                            const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
-                            if(storageRef.child('image-profile-uploaded')){
-                                storageRef.getDownloadURL()
-                                    .then(function(url) {
-                                        if(url){
-                                            Variables.state.userProfileImage = url;
-                                        }
-                                    }).catch(function(error) {
-                                    //
-                                });
-                            }
-
-                            firebase.database().ref(`users/${currentUser.uid}/favorites`).on("value", function (snapshot) {
-                                snapshot.forEach(function (data) {
-                                    if(data.key == id){
-                                        Variables.state.favorited = true;
-                                    }
-                                })
-                            })
-
-
-                        });
-                }
-                else{
-                    firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL().catch(() => {console.warn("file not found")})
-                        .then(function(url) {
-
-
-                            firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
-                                if(snap.val()){
-                                    Variables.state.currentUsername = snap.val().username;
-                                }
-                                else {
-                                    Variables.state.currentUsername = podcastArtist;
-                                }
-                            });
-
-                            Variables.pause();
-                            Variables.setPodcastFile(url);
-                            Variables.state.isPlaying = false;
-                            Variables.state.podcastTitle = podcastTitle;
-                            Variables.state.podcastArtist = podcastArtist;
-                            Variables.state.podcastCategory = podcastCategory;
-                            Variables.state.podcastDescription = podcastDescription;
-                            Variables.state.podcastID = '';
-                            Variables.state.liked = false;
-                            Variables.state.favorited = false;
-                            Variables.state.likers = [];
-                            Variables.state.userProfileImage = '';
-                            Variables.play();
-                            Variables.state.isPlaying = true;
-
-                            const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
-                            if(storageRef.child('image-profile-uploaded')){
-                                storageRef.getDownloadURL()
-                                    .then(function(url) {
-                                        if(url){
-                                            Variables.state.userProfileImage = url;
-                                        }
-                                    }).catch(function(error) {
-                                    //
-                                });
-                            }
-
-
-                        });
-                }
-
-            }}>
-                <View style={styles.container}>
-
-
-                    <View style={styles.leftContainer}>
-                        <Text style={styles.title}>{podcastTitle}</Text>
-                        <Text style={styles.artistTitle}>{profileName}</Text>
-                    </View>
-
-
-                    <View style={styles.rightContainer}>
-                        <Icon onPress={() => {
-
-                            navigator.showLightBox({
-                                screen: "PodcastOptions",
-                                passProps: {rowData, navigator},
-                                style: {
-                                    backgroundBlur: "light",
-                                    backgroundColor: "#9f60ff",
-                                    tapBackgroundToDismiss: true,
-                                    width: 100,
-                                    height: 200
-                                },
-                            });
-
-
-
-                        }} style={{
-                            textAlign: 'left',
-                            marginLeft: 0,
-                            marginRight: 15,
-                            fontSize: 40,
-                            color: '#5757FF',
-                        }} name="ios-more">
-                        </Icon>
-                    </View>
-
-
-                </View>
-            </TouchableOpacity>
-
-        );
-
+        return <ListItem podcast={rowData} navigator={this.props.navigator} />;
     };
+
 
 
     render() {
@@ -254,7 +73,6 @@ class ViewAll extends Component{
                         enableEmptySections
                         dataSource={this.state.dataSource}
                         renderRow={this.renderRow}
-                        renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
                     />
 
 

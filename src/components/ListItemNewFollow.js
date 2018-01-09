@@ -40,6 +40,7 @@ class ListItemNewFollow extends Component {
             //
         });
         setTimeout(() => {this.setState({profileImage: profileImage})},1000);
+        setTimeout(() => {this.setState({profileImage: profileImage})},2500);
     }
 
     componentWillUpdate() {

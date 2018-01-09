@@ -52,6 +52,7 @@ import Music from "./components/Categories/Music";
 import PlayerInfo from "./components/PlayerInfo";
 import PopupCategory from "./components/Categories/PopupCategory";
 import UserProfileModal from "./components/UserProfileModal";
+import RecentlyPlayed from "./components/RecentlyPlayed";
 
 
 
@@ -98,6 +99,7 @@ Navigation.registerComponent('Queue', () => Queue, store, Provider);
 Navigation.registerComponent('Favorites', () => Favorites, store, Provider);
 Navigation.registerComponent('MyContent', () => MyContent, store, Provider);
 Navigation.registerComponent('Followed', () => FollowedContent, store, Provider);
+Navigation.registerComponent('RecentlyPlayed', () => RecentlyPlayed, store, Provider);
 
 Navigation.registerComponent('Account', () => Account, store, Provider);
 Navigation.registerComponent('MyFollowersPage', () => MyFollowersPage, store, Provider);

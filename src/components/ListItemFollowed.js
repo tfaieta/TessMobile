@@ -20,6 +20,7 @@ class ListItemFollowed extends Component {
             //
         });
         setTimeout(() => {this.setState({profileImage: profileImage})},1250);
+        setTimeout(() => {this.setState({profileImage: profileImage})},2500);
     }
 
     constructor(state) {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, LayoutAnimation, TouchableOpacity, Alert } from 'react-native';
+import { Text, View, LayoutAnimation, TouchableOpacity, Alert, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import {AudioUtils} from 'react-native-audio';
@@ -9,13 +9,25 @@ import Variables from "./Variables";
 class ListItem extends Component {
 
     componentWillMount(){
-        const { podcastTitle } = this.props.podcast;
-        const {currentUser} = firebase.auth();
+        const {podcastArtist} = this.props.podcast;
 
+        let profileImage = '';
+        const storageRef = firebase.storage().ref(`/users/${podcastArtist}/image-profile-uploaded`);
+        storageRef.getDownloadURL()
+            .then(function(url) {
+                profileImage = url;
+            }).catch(function(error) {
+            //
+        });
+        setTimeout(() => {this.setState({profileImage: profileImage})},1200);
+        setTimeout(() => {this.setState({profileImage: profileImage})},3400);
     }
 
     constructor(props) {
         super(props);
+        this.state = {
+            profileImage: ''
+        }
     }
 
     state = {
@@ -26,6 +38,34 @@ class ListItem extends Component {
 
     componentWillUpdate() {
         LayoutAnimation.spring();
+    }
+
+
+    _renderProfileImage(){
+
+        if (this.state.profileImage == ''){
+            return(
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginLeft: 10, alignSelf: 'center', height: 50, width: 50, borderRadius: 10, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)', shadowOffset:{  width: 0,  height: 2}, shadowOpacity: 0.5, shadowRadius: 2}}>
+                    <Icon style={{
+                        textAlign: 'center',
+                        fontSize: 35,
+                        marginTop: 8,
+                        color: 'white',
+                    }} name="md-person">
+                    </Icon>
+                </View>
+            )
+        }
+        else{
+            return(
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginLeft: 10, height: 50, width: 50}}>
+                    <Image
+                        style={{width: 50, height: 50, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
+                        source={{uri: this.state.profileImage}}
+                    />
+                </View>
+            )
+        }
     }
 
     onRowPress(){
@@ -94,60 +134,6 @@ class ListItem extends Component {
 
 
 
-    onAddPress=()=>{
-        const {currentUser} = firebase.auth();
-        const { podcastTitle } = this.props.podcast;
-        const {podcastArtist} = this.props.podcast;
-        const { podcastCategory } = this.props.podcast;
-        const {podcastDescription} = this.props.podcast;
-
-
-            if(!this.state.favorite) {
-
-                Alert.alert(
-                    'Add to favorites?',
-                    '',
-                    [
-                        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                        {
-                            text: 'Yes', onPress: () => {
-                            firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle).update({podcastArtist, podcastTitle, podcastCategory, podcastDescription});
-                                this.setState({favorite: true})
-                        }
-                        },
-                    ],
-                    {cancelable: false}
-                )
-
-            }
-            else{
-                Alert.alert(
-                    'Remove from favorites?',
-                    '',
-                    [
-                        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                        {
-                            text: 'Yes', onPress: () => {
-                            firebase.database().ref(`users/${currentUser.uid}/favorites/${podcastTitle}`).remove();
-                            this.setState({favorite: false})
-                        }
-                        },
-                    ],
-                    {cancelable: false}
-                )
-
-            }
-
-    };
-
-
-
-
-
-
-
-
-
 
     render() {
 
@@ -171,8 +157,6 @@ class ListItem extends Component {
         const user = currentUser.uid;
         const {podcast} = this.props;
         const rowData = podcast;
-
-
 
 
 
@@ -221,6 +205,11 @@ class ListItem extends Component {
 
 
                                 firebase.database().ref(`podcasts/${id}/plays`).child(user).update({user});
+
+
+                                firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed/${id}`).remove();
+                                firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed/${id}`).push({id});
+
 
                                 Variables.pause();
                                 Variables.setPodcastFile(url);
@@ -309,6 +298,7 @@ class ListItem extends Component {
                 }}>
                     <View style={styles.container}>
 
+                        {this._renderProfileImage()}
 
                         <View style={styles.leftContainer}>
                             <Text style={styles.title}>{podcastTitle}</Text>
@@ -316,31 +306,31 @@ class ListItem extends Component {
                         </View>
 
 
-                        <View style={styles.rightContainer}>
-                            <Icon onPress={() => {
-                                const {navigator} = this.props;
+                        <TouchableOpacity onPress={() => {
+                            const {navigator} = this.props;
 
-                                this.props.navigator.showLightBox({
-                                    screen: "PodcastOptions",
-                                    passProps: {rowData, navigator},
-                                    style: {
-                                        backgroundBlur: "light",
-                                        backgroundColor: "#9f60ff",
-                                        tapBackgroundToDismiss: true,
-                                        width: 100,
-                                        height: 200
-                                    },
-                                });
+                            this.props.navigator.showLightBox({
+                                screen: "PodcastOptions",
+                                passProps: {rowData, navigator},
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#9f60ff",
+                                    tapBackgroundToDismiss: true,
+                                    width: 100,
+                                    height: 200
+                                },
+                            });
 
-                            }} style={{
+                        }} style={styles.rightContainer}>
+                            <Icon style={{
                                 textAlign: 'left',
                                 marginLeft: 0,
                                 marginRight: 15,
-                                fontSize: 40,
+                                fontSize: 30,
                                 color: '#5757FF',
                             }} name="ios-more">
                             </Icon>
-                        </View>
+                        </TouchableOpacity>
 
 
                     </View>
@@ -401,13 +391,11 @@ const styles = {
     },
     leftContainer: {
         flex: 7,
-        paddingLeft: 2,
         justifyContent: 'center',
         alignItems:'flex-start',
     },
     rightContainer: {
         flex: 1,
-        paddingRight: 2,
         justifyContent: 'center',
         alignItems: 'flex-end',
 

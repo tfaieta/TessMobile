@@ -6,9 +6,9 @@ import PlayerBottom from './PlayerBottom';
 
 class Library extends Component{
 
-    GoToQueue = () => {
+    GoToRecentlyPlayed = () => {
         this.props.navigator.push({
-            screen: 'Queue',
+            screen: 'RecentlyPlayed',
             animated: true,
             animationType: 'fade',
         });
@@ -70,7 +70,7 @@ class Library extends Component{
                         <TouchableOpacity onPress={this.GoToFavs} style={{flex:1, width: 260, height:130, alignSelf: 'flex-start'}}>
 
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={this.GoToQueue} style={{flex:1, width: 260, height:130, alignSelf: 'flex-start'}}>
+                        <TouchableOpacity onPress={this.GoToRecentlyPlayed} style={{flex:1, width: 260, height:130, alignSelf: 'flex-start'}}>
 
                         </TouchableOpacity>
                     </View>

@@ -77,7 +77,7 @@ class Discover extends Component{
                     renderTabBar={() => <DefaultTabBar />}>
 
                     <Categories tabLabel="Categories" navigator={this.props.navigator} />
-                    <TopCharts tabLabel="Top Charts" navigator={this.props.navigator} />
+                    <TopCharts tabLabel="Popular" navigator={this.props.navigator} />
                     <NewPodcasts tabLabel="New" navigator={this.props.navigator} />
                     <Following tabLabel="Following" navigator={this.props.navigator}/>
 
