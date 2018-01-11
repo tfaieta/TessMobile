@@ -15,10 +15,11 @@ class RecentlyPlayed extends Component{
         firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).on("value", function (snapshot) {
             Variables.state.recentlyPlayed = [];
             snapshot.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (data) {
-                    Variables.state.recentlyPlayed.push(data.val());
+                firebase.database().ref(`podcasts/${snap.val().id}`).on("value", function (data) {
+                    Variables.state.recentlyPlayed.push(data.val())
                 })
             });
+            Variables.state.recentlyPlayed.reverse();
         });
 
     }

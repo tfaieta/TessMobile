@@ -67,7 +67,7 @@ class Variables extends Component{
         selectedByTess: [],
         fromTess : [],
         topCharts: [],
-        recentlyPlayed: []
+        recentlyPlayed: [],
 
 };
 

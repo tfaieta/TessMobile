@@ -125,8 +125,16 @@ class ListItemUsers extends Component {
                     firebase.database().ref(`podcasts/${id}/plays`).child(user).update({user});
 
 
-                    firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed/${id}`).remove();
-                    firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed/${id}`).push(id);
+
+                    firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed/`).once("value", function (snap) {
+                        snap.forEach(function (data) {
+                            if(data.val().id == id){
+                                firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed/${data.key}`).remove()
+                            }
+                        });
+                        firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed/`).push({id});
+                    });
+
 
                     Variables.pause();
                     Variables.setPodcastFile(url);

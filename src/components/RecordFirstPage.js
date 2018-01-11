@@ -72,7 +72,7 @@ class RecordFirstPage extends Component{
 
                 <View style={{flex:1}}>
                     <Image
-                        style={{width: 147, height:151, alignSelf: 'center', opacity: 1}}
+                        style={{width: 140, height:144, alignSelf: 'center', opacity: 1}}
                         source={require('tess/src/images/record-icon.png')}
                     />
 
@@ -116,9 +116,9 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
-        fontSize: 36,
-        marginTop: 20,
-        paddingLeft: 20,
+        fontSize: 32,
+        marginTop: 25,
+        paddingLeft: 30,
         backgroundColor: 'transparent',
     },
 
@@ -130,18 +130,19 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         fontSize: 14,
         marginTop: 10,
-        marginHorizontal: 20,
+        marginRight: 100,
+        marginHorizontal: 30,
         backgroundColor: 'transparent',
     },
 
     contentTitle: {
         color: '#fff',
-        fontSize: 18,
+        fontSize: 20,
         paddingVertical: 16,
         marginTop: 10,
         textAlign: 'left',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'HiraginoSans-W6',
 
     },
 
@@ -156,7 +157,11 @@ const styles = StyleSheet.create({
 
     buttonContainer: {
         flex:1,
-        marginTop: 10
+        marginTop: 10,
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 20,
     },
 
     header: {

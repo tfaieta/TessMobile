@@ -89,7 +89,7 @@ class ListItemComment extends Component {
 
 
 
-        if(user == me){
+        if(user == me || Variables.state.podcastArtist == me){
 
             return (
                 <View style={{marginHorizontal: 80}}>
