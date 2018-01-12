@@ -25,7 +25,10 @@ class Home extends Component{
             snapshot.forEach(function (data) {
                 if(data.val()){
                     if(Variables.state.newPodcastsArtsts.includes(data.val().podcastArtist)){
-                        Variables.state.newPodcasts[Variables.state.newPodcastsArtsts.indexOf(data.val().podcastArtist)] = data.val()
+                        Variables.state.newPodcasts.splice(Variables.state.newPodcastsArtsts.indexOf(data.val().podcastArtist), 1);
+                        Variables.state.newPodcastsArtsts.splice(Variables.state.newPodcastsArtsts.indexOf(data.val().podcastArtist), 1);
+                        Variables.state.newPodcasts.push(data.val());
+                        Variables.state.newPodcastsArtsts.push(data.val().podcastArtist);
                     }
                     else{
                         Variables.state.newPodcasts.push(data.val());
@@ -348,7 +351,10 @@ class Home extends Component{
             snapshot.forEach(function (data) {
                 if(data.val()){
                     if(Variables.state.newPodcastsArtsts.includes(data.val().podcastArtist)){
-                        Variables.state.newPodcasts[Variables.state.newPodcastsArtsts.indexOf(data.val().podcastArtist)] = data.val()
+                        Variables.state.newPodcasts.splice(Variables.state.newPodcastsArtsts.indexOf(data.val().podcastArtist), 1);
+                        Variables.state.newPodcastsArtsts.splice(Variables.state.newPodcastsArtsts.indexOf(data.val().podcastArtist), 1);
+                        Variables.state.newPodcasts.push(data.val());
+                        Variables.state.newPodcastsArtsts.push(data.val().podcastArtist);
                     }
                     else{
                         Variables.state.newPodcasts.push(data.val());

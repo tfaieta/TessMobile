@@ -320,7 +320,7 @@ class ListItem extends Component {
                                 passProps: {rowData, navigator},
                                 style: {
                                     backgroundBlur: "light",
-                                    backgroundColor: "#9f60ff",
+                                    backgroundColor: "#9f60ff90",
                                     tapBackgroundToDismiss: true,
                                     width: 100,
                                     height: 200

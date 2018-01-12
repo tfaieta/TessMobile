@@ -36,7 +36,7 @@ class ListItemComment extends Component {
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginRight: 5, alignSelf: 'center', height: 30, width: 30, borderRadius: 10, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)', shadowOffset:{  width: 0,  height: 2}, shadowOpacity: 0.5, shadowRadius: 2}}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginTop:5, marginRight: 5,  height: 30, width: 30, borderRadius: 10, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)', shadowOffset:{  width: 0,  height: 2}, shadowOpacity: 0.5, shadowRadius: 2}}>
                     <Icon style={{
                         textAlign: 'center',
                         fontSize: 18,
@@ -49,7 +49,7 @@ class ListItemComment extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginRight: 5, height: 30, width: 30}}>
+                <View style={{backgroundColor:'transparent', marginTop:5, marginRight: 5, height: 30, width: 30}}>
                     <Image
                         style={{width: 30, height: 30, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
                         source={{uri: this.state.profileImage}}
@@ -92,7 +92,7 @@ class ListItemComment extends Component {
         if(user == me || Variables.state.podcastArtist == me){
 
             return (
-                <View style={{marginHorizontal: 80}}>
+                <View>
                     <TouchableOpacity onPress={() => {
 
                         const {navigator} = this.props;
@@ -104,12 +104,14 @@ class ListItemComment extends Component {
                             passProps: {navigator},
                         });
 
-                    }} style={{flexDirection: 'row', alignSelf: 'center', marginHorizontal: 10}}>
+                    }} style={{flexDirection: 'row', alignSelf: 'flex-start', marginHorizontal: 10, marginVertical: 10}}>
 
                         {this._renderProfileImage()}
 
                         <Text style={styles.textCommentName}>{profileName}:</Text>
+                        <View style = {{marginHorizontal: 10, flex:1}}>
                         <Text style={styles.textComment}>{comment}</Text>
+                        </View>
 
                         <Icon onPress={() => {
 
@@ -146,7 +148,7 @@ class ListItemComment extends Component {
         }
         else{
             return (
-                <View style={{marginHorizontal: 80}}>
+                <View>
                     <TouchableOpacity onPress={() => {
 
                         const {navigator} = this.props;
@@ -158,12 +160,15 @@ class ListItemComment extends Component {
                             passProps: {navigator},
                         });
 
-                    }} style={{flexDirection: 'row', alignSelf: 'center', marginHorizontal: 10}}>
+                    }} style={{flexDirection: 'row', alignSelf: 'flex-start', marginHorizontal: 10, marginVertical: 10}}>
 
                         {this._renderProfileImage()}
 
                         <Text style={styles.textCommentName}>{profileName}:</Text>
+                        <View style = {{marginHorizontal: 10, flex:1}}>
                         <Text style={styles.textComment}>{comment}</Text>
+                        </View>
+
                     </TouchableOpacity>
                 </View>
 
@@ -180,26 +185,23 @@ const styles = {
     textComment:{
         color: '#656575',
         flexDirection: 'column',
-        textAlign: 'center',
+        textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
         fontSize: 14,
         backgroundColor: 'transparent',
-        marginVertical: 10,
-        marginHorizontal: 5,
         marginTop: 10
     },
     textCommentName:{
         color: '#2A2A30',
         flexDirection: 'column',
-        textAlign: 'center',
+        textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
         fontSize: 14,
         backgroundColor: 'transparent',
-        marginVertical: 10,
         marginHorizontal: 5,
         marginTop: 10
     },
