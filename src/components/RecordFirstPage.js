@@ -1,65 +1,53 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Image, StatusBar} from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Variables from "./Variables";
-import DropdownAlert from 'react-native-dropdownalert';
-
+import PlayerBottom from './PlayerBottom';
+import { Navigation } from 'react-native-navigation';
 
 
 class RecordFirstPage extends Component{
 
-    componentWillMount(){
-        this.props.navigator.toggleTabs({
-            to: 'false',
-            animated: true,
-        });
-
-        if(Variables.state.isPlaying){
-            Variables.pause();
-            Variables.state.isPlaying = false;
-        }
-    }
-
-
     info = () =>{
-        this.dropdown.alertWithType("custom", "", "Just tap 'Get Started' and hit that big button to start your recording. You can pause and resume at anytime.")
-    };
+        Navigation.showLightBox({
+            screen: 'InfoDiagram',
+            style: {
+                tapBackgroundToDismiss: true,
+                backgroundColor: "#53249080",
+                backgroundBlur: "light",
+            }
 
+        })
+
+    };
 
     recordNewPodcast =() => {
-        this.props.navigator.push({
+
+        Navigation.showModal({
             screen: 'Record',
-            animated: true,
-            animationType: 'fade',
-            navigatorStyle: {
-                tabBarHidden: true,
-            },
+            animationType: 'slide-up'
         });
     };
-
 
 
     render() {
+        var {height, width} = Dimensions.get('window');
+
         return (
             <View
                 style={styles.container}>
 
-                <StatusBar
-                    barStyle="dark-content"
-                />
 
 
-
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, marginBottom: 10, shadowOffset:{  width: 0,  height: 6}, shadowOpacity: 0.2, shadowRadius: 10}}>
-                    <View style={{justifyContent: 'center', alignItems: 'center', flex:10, marginLeft:30, marginTop:20}}>
+                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 12, marginBottom: 10, shadowOffset:{  width: 0,  height: 6}, shadowOpacity: 0.2, shadowRadius: 10}}>
+                    <View style={{justifyContent: 'center', alignItems: 'center', marginLeft: 30, flex:10, marginTop:20}}>
                         <Text style={styles.header}>Create a Podcast</Text>
                     </View>
 
-                    <View style={{justifyContent: 'center', alignItems: 'flex-end', marginTop: 26, marginRight: 10, flex:1}}>
+                    <View style={{justifyContent: 'center', alignItems: 'flex-end', marginTop: 26, marginRight: 15, flex:1}}>
                         <TouchableOpacity onPress={this.info} >
                             <Icon style={{
                                 textAlign: 'right',
-                                fontSize: 24,
+                                fontSize: 28,
                                 color: '#5757FF'
                             }} name="md-information-circle">
                             </Icon>
@@ -68,37 +56,26 @@ class RecordFirstPage extends Component{
 
                 </View>
 
+                <TouchableOpacity style = {{marginTop: height / 6}} onPress={this.recordNewPodcast}>
+                    <Icon style={{
+                        textAlign:'center',fontSize: 45,color:'#5757FF'
+                    }} name="md-add">
+                    </Icon>
+                        <Text style= {styles.text} >Create a New Podcast</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style = {{marginTop: 30}}>
+                    <Icon style={{
+                        textAlign:'center',fontSize: 45,color:'#5757FF'
+                    }} name="md-folder">
+                    </Icon>
+                    <Text style= {styles.text} >Upload a Podcast</Text>
+                </TouchableOpacity>
 
 
-                <View style={{flex:1}}>
-                    <Image
-                        style={{width: 140, height:144, alignSelf: 'center', opacity: 1}}
-                        source={require('tess/src/images/record-icon.png')}
-                    />
+                <PlayerBottom navigator={this.props.navigator}/>
 
-                    <Text style={styles.title}>Record New Podcast</Text>
-
-                    <Text style={styles.title2}>Let people know what you have to say.</Text>
-
-
-
-
-                    <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.buttonPreview}  onPress={this.recordNewPodcast}>
-                                <Text style={styles.contentTitle}>Get Started</Text>
-                        </TouchableOpacity>
-                </View>
-
-                </View>
-
-
-
-
-
-                <DropdownAlert titleStyle={{color:'#fff'}} messageStyle={{color: '#fff'}} containerStyle={{backgroundColor: '#5757FF'}} ref={ref => this.dropdown = ref} showCancel={true} />
             </View>
-
-
 
 
         );
@@ -111,59 +88,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
 
-    title: {
-        color: '#2A2A30',
-        textAlign: 'left',
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 32,
-        marginTop: 25,
-        paddingLeft: 30,
-        backgroundColor: 'transparent',
-    },
-
-    title2: {
-        color: '#828393',
-        textAlign: 'left',
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        marginBottom: 10,
-        fontSize: 14,
-        marginTop: 10,
-        marginRight: 100,
-        marginHorizontal: 30,
-        backgroundColor: 'transparent',
-    },
-
-    contentTitle: {
-        color: '#fff',
-        fontSize: 20,
-        paddingVertical: 16,
-        marginTop: 10,
-        textAlign: 'left',
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-
-    },
-
-    buttonPreview: {
-        marginHorizontal: 20,
-        backgroundColor: '#5757FF',
-        alignItems: 'center',
-        borderWidth: 0.1,
-        borderRadius: 10,
-    },
-
-
-    buttonContainer: {
-        flex:1,
-        marginTop: 10,
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 20,
-    },
-
     header: {
         marginTop:10,
         color: '#2A2A30',
@@ -173,7 +97,17 @@ const styles = StyleSheet.create({
         fontSize: 16,
         backgroundColor: 'transparent',
 
-    }
+    },
+
+    text: {
+        backgroundColor: 'transparent',
+        color: '#2A2A30',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'HiraginoSans-W3',
+        fontSize: 20,
+        paddingVertical: 15,
+    },
 
 
 });

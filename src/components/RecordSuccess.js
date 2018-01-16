@@ -1,26 +1,13 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity,} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { Actions } from 'react-native-router-flux';
 import { volume } from './Home';
-import Sound from 'react-native-sound';
-import {podFile, podTime} from './Record';
 import Variables from './Variables';
 import LinearGradient from "react-native-linear-gradient/index.android";
 import PlayerBottom from "./PlayerBottom";
 
 
 
-
-
 class RecordSuccess extends Component{
-    componentWillMount(){
-        this.props.navigator.toggleTabs({
-            to: 'true',
-            animated: true,
-            tabBarHidden: false,
-        });
-    }
 
     state = {
         title: Variables.state.podcastTitle,
@@ -28,15 +15,13 @@ class RecordSuccess extends Component{
     };
 
 
-    Cancel = () => {
-        this.props.navigator.push({
-            screen: 'RecordFirst',
-            animated: true,
-            animationType: 'fade',
-            navigatorStyle: {
-                tabBarHidden: false,
-            },
+    RecordAgain = () => {
+
+        this.props.navigator.showModal({
+            screen: 'Record',
+            animationType: 'slide-up'
         });
+
     };
 
 
@@ -48,6 +33,12 @@ class RecordSuccess extends Component{
 
     };
 
+    finished = () => {
+        this.props.navigator.dismissAllModals({
+            animationType: 'slide-down'
+        });
+    };
+
 
 
     render() {
@@ -55,9 +46,8 @@ class RecordSuccess extends Component{
             <LinearGradient
 
                 colors={['#3e279b', '#5d539c' ]}
+                start={{x: 0.0, y: 0.0}} end={{x: 0, y: 0.75}}
                 style={styles.container}>
-
-
 
 
 
@@ -67,20 +57,19 @@ class RecordSuccess extends Component{
                             <Text  style={styles.title}> Upload Successful</Text>
 
 
-
-
-
                     <TouchableOpacity style={styles.buttonPreview}  onPress={this.preview}>
-                        <Icon style={{textAlign:'center', marginTop: 10, fontSize: 35,color:'#fff' }} name="ios-play">
-                            <Text  style={styles.contentTitle}>  {this.state.title}</Text>
-                        </Icon>
+                            <Text  style={styles.contentTitle}>Play "{this.state.title}"</Text>
                     </TouchableOpacity>
 
-
-
-                    <TouchableOpacity style={styles.buttonMore} onPress={this.Cancel}>
+                    <TouchableOpacity style={styles.buttonMore} onPress={this.RecordAgain}>
                         <Text  style={styles.contentTitle}>Record More</Text>
                     </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.buttonMore} onPress={this.finished}>
+                        <Text  style={styles.contentTitle}>Done</Text>
+                    </TouchableOpacity>
+
+
                 </View>
 
 
@@ -139,27 +128,22 @@ const styles = StyleSheet.create({
     },
 
     buttonPreview: {
-        backgroundColor: '#ee617c',
+        backgroundColor: 'transparent',
         alignItems: 'center',
-        paddingBottom: 15,
         marginHorizontal: 15,
-        borderWidth:0.1,
-        borderRadius: 10,
-        marginTop:20,
+        marginTop:10,
     },
 
     buttonMore: {
-        backgroundColor: '#5757FF',
+        backgroundColor: 'transparent',
         alignItems: 'center',
-        paddingTop: 15,
+        paddingTop: 10,
         marginHorizontal: 15,
-        borderWidth:0.1,
-        borderRadius: 10,
         marginTop:10,
     },
 
     buttonContainer: {
-        marginTop: 100,
+        marginTop: 80,
     }
 
 });

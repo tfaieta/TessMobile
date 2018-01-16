@@ -15,6 +15,11 @@ export var totalTime = 0;
 
 class Record extends Component{
 
+    static navigatorStyle = {
+        tabBarHidden: true,
+    };
+
+
     state = {
         currentTime: 0.0,
         recording: false,
@@ -23,6 +28,7 @@ class Record extends Component{
         playing: false,
         audioPath: AudioUtils.DocumentDirectoryPath + '/test.aac',
         hasPermission: undefined,
+        level: 0
     };
 
     prepareRecordingPath(audioPath){
@@ -31,7 +37,8 @@ class Record extends Component{
             Channels: 1,
             AudioQuality: "max",
             AudioEncoding: "aac",
-            AudioEncodingBitRate: 96000
+            AudioEncodingBitRate: 96000,
+            MeteringEnabled: true
         });
     }
 
@@ -53,6 +60,7 @@ class Record extends Component{
 
             AudioRecorder.onProgress = (data) => {
                 this.setState({currentTime: Math.floor(data.currentTime)});
+                this.setState({level: Math.floor(data.currentMetering)})
             };
 
             AudioRecorder.onFinished = (data) => {
@@ -94,28 +102,25 @@ class Record extends Component{
         }
     }
 
-    _renderButton(title, onPress, active) {
-        var style = (active) ? styles.activeButtonText : styles.buttonText;
-        if (this.state.currentTime > 0) {
+
+    _renderButtonRecord(onPress, active) {
+        if(active){
             return (
                 <TouchableOpacity style={styles.button} onPress={onPress}>
-                    <Text style={style}>
-                        {title}
-                    </Text>
+                    <Image style={styles.iconText} onPress={this.recordSound} source={require('tess/src/images/record-icon-pause.png')}>
+                    </Image>
                 </TouchableOpacity>
             );
         }
-    }
+        else{
+            return (
+                <TouchableOpacity style={styles.button} onPress={onPress}>
+                    <Image style={styles.iconText} onPress={this.recordSound} source={require('tess/src/images/record-icon.png')}>
+                    </Image>
+                </TouchableOpacity>
+            );
+        }
 
-    _renderButtonRecordN(onPress, active) {
-        var iconStyle = (active) ? styles.activeIconText : styles.iconText;
-
-        return (
-            <TouchableOpacity style={styles.button} onPress={onPress}>
-                <Image style={iconStyle} onPress={this.recordSound} source={require('tess/src/images/record-icon.png')}>
-                </Image>
-            </TouchableOpacity>
-        );
     }
 
     _renderTime() {
@@ -151,6 +156,24 @@ class Record extends Component{
         }
     }
 
+
+    _renderNext(){
+        if(this.state.currentTime>0){
+            return(
+                <TouchableOpacity onPress= {() => {this._done()}}>
+                    <Text style={styles.next}>Next</Text>
+                </TouchableOpacity>
+            )
+        }
+        else{
+            return(
+                <View>
+                    <Text style={styles.nextDark}>Next</Text>
+                </View>
+            )
+        }
+    }
+
     _renderProgress(){
         var {height, width} = Dimensions.get('window');
 
@@ -166,6 +189,42 @@ class Record extends Component{
         }
 
     }
+
+    _renderLevel2(level){
+
+            return(
+                <View style={{width: (level+40) * 10, height: 10, backgroundColor: 'white'}}/>
+            )
+    }
+
+    _renderLevel(level){
+        var {height, width} = Dimensions.get('window');
+
+        if(this.state.recording){
+            if((level+40) * (height/40) > 500){
+                return(
+                    <View style={{   position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        width: width, height: (level+40) * (height/40), backgroundColor: '#ff5b6450'}}/>
+                )
+            }
+            else{
+                return(
+                    <View style={{   position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        width: width, height: (level+40) * (height/40), backgroundColor: '#ffffff50'}}/>
+                )
+            }
+        }
+
+
+    }
+
+
 
     async _pause() {
         if (!this.state.recording) {
@@ -217,6 +276,7 @@ class Record extends Component{
     }
 
     next =() =>{
+
         this.props.navigator.push({
             screen: 'RecordInfo',
             animated: true,
@@ -256,7 +316,9 @@ class Record extends Component{
 
 
     async _record() {
+
         if (this.state.recording) {
+
             this.setState({stoppedRecording: true, recording: false});
 
             try {
@@ -307,10 +369,16 @@ class Record extends Component{
                         AudioRecorder.stopRecording();
                         this.setState({stoppedRecording: true, recording: false});
 
-                        this.props.navigator.pop({
-                            animated: true,
-                            animationType: 'fade',
+
+                        this.props.navigator.dismissModal({
+                            animationType: 'slide-down'
                         });
+
+                        this.props.navigator.popToRoot({
+                            animated: true,
+                            animationType: 'fade'
+                        });
+
 
                     }
                     },
@@ -324,10 +392,16 @@ class Record extends Component{
             AudioRecorder.stopRecording();
             this.setState({stoppedRecording: true, recording: false});
 
-            this.props.navigator.pop({
-                animated: true,
-                animationType: 'fade',
+
+            this.props.navigator.dismissModal({
+                animationType: 'slide-down'
             });
+
+            this.props.navigator.popToRoot({
+                animated: true,
+                animationType: 'fade'
+            });
+
 
         }
 
@@ -345,11 +419,12 @@ class Record extends Component{
             <LinearGradient
 
                 colors={['#3e279b', '#5d539c' ]}
+                start={{x: 0.0, y: 0.0}} end={{x: 0, y: 0.75}}
+
                 style={styles.container}>
 
-                    <StatusBar
-                        barStyle="light-content"
-                    />
+
+                {this._renderLevel(this.state.level)}
 
 
                 <View style={{flexDirection: 'row', paddingVertical:5}}>
@@ -363,6 +438,10 @@ class Record extends Component{
                         </TouchableOpacity>
                     </View>
 
+                    <View style={{flex:1, marginRight: 10, alignItems: 'flex-end', justifyContent: 'center', marginTop: 25}}>
+                        {this._renderNext()}
+                    </View>
+
                 </View>
 
                     {this._renderRecordTitle(this.state.recording)}
@@ -370,10 +449,10 @@ class Record extends Component{
 
 
                     <View style={styles.controls}>
-                        {this._renderButtonRecordN(() => {this._record()}, this.state.recording )}
+                        {this._renderButtonRecord(() => {this._record()}, this.state.recording )}
                         {this._renderTime()}
-                        {this._renderButton("Done", () => {this._done()} )}
                     </View>
+
 
 
             </LinearGradient>
@@ -497,6 +576,24 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
         fontSize: 18,
+        backgroundColor: 'transparent',
+    },
+
+    next: {
+        color: '#fff',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'HiraginoSans-W6',
+        fontSize: 16,
+        backgroundColor: 'transparent',
+    },
+
+    nextDark: {
+        color: 'rgba(350,350,350,0.4)',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'HiraginoSans-W6',
+        fontSize: 16,
         backgroundColor: 'transparent',
     },
 

@@ -77,13 +77,19 @@ class RecordInfo extends Component{
                 {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
                 {text: 'Yes', onPress: () => {
 
-                    this.props.navigator.push({
-                        screen: 'RecordFirst',
+                    Variables.pause();
+                    this.setState({
+                        isPlaying: false,
+                        interval: clearInterval(this.state.interval)
+                    });
+
+                    this.props.navigator.dismissModal({
+                        animationType: 'slide-down'
+                    });
+
+                    this.props.navigator.popToRoot({
                         animated: true,
-                        animationType: 'fade',
-                        navigatorStyle: {
-                            tabBarHidden: false,
-                        },
+                        animationType: 'fade'
                     });
 
                 }
@@ -288,6 +294,7 @@ class RecordInfo extends Component{
             <LinearGradient
 
                 colors={['#3e279b', '#5d539c' ]}
+                start={{x: 0.0, y: 0.0}} end={{x: 0, y: 0.75}}
                 style={styles.container}>
 
 
