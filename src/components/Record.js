@@ -207,7 +207,7 @@ class Record extends Component{
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        width: width, height: (level+40) * (height/40), backgroundColor: '#ff5b6450'}}/>
+                        width: width, height: (level+40) * (height/40), backgroundColor: '#ff5b6420'}}/>
                 )
             }
             else{
@@ -216,7 +216,7 @@ class Record extends Component{
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        width: width, height: (level+40) * (height/40), backgroundColor: '#ffffff50'}}/>
+                        width: width, height: (level+40) * (height/40), backgroundColor: '#ffffff20'}}/>
                 )
             }
         }

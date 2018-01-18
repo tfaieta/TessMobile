@@ -18,13 +18,25 @@ class TopCharts extends Component{
         ref.limitToLast(50).on("value", function (snapshot) {
 
             snapshot.forEach(function (data) {
-                if(data.val().plays){
+                if(data.child("plays").numChildren() > 3){
 
-                    if(!Variables.state.topCharts[data.child("plays").numChildren()]){
-                        Variables.state.topCharts[data.child("plays").numChildren()] = data.val();
+                    if(!Variables.state.topCharts[data.child("plays").numChildren() * 2]){
+                        Variables.state.topCharts[data.child("plays").numChildren() * 2] = data.val();
                     }
                     else{
-                        Variables.state.topCharts[data.child("plays").numChildren() + 1] = data.val();
+                        if(!Variables.state.topCharts[data.child("plays").numChildren() * 2 + 1]){
+                            Variables.state.topCharts[data.child("plays").numChildren() * 2 + 1] = data.val();
+                        }
+                        else{
+                            if(!Variables.state.topCharts[data.child("plays").numChildren() * 2 + 2]){
+                                Variables.state.topCharts[data.child("plays").numChildren() * 2 + 2] = data.val();
+                            }
+                            else {
+                                Variables.state.topCharts[data.child("plays").numChildren() * 2 + 3] = data.val();
+                            }
+
+                        }
+
                     }
 
 

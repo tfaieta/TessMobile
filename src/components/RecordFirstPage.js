@@ -56,20 +56,12 @@ class RecordFirstPage extends Component{
 
                 </View>
 
-                <TouchableOpacity style = {{marginTop: height / 6}} onPress={this.recordNewPodcast}>
+                <TouchableOpacity style = {{marginTop: height / 4}} onPress={this.recordNewPodcast}>
                     <Icon style={{
                         textAlign:'center',fontSize: 45,color:'#5757FF'
                     }} name="md-add">
                     </Icon>
                         <Text style= {styles.text} >Create a New Podcast</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style = {{marginTop: 30}}>
-                    <Icon style={{
-                        textAlign:'center',fontSize: 45,color:'#5757FF'
-                    }} name="md-folder">
-                    </Icon>
-                    <Text style= {styles.text} >Upload a Podcast</Text>
                 </TouchableOpacity>
 
 
@@ -105,7 +97,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W3',
-        fontSize: 20,
+        fontSize: 18,
         paddingVertical: 15,
     },
 
