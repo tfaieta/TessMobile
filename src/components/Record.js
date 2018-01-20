@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, StatusBar, Image, Platform, Alert, Dimensions} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, StatusBar, Animated, Easing, Image, Platform, Alert, Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Sound from 'react-native-sound';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
@@ -12,8 +12,30 @@ export let podFile =  AudioUtils.DocumentDirectoryPath + '/test.aac';
 export var podTime = 0;
 export var totalTime = 0;
 
+var {height, width} = Dimensions.get('window');
+
 
 class Record extends Component{
+
+    componentWillMount(){
+        this.animatedValue = new Animated.Value(1);
+
+
+        setInterval(() => {
+
+            Animated.timing(this.animatedValue, {
+                toValue: (this.state.level+40) * (height/40),
+                duration: 500,
+                easing: Easing.elastic()
+            }).start();
+
+
+            this.slide();
+
+        },600);
+
+
+    }
 
     static navigatorStyle = {
         tabBarHidden: true,
@@ -28,8 +50,21 @@ class Record extends Component{
         playing: false,
         audioPath: AudioUtils.DocumentDirectoryPath + '/test.aac',
         hasPermission: undefined,
-        level: 0
+        level: 0,
+        visible: false,
+        x: new Animated.Value(400),
+
     };
+
+    slide = () => {
+        Animated.spring(this.state.x, {
+            toValue: 0,
+        }).start();
+        this.setState({
+            visible: true,
+        });
+    };
+
 
     prepareRecordingPath(audioPath){
         AudioRecorder.prepareRecordingAtPath(audioPath, {
@@ -198,29 +233,58 @@ class Record extends Component{
     }
 
     _renderLevel(level){
+        const animatedStyle = {height: this.animatedValue};
         var {height, width} = Dimensions.get('window');
 
         if(this.state.recording){
-            if((level+40) * (height/40) > 500){
+            if((level+40) * (height/40) > (height*0.80)){
                 return(
-                    <View style={{   position: 'absolute',
+                    <View style = {{ position: 'absolute',
                         left: 0,
                         right: 0,
-                        bottom: 0,
-                        width: width, height: (level+40) * (height/40), backgroundColor: '#ff5b6420'}}/>
+                        bottom: 0,}}>
+                        <Animated.View style={[ {
+                            width: width, height: 100, backgroundColor: '#ff5b6430'}, animatedStyle]}/>
+                    </View>
                 )
             }
             else{
                 return(
-                    <View style={{   position: 'absolute',
+                    <View style = {{ position: 'absolute',
                         left: 0,
                         right: 0,
-                        bottom: 0,
-                        width: width, height: (level+40) * (height/40), backgroundColor: '#ffffff20'}}/>
+                        bottom: 0,}}>
+                        <Animated.View style={[ {
+                            position: 'absolute',
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            width: width, height: 100, backgroundColor: '#ffffff30'}, animatedStyle]}/>
+                    </View>
                 )
             }
         }
 
+
+    }
+
+    _renderWave(level){
+
+            return(
+                <View>
+                <Animated.View
+                    style={[styles.slideView, {
+                        transform: [
+                            {
+                                translateX: this.state.x
+                            }
+                        ]
+                    }]}
+                >
+                    {/* your content, such as this.props.children */}
+                </Animated.View>
+                </View>
+            )
 
     }
 
@@ -316,6 +380,7 @@ class Record extends Component{
 
 
     async _record() {
+
 
         if (this.state.recording) {
 
@@ -452,6 +517,7 @@ class Record extends Component{
                         {this._renderButtonRecord(() => {this._record()}, this.state.recording )}
                         {this._renderTime()}
                     </View>
+
 
 
 
@@ -596,6 +662,12 @@ const styles = StyleSheet.create({
         fontSize: 16,
         backgroundColor: 'transparent',
     },
+
+    slideView: {
+        backgroundColor: 'white',
+        width: 20,
+        height: 20,
+    }
 
 });
 

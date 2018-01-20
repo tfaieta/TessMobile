@@ -208,7 +208,7 @@ class PlayerInfo extends Component {
                         label="Comment"
                         value={this.state.comment}
                         onChangeText={text => this.setState({comment: text})}
-                        maxLength={100}
+                        maxLength={500}
                         onSubmitEditing={(event) => {
                             if(this.state.comment != ''){
 
