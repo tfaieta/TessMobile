@@ -1,11 +1,52 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Dimensions} from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Dimensions, Animated} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PlayerBottom from './PlayerBottom';
 import { Navigation } from 'react-native-navigation';
 
 
+var {height, width} = Dimensions.get('window');
+
 class RecordFirstPage extends Component{
+
+    constructor(props) {
+        super(props);
+        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+        this.state ={
+            visible: false,
+            y: new Animated.Value(height),
+        };
+    }
+
+    onNavigatorEvent(event) {
+        if (event.id === 'willAppear') {
+
+            this.setState({
+                visible: false,
+                y: new Animated.Value(height),
+            });
+
+            setTimeout(() => {
+                this.slide();
+            }, 500);
+
+            Navigation.showModal({
+                screen: 'Record',
+                animationType: 'slide-up'
+            });
+        }
+    }
+
+    slide = () => {
+
+        this.setState({
+            visible: true,
+        });
+        Animated.spring(this.state.y, {
+            toValue: 0,
+        }).start();
+
+    };
 
     info = () =>{
         Navigation.showLightBox({
@@ -30,42 +71,56 @@ class RecordFirstPage extends Component{
 
 
     render() {
-        var {height, width} = Dimensions.get('window');
 
-        return (
-            <View
-                style={styles.container}>
+        if(this.state.visible){
+            return (
+                <View
+                    style={styles.container}>
 
-
-
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 12, marginBottom: 10, shadowOffset:{  width: 0,  height: 6}, shadowOpacity: 0.2, shadowRadius: 10}}>
-                    <View style={{justifyContent: 'center', alignItems: 'center', marginLeft: 30, flex:10, marginTop:20}}>
-                        <Text style={styles.header}>Create a Podcast</Text>
-                    </View>
-
-                    <View style={{justifyContent: 'center', alignItems: 'flex-end', marginTop: 26, marginRight: 15, flex:1}}>
-                        <TouchableOpacity onPress={this.info} >
+                    <Animated.View
+                        style={[styles.slideView, {
+                            transform: [
+                                {
+                                    translateY: this.state.y
+                                }
+                            ]
+                        }]}
+                    >
+                        <TouchableOpacity style = {{marginTop: height / 4.5}} onPress={this.recordNewPodcast}>
                             <Icon style={{
-                                textAlign: 'right',
-                                fontSize: 28,
-                                color: '#5757FF'
-                            }} name="md-information-circle">
+                                textAlign:'center',fontSize: 45,color:'#5757FF'
+                            }} name="md-add">
                             </Icon>
+                            <Text style= {styles.text} >Create a New Podcast</Text>
                         </TouchableOpacity>
-                    </View>
+
+                        <TouchableOpacity style = {{marginTop: 40}} onPress={this.info} >
+                            <Icon style={{
+                                textAlign: 'center',
+                                fontSize: 45,
+                                color: '#5757FF'
+                            }} name="md-help-circle">
+                            </Icon>
+                            <Text style= {styles.text} >Help</Text>
+                        </TouchableOpacity>
+
+                    </Animated.View>
+
+
+
+
+
+
+                    <PlayerBottom navigator={this.props.navigator}/>
 
                 </View>
 
-                <TouchableOpacity style = {{marginTop: height / 4}} onPress={this.recordNewPodcast}>
-                    <Icon style={{
-                        textAlign:'center',fontSize: 45,color:'#5757FF'
-                    }} name="md-add">
-                    </Icon>
-                        <Text style= {styles.text} >Create a New Podcast</Text>
-                </TouchableOpacity>
 
-
-                <PlayerBottom navigator={this.props.navigator}/>
+            );
+        }
+        return (
+            <View
+                style={styles.container}>
 
             </View>
 

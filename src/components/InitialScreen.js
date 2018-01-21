@@ -18,9 +18,9 @@ var discoverIconSelected;
 Icon.getImageSource('ios-search', 30, '#F5002A').then((source) => { discoverIconSelected = source});
 
 var recordIcon;
-Icon.getImageSource('ios-microphone-outline', 30, '#F5002A').then((source) => { recordIcon = source});
+Icon.getImageSource('ios-microphone-outline', 50, '#F5002A').then((source) => { recordIcon = source});
 var recordIconSelected;
-Icon.getImageSource('ios-microphone', 30, '#F5002A').then((source) => { recordIconSelected = source});
+Icon.getImageSource('ios-microphone', 50, '#F5002A').then((source) => { recordIconSelected = source});
 
 var libraryIcon;
 Icon.getImageSource('ios-headset-outline', 30, '#F5002A').then((source) => { libraryIcon = source});

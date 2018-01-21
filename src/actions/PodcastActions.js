@@ -7,6 +7,7 @@ import {
     PODCAST_CREATE,
     PODCAST_FETCH_SUCCESS, PODCAST_FETCH_SUCCESS_NEW
 } from './types';
+import Variables from "../components/Variables";
 
 let podFile = AudioUtils.DocumentDirectoryPath + '/test.aac';
 
@@ -61,37 +62,48 @@ export const podcastCreate = ({ podcastTitle, podcastDescription, podcastCategor
                 })
                 .then((blob) => {
                     uploadBlob = blob;
-                    return podcastRef.put(blob, {contentType: mime})
-                })
-                .then(() => {
-                    uploadBlob.close();
+                    var upload = podcastRef.put(blob, {contentType: mime});
 
-                    navigator.push({
-                        screen: 'RecordSuccess',
-                        animated: true,
-                        animationType: 'fade',
-                        tabBarHidden: false,
-                        navigatorStyle: {
+                    upload.on('state_changed', function (snapshot) {
+
+                        Variables.state.uploadProgress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+
+                        switch (snapshot.state) {
+                            case firebase.storage.TaskState.PAUSED: // or 'paused'
+                                console.log('Upload is paused');
+                                break;
+                            case firebase.storage.TaskState.RUNNING: // or 'running'
+                                console.log('Upload is running');
+                                break;
+                        }
+                    }, function(error) {
+                        // Handle unsuccessful uploads
+                        console.log(error)
+                    }, function() {
+                        // Handle successful uploads on complete
+                        // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+
+                        console.log("success");
+                        uploadBlob.close();
+
+                        Variables.state.uploadProgress = 0;
+
+                        navigator.push({
+                            screen: 'RecordSuccess',
+                            animated: true,
+                            animationType: 'fade',
                             tabBarHidden: false,
-                        },
+                            navigatorStyle: {
+                                tabBarHidden: false,
+                            },
+                        });
+
                     });
 
+                    })
 
-                    return podcastRef.getDownloadURL()
-                })
-                .then((url) => {
-                    let obj = {};
-                    obj["loading"] = false;
-                    obj["dp"] = url;
 
                 })
-                .catch((error) => {
-                    console.log(error);
-                    console.warn(error);
-                });
-
-
-        });
 
 
 

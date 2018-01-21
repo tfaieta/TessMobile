@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet, TouchableOpacity, ActivityIndicator, Alert, ScrollView} from 'react-native';
+import { Text, TextInput, View, StyleSheet, TouchableOpacity, ActivityIndicator, Dimensions, Alert, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {podTime, totalTime} from './Record';
 import Variables, {podcastPlayer} from './Variables';
@@ -15,7 +15,6 @@ import Slider from 'react-native-slider';
 
 
 
-
 let podFile = AudioUtils.DocumentDirectoryPath + '/test.aac';
 
 
@@ -23,6 +22,7 @@ const labels = ['News', 'Fitness', 'Gaming', 'Society & Culture', 'Sports', 'Ent
 const options = ['News', 'Fitness', 'Gaming', 'Society & Culture', 'Sports', 'Entertainment', 'Comedy', 'Music', 'Lifestyle', 'Science & Nature', 'Tech', 'Travel', 'Learn Something', 'Storytelling', 'Other'];
 
 
+var {height, width} = Dimensions.get('window');
 
 class RecordInfo extends Component{
 
@@ -47,13 +47,25 @@ class RecordInfo extends Component{
         isPlaying:false,
         interval: null,
         currentTime: 0,
-        loading: false
+        loading: false,
+        uploadProgress: 10
     };
 
     componentWillMount(){
         const {currentUser} = firebase.auth();
         let userID = currentUser.uid;
         this.props.podcastUpdate({prop: 'podcastArtist', value: userID});
+
+        setInterval(() => {
+            if(this.state.loading){
+                if(Variables.state.uploadProgress <= 100.00 && Variables.state.uploadProgress > 10){
+                    this.setState({
+                        uploadProgress: Variables.state.uploadProgress
+                    })
+                }
+            }
+
+        }, 300)
     }
 
     componentWillUnmount() {
@@ -269,12 +281,15 @@ class RecordInfo extends Component{
 
 
 
-    _renderUploadButton(loading){
+    _renderUploadButton(loading, uploadProgress){
         if(loading){
+
             return(
-                <TouchableOpacity style={styles.buttonUpload}>
-                    <ActivityIndicator style={{paddingVertical: 10}} color="#fff" size ="large" />
-                </TouchableOpacity>
+                    <View style={{width: (width / 100) * (uploadProgress), backgroundColor: '#5757FF', marginVertical: 12, marginHorizontal: 15,
+                        borderWidth:0.1,
+                        borderRadius: 10,}} >
+                        <ActivityIndicator style={{paddingVertical: 10, alignSelf:'center'}} color="#fff" size ="small" />
+                    </View>
             )
         }
         else{
@@ -432,7 +447,7 @@ class RecordInfo extends Component{
 
                 <View style={styles.buttonContainer}>
 
-                    {this._renderUploadButton(this.state.loading)}
+                    {this._renderUploadButton(this.state.loading, this.state.uploadProgress)}
 
                 <TouchableOpacity style={styles.buttonCancel} onPress={this.Cancel}>
                     <Text  style={styles.contentTitle}>Cancel</Text>

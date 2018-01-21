@@ -234,35 +234,19 @@ class Record extends Component{
 
     _renderLevel(level){
         const animatedStyle = {height: this.animatedValue};
-        var {height, width} = Dimensions.get('window');
 
         if(this.state.recording){
-            if((level+40) * (height/40) > (height*0.80)){
+
                 return(
                     <View style = {{ position: 'absolute',
                         left: 0,
                         right: 0,
                         bottom: 0,}}>
                         <Animated.View style={[ {
-                            width: width, height: 100, backgroundColor: '#ff5b6430'}, animatedStyle]}/>
+                            width: width, backgroundColor: '#ffffff30'}, animatedStyle]}/>
                     </View>
                 )
-            }
-            else{
-                return(
-                    <View style = {{ position: 'absolute',
-                        left: 0,
-                        right: 0,
-                        bottom: 0,}}>
-                        <Animated.View style={[ {
-                            position: 'absolute',
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            width: width, height: 100, backgroundColor: '#ffffff30'}, animatedStyle]}/>
-                    </View>
-                )
-            }
+
         }
 
 

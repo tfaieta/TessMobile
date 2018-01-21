@@ -34,9 +34,10 @@ class RecordSuccess extends Component{
     };
 
     finished = () => {
-        this.props.navigator.dismissAllModals({
+        this.props.navigator.dismissModal({
             animationType: 'slide-down'
         });
+
     };
 
 

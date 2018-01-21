@@ -24,6 +24,7 @@ class Variables extends Component{
         isPlaying: false,
         podProgress: 0,
         currentTime: 0,
+        uploadProgress: 0,
         interval: null,
         podcastTitle: '',
         podcastDescription: '',
@@ -116,7 +117,7 @@ class Variables extends Component{
 
 
     }
-
+    
 
     static play()   {
 
