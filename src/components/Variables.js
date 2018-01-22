@@ -117,7 +117,7 @@ class Variables extends Component{
 
 
     }
-    
+
 
     static play()   {
 

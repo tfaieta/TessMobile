@@ -95,13 +95,19 @@ class RecordInfo extends Component{
                         interval: clearInterval(this.state.interval)
                     });
 
-                    this.props.navigator.dismissModal({
-                        animationType: 'slide-down'
-                    });
+                    this.props.podcastUpdate({prop: 'podcastDescription', value: ''});
+                    this.props.podcastUpdate({prop: 'podcastTitle', value: ''});
+                    this.props.podcastUpdate({prop: 'podcastCategory', value: ''});
 
-                    this.props.navigator.popToRoot({
+                    this.props.navigator.push({
+                        screen: 'RecordFirst',
+                        title: undefined,
+                        passProps: {},
                         animated: true,
-                        animationType: 'fade'
+                        animationType: 'fade',
+                        backButtonTitle: undefined,
+                        backButtonHidden: true,
+
                     });
 
                 }

@@ -17,9 +17,14 @@ class RecordSuccess extends Component{
 
     RecordAgain = () => {
 
-        this.props.navigator.showModal({
+        this.props.navigator.resetTo({
             screen: 'Record',
-            animationType: 'slide-up'
+            title: undefined,
+            passProps: {},
+            animated: true,
+            animationType: 'fade',
+            navigatorStyle: {},
+            navigatorButtons: {}
         });
 
     };
@@ -34,8 +39,16 @@ class RecordSuccess extends Component{
     };
 
     finished = () => {
-        this.props.navigator.dismissModal({
-            animationType: 'slide-down'
+
+        this.props.navigator.push({
+            screen: 'RecordFirst',
+            title: undefined,
+            passProps: {},
+            animated: true,
+            animationType: 'fade',
+            backButtonTitle: undefined,
+            backButtonHidden: true,
+
         });
 
     };

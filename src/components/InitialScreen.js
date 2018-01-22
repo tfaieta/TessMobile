@@ -76,7 +76,7 @@ export default class InitialScreen extends Component{
                         navigatorButtons: {screenBackgroundColor: '#fff'}
                     },
                     {
-                        screen: 'RecordFirst',
+                        screen: 'Record',
                         icon: recordIcon,
                         selectedIcon: recordIconSelected,
                         iconInsets: {

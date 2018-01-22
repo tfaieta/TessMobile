@@ -419,15 +419,16 @@ class Record extends Component{
                         this.setState({stoppedRecording: true, recording: false});
 
 
-                        this.props.navigator.dismissModal({
-                            animationType: 'slide-down'
-                        });
-
-                        this.props.navigator.popToRoot({
+                        this.props.navigator.push({
+                            screen: 'RecordFirst',
+                            title: undefined,
+                            passProps: {},
                             animated: true,
-                            animationType: 'fade'
-                        });
+                            animationType: 'fade',
+                            backButtonTitle: undefined,
+                            backButtonHidden: true,
 
+                        });
 
                     }
                     },
@@ -442,14 +443,17 @@ class Record extends Component{
             this.setState({stoppedRecording: true, recording: false});
 
 
-            this.props.navigator.dismissModal({
-                animationType: 'slide-down'
+            this.props.navigator.push({
+                screen: 'RecordFirst',
+                title: undefined,
+                passProps: {},
+                animated: true,
+                animationType: 'fade',
+                backButtonTitle: undefined,
+                backButtonHidden: true,
+
             });
 
-            this.props.navigator.popToRoot({
-                animated: true,
-                animationType: 'fade'
-            });
 
 
         }

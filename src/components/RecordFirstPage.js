@@ -9,6 +9,10 @@ var {height, width} = Dimensions.get('window');
 
 class RecordFirstPage extends Component{
 
+    static navigatorStyle = {
+        tabBarHidden: false
+    };
+
     constructor(props) {
         super(props);
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
@@ -30,21 +34,17 @@ class RecordFirstPage extends Component{
                 this.slide();
             }, 500);
 
-            Navigation.showModal({
-                screen: 'Record',
-                animationType: 'slide-up'
-            });
         }
     }
 
     slide = () => {
 
-        this.setState({
-            visible: true,
-        });
         Animated.spring(this.state.y, {
             toValue: 0,
         }).start();
+        this.setState({
+            visible: true,
+        });
 
     };
 
@@ -63,10 +63,16 @@ class RecordFirstPage extends Component{
 
     recordNewPodcast =() => {
 
-        Navigation.showModal({
+        this.props.navigator.resetTo({
             screen: 'Record',
-            animationType: 'slide-up'
+            title: undefined,
+            passProps: {},
+            animated: true,
+            animationType: 'fade',
+            navigatorStyle: {},
+            navigatorButtons: {}
         });
+
     };
 
 
