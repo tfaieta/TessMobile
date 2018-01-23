@@ -54,6 +54,7 @@ import PopupCategory from "./components/Categories/PopupCategory";
 import UserProfileModal from "./components/UserProfileModal";
 import RecentlyPlayed from "./components/RecentlyPlayed";
 import InfoDiagram from "./components/InfoDiagram";
+import ReligionSpirituality from "./components/Categories/ReligionSpirituality";
 
 
 
@@ -81,6 +82,7 @@ Navigation.registerComponent('Entertainment', () => Entertainment, store, Provid
 Navigation.registerComponent('Gaming', () => Gaming, store, Provider);
 Navigation.registerComponent('LearnSomething', () => LearnSomething, store, Provider);
 Navigation.registerComponent('Lifestyle', () => LifeStyle, store, Provider);
+Navigation.registerComponent('ReligionSpirituality', () => ReligionSpirituality, store, Provider);
 Navigation.registerComponent('ScienceNature', () => ScienceNature, store, Provider);
 Navigation.registerComponent('SocietyCulture', () => SocietyCulture, store, Provider);
 Navigation.registerComponent('Sports', () => Sports, store, Provider);

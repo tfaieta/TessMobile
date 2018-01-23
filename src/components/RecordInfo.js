@@ -18,8 +18,8 @@ import Slider from 'react-native-slider';
 let podFile = AudioUtils.DocumentDirectoryPath + '/test.aac';
 
 
-const labels = ['News', 'Fitness', 'Gaming', 'Society & Culture', 'Sports', 'Entertainment', 'Comedy', 'Music', 'Lifestyle', 'Science & Nature', 'Tech', 'Travel', 'Learn Something', 'Storytelling', 'Other'];
-const options = ['News', 'Fitness', 'Gaming', 'Society & Culture', 'Sports', 'Entertainment', 'Comedy', 'Music', 'Lifestyle', 'Science & Nature', 'Tech', 'Travel', 'Learn Something', 'Storytelling', 'Other'];
+const labels = ['News', 'Fitness', 'Gaming', 'Society & Culture', 'Sports', 'Entertainment', 'Comedy', 'Music', 'Lifestyle', 'Religion & Spirituality', 'Science & Nature', 'Tech', 'Travel', 'Learn Something', 'Storytelling', 'Other'];
+const options = ['News', 'Fitness', 'Gaming', 'Society & Culture', 'Sports', 'Entertainment', 'Comedy', 'Music', 'Lifestyle', 'Religion & Spirituality', 'Science & Nature', 'Tech', 'Travel', 'Learn Something', 'Storytelling', 'Other'];
 
 
 var {height, width} = Dimensions.get('window');
@@ -99,16 +99,12 @@ class RecordInfo extends Component{
                     this.props.podcastUpdate({prop: 'podcastTitle', value: ''});
                     this.props.podcastUpdate({prop: 'podcastCategory', value: ''});
 
-                    this.props.navigator.push({
+                    this.props.navigator.resetTo({
                         screen: 'RecordFirst',
-                        title: undefined,
-                        passProps: {},
                         animated: true,
                         animationType: 'fade',
-                        backButtonTitle: undefined,
-                        backButtonHidden: true,
-
                     });
+
 
                 }
                 },

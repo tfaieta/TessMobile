@@ -419,15 +419,10 @@ class Record extends Component{
                         this.setState({stoppedRecording: true, recording: false});
 
 
-                        this.props.navigator.push({
+                        this.props.navigator.resetTo({
                             screen: 'RecordFirst',
-                            title: undefined,
-                            passProps: {},
                             animated: true,
                             animationType: 'fade',
-                            backButtonTitle: undefined,
-                            backButtonHidden: true,
-
                         });
 
                     }
@@ -443,16 +438,12 @@ class Record extends Component{
             this.setState({stoppedRecording: true, recording: false});
 
 
-            this.props.navigator.push({
+            this.props.navigator.resetTo({
                 screen: 'RecordFirst',
-                title: undefined,
-                passProps: {},
                 animated: true,
                 animationType: 'fade',
-                backButtonTitle: undefined,
-                backButtonHidden: true,
-
             });
+
 
 
 

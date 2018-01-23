@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Dimensions, Animated} from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PlayerBottom from './PlayerBottom';
 import { Navigation } from 'react-native-navigation';
@@ -15,38 +15,10 @@ class RecordFirstPage extends Component{
 
     constructor(props) {
         super(props);
-        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-        this.state ={
-            visible: false,
-            y: new Animated.Value(height),
-        };
+
     }
 
-    onNavigatorEvent(event) {
-        if (event.id === 'willAppear') {
 
-            this.setState({
-                visible: false,
-                y: new Animated.Value(height),
-            });
-
-            setTimeout(() => {
-                this.slide();
-            }, 500);
-
-        }
-    }
-
-    slide = () => {
-
-        Animated.spring(this.state.y, {
-            toValue: 0,
-        }).start();
-        this.setState({
-            visible: true,
-        });
-
-    };
 
     info = () =>{
         Navigation.showLightBox({
@@ -63,14 +35,10 @@ class RecordFirstPage extends Component{
 
     recordNewPodcast =() => {
 
-        this.props.navigator.resetTo({
+        this.props.navigator.push({
             screen: 'Record',
-            title: undefined,
-            passProps: {},
             animated: true,
             animationType: 'fade',
-            navigatorStyle: {},
-            navigatorButtons: {}
         });
 
     };
@@ -78,26 +46,23 @@ class RecordFirstPage extends Component{
 
     render() {
 
-        if(this.state.visible){
             return (
                 <View
                     style={styles.container}>
 
-                    <Animated.View
-                        style={[styles.slideView, {
-                            transform: [
-                                {
-                                    translateY: this.state.y
-                                }
-                            ]
-                        }]}
-                    >
-                        <TouchableOpacity style = {{marginTop: height / 4.5}} onPress={this.recordNewPodcast}>
+
+                        <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 6}, shadowOpacity: 0.2, shadowRadius: 10}}>
+                            <View style={{flex:1,justifyContent: 'center', alignItems: 'center', marginTop:5}}>
+                                <Text style={styles.header}>Create a Podcast</Text>
+                            </View>
+                        </View>
+
+                        <TouchableOpacity style = {{marginTop: height / 5}} onPress={this.recordNewPodcast}>
                             <Icon style={{
                                 textAlign:'center',fontSize: 45,color:'#5757FF'
                             }} name="md-add">
                             </Icon>
-                            <Text style= {styles.text} >Create a New Podcast</Text>
+                            <Text style= {styles.text} >Record a New Podcast</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity style = {{marginTop: 40}} onPress={this.info} >
@@ -110,11 +75,6 @@ class RecordFirstPage extends Component{
                             <Text style= {styles.text} >Help</Text>
                         </TouchableOpacity>
 
-                    </Animated.View>
-
-
-
-
 
 
                     <PlayerBottom navigator={this.props.navigator}/>
@@ -123,15 +83,7 @@ class RecordFirstPage extends Component{
 
 
             );
-        }
-        return (
-            <View
-                style={styles.container}>
 
-            </View>
-
-
-        );
     }
 }
 
@@ -142,7 +94,7 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        marginTop:10,
+        marginTop:25,
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',

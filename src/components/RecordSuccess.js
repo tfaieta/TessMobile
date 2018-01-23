@@ -40,16 +40,12 @@ class RecordSuccess extends Component{
 
     finished = () => {
 
-        this.props.navigator.push({
+        this.props.navigator.resetTo({
             screen: 'RecordFirst',
-            title: undefined,
-            passProps: {},
             animated: true,
             animationType: 'fade',
-            backButtonTitle: undefined,
-            backButtonHidden: true,
-
         });
+
 
     };
 

@@ -109,6 +109,14 @@ class Categories extends Component{
         });
     };
 
+    pressReligionSpirit =()=>{
+        this.props.navigator.push({
+            screen: 'ReligionSpirituality',
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+
 
     render() {
         return (
@@ -142,12 +150,12 @@ class Categories extends Component{
                     />
                     <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Society & Culture</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: 10}} onPress={this.pressGaming}>
+                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: 10}} onPress={this.pressReligionSpirit}>
                     <Image
                         style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
-                        source={require('tess/src/images/gaming-cat.png')}
+                        source={require('tess/src/images/religionSpirit-cat.png')}
                     />
-                    <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Gaming</Text>
+                    <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Religion & Spirituality</Text>
                 </TouchableOpacity>
                 </View>
 
@@ -232,12 +240,23 @@ class Categories extends Component{
                         />
                         <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Music</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10,  paddingBottom: 150}} onPress={this.pressTech}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10}} onPress={this.pressTech}>
                         <Image
                             style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/tech-cat.png')}
                         />
                         <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Tech</Text>
+                    </TouchableOpacity>
+                </View>
+
+
+                <View style={{flexDirection: 'row', flex:1}}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: 10, paddingBottom: 125}} onPress={this.pressGaming}>
+                        <Image
+                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            source={require('tess/src/images/gaming-cat.png')}
+                        />
+                        <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Gaming</Text>
                     </TouchableOpacity>
                 </View>
 

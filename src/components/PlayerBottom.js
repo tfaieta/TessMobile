@@ -911,6 +911,14 @@ class PlayerBottom extends Component {
                 passProps: {navigator, category},
             });
         }
+        else if(Variables.state.podcastCategory == 'Religion & Spirituality'){
+            const category = Variables.state.podcastCategory;
+
+            Navigation.showModal({
+                screen: 'PopupCategory',
+                passProps: {navigator, category},
+            });
+        }
         else console.warn("Category not yet supported");
     };
 
