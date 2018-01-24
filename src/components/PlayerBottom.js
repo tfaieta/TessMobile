@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, StyleSheet,StatusBar, ScrollView, Modal, TouchableOpacity, Alert, Image} from 'react-native';
+import { Text, View, StyleSheet,StatusBar, ScrollView, Modal, TouchableOpacity, Alert, Dimensions, Image, ActivityIndicator} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from './Variables';
 import {podcastPlayer} from './Variables';
@@ -8,15 +8,19 @@ import firebase from 'firebase';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import MusicControl from 'react-native-music-control';
 
+
 import { Navigation } from 'react-native-navigation';
 
+var {height, width} = Dimensions.get('window');
 
+
+
+
+// Not the actual Player, cosmetic features & controls
 
 class PlayerBottom extends Component {
     constructor() {
         super();
-        this.tick = this.tick.bind(this);
-        this.play=this.play.bind(this);
 
         setInterval(() => {
             this.setState({profileImage: Variables.state.userProfileImage});
@@ -24,10 +28,8 @@ class PlayerBottom extends Component {
     }
 
     state = {
-        isPlaying: true,
-        podProgress: Variables.state.podProgress,
+        isPlaying: !Variables.state.paused,
         currentTime: Variables.state.currentTime,
-        interval: Variables.state.interval,
         podcastTitle: Variables.state.podcastTitle,
         podcastDescription: Variables.state.podcastDescription,
         comment: '',
@@ -35,6 +37,8 @@ class PlayerBottom extends Component {
         liked: false,
         likes: 12,
         profileImage: '',
+        buffering: Variables.state.buffering,
+        speed: Variables.state.podcastSpeed
     };
 
     componentDidMount() {
@@ -43,27 +47,43 @@ class PlayerBottom extends Component {
         MusicControl.handleAudioInterruptions(true);
 
         MusicControl.on('play', ()=> {
-            this.play();
+            Variables.state.paused = false;
+            this.setState({
+                isPlaying: true
+            });
+
+            MusicControl.updatePlayback({
+                state: MusicControl.STATE_PLAYING,
+                elapsedTime: Variables.state.currentTime
+            });
         });
 
         MusicControl.on('pause', ()=> {
-            this.pause();
+            Variables.state.paused = true;
+            this.setState({
+                isPlaying: false
+            });
+
+            MusicControl.updatePlayback({
+                state: MusicControl.STATE_PAUSED,
+                elapsedTime: Variables.state.currentTime
+            });
         });
 
         MusicControl.on('skipForward', ()=> {
 
             MusicControl.updatePlayback({
-                elapsedTime: (podcastPlayer.currentTime + 15000)/1000,
+                elapsedTime: (Variables.state.currentTime + 15),
             });
-            podcastPlayer.seek(podcastPlayer.currentTime + 15000);
+            Variables.state.seekForward = true;
         });
 
         MusicControl.on('skipBackward', ()=> {
 
             MusicControl.updatePlayback({
-                elapsedTime: (podcastPlayer.currentTime - 15000)/1000,
+                elapsedTime: (Variables.state.currentTime - 15),
             });
-            podcastPlayer.seek(podcastPlayer.currentTime - 15000);
+            Variables.state.seekBackward = true;
 
         });
 
@@ -72,71 +92,55 @@ class PlayerBottom extends Component {
 
 
     componentWillMount(){
-        if(this.state.isPlaying){
-            this.setState({
-                interval: setInterval(this.tick, 250)
-            });
-        }
-        else {
-            this.setState({
-                interval: clearInterval(this.state.interval)
-            });
-            Variables.pause();
-        }
+
+        setInterval(() => {
+                this.setState({
+                    currentTime: Variables.state.currentTime,
+                    buffering: Variables.state.buffering,
+                    isPlaying: !Variables.state.paused,
+                    speed: Variables.state.podcastSpeed,
+                });
+        }, 100);
+
     }
 
-    componentWillUnmount() {
-        this.setState({
-            interval: clearInterval(this.state.interval)
-        });
-    }
 
-    tick() {
-        if(podcastPlayer.isPlaying){
-            this.setState({ currentTime: podcastPlayer.currentTime})
-        }
-    }
 
     play = () =>  {
+        Variables.state.paused = false;
         this.setState({
-            isPlaying: true,
-            interval: setInterval(this.tick, 250)
+            isPlaying: true
         });
 
         MusicControl.updatePlayback({
             state: MusicControl.STATE_PLAYING,
-            elapsedTime: podcastPlayer.currentTime/1000
+            elapsedTime: Variables.state.currentTime
         });
-
-        Variables.play()
 
     };
 
 
     pause = () =>  {
+        Variables.state.paused = true;
         this.setState({
-            isPlaying: false,
-            interval: clearInterval(this.state.interval)
+            isPlaying: false
         });
 
         MusicControl.updatePlayback({
             state: MusicControl.STATE_PAUSED,
-            elapsedTime: podcastPlayer.currentTime/1000
+            elapsedTime: Variables.state.currentTime
         });
 
-       Variables.pause();
 
     };
 
 
     scrubForward = () => {
-        podcastPlayer.seek(podcastPlayer.currentTime + 15000)
-
+       Variables.state.seekForward = true;
     };
 
     scrubBackward = () => {
-        podcastPlayer.seek(podcastPlayer.currentTime - 15000)
-
+        Variables.state.seekBackward = true;
     };
 
 
@@ -145,15 +149,14 @@ class PlayerBottom extends Component {
             <Slider
                 minimumTrackTintColor='#5757FF'
                 maximumTrackTintColor='#E7E7F0'
-                thumbTintColor='#5757FF'
-                thumbTouchSize={{width: 20, height: 20}}
+                thumbStyle={{width: 25, height: 25, borderRadius: 12.5, backgroundColor: '#fff', borderColor: '#5757FF', borderWidth: 2}}
                 animateTransitions = {true}
                 style={styles.sliderContainer}
                 step={0}
                 minimumValue={0}
-                maximumValue= { Math.abs( podcastPlayer.duration)}
+                maximumValue= { Math.abs( Variables.state.duration)}
                 value={ currentTime }
-                onValueChange={currentTime => podcastPlayer.seek(currentTime)}
+                onValueChange={currentTime => Variables.state.seekTo = currentTime}
             />
         )
     }
@@ -192,38 +195,47 @@ class PlayerBottom extends Component {
 
     _renderPlayButton(isPlaying) {
         if(Variables.state.podcastTitle != ''){
-            if (isPlaying) {
-                return (
-                    <TouchableOpacity onPress={this.pause}>
-                        <Icon style={{
-                            textAlign: 'right',
-                            marginRight: 0,
-                            marginLeft: 0,
-                            paddingTop: 0,
-                            paddingRight:5,
-                            fontSize: 30,
-                            color: '#fff',
-                        }} name="md-pause">
-                        </Icon>
-                    </TouchableOpacity>
-                );
+
+            if(this.state.buffering){
+                return(
+                    <ActivityIndicator style={{alignSelf:'center'}} color="#fff" size ="small" />
+                )
             }
-            else {
-                return (
-                    <TouchableOpacity onPress={this.play}>
-                        <Icon style={{
-                            textAlign: 'right',
-                            marginRight: 0,
-                            marginLeft: 0,
-                            paddingTop: 0,
-                            paddingRight:5,
-                            fontSize: 30,
-                            color: '#fff',
-                        }} name="md-play">
-                        </Icon>
-                    </TouchableOpacity>
-                );
+            else{
+                if (isPlaying) {
+                    return (
+                        <TouchableOpacity onPress={this.pause}>
+                            <Icon style={{
+                                textAlign: 'right',
+                                marginRight: 0,
+                                marginLeft: 0,
+                                paddingTop: 0,
+                                paddingRight:5,
+                                fontSize: 30,
+                                color: '#fff',
+                            }} name="md-pause">
+                            </Icon>
+                        </TouchableOpacity>
+                    );
+                }
+                else {
+                    return (
+                        <TouchableOpacity onPress={this.play}>
+                            <Icon style={{
+                                textAlign: 'right',
+                                marginRight: 0,
+                                marginLeft: 0,
+                                paddingTop: 0,
+                                paddingRight:5,
+                                fontSize: 30,
+                                color: '#fff',
+                            }} name="md-play">
+                            </Icon>
+                        </TouchableOpacity>
+                    );
+                }
             }
+
         }
 
     }
@@ -263,24 +275,28 @@ class PlayerBottom extends Component {
                 </View>
             )
         }
-
-}
-
-
-    _renderFillBar(isPlaying){
-        if(isPlaying) {
-            return (
-                <View style = {{
-                    width: (Variables.state.currentTime / podcastPlayer.duration) * 340,
-                    height: 6,
-                    backgroundColor: 'rgba(170,170,170,0.7)',}}
-                >
-                </View>
-            )
-        }
-
-
     }
+
+    _renderPodcastSpeed(speed){
+        return(
+            <TouchableOpacity onPress={this.setSpeed}>
+                <Text style = {styles.podcastTextSpeed}>x{speed.toFixed(2)}</Text>
+            </TouchableOpacity>
+        )
+    }
+
+    setSpeed(){
+        Navigation.showLightBox({
+            screen: "SetPlayerSpeed",
+            style: {
+                backgroundBlur: "light",
+                backgroundColor: "#44434470",
+                tapBackgroundToDismiss: true,
+            },
+
+        });
+    }
+
 
 
     setModalVisible(visible) {
@@ -302,12 +318,20 @@ class PlayerBottom extends Component {
     _renderPlayButton2(isPlaying) {
 
         if (isPlaying) {
-            return (
-                <TouchableOpacity onPress={this.pause}>
-                    <Icon style={{textAlign:'center', fontSize: 50, color:'#2A2A30' }}  name="ios-pause">
-                    </Icon>
-                </TouchableOpacity>
-            );
+
+            if(this.state.buffering){
+                return(
+                    <ActivityIndicator style={{paddingVertical: 10, alignSelf:'center'}} color='#2A2A30' size ="large" />
+                )
+            }
+            else{
+                return (
+                    <TouchableOpacity onPress={this.pause}>
+                        <Icon style={{textAlign:'center', fontSize: 50, color:'#2A2A30' }}  name="ios-pause">
+                        </Icon>
+                    </TouchableOpacity>
+                );
+            }
         }
         else {
             return (
@@ -372,6 +396,7 @@ class PlayerBottom extends Component {
 
 
 
+    // moved to PlayerInfo
     _renderDescription(){
         if (Variables.state.podcastTitle == ''){
             return(
@@ -392,6 +417,7 @@ class PlayerBottom extends Component {
             )
         }
     }
+
 
     _renderCategory(){
 
@@ -418,6 +444,7 @@ class PlayerBottom extends Component {
         }
 
     }
+
 
     _renderFav(faved){
         if(Variables.state.podcastID){
@@ -548,6 +575,7 @@ class PlayerBottom extends Component {
 
     }
 
+
     _renderLikes(likers, liked){
 
         if(Variables.state.podcastTitle == ''){
@@ -583,51 +611,13 @@ class PlayerBottom extends Component {
 
     }
 
-    _renderComments(){
-        if(Variables.state.podcastTitle == ''){
-            return;
-        }
 
-        return(
-            <View>
-                <Text style={styles.podcastText}> comments </Text>
-
-
-                <View style={{marginHorizontal: 20, marginBottom: 2, backgroundColor: '#6e89e7', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}}>
-                    <Icon style={{textAlign:'center', fontSize: 40, paddingHorizontal: 10, color:'#fff' }} name="md-contact">
-                        <Text style={styles.podcastText}> nice! </Text>
-                    </Icon>
-                </View>
-
-                <View style={{marginHorizontal: 20, marginBottom: 2, backgroundColor: '#6e89e7', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}}>
-                    <Icon style={{textAlign:'center', fontSize: 40, paddingHorizontal: 10, color:'#fff' }} name="md-contact">
-                        <Text style={styles.podcastText}> i love you </Text>
-                    </Icon>
-                </View>
-
-                <View style={{marginHorizontal: 20, marginBottom: 2, backgroundColor: '#6e89e7', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 10}}>
-                    <TextInput style={styles.input}
-                               placeholder = "write a comment..."
-                               placeholderTextColor='#FFF'
-                               returnKeyType='send'
-                               multiline={true}
-                               onChangeText={text => this.setState({ comment: text})}
-                               onSubmitEditing={() => this.onCommentSubmit()}
-
-                    />
-                </View>
-            </View>
-
-        )
-
-
-    }
 
 
     _renderEndTime() {
 
-        var num = ((podcastPlayer.duration / 1000) % 60).toString();
-        var num2 = ((podcastPlayer.duration / 1000) / 60).toString();
+        var num = ((Variables.state.duration - Variables.state.currentTime) % 60).toString();
+        var num2 = ((Variables.state.duration - Variables.state.currentTime) / 60).toString();
         var minutes = num2.slice(0,1);
         Number(minutes.slice(0,1));
 
@@ -644,14 +634,14 @@ class PlayerBottom extends Component {
                 var seconds = num.slice(0,1);
                 Number(seconds.slice(0,1));
                 return (
-                    <Text style={styles.podcastTextNum}>{minutes}:0{seconds}</Text>
+                    <Text style={styles.podcastTextNum}>-{minutes}:0{seconds}</Text>
                 )
             }
             else{
                 var seconds = num.slice(0,2);
                 Number(seconds.slice(0,2));
                 return (
-                    <Text style={styles.podcastTextNum}>{minutes}:{seconds}</Text>
+                    <Text style={styles.podcastTextNum}>-{minutes}:{seconds}</Text>
                 );
             }
         }
@@ -662,14 +652,14 @@ class PlayerBottom extends Component {
                 var seconds = num.slice(0,1);
                 Number(seconds.slice(0,1));
                 return (
-                    <Text style={styles.podcastTextNum}>{minutes}:0{seconds}</Text>
+                    <Text style={styles.podcastTextNum}>-{minutes}:0{seconds}</Text>
                 )
             }
             else{
                 var seconds = num.slice(0,2);
                 Number(seconds.slice(0,2));
                 return (
-                    <Text style={styles.podcastTextNum}>{minutes}:{seconds}</Text>
+                    <Text style={styles.podcastTextNum}>-{minutes}:{seconds}</Text>
                 );
             }
         }
@@ -680,24 +670,24 @@ class PlayerBottom extends Component {
                 var seconds = num.slice(0,1);
                 Number(seconds.slice(0,1));
                 return (
-                    <Text style={styles.podcastTextNum}>{minutes}:0{seconds}</Text>
+                    <Text style={styles.podcastTextNum}>-{minutes}:0{seconds}</Text>
                 )
             }
             else{
                 var seconds = num.slice(0,2);
                 Number(seconds.slice(0,2));
                 return (
-                    <Text style={styles.podcastTextNum}>{minutes}:{seconds}</Text>
+                    <Text style={styles.podcastTextNum}>-{minutes}:{seconds}</Text>
                 );
             }
         }
 
     }
 
-    _renderCurrentTime() {
+    _renderCurrentTime(currentTime) {
 
-        var num = ((Variables.state.currentTime / 1000) % 60).toString();
-        var num2 = ((Variables.state.currentTime / 1000) / 60).toString();
+        var num = ((currentTime) % 60).toString();
+        var num2 = ((currentTime) / 60).toString();
         var minutes = num2.slice(0,1);
         Number(minutes.slice(0,1));
 
@@ -707,7 +697,7 @@ class PlayerBottom extends Component {
                 <Text style={styles.podcastTextNum}></Text>
             );
         }
-        else if (Variables.state.currentTime == -1){
+        else if (currentTime == -1){
             return (
                 <Text style={styles.podcastTextNum}>0:00</Text>
             )
@@ -754,13 +744,6 @@ class PlayerBottom extends Component {
     }
 
 
-    onCommentSubmit(){
-        const comment = this.state.comment;
-        const currentUser = firebase.auth().uid;
-        firebase.database().ref(`${Variables.state.currentRef}/comments`).push(comment, currentUser);
-        this.state.comment = '';
-    }
-
     onProfilePress = () => {
         const {navigator} = this.props;
         Variables.state.browsingArtist = Variables.state.podcastArtist;
@@ -771,6 +754,7 @@ class PlayerBottom extends Component {
             passProps: {navigator},
         });
     };
+
 
     pressLike = () => {
         const {currentUser} = firebase.auth();
@@ -973,7 +957,7 @@ class PlayerBottom extends Component {
 
                         <View style={styles.rightContainer}>
                             <TouchableOpacity style={{marginRight: 10}}>
-                                {this._renderPlayButton(Variables.state.isPlaying)}
+                                {this._renderPlayButton(this.state.isPlaying)}
                             </TouchableOpacity>
                         </View>
 
@@ -1057,7 +1041,7 @@ class PlayerBottom extends Component {
 
                             <View style={styles.middleContainer}>
                                 <TouchableOpacity>
-                                    {this._renderPlayButton2(Variables.state.isPlaying)}
+                                    {this._renderPlayButton2(this.state.isPlaying)}
                                 </TouchableOpacity>
                             </View>
 
@@ -1076,7 +1060,7 @@ class PlayerBottom extends Component {
                         <View style={styles.centerContainerPlayer}>
 
                             <View style={styles.leftContainer}>
-                                {this._renderCurrentTime()}
+                                {this._renderCurrentTime(Variables.state.currentTime)}
                             </View>
 
                             <View style={styles.rightContainer}>
@@ -1092,7 +1076,7 @@ class PlayerBottom extends Component {
                         <View style={{flexDirection: 'row', flex: 1, marginTop: 0}}>
 
                             <View style={{alignItems:'flex-start', flex:1}}>
-                              
+                                {this._renderPodcastSpeed(this.state.speed)}
                             </View>
 
                             <View style={{alignItems: 'center', flex:1}}>
@@ -1171,19 +1155,12 @@ class PlayerBottom extends Component {
         backgroundColor: '#F5FCFF',
     },
     sliderContainer: {
-        width: 280,
+        width: width-40,
         alignSelf: 'center'
     },
     audioProgress: {
         marginTop: 0,
         flexDirection: 'row'
-    },
-    fillProgress: {
-        width: podcastPlayer.currentTime / podcastPlayer.duration * 250,
-        height: 8,
-        backgroundColor: 'rgba(1,170,170,1)',
-        borderWidth:0.1,
-        borderRadius:10
     },
     emptyProgress: {
         width: 280,
@@ -1307,7 +1284,7 @@ class PlayerBottom extends Component {
             marginTop: 5,
             flexDirection: 'row',
             backgroundColor: 'transparent',
-            marginHorizontal: 10,
+            marginHorizontal: 15,
             fontFamily: 'Hiragino Sans',
         },
 
@@ -1337,6 +1314,13 @@ class PlayerBottom extends Component {
             alignSelf: 'center',
             fontFamily: 'HiraginoSans-W3',
             marginTop: 6,
+        },
+        podcastTextSpeed:{
+            color: '#828393',
+            fontSize: 20,
+            marginHorizontal: 30,
+            backgroundColor: 'transparent',
+            textAlign: 'center'
         },
 
         podcastTextCat:{

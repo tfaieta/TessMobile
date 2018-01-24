@@ -55,6 +55,7 @@ import UserProfileModal from "./components/UserProfileModal";
 import RecentlyPlayed from "./components/RecentlyPlayed";
 import InfoDiagram from "./components/InfoDiagram";
 import ReligionSpirituality from "./components/Categories/ReligionSpirituality";
+import SetPlayerSpeed from "./components/SetPlayerSpeed";
 
 
 
@@ -117,6 +118,7 @@ Navigation.registerComponent('UserProfileModal', () => UserProfileModal, store, 
 Navigation.registerComponent('PodcastOptions', () => PodcastOptions, store, Provider);
 Navigation.registerComponent('EditPodcast', () => EditPodcast, store, Provider);
 Navigation.registerComponent('PlayerInfo', () => PlayerInfo, store, Provider);
+Navigation.registerComponent('SetPlayerSpeed', () => SetPlayerSpeed, store, Provider);
 
 
 const config = {

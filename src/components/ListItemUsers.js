@@ -7,6 +7,9 @@ import Variables from "./Variables";
 
 
 
+// A single podcast on scrollview slider list (on home page)
+
+
 class ListItemUsers extends Component {
 
     state = {

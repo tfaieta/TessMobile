@@ -8,6 +8,7 @@ import ListItemUsers from '../components/ListItemUsers';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "./Variables";
 import firebase from 'firebase';
+import Player from "./Player";
 
 
 class Home extends Component{
@@ -915,6 +916,7 @@ class Home extends Component{
 
 
 
+                    <Player/>
                     <PlayerBottom navigator={this.props.navigator}/>
 
                 </View>

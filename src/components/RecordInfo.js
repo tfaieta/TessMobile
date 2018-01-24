@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, TextInput, View, StyleSheet, TouchableOpacity, ActivityIndicator, Dimensions, Alert, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {podTime, totalTime} from './Record';
-import Variables, {podcastPlayer} from './Variables';
+import Variables from './Variables';
 import { connect } from 'react-redux';
 import { podcastUpdate} from '../actions';
 import {AudioUtils} from 'react-native-audio';
@@ -28,8 +28,7 @@ class RecordInfo extends Component{
 
     constructor(props) {
         super();
-        this.tick = this.tick.bind(this);
-        this.play=this.play.bind(this);
+
         const {currentUser} = firebase.auth();
         let userID = currentUser.uid;
         props = {
@@ -38,7 +37,7 @@ class RecordInfo extends Component{
             podcastCategory: Variables.state.podcastCategory,
             podcastArtist: userID
         };
-        Variables.setPodcastFile("test.aac");
+        Variables.setPodcastFile(podFile);
     }
 
     state = {
@@ -55,6 +54,7 @@ class RecordInfo extends Component{
         const {currentUser} = firebase.auth();
         let userID = currentUser.uid;
         this.props.podcastUpdate({prop: 'podcastArtist', value: userID});
+        Variables.state.podcastSpeed = 1.0;
 
         setInterval(() => {
             if(this.state.loading){
@@ -65,20 +65,15 @@ class RecordInfo extends Component{
                 }
             }
 
-        }, 300)
+            this.setState({
+                currentTime: Variables.state.currentTime,
+            })
+
+        }, 200)
     }
 
-    componentWillUnmount() {
-        this.setState({
-            interval: clearInterval(this.state.interval)
-        });
-    }
 
 
-    tick() {
-        this.setState({ currentTime: podcastPlayer.currentTime})
-
-    }
 
     Cancel = () => {
 
@@ -89,11 +84,11 @@ class RecordInfo extends Component{
                 {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
                 {text: 'Yes', onPress: () => {
 
-                    Variables.pause();
+                    Variables.state.paused = true;
                     this.setState({
-                        isPlaying: false,
-                        interval: clearInterval(this.state.interval)
+                        isPlaying: false
                     });
+                    Variables.state.podcastURL = '';
 
                     this.props.podcastUpdate({prop: 'podcastDescription', value: ''});
                     this.props.podcastUpdate({prop: 'podcastTitle', value: ''});
@@ -115,29 +110,26 @@ class RecordInfo extends Component{
     };
 
     play =()=> {
+        Variables.state.paused = false;
         this.setState({
-            isPlaying: true,
-            interval: setInterval(this.tick, 250)
+            isPlaying: true
         });
-        Variables.play();
     };
 
 
     pause=()=> {
+        Variables.state.paused = true;
         this.setState({
-            isPlaying: false,
-            interval: clearInterval(this.state.interval)
+            isPlaying: false
         });
-        Variables.pause();
     };
 
 
     Upload = () => {
 
-        Variables.pause();
+        Variables.state.paused = true;
         this.setState({
-            isPlaying: false,
-            interval: clearInterval(this.state.interval)
+            isPlaying: false
         });
 
 
@@ -180,71 +172,139 @@ class RecordInfo extends Component{
 
 
 
-    _renderTime= (podcastPlayer)=>{
+    _renderCurrentTime(currentTime) {
 
-            if ((podcastPlayer.duration / 1000) < 10) {
-                var num2 = ((podcastPlayer.duration / 1000) % 60).toString();
-                num2 = num2.slice(0, 1);
-                Number(num2);
+        var num = ((currentTime) % 60).toString();
+        var num2 = ((currentTime) / 60).toString();
+        var minutes = num2.slice(0,1);
+        Number(minutes.slice(0,1));
 
-                return <Text style={styles.progressText}>{num2}s</Text>
+
+
+        if (currentTime == -1){
+            return (
+                <Text style={styles.podcastTextNum}>0:00</Text>
+            )
+        }
+        else if(Number(num2) < 10){
+            var minutes = num2.slice(0,1);
+            Number(minutes.slice(0,1));
+            if(Number(num) < 10){
+                var seconds = num.slice(0,1);
+                Number(seconds.slice(0,1));
+                return (
+                    <Text style={styles.podcastTextNum}>{minutes}:0{seconds}</Text>
+                )
             }
-            else if ((podcastPlayer.duration / 1000) < 60) {
-                var num2 = ((podcastPlayer.duration / 1000) % 60).toString();
-                num2 = num2.slice(0, 2);
-                Number(num2);
-
-                return <Text style={styles.progressText}>{num2}s</Text>
+            else{
+                var seconds = num.slice(0,2);
+                Number(seconds.slice(0,2));
+                return (
+                    <Text style={styles.podcastTextNum}>{minutes}:{seconds}</Text>
+                );
             }
-            else {
-
-                var num2 = ((podcastPlayer.duration / 1000) % 60).toString();
-                if(num2 < 10){
-                    num2 = num2.slice(0, 1);
-                    Number(num2);
-                }
-                else {
-                    num2 = num2.slice(0, 2);
-                    Number(num2);
-                }
-
-
-                if(((podcastPlayer.duration / 1000) / 60) < 10){
-                    var num = ((podcastPlayer.duration / 1000) / 60).toString();
-                    num = num.slice(0, 1);
-                    Number(num);
-                    return <Text style={styles.progressText}>{num}m {num2}s</Text>
-                }
-                else if(((podcastPlayer.duration / 1000) / 60) < 100){
-                    var num = ((podcastPlayer.duration / 1000) / 60).toString();
-                    num = num.slice(0, 2);
-                    Number(num);
-                    return <Text style={styles.progressText}>{num}m {num2}s</Text>
-                }
-                else{
-                    var num = ((podcastPlayer.duration / 1000) / 60).toString();
-                    num = num.slice(0, 3);
-                    Number(num);
-                    return <Text style={styles.progressText}>{num}m {num2}s</Text>
-                }
-
+        }
+        else{
+            var minutes = num2.slice(0,2);
+            Number(minutes.slice(0,2));
+            if(Number(num) < 10){
+                var seconds = num.slice(0,1);
+                Number(seconds.slice(0,1));
+                return (
+                    <Text style={styles.podcastTextNum}>{minutes}:0{seconds}</Text>
+                )
             }
-    };
+            else{
+                var seconds = num.slice(0,2);
+                Number(seconds.slice(0,2));
+                return (
+                    <Text style={styles.podcastTextNum}>{minutes}:{seconds}</Text>
+                );
+            }
+        }
+
+    }
+
+
+
+    _renderEndTime() {
+        var num = ((Variables.state.duration - Variables.state.currentTime) % 60).toString();
+        var num2 = ((Variables.state.duration - Variables.state.currentTime) / 60).toString();
+        var minutes = num2.slice(0,1);
+        Number(minutes.slice(0,1));
+
+
+
+        if(Number(num2) < 10){
+            var minutes = num2.slice(0,1);
+            Number(minutes.slice(0,1));
+            if(Number(num) < 10){
+                var seconds = num.slice(0,1);
+                Number(seconds.slice(0,1));
+                return (
+                    <Text style={styles.podcastTextNum}>-{minutes}:0{seconds}</Text>
+                )
+            }
+            else{
+                var seconds = num.slice(0,2);
+                Number(seconds.slice(0,2));
+                return (
+                    <Text style={styles.podcastTextNum}>-{minutes}:{seconds}</Text>
+                );
+            }
+        }
+        else if(Number(num2) < 100){
+            var minutes = num2.slice(0,2);
+            Number(minutes.slice(0,2));
+            if(Number(num) < 10){
+                var seconds = num.slice(0,1);
+                Number(seconds.slice(0,1));
+                return (
+                    <Text style={styles.podcastTextNum}>-{minutes}:0{seconds}</Text>
+                )
+            }
+            else{
+                var seconds = num.slice(0,2);
+                Number(seconds.slice(0,2));
+                return (
+                    <Text style={styles.podcastTextNum}>-{minutes}:{seconds}</Text>
+                );
+            }
+        }
+        else{
+            var minutes = num2.slice(0,3);
+            Number(minutes.slice(0,3));
+            if(Number(num) < 10){
+                var seconds = num.slice(0,1);
+                Number(seconds.slice(0,1));
+                return (
+                    <Text style={styles.podcastTextNum}>-{minutes}:0{seconds}</Text>
+                )
+            }
+            else{
+                var seconds = num.slice(0,2);
+                Number(seconds.slice(0,2));
+                return (
+                    <Text style={styles.podcastTextNum}>-{minutes}:{seconds}</Text>
+                );
+            }
+        }
+
+    }
 
     _renderSlider(currentTime){
         return(
             <Slider
                 minimumTrackTintColor='#5757FF'
                 maximumTrackTintColor='#fff'
-                thumbTintColor='#fff'
-                thumbTouchSize={{width: 10, height: 10}}
+                thumbStyle={{width: 20, height: 20, borderRadius: 10, backgroundColor: '#5757FF', borderColor: '#FFF', borderWidth: 2}}
                 animateTransitions = {true}
                 style={styles.sliderContainer}
                 step={0}
                 minimumValue={0}
-                maximumValue= { Math.abs( podcastPlayer.duration)}
+                maximumValue= { Math.abs(Variables.state.duration)}
                 value={ Math.abs(currentTime) }
-                onValueChange={currentTime => podcastPlayer.seek(currentTime)}
+                onValueChange={currentTime => Variables.state.seekTo = currentTime}
             />
         )
     };
@@ -256,8 +316,8 @@ class RecordInfo extends Component{
                 <TouchableOpacity onPress={this.pause}>
                 <Icon style={{
                     textAlign: 'right',
-                    fontSize: 40,
-                    marginLeft: 20,
+                    fontSize: 35,
+                    marginHorizontal: 10,
                     color: '#fff',
                     backgroundColor: 'transparent',
                 }} name="ios-pause">
@@ -270,8 +330,8 @@ class RecordInfo extends Component{
                 <TouchableOpacity onPress={this.play}>
                 <Icon style={{
                     textAlign: 'right',
-                    fontSize: 40,
-                    marginLeft: 20,
+                    fontSize: 35,
+                    marginHorizontal: 10,
                     color: '#fff',
                     backgroundColor: 'transparent',
                 }} name="ios-play">
@@ -342,11 +402,14 @@ class RecordInfo extends Component{
                         <View style={{marginTop: 10, alignItems: 'flex-start'}}>
                                 {this._renderPlayButton(this.state.isPlaying)}
                         </View>
+                        <View style={{justifyContent: 'center', alignItems: 'flex-end',}}>
+                            <Text  style={styles.contentTime}>{this._renderCurrentTime(Variables.state.currentTime)}</Text>
+                        </View>
                         <View style={{justifyContent: 'center', alignItems: 'center', marginHorizontal: 15}}>
                             {this._renderSlider(Variables.state.currentTime)}
                         </View>
                         <View style={{justifyContent: 'center', alignItems: 'flex-end',}}>
-                            <Text  style={styles.contentTime}>{this._renderTime(podcastPlayer)}</Text>
+                            <Text  style={styles.contentTime}>{this._renderEndTime()}</Text>
                         </View>
                     </View>
 
@@ -586,14 +649,24 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         marginLeft: 15,
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'HiraginoSans-W6',
         fontSize: 12,
         backgroundColor: 'transparent',
     },
     sliderContainer: {
-        width: 190,
+        width: width/1.8,
         height: 50,
+        marginTop:4,
         alignSelf: 'center'
+    },
+    podcastTextNum:{
+        color: '#fff',
+        fontSize: 12,
+        marginTop: 5,
+        flexDirection: 'row',
+        backgroundColor: 'transparent',
+        marginHorizontal: 10,
+        fontFamily: 'HiraginoSans-W6',
     },
 
 });

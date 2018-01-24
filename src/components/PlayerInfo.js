@@ -8,7 +8,7 @@ import {
     ListView,
     TextInput,
     KeyboardAvoidingView,
-    Alert
+    Dimensions,
 } from 'react-native';
 import Variables from "./Variables";
 import firebase from 'firebase';
@@ -16,6 +16,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import { Navigation } from 'react-native-navigation';
 import ListItemComment from "./ListItemComment";
+
+
+
+
+var {height, width} = Dimensions.get('window');
 
 
 class PlayerInfo extends Component {
@@ -125,7 +130,7 @@ class PlayerInfo extends Component {
     renderComments(){
         if(Variables.state.comments.length > 0){
             return(
-                <View style={{height: 250}}>
+                <View style={{height: height/2.4}}>
 
                     <ListView
                         ref={ ( ref ) => this.scrollView = ref }

@@ -6,6 +6,9 @@ import {AudioUtils} from 'react-native-audio';
 import Variables from "./Variables";
 
 
+
+//A single podcast on a list
+
 class ListItem extends Component {
 
     componentWillMount(){
