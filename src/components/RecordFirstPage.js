@@ -3,7 +3,16 @@ import { View, StyleSheet, Text, TouchableOpacity, Dimensions} from 'react-nativ
 import Icon from 'react-native-vector-icons/Ionicons';
 import PlayerBottom from './PlayerBottom';
 import { Navigation } from 'react-native-navigation';
+import {AudioUtils} from 'react-native-audio';
+import RNFetchBlob from 'react-native-fetch-blob';
 
+
+
+
+
+// Initial Record Page (Tab)
+
+let podFile = AudioUtils.DocumentDirectoryPath + '/test.aac';
 
 var {height, width} = Dimensions.get('window');
 
@@ -15,6 +24,9 @@ class RecordFirstPage extends Component{
 
     constructor(props) {
         super(props);
+        this.state={
+            fileExists: false
+        };
 
     }
 
@@ -44,6 +56,46 @@ class RecordFirstPage extends Component{
     };
 
 
+    prevPodcast =() => {
+
+        this.props.navigator.push({
+            screen: 'RecordInfo',
+            animated: true,
+            animationType: 'fade',
+        });
+
+    };
+
+    _renderPrevPodcast = () => {
+
+        RNFetchBlob.fs.stat(podFile)
+            .then((stats) => {
+                if(stats.size > 0){
+                this.setState({
+                    fileExists: true
+                })
+                }
+                else{
+                    this.setState({
+                        fileExists: false
+                    })
+                }
+            });
+
+        if(this.state.fileExists){
+            return(
+                <TouchableOpacity style = {{marginTop: 40}} onPress={this.prevPodcast}>
+                    <Icon style={{
+                        textAlign:'center',fontSize: 45,color:'#5757FF'
+                    }} name="md-undo">
+                    </Icon>
+                    <Text style= {styles.text} >Last recorded podcast</Text>
+                </TouchableOpacity>
+            )
+        }
+    };
+
+
     render() {
 
             return (
@@ -57,13 +109,15 @@ class RecordFirstPage extends Component{
                             </View>
                         </View>
 
-                        <TouchableOpacity style = {{marginTop: height / 5}} onPress={this.recordNewPodcast}>
+                        <TouchableOpacity style = {{marginTop: height / 8}} onPress={this.recordNewPodcast}>
                             <Icon style={{
                                 textAlign:'center',fontSize: 45,color:'#5757FF'
                             }} name="md-add">
                             </Icon>
                             <Text style= {styles.text} >Record a New Podcast</Text>
                         </TouchableOpacity>
+
+                        {this._renderPrevPodcast()}
 
                         <TouchableOpacity style = {{marginTop: 40}} onPress={this.info} >
                             <Icon style={{
@@ -72,7 +126,7 @@ class RecordFirstPage extends Component{
                                 color: '#5757FF'
                             }} name="md-help-circle">
                             </Icon>
-                            <Text style= {styles.text} >Help</Text>
+                            <Text style= {styles.text}>Help</Text>
                         </TouchableOpacity>
 
 

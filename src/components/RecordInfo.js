@@ -15,6 +15,11 @@ import Slider from 'react-native-slider';
 
 
 
+
+
+// 2nd Record Page (to set podcast info)
+
+
 let podFile = AudioUtils.DocumentDirectoryPath + '/test.aac';
 
 
@@ -38,6 +43,7 @@ class RecordInfo extends Component{
             podcastArtist: userID
         };
         Variables.setPodcastFile(podFile);
+        Variables.state.paused=true;
     }
 
     state = {
@@ -48,6 +54,10 @@ class RecordInfo extends Component{
         currentTime: 0,
         loading: false,
         uploadProgress: 10
+    };
+
+    static navigatorStyle = {
+        tabBarHidden: true
     };
 
     componentWillMount(){
@@ -427,7 +437,7 @@ class RecordInfo extends Component{
                     label="Title"
                     value={this.props.podcastTitle}
                     onChangeText={text => this.props.podcastUpdate({prop: 'podcastTitle', value: text})}
-                    maxLength={50}
+                    maxLength={75}
                     onSubmitEditing={(event) => {
                         this.refs.input2.focus();
                     }}
@@ -446,7 +456,7 @@ class RecordInfo extends Component{
                     value={this.props.podcastDescription}
                     onChangeText={text => this.props.podcastUpdate({prop: 'podcastDescription', value: text})}
                     multiline={true}
-                    maxLength={200}
+                    maxLength={500}
                 />
 
 

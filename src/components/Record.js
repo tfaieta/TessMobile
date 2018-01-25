@@ -8,6 +8,10 @@ import Variables from "./Variables";
 
 
 
+
+
+// First Record Page (where the recording happens)
+
 export let podFile =  AudioUtils.DocumentDirectoryPath + '/test.aac';
 export var podTime = 0;
 export var totalTime = 0;
@@ -417,6 +421,7 @@ class Record extends Component{
 
                         AudioRecorder.stopRecording();
                         this.setState({stoppedRecording: true, recording: false});
+                        this.prepareRecordingPath(this.state.audioPath);
 
 
                         this.props.navigator.resetTo({

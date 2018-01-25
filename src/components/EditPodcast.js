@@ -60,7 +60,7 @@ class EditPodcast extends Component {
                             label="Title"
                             value={this.state.title}
                             onChangeText={text => this.setState({title: text})}
-                            maxLength={50}
+                            maxLength={75}
                             multiline={true}
                             onSubmitEditing={(event) => {
                                 this.refs.input2.focus();
@@ -79,7 +79,7 @@ class EditPodcast extends Component {
                             value={this.state.description}
                             onChangeText={text => this.setState({description: text})}
                             multiline={true}
-                            maxLength={200}
+                            maxLength={500}
                         />
 
 
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
 
     container:{
         flex: 1,
-        backgroundColor: "#9f60ff90"
+        backgroundColor: "#565556",
     },
     textStyle:{
         color: '#fff',

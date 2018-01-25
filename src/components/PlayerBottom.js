@@ -921,7 +921,7 @@ class PlayerBottom extends Component {
         Variables.state.podcastArtist = '';
         Variables.state.podcastDescription = '';
         Variables.state.podcastCategory = '';
-        podcastPlayer.destroy();
+        Variables.state.podcastURL = '';
         MusicControl.resetNowPlaying();
     }
 

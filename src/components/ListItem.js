@@ -322,8 +322,8 @@ class ListItem extends Component {
                                 screen: "PodcastOptions",
                                 passProps: {rowData, navigator},
                                 style: {
-                                    backgroundBlur: "light",
-                                    backgroundColor: "#44434470",
+                                    backgroundBlur: "dark",
+                                    backgroundColor: "#44434410",
                                     tapBackgroundToDismiss: true,
                                     width: 100,
                                     height: 200
