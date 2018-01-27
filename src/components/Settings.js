@@ -267,7 +267,7 @@ class Settings extends Component {
                                 placeholderTextColor='#2A2A30'
                                 onChangeText={text => this.setState({bio: text})}
                                 multiline={true}
-                                maxLength={250}
+                                maxLength={500}
                                 onSubmitEditing={(event) => {
                                     firebase.database().ref(`users/${firebase.auth().currentUser.uid}`).child('/bio')
                                         .update({   bio: this.state.bio  });

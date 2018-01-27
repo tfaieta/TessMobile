@@ -357,10 +357,11 @@ class RecordInfo extends Component{
         if(loading){
 
             return(
-                    <View style={{width: (width / 100) * (uploadProgress), backgroundColor: '#5757FF', marginVertical: 12, marginHorizontal: 15,
-                        borderWidth:0.1,
-                        borderRadius: 10,}} >
-                        <ActivityIndicator style={{paddingVertical: 10, alignSelf:'center'}} color="#fff" size ="small" />
+                    <View style={{flex:1, flexDirection:'row'}}>
+                        <View style={{width: (width / 100) * (uploadProgress), alignContent:'flex-start', backgroundColor: '#5757FF', marginVertical: 12}} >
+                            <ActivityIndicator style={{paddingVertical: 10, alignSelf:'center'}} color="#fff" size ="small" />
+                        </View>
+                        <View style={{width: (width - (width / 100) * (uploadProgress) ), marginVertical: 12, flex:1, alignContent:'flex-end', backgroundColor: '#929acb70'}}/>
                     </View>
             )
         }

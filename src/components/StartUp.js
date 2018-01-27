@@ -2,11 +2,21 @@
  * Created by nickruspantini on 6/6/17.
  */
 import React, {Component} from 'react';
-import {StyleSheet, View, Image, Text, TouchableOpacity, StatusBar} from 'react-native';
-import { Actions } from 'react-native-router-flux';
+import {StyleSheet, View, Image, Text, TouchableOpacity, Dimensions, StatusBar} from 'react-native';
 import AppIntro from 'react-native-app-intro';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+
+
+
+
+
+
+// start up page for tess -> takes users to login or create account
+
+
+
+var {height, width} = Dimensions.get('window');
 
 
 export  default class Login extends Component{
@@ -38,60 +48,87 @@ export  default class Login extends Component{
                       showDoneButton={false}
                       showDots={true}
                       showSkipButton={false}
-                    dotColor='#b9bad1'
-                    activeDotColor='#9787FF'
+                    dotColor='#838394'
+                    activeDotColor='#fff'
             >
 
-                <View style={styles.slide1}>
-                    <View style={styles.linearGradient} level={0}>
-                    </View>
+                <View style={styles.slide1} level = {12.5}>
                     <Image
-                        style={{width: 294, height:290, position: 'absolute', alignSelf: 'flex-end', opacity: 1}}
-                        source={require('tess/src/images/woman-listening-music.png')}
-                    />
+                        style={{width: width, height: height, alignSelf: 'center', opacity: 1}}
+                        source={require('tess/src/images/tessLoadingScreen.png')}
+                    >
 
-                    <View level = {-20} style={styles.textContainer}>
-                        <View style={{marginLeft:10}}>
-                        <Text style={styles.textforSlide1}>Ready to Create?</Text>
+                    <View style={styles.textContainer}>
+                        <View style={{marginLeft:10}} >
+                        <Text style={styles.textforSlide1}>Let Your Voice Be Heard</Text>
                         </View>
-                        <View style={{marginLeft:10}}>
-                        <Text style={styles.smallText}>We make it easy for anyone to record high-quality audio.</Text>
+                        <View style={{marginLeft:10}} >
+                        <Text style={styles.smallText1}>LET'S GET STARTED!</Text>
                         </View>
                     </View>
+
+                    </Image>
                 </View>
 
 
 
-                <View style={styles.slide2}>
+                <View style={styles.slide2} level = {12.5}>
+
+                    <Image
+                        style={{width: width, height: height, borderColor: '#b9bad1', alignSelf: 'center', opacity: 1}}
+                        source={require('tess/src/images/woman-listening-music.png')}
+                    >
+
                     <View level = {20}>
-                        <Icon style={{textAlign:'center', fontSize: 80,color:'#9787FF' }} name="md-microphone">
+                        <Icon style={{textAlign:'center', marginTop: height/4, fontSize: 80,color:'#fff', backgroundColor: 'transparent'}} name="md-microphone">
                         </Icon>
                     </View>
                     <View level={-20}>
                     <Text style={styles.smallText}>Tess is a podcast platform</Text>
                     </View>
+
+                    </Image>
                 </View>
 
 
-                <View style={styles.slide3}>
+                <View style={styles.slide3} level = {12.5}>
+
+                    <Image
+                        style={{width: width, height: height, borderColor: '#ffffff70', alignSelf: 'center', opacity: 1}}
+                        source={require('tess/src/images/woman-listening2.png')}
+                    >
+
                     <View level = {20}>
-                        <Icon style={{textAlign:'center', fontSize: 80,color:'#9787FF' }} name="md-headset">
+                        <Icon style={{textAlign:'center',  marginTop: height/4, fontSize: 80,color:'#fff', backgroundColor: 'transparent' }} name="md-headset">
                         </Icon>
                     </View>
                     <View level = {-20}>
                     <Text style={styles.smallText}>A place to easily listen to or create podcasts</Text>
                     </View>
+
+                    </Image>
+
                 </View>
 
 
-                <View style={styles.slide4}>
+                <View style={styles.slide4} level = {12.5}>
+
+                    <Image
+                        style={{width: width, height: height, borderColor: '#ffffff70', alignSelf: 'center', opacity: 1}}
+                        source={require('tess/src/images/man-recording.png')}
+                    >
+
+
                     <View level = {20}>
-                        <Icon style={{textAlign:'center', fontSize: 80,color:'#9787FF' }} name="ios-radio-button-on">
+                        <Icon style={{textAlign:'center', marginTop: height/4, fontSize: 80,color:'#fff', backgroundColor: 'transparent' }} name="ios-radio-button-on">
                         </Icon>
                     </View>
                     <View level = {-20}>
-                    <Text style={styles.smallText}>Record with the touch of a button</Text>
+                    <Text style={styles.smallText}>Record with the touch of a button anywhere, anytime</Text>
                     </View>
+
+                    </Image>
+
                 </View>
 
 
@@ -106,8 +143,8 @@ export  default class Login extends Component{
 
                 <View style={{flex:1, flexDirection: 'row', alignItems: 'flex-end'}}>
 
-                    <View style={{flex:1, marginRight: 10 , marginBottom: 10 , flexDirection: 'column', alignItems: 'flex-end'}}>
-                        <TouchableOpacity onPress={this._handleButtonPressLogin} style = {{ width: 75, height: 75, backgroundColor: 'rgba(151,135,255,0.16)',borderRadius: 40, borderColor:  'rgba(151,135,255,0)', borderWidth: 2.5, alignItems: 'center'}}>
+                    <View style={{flex:1, marginRight: 20 , marginBottom: 60 , flexDirection: 'column', alignItems: 'flex-end'}}>
+                        <TouchableOpacity onPress={this._handleButtonPressLogin} style = {{ width: 75, height: 75, backgroundColor: '#ffffff50',borderRadius: 40, borderColor:  'rgba(151,135,255,0)', borderWidth: 2.5, alignItems: 'center'}}>
                             <Image
                                 style={styles.logo}
                                 source={require('tess/src/images/Circle-button.png')}
@@ -167,39 +204,49 @@ const styles = StyleSheet.create({
     },
     slide2: {
         flex: 1,
-        paddingTop: 150,
         alignItems: 'center',
         backgroundColor: '#fff'
     },
     slide3: {
         flex: 1,
-        paddingTop: 150,
         alignItems: 'center',
         backgroundColor: '#fff'
     },
     slide4: {
         flex: 1,
-        paddingTop: 150,
         alignItems: 'center',
         backgroundColor: '#fff'
     },
 
     textforSlide1: {
-        color: '#2A2A30',
-        fontSize: 38,
+        color: '#fff',
+        fontSize: 46,
         textAlign: 'left',
-        fontFamily: 'HiraginoSans-W3',
+        fontFamily: 'AvenirNext-Bold',
         marginLeft: 30,
         marginRight: 30,
-        marginHorizontal: -250,
+        marginHorizontal: -400,
+        marginTop: height / 2,
+        backgroundColor: 'transparent'
+    },
+    smallText1: {
+        color: '#fff',
+        fontSize: 12,
+        textAlign: 'left',
+        fontFamily: 'Avenir-Light',
+        marginLeft: 30,
+        marginRight: 30,
+        marginTop: 20,
+        backgroundColor: 'transparent'
     },
     smallText: {
-        color: '#828393',
-        fontSize: 16,
-        textAlign: 'left',
+        color: '#fff',
+        fontSize: 18,
+        marginTop: 10,
+        textAlign: 'center',
         fontFamily: 'HiraginoSans-W3',
-        marginLeft: 30,
-        marginRight: 30,
+        marginHorizontal: 30,
+        backgroundColor: 'transparent'
     },
 
 

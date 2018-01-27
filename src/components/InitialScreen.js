@@ -1,10 +1,18 @@
 import React, {Component} from 'react';
-import {View, Image, StatusBar, ActivityIndicator} from 'react-native';
+import {View, Image, StatusBar, ActivityIndicator, Dimensions} from 'react-native';
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
 import { Navigation } from 'react-native-navigation';
+
+
+
+
+
+
+// first official screen of tess, from here it goes to home page if logged in or start up if not
+
 
 
 var homeIcon;
@@ -33,6 +41,8 @@ var accountIconSelected;
 Icon.getImageSource('ios-person', 30, '#F5002A').then((source) => { accountIconSelected = source});
 
 
+
+var {height, width} = Dimensions.get('window');
 
 
 export default class InitialScreen extends Component{
@@ -163,10 +173,10 @@ export default class InitialScreen extends Component{
                 <StatusBar hidden={true} />
 
                 <Image
-                    style={{ alignSelf: 'center', height: 700, width:400, opacity: 1}}
-                    source={require('tess/src/images/initialScreenSplash.png')}
+                    style={{ alignSelf: 'center', height: height, width: width, opacity: 1}}
+                    source={require('tess/src/images/tessLoadingScreen.png')}
                 >
-                <ActivityIndicator style={{marginTop:450}} size="large" color='#856cff'/>
+                <ActivityIndicator style={{marginTop:height/2}} size="large" color='#fff'/>
                 </Image>
 
             </View>
