@@ -1,34 +1,28 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ScrollView, ListView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import PlayerBottom from './PlayerBottom';
 import Variables from "./Variables";
 import firebase from 'firebase';
 import ListItem from "./ListItem";
+import ListItemQueue from "./ListItemQueue";
 
 
-
-
-
-// displays recently played podcasts
-
-
-class RecentlyPlayed extends Component{
+class MyQueue extends Component{
 
     componentWillMount(){
         const {currentUser} = firebase.auth();
 
-        firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).on("value", function (snapshot) {
-            Variables.state.recentlyPlayed = [];
+
+        firebase.database().ref(`users/${currentUser.uid}/queue`).on("value", function (snapshot) {
+            Variables.state.myQueue = [];
             snapshot.forEach(function (snap) {
                 firebase.database().ref(`podcasts/${snap.val().id}`).on("value", function (data) {
                     if(data.val()){
-                        Variables.state.recentlyPlayed.push(data.val())
+                        Variables.state.myQueue.push(data.val())
                     }
 
                 })
             });
-            Variables.state.recentlyPlayed.reverse();
         });
 
     }
@@ -37,18 +31,17 @@ class RecentlyPlayed extends Component{
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithRows(Variables.state.recentlyPlayed),
+            dataSource: dataSource.cloneWithRows(Variables.state.myQueue),
         };
-        setTimeout(() => {
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.recentlyPlayed)})
+
+        setInterval(() => {
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myQueue)})
         },1000);
-        setTimeout(() => {
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.recentlyPlayed)})
-        },2500);
+
     };
 
     _pressBack = () => {
-        this.props.navigator.pop({
+        this.props.navigator.dismissModal({
             animated: true,
             animationType: 'fade',
         });
@@ -56,17 +49,18 @@ class RecentlyPlayed extends Component{
 
 
     renderRow = (rowData) => {
-        return <ListItem podcast={rowData} navigator={this.props.navigator} />;
+        return <ListItemQueue podcast={rowData} navigator={this.props.navigator} />;
     };
 
 
     render() {
         return (
+            <View style = {{backgroundColor: '#5757FF80', flex:1}}>
             <View
                 style={styles.container}>
 
 
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, borderWidth: 2, borderBottomColor: 'rgba(187,188,205,0.3)', borderTopColor: '#fff', borderLeftColor: '#fff', borderRightColor: '#fff'}}>
+                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15}}>
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
@@ -76,7 +70,7 @@ class RecentlyPlayed extends Component{
                         </TouchableOpacity>
                     </View>
                     <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={styles.header}>Recently Played</Text>
+                        <Text style={styles.header}>My Queue</Text>
                     </View>
 
                     <View>
@@ -86,6 +80,7 @@ class RecentlyPlayed extends Component{
 
 
                 <ScrollView>
+
 
                     <ListView
                         enableEmptySections
@@ -101,10 +96,7 @@ class RecentlyPlayed extends Component{
                 </ScrollView>
 
 
-
-                <PlayerBottom navigator={this.props.navigator}/>
-
-
+            </View>
             </View>
 
 
@@ -117,7 +109,13 @@ class RecentlyPlayed extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: 'transparent',
+        backgroundColor: '#fff',
+        borderColor: '#fff',
+        borderWidth: 1,
+        marginTop: 20,
+        marginHorizontal: 20,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
     },
 
     title: {
@@ -155,4 +153,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default RecentlyPlayed;
+export default MyQueue;

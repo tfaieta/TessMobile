@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, StatusBar, Image, TextInput, ScrollView} from 'react-native';
+import { Text, View, TouchableOpacity, StatusBar, Image, TextInput, ScrollView, Dimensions} from 'react-native';
 import { Spinner } from './common';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from "react-native-linear-gradient/index.android";
+
+var {height, width} = Dimensions.get('window');
+
+
+
+
+// login page
 
 
 class Login extends Component {
@@ -70,7 +77,7 @@ class Login extends Component {
 
 
                 <Image
-                    style={{ width: 137, height: 154, marginBottom: 40, alignSelf: 'center'}}
+                    style={{ width: height/4.87, height: height/4.33, marginBottom: 40, alignSelf: 'center'}}
                     source={require('tess/src/images/White_Logo.png')}
                 />
 

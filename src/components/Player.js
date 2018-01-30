@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {View, StyleSheet} from 'react-native';
 import Variables from './Variables';
 import Video from 'react-native-video';
+import firebase from 'firebase';
 
 
 
@@ -74,7 +75,119 @@ class Player extends Component{
         console.warn("ERROR!")
     }
     onEnd(){
-        Variables.state.paused = true;
+        const {currentUser} = firebase.auth();
+        const user = currentUser.uid;
+
+        firebase.database().ref(`users/${currentUser.uid}/queue`).limitToFirst(1).once("value", function (snapshot) {
+
+           snapshot.forEach(function (key) {
+               if(key.val()){
+
+                   firebase.database().ref(`podcasts/${key.val().id}`).on("value", function (mainSnap) {
+                       const {id} = mainSnap.val();
+
+                       firebase.storage().ref(`/users/${mainSnap.val().podcastArtist}/${mainSnap.val().id}`).getDownloadURL().catch(() => {console.warn("file not found")})
+                           .then(function(url) {
+                               Variables.setPodcastFile(url);
+                           });
+
+
+                       firebase.database().ref(`/users/${mainSnap.val().podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
+                           if(snap.val()){
+                               Variables.state.currentUsername = snap.val().username;
+                           }
+                           else {
+                               Variables.state.currentUsername = mainSnap.val().podcastArtist;
+                           }
+                       });
+
+
+                       firebase.database().ref(`podcasts/${mainSnap.val().id}/likes`).on("value", function (snap) {
+                           Variables.state.likers = [];
+                           Variables.state.liked = false;
+                           snap.forEach(function (data) {
+                               if (data.val()) {
+                                   if(data.val().user == currentUser.uid){
+                                       Variables.state.liked = true;
+                                   }
+                                   Variables.state.likers.push(data.val());
+                               }
+                           });
+                       });
+
+
+
+                       firebase.database().ref(`podcasts/${mainSnap.val().id}/plays`).on("value", function (snap) {
+                           Variables.state.podcastsPlays = 0;
+                           snap.forEach(function (data) {
+                               if (data.val()) {
+                                   Variables.state.podcastsPlays++;
+                               }
+                           });
+                       });
+
+
+                       firebase.database().ref(`podcasts/${mainSnap.val().id}/plays`).child(user).update({user});
+
+
+
+                       firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed/`).once("value", function (snap) {
+                           snap.forEach(function (data) {
+                               if(data.val().id == mainSnap.val().id){
+                                   firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed/${data.key}`).remove()
+                               }
+                           });
+                           firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed/`).push({id});
+                       });
+
+
+                       Variables.pause();
+                       Variables.state.isPlaying = false;
+                       Variables.state.podcastTitle = mainSnap.val().podcastTitle;
+                       Variables.state.podcastArtist = mainSnap.val().podcastArtist;
+                       Variables.state.podcastID = mainSnap.val().id;
+                       Variables.state.podcastDescription = mainSnap.val().podcastDescription;
+                       Variables.state.podcastCategory = mainSnap.val().podcastCategory;
+                       Variables.state.favorited = false;
+                       Variables.state.userProfileImage = '';
+                       Variables.play();
+                       Variables.state.isPlaying = true;
+
+
+                       const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
+                       if(storageRef.child('image-profile-uploaded')){
+                           storageRef.getDownloadURL()
+                               .then(function(url) {
+                                   if(url){
+                                       Variables.state.userProfileImage = url;
+                                   }
+                               }).catch(function(error) {
+                               //
+                           });
+                       }
+
+
+                       firebase.database().ref(`users/${currentUser.uid}/favorites`).on("value", function (snapshot) {
+                           snapshot.forEach(function (data) {
+                               if(data.key == mainSnap.val().id){
+                                   Variables.state.favorited = true;
+                               }
+                           })
+                       })
+
+
+
+                   });
+
+
+                   firebase.database().ref(`users/${currentUser.uid}/queue/${key.key}`).remove()
+
+               }
+
+           });
+
+        });
+
     }
     onLoadStart(){
         Variables.state.buffering = true;

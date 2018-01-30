@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, Image, StatusBar, ActivityIndicator, Dimensions} from 'react-native';
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import LinearGradient from "react-native-linear-gradient/index.android";
 
 import { Navigation } from 'react-native-navigation';
 
@@ -169,17 +169,22 @@ export default class InitialScreen extends Component{
 
     render() {
         return (
-            <View style={{flex:1, backgroundColor: '#fff'}}>
+            <LinearGradient
+
+                colors={['#5555ff', '#9687ff' ]}
+                start={{x: 0.0, y: 0.0}} end={{x: 0, y: 1}}
+                style={{flex:1}}>
                 <StatusBar hidden={true} />
 
                 <Image
-                    style={{ alignSelf: 'center', height: height, width: width, opacity: 1}}
-                    source={require('tess/src/images/tessLoadingScreen.png')}
-                >
-                <ActivityIndicator style={{marginTop:height/2}} size="large" color='#fff'/>
-                </Image>
+                    style={{width: 150, height: 168, borderColor: '#b9bad1', alignSelf: 'center', opacity: 1, marginTop: height / 6,}}
+                    source={require('tess/src/images/White_Logo.png')}
+                />
 
-            </View>
+                <ActivityIndicator style={{marginTop: 60}} size="large" color='#fff'/>
+
+
+            </LinearGradient>
         );
     }
 }

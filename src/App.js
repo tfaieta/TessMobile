@@ -56,6 +56,8 @@ import RecentlyPlayed from "./components/RecentlyPlayed";
 import InfoDiagram from "./components/InfoDiagram";
 import ReligionSpirituality from "./components/Categories/ReligionSpirituality";
 import SetPlayerSpeed from "./components/SetPlayerSpeed";
+import MyQueue from "./components/MyQueue";
+import PlayerOptions from "./components/PlayerOptions";
 
 
 
@@ -119,6 +121,8 @@ Navigation.registerComponent('PodcastOptions', () => PodcastOptions, store, Prov
 Navigation.registerComponent('EditPodcast', () => EditPodcast, store, Provider);
 Navigation.registerComponent('PlayerInfo', () => PlayerInfo, store, Provider);
 Navigation.registerComponent('SetPlayerSpeed', () => SetPlayerSpeed, store, Provider);
+Navigation.registerComponent('MyQueue', () => MyQueue, store, Provider);
+Navigation.registerComponent('PlayerOptions', () => PlayerOptions, store, Provider);
 
 
 const config = {

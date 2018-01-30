@@ -84,7 +84,7 @@ class RecordFirstPage extends Component{
 
         if(this.state.fileExists){
             return(
-                <TouchableOpacity style = {{marginTop: 40}} onPress={this.prevPodcast}>
+                <TouchableOpacity style = {{marginTop: height/16.675}} onPress={this.prevPodcast}>
                     <Icon style={{
                         textAlign:'center',fontSize: 45,color:'#5757FF'
                     }} name="md-undo">
@@ -109,7 +109,7 @@ class RecordFirstPage extends Component{
                             </View>
                         </View>
 
-                        <TouchableOpacity style = {{marginTop: height / 8}} onPress={this.recordNewPodcast}>
+                        <TouchableOpacity style = {{marginTop: height / 9}} onPress={this.recordNewPodcast}>
                             <Icon style={{
                                 textAlign:'center',fontSize: 45,color:'#5757FF'
                             }} name="md-add">
@@ -119,7 +119,7 @@ class RecordFirstPage extends Component{
 
                         {this._renderPrevPodcast()}
 
-                        <TouchableOpacity style = {{marginTop: 40}} onPress={this.info} >
+                        <TouchableOpacity style = {{marginTop: height/16.675}} onPress={this.info} >
                             <Icon style={{
                                 textAlign: 'center',
                                 fontSize: 45,

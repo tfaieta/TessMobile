@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     Alert,
     Dimensions
+
 } from 'react-native';
 import firebase from 'firebase';
 import Variables from "./Variables";
@@ -14,9 +15,10 @@ var {height, width} = Dimensions.get('window');
 
 
 
-// options popup for podcasts on a list
+// options popup from player options
 
-class PodcastOptions extends Component {
+
+class PlayerOptions extends Component {
 
     constructor(props){
         super(props);
@@ -24,11 +26,10 @@ class PodcastOptions extends Component {
             favorite: false
         };
 
-        const rowData = this.props.rowData;
-        const id  = rowData.id;
+        const id  = Variables.state.podcastID;
         const {currentUser} = firebase.auth();
         if(id){
-            if (firebase.database().ref(`users/${currentUser.uid}/favorites`).child(rowData.id)){
+            if (firebase.database().ref(`users/${currentUser.uid}/favorites`).child(id)){
                 this.setState({favorite: true})
             }
             else{
@@ -42,38 +43,37 @@ class PodcastOptions extends Component {
 
     render(){
 
-        const rowData = this.props.rowData;
         const navigator = this.props.navigator;
         const {currentUser} = firebase.auth();
-        const id  = rowData.id;
-        const podcastArtist = rowData.podcastArtist;
-        const podcastTitle = rowData.podcastTitle;
-        const podcastDescription = rowData.podcastDescription;
-        const podcastCategory = rowData.podcastCategory;
+        const id  = Variables.state.podcastID;
+        const podcastArtist = Variables.state.podcastArtist;
+        const podcastTitle = Variables.state.podcastTitle;
+
 
         let profileName = 'loading';
-        firebase.database().ref(`/users/${rowData.podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
+        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
             if (snap.val()) {
                 profileName = snap.val().username;
             }
             else {
-                profileName = rowData.podcastArtist;
+                profileName = podcastArtist;
             }
         });
 
 
 
-        if(rowData.podcastArtist == currentUser.uid){
+        if(podcastArtist == currentUser.uid){
             return(
                 <View>
                     <View>
-                        <Text style={styles.textTitle}>{rowData.podcastTitle}</Text>
+                        <Text style={styles.textTitle}>{podcastTitle}</Text>
                         <Text style={styles.textArtist}>by {profileName}</Text>
                     </View>
 
                     <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
 
                     <TouchableOpacity onPress = {() => {
+
 
                         firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
                             snap.forEach(function (data) {
@@ -101,56 +101,14 @@ class PodcastOptions extends Component {
 
 
                     <TouchableOpacity onPress={() => {
+                        Variables.state.browsingArtist = podcastArtist;
                         navigator.showModal({
-                            screen: 'EditPodcast',
-                            passProps: {rowData, navigator},
+                            screen: 'UserProfile',
+                            passProps: {navigator},
                         })
-
                     }}>
-                        <Text style={styles.textStyle}>Edit</Text>
+                        <Text style={styles.textStyle}>Go to Profile</Text>
                     </TouchableOpacity>
-
-
-
-
-
-                    <TouchableOpacity onPress = {() => {
-                        Alert.alert(
-                            'Are you sure you want to delete?',
-                            '',
-                            [
-                                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                                {text: 'Yes', onPress: () => {
-
-                                    if(rowData.id){
-                                        firebase.storage().ref(`/users/${rowData.podcastArtist}/${rowData.id}`).delete();
-                                        firebase.database().ref(`/podcasts/${rowData.id}`).remove();
-                                        firebase.database().ref(`/users/${rowData.podcastArtist}/podcasts/${rowData.id}`).remove();
-                                        navigator.dismissLightBox();
-                                    }
-                                    else{
-                                        firebase.storage().ref(`/users/${rowData.podcastArtist}/${rowData.podcastTitle}`).delete();
-                                        firebase.database().ref(`/podcasts`).on("value", function (snapshot) {
-                                            snapshot.forEach(function (data) {
-                                                if(data.val().podcastTitle == rowData.podcastTitle && data.val().podcastArtist == rowData.podcastArtist){
-                                                    data.ref.remove()
-                                                }
-                                            })
-                                        });
-                                        navigator.dismissLightBox();
-                                    }
-
-                                }
-                                },
-                            ],
-                            { cancelable: false }
-                        )
-                    }}>
-                        <Text style={styles.textStyle}>Delete</Text>
-                    </TouchableOpacity>
-
-
-
 
 
                     <TouchableOpacity onPress = {() => {
@@ -172,11 +130,12 @@ class PodcastOptions extends Component {
                     return(
                         <View>
                             <View>
-                                <Text style={styles.textTitle}>{rowData.podcastTitle}</Text>
+                                <Text style={styles.textTitle}>{podcastTitle}</Text>
                                 <Text style={styles.textArtist}>{profileName}</Text>
                             </View>
 
                             <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
+
 
                             <TouchableOpacity onPress = {() => {
 
@@ -215,10 +174,10 @@ class PodcastOptions extends Component {
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={() => {
-                                Variables.state.browsingArtist = rowData.podcastArtist;
+                                Variables.state.browsingArtist = podcastArtist;
                                 navigator.showModal({
                                     screen: 'UserProfile',
-                                    passProps: {rowData, navigator},
+                                    passProps: {navigator},
                                 })
                             }}>
                                 <Text style={styles.textStyle}>Go to Profile</Text>
@@ -240,7 +199,7 @@ class PodcastOptions extends Component {
                     return(
                         <View>
                             <View>
-                                <Text style={styles.textTitle}>{rowData.podcastTitle}</Text>
+                                <Text style={styles.textTitle}>{podcastTitle}</Text>
                                 <Text style={styles.textArtist}>{profileName}</Text>
                             </View>
 
@@ -264,6 +223,7 @@ class PodcastOptions extends Component {
                             </TouchableOpacity>
 
 
+
                             <TouchableOpacity onPress = {() => {
                                 this.props.navigator.showModal({
                                     screen: 'MyQueue',
@@ -284,10 +244,10 @@ class PodcastOptions extends Component {
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={() => {
-                                Variables.state.browsingArtist = rowData.podcastArtist;
+                                Variables.state.browsingArtist = podcastArtist;
                                 navigator.showModal({
                                     screen: 'UserProfile',
-                                    passProps: {rowData, navigator},
+                                    passProps: {navigator},
                                 })
                             }}>
                                 <Text style={styles.textStyle}>Go to Profile</Text>
@@ -311,7 +271,7 @@ class PodcastOptions extends Component {
                     return(
                         <View>
                             <View>
-                                <Text style={styles.textTitle}>{rowData.podcastTitle}</Text>
+                                <Text style={styles.textTitle}>{podcastTitle}</Text>
                                 <Text style={styles.textArtist}>{profileName}</Text>
                             </View>
 
@@ -330,10 +290,10 @@ class PodcastOptions extends Component {
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={() => {
-                                Variables.state.browsingArtist = rowData.podcastArtist;
+                                Variables.state.browsingArtist = podcastArtist;
                                 navigator.showModal({
                                     screen: 'UserProfile',
-                                    passProps: {rowData, navigator},
+                                    passProps: {navigator},
                                 })
                             }}>
                                 <Text style={styles.textStyle}>Go to Profile</Text>
@@ -355,7 +315,7 @@ class PodcastOptions extends Component {
                     return(
                         <View>
                             <View>
-                                <Text style={styles.textTitle}>{rowData.podcastTitle}</Text>
+                                <Text style={styles.textTitle}>{podcastTitle}</Text>
                                 <Text style={styles.textArtist}>{profileName}</Text>
                             </View>
 
@@ -374,10 +334,10 @@ class PodcastOptions extends Component {
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={() => {
-                                Variables.state.browsingArtist = rowData.podcastArtist;
+                                Variables.state.browsingArtist = podcastArtist;
                                 navigator.showModal({
                                     screen: 'UserProfile',
-                                    passProps: {rowData, navigator},
+                                    passProps: {navigator},
                                 })
                             }}>
                                 <Text style={styles.textStyle}>Go to Profile</Text>
@@ -457,4 +417,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default PodcastOptions;
+export default PlayerOptions;

@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 import {StyleSheet, View, Image, Text, TouchableOpacity, Dimensions, StatusBar} from 'react-native';
 import AppIntro from 'react-native-app-intro';
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import LinearGradient from "react-native-linear-gradient/index.android";
 
 
 
@@ -52,11 +52,17 @@ export  default class Login extends Component{
                     activeDotColor='#fff'
             >
 
-                <View style={styles.slide1} level = {12.5}>
-                    <Image
-                        style={{width: width, height: height, alignSelf: 'center', opacity: 1}}
-                        source={require('tess/src/images/tessLoadingScreen.png')}
-                    >
+                <View style={styles.slide1} level = {width/30}>
+                    <LinearGradient
+
+                        colors={['#5555ff', '#9687ff' ]}
+                        start={{x: 0.0, y: 0.0}} end={{x: 0, y: 1}}
+                        style={{height: height, width: width}}>
+
+                        <Image
+                            style={{width: height/4.45, height: height/3.97, borderColor: '#b9bad1', alignSelf: 'center', opacity: 1, marginTop: height / 6,}}
+                            source={require('tess/src/images/White_Logo.png')}
+                        />
 
                     <View style={styles.textContainer}>
                         <View style={{marginLeft:10}} >
@@ -67,12 +73,13 @@ export  default class Login extends Component{
                         </View>
                     </View>
 
-                    </Image>
+
+                    </LinearGradient>
                 </View>
 
 
 
-                <View style={styles.slide2} level = {12.5}>
+                <View style={styles.slide2} level = {width/30}>
 
                     <Image
                         style={{width: width, height: height, borderColor: '#b9bad1', alignSelf: 'center', opacity: 1}}
@@ -91,7 +98,7 @@ export  default class Login extends Component{
                 </View>
 
 
-                <View style={styles.slide3} level = {12.5}>
+                <View style={styles.slide3} level = {width/30}>
 
                     <Image
                         style={{width: width, height: height, borderColor: '#ffffff70', alignSelf: 'center', opacity: 1}}
@@ -111,7 +118,7 @@ export  default class Login extends Component{
                 </View>
 
 
-                <View style={styles.slide4} level = {12.5}>
+                <View style={styles.slide4} level = {width/30}>
 
                     <Image
                         style={{width: width, height: height, borderColor: '#ffffff70', alignSelf: 'center', opacity: 1}}
@@ -197,7 +204,6 @@ const styles = StyleSheet.create({
     },
 
     slide1: {
-        paddingTop: 0,
         flex: 1,
         alignItems: 'center',
         backgroundColor: '#fff'
@@ -220,18 +226,18 @@ const styles = StyleSheet.create({
 
     textforSlide1: {
         color: '#fff',
-        fontSize: 46,
+        fontSize: height/14.5,
         textAlign: 'left',
         fontFamily: 'AvenirNext-Bold',
         marginLeft: 30,
         marginRight: 30,
         marginHorizontal: -400,
-        marginTop: height / 2,
+        marginTop: 60,
         backgroundColor: 'transparent'
     },
     smallText1: {
         color: '#fff',
-        fontSize: 12,
+        fontSize: height/55.58,
         textAlign: 'left',
         fontFamily: 'Avenir-Light',
         marginLeft: 30,

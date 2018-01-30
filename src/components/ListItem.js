@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import { Text, View, LayoutAnimation, TouchableOpacity, Alert, Image } from 'react-native';
+import { Text, View, LayoutAnimation, TouchableOpacity, Alert, Image, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import {AudioUtils} from 'react-native-audio';
 import Variables from "./Variables";
 
+var {height, width} = Dimensions.get('window');
 
 
-//A single podcast on a list
+
+
+// A single podcast on a list
 
 class ListItem extends Component {
 
@@ -334,8 +337,8 @@ class ListItem extends Component {
                             <Icon style={{
                                 textAlign: 'left',
                                 marginLeft: 0,
-                                marginRight: 15,
-                                fontSize: 30,
+                                marginRight: height/44.47,
+                                fontSize: height/22.23,
                                 color: '#5757FF',
                             }} name="ios-more">
                             </Icon>

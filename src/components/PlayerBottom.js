@@ -327,7 +327,7 @@ class PlayerBottom extends Component {
             else{
                 return (
                     <TouchableOpacity onPress={this.pause}>
-                        <Icon style={{textAlign:'center', fontSize: 50, color:'#2A2A30' }}  name="ios-pause">
+                        <Icon style={{textAlign:'center', fontSize: height/13.34, color:'#2A2A30' }}  name="ios-pause">
                         </Icon>
                     </TouchableOpacity>
                 );
@@ -336,7 +336,7 @@ class PlayerBottom extends Component {
         else {
             return (
                 <TouchableOpacity onPress={this.play}>
-                    <Icon style={{textAlign:'center', fontSize: 50, color:'#2A2A30' }}  name="md-play">
+                    <Icon style={{textAlign:'center', fontSize: height/13.34, color:'#2A2A30' }}  name="md-play">
                     </Icon>
                 </TouchableOpacity>
             );
@@ -372,7 +372,7 @@ class PlayerBottom extends Component {
                     <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom: 10, height: 140, width: 140, borderRadius:10, borderWidth:8, borderColor:'rgba(320,320,320,0.8)',  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
                         <Icon style={{
                             textAlign: 'center',
-                            fontSize: 90,
+                            fontSize: height/7.41,
                             color: 'white',
                             marginTop: 20,
                         }} name="md-person">
@@ -382,9 +382,9 @@ class PlayerBottom extends Component {
             }
             else{
                 return(
-                    <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom: 10, height: 140, width: 140,  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
+                    <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom: 10, height: height/4.75, width: height/4.75,  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
                         <Image
-                            style={{width: 140, height:140,  alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
+                            style={{width: height/4.75, height:height/4.75,  alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
                             source={{uri: this.state.profileImage}}
                         />
                     </View>
@@ -907,6 +907,29 @@ class PlayerBottom extends Component {
     };
 
 
+    goToMyQueue(){
+
+        Navigation.showModal({
+            screen: 'MyQueue',
+        });
+
+    }
+
+
+    openPlayerOptions(){
+
+        Navigation.showLightBox({
+            screen: "PlayerOptions",
+            style: {
+                backgroundBlur: "dark",
+                backgroundColor: "#44434410",
+                tapBackgroundToDismiss: true,
+            },
+        });
+
+    }
+
+
     onSwipeUp(gestureState) {
         this.setModalVisible(true)
     }
@@ -991,10 +1014,19 @@ class PlayerBottom extends Component {
                             hidden={true}
                         />
 
-                        <TouchableOpacity onPress={this.Close} style={{alignItems:'center', flex:1}}>
-                            <Icon style={{textAlign:'center', fontSize: 40,color:'#BBBCCD' }} name="ios-arrow-down">
-                            </Icon>
-                        </TouchableOpacity>
+                        <View style = {{flexDirection: 'row'}}>
+
+                            <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex:1, marginVertical: 10, marginHorizontal: 20}}>
+                                <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="ios-arrow-down">
+                                </Icon>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={this.goToMyQueue} style={{alignItems:'flex-end', flex:1, marginVertical: 10, marginHorizontal: 20}}>
+                                <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="md-list-box">
+                                </Icon>
+                            </TouchableOpacity>
+
+                        </View>
 
 
                         {this._renderPodcastImageBig()}
@@ -1033,9 +1065,9 @@ class PlayerBottom extends Component {
 
                             <View style={styles.leftContainerP}>
                                 <TouchableOpacity onPress={this.scrubBackward}>
-                                    <Icon style={{flex:1, textAlign:'center', fontSize: 50,color:'#2A2A30' }} name="ios-undo">
+                                    <Icon style={{flex:1, textAlign:'center', fontSize: height/13.34,color:'#2A2A30' }} name="ios-undo">
                                     </Icon>
-                                    <Text style={{textAlign: 'center',  color: '#2A2A30', fontSize: 10, backgroundColor: 'transparent', fontFamily: 'HiraginoSans-W6',}}>15</Text>
+                                    <Text style={{textAlign: 'center',  color: '#2A2A30', fontSize: height/66.7, backgroundColor: 'transparent', fontFamily: 'HiraginoSans-W6',}}>15</Text>
                                 </TouchableOpacity>
                             </View>
 
@@ -1047,12 +1079,11 @@ class PlayerBottom extends Component {
 
                             <View style={styles.rightContainerP}>
                                 <TouchableOpacity onPress={this.scrubForward}>
-                                    <Icon style={{flex:1, textAlign:'center', fontSize: 50,color:'#2A2A30' }} name="ios-redo">
+                                    <Icon style={{flex:1, textAlign:'center', fontSize: height/13.34,color:'#2A2A30' }} name="ios-redo">
                                     </Icon>
-                                    <Text style={{textAlign: 'center',  color: '#2A2A30', fontSize: 10, backgroundColor: 'transparent', fontFamily: 'HiraginoSans-W6',}}>15</Text>
+                                    <Text style={{textAlign: 'center',  color: '#2A2A30', fontSize: height/66.7, backgroundColor: 'transparent', fontFamily: 'HiraginoSans-W6',}}>15</Text>
                                 </TouchableOpacity>
                             </View>
-
 
                         </View>
 
@@ -1081,7 +1112,10 @@ class PlayerBottom extends Component {
 
                             <View style={{alignItems: 'center', flex:1}}>
 
-                                {this._renderFav(Variables.state.favorited)}
+                                <TouchableOpacity onPress={this.openPlayerOptions} style={{alignItems:'center', flex: 1}}>
+                                    <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="ios-more">
+                                    </Icon>
+                                </TouchableOpacity>
 
                             </View>
 
@@ -1174,7 +1208,7 @@ class PlayerBottom extends Component {
     },
         leftContainerP: {
             flex:1,
-            marginTop:10,
+            marginTop: height/66.7,
             paddingLeft: 0,
             justifyContent: 'center',
             alignItems:'flex-end',
@@ -1202,8 +1236,8 @@ class PlayerBottom extends Component {
     },
         rightContainerP: {
             flex: 1,
-            marginTop:10,
             paddingRight: 0,
+            marginTop: height/66.7,
             justifyContent: 'center',
             alignItems: 'flex-start',
         },
@@ -1221,8 +1255,8 @@ class PlayerBottom extends Component {
             marginTop: 5,
             marginHorizontal: 5,
             borderColor: 'rgba(170,170,170,0.2)',
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
             borderWidth: 2
         },
 
@@ -1257,7 +1291,7 @@ class PlayerBottom extends Component {
 
         podcastText:{
             color: '#2A2A30',
-            fontSize: 15,
+            fontSize: height/44.47,
             marginTop: 5,
             marginHorizontal: 10,
             flexDirection: 'row',
@@ -1307,7 +1341,7 @@ class PlayerBottom extends Component {
         },
         podcastTextArtist:{
             color:'#2A2A30',
-            fontSize: 15,
+            fontSize: height/44.47,
             marginHorizontal: 10,
             flexDirection: 'row',
             backgroundColor: 'transparent',
@@ -1317,8 +1351,9 @@ class PlayerBottom extends Component {
         },
         podcastTextSpeed:{
             color: '#828393',
-            fontSize: 20,
+            fontSize: height/33.35,
             marginHorizontal: 30,
+            marginTop: 5,
             backgroundColor: 'transparent',
             textAlign: 'center'
         },
