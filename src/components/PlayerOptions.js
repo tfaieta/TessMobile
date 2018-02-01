@@ -10,8 +10,12 @@ import {
 } from 'react-native';
 import firebase from 'firebase';
 import Variables from "./Variables";
+import Icon from 'react-native-vector-icons/Ionicons';
+
 
 var {height, width} = Dimensions.get('window');
+
+
 
 
 
@@ -47,7 +51,15 @@ class PlayerOptions extends Component {
         const {currentUser} = firebase.auth();
         const id  = Variables.state.podcastID;
         const podcastArtist = Variables.state.podcastArtist;
-        const podcastTitle = Variables.state.podcastTitle;
+
+        let podcastTitle = Variables.state.podcastTitle;
+        if(Variables.state.podcastTitle.toString().length > width/9.375 ){
+            podcastTitle = (Variables.state.podcastTitle.slice(0,width/9.375)+"...")
+        }
+        else{
+            podcastTitle = Variables.state.podcastTitle;
+        }
+
 
 
         let profileName = 'loading';
@@ -72,7 +84,7 @@ class PlayerOptions extends Component {
 
                     <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
 
-                    <TouchableOpacity onPress = {() => {
+                    <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
 
 
                         firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
@@ -87,34 +99,55 @@ class PlayerOptions extends Component {
                         navigator.dismissLightBox();
 
                     }}>
-                        <Text style={styles.textStyle}>Add to Queue</Text>
+                        <View style={{alignContent: 'center'}}>
+                            <Icon style={styles.iconStyle} name="ios-add-circle-outline" />
+                        </View>
+
+                        <View style={{alignContent: 'center'}}>
+                            <Text style={styles.textStyle}>Add to Queue</Text>
+                        </View>
                     </TouchableOpacity>
 
 
-                    <TouchableOpacity onPress = {() => {
+                    <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
                         this.props.navigator.showModal({
                             screen: 'MyQueue',
                         });
                     }}>
-                        <Text style={styles.textStyle}>Go to Queue</Text>
+                        <View style={{alignContent: 'center'}}>
+                            <Icon style={styles.iconStyle} name="ios-list-box-outline" />
+                        </View>
+                        <View style = {{alignContent: 'center'}}>
+                            <Text style={styles.textStyle}>Go to Queue</Text>
+                        </View>
                     </TouchableOpacity>
 
 
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
                         Variables.state.browsingArtist = podcastArtist;
                         navigator.showModal({
                             screen: 'UserProfile',
                             passProps: {navigator},
                         })
                     }}>
-                        <Text style={styles.textStyle}>Go to Profile</Text>
+                        <View style={{alignContent: 'center'}}>
+                            <Icon style={styles.iconStyle} name="ios-contact-outline" />
+                        </View>
+                        <View style = {{alignContent: 'center'}}>
+                            <Text style={styles.textStyle}>Go to Profile</Text>
+                        </View>
                     </TouchableOpacity>
 
 
-                    <TouchableOpacity onPress = {() => {
+                    <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
                         navigator.dismissLightBox();
                     }}>
-                        <Text style={styles.textStyle}>Cancel</Text>
+                        <View style={{alignContent: 'center'}}>
+                            <Icon style={styles.iconStyle} name="ios-close" />
+                        </View>
+                        <View style = {{alignContent: 'center'}}>
+                            <Text style={styles.textStyle}>Cancel</Text>
+                        </View>
                     </TouchableOpacity>
 
 
@@ -137,7 +170,7 @@ class PlayerOptions extends Component {
                             <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
 
 
-                            <TouchableOpacity onPress = {() => {
+                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
 
                                 firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
                                     snap.forEach(function (data) {
@@ -151,42 +184,68 @@ class PlayerOptions extends Component {
                                 navigator.dismissLightBox();
 
                             }}>
-                                <Text style={styles.textStyle}>Add to Queue</Text>
+                                <View style={{alignContent: 'center'}}>
+                                    <Icon style={styles.iconStyle} name="ios-add-circle-outline" />
+                                </View>
+
+                                <View style={{alignContent: 'center'}}>
+                                    <Text style={styles.textStyle}>Add to Queue</Text>
+                                </View>
                             </TouchableOpacity>
 
 
-                            <TouchableOpacity onPress = {() => {
+                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
                                 this.props.navigator.showModal({
                                     screen: 'MyQueue',
                                 });
                             }}>
-                                <Text style={styles.textStyle}>Go to Queue</Text>
+                                <View style={{alignContent: 'center'}}>
+                                    <Icon style={styles.iconStyle} name="ios-list-box-outline" />
+                                </View>
+                                <View style = {{alignContent: 'center'}}>
+                                    <Text style={styles.textStyle}>Go to Queue</Text>
+                                </View>
                             </TouchableOpacity>
 
 
-                            <TouchableOpacity onPress={() => {
+                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
 
                                 firebase.database().ref(`users/${currentUser.uid}/favorites/${id}`).remove();
                                 this.setState({favorite: false})
 
                             }}>
-                                <Text style={styles.textStyle}>Remove from Favorites</Text>
+                                <View style={{alignContent: 'center'}}>
+                                    <Icon style={styles.iconStyle} name="ios-heart" />
+                                </View>
+                                <View style = {{alignContent: 'center'}}>
+                                    <Text style={styles.textStyle}>Remove from Favorites</Text>
+                                </View>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={() => {
+                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
                                 Variables.state.browsingArtist = podcastArtist;
                                 navigator.showModal({
                                     screen: 'UserProfile',
                                     passProps: {navigator},
                                 })
                             }}>
-                                <Text style={styles.textStyle}>Go to Profile</Text>
+                                <View style={{alignContent: 'center'}}>
+                                    <Icon style={styles.iconStyle} name="ios-contact-outline" />
+                                </View>
+                                <View style = {{alignContent: 'center'}}>
+                                    <Text style={styles.textStyle}>Go to Profile</Text>
+                                </View>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress = {() => {
+                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
                                 navigator.dismissLightBox();
                             }}>
-                                <Text style={styles.textStyle}>Cancel</Text>
+                                <View style={{alignContent: 'center'}}>
+                                    <Icon style={styles.iconStyle} name="ios-close" />
+                                </View>
+                                <View style = {{alignContent: 'center'}}>
+                                    <Text style={styles.textStyle}>Cancel</Text>
+                                </View>
                             </TouchableOpacity>
 
                         </View>
@@ -205,7 +264,7 @@ class PlayerOptions extends Component {
 
                             <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
 
-                            <TouchableOpacity onPress = {() => {
+                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
 
                                 firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
                                     snap.forEach(function (data) {
@@ -219,44 +278,70 @@ class PlayerOptions extends Component {
                                 navigator.dismissLightBox();
 
                             }}>
-                                <Text style={styles.textStyle}>Add to Queue</Text>
+                                <View style={{alignContent: 'center'}}>
+                                    <Icon style={styles.iconStyle} name="ios-add-circle-outline" />
+                                </View>
+
+                                <View style={{alignContent: 'center'}}>
+                                    <Text style={styles.textStyle}>Add to Queue</Text>
+                                </View>
                             </TouchableOpacity>
 
 
 
-                            <TouchableOpacity onPress = {() => {
+                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
                                 this.props.navigator.showModal({
                                     screen: 'MyQueue',
                                 });
                             }}>
-                                <Text style={styles.textStyle}>Go to Queue</Text>
+                                <View style={{alignContent: 'center'}}>
+                                    <Icon style={styles.iconStyle} name="ios-list-box-outline" />
+                                </View>
+                                <View style = {{alignContent: 'center'}}>
+                                    <Text style={styles.textStyle}>Go to Queue</Text>
+                                </View>
                             </TouchableOpacity>
 
 
 
-                            <TouchableOpacity onPress={() => {
+                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
 
                                 firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(id).update({id});
                                 this.setState({favorite: true})
 
                             }}>
-                                <Text style={styles.textStyle}>Add to Favorites</Text>
+                                <View style={{alignContent: 'center'}}>
+                                    <Icon style={styles.iconStyle} name="ios-heart-outline" />
+                                </View>
+                                <View style = {{alignContent: 'center'}}>
+                                    <Text style={styles.textStyle}>Add to Favorites</Text>
+                                </View>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={() => {
+                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
                                 Variables.state.browsingArtist = podcastArtist;
                                 navigator.showModal({
                                     screen: 'UserProfile',
                                     passProps: {navigator},
                                 })
                             }}>
-                                <Text style={styles.textStyle}>Go to Profile</Text>
+                                <View style={{alignContent: 'center'}}>
+                                    <Icon style={styles.iconStyle} name="ios-contact-outline" />
+                                </View>
+                                <View style = {{alignContent: 'center'}}>
+                                    <Text style={styles.textStyle}>Go to Profile</Text>
+                                </View>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress = {() => {
+                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
                                 navigator.dismissLightBox();
                             }}>
-                                <Text style={styles.textStyle}>Cancel</Text>
+                                <View style={{alignContent: 'center'}}>
+                                    <Icon style={styles.iconStyle} name="ios-close" />
+                                </View>
+                                <View style= {{alignContent: 'center'}}>
+                                    <Text style={styles.textStyle}>Cancel</Text>
+                                </View>
                             </TouchableOpacity>
 
                         </View>
@@ -277,7 +362,7 @@ class PlayerOptions extends Component {
 
                             <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
 
-                            <TouchableOpacity onPress={() => {
+                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
 
 
                                 /*
@@ -286,23 +371,38 @@ class PlayerOptions extends Component {
                                 */
 
                             }}>
-                                <Text style={styles.textStyle}>Remove from Favorites</Text>
+                                <View style={{alignContent: 'center'}}>
+                                    <Icon style={styles.iconStyle} name="ios-heart" />
+                                </View>
+                                <View style = {{alignContent: 'center'}}>
+                                    <Text style={styles.textStyle}>Remove from Favorites</Text>
+                                </View>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={() => {
+                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
                                 Variables.state.browsingArtist = podcastArtist;
                                 navigator.showModal({
                                     screen: 'UserProfile',
                                     passProps: {navigator},
                                 })
                             }}>
-                                <Text style={styles.textStyle}>Go to Profile</Text>
+                                <View style={{alignContent: 'center'}}>
+                                    <Icon style={styles.iconStyle} name="ios-contact-outline" />
+                                </View>
+                                <View style = {{alignContent: 'center'}}>
+                                    <Text style={styles.textStyle}>Go to Profile</Text>
+                                </View>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress = {() => {
+                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
                                 navigator.dismissLightBox();
                             }}>
-                                <Text style={styles.textStyle}>Cancel</Text>
+                                <View style={{alignContent: 'center'}}>
+                                    <Icon style={styles.iconStyle} name="ios-close" />
+                                </View>
+                                <View style = {{alignContent: 'center'}}>
+                                    <Text style={styles.textStyle}>Cancel</Text>
+                                </View>
                             </TouchableOpacity>
 
                         </View>
@@ -321,7 +421,7 @@ class PlayerOptions extends Component {
 
                             <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
 
-                            <TouchableOpacity onPress={() => {
+                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
 
                                 /*
                                 firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle).update({podcastArtist, podcastTitle});
@@ -330,23 +430,38 @@ class PlayerOptions extends Component {
 
 
                             }}>
-                                <Text style={styles.textStyle}>Add to Favorites</Text>
+                                <View style={{alignContent: 'center'}}>
+                                    <Icon style={styles.iconStyle} name="ios-heart-outline" />
+                                </View>
+                                <View style = {{alignContent: 'center'}}>
+                                    <Text style={styles.textStyle}>Add to Favorites</Text>
+                                </View>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={() => {
+                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
                                 Variables.state.browsingArtist = podcastArtist;
                                 navigator.showModal({
                                     screen: 'UserProfile',
                                     passProps: {navigator},
                                 })
                             }}>
-                                <Text style={styles.textStyle}>Go to Profile</Text>
+                                <View style={{alignContent: 'center'}}>
+                                    <Icon style={styles.iconStyle} name="ios-contact-outline" />
+                                </View>
+                                <View style = {{alignContent: 'center'}}>
+                                    <Text style={styles.textStyle}>Go to Profile</Text>
+                                </View>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress = {() => {
+                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
                                 navigator.dismissLightBox();
                             }}>
-                                <Text style={styles.textStyle}>Cancel</Text>
+                                <View style={{alignContent: 'center'}}>
+                                    <Icon style={styles.iconStyle} name="ios-close" />
+                                </View>
+                                <View style= {{alignContent: 'center'}}>
+                                    <Text style={styles.textStyle}>Cancel</Text>
+                                </View>
                             </TouchableOpacity>
 
                         </View>
@@ -396,7 +511,7 @@ const styles = StyleSheet.create({
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
-        fontSize: 13,
+        fontSize: height/51.3,
         backgroundColor: 'transparent',
         marginVertical: 5,
         marginHorizontal: 20,
@@ -408,10 +523,17 @@ const styles = StyleSheet.create({
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
-        fontSize: 13,
+        fontSize: height/51.3,
         backgroundColor: 'transparent',
         marginBottom: 20,
         marginHorizontal: 20,
+    },
+    iconStyle: {
+        textAlign: 'center',
+        fontSize: height/26.68,
+        color: 'white',
+        marginTop: height/41.69,
+        marginRight: 12,
     }
 
 });

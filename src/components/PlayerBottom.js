@@ -251,16 +251,16 @@ class PlayerBottom extends Component {
         else{
 
             var fixedTitle = '';
-            if(Variables.state.podcastTitle.toString().length > 18 ){
-                fixedTitle = (Variables.state.podcastTitle.slice(0,18)+"...")
+            if(Variables.state.podcastTitle.toString().length > width/16.3 ){
+                fixedTitle = (Variables.state.podcastTitle.slice(0,width/16.3)+"...")
             }
             else{
                 fixedTitle = Variables.state.podcastTitle;
             }
 
             var fixedUsername = '';
-            if(profileName > 18){
-                fixedUsername =  (profileName.slice(0,18)+"...");
+            if(profileName > width/16.3){
+                fixedUsername =  (profileName.slice(0,width/16.3)+"...");
             }
             else{
                 fixedUsername = profileName;
@@ -1170,7 +1170,7 @@ class PlayerBottom extends Component {
         backgroundColor: 'transparent',
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
-        fontSize: 13,
+        fontSize: width/28.85,
         textAlign: 'left',
         paddingLeft: 10
     },
@@ -1180,7 +1180,7 @@ class PlayerBottom extends Component {
         backgroundColor: 'transparent',
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
-        fontSize: 11,
+        fontSize: width/34.1,
         textAlign: 'left',
         paddingLeft: 10
     },

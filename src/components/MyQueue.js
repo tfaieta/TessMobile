@@ -55,7 +55,7 @@ class MyQueue extends Component{
 
     render() {
         return (
-            <View style = {{backgroundColor: '#5757FF80', flex:1}}>
+            <View style = {{backgroundColor: '#414149', flex:1}}>
             <View
                 style={styles.container}>
 
