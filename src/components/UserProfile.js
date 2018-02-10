@@ -100,14 +100,26 @@ class UserProfile extends Component {
             }
         });
 
-        storageRef.getDownloadURL()
-            .then(function(url) {
 
-                Variables.state.onUserProfileImage = url;
+        if(Variables.state.rss){
+            firebase.database().ref(`users/${Variables.state.browsingArtist}/profileImage`).once("value", function (snapshot) {
+                if(snapshot.val()){
+                    Variables.state.onUserProfileImage = snapshot.val().profileImage
+                }
+            });
 
-            }).catch(function(error) {
-            //
-        });
+        }
+        else{
+            storageRef.getDownloadURL()
+                .then(function(url) {
+
+                    Variables.state.onUserProfileImage = url;
+
+                }).catch(function(error) {
+                //
+            });
+
+        }
 
 
     }
@@ -212,14 +224,26 @@ class UserProfile extends Component {
             }
         });
 
-        storageRef.getDownloadURL()
-            .then(function(url) {
 
-                Variables.state.onUserProfileImage = url;
+        if(Variables.state.rss){
+            firebase.database().ref(`users/${Variables.state.browsingArtist}/profileImage`).once("value", function (snapshot) {
+                if(snapshot.val()){
+                    Variables.state.onUserProfileImage = snapshot.val().profileImage
+                }
+            });
 
-            }).catch(function(error) {
-            //
-        });
+        }
+        else{
+            storageRef.getDownloadURL()
+                .then(function(url) {
+
+                    Variables.state.onUserProfileImage = url;
+
+                }).catch(function(error) {
+                //
+            });
+
+        }
 
 
     }
@@ -620,7 +644,7 @@ const styles = StyleSheet.create({
         opacity: 2,
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
-        fontSize: 25,
+        fontSize: 16,
         backgroundColor: 'transparent'
     },
 

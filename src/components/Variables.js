@@ -45,6 +45,7 @@ class Variables extends Component{
         following: false,
         liked: false,
         favorited: false,
+        rss: false,
         usersFollowed: [],
         favPodcasts: [],
         myPodcasts: [],

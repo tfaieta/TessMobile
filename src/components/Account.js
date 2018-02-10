@@ -351,7 +351,7 @@ const styles = StyleSheet.create({
         opacity: 2,
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
-        fontSize: 25,
+        fontSize: 16,
         backgroundColor: 'transparent'
     },
     title3: {

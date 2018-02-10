@@ -259,8 +259,8 @@ class PlayerBottom extends Component {
             }
 
             var fixedUsername = '';
-            if(profileName > width/16.3){
-                fixedUsername =  (profileName.slice(0,width/16.3)+"...");
+            if(profileName.length > width/15){
+                fixedUsername =  (profileName.slice(0,width/15)+"...");
             }
             else{
                 fixedUsername = profileName;

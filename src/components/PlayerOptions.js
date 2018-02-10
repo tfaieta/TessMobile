@@ -51,10 +51,11 @@ class PlayerOptions extends Component {
         const {currentUser} = firebase.auth();
         const id  = Variables.state.podcastID;
         const podcastArtist = Variables.state.podcastArtist;
+        const rss = Variables.state.rss;
 
         let podcastTitle = Variables.state.podcastTitle;
-        if(Variables.state.podcastTitle.toString().length > width/9.375 ){
-            podcastTitle = (Variables.state.podcastTitle.slice(0,width/9.375)+"...")
+        if(Variables.state.podcastTitle.toString().length > width/10 ){
+            podcastTitle = (Variables.state.podcastTitle.slice(0,width/10)+"...")
         }
         else{
             podcastTitle = Variables.state.podcastTitle;
@@ -125,6 +126,12 @@ class PlayerOptions extends Component {
 
                     <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
                         Variables.state.browsingArtist = podcastArtist;
+                        if(rss){
+                            Variables.state.rss = true;
+                        }
+                        else{
+                            Variables.state.rss = false;
+                        }
                         navigator.showModal({
                             screen: 'UserProfile',
                             passProps: {navigator},
@@ -224,6 +231,12 @@ class PlayerOptions extends Component {
 
                             <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
                                 Variables.state.browsingArtist = podcastArtist;
+                                if(rss){
+                                    Variables.state.rss = true;
+                                }
+                                else{
+                                    Variables.state.rss = false;
+                                }
                                 navigator.showModal({
                                     screen: 'UserProfile',
                                     passProps: {navigator},
@@ -320,6 +333,12 @@ class PlayerOptions extends Component {
 
                             <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
                                 Variables.state.browsingArtist = podcastArtist;
+                                if(rss){
+                                    Variables.state.rss = true;
+                                }
+                                else{
+                                    Variables.state.rss = false;
+                                }
                                 navigator.showModal({
                                     screen: 'UserProfile',
                                     passProps: {navigator},
@@ -381,6 +400,12 @@ class PlayerOptions extends Component {
 
                             <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
                                 Variables.state.browsingArtist = podcastArtist;
+                                if(rss){
+                                    Variables.state.rss = true;
+                                }
+                                else{
+                                    Variables.state.rss = false;
+                                }
                                 navigator.showModal({
                                     screen: 'UserProfile',
                                     passProps: {navigator},
@@ -440,6 +465,12 @@ class PlayerOptions extends Component {
 
                             <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
                                 Variables.state.browsingArtist = podcastArtist;
+                                if(rss){
+                                    Variables.state.rss = true;
+                                }
+                                else{
+                                    Variables.state.rss = false;
+                                }
                                 navigator.showModal({
                                     screen: 'UserProfile',
                                     passProps: {navigator},

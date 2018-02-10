@@ -51,10 +51,11 @@ class PodcastOptions extends Component {
         const podcastTitle = rowData.podcastTitle;
         const podcastDescription = rowData.podcastDescription;
         const podcastCategory = rowData.podcastCategory;
+        const rss = rowData.rss;
 
         let podTitle = rowData.podcastTitle;
-        if(rowData.podcastTitle.toString().length > width/9.375 ){
-            podTitle = (rowData.podcastTitle.slice(0,width/9.375)+"...")
+        if(rowData.podcastTitle.toString().length > width/10 ){
+            podTitle = (rowData.podcastTitle.slice(0,width/10)+"...")
         }
         else{
             podTitle = rowData.podcastTitle;
@@ -267,6 +268,12 @@ class PodcastOptions extends Component {
 
                             <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
                                 Variables.state.browsingArtist = rowData.podcastArtist;
+                                if(rss){
+                                    Variables.state.rss = true;
+                                }
+                                else{
+                                    Variables.state.rss = false;
+                                }
                                 navigator.showModal({
                                     screen: 'UserProfile',
                                     passProps: {rowData, navigator},
@@ -361,6 +368,12 @@ class PodcastOptions extends Component {
 
                             <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
                                 Variables.state.browsingArtist = rowData.podcastArtist;
+                                if(rss){
+                                    Variables.state.rss = true;
+                                }
+                                else{
+                                    Variables.state.rss = false;
+                                }
                                 navigator.showModal({
                                     screen: 'UserProfile',
                                     passProps: {rowData, navigator},
@@ -422,6 +435,12 @@ class PodcastOptions extends Component {
 
                             <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
                                 Variables.state.browsingArtist = rowData.podcastArtist;
+                                if(rss){
+                                    Variables.state.rss = true;
+                                }
+                                else{
+                                    Variables.state.rss = false;
+                                }
                                 navigator.showModal({
                                     screen: 'UserProfile',
                                     passProps: {rowData, navigator},
@@ -481,6 +500,12 @@ class PodcastOptions extends Component {
 
                             <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
                                 Variables.state.browsingArtist = rowData.podcastArtist;
+                                if(rss){
+                                    Variables.state.rss = true;
+                                }
+                                else{
+                                    Variables.state.rss = false;
+                                }
                                 navigator.showModal({
                                     screen: 'UserProfile',
                                     passProps: {rowData, navigator},

@@ -4,6 +4,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import PlayerBottom from './PlayerBottom';
 
 
+// NOT in use
+
 class Queue extends Component{
 
     _pressBack = () => {

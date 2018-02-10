@@ -10,24 +10,36 @@ class ListItemFollowed extends Component {
 
     componentWillMount(){
         const podcastArtist = this.props.podcast;
-
         let profileImage = '';
-        const storageRef = firebase.storage().ref(`/users/${podcastArtist}/image-profile-uploaded`);
-        storageRef.getDownloadURL()
-            .then(function(url) {
-                profileImage = url;
-            }).catch(function(error) {
-            //
-        });
-        setTimeout(() => {this.setState({profileImage: profileImage})},1250);
-        setTimeout(() => {this.setState({profileImage: profileImage})},2500);
+        let rss = false;
+
+
+            firebase.database().ref(`users/${podcastArtist}/profileImage`).once("value", function (snapshot) {
+                if(snapshot.val()){
+                    profileImage = snapshot.val().profileImage
+                    rss = true;
+                }
+                else{
+                    const storageRef = firebase.storage().ref(`/users/${podcastArtist}/image-profile-uploaded`);
+                    storageRef.getDownloadURL()
+                        .then(function(url) {
+                            profileImage = url;
+                        }).catch(function(error) {
+                        //
+                    });
+                }
+            });
+            setTimeout(() => {this.setState({profileImage: profileImage, rss: rss})},1200);
+            setTimeout(() => {this.setState({profileImage: profileImage, rss: rss})},3400);
+
     }
 
     constructor(state) {
         super(state);
         this.state ={
             profileName: '',
-            profileImage: ''
+            profileImage: '',
+            rss: false,
         };
     }
 
@@ -86,6 +98,12 @@ class ListItemFollowed extends Component {
 
             <TouchableOpacity underlayColor='#5757FF' onPress={ () =>{
                 Variables.state.browsingArtist = podcastArtist;
+                if(this.state.rss){
+                    Variables.state.rss = true;
+                }
+                else{
+                    Variables.state.rss = false;
+                }
                 Navigation.showModal({
                     screen: "UserProfile",
                     title: "Modal",

@@ -11,8 +11,13 @@ import firebase from 'firebase';
 import Player from "./Player";
 
 
+var DomParser = require('react-native-html-parser').DOMParser;
+
+
+
 class Home extends Component{
     componentWillMount(){
+
         this.props.podcastFetchNew();
 
         this.creataDataSourceNewPodcasts(this.props);
@@ -337,6 +342,180 @@ class Home extends Component{
     }
 
 
+    rssFetch(){
+
+
+        // loop for every rss feed in database
+        firebase.database().ref("feeds").once("value", function (snap) {
+            snap.forEach(function (data) {
+
+
+
+                fetch(data.val())
+                    .then((response) => response.text())
+                    .then((responseData) => {
+
+                        var doc = new DomParser().parseFromString(responseData,'text/html');
+                        var items = doc.getElementsByTagName('item');
+                        var channel = doc.getElementsByTagName("title");
+
+
+                        // profile bio
+                        var userBio = "";
+                        let bio = "";
+                        if(doc.getElementsByTagName("description").length > 0){
+                            userBio = doc.getElementsByTagName("description");
+                            bio = userBio[0].textContent;
+                        }
+
+
+                        // profile image
+                        let profileImage = '';
+                        if(doc.getElementsByTagName("image").length >0){
+                            const image = doc.getElementsByTagName("image");
+                            const pI = image[0].getElementsByTagName('url');
+                            profileImage = pI[0].textContent;
+                            console.warn(profileImage);
+
+                        }
+
+                        // profile username
+                        let username = channel[0].textContent;
+                        let usernameData = channel[0].textContent;
+                        usernameData = usernameData.replace("#", " ");
+                        usernameData = usernameData.replace("$", " ");
+                        usernameData = usernameData.replace("[", " ");
+                        usernameData = usernameData.replace("]", " ");
+
+
+                        // create account for user if it doesn't exist
+                        // reserve username & create user if needed
+                        firebase.database().ref(`users`).child(usernameData).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                console.warn("Account Exists")
+                            }
+                            else{
+                                firebase.database().ref(`users`).child(usernameData).child("/username").update({username});
+                                firebase.database().ref(`users`).child(usernameData).child("/bio").update({bio});
+                                firebase.database().ref(`users`).child(usernameData).child("/profileImage").update({profileImage});
+                                firebase.database().ref(`usernames`).child(usernameData.toLowerCase()).update({username: usernameData.toLowerCase()});
+                            }
+                        });
+
+
+
+                        // get info for each podcast
+                        // items.length()
+                        for (var i=0; i < items.length(); i++) {
+
+                            //artist
+                            let podcastArtist = username;
+
+                            //title
+                            const title = items[i].getElementsByTagName('title');
+                            console.warn(title[0].textContent);
+                            let podcastTitle = title[0].textContent;
+
+                            //description
+                            const description = items[i].getElementsByTagName('description');
+                            console.warn(description[0].textContent);
+                            let podcastDescription = description[0].textContent;
+                            podcastDescription = podcastDescription.replace("<p>", " ");
+                            podcastDescription = podcastDescription.replace("</p>", " ");
+
+                            //rss = true, need to tell firebase it's an rss podcast
+                            const rss = true;
+
+                            //category
+                            const podcastCategory = ''; // no category
+
+                            //likes = 0
+                            const likes = 0;
+
+                            //joint title (for database)
+                            let jointTitle = podcastArtist + podcastTitle;
+                            if(jointTitle.length > 50 ){
+                                jointTitle = (jointTitle.slice(0,50))
+                            }
+                            jointTitle = jointTitle.replace("#", "_");
+                            jointTitle = jointTitle.replace("$", "_");
+                            jointTitle = jointTitle.replace("[", "_");
+                            jointTitle = jointTitle.replace("]", "_");
+
+                            //url
+                            if(items[i].getElementsByTagName('enclosure').length > 0){
+                                var link = items[i].getElementsByTagName('enclosure')[0].getAttribute('url');
+                                console.warn(link);
+                                const podcastURL = link;
+
+
+                                // upload to database if doesn't exist (follow podcastCreate)
+                                firebase.database().ref(`podcasts`).child(jointTitle).once("value", function (snapshot) {
+                                    if(snapshot.val()){
+                                        console.warn("Podcast Exists")
+                                    }
+                                    else{
+                                        firebase.database().ref(`podcasts`).child(jointTitle).update({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes})
+                                            .then((snap) => {
+
+                                                const ref = firebase.database().ref(`podcasts`).child(jointTitle);
+                                                const id = jointTitle;
+
+                                                ref.update({id});
+                                                firebase.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
+
+                                            })
+                                    }
+                                });
+
+
+                            }
+                            //another way of getting url
+                            else if(items[i].getElementsByTagName('link').length > 0){
+                                var link = items[i].getElementsByTagName('link');
+                                console.warn(link[0].textContent);
+                                const podcastURL = link[0].textContent;
+
+
+                                // upload to database if doesn't exist (follow podcastCreate)
+                                firebase.database().ref(`podcasts`).child(jointTitle).once("value", function (snapshot) {
+                                    if(snapshot.val()){
+                                        console.warn("Podcast Exists")
+                                    }
+                                    else{
+                                        firebase.database().ref(`podcasts`).child(jointTitle).update({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes})
+                                            .then((snap) => {
+
+                                                const ref = firebase.database().ref(`podcasts`).child(jointTitle);
+                                                const id = jointTitle;
+
+                                                ref.update({id});
+                                                firebase.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
+
+                                            })
+                                    }
+                                });
+
+
+                            }
+                            else{
+                                console.warn("Error: no download url")
+                            }
+                        }
+
+
+                    });
+
+
+
+
+            })
+        })
+
+
+    }
+
+
     fetchData(){
 
         this.props.podcastFetchNew();
@@ -619,6 +798,17 @@ class Home extends Component{
         Linking.openURL(url).catch(err => console.warn('An error occurred', err));
     }
 
+    renderRSSFetcher(){
+        const {currentUser} = firebase.auth();
+
+        if(currentUser.uid == "pgIx9JAiq9aQWcyUZX8AuIdqNmP2" || currentUser.uid == "sJsB8XK4XRZ8tNpeGC14JNsa6Jj1"){
+            return(
+                <TouchableOpacity style = {{marginVertical: 40, marginHorizontal: 10, backgroundColor: '#5757FF',}} onPress = {this.rssFetch}>
+                    <Text style = {{color: "#fff", fontSize: 22, textAlign: 'center', padding: 15}}>Fetch RSS Feeds</Text>
+                </TouchableOpacity>
+            )
+        }
+    }
 
 
     render() {
@@ -907,6 +1097,7 @@ class Home extends Component{
 
                             </View>
 
+                            {this.renderRSSFetcher()}
 
                         </View>
 
