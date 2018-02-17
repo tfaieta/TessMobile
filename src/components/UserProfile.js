@@ -8,7 +8,7 @@ import {
     ListView,
     TouchableOpacity,
     Alert, Image,
-    RefreshControl
+    RefreshControl, Dimensions
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
@@ -23,6 +23,12 @@ import InvertibleScrollView from 'react-native-invertible-scroll-view';
 import { Navigation } from 'react-native-navigation';
 import ListItem from "./ListItem";
 
+var {height, width} = Dimensions.get('window');
+
+
+
+
+// contains a profile that you can view (any profile that is not yours)
 
 class UserProfile extends Component {
     componentWillMount(){
@@ -145,7 +151,7 @@ class UserProfile extends Component {
                 username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
                 following: Variables.state.following
             })
-        },1500)
+        },3500)
     }
 
 
@@ -264,7 +270,13 @@ class UserProfile extends Component {
                 username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
                 following: Variables.state.following
             })
-        },1000)
+        },500);
+        setTimeout(() =>{
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
+                username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
+                following: Variables.state.following
+            })
+        },3500)
 
 
     }
@@ -310,7 +322,7 @@ class UserProfile extends Component {
     _renderProfileImage(){
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:30, height: 160, width: 160, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)', shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 4,   }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:30, height: 160, width: 160, borderRadius: 4, borderWidth:5, borderColor:'rgba(320,320,320,0.8)',  }}>
                     <Icon style={{
                         textAlign: 'center',
                         fontSize: 120,
@@ -323,9 +335,9 @@ class UserProfile extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:30, height: 160, width: 160, shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 4,   }}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:30, height: 160, width: 160, }}>
                     <Image
-                        style={{width: 160, height:160, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.5, borderColor: 'rgba(200,200,200,0.8)'}}
+                        style={{width: 160, height:160, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.5, borderColor: 'rgba(200,200,200,0.8)'}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -483,6 +495,15 @@ class UserProfile extends Component {
     render() {
 
 
+        var fixedTitle = '';
+        if(this.state.username.toString().length > width/16.3 ){
+            fixedTitle = (this.state.username.slice(0,width/16.3)+"...")
+        }
+        else{
+            fixedTitle = this.state.username;
+        }
+
+
         return (
             <View
                 style={styles.containerMain}>
@@ -498,7 +519,7 @@ class UserProfile extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={styles.header}>{this.state.username}</Text>
+                        <Text style={styles.header}>{fixedTitle}</Text>
                     </View>
 
                     <View>

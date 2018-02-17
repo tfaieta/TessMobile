@@ -17,7 +17,7 @@ class SearchPage extends Component{
         const refMy = firebase.database().ref(`podcasts/`);
 
 
-        refMy.on("value", function (snapshot) {
+        refMy.once("value", function (snapshot) {
             Variables.state.mySearches = [];
             snapshot.forEach(function (data) {
 
@@ -56,7 +56,9 @@ class SearchPage extends Component{
             dataSource: dataSource.cloneWithRows(Variables.state.mySearches),
             search: Variables.state.searchWord
         };
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches)})},1000)
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches)})},1000);
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches)})},3000);
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches)})},5000);
     }
 
     _renderResults(mySearches){

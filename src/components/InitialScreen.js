@@ -48,7 +48,10 @@ var {height, width} = Dimensions.get('window');
 export default class InitialScreen extends Component{
 
     componentWillMount(){
-        firebase.auth().onAuthStateChanged(this.func);
+        setTimeout(() => {
+            firebase.auth().onAuthStateChanged(this.func);
+        }, 1000);
+
     }
 
     func(){

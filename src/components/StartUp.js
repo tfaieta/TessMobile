@@ -110,7 +110,7 @@ export  default class Login extends Component{
                         </Icon>
                     </View>
                     <View level = {-20}>
-                    <Text style={styles.smallText}>A place to easily listen to or create podcasts</Text>
+                    <Text style={styles.smallText}>A place to easily listen to and create podcasts</Text>
                     </View>
 
                     </Image>

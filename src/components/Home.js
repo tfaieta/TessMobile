@@ -27,7 +27,7 @@ class Home extends Component{
         Variables.state.newPodcastsArtsts = [];
         const refNew = firebase.database().ref(`podcasts/`);
 
-        refNew.limitToLast(50).on("value", function (snapshot) {
+        refNew.limitToLast(250).once("value", function (snapshot) {
             snapshot.forEach(function (data) {
                 if(data.val()){
                     if(Variables.state.newPodcastsArtsts.includes(data.val().podcastArtist)){
@@ -54,10 +54,10 @@ class Home extends Component{
         refFol.on("value", function (snapshot) {
             snapshot.forEach(function (data) {
 
-                firebase.database().ref(`users/${data.key}/podcasts`).limitToLast(1).on("value", function (snap) {
+                firebase.database().ref(`users/${data.key}/podcasts`).limitToLast(1).once("value", function (snap) {
                     snap.forEach(function (pod) {
 
-                        firebase.database().ref(`podcasts/${pod.key}`).on("value", function (data2) {
+                        firebase.database().ref(`podcasts/${pod.key}`).once("value", function (data2) {
                             if(data2.val()){
                                 Variables.state.homeFollowedContent.push(data2.val())
                             }
@@ -73,9 +73,9 @@ class Home extends Component{
         Variables.state.selectedByTess = [];
 
         //TheMaddyIce
-        firebase.database().ref(`users/upwadf76CrOBee8aSwzcCZR4kM33/podcasts`).limitToLast(1).on("value", function (data) {
+        firebase.database().ref(`users/upwadf76CrOBee8aSwzcCZR4kM33/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -85,9 +85,9 @@ class Home extends Component{
 
 
         //Two Bros and a Pod
-        firebase.database().ref(`users/JHPYRdcWtOheHCkrddZjJaLXtPg2/podcasts`).limitToLast(1).on("value", function (data) {
+        firebase.database().ref(`users/JHPYRdcWtOheHCkrddZjJaLXtPg2/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -97,9 +97,9 @@ class Home extends Component{
 
 
         //Big Tay
-        firebase.database().ref(`users/1F1q9gRKWyMQ8cSATXqGT4PnCaK2/podcasts`).limitToLast(1).on("value", function (data) {
+        firebase.database().ref(`users/1F1q9gRKWyMQ8cSATXqGT4PnCaK2/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -109,9 +109,9 @@ class Home extends Component{
 
 
         //Tim Dulak
-        firebase.database().ref(`users/3tHL3dIcINUdMeKZn6ckf81e2Sk2/podcasts`).limitToLast(1).on("value", function (data) {
+        firebase.database().ref(`users/3tHL3dIcINUdMeKZn6ckf81e2Sk2/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -121,9 +121,9 @@ class Home extends Component{
 
 
         //Joey Bradfield
-        firebase.database().ref(`users/gdGuN9v14qU9pSHXSk1KbDGlUsu1/podcasts`).limitToLast(1).on("value", function (data) {
+        firebase.database().ref(`users/gdGuN9v14qU9pSHXSk1KbDGlUsu1/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -133,9 +133,9 @@ class Home extends Component{
 
 
         //Dom Gold
-        firebase.database().ref(`users/6px5go2E3USvYvkcNQejkLkJx3H3/podcasts`).limitToLast(1).on("value", function (data) {
+        firebase.database().ref(`users/6px5go2E3USvYvkcNQejkLkJx3H3/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -145,9 +145,9 @@ class Home extends Component{
 
 
         //Eat the fruit
-        firebase.database().ref(`users/7ubx6NftyyQbAwufE7BquuSJ6gJ3/podcasts`).limitToLast(1).on("value", function (data) {
+        firebase.database().ref(`users/7ubx6NftyyQbAwufE7BquuSJ6gJ3/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -157,9 +157,9 @@ class Home extends Component{
 
 
         //Abbey
-        firebase.database().ref(`users/P2HAtFE3YKXe8uP9Mu1HyCE2cD83/podcasts`).limitToLast(1).on("value", function (data) {
+        firebase.database().ref(`users/P2HAtFE3YKXe8uP9Mu1HyCE2cD83/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -169,9 +169,9 @@ class Home extends Component{
 
 
         //ShakDaddy
-        firebase.database().ref(`users/u1osicyhjcR5j3EHx6m1SMe2LpJ3/podcasts`).limitToLast(1).on("value", function (data) {
+        firebase.database().ref(`users/u1osicyhjcR5j3EHx6m1SMe2LpJ3/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -180,10 +180,10 @@ class Home extends Component{
         });
 
 
-        //Nick Ruspy
-        firebase.database().ref(`users/pgIx9JAiq9aQWcyUZX8AuIdqNmP2/podcasts`).limitToLast(1).on("value", function (data) {
+        //Nick Ruspantini
+        firebase.database().ref(`users/pgIx9JAiq9aQWcyUZX8AuIdqNmP2/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -193,9 +193,9 @@ class Home extends Component{
 
 
         //Tony
-        firebase.database().ref(`users/sJsB8XK4XRZ8tNpeGC14JNsa6Jj1/podcasts`).limitToLast(1).on("value", function (data) {
+        firebase.database().ref(`users/sJsB8XK4XRZ8tNpeGC14JNsa6Jj1/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -207,9 +207,9 @@ class Home extends Component{
 
 
         Variables.state.fromTess = [];
-        firebase.database().ref(`users/dlUCIXXnXGTgJZwYLE1KUYWGkQ73/podcasts`).on("value", function (data) {
+        firebase.database().ref(`users/dlUCIXXnXGTgJZwYLE1KUYWGkQ73/podcasts`).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.fromTess.push(snapshot.val())
                     }
@@ -346,12 +346,11 @@ class Home extends Component{
 
 
         // loop for every rss feed in database
-        firebase.database().ref("feeds").once("value", function (snap) {
-            snap.forEach(function (data) {
+        firebase.database().ref('feeds').once("value", function (snapshot) {
+            snapshot.forEach(function (snap) {
+                console.warn(snap.val());
 
-
-
-                fetch(data.val())
+                fetch(snap.val())
                     .then((response) => response.text())
                     .then((responseData) => {
 
@@ -366,6 +365,16 @@ class Home extends Component{
                         if(doc.getElementsByTagName("description").length > 0){
                             userBio = doc.getElementsByTagName("description");
                             bio = userBio[0].textContent;
+                            bio = bio.replace("<p>", " ");
+                            bio = bio.replace("</p>", " ");
+                            bio = bio.replace("<a", " ");
+                            bio = bio.replace("</a>", " ");
+                            bio = bio.replace("href=", " ");
+                            bio = bio.replace("rel=", " ");
+                            bio = bio.replace("target=", " ");
+                            bio = bio.replace("<em/>", " ");
+                            bio = bio.replace("<em>", " ");
+                            bio = bio.replace("&nbsp", " ");
                         }
 
 
@@ -375,6 +384,7 @@ class Home extends Component{
                             const image = doc.getElementsByTagName("image");
                             const pI = image[0].getElementsByTagName('url');
                             profileImage = pI[0].textContent;
+
                             console.warn(profileImage);
 
                         }
@@ -386,13 +396,15 @@ class Home extends Component{
                         usernameData = usernameData.replace("$", " ");
                         usernameData = usernameData.replace("[", " ");
                         usernameData = usernameData.replace("]", " ");
+                        usernameData = usernameData.replace(".", "");
+                        usernameData = usernameData.replace("http://", "");
 
 
                         // create account for user if it doesn't exist
                         // reserve username & create user if needed
                         firebase.database().ref(`users`).child(usernameData).once("value", function (snapshot) {
                             if(snapshot.val()){
-                                console.warn("Account Exists")
+                                console.warn("Account Exists: " + usernameData)
                             }
                             else{
                                 firebase.database().ref(`users`).child(usernameData).child("/username").update({username});
@@ -405,11 +417,18 @@ class Home extends Component{
 
 
                         // get info for each podcast
-                        // items.length()
-                        for (var i=0; i < items.length(); i++) {
+                        // items.length gets max size of rss feed, 0 is most recent
+                        let size = 0;
+                        if(items.length >= 4){
+                            size = 4;
+                        }
+                        else{
+                            size = items.length
+                        }
+                        for (var i=size; i >= 0; i--) {
 
                             //artist
-                            let podcastArtist = username;
+                            let podcastArtist = usernameData;
 
                             //title
                             const title = items[i].getElementsByTagName('title');
@@ -422,6 +441,26 @@ class Home extends Component{
                             let podcastDescription = description[0].textContent;
                             podcastDescription = podcastDescription.replace("<p>", " ");
                             podcastDescription = podcastDescription.replace("</p>", " ");
+                            podcastDescription = podcastDescription.replace("<a", " ");
+                            podcastDescription = podcastDescription.replace("&amp", " ");
+                            podcastDescription = podcastDescription.replace("href=", " ");
+                            podcastDescription = podcastDescription.replace("<em>", " ");
+                            podcastDescription = podcastDescription.replace("</em>", " ");
+                            podcastDescription = podcastDescription.replace("</a>", " ");
+                            podcastDescription = podcastDescription.replace("<h2", " ");
+                            podcastDescription = podcastDescription.replace("id=", " ");
+                            podcastDescription = podcastDescription.replace("</h2>", " ");
+                            podcastDescription = podcastDescription.replace("</p>", " ");
+                            podcastDescription = podcastDescription.replace("<br>", " ");
+                            podcastDescription = podcastDescription.replace("<div>", " ");
+                            podcastDescription = podcastDescription.replace("</div>", " ");
+                            podcastDescription = podcastDescription.replace("<ul>", " ");
+                            podcastDescription = podcastDescription.replace("<li>", " ");
+                            podcastDescription = podcastDescription.replace("</li>", " ");
+                            podcastDescription = podcastDescription.replace("<strong>", " ");
+                            podcastDescription = podcastDescription.replace("</strong>", " ");
+                            podcastDescription = podcastDescription.replace("<sup>", " ");
+                            podcastDescription = podcastDescription.replace("</sup>", " ");
 
                             //rss = true, need to tell firebase it's an rss podcast
                             const rss = true;
@@ -434,13 +473,15 @@ class Home extends Component{
 
                             //joint title (for database)
                             let jointTitle = podcastArtist + podcastTitle;
-                            if(jointTitle.length > 50 ){
-                                jointTitle = (jointTitle.slice(0,50))
+                            if(jointTitle.length > 60 ){
+                                jointTitle = (jointTitle.slice(0,60))
                             }
                             jointTitle = jointTitle.replace("#", "_");
                             jointTitle = jointTitle.replace("$", "_");
                             jointTitle = jointTitle.replace("[", "_");
                             jointTitle = jointTitle.replace("]", "_");
+                            jointTitle = jointTitle.replace(".", "_");
+                            const RSSID = jointTitle;
 
                             //url
                             if(items[i].getElementsByTagName('enclosure').length > 0){
@@ -450,6 +491,29 @@ class Home extends Component{
 
 
                                 // upload to database if doesn't exist (follow podcastCreate)
+                                firebase.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
+                                    if(snapshot.val()){
+                                        console.warn("EXISTS")
+                                    }
+                                    else{
+                                        firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID})
+                                            .then((snap) => {
+
+                                                const ref = snap.ref;
+                                                const id = snap.key;
+
+                                                ref.update({id});
+                                                firebase.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
+
+                                            });
+
+                                    }
+
+                                });
+
+
+
+                                /*
                                 firebase.database().ref(`podcasts`).child(jointTitle).once("value", function (snapshot) {
                                     if(snapshot.val()){
                                         console.warn("Podcast Exists")
@@ -467,6 +531,7 @@ class Home extends Component{
                                             })
                                     }
                                 });
+                                */
 
 
                             }
@@ -478,6 +543,28 @@ class Home extends Component{
 
 
                                 // upload to database if doesn't exist (follow podcastCreate)
+                                firebase.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
+                                    if(snapshot.val()){
+                                        console.warn("EXISTS")
+                                    }
+                                    else{
+                                        firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID})
+                                            .then((snap) => {
+
+                                                const ref = snap.ref;
+                                                const id = snap.key;
+
+                                                ref.update({id});
+                                                firebase.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
+
+                                            });
+
+                                    }
+
+                                });
+
+
+                                /*
                                 firebase.database().ref(`podcasts`).child(jointTitle).once("value", function (snapshot) {
                                     if(snapshot.val()){
                                         console.warn("Podcast Exists")
@@ -495,6 +582,7 @@ class Home extends Component{
                                             })
                                     }
                                 });
+                                */
 
 
                             }
@@ -509,8 +597,12 @@ class Home extends Component{
 
 
 
-            })
-        })
+
+
+            });
+
+        });
+
 
 
     }
@@ -527,7 +619,7 @@ class Home extends Component{
         Variables.state.newPodcastsArtsts = [];
         const refNew = firebase.database().ref(`podcasts/`);
 
-        refNew.limitToLast(50).on("value", function (snapshot) {
+        refNew.limitToLast(250).once("value", function (snapshot) {
             snapshot.forEach(function (data) {
                 if(data.val()){
                     if(Variables.state.newPodcastsArtsts.includes(data.val().podcastArtist)){
@@ -554,10 +646,10 @@ class Home extends Component{
         refFol.on("value", function (snapshot) {
             snapshot.forEach(function (data) {
 
-                firebase.database().ref(`users/${data.key}/podcasts`).limitToLast(1).on("value", function (snap) {
+                firebase.database().ref(`users/${data.key}/podcasts`).limitToLast(1).once("value", function (snap) {
                     snap.forEach(function (pod) {
 
-                        firebase.database().ref(`podcasts/${pod.key}`).on("value", function (data2) {
+                        firebase.database().ref(`podcasts/${pod.key}`).once("value", function (data2) {
                             if(data2.val()){
                                 Variables.state.homeFollowedContent.push(data2.val())
                             }
@@ -573,9 +665,9 @@ class Home extends Component{
         Variables.state.selectedByTess = [];
 
         //TheMaddyIce
-        firebase.database().ref(`users/upwadf76CrOBee8aSwzcCZR4kM33/podcasts`).limitToLast(1).on("value", function (data) {
+        firebase.database().ref(`users/upwadf76CrOBee8aSwzcCZR4kM33/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -585,9 +677,9 @@ class Home extends Component{
 
 
         //Two Bros and a Pod
-        firebase.database().ref(`users/JHPYRdcWtOheHCkrddZjJaLXtPg2/podcasts`).limitToLast(1).on("value", function (data) {
+        firebase.database().ref(`users/JHPYRdcWtOheHCkrddZjJaLXtPg2/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -597,9 +689,9 @@ class Home extends Component{
 
 
         //Big Tay
-        firebase.database().ref(`users/1F1q9gRKWyMQ8cSATXqGT4PnCaK2/podcasts`).limitToLast(1).on("value", function (data) {
+        firebase.database().ref(`users/1F1q9gRKWyMQ8cSATXqGT4PnCaK2/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -609,9 +701,9 @@ class Home extends Component{
 
 
         //Tim Dulak
-        firebase.database().ref(`users/3tHL3dIcINUdMeKZn6ckf81e2Sk2/podcasts`).limitToLast(1).on("value", function (data) {
+        firebase.database().ref(`users/3tHL3dIcINUdMeKZn6ckf81e2Sk2/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -621,9 +713,9 @@ class Home extends Component{
 
 
         //Joey Bradfield
-        firebase.database().ref(`users/gdGuN9v14qU9pSHXSk1KbDGlUsu1/podcasts`).limitToLast(1).on("value", function (data) {
+        firebase.database().ref(`users/gdGuN9v14qU9pSHXSk1KbDGlUsu1/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -633,9 +725,9 @@ class Home extends Component{
 
 
         //Dom Gold
-        firebase.database().ref(`users/6px5go2E3USvYvkcNQejkLkJx3H3/podcasts`).limitToLast(1).on("value", function (data) {
+        firebase.database().ref(`users/6px5go2E3USvYvkcNQejkLkJx3H3/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -645,9 +737,9 @@ class Home extends Component{
 
 
         //Eat the fruit
-        firebase.database().ref(`users/7ubx6NftyyQbAwufE7BquuSJ6gJ3/podcasts`).limitToLast(1).on("value", function (data) {
+        firebase.database().ref(`users/7ubx6NftyyQbAwufE7BquuSJ6gJ3/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -657,9 +749,9 @@ class Home extends Component{
 
 
         //Abbey
-        firebase.database().ref(`users/P2HAtFE3YKXe8uP9Mu1HyCE2cD83/podcasts`).limitToLast(1).on("value", function (data) {
+        firebase.database().ref(`users/P2HAtFE3YKXe8uP9Mu1HyCE2cD83/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -669,9 +761,9 @@ class Home extends Component{
 
 
         //ShakDaddy
-        firebase.database().ref(`users/u1osicyhjcR5j3EHx6m1SMe2LpJ3/podcasts`).limitToLast(1).on("value", function (data) {
+        firebase.database().ref(`users/u1osicyhjcR5j3EHx6m1SMe2LpJ3/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -680,10 +772,10 @@ class Home extends Component{
         });
 
 
-        //Nick Ruspy
-        firebase.database().ref(`users/pgIx9JAiq9aQWcyUZX8AuIdqNmP2/podcasts`).limitToLast(1).on("value", function (data) {
+        //Nick Ruspantini
+        firebase.database().ref(`users/pgIx9JAiq9aQWcyUZX8AuIdqNmP2/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -693,9 +785,9 @@ class Home extends Component{
 
 
         //Tony
-        firebase.database().ref(`users/sJsB8XK4XRZ8tNpeGC14JNsa6Jj1/podcasts`).limitToLast(1).on("value", function (data) {
+        firebase.database().ref(`users/sJsB8XK4XRZ8tNpeGC14JNsa6Jj1/podcasts`).limitToLast(1).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.selectedByTess.push(snapshot.val())
                     }
@@ -707,9 +799,9 @@ class Home extends Component{
 
 
         Variables.state.fromTess = [];
-        firebase.database().ref(`users/dlUCIXXnXGTgJZwYLE1KUYWGkQ73/podcasts`).on("value", function (data) {
+        firebase.database().ref(`users/dlUCIXXnXGTgJZwYLE1KUYWGkQ73/podcasts`).once("value", function (data) {
             data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).on("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         Variables.state.fromTess.push(snapshot.val())
                     }
@@ -743,10 +835,20 @@ class Home extends Component{
             setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},3800);
             setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},3200);
 
-            setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},6000);
-            setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},6400);
-            setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},6800);
-            setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},7200);
+            setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},5000);
+            setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},5400);
+            setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},5800);
+            setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},6200);
+
+            setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},8000);
+            setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},8400);
+            setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},8800);
+            setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},9200);
+
+            setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},11000);
+            setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},11400);
+            setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},11800);
+            setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},12200);
 
 
     }
@@ -1048,7 +1150,7 @@ class Home extends Component{
                                 </View>
 
                             </View>
-                            <Text style={styles.title2}>Hey Everyone! Thank you for downloading Tess, your feedback is important. We look forward to hearing from you! Check out our updates on the beta below. </Text>
+                            <Text style={styles.title2}>Hey, everyone! Thank you for downloading Tess. Your feedback is important. We look forward to hearing from you! Check out our updates on the beta below. </Text>
 
                             <ListView
                                 showsHorizontalScrollIndicator={false}

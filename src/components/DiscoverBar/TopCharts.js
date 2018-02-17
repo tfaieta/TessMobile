@@ -15,7 +15,7 @@ class TopCharts extends Component{
         const { currentUser } = firebase.auth();
         const ref = firebase.database().ref(`podcasts/`);
 
-        ref.limitToLast(50).on("value", function (snapshot) {
+        ref.limitToLast(250).once("value", function (snapshot) {
 
             snapshot.forEach(function (data) {
                 if(data.child("plays").numChildren() > 3){
@@ -61,28 +61,43 @@ class TopCharts extends Component{
 
 
 
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},1000)
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},1000);
+
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},3000);
+
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},5000);
     }
 
 
 
     fetchData(){
 
-
         Variables.state.topCharts = [];
         const { currentUser } = firebase.auth();
         const ref = firebase.database().ref(`podcasts/`);
 
-        ref.limitToLast(50).on("value", function (snapshot) {
+        ref.limitToLast(250).once("value", function (snapshot) {
 
             snapshot.forEach(function (data) {
-                if(data.val().plays){
+                if(data.child("plays").numChildren() > 3){
 
-                    if(!Variables.state.topCharts[data.child("plays").numChildren()]){
-                        Variables.state.topCharts[data.child("plays").numChildren()] = data.val();
+                    if(!Variables.state.topCharts[data.child("plays").numChildren() * 2]){
+                        Variables.state.topCharts[data.child("plays").numChildren() * 2] = data.val();
                     }
                     else{
-                        Variables.state.topCharts[data.child("plays").numChildren() + 1] = data.val();
+                        if(!Variables.state.topCharts[data.child("plays").numChildren() * 2 + 1]){
+                            Variables.state.topCharts[data.child("plays").numChildren() * 2 + 1] = data.val();
+                        }
+                        else{
+                            if(!Variables.state.topCharts[data.child("plays").numChildren() * 2 + 2]){
+                                Variables.state.topCharts[data.child("plays").numChildren() * 2 + 2] = data.val();
+                            }
+                            else {
+                                Variables.state.topCharts[data.child("plays").numChildren() * 2 + 3] = data.val();
+                            }
+
+                        }
+
                     }
 
 
@@ -91,6 +106,7 @@ class TopCharts extends Component{
             })
 
         });
+
 
     }
 

@@ -43,7 +43,11 @@ class Following extends Component{
             refreshing: false
         };
 
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.followedContent)})},1000)
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.followedContent)})},1000);
+
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.followedContent)})},3000);
+
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.followedContent)})},5000);
     }
 
 

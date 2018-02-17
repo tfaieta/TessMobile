@@ -20,7 +20,7 @@ class FollowedContent extends Component{
         const { currentUser } = firebase.auth();
         const refFol = firebase.database().ref(`users/${currentUser.uid}/following`);
 
-        refFol.orderByChild('following').on("value", function (snapshot) {
+        refFol.orderByChild('following').once("value", function (snapshot) {
             snapshot.forEach(function (data) {
                 Variables.state.usersFollowed.push(data.key);
             })
@@ -36,7 +36,8 @@ class FollowedContent extends Component{
             loading: true,
         };
 
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed)})},1000)
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed)})},1000);
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed)})},3000);
     }
 
     state={

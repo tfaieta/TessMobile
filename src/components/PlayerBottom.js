@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet,StatusBar, ScrollView, Modal, TouchableOpacity, Alert, Dimensions, Image, ActivityIndicator} from 'react-native';
+import { Text, View, StyleSheet,StatusBar, ScrollView, Modal, TouchableOpacity, Alert, Dimensions, Image, ActivityIndicator, AsyncStorage} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from './Variables';
-import {podcastPlayer} from './Variables';
 import Slider from 'react-native-slider';
 import firebase from 'firebase';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
@@ -183,7 +182,7 @@ class PlayerBottom extends Component {
                     return(
                         <View style={{backgroundColor:'transparent', alignSelf: 'center', height: 45, width: 45  }}>
                             <Image
-                                style={{width: 45, height:45, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 5, borderWidth: 0.1, borderColor: 'transparent'}}
+                                style={{width: 45, height:45, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
                                 source={{uri: Variables.state.userProfileImage}}
                             />
                         </View>
@@ -345,9 +344,14 @@ class PlayerBottom extends Component {
 
 
     _renderPodcastTitle(isPlaying) {
+        let podTitle = Variables.state.podcastTitle;
+        if(podTitle.toString().length > width/5 ){
+            podTitle = (podTitle.slice(0,width/5)+"...")
+        }
+
         if (isPlaying) {
             return (
-                <Text style={styles.podcastText}>{Variables.state.podcastTitle}</Text>
+                <Text style={styles.podcastText}>{podTitle}</Text>
             );
         }
         if (Variables.state.podcastTitle =='') {
@@ -357,7 +361,7 @@ class PlayerBottom extends Component {
         }
         else{
             return (
-                <Text style={styles.podcastText}>{Variables.state.podcastTitle}</Text>
+                <Text style={styles.podcastText}>{podTitle}</Text>
             );
         }
     }
@@ -369,7 +373,7 @@ class PlayerBottom extends Component {
 
             if (this.state.profileImage == ''){
                 return(
-                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom: 10, height: 140, width: 140, borderRadius:10, borderWidth:8, borderColor:'rgba(320,320,320,0.8)',  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
+                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom: 10, height: 140, width: 140, borderRadius:4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)',  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
                         <Icon style={{
                             textAlign: 'center',
                             fontSize: height/7.41,
@@ -384,7 +388,7 @@ class PlayerBottom extends Component {
                 return(
                     <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom: 10, height: height/4.75, width: height/4.75,  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
                         <Image
-                            style={{width: height/4.75, height:height/4.75,  alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
+                            style={{width: height/4.75, height:height/4.75,  alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
                             source={{uri: this.state.profileImage}}
                         />
                     </View>
@@ -421,17 +425,25 @@ class PlayerBottom extends Component {
 
     _renderCategory(){
 
-        return(
-            <TouchableOpacity onPress={this.onCategoryPress}>
-                <Text style={styles.podcastTextCat}>{Variables.state.podcastCategory}</Text>
-            </TouchableOpacity>
-        );
+            if(Variables.state.podcastCategory.length>0){
+                return(
+                    <TouchableOpacity onPress={this.onCategoryPress}>
+                        <Text style={styles.podcastTextCat}>{Variables.state.podcastCategory}</Text>
+                    </TouchableOpacity>
+                )
+            }
+
+
 
     }
 
 
     _renderPodcastArtist(isPlaying) {
         let profileName = Variables.state.currentUsername;
+        if(profileName.toString().length > width/10 ){
+            profileName = (profileName.slice(0,width/10)+"...")
+        }
+
         if(Variables.state.podcastTitle == '') {
             return (
                 <Text style={styles.podcastTextArtist}> </Text>
@@ -945,6 +957,8 @@ class PlayerBottom extends Component {
         Variables.state.podcastDescription = '';
         Variables.state.podcastCategory = '';
         Variables.state.podcastURL = '';
+        AsyncStorage.setItem("currentTime", "0");
+        AsyncStorage.setItem("currentPodcast", "");
         MusicControl.resetNowPlaying();
     }
 

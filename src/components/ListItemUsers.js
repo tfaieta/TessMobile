@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, LayoutAnimation, TouchableOpacity, Image } from 'react-native';
+import { Text, View, LayoutAnimation, TouchableOpacity, Image, AsyncStorage } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import {AudioUtils} from 'react-native-audio';
@@ -63,7 +63,7 @@ class ListItemUsers extends Component {
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom:20, height: 130, width: 130, borderRadius:10, borderWidth:8, borderColor:'rgba(320,320,320,0.8)',  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 4,   }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom:20, height: 130, width: 130, borderRadius: 4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)' }}>
                     <Icon style={{
                         textAlign: 'center',
                         fontSize: 80,
@@ -76,9 +76,9 @@ class ListItemUsers extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom:20, height: 130, width: 130, shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 4,  }}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom:20, height: 130, width: 130  }}>
                     <Image
-                        style={{width: 130, height:130, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 5, borderWidth: 0.5, borderColor: 'rgba(200,200,200,0.8)'}}
+                        style={{width: 130, height:130, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -99,6 +99,7 @@ class ListItemUsers extends Component {
 
         if(rss){
 
+            AsyncStorage.setItem("currentPodcast", id);
 
             firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
                 if(snap.val()){
@@ -183,6 +184,8 @@ class ListItemUsers extends Component {
         }
         else{
             if(id){
+                AsyncStorage.setItem("currentPodcast", id);
+
                 firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL().catch(() => {console.warn("file not found")})
                     .then(function(url) {
 

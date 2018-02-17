@@ -132,7 +132,7 @@ class Account extends Component {
     _renderProfileImage(){
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:30, height: 160, width: 160, borderRadius:10, borderWidth:5, borderColor:'rgba(320,320,320,0.8)', shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 4, }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:30, height: 160, width: 160, borderRadius:4, borderWidth:5, borderColor:'rgba(320,320,320,0.8)', }}>
                     <Icon style={{
                         textAlign: 'center',
                         fontSize: 120,
@@ -145,9 +145,9 @@ class Account extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:30, height: 160, width: 160, shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 4, }}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:30, height: 160, width: 160, }}>
                 <Image
-                    style={{width: 160, height:160, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.5, borderColor: 'rgba(200,200,200,0.8)'}}
+                    style={{width: 160, height:160, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.5, borderColor: 'rgba(200,200,200,0.8)'}}
                     source={{uri: this.state.profileImage}}
                 />
                 </View>
