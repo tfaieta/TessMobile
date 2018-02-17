@@ -339,7 +339,7 @@ class UserProfileModal extends Component {
             return(
                 <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop: 20, marginRight:20, marginLeft: 20, paddingTop: 10, marginBottom:30, height: 160, width: 160,   }}>
                     <Image
-                        style={{width: 160, height:160, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
+                        style={{width: 160, height:160, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
