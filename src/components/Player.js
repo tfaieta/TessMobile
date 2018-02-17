@@ -54,7 +54,7 @@ class Player extends Component{
                         });
 
                         Variables.pause();
-                        Variables.setPodcastFile(snapshot.val().RSSID);
+                        Variables.setPodcastFile(snapshot.val().podcastURL);
                         Variables.state.isPlaying = false;
                         Variables.state.podcastTitle = snapshot.val().podcastTitle;
                         Variables.state.podcastArtist = snapshot.val().podcastArtist;
@@ -71,15 +71,6 @@ class Player extends Component{
                                 Variables.state.userProfileImage = snap.val().profileImage
                             }
                         });
-
-
-                        firebase.database().ref(`users/${currentUser.uid}/favorites`).on("value", function (snap) {
-                            snap.forEach(function (data) {
-                                if(data.key == id){
-                                    Variables.state.favorited = true;
-                                }
-                            })
-                        })
 
 
                     }

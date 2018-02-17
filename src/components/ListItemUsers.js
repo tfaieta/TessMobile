@@ -100,6 +100,9 @@ class ListItemUsers extends Component {
         if(rss){
 
             AsyncStorage.setItem("currentPodcast", id);
+            AsyncStorage.setItem("currentTime", "0");
+            Variables.state.seekTo = 0;
+            Variables.state.currentTime = 0;
 
             firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
                 if(snap.val()){

@@ -15,7 +15,7 @@ class TopCharts extends Component{
         const { currentUser } = firebase.auth();
         const ref = firebase.database().ref(`podcasts/`);
 
-        ref.limitToLast(250).once("value", function (snapshot) {
+        ref.limitToLast(350).once("value", function (snapshot) {
 
             snapshot.forEach(function (data) {
                 if(data.child("plays").numChildren() > 3){
@@ -54,18 +54,16 @@ class TopCharts extends Component{
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithRows(Variables.state.topCharts),
+            dataSource: dataSource.cloneWithRows([]),
             refreshing: false
         };
-
-
-
-
         setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},1000);
 
         setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},3000);
 
         setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},5000);
+
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},7000);
     }
 
 
@@ -76,7 +74,7 @@ class TopCharts extends Component{
         const { currentUser } = firebase.auth();
         const ref = firebase.database().ref(`podcasts/`);
 
-        ref.limitToLast(250).once("value", function (snapshot) {
+        ref.limitToLast(350).once("value", function (snapshot) {
 
             snapshot.forEach(function (data) {
                 if(data.child("plays").numChildren() > 3){
@@ -122,7 +120,10 @@ class TopCharts extends Component{
             refreshing: false,
         });
 
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},1000)
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},1000);
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},3000);
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},5000);
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},7000);
 
 
     }
