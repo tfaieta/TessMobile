@@ -322,7 +322,7 @@ class UserProfile extends Component {
     _renderProfileImage(){
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:30, height: 160, width: 160, borderRadius: 4, borderWidth:5, borderColor:'rgba(320,320,320,0.8)',  }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:30, height: height/4.17, width: height/4.17, borderRadius: 4, borderWidth:5, borderColor:'rgba(320,320,320,0.8)',  }}>
                     <Icon style={{
                         textAlign: 'center',
                         fontSize: 120,
@@ -335,9 +335,9 @@ class UserProfile extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:30, height: 160, width: 160, }}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:30, height: height/4.17, width: height/4.17, }}>
                     <Image
-                        style={{width: 160, height:160, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4}}
+                        style={{width: height/4.17, height: height/4.17, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -371,7 +371,7 @@ class UserProfile extends Component {
 
     _renderProfileNumbers(totalPodcasts, totalFollowers, totalFollowing){
         return(
-            <View style={{flexDirection: 'row',  paddingBottom: 40, paddingHorizontal: 20}}>
+            <View style={{flexDirection: 'row',  paddingBottom: height/16.675, paddingHorizontal: width/18.75}}>
 
                 <View style={{flex: 1, alignSelf: 'flex-start'}}>
                     <Text style={styles.stats}>podcasts</Text>
@@ -610,7 +610,7 @@ const styles = StyleSheet.create({
         opacity: 2,
         fontStyle: 'normal',
         fontFamily: 'Hiragino Sans',
-        fontSize: 15,
+        fontSize: width/25,
         backgroundColor: 'transparent'
     },
     titleFollow: {
@@ -621,7 +621,7 @@ const styles = StyleSheet.create({
         opacity: 2,
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W3',
-        fontSize: 16,
+        fontSize: width/23.44,
         backgroundColor: 'transparent'
     },
     titleFollowSelected: {
@@ -632,7 +632,7 @@ const styles = StyleSheet.create({
         opacity: 2,
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W3',
-        fontSize: 16,
+        fontSize: width/23.44,
         backgroundColor: 'transparent'
     },
     title3: {
@@ -653,7 +653,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
+        fontSize: width/23.44,
         backgroundColor: 'transparent',
 
     },
@@ -665,7 +665,7 @@ const styles = StyleSheet.create({
         opacity: 2,
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
+        fontSize: width/23.44,
         backgroundColor: 'transparent'
     },
 
@@ -677,7 +677,7 @@ const styles = StyleSheet.create({
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
-        fontSize: 15,
+        fontSize: width/25,
         backgroundColor: 'transparent',
         marginHorizontal: 20,
 
@@ -689,7 +689,7 @@ const styles = StyleSheet.create({
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W3',
-        fontSize: 16,
+        fontSize: width/23.44,
         backgroundColor: 'transparent'
     },
     artistTitle: {
@@ -700,7 +700,7 @@ const styles = StyleSheet.create({
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Hiragino Sans',
-        fontSize: 15,
+        fontSize: width/25,
         backgroundColor: 'transparent',
         marginLeft: 20,
     },

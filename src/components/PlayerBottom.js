@@ -166,7 +166,7 @@ class PlayerBottom extends Component {
                 if (this.state.profileImage == ''){
                     return(
                         <TouchableOpacity onPress={this.ExpandPlayer}>
-                            <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: 45, width: 45, borderRadius:4, borderWidth:1, borderColor:'rgba(320,320,320,1)'}}>
+                            <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: width/8.3, width: width/8.3, borderRadius:4, borderWidth:1, borderColor:'rgba(320,320,320,1)'}}>
                                 <Icon style={{
                                     textAlign: 'center',
                                     fontSize: 24,
@@ -180,9 +180,9 @@ class PlayerBottom extends Component {
                 }
                 else{
                     return(
-                        <View style={{backgroundColor:'transparent', alignSelf: 'center', height: 45, width: 45  }}>
+                        <View style={{backgroundColor:'transparent', alignSelf: 'center', height: width/8.3, width: width/8.3  }}>
                             <Image
-                                style={{width: 45, height:45, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
+                                style={{width: width/8.3, height: width/8.3, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
                                 source={{uri: Variables.state.userProfileImage}}
                             />
                         </View>
@@ -210,7 +210,7 @@ class PlayerBottom extends Component {
                                 marginLeft: 0,
                                 paddingTop: 0,
                                 paddingRight:5,
-                                fontSize: 30,
+                                fontSize: width/12.5,
                                 color: '#fff',
                             }} name="md-pause">
                             </Icon>
@@ -226,7 +226,7 @@ class PlayerBottom extends Component {
                                 marginLeft: 0,
                                 paddingTop: 0,
                                 paddingRight:5,
-                                fontSize: 30,
+                                fontSize: width/12.5,
                                 color: '#fff',
                             }} name="md-play">
                             </Icon>
@@ -250,16 +250,16 @@ class PlayerBottom extends Component {
         else{
 
             var fixedTitle = '';
-            if(Variables.state.podcastTitle.toString().length > width/16.3 ){
-                fixedTitle = (Variables.state.podcastTitle.slice(0,width/16.3)+"...")
+            if(Variables.state.podcastTitle.toString().length > height/28 ){
+                fixedTitle = (Variables.state.podcastTitle.slice(0,height/28)+"...")
             }
             else{
                 fixedTitle = Variables.state.podcastTitle;
             }
 
             var fixedUsername = '';
-            if(profileName.length > width/15){
-                fixedUsername =  (profileName.slice(0,width/15)+"...");
+            if(profileName.length > height/26){
+                fixedUsername =  (profileName.slice(0,height/26)+"...");
             }
             else{
                 fixedUsername = profileName;
@@ -1176,7 +1176,7 @@ class PlayerBottom extends Component {
         borderColor: '#5757FF',
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
-        marginHorizontal: 30,
+        marginHorizontal: width/12.5,
     },
     playingText:{
         color: '#fff',
@@ -1184,9 +1184,9 @@ class PlayerBottom extends Component {
         backgroundColor: 'transparent',
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
-        fontSize: width/28.85,
+        fontSize: height/54,
         textAlign: 'left',
-        paddingLeft: 10
+        paddingLeft: width/37.5
     },
     playingText2:{
         color: '#fff',
@@ -1194,9 +1194,9 @@ class PlayerBottom extends Component {
         backgroundColor: 'transparent',
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
-        fontSize: width/34.1,
+        fontSize: height/60,
         textAlign: 'left',
-        paddingLeft: 10
+        paddingLeft: width/37.5
     },
     listView: {
         paddingTop: 20,

@@ -16,6 +16,7 @@ var DomParser = require('react-native-html-parser').DOMParser;
 
 
 class Home extends Component{
+
     componentWillMount(){
 
         this.props.podcastFetchNew();
@@ -59,14 +60,23 @@ class Home extends Component{
 
                         firebase.database().ref(`podcasts/${pod.key}`).once("value", function (data2) {
                             if(data2.val()){
-                                Variables.state.homeFollowedContent.push(data2.val())
+                                Variables.state.homeFollowedContent.push(data2.val());
+                                for(let i = Variables.state.homeFollowedContent.length-1; i > 0 && Variables.state.homeFollowedContent[i].id > Variables.state.homeFollowedContent[i-1].id; i--){
+                                    let temp = Variables.state.homeFollowedContent[i-1];
+                                    Variables.state.homeFollowedContent[i-1] = Variables.state.homeFollowedContent[i];
+                                    Variables.state.homeFollowedContent[i] = temp;
+                                }
                             }
                         })
+
                     });
+
                 });
 
             })
         });
+
+
 
 
 
@@ -257,8 +267,6 @@ class Home extends Component{
         setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},6800);
         setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},7200);
     }
-
-
 
 
 
@@ -651,14 +659,23 @@ class Home extends Component{
 
                         firebase.database().ref(`podcasts/${pod.key}`).once("value", function (data2) {
                             if(data2.val()){
-                                Variables.state.homeFollowedContent.push(data2.val())
+                                Variables.state.homeFollowedContent.push(data2.val());
+                                for(let i = Variables.state.homeFollowedContent.length-1; i > 0 && Variables.state.homeFollowedContent[i].id > Variables.state.homeFollowedContent[i-1].id; i--){
+                                    let temp = Variables.state.homeFollowedContent[i-1];
+                                    Variables.state.homeFollowedContent[i-1] = Variables.state.homeFollowedContent[i];
+                                    Variables.state.homeFollowedContent[i] = temp;
+                                }
                             }
                         })
+
                     });
+
                 });
 
             })
         });
+
+
 
 
 
