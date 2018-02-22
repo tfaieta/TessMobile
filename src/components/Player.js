@@ -164,13 +164,19 @@ class Player extends Component{
         }).done();
 
 
-        setInterval(() => {
+        this.interval = setInterval(() => {
             this.setState({
                 podcastURL: Variables.state.podcastURL,
                 paused: Variables.state.paused,
             })
         }, 200)
     }
+
+
+    componentWillUnmount(){
+        clearInterval(this.interval)
+    }
+
 
     constructor(props) {
         super(props);

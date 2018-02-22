@@ -132,6 +132,13 @@ class UserProfileModal extends Component {
     }
 
 
+
+    componentWillUnmount(){
+        clearTimeout(this.timeout);
+        clearTimeout(this.timeout2);
+    }
+
+
     constructor(props) {
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
@@ -141,13 +148,13 @@ class UserProfileModal extends Component {
             loading: true,
             refreshing: false
         };
-        setTimeout(() =>{
+        this.timeout = setTimeout(() =>{
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
                 username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
                 following: Variables.state.following
             })
         },500);
-        setTimeout(() =>{
+        this.timeout2 = setTimeout(() =>{
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
                 username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
                 following: Variables.state.following
@@ -267,13 +274,13 @@ class UserProfileModal extends Component {
             refreshing: false,
         });
 
-        setTimeout(() =>{
+        this.timeout = setTimeout(() =>{
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
                 username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
                 following: Variables.state.following
             })
         },500);
-        setTimeout(() =>{
+        this.timeout2 = setTimeout(() =>{
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
                 username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
                 following: Variables.state.following

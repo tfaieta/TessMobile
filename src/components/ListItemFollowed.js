@@ -29,10 +29,17 @@ class ListItemFollowed extends Component {
                     });
                 }
             });
-            setTimeout(() => {this.setState({profileImage: profileImage, rss: rss})},1200);
-            setTimeout(() => {this.setState({profileImage: profileImage, rss: rss})},3400);
+            this.timeout = setTimeout(() => {this.setState({profileImage: profileImage, rss: rss})},1200);
+            this.timeout2 = setTimeout(() => {this.setState({profileImage: profileImage, rss: rss})},3400);
 
     }
+
+
+    componentWillUnmount(){
+        clearTimeout(this.timeout);
+        clearTimeout(this.timeout2);
+    }
+
 
     constructor(state) {
         super(state);

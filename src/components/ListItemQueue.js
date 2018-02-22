@@ -21,8 +21,8 @@ class ListItemQueue extends Component {
                     profileImage = snapshot.val().profileImage
                 }
             });
-            setTimeout(() => {this.setState({profileImage: profileImage})},1200);
-            setTimeout(() => {this.setState({profileImage: profileImage})},3400);
+            this.timeout = setTimeout(() => {this.setState({profileImage: profileImage})},1200);
+            this.timeout2 = setTimeout(() => {this.setState({profileImage: profileImage})},3400);
 
         }
         else{
@@ -33,11 +33,19 @@ class ListItemQueue extends Component {
                 }).catch(function(error) {
                 //
             });
-            setTimeout(() => {this.setState({profileImage: profileImage})},1200);
-            setTimeout(() => {this.setState({profileImage: profileImage})},3400);
+            this.timeout = setTimeout(() => {this.setState({profileImage: profileImage})},1200);
+            this.timeout2 = setTimeout(() => {this.setState({profileImage: profileImage})},3400);
 
         }
     }
+
+
+    componentWillUnmount(){
+        clearTimeout(this.timeout);
+        clearTimeout(this.timeout2);
+    }
+
+
 
     constructor(props) {
         super(props);

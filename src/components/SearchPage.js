@@ -39,6 +39,11 @@ class SearchPage extends Component{
     }
 
 
+    componentWillUnmount(){
+        clearTimeout(this.timeout);
+        clearTimeout(this.timeout2);
+    }
+
 
     searchActivate = () => {
         Variables.state.searchWord = this.state.search;
@@ -56,9 +61,8 @@ class SearchPage extends Component{
             dataSource: dataSource.cloneWithRows(Variables.state.mySearches),
             search: Variables.state.searchWord
         };
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches)})},1000);
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches)})},3000);
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches)})},5000);
+        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches)})},1000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches)})},3500);
     }
 
     _renderResults(mySearches){

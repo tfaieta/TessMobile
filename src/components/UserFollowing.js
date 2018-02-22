@@ -27,6 +27,12 @@ class UserFollowing extends Component{
 
     }
 
+
+    componentWillUnmount(){
+        clearTimeout(this.timeout);
+    }
+
+
     constructor(props){
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
@@ -35,14 +41,12 @@ class UserFollowing extends Component{
             loading: true,
         };
 
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userFollowing)})},1000)
+        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userFollowing)})},1000)
     }
 
     state={
         loading: true
     };
-
-
 
 
     renderRow(podcast){

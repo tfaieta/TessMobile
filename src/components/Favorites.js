@@ -32,6 +32,12 @@ class Favorites extends Component{
         });
     }
 
+
+    componentWillUnmount(){
+        clearTimeout(this.timeout);
+        clearTimeout(this.timeout2);
+    }
+
     constructor(props){
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
@@ -40,8 +46,8 @@ class Favorites extends Component{
             loading: true,
             favorite: true
         };
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts)})},1000);
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts)})},3000);
+        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts)})},1000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts)})},3000);
     }
 
 

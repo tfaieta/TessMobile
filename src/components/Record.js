@@ -25,7 +25,7 @@ class Record extends Component{
         this.animatedValue = new Animated.Value(1);
 
 
-        setInterval(() => {
+        this.interval = setInterval(() => {
 
             Animated.timing(this.animatedValue, {
                 toValue: (this.state.level+40) * (height/40),
@@ -113,6 +113,7 @@ class Record extends Component{
     componentWillUnmount(){
        AudioRecorder.stopRecording();
        this.setState({stoppedRecording: true, recording: false});
+       clearInterval(this.interval);
     }
 
     _checkPermission() {

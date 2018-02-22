@@ -27,6 +27,12 @@ class MyQueue extends Component{
 
     }
 
+
+    componentWillUnmount(){
+        clearInterval(this.interval);
+    }
+
+
     constructor(props){
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
@@ -34,7 +40,7 @@ class MyQueue extends Component{
             dataSource: dataSource.cloneWithRows(Variables.state.myQueue),
         };
 
-        setInterval(() => {
+        this.interval = setInterval(() => {
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myQueue)})
         },1000);
 

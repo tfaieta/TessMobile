@@ -33,16 +33,23 @@ class RecentlyPlayed extends Component{
 
     }
 
+
+    componentWillUnmount(){
+        clearTimeout(this.timeout);
+        clearTimeout(this.timeout2);
+    }
+
+
     constructor(props){
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.recentlyPlayed),
         };
-        setTimeout(() => {
+        this.timeout = setTimeout(() => {
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.recentlyPlayed)})
         },1000);
-        setTimeout(() => {
+        this.timeout2 = setTimeout(() => {
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.recentlyPlayed)})
         },2500);
     };

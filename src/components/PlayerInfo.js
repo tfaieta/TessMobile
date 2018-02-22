@@ -38,6 +38,12 @@ class PlayerInfo extends Component {
 
     }
 
+
+    componentWillUnmount(){
+        clearInterval(this.interval);
+    }
+
+
     constructor(props){
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
@@ -46,7 +52,7 @@ class PlayerInfo extends Component {
             dataSource: dataSource.cloneWithRows(Variables.state.comments),
         };
 
-        setInterval(() => {
+        this.interval = setInterval(() => {
             firebase.database().ref(`podcasts/${Variables.state.podcastID}/comments`).on("value", function (snap) {
                 Variables.state.comments = [];
                 snap.forEach(function (data) {

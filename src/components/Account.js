@@ -102,6 +102,13 @@ class Account extends Component {
 
     }
 
+
+
+    componentWillUnmount(){
+        clearInterval(this.interval);
+    }
+
+
     constructor(props){
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
@@ -113,7 +120,7 @@ class Account extends Component {
             profileImage: '',
             category: '',
         };
-        setInterval(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username, profileImage: Variables.state.profileImage})},1500)
+        this.interval = setInterval(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username, profileImage: Variables.state.profileImage})},1500)
     }
 
 

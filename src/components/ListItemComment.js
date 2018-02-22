@@ -19,8 +19,14 @@ class ListItemComment extends Component {
             }).catch(function(error) {
             //
         });
-        setTimeout(() => {this.setState({profileImage: profileImage})},1250);
+        this.timeout = setTimeout(() => {this.setState({profileImage: profileImage})},1250);
     }
+
+
+    componentWillUnmount(){
+        clearTimeout(this.timeout);
+    }
+
 
     constructor(state) {
         super(state);

@@ -28,6 +28,13 @@ class FollowedContent extends Component{
 
     }
 
+
+    componentWillUnmount(){
+        clearTimeout(this.timeout);
+        clearTimeout(this.timeout2);
+    }
+
+
     constructor(props){
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
@@ -36,8 +43,8 @@ class FollowedContent extends Component{
             loading: true,
         };
 
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed)})},1000);
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed)})},3000);
+        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed)})},1000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed)})},3000);
     }
 
     state={

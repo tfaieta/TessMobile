@@ -66,7 +66,7 @@ class RecordInfo extends Component{
         this.props.podcastUpdate({prop: 'podcastArtist', value: userID});
         Variables.state.podcastSpeed = 1.0;
 
-        setInterval(() => {
+        this.interval = setInterval(() => {
             if(this.state.loading){
                 if(Variables.state.uploadProgress <= 100.00 && Variables.state.uploadProgress > 10){
                     this.setState({
@@ -82,6 +82,11 @@ class RecordInfo extends Component{
         }, 200)
     }
 
+
+
+    componentWillUnmount(){
+        clearInterval(this.interval);
+    }
 
 
 

@@ -21,10 +21,17 @@ class PlayerBottom extends Component {
     constructor() {
         super();
 
-        setInterval(() => {
+        this.intervalImage = setInterval(() => {
             this.setState({profileImage: Variables.state.userProfileImage});
         },500);
     }
+
+
+    componentWillUnmount(){
+        clearInterval(this.intervalImage);
+        clearInterval(this.interval);
+    }
+
 
     state = {
         isPlaying: !Variables.state.paused,
@@ -92,7 +99,7 @@ class PlayerBottom extends Component {
 
     componentWillMount(){
 
-        setInterval(() => {
+        this.interval = setInterval(() => {
                 this.setState({
                     currentTime: Variables.state.currentTime,
                     buffering: Variables.state.buffering,

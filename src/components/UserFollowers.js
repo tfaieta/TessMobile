@@ -26,6 +26,12 @@ class UserFollowers extends Component{
 
     }
 
+
+    componentWillUnmount(){
+        clearTimeout(this.timeout);
+    }
+
+
     constructor(props){
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
@@ -34,13 +40,12 @@ class UserFollowers extends Component{
             loading: true,
         };
 
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userFollowers)})},1000)
+        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userFollowers)})},1000)
     }
 
     state={
         loading: true
     };
-
 
 
     _renderProfileImage(profileImage){
