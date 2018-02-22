@@ -15,6 +15,9 @@ var DomParser = require('react-native-html-parser').DOMParser;
 
 
 
+
+// 1st tab, home page
+
 class Home extends Component{
 
     componentWillMount(){

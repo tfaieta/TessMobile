@@ -122,7 +122,7 @@ class Record extends Component{
 
         const rationale = {
             'title': 'Microphone Permission',
-            'message': 'AudioExample needs access to your microphone so you can record audio.'
+            'message': 'Tess needs access to your microphone so you can record audio.'
         };
 
         return PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO, rationale)

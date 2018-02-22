@@ -1,45 +1,31 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, ScrollView, TouchableOpacity, ListView,  RefreshControl, View} from 'react-native';
+import { StyleSheet, ScrollView, ListView,  RefreshControl, View} from 'react-native';
 import Variables from "../Variables";
 import firebase from 'firebase';
-import InvertibleScrollView from 'react-native-invertible-scroll-view';
 import ListItem from "../ListItem";
 
 
+
+// popular tab on discover page
 
 class TopCharts extends Component{
 
     componentWillMount(){
 
         Variables.state.topCharts = [];
-        const { currentUser } = firebase.auth();
         const ref = firebase.database().ref(`podcasts/`);
 
-        ref.limitToLast(350).once("value", function (snapshot) {
+        ref.limitToLast(400).once("value", function (snapshot) {
 
             snapshot.forEach(function (data) {
-                if(data.child("plays").numChildren() > 3){
 
-                    if(!Variables.state.topCharts[data.child("plays").numChildren() * 2]){
-                        Variables.state.topCharts[data.child("plays").numChildren() * 2] = data.val();
+                if(data.child("plays").numChildren() > 0){
+                    Variables.state.topCharts.push(data.val());
+                    for(let i = Variables.state.topCharts.length-1; i > 0 && Object.keys(Variables.state.topCharts[i].plays).length > Object.keys(Variables.state.topCharts[i-1].plays).length; i--){
+                        let temp = Variables.state.topCharts[i-1];
+                        Variables.state.topCharts[i-1] = Variables.state.topCharts[i];
+                        Variables.state.topCharts[i] = temp;
                     }
-                    else{
-                        if(!Variables.state.topCharts[data.child("plays").numChildren() * 2 + 1]){
-                            Variables.state.topCharts[data.child("plays").numChildren() * 2 + 1] = data.val();
-                        }
-                        else{
-                            if(!Variables.state.topCharts[data.child("plays").numChildren() * 2 + 2]){
-                                Variables.state.topCharts[data.child("plays").numChildren() * 2 + 2] = data.val();
-                            }
-                            else {
-                                Variables.state.topCharts[data.child("plays").numChildren() * 2 + 3] = data.val();
-                            }
-
-                        }
-
-                    }
-
-
                 }
 
             })
@@ -71,34 +57,19 @@ class TopCharts extends Component{
     fetchData(){
 
         Variables.state.topCharts = [];
-        const { currentUser } = firebase.auth();
         const ref = firebase.database().ref(`podcasts/`);
 
-        ref.limitToLast(350).once("value", function (snapshot) {
+        ref.limitToLast(400).once("value", function (snapshot) {
 
             snapshot.forEach(function (data) {
-                if(data.child("plays").numChildren() > 3){
 
-                    if(!Variables.state.topCharts[data.child("plays").numChildren() * 2]){
-                        Variables.state.topCharts[data.child("plays").numChildren() * 2] = data.val();
+                if(data.child("plays").numChildren() > 0){
+                    Variables.state.topCharts.push(data.val());
+                    for(let i = Variables.state.topCharts.length-1; i > 0 && Object.keys(Variables.state.topCharts[i].plays).length > Object.keys(Variables.state.topCharts[i-1].plays).length; i--){
+                        let temp = Variables.state.topCharts[i-1];
+                        Variables.state.topCharts[i-1] = Variables.state.topCharts[i];
+                        Variables.state.topCharts[i] = temp;
                     }
-                    else{
-                        if(!Variables.state.topCharts[data.child("plays").numChildren() * 2 + 1]){
-                            Variables.state.topCharts[data.child("plays").numChildren() * 2 + 1] = data.val();
-                        }
-                        else{
-                            if(!Variables.state.topCharts[data.child("plays").numChildren() * 2 + 2]){
-                                Variables.state.topCharts[data.child("plays").numChildren() * 2 + 2] = data.val();
-                            }
-                            else {
-                                Variables.state.topCharts[data.child("plays").numChildren() * 2 + 3] = data.val();
-                            }
-
-                        }
-
-                    }
-
-
                 }
 
             })
@@ -151,7 +122,6 @@ class TopCharts extends Component{
                         enableEmptySections
                         dataSource={this.state.dataSource}
                         renderRow={this.renderRow}
-                        renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
                     />
                 </View>
 
