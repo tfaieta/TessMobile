@@ -8,7 +8,8 @@ class Library extends Component{
 
     static navigatorStyle = {
         statusBarHidden: false,
-        navBarHidden: true
+        navBarHidden: true,
+        statusBarTextColorScheme: 'light'
     };
 
     GoToRecentlyPlayed = () => {

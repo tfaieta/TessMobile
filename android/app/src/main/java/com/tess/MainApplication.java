@@ -14,6 +14,7 @@ import com.facebook.soloader.SoLoader;
 import com.tanguyantoine.react.MusicControl;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.reactnativenavigation.NavigationApplication;
+import com.brentvatne.react.ReactVideoPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +35,8 @@ public class MainApplication extends NavigationApplication {
         new VectorIconsPackage(),
         new LinearGradientPackage(),
         new MusicControl(),
-        new RNFetchBlobPackage()
+        new RNFetchBlobPackage(),
+        new ReactVideoPackage()
     );
   }
 
@@ -46,7 +48,7 @@ public class MainApplication extends NavigationApplication {
 
   @Override
   public String getJSMainModuleName() {
-    return "index";
+    return "index.android";
   }
 
 }

@@ -35,7 +35,8 @@ class Account extends Component {
 
     static navigatorStyle = {
         statusBarHidden: false,
-        navBarHidden: true
+        navBarHidden: true,
+        statusBarTextColorScheme: 'light'
     };
 
     componentDidMount(){

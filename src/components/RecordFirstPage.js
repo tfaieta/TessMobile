@@ -21,7 +21,8 @@ class RecordFirstPage extends Component{
     static navigatorStyle = {
         tabBarHidden: false,
         statusBarHidden: false,
-        navBarHidden: true
+        navBarHidden: true,
+        statusBarTextColorScheme: 'light'
     };
 
     constructor(props) {

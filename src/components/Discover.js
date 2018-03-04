@@ -18,7 +18,8 @@ class Discover extends Component{
 
     static navigatorStyle = {
         statusBarHidden: false,
-        navBarHidden: true
+        navBarHidden: true,
+        statusBarTextColorScheme: 'light'
     };
 
     static state = { search: ''};
