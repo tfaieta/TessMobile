@@ -12,6 +12,13 @@ import firebase from 'firebase';
 export let profileName='';
 
 class CreateAccount extends Component {
+
+    static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true
+    };
+
+
     state = {
         confirmPassword: '',
         confirmPasswordError: '',

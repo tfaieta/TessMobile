@@ -47,11 +47,20 @@ var {height, width} = Dimensions.get('window');
 
 export default class InitialScreen extends Component{
 
+    static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true
+    };
+
     componentWillMount(){
-        setTimeout(() => {
+        this.timeout = setTimeout(() => {
             firebase.auth().onAuthStateChanged(this.func);
         }, 1000);
 
+    }
+
+    componentWillUnmount(){
+        clearTimeout(this.timeout)
     }
 
     func(){
@@ -153,6 +162,7 @@ export default class InitialScreen extends Component{
             Navigation.startSingleScreenApp({
                 screen: {
                     screen: 'Startup',
+                    navBarHidden: true,
                     navigatorStyle: {screenBackgroundColor: '#fff'},
                     navigatorButtons: {screenBackgroundColor: '#fff'}
                 },

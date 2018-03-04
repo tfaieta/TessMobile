@@ -35,6 +35,12 @@ class Following extends Component{
 
     }
 
+    componentWillUnmount(){
+        clearTimeout(this.timeout1);
+        clearTimeout(this.timeout2);
+        clearTimeout(this.timeout3);
+    }
+
     constructor(props){
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
@@ -43,11 +49,11 @@ class Following extends Component{
             refreshing: false
         };
 
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.followedContent)})},1000);
+        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.followedContent)})},1000);
 
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.followedContent)})},3000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.followedContent)})},3000);
 
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.followedContent)})},5000);
+        this.timeout3 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.followedContent)})},5000);
     }
 
 

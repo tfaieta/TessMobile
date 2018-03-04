@@ -3,7 +3,7 @@ import { Text, View, LayoutAnimation, TouchableOpacity, Image } from 'react-nati
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import Variables from "./Variables";
-
+import { Navigation } from 'react-native-navigation';
 
 
 // A single podcast on the queue list
@@ -364,6 +364,11 @@ class ListItemQueue extends Component {
                     }
 
                 }
+
+
+                Navigation.dismissModal({
+                    animationType: 'slide-down'
+                });
 
 
 

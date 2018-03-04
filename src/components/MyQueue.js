@@ -3,7 +3,6 @@ import { Text, View, StyleSheet, TouchableOpacity, ScrollView, ListView} from 'r
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "./Variables";
 import firebase from 'firebase';
-import ListItem from "./ListItem";
 import ListItemQueue from "./ListItemQueue";
 
 

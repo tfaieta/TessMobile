@@ -141,6 +141,7 @@ firebase.initializeApp(config);
 Navigation.startSingleScreenApp({
     screen:{
         screen: 'Initial',
+        navBarHidden: true,
         navigatorStyle: { screenBackgroundColor: '#fff' },
         navigatorButtons: {backgroundColor: 'white'},
     },

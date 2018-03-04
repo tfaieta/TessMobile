@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import { Text, View, LayoutAnimation, TouchableOpacity, Image, AsyncStorage } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
-import {AudioUtils} from 'react-native-audio';
 import Variables from "./Variables";
 
 
 
 // A single podcast on scrollview slider list (on home page)
-
 
 class ListItemUsers extends Component {
 
@@ -60,8 +58,48 @@ class ListItemUsers extends Component {
         super(state);
         this.state ={
             profileName: '',
-            profileImage: ''
+            profileImage: '',
+            username: '',
+            title: '',
         };
+
+        const {podcastTitle} = this.props.podcast;
+        const {podcastArtist} = this.props.podcast;
+        const {currentUser} = firebase.auth();
+
+        let profileName = '';
+        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").once("value", function (snap) {
+            if (snap.val()) {
+                profileName = snap.val().username;
+            }
+            else {
+                profileName = podcastArtist;
+            }
+        });
+
+        if(this.state.profileName == ''){
+            setTimeout(() =>{
+                this.setState({profileName: profileName})
+            },250);
+        }
+
+        setTimeout(() => {
+            if(podcastTitle.toString().length > 13 ){
+                this.setState({title: (podcastTitle.toString().slice(0,13)+"...")});
+            }
+            else{
+                this.setState({title: podcastTitle});
+            }
+
+            if(this.state.profileName.length > 15){
+                this.setState({username: (profileName.slice(0,15)+"...")});
+            }
+            else{
+                this.setState({username: this.state.profileName});
+            }
+        }, 500);
+
+
     }
 
 
@@ -194,6 +232,7 @@ class ListItemUsers extends Component {
         else{
             if(id){
                 AsyncStorage.setItem("currentPodcast", id);
+                AsyncStorage.setItem("currentTime", "0");
 
                 firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL().catch(() => {console.warn("file not found")})
                     .then(function(url) {
@@ -339,42 +378,6 @@ class ListItemUsers extends Component {
 
 
     render() {
-        const {podcastTitle} = this.props.podcast;
-        const {podcastArtist} = this.props.podcast;
-        const {currentUser} = firebase.auth();
-
-        let profileName = '';
-        if(this.state.profileName == ''){
-            setTimeout(() =>{
-                this.setState({profileName: profileName})
-            },200);
-        }
-        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
-            if (snap.val()) {
-                profileName = snap.val().username;
-            }
-            else {
-                profileName = podcastArtist;
-            }
-        });
-
-        var fixedTitle = '';
-        if(podcastTitle.toString().length > 13 ){
-            fixedTitle = (podcastTitle.toString().slice(0,13)+"...")
-        }
-        else{
-            fixedTitle = podcastTitle;
-        }
-
-        var fixedUsername = '';
-        if(this.state.profileName.length > 15){
-            fixedUsername =  (profileName.slice(0,15)+"...");
-        }
-        else{
-            fixedUsername = this.state.profileName;
-        }
-
-
 
         return (
 
@@ -383,8 +386,8 @@ class ListItemUsers extends Component {
 
                     {this._renderProfileImage()}
 
-                <Text style={styles.title}>{fixedTitle}</Text>
-                <Text style={styles.artistTitle}>{fixedUsername}</Text>
+                <Text style={styles.title}>{this.state.title}</Text>
+                <Text style={styles.artistTitle}>{this.state.username}</Text>
                 </View>
             </TouchableOpacity>
 

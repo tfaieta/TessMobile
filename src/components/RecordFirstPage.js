@@ -19,7 +19,9 @@ var {height, width} = Dimensions.get('window');
 class RecordFirstPage extends Component{
 
     static navigatorStyle = {
-        tabBarHidden: false
+        tabBarHidden: false,
+        statusBarHidden: false,
+        navBarHidden: true
     };
 
     constructor(props) {
