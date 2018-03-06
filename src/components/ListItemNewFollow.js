@@ -7,6 +7,8 @@ import Variables from "./Variables";
 
 
 
+// NOT IN USE
+
 class ListItemNewFollow extends Component {
 
     state = {

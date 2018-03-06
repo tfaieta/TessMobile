@@ -6,6 +6,8 @@ import Variables from "./Variables";
 import { Navigation } from 'react-native-navigation';
 
 
+// A single user item on a following or followed list
+
 class ListItemFollowed extends Component {
 
     componentWillMount(){

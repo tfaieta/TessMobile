@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, StatusBar, Animated, Easing, Image, Platform, Alert, Dimensions} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, StatusBar, Animated, Easing, Image, Platform, Alert, Dimensions, PermissionsAndroid} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Sound from 'react-native-sound';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
