@@ -11,6 +11,11 @@ import ListItem from "./ListItem";
 
 class SearchPage extends Component{
 
+static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true
+    };
+
 
     componentWillMount(){
         Variables.state.mySearches = [];

@@ -8,6 +8,11 @@ import ListItemQueue from "./ListItemQueue";
 
 class MyQueue extends Component{
 
+static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true
+    };
+
     componentWillMount(){
         const {currentUser} = firebase.auth();
 

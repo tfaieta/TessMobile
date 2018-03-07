@@ -14,6 +14,11 @@ import ListItem from "./ListItem";
 
 class MyContent extends Component{
 
+static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true
+    };
+
     constructor(props){
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});

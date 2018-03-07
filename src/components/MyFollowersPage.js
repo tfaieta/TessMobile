@@ -14,6 +14,12 @@ import ListItemFollowed from "./ListItemFollowed";
 
 
 class MyFollowersPage extends Component{
+
+static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true
+    };
+
     componentWillMount(){
         Variables.state.myFollowers = [];
 

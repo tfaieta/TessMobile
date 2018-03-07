@@ -17,10 +17,9 @@ import Variables from "./Variables";
 class Discover extends Component{
 
     static navigatorStyle = {
-        statusBarHidden: false,
-        navBarHidden: true,
-        statusBarTextColorScheme: 'light'
-    };
+            statusBarHidden: false,
+            navBarHidden: true
+        };
 
     static state = { search: ''};
 

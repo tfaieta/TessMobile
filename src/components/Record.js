@@ -41,9 +41,13 @@ class Record extends Component{
 
     }
 
-    static navigatorStyle = {
-        tabBarHidden: true,
-    };
+
+      static navigatorStyle = {
+            statusBarHidden: false,
+            navBarHidden: true,
+            statusBarTextColorScheme: 'light',
+            tabBarHidden: true
+      };
 
 
     state = {

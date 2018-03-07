@@ -3,7 +3,6 @@ import { Text, StyleSheet, ScrollView, TouchableOpacity, ListView, View, Refresh
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "../Variables";
 import firebase from 'firebase';
-import InvertibleScrollView from 'react-native-invertible-scroll-view';
 import ListItem from "../ListItem";
 
 
@@ -16,14 +15,21 @@ class Following extends Component{
         const refFol = firebase.database().ref(`users/${currentUser.uid}/following`);
         const ref = firebase.database().ref(`podcasts/`);
 
-        refFol.orderByChild('following').on("value", function (snapshot) {
+        refFol.orderByChild('following').limitToLast(50).once("value", function (snapshot) {
             snapshot.forEach(function (data) {
 
                 ref.on("value", function (snapshot) {
 
                     snapshot.forEach(function (data2) {
                         if(data.key == data2.val().podcastArtist) {
-                            Variables.state.followedContent.push(data2.val());
+                            if(data2.val().id){
+                                Variables.state.followedContent.push(data2.val());
+                                for(let i = Variables.state.followedContent.length-1; i > 0 && Variables.state.followedContent[i].id > Variables.state.followedContent[i-1].id; i--){
+                                    let temp = Variables.state.followedContent[i-1];
+                                    Variables.state.followedContent[i-1] = Variables.state.followedContent[i];
+                                    Variables.state.followedContent[i] = temp;
+                                }
+                            }
                         }
                     })
 
@@ -60,26 +66,33 @@ class Following extends Component{
     fetchData(){
 
         Variables.state.followedContent = [];
-        const { currentUser } = firebase.auth();
-        const refFol = firebase.database().ref(`users/${currentUser.uid}/following`);
-        const ref = firebase.database().ref(`podcasts/`);
+                const { currentUser } = firebase.auth();
+                const refFol = firebase.database().ref(`users/${currentUser.uid}/following`);
+                const ref = firebase.database().ref(`podcasts/`);
 
-        refFol.orderByChild('following').on("value", function (snapshot) {
-            snapshot.forEach(function (data) {
+                refFol.orderByChild('following').limitToLast(50).once("value", function (snapshot) {
+                    snapshot.forEach(function (data) {
 
-                ref.on("value", function (snapshot) {
+                        ref.on("value", function (snapshot) {
 
-                    snapshot.forEach(function (data2) {
-                        if(data.key == data2.val().podcastArtist) {
-                            Variables.state.followedContent.push(data2.val());
-                        }
+                            snapshot.forEach(function (data2) {
+                                if(data.key == data2.val().podcastArtist) {
+                                    if(data2.val().id){
+                                        Variables.state.followedContent.push(data2.val());
+                                        for(let i = Variables.state.followedContent.length-1; i > 0 && Variables.state.followedContent[i].id > Variables.state.followedContent[i-1].id; i--){
+                                            let temp = Variables.state.followedContent[i-1];
+                                            Variables.state.followedContent[i-1] = Variables.state.followedContent[i];
+                                            Variables.state.followedContent[i] = temp;
+                                        }
+                                    }
+                                }
+                            })
+
+                        });
+
+
                     })
-
                 });
-
-
-            })
-        });
 
     }
 
@@ -125,7 +138,6 @@ class Following extends Component{
                         enableEmptySections
                         dataSource={this.state.dataSource}
                         renderRow={this.renderRow}
-                        renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
                     />
                 </View>
 

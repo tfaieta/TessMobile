@@ -15,6 +15,11 @@ import ListItem from "./ListItem";
 
 class RecentlyPlayed extends Component{
 
+static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true
+    };
+
     componentWillMount(){
         const {currentUser} = firebase.auth();
 

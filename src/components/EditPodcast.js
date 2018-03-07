@@ -20,6 +20,13 @@ const options = ['News', 'Fitness', 'Gaming', 'Society & Culture', 'Sports', 'En
 
 
 class EditPodcast extends Component {
+
+  static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true,
+        statusBarTextColorScheme: 'light'
+    };
+
     componentWillMount(){
         const rowData = this.props.rowData;
         this.setState({title: rowData.podcastTitle, description: rowData.podcastDescription, category: rowData.podcastCategory})

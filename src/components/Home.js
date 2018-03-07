@@ -21,10 +21,9 @@ var DomParser = require('react-native-html-parser').DOMParser;
 class Home extends Component{
 
     static navigatorStyle = {
-        statusBarHidden: false,
-        navBarHidden: true,
-        statusBarTextColorScheme: 'light'
-    };
+            statusBarHidden: false,
+            navBarHidden: true
+        };
 
     componentDidMount(){
 

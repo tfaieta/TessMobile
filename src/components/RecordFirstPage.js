@@ -19,11 +19,9 @@ var {height, width} = Dimensions.get('window');
 class RecordFirstPage extends Component{
 
     static navigatorStyle = {
-        tabBarHidden: false,
-        statusBarHidden: false,
-        navBarHidden: true,
-        statusBarTextColorScheme: 'light'
-    };
+            statusBarHidden: false,
+            navBarHidden: true
+        };
 
     constructor(props) {
         super(props);
@@ -31,6 +29,27 @@ class RecordFirstPage extends Component{
             fileExists: false
         };
 
+
+        this.interval = setInterval(() => {
+            RNFetchBlob.fs.stat(podFile)
+                .then((stats) => {
+                    if(stats.size > 0){
+                        this.setState({
+                            fileExists: true
+                        })
+                    }
+                    else{
+                        this.setState({
+                            fileExists: false
+                        })
+                    }
+                });
+        } , 1000)
+
+    }
+
+    componentWillUnmount(){
+        clearInterval(this.interval);
     }
 
 
@@ -70,20 +89,6 @@ class RecordFirstPage extends Component{
     };
 
     _renderPrevPodcast = () => {
-
-        RNFetchBlob.fs.stat(podFile)
-            .then((stats) => {
-                if(stats.size > 0){
-                this.setState({
-                    fileExists: true
-                })
-                }
-                else{
-                    this.setState({
-                        fileExists: false
-                    })
-                }
-            });
 
         if(this.state.fileExists){
             return(

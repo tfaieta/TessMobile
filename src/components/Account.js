@@ -34,10 +34,9 @@ var {height, width} = Dimensions.get('window');
 class Account extends Component {
 
     static navigatorStyle = {
-        statusBarHidden: false,
-        navBarHidden: true,
-        statusBarTextColorScheme: 'light'
-    };
+            statusBarHidden: false,
+            navBarHidden: true
+        };
 
     componentDidMount(){
         Variables.state.myPodcasts = [];

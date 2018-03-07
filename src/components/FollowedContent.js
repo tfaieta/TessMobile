@@ -14,6 +14,13 @@ import ListItemFollowed from "./ListItemFollowed";
 
 
 class FollowedContent extends Component{
+
+  static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true,
+        statusBarTextColorScheme: 'light'
+    };
+
     componentWillMount(){
         Variables.state.usersFollowed = [];
 

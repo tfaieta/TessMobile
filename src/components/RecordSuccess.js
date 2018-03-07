@@ -9,6 +9,13 @@ import PlayerBottom from "./PlayerBottom";
 
 class RecordSuccess extends Component{
 
+  static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true,
+        statusBarTextColorScheme: 'light'
+    };
+
+
     state = {
         title: Variables.state.podcastTitle,
         description: Variables.state.podcastDescription,

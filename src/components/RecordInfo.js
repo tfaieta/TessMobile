@@ -31,6 +31,14 @@ var {height, width} = Dimensions.get('window');
 
 class RecordInfo extends Component{
 
+  static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true,
+        statusBarTextColorScheme: 'light',
+        tabBarHidden: true
+    };
+
+
     constructor(props) {
         super();
 
@@ -56,9 +64,6 @@ class RecordInfo extends Component{
         uploadProgress: 10
     };
 
-    static navigatorStyle = {
-        tabBarHidden: true
-    };
 
     componentWillMount(){
         const {currentUser} = firebase.auth();
