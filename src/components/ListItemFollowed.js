@@ -6,6 +6,8 @@ import Variables from "./Variables";
 import { Navigation } from 'react-native-navigation';
 
 
+// A single user item on a following or followed list
+
 class ListItemFollowed extends Component {
 
     componentWillMount(){
@@ -48,6 +50,23 @@ class ListItemFollowed extends Component {
             profileImage: '',
             rss: false,
         };
+
+
+        const podcastArtist = this.props.podcast;
+
+        let profileName = 'loading';
+        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").once("value", function (snap) {
+            if (snap.val()) {
+                profileName = snap.val().username;
+            }
+
+        });
+
+        setTimeout(() =>{
+            this.setState({profileName: profileName})
+        },250);
+
+
     }
 
 
@@ -85,21 +104,6 @@ class ListItemFollowed extends Component {
 
 
     render() {
-
-        const podcastArtist = this.props.podcast;
-
-        let profileName = 'loading';
-        setTimeout(() =>{
-            this.setState({profileName: profileName})
-        },200);
-        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
-            if (snap.val()) {
-                profileName = snap.val().username;
-            }
-
-        });
-
-
 
         return (
 

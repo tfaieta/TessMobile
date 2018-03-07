@@ -21,6 +21,11 @@ import DropdownAlert from 'react-native-dropdownalert';
 
 class Settings extends Component {
 
+static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true
+    };
+
 
     constructor(){
         super();

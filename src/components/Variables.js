@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
 import {podFile, podTime} from './Record';
 import firebase from 'firebase';
-import {
-    Player,
-} from 'react-native-audio-toolkit';
 import MusicControl from 'react-native-music-control';
-
-
-export var podcastPlayer = new Player(podFile, {continuesToPlayInBackground : true});
-podcastPlayer.prepare();
 
 
 

@@ -16,6 +16,11 @@ var {height, width} = Dimensions.get('window');
 
 class Login extends Component {
 
+    static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true
+    };
+
     onEmailChange(text){
         this.props.emailChanged(text);
     }

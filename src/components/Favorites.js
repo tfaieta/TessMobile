@@ -13,6 +13,13 @@ import ListItem from "./ListItem";
 
 class Favorites extends Component{
 
+  static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true,
+        statusBarTextColorScheme: 'light'
+    };
+
+
     componentWillMount(){
         Variables.state.favPodcasts = [];
         const { currentUser } = firebase.auth();

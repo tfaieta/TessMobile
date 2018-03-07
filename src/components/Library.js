@@ -6,6 +6,11 @@ import PlayerBottom from './PlayerBottom';
 
 class Library extends Component{
 
+    static navigatorStyle = {
+            statusBarHidden: false,
+            navBarHidden: true
+        };
+
     GoToRecentlyPlayed = () => {
         this.props.navigator.push({
             screen: 'RecentlyPlayed',

@@ -1,6 +1,11 @@
 /**
  * Created by nickruspantini on 6/17/17.
  */
+
+
+ // NOT IN USE (Switched to React Native Navigation, all screen registry is on App.js)
+
+
 import React from 'react';
 import {StyleSheet, TabBarIOS, Text, Image} from 'react-native';
 import {Scene, Router, TabBar, TabBarProps, Actions, ActionConst } from 'react-native-router-flux';

@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import PlayerBottom from './PlayerBottom';
 
 
-// NOT in use
+// NOT in use, Queue is implemented in MyQueue
 
 class Queue extends Component{
 

@@ -31,6 +31,12 @@ var {height, width} = Dimensions.get('window');
 // contains a profile that you can view (any profile that is not yours)
 
 class UserProfile extends Component {
+
+static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true
+    };
+
     componentWillMount(){
 
         const {currentUser} = firebase.auth();

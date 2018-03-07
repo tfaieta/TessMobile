@@ -33,7 +33,12 @@ var {height, width} = Dimensions.get('window');
 
 class Account extends Component {
 
-    componentWillMount(){
+    static navigatorStyle = {
+            statusBarHidden: false,
+            navBarHidden: true
+        };
+
+    componentDidMount(){
         Variables.state.myPodcasts = [];
         Variables.state.myFollowers = [];
         Variables.state.myFollowing = [];

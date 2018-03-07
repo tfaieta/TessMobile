@@ -4,7 +4,6 @@ import {
     Text,
     View,
     TouchableOpacity,
-    Alert,
     Dimensions
 
 } from 'react-native';
@@ -20,7 +19,6 @@ var {height, width} = Dimensions.get('window');
 
 
 // options popup from player options
-
 
 class PlayerOptions extends Component {
 

@@ -25,6 +25,11 @@ var {height, width} = Dimensions.get('window');
 
 class PlayerInfo extends Component {
 
+static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true
+    };
+
     componentWillMount(){
 
         firebase.database().ref(`podcasts/${Variables.state.podcastID}/comments`).on("value", function (snap) {

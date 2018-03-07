@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Text, View, LayoutAnimation, TouchableOpacity, Alert, Image, Dimensions, AsyncStorage } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
-import {AudioUtils} from 'react-native-audio';
 import Variables from "./Variables";
 
 var {height, width} = Dimensions.get('window');
@@ -55,8 +54,35 @@ class ListItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            profileImage: ''
-        }
+            profileImage: '',
+            username: '',
+        };
+
+        const {podcastArtist} = this.props.podcast;
+        const {podcastTitle} = this.props.podcast;
+
+        let profileName = 'loading';
+        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").once("value", function (snap) {
+            if (snap.val()) {
+                profileName = snap.val().username;
+            }
+            else {
+                profileName = podcastArtist;
+            }
+        });
+
+        setTimeout(() => {
+            this.setState({username: profileName});
+            this.setState({title: podcastTitle});
+        }, 300);
+
+        setTimeout(() => {
+            this.setState({username: profileName});
+            this.setState({title: podcastTitle});
+        }, 1000);
+
+
+
     }
 
     state = {
@@ -97,56 +123,6 @@ class ListItem extends Component {
         }
     }
 
-    onRowPress(){
-        const {currentUser} = firebase.auth();
-        const { podcastTitle } = this.props.podcast;
-        const { podcastDescription } = this.props.podcast;
-        const { podcastCategory } = this.props.podcast;
-        const { podcastArtist } = this.props.podcast;
-        let localPath =  AudioUtils.DocumentDirectoryPath + '/local.aac';
-
-        firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL()
-            .then(function(url) {
-                        
-                        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
-                            if(snap.val()){
-                                Variables.state.currentUsername = snap.val().username;
-                            }
-                            else {
-                                Variables.state.currentUsername = podcastArtist;
-                            }
-                        });
-
-                        Variables.pause();
-                        Variables.setPodcastFile(url);
-                        Variables.state.podcastTitle = podcastTitle;
-                        Variables.state.podcastDescription = podcastDescription;
-                        Variables.state.podcastCategory = podcastCategory;
-                        Variables.state.podcastArtist = podcastArtist;
-                        Variables.state.userProfileImage = '';
-                        Variables.play();
-                        Variables.state.isPlaying = true;
-
-                const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
-                if(storageRef.child('image-profile-uploaded')){
-                    storageRef.getDownloadURL()
-                        .then(function(url) {
-                            if(url){
-                                Variables.state.userProfileImage = url;
-                            }
-                        }).catch(function(error) {
-                        //
-                    });
-                }
-
-                    });
-
-
-
-
-
-    }
-
 
     onGarbagePress(){
         Alert.alert(
@@ -166,35 +142,20 @@ class ListItem extends Component {
 
     render() {
 
-        const {podcastArtist} = this.props.podcast;
-
-        let profileName = 'loading';
-        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
-            if (snap.val()) {
-                profileName = snap.val().username;
-            }
-            else {
-                profileName = podcastArtist;
-            }
-        });
-
-        const {podcastTitle} = this.props.podcast;
-        const {podcastDescription} = this.props.podcast;
-        const {podcastCategory} = this.props.podcast;
-        const {id} = this.props.podcast;
-        const {rss} = this.props.podcast;
-        const {podcastURL} = this.props.podcast;
-        const {currentUser} = firebase.auth();
-        const user = currentUser.uid;
-        const {podcast} = this.props;
-        const rowData = podcast;
-
-
-
-
             return (
 
                 <TouchableOpacity onPress={() =>  {
+
+                    const {podcastArtist} = this.props.podcast;
+                    const {podcastTitle} = this.props.podcast;
+                    const {podcastDescription} = this.props.podcast;
+                    const {podcastCategory} = this.props.podcast;
+                    const {id} = this.props.podcast;
+                    const {rss} = this.props.podcast;
+                    const {podcastURL} = this.props.podcast;
+                    const {currentUser} = firebase.auth();
+                    const user = currentUser.uid;
+                    const {podcast} = this.props;
 
 
                     if(rss){
@@ -288,6 +249,7 @@ class ListItem extends Component {
                     else{
                         if(id){
                             AsyncStorage.setItem("currentPodcast", id);
+                            AsyncStorage.setItem("currentTime", "0");
 
                             firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL().catch(() => {console.warn("file not found")})
                                 .then(function(url) {
@@ -433,12 +395,16 @@ class ListItem extends Component {
                         {this._renderProfileImage()}
 
                         <View style={styles.leftContainer}>
-                            <Text style={styles.title}>{podcastTitle}</Text>
-                            <Text style={styles.artistTitle}>{profileName}</Text>
+                            <Text style={styles.title}>{this.state.title}</Text>
+                            <Text style={styles.artistTitle}>{this.state.username}</Text>
                         </View>
 
 
                         <TouchableOpacity onPress={() => {
+                            const {currentUser} = firebase.auth();
+                            const {podcast} = this.props;
+                            const rowData = podcast;
+
                             const {navigator} = this.props;
 
                             this.props.navigator.showLightBox({

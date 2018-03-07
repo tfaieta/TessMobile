@@ -7,7 +7,6 @@ import firebase from 'firebase';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import MusicControl from 'react-native-music-control';
 
-
 import { Navigation } from 'react-native-navigation';
 
 var {height, width} = Dimensions.get('window');

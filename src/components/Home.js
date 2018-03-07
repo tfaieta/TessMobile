@@ -20,7 +20,12 @@ var DomParser = require('react-native-html-parser').DOMParser;
 
 class Home extends Component{
 
-    componentWillMount(){
+    static navigatorStyle = {
+            statusBarHidden: false,
+            navBarHidden: true
+        };
+
+    componentDidMount(){
 
         this.props.podcastFetchNew();
 
@@ -249,6 +254,18 @@ class Home extends Component{
     }
 
 
+    componentWillUnmount(){
+        clearTimeout(this.timeout1);
+        clearTimeout(this.timeout2);
+        clearTimeout(this.timeout3);
+        clearTimeout(this.timeout4);
+        clearTimeout(this.timeout5);
+        clearTimeout(this.timeout6);
+        clearTimeout(this.timeout7);
+        clearTimeout(this.timeout8);
+    }
+
+
     constructor(props) {
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
@@ -260,15 +277,15 @@ class Home extends Component{
             url: '',
             refreshing: false,
         };
-        setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},2000);
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},2400);
-        setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},3800);
-        setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},3200);
+        this.timeout1 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},2000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},2400);
+        this.timeout3 = setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},3800);
+        this.timeout4 = setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},3200);
 
-        setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},6000);
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},6400);
-        setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},6800);
-        setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},7200);
+        this.timeout5 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},6000);
+        this.timeout6 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},6400);
+        this.timeout7 = setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},6800);
+        this.timeout8 = setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},7200);
     }
 
 
@@ -1043,95 +1060,6 @@ class Home extends Component{
                             {this._selectedByTess(Variables.state.selectedByTess.length)}
 
                         </View>
-
-
-
-                        <View>
-                            <View style={{flexDirection:'row'}}>
-                                <View style={{alignSelf:'flex-start'}}>
-                                    <Text style={styles.title}>Featured Categories</Text>
-                                </View>
-
-                            </View>
-
-                        </View>
-
-
-                        <ScrollView style={{height: 122, marginVertical: 10}} horizontal={true} showsHorizontalScrollIndicator={false}>
-
-                            <TouchableOpacity style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, borderRadius: 10, borderWidth: 0.1}} onPress={this.pressTech}>
-                                <Image
-                                    style={{width: 218, height:122, position: 'absolute', alignSelf: 'center', opacity: 0.9, borderRadius: 10, borderWidth: 0.1}}
-                                    source={require('tess/src/images/tech.jpeg')}
-                                >
-                                    <Icon style={{
-                                        textAlign: 'center',
-                                        marginTop: 30,
-                                        fontSize: 30,
-                                        backgroundColor: 'transparent',
-                                        color: '#FFF'
-                                    }} name="md-phone-portrait">
-                                    </Icon>
-                                    <Text style={styles.catTitle}>Tech</Text>
-                                </Image>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, borderRadius: 10, borderWidth: 0.1}} onPress={this.pressTravel}>
-                                <Image
-                                    style={{width: 218, height:122, position: 'absolute', alignSelf: 'center', opacity: 0.9, borderRadius: 10, borderWidth: 0.1}}
-                                    source={require('tess/src/images/travel.png')}
-                                >
-                                    <Icon style={{
-                                        textAlign: 'center',
-                                        marginTop: 30,
-                                        fontSize: 30,
-                                        backgroundColor: 'transparent',
-                                        color: '#FFF'
-                                    }} name="md-plane">
-                                    </Icon>
-                                    <Text style={styles.catTitle}>Travel</Text>
-                                </Image>
-                            </TouchableOpacity>
-
-
-                            <TouchableOpacity style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, borderRadius: 10, borderWidth: 0.1}} onPress={this.pressFitness}>
-                                <Image
-                                    style={{width: 218, height:122, position: 'absolute', alignSelf: 'center', opacity: 0.9, borderRadius: 10, borderWidth: 0.1}}
-                                    source={require('tess/src/images/fitness.png')}
-                                >
-                                    <Icon style={{
-                                        textAlign: 'center',
-                                        marginTop: 30,
-                                        fontSize: 30,
-                                        backgroundColor: 'transparent',
-                                        color: '#FFF'
-                                    }} name="ios-flash">
-                                    </Icon>
-                                    <Text style={styles.catTitle}>Fitness</Text>
-                                </Image>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, marginRight: 20, borderRadius: 10, borderWidth: 0.1}} onPress={this.pressCurrEvents}>
-                                <Image
-                                    style={{width: 218, height:122, position: 'absolute', alignSelf: 'center', opacity: 0.9, borderRadius: 10, borderWidth: 0.1}}
-                                    source={require('tess/src/images/worldNews.png')}
-                                >
-                                    <Icon style={{
-                                        textAlign: 'center',
-                                        marginTop: 30,
-                                        fontSize: 30,
-                                        backgroundColor: 'transparent',
-                                        color: '#FFF'
-                                    }} name="md-globe">
-                                    </Icon>
-                                    <Text style={styles.catTitle}>News</Text>
-                                </Image>
-                            </TouchableOpacity>
-
-
-                        </ScrollView>
-
-
 
 
 

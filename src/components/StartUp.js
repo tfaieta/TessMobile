@@ -21,6 +21,11 @@ var {height, width} = Dimensions.get('window');
 
 export  default class Login extends Component{
 
+    static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true
+    };
+
     _handleButtonPressLogin = () => {
         this.props.navigator.push({
             screen: 'Login',

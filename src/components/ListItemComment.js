@@ -6,6 +6,9 @@ import Variables from "./Variables";
 import { Navigation } from 'react-native-navigation';
 
 
+
+// individual list item for a comment
+
 class ListItemComment extends Component {
 
     componentWillMount(){
@@ -32,8 +35,33 @@ class ListItemComment extends Component {
         super(state);
         this.state ={
             profileName: '',
-            profileImage: ''
+            profileImage: '',
+            username: '',
+            comment: ''
         };
+
+        const {user} = this.props.rowData;
+        const {comment} = this.props.rowData;
+
+        let profileName = 'loading';
+        firebase.database().ref(`/users/${user}/username`).orderByChild("username").on("value", function (snap) {
+            if (snap.val()) {
+                profileName = snap.val().username;
+            }
+            else {
+                profileName = user;
+            }
+        });
+
+        setTimeout(() => {
+            this.setState({username: profileName});
+            this.setState({comment: comment});
+        }, 250);
+
+        setTimeout(() => {
+            this.setState({username: profileName})
+        }, 500);
+
     }
 
 
@@ -73,29 +101,9 @@ class ListItemComment extends Component {
     render() {
 
         const {user} = this.props.rowData;
-        const {comment} = this.props.rowData;
-        const {id} = this.props.rowData;
-
-
-        let profileName = 'loading';
-        firebase.database().ref(`/users/${user}/username`).orderByChild("username").on("value", function (snap) {
-            if (snap.val()) {
-                profileName = snap.val().username;
-            }
-            else {
-                profileName = user;
-            }
-        });
-
-
-
         const {currentUser} = firebase.auth();
-        const me = currentUser.uid;
 
-
-
-
-        if(user == me || Variables.state.podcastArtist == me){
+        if(user == currentUser.uid || Variables.state.podcastArtist == currentUser.uid){
 
             return (
                 <View>
@@ -114,12 +122,14 @@ class ListItemComment extends Component {
 
                         {this._renderProfileImage()}
 
-                        <Text style={styles.textCommentName}>{profileName}:</Text>
+                        <Text style={styles.textCommentName}>{this.state.username}:</Text>
                         <View style = {{marginHorizontal: 10, flex:1}}>
-                        <Text style={styles.textComment}>{comment}</Text>
+                        <Text style={styles.textComment}>{this.state.comment}</Text>
                         </View>
 
                         <Icon onPress={() => {
+
+                            const {id} = this.props.rowData;
 
                             Alert.alert(
                                 'Are you sure you want to delete?',
@@ -170,9 +180,9 @@ class ListItemComment extends Component {
 
                         {this._renderProfileImage()}
 
-                        <Text style={styles.textCommentName}>{profileName}:</Text>
+                        <Text style={styles.textCommentName}>{this.state.username}:</Text>
                         <View style = {{marginHorizontal: 10, flex:1}}>
-                        <Text style={styles.textComment}>{comment}</Text>
+                        <Text style={styles.textComment}>{this.state.comment}</Text>
                         </View>
 
                     </TouchableOpacity>
