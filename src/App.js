@@ -58,6 +58,7 @@ import ReligionSpirituality from "./components/Categories/ReligionSpirituality";
 import SetPlayerSpeed from "./components/SetPlayerSpeed";
 import MyQueue from "./components/MyQueue";
 import PlayerOptions from "./components/PlayerOptions";
+import CustomNavbar from "./components/CustomNavbar";
 
 
 
@@ -67,6 +68,8 @@ Navigation.registerComponent('Initial', () => InitialScreen, store, Provider);
 Navigation.registerComponent('Startup', () => StartUp, store, Provider);
 Navigation.registerComponent('Login', () => Login, store, Provider);
 Navigation.registerComponent('CreateAccount', () => CreateAccount, store, Provider);
+
+Navigation.registerComponent('CustomNavbar', () => CustomNavbar, store, Provider);
 
 Navigation.registerComponent('Home', () => Home, store, Provider);
 Navigation.registerComponent('ViewAll', () => ViewAll, store, Provider);

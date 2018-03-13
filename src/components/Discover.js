@@ -17,9 +17,20 @@ import Variables from "./Variables";
 class Discover extends Component{
 
     static navigatorStyle = {
-            statusBarHidden: false,
-            navBarHidden: true
-        };
+        statusBarHidden: false,
+        statusBarTextColorScheme: 'light',
+        navBarHidden: false,
+        drawUnderTabBar: false,
+        navBarCustomView: 'CustomNavbar',
+        navBarCustomViewInitialProps: {navigator},
+        navBarHideOnScroll: true,
+        navBarBackgroundColor: '#fff',
+        topBarElevationShadowEnabled: true,
+        topBarShadowColor: '#000',
+        topBarShadowOpacity: 1,
+        topBarShadowOffset: 20,
+        topBarShadowRadius: 10,
+    };
 
     static state = { search: ''};
 
@@ -48,29 +59,6 @@ class Discover extends Component{
                     barStyle="dark-content"
                 />
 
-                <View style={styles.backColor}>
-
-
-                    <SearchBar
-                        lightTheme
-                        round
-                        inputStyle={{backgroundColor: '#fff', color: '#2A2A30', marginLeft: 20}}
-                        containerStyle= {styles.containerSearch}
-                        placeholder='Search...'
-                        placeholderTextColor = '#2A2A30'
-                        icon = {{ color: '#5757FF', name: 'search', paddingRight: 20 }}
-                        clearIcon = {{ color: '#9496A3', name: 'close' }}
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        value={this.state.search}
-                        onChangeText={search => this.setState({ search })}
-                        returnKeyType='search'
-                        onSubmitEditing={this.searchActivate}
-                    />
-                </View>
-
-
-
 
                 <ScrollableTabView
                     tabBarUnderlineStyle = {styles.underline}
@@ -87,9 +75,6 @@ class Discover extends Component{
                     <Following tabLabel="Following" navigator={this.props.navigator}/>
 
                 </ScrollableTabView>
-
-
-
 
 
 

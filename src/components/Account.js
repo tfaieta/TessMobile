@@ -34,9 +34,20 @@ var {height, width} = Dimensions.get('window');
 class Account extends Component {
 
     static navigatorStyle = {
-            statusBarHidden: false,
-            navBarHidden: true
-        };
+        statusBarHidden: false,
+        statusBarTextColorScheme: 'light',
+        navBarHidden: false,
+        drawUnderTabBar: false,
+        navBarCustomView: 'CustomNavbar',
+        navBarCustomViewInitialProps: {navigator},
+        navBarHideOnScroll: true,
+        navBarBackgroundColor: '#fff',
+        topBarElevationShadowEnabled: true,
+        topBarShadowColor: '#000',
+        topBarShadowOpacity: 1,
+        topBarShadowOffset: 20,
+        topBarShadowRadius: 10,
+    };
 
     componentDidMount(){
         Variables.state.myPodcasts = [];
@@ -293,28 +304,6 @@ class Account extends Component {
                 <StatusBar
                     barStyle="dark-content"
                 />
-
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 6}, shadowOpacity: 0.2, shadowRadius: 10}}>
-                    <View style={{flex:1,alignItems: 'flex-start'}}>
-                    </View>
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center',}}>
-                        <Text style={styles.header}>Account</Text>
-                    </View>
-
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'flex-end', marginTop: 20}}>
-                        <TouchableOpacity onPress={this._pressSettings}>
-                        <Icon style={{
-                            textAlign: 'right',
-                            fontSize: 24,
-                            marginRight: 15,
-                            marginTop: 5,
-                            color: '#5757FF'
-                        }} name="md-settings">
-                        </Icon>
-                        </TouchableOpacity>
-                    </View>
-
-                </View>
 
 
                 <ScrollView >

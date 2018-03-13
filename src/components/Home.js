@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Text, View, StyleSheet,StatusBar, ListView, ScrollView, TouchableOpacity, Image, Linking, RefreshControl} from 'react-native';
+import { Text, View, StyleSheet, ListView, ScrollView, TouchableOpacity, Image, Linking, RefreshControl} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { podcastFetchNew} from "../actions/PodcastActions";
 import { connect } from 'react-redux';
@@ -20,9 +20,21 @@ var DomParser = require('react-native-html-parser').DOMParser;
 
 class Home extends Component{
 
+
     static navigatorStyle = {
-            statusBarHidden: false,
-            navBarHidden: true
+        statusBarHidden: false,
+        statusBarTextColorScheme: 'light',
+        navBarHidden: false,
+        drawUnderTabBar: false,
+        navBarCustomView: 'CustomNavbar',
+        navBarCustomViewInitialProps: {navigator},
+        navBarHideOnScroll: true,
+        navBarBackgroundColor: '#fff',
+        topBarElevationShadowEnabled: true,
+        topBarShadowColor: '#000',
+        topBarShadowOpacity: 1,
+        topBarShadowOffset: 20,
+        topBarShadowRadius: 10,
         };
 
     componentDidMount(){
@@ -956,10 +968,6 @@ class Home extends Component{
                 <View
                     style={styles.container}>
 
-                    <StatusBar
-                        barStyle="dark-content"
-                    />
-
 
                     <ScrollView
                         refreshControl={
@@ -1172,7 +1180,6 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: 'transparent',
-        marginTop: 20,
     },
     homeContainer:{
         flex:1,

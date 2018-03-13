@@ -7,9 +7,20 @@ import PlayerBottom from './PlayerBottom';
 class Library extends Component{
 
     static navigatorStyle = {
-            statusBarHidden: false,
-            navBarHidden: true
-        };
+        statusBarHidden: false,
+        statusBarTextColorScheme: 'light',
+        navBarHidden: false,
+        drawUnderTabBar: false,
+        navBarCustomView: 'CustomNavbar',
+        navBarCustomViewInitialProps: {navigator},
+        navBarHideOnScroll: true,
+        navBarBackgroundColor: '#fff',
+        topBarElevationShadowEnabled: true,
+        topBarShadowColor: '#000',
+        topBarShadowOpacity: 1,
+        topBarShadowOffset: 20,
+        topBarShadowRadius: 10,
+    };
 
     GoToRecentlyPlayed = () => {
         this.props.navigator.push({
@@ -55,13 +66,6 @@ class Library extends Component{
                 <StatusBar
                     barStyle="dark-content"
                 />
-
-
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 6}, shadowOpacity: 0.2, shadowRadius: 10}}>
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center', marginTop:5}}>
-                        <Text style={styles.header}>Library</Text>
-                    </View>
-                </View>
 
 
                 <Image

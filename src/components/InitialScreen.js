@@ -15,31 +15,17 @@ import { Navigation } from 'react-native-navigation';
 
 
 
-var homeIcon;
-Icon.getImageSource('ios-home-outline', 30, '#F5002A').then((source) => { homeIcon = source});
-var homeIconSelected;
-Icon.getImageSource('ios-home', 30, '#F5002A').then((source) => { homeIconSelected = source});
+var homeIcon = require('tess/src/images/iconHome.png');
+var homeIconSelected = require('tess/src/images/iconHome.png');
 
-var discoverIcon;
-Icon.getImageSource('ios-search-outline', 30, '#F5002A').then((source) => { discoverIcon = source});
-var discoverIconSelected;
-Icon.getImageSource('ios-search', 30, '#F5002A').then((source) => { discoverIconSelected = source});
+var discoverIcon = require('tess/src/images/iconDiscover.png');
+var discoverIconSelected = require('tess/src/images/iconDiscover.png');
 
-var recordIcon;
-Icon.getImageSource('ios-microphone-outline', 50, '#F5002A').then((source) => { recordIcon = source});
-var recordIconSelected;
-Icon.getImageSource('ios-microphone', 50, '#F5002A').then((source) => { recordIconSelected = source});
+var libraryIcon = require('tess/src/images/iconLibrary.png');
+var libraryIconSelected = require('tess/src/images/iconLibrary.png');
 
-var libraryIcon;
-Icon.getImageSource('ios-headset-outline', 30, '#F5002A').then((source) => { libraryIcon = source});
-var libraryIconSelected;
-Icon.getImageSource('ios-headset', 30, '#F5002A').then((source) => { libraryIconSelected = source});
-
-var accountIcon;
-Icon.getImageSource('ios-person-outline', 30, '#F5002A').then((source) => { accountIcon = source});
-var accountIconSelected;
-Icon.getImageSource('ios-person', 30, '#F5002A').then((source) => { accountIconSelected = source});
-
+var notificationsIcon = require('tess/src/images/iconNotifications.png');
+var notificationsIconSelected = require('tess/src/images/iconNotifications.png');
 
 
 var {height, width} = Dimensions.get('window');
@@ -98,9 +84,9 @@ export default class InitialScreen extends Component{
                         navigatorButtons: {screenBackgroundColor: '#fff'}
                     },
                     {
-                        screen: 'RecordFirst',
-                        icon: recordIcon,
-                        selectedIcon: recordIconSelected,
+                        screen: 'Account',
+                        icon: notificationsIcon,
+                        selectedIcon: notificationsIconSelected,
                         iconInsets: {
                             top: 5,
                             left: 0,
@@ -125,25 +111,12 @@ export default class InitialScreen extends Component{
                         navigatorStyle: {screenBackgroundColor: '#fff'},
                         navigatorButtons: {screenBackgroundColor: '#fff'}
                     },
-                    {
-                        screen: 'Account',
-                        icon: accountIcon,
-                        selectedIcon: accountIconSelected,
-                        iconInsets: {
-                            top: 5,
-                            left: 0,
-                            bottom: -5,
-                            right: 0
-                        },
-                        navBarHidden: true,
-                        navigatorStyle: {screenBackgroundColor: '#fff'},
-                        navigatorButtons: {screenBackgroundColor: '#fff'}
-                    }
                 ],
                 tabsStyle: {
-                    tabBarButtonColor: '#6a6b78',
-                    tabBarSelectedButtonColor: '#5757FF',
+                    tabBarButtonColor: '#b1b3c8',
+                    tabBarSelectedButtonColor: '#506dcf',
                     tabBarBackgroundColor: '#fff',
+                    tabBarHideShadow: true,
                     initialTabIndex: 0,
                     tabBarTextFontFamily: 'HiraginoSans-W3',
                 },
