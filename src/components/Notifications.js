@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ScrollView, StatusBar} from 'react-native';
+import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView, StatusBar} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import LinearGradient from "react-native-linear-gradient/index.android";
 
 
-class Library extends Component{
+class Notifications extends Component{
 
     static navigatorStyle = {
         statusBarHidden: false,
@@ -70,29 +69,15 @@ class Library extends Component{
 
                 <ScrollView>
 
-
-
-                    <TouchableOpacity>
-                    <LinearGradient
-
-                        colors={['#d15564', '#9a5e9a', '#506dcf' ]}
-                        style={styles.container2}
-                    >
-                        <Text style = {styles.titleTop}>154 minutes to catch up</Text>
-                    </LinearGradient>
-                    </TouchableOpacity>
-
-
-
                     <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
                             color: '#797979',
                             marginHorizontal: 10,
-                        }} name="history">
+                        }} name="user-circle">
                         </Icon>
-                        <Text style = {styles.title}>   History</Text>
+                        <Text style = {styles.title}>Joe liked your podcast.</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: 22,
@@ -110,9 +95,9 @@ class Library extends Component{
                             backgroundColor: 'transparent',
                             color: '#797979',
                             marginHorizontal: 10,
-                        }} name="podcast">
+                        }} name="user-circle">
                         </Icon>
-                        <Text style = {styles.title}>   Podcasts</Text>
+                        <Text style = {styles.title}>Jane liked your podcast.</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: 22,
@@ -130,9 +115,9 @@ class Library extends Component{
                             backgroundColor: 'transparent',
                             color: '#797979',
                             marginHorizontal: 10,
-                        }} name="list-ul">
+                        }} name="user-circle">
                         </Icon>
-                        <Text style = {styles.title}>   Playlists</Text>
+                        <Text style = {styles.title}>Tony liked your podcast.</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: 22,
@@ -150,9 +135,9 @@ class Library extends Component{
                             backgroundColor: 'transparent',
                             color: '#797979',
                             marginHorizontal: 10,
-                        }} name="star">
+                        }} name="comment">
                         </Icon>
-                        <Text style = {styles.title}>   Highlights</Text>
+                        <Text style = {styles.title}>Tony commented on your podcast.</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: 22,
@@ -170,9 +155,9 @@ class Library extends Component{
                             backgroundColor: 'transparent',
                             color: '#797979',
                             marginHorizontal: 10,
-                        }} name="users">
+                        }} name="user-circle">
                         </Icon>
-                        <Text style = {styles.title}>   Creators</Text>
+                        <Text style = {styles.title}>New Episode from Jane.</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: 22,
@@ -184,6 +169,25 @@ class Library extends Component{
                         </View>
                     </TouchableOpacity>
 
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}}>
+                        <Icon style={{
+                            fontSize: 24,
+                            backgroundColor: 'transparent',
+                            color: '#797979',
+                            marginHorizontal: 10,
+                        }} name="user-circle">
+                        </Icon>
+                        <Text style = {styles.title}>New Episode from Joe.</Text>
+                        <View style={{alignSelf:'flex-end'}}>
+                            <Icon style={{
+                                fontSize: 22,
+                                backgroundColor: 'transparent',
+                                color: '#797979',
+                                marginHorizontal: 10,
+                            }} name="chevron-right">
+                            </Icon>
+                        </View>
+                    </TouchableOpacity>
 
                 </ScrollView>
 
@@ -205,10 +209,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
-    container2:{
-        backgroundColor: 'transparent',
-        marginBottom: 10,
-    },
+
     title: {
         flex:1,
         color: '#000',
@@ -220,13 +221,13 @@ const styles = StyleSheet.create({
     },
 
     titleTop: {
-        color: '#fff',
+        color: '#000',
         flex:1,
         textAlign: 'center',
-        marginVertical: 20,
+        marginVertical: 10,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: 25,
+        fontSize: 22,
         backgroundColor: 'transparent',
     },
 
@@ -234,4 +235,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default Library;
+export default Notifications;

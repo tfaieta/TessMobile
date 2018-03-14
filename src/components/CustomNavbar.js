@@ -6,6 +6,7 @@ import {
     Image,
     Text
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 
@@ -27,13 +28,15 @@ export default class CustomNavbar extends Component {
     render() {
         return (
 
-                <View style={{flex: 1, flexDirection: 'row'}}>
-                    <View style={{flex: 1, flexDirection: 'row', marginTop: 10, borderBottomColor: '#00000010', borderBottomWidth: 2, }}>
+            <View style={{flex: 1, flexDirection: 'row'}}>
+                <View style={{flex: 1, flexDirection: 'row', marginTop: 10, borderLeftColor: '#00000005', borderLeftWidth: 2, borderRightColor: '#00000005', borderRightWidth: 2,  borderBottomColor: '#00000015', borderBottomWidth: 2, }}>
                     <View style={{alignItems: 'flex-start'}}>
-                        <Image
-                            style={{tintColor: '#506dcf'}}
-                            source={require('tess/src/images/iconSearch.png')}
-                        />
+                        <Icon style={{
+                            fontSize: 18,
+                            backgroundColor: 'transparent',
+                            color: '#506dcf',
+                            marginHorizontal: 10,
+                        }} name="search"/>
                     </View>
 
                     <View style={{flex:1,justifyContent: 'flex-start', alignItems: 'flex-start', marginLeft: 10}}>
@@ -42,21 +45,25 @@ export default class CustomNavbar extends Component {
 
                     <View style={{flexDirection: 'row'}}>
                         <TouchableOpacity onPress={this.goToAccount}>
-                            <Image
-                                style={{tintColor: 'black', marginHorizontal: 10}}
-                                source={require('tess/src/images/iconMic.png')}
-                            />
+                            <Icon style={{
+                                fontSize: 20,
+                                backgroundColor: 'transparent',
+                                color: '#000',
+                                marginHorizontal: 10,
+                            }} name="microphone"/>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this.goToAccount}>
-                            <Image
-                                style={{tintColor: 'black', marginHorizontal: 10}}
-                                source={require('tess/src/images/iconAccount.png')}
-                            />
+                            <Icon style={{
+                                fontSize: 20,
+                                backgroundColor: 'transparent',
+                                color: '#000',
+                                marginHorizontal: 10,
+                            }} name="user-circle"/>
                         </TouchableOpacity>
                     </View>
-                    </View>
-
                 </View>
+
+            </View>
         );
     }
 }
@@ -81,10 +88,9 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 14,
         color: '#000',
-        marginTop: 5,
         textAlign: 'left',
         backgroundColor: 'transparent',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-Regular',
     }
 });

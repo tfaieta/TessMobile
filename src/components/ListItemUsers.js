@@ -404,7 +404,7 @@ const styles = {
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-Regular',
         fontSize: 14,
         marginLeft: 10,
         backgroundColor: 'transparent'
@@ -415,7 +415,7 @@ const styles = {
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-Regular',
         paddingVertical: 1,
         marginLeft: 10,
         fontSize: 12,

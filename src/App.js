@@ -59,6 +59,7 @@ import SetPlayerSpeed from "./components/SetPlayerSpeed";
 import MyQueue from "./components/MyQueue";
 import PlayerOptions from "./components/PlayerOptions";
 import CustomNavbar from "./components/CustomNavbar";
+import Notifications from "./components/Notifications";
 
 
 
@@ -80,6 +81,8 @@ Navigation.registerComponent('Following', () => Following, store, Provider);
 Navigation.registerComponent('NewPodcasts', () => NewPodcasts, store, Provider);
 Navigation.registerComponent('TopCharts', () => TopCharts, store, Provider);
 Navigation.registerComponent('Search', () => SearchPage, store, Provider);
+
+Navigation.registerComponent('Notifications', () => Notifications, store, Provider);
 
 Navigation.registerComponent('Fitness', () => Fitness, store, Provider);
 Navigation.registerComponent('News', () => CurrentEvents, store, Provider);

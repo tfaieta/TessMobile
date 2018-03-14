@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {View, Image, StatusBar, ActivityIndicator, Dimensions} from 'react-native';
 import firebase from 'firebase';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Foundation';
+var FontAwesome = require('react-native-vector-icons/FontAwesome');
 import LinearGradient from "react-native-linear-gradient/index.android";
 
 import { Navigation } from 'react-native-navigation';
@@ -15,17 +16,27 @@ import { Navigation } from 'react-native-navigation';
 
 
 
-var homeIcon = require('tess/src/images/iconHome.png');
+var homeIcon;
+Icon.getImageSource('home', 26, '#F5002A').then((source) => { homeIcon = source});
 var homeIconSelected = require('tess/src/images/iconHome.png');
+Icon.getImageSource('home', 30, '#F5002A').then((source) => { homeIconSelected = source});
 
-var discoverIcon = require('tess/src/images/iconDiscover.png');
-var discoverIconSelected = require('tess/src/images/iconDiscover.png');
 
-var libraryIcon = require('tess/src/images/iconLibrary.png');
-var libraryIconSelected = require('tess/src/images/iconLibrary.png');
 
-var notificationsIcon = require('tess/src/images/iconNotifications.png');
-var notificationsIconSelected = require('tess/src/images/iconNotifications.png');
+var discoverIcon;
+Icon.getImageSource('compass', 30, '#F5002A').then((source) => { discoverIcon = source});
+var discoverIconSelected;
+Icon.getImageSource('compass', 34, '#F5002A').then((source) => { discoverIconSelected = source});
+
+var libraryIcon;
+FontAwesome.getImageSource('bars', 22, '#F5002A').then((source) => { libraryIcon = source});
+var libraryIconSelected;
+FontAwesome.getImageSource('bars', 26, '#F5002A').then((source) => { libraryIconSelected = source});
+
+var notificationsIcon;
+FontAwesome.getImageSource('bell', 22, '#F5002A').then((source) => { notificationsIcon = source});
+var notificationsIconSelected;
+FontAwesome.getImageSource('bell', 26, '#F5002A').then((source) => { notificationsIconSelected = source});
 
 
 var {height, width} = Dimensions.get('window');
@@ -84,7 +95,7 @@ export default class InitialScreen extends Component{
                         navigatorButtons: {screenBackgroundColor: '#fff'}
                     },
                     {
-                        screen: 'Account',
+                        screen: 'Notifications',
                         icon: notificationsIcon,
                         selectedIcon: notificationsIconSelected,
                         iconInsets: {

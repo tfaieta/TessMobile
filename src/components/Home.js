@@ -35,7 +35,7 @@ class Home extends Component{
         topBarShadowOpacity: 1,
         topBarShadowOffset: 20,
         topBarShadowRadius: 10,
-        };
+    };
 
     componentDidMount(){
 
@@ -867,37 +867,37 @@ class Home extends Component{
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
 
         this.setState({
-                dataSourceFol: dataSource.cloneWithRows([]),
-                dataSource: dataSource.cloneWithRows([]),
-                dataSourceSel: dataSource.cloneWithRows([]),
-                dataSourceTess: dataSource.cloneWithRows([])
-            });
+            dataSourceFol: dataSource.cloneWithRows([]),
+            dataSource: dataSource.cloneWithRows([]),
+            dataSourceSel: dataSource.cloneWithRows([]),
+            dataSourceTess: dataSource.cloneWithRows([])
+        });
 
 
-            this.fetchData();
-            this.setState({
-                refreshing: false,
-            });
+        this.fetchData();
+        this.setState({
+            refreshing: false,
+        });
 
-            setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},2000);
-            setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},2400);
-            setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},3800);
-            setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},3200);
+        setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},2000);
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},2400);
+        setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},3800);
+        setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},3200);
 
-            setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},5000);
-            setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},5400);
-            setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},5800);
-            setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},6200);
+        setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},5000);
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},5400);
+        setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},5800);
+        setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},6200);
 
-            setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},8000);
-            setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},8400);
-            setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},8800);
-            setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},9200);
+        setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},8000);
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},8400);
+        setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},8800);
+        setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},9200);
 
-            setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},11000);
-            setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},11400);
-            setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},11800);
-            setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},12200);
+        setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},11000);
+        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},11400);
+        setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},11800);
+        setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},12200);
 
 
     }
@@ -964,216 +964,46 @@ class Home extends Component{
 
     render() {
 
-            return (
-                <View
-                    style={styles.container}>
+        return (
+            <View
+                style={styles.container}>
 
 
-                    <ScrollView
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={this.state.refreshing}
-                                onRefresh={this._onRefresh.bind(this)}
-                            />
-                        }
-                    >
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                        />
+                    }
+                >
 
 
-                        {this._newFromFollow(Variables.state.homeFollowedContent.length)}
+                    {this._newFromFollow(Variables.state.homeFollowedContent.length)}
 
 
+                    <Text style={styles.titleMini}>This is your home screen, you can add whatever you want.</Text>
 
-
-                        <View>
-                            <View style={{flexDirection:'row'}}>
-                                <View style={{alignSelf:'flex-start'}}>
-                                    <Text style={styles.title}>Latest Episodes</Text>
-                                </View>
-
-                                <View style={{alignSelf:'flex-end', flex:1}}>
-                                    <TouchableOpacity onPress={() => {
-                                        let data = Variables.state.newPodcasts;
-                                        let title = "Latest Episodes";
-
-                                        this.props.navigator.push({
-                                            screen: 'ViewAll',
-                                            animated: true,
-                                            animationType: 'fade',
-                                            passProps: {data, title},
-                                        });
-
-                                    }} style={{alignSelf:'flex-end', flexDirection:'row', marginTop: 3}}>
-                                        <Text style={styles.viewAll}>View all</Text>
-                                        <Icon style={{
-                                            fontSize: 14,
-                                            backgroundColor: 'transparent',
-                                            marginTop: 20,
-                                            color: '#5757FF',
-                                            marginLeft: 10,
-                                            marginRight: 15,
-                                        }} name="ios-arrow-forward">
-                                        </Icon>
-                                    </TouchableOpacity>
-                                </View>
-
-                            </View>
-
-
-                            <ListView
-                                ref={(ref) => this.listView = ref}
-                                showsHorizontalScrollIndicator={false}
-                                horizontal={true}
-                                enableEmptySections
-                                dataSource={this.state.dataSource}
-                                renderRow={this.renderRowNewPodcasts}
-                            />
-                        </View>
+                    <TouchableOpacity stlye={{borderColor: '#000', borderStyle: 'dotted', borderWidth: 1, borderRadius: 10, padding: 10}}>
+                        <Text style={styles.titleAdd}>Add a widget</Text>
+                    </TouchableOpacity>
 
 
 
-                        <View>
-                            <View style={{flexDirection:'row'}}>
-                                <View style={{alignSelf:'flex-start'}}>
-                                    <Text style={styles.title}>Selected by Tess</Text>
-                                </View>
-
-                                <View style={{alignSelf:'flex-end', flex:1}}>
-                                    <TouchableOpacity onPress={() => {
-                                        let data = Variables.state.selectedByTess;
-                                        let title = "Selected by Tess";
-
-                                        this.props.navigator.push({
-                                            screen: 'ViewAll',
-                                            animated: true,
-                                            animationType: 'fade',
-                                            passProps: {data, title},
-                                        });
-
-                                    }}  style={{alignSelf:'flex-end', flexDirection:'row', marginTop: 3}}>
-                                        <Text style={styles.viewAll}>View all</Text>
-                                        <Icon style={{
-                                            fontSize: 14,
-                                            backgroundColor: 'transparent',
-                                            marginTop: 20,
-                                            color: '#5757FF',
-                                            marginLeft: 10,
-                                            marginRight: 15,
-                                        }} name="ios-arrow-forward">
-                                        </Icon>
-                                    </TouchableOpacity>
-                                </View>
-
-                            </View>
-
-                            {this._selectedByTess(Variables.state.selectedByTess.length)}
-
-                        </View>
-
-
-
-                        <View style={{paddingBottom: 150}}>
-                            <View style={{flexDirection:'row'}}>
-                                <View style={{alignSelf:'flex-start'}}>
-                                    <Text style={styles.title}>From Tess</Text>
-                                </View>
-
-                                <View style={{alignSelf:'flex-end', flex:1}}>
-                                    <TouchableOpacity onPress={() => {
-
-                                        let data = Variables.state.fromTess;
-                                        let title = "From Tess";
-
-                                        this.props.navigator.push({
-                                            screen: 'ViewAll',
-                                            animated: true,
-                                            animationType: 'fade',
-                                            passProps: {data, title},
-                                        });
-
-
-                                    }} style={{alignSelf:'flex-end', flexDirection:'row', marginTop: 3}} >
-                                        <Text style={styles.viewAll}>View all</Text>
-                                        <Icon style={{
-                                            fontSize: 14,
-                                            backgroundColor: 'transparent',
-                                            marginTop: 20,
-                                            color: '#5757FF',
-                                            marginLeft: 10,
-                                            marginRight: 15,
-                                        }} name="ios-arrow-forward">
-                                        </Icon>
-                                    </TouchableOpacity>
-                                </View>
-
-                            </View>
-                            <Text style={styles.title2}>Hey, everyone! Thank you for downloading Tess. Your feedback is important. We look forward to hearing from you! Check out our updates on the beta below. </Text>
-
-                            <ListView
-                                showsHorizontalScrollIndicator={false}
-                                horizontal={true}
-                                enableEmptySections
-                                dataSource={this.state.dataSourceTess}
-                                renderRow={this.renderRowNewPodcasts}
-                            />
-
-
-
-                            <View style={{marginTop: 30, height: 2, backgroundColor: '#2A2A3040', marginHorizontal: 20}}/>
-                            <Text style={styles.titleMini}>Follow us on social media to stay up to date!</Text>
-                            <View style = {{flex:1, flexDirection: 'row', marginTop:20}}>
-
-                                <TouchableOpacity style={{alignItems:'flex-start', flex: 1}} onPress={this.pressTwit}>
-                                    <Icon style={{
-                                        alignSelf: 'flex-end',
-                                        fontSize: 48,
-                                        backgroundColor: 'transparent',
-                                        color:   "#9f60ff90",
-                                    }} name="logo-twitter">
-                                    </Icon>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={{alignItems:'center', flex: 1}} onPress={this.pressInsta}>
-                                    <Icon style={{
-                                        fontSize: 48,
-                                        backgroundColor: 'transparent',
-                                        color:   "#9f60ff90",
-                                    }} name="logo-instagram">
-                                    </Icon>
-                                </TouchableOpacity>
-
-
-                                <TouchableOpacity style={{alignItems:'flex-end', flex: 1}} onPress={this.pressFB}>
-                                    <Icon style={{
-                                        alignSelf: 'flex-start',
-                                        fontSize: 48,
-                                        backgroundColor: 'transparent',
-                                        color:   "#9f60ff90",
-                                    }} name="logo-facebook">
-                                    </Icon>
-                                </TouchableOpacity>
-
-
-                            </View>
-
-                            {this.renderRSSFetcher()}
-
-                        </View>
-
-
-                    </ScrollView>
+                </ScrollView>
 
 
 
 
-                    <Player/>
-                    <PlayerBottom navigator={this.props.navigator}/>
+                <Player/>
+                <PlayerBottom navigator={this.props.navigator}/>
 
-                </View>
+            </View>
 
-            );
+        );
 
 
-}
+    }
 }
 
 const styles = StyleSheet.create({
@@ -1194,9 +1024,9 @@ const styles = StyleSheet.create({
 
     title: {
         color: '#2A2A30',
-        textAlign: 'left',
+        textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-Regular',
         fontSize: 16,
         marginTop: 20,
         paddingLeft: 20,
@@ -1206,8 +1036,8 @@ const styles = StyleSheet.create({
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 14,
+        fontFamily: 'Montserrat-Regular',
+        fontSize: 18,
         marginTop: 30,
         paddingHorizontal: 20,
         marginHorizontal: 40,
@@ -1217,7 +1047,7 @@ const styles = StyleSheet.create({
         color: '#9496A3',
         textAlign: 'left',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W3',
+        fontFamily: 'Montserrat-Regular',
         fontSize: 16,
         marginTop: 10,
         paddingBottom: 10,
@@ -1230,9 +1060,20 @@ const styles = StyleSheet.create({
         color: '#2A2A30',
         textAlign: 'left',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W3',
+        fontFamily: 'Montserrat-Regular',
         fontSize: 14,
         marginVertical: 10,
+        marginHorizontal: 20,
+        backgroundColor: 'transparent',
+    },
+
+    titleAdd: {
+        color: '#506dcf',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-Regular',
+        fontSize: 16,
+        marginVertical: 20,
         marginHorizontal: 20,
         backgroundColor: 'transparent',
     },
@@ -1241,7 +1082,7 @@ const styles = StyleSheet.create({
         color: '#5757FF',
         textAlign: 'right',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-Regular',
         fontSize: 12,
         marginTop: 20,
         paddingBottom: 10,
@@ -1255,7 +1096,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         backgroundColor: 'transparent',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'Montserrat-Regular',
     }
 
 
