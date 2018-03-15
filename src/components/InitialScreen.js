@@ -168,7 +168,7 @@ export default class InitialScreen extends Component{
         return (
             <LinearGradient
 
-                colors={['#5555ff', '#9687ff' ]}
+                colors={['#d15564', '#9a5e9a', '#506dcf' ]}
                 start={{x: 0.0, y: 0.0}} end={{x: 0, y: 1}}
                 style={{flex:1}}>
                 <StatusBar hidden={true} />

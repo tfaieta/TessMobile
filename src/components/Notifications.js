@@ -69,11 +69,11 @@ class Notifications extends Component{
 
                 <ScrollView>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 15}}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
-                            color: '#797979',
+                            color: '#79797970',
                             marginHorizontal: 10,
                         }} name="user-circle">
                         </Icon>
@@ -82,18 +82,18 @@ class Notifications extends Component{
                             <Icon style={{
                                 fontSize: 22,
                                 backgroundColor: 'transparent',
-                                color: '#797979',
+                                color: '#79797970',
                                 marginHorizontal: 10,
                             }} name="chevron-right">
                             </Icon>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 15}}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
-                            color: '#797979',
+                            color: '#79797970',
                             marginHorizontal: 10,
                         }} name="user-circle">
                         </Icon>
@@ -102,18 +102,18 @@ class Notifications extends Component{
                             <Icon style={{
                                 fontSize: 22,
                                 backgroundColor: 'transparent',
-                                color: '#797979',
+                                color: '#79797970',
                                 marginHorizontal: 10,
                             }} name="chevron-right">
                             </Icon>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 15}}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
-                            color: '#797979',
+                            color: '#79797970',
                             marginHorizontal: 10,
                         }} name="user-circle">
                         </Icon>
@@ -122,18 +122,18 @@ class Notifications extends Component{
                             <Icon style={{
                                 fontSize: 22,
                                 backgroundColor: 'transparent',
-                                color: '#797979',
+                                color: '#79797970',
                                 marginHorizontal: 10,
                             }} name="chevron-right">
                             </Icon>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 15}}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
-                            color: '#797979',
+                            color: '#79797970',
                             marginHorizontal: 10,
                         }} name="comment">
                         </Icon>
@@ -142,18 +142,18 @@ class Notifications extends Component{
                             <Icon style={{
                                 fontSize: 22,
                                 backgroundColor: 'transparent',
-                                color: '#797979',
+                                color: '#79797970',
                                 marginHorizontal: 10,
                             }} name="chevron-right">
                             </Icon>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 15}}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
-                            color: '#797979',
+                            color: '#79797970',
                             marginHorizontal: 10,
                         }} name="user-circle">
                         </Icon>
@@ -162,18 +162,18 @@ class Notifications extends Component{
                             <Icon style={{
                                 fontSize: 22,
                                 backgroundColor: 'transparent',
-                                color: '#797979',
+                                color: '#79797970',
                                 marginHorizontal: 10,
                             }} name="chevron-right">
                             </Icon>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 15}}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
-                            color: '#797979',
+                            color: '#79797970',
                             marginHorizontal: 10,
                         }} name="user-circle">
                         </Icon>
@@ -182,7 +182,7 @@ class Notifications extends Component{
                             <Icon style={{
                                 fontSize: 22,
                                 backgroundColor: 'transparent',
-                                color: '#797979',
+                                color: '#79797970',
                                 marginHorizontal: 10,
                             }} name="chevron-right">
                             </Icon>

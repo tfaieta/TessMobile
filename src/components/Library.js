@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ScrollView, StatusBar} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, ScrollView, StatusBar, ListView} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from "react-native-linear-gradient/index.android";
+import Variables from "./Variables";
+import firebase from 'firebase';
+import ListItemQueue from "./ListItemQueue";
 
 
 class Library extends Component{
@@ -21,6 +24,49 @@ class Library extends Component{
         topBarShadowOpacity: 1,
         topBarShadowOffset: 20,
         topBarShadowRadius: 10,
+    };
+
+
+    componentWillMount(){
+        const {currentUser} = firebase.auth();
+
+
+        firebase.database().ref(`users/${currentUser.uid}/queue`).on("value", function (snapshot) {
+            Variables.state.myQueue = [];
+            snapshot.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.val().id}`).on("value", function (data) {
+                    if(data.val()){
+                        Variables.state.myQueue.push(data.val())
+                    }
+
+                })
+            });
+        });
+
+    }
+
+
+    componentWillUnmount(){
+        clearInterval(this.interval);
+    }
+
+
+    constructor(props){
+        super(props);
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.state = {
+            dataSource: dataSource.cloneWithRows(Variables.state.myQueue),
+        };
+
+        this.interval = setInterval(() => {
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myQueue)})
+        },1000);
+
+    };
+
+
+    renderRow = (rowData) => {
+        return <ListItemQueue podcast={rowData} navigator={this.props.navigator} />;
     };
 
     GoToRecentlyPlayed = () => {
@@ -55,9 +101,6 @@ class Library extends Component{
         });
     };
 
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         return (
@@ -185,6 +228,25 @@ class Library extends Component{
                     </TouchableOpacity>
 
 
+
+                    <View style={{flex:1, flexDirection: 'row'}}>
+                        <View style={{flex:1}}>
+                            <Text style = {styles.titleNext}>Up Next</Text>
+                        </View>
+                        <TouchableOpacity style={{flex:1, alignSelf: 'flex-end'}}>
+                            <Text style = {styles.titleEdit}>Edit</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View>
+                    <ListView
+                        enableEmptySections
+                        dataSource={this.state.dataSource}
+                        renderRow={this.renderRow}
+                    />
+                    </View>
+
+
                 </ScrollView>
 
 
@@ -216,6 +278,32 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
         fontSize: 20,
+        backgroundColor: 'transparent',
+    },
+
+    titleNext: {
+        color: '#000',
+        flex:1,
+        textAlign: 'left',
+        marginVertical: 10,
+        marginTop: 20,
+        marginHorizontal: 10,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-Regular',
+        fontSize: 20,
+        backgroundColor: 'transparent',
+    },
+
+    titleEdit: {
+        color: '#000',
+        flex:1,
+        textAlign: 'right',
+        marginVertical: 10,
+        marginHorizontal: 10,
+        marginTop: 24,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-Regular',
+        fontSize: 14,
         backgroundColor: 'transparent',
     },
 
