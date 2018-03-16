@@ -27,7 +27,7 @@ class Home extends Component{
         navBarHidden: false,
         drawUnderTabBar: false,
         navBarCustomView: 'CustomNavbar',
-        navBarCustomViewInitialProps: {navigator},
+        navBarCustomViewInitialProps: { navigator },
         navBarHideOnScroll: true,
         navBarBackgroundColor: '#fff',
         topBarElevationShadowEnabled: true,
@@ -36,6 +36,25 @@ class Home extends Component{
         topBarShadowOffset: 20,
         topBarShadowRadius: 10,
     };
+
+    onNavigatorEvent(event) {
+        if (event.type == 'DeepLink') {
+            if (event.link === 'Account') {
+                this.props.navigator.push({
+                    screen:'Account',
+                    animated: true,
+                    animationType: 'fade',
+                })
+            }
+            else if (event.link === 'RecordFirst') {
+                this.props.navigator.push({
+                    screen:'RecordFirst',
+                    animated: true,
+                    animationType: 'fade',
+                })
+            }
+        }
+    }
 
     componentDidMount(){
 
@@ -99,143 +118,6 @@ class Home extends Component{
 
 
 
-
-        Variables.state.selectedByTess = [];
-
-        //TheMaddyIce
-        firebase.database().ref(`users/upwadf76CrOBee8aSwzcCZR4kM33/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-        //Two Bros and a Pod
-        firebase.database().ref(`users/JHPYRdcWtOheHCkrddZjJaLXtPg2/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-        //Big Tay
-        firebase.database().ref(`users/1F1q9gRKWyMQ8cSATXqGT4PnCaK2/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-        //Tim Dulak
-        firebase.database().ref(`users/3tHL3dIcINUdMeKZn6ckf81e2Sk2/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-        //Joey Bradfield
-        firebase.database().ref(`users/gdGuN9v14qU9pSHXSk1KbDGlUsu1/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-        //Dom Gold
-        firebase.database().ref(`users/6px5go2E3USvYvkcNQejkLkJx3H3/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-        //Eat the fruit
-        firebase.database().ref(`users/7ubx6NftyyQbAwufE7BquuSJ6gJ3/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-        //Abbey
-        firebase.database().ref(`users/P2HAtFE3YKXe8uP9Mu1HyCE2cD83/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-        //ShakDaddy
-        firebase.database().ref(`users/u1osicyhjcR5j3EHx6m1SMe2LpJ3/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-        //Nick Ruspantini
-        firebase.database().ref(`users/pgIx9JAiq9aQWcyUZX8AuIdqNmP2/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-        //Tony
-        firebase.database().ref(`users/sJsB8XK4XRZ8tNpeGC14JNsa6Jj1/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-
-
         Variables.state.fromTess = [];
         firebase.database().ref(`users/dlUCIXXnXGTgJZwYLE1KUYWGkQ73/podcasts`).once("value", function (data) {
             data.forEach(function (snap) {
@@ -280,6 +162,7 @@ class Home extends Component{
 
     constructor(props) {
         super(props);
+        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts),
@@ -356,7 +239,7 @@ class Home extends Component{
                                     fontSize: 14,
                                     backgroundColor: 'transparent',
                                     marginTop: 20,
-                                    color: '#5757FF',
+                                    color: '#506dcf',
                                     marginLeft: 10,
                                     marginRight: 15,
                                 }} name="ios-arrow-forward">
@@ -1026,7 +909,7 @@ const styles = StyleSheet.create({
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 16,
         marginTop: 20,
         paddingLeft: 20,

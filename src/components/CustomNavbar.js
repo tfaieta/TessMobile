@@ -7,7 +7,7 @@ import {
     Text
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import {Navigation} from 'react-native-navigation';
 
 
 // custom static nav bar, used throughout app
@@ -20,9 +20,17 @@ export default class CustomNavbar extends Component {
     }
 
 
+    goToRecord(){
+
+        Navigation.handleDeepLink({link:"RecordFirst"})
+
+
+
+    }
 
     goToAccount(){
 
+        Navigation.handleDeepLink({link:"Account"})
     }
 
     render() {
@@ -44,7 +52,7 @@ export default class CustomNavbar extends Component {
                     </View>
 
                     <View style={{flexDirection: 'row'}}>
-                        <TouchableOpacity onPress={this.goToAccount}>
+                        <TouchableOpacity onPress={this.goToRecord}>
                             <Icon style={{
                                 fontSize: 20,
                                 backgroundColor: 'transparent',

@@ -1,18 +1,15 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { View, StyleSheet,StatusBar, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
-import ScrollableTabView, {DefaultTabBar, } from 'react-native-scrollable-tab-view';
-import TopCharts from './DiscoverBar/TopCharts';
-import NewPodcasts from './DiscoverBar/NewPodcasts';
-import Categories from './DiscoverBar/Categories';
-import Following from './DiscoverBar/Following';
-import { SearchBar } from 'react-native-elements'
-import {volume} from './Home';
+import { View, StyleSheet,StatusBar, Text, TouchableOpacity, ScrollView, Image, ListView} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { connect } from 'react-redux';
 import Variables from "./Variables";
+import ListItem from '../components/ListItem';
+import firebase from 'firebase';
 
 
+
+// 2nd tab, discover page
 
 class Discover extends Component{
 
@@ -32,6 +29,162 @@ class Discover extends Component{
         topBarShadowRadius: 10,
     };
 
+
+    onNavigatorEvent(event) {
+        if (event.type == 'DeepLink') {
+            if (event.link === 'Account') {
+                this.props.navigator.push({
+                    screen:'Account',
+                    animated: true,
+                    animationType: 'fade',
+                })
+            }
+            else if (event.link === 'RecordFirst') {
+                this.props.navigator.push({
+                    screen:'RecordFirst',
+                    animated: true,
+                    animationType: 'fade',
+                })
+            }
+        }
+    }
+
+
+    componentWillMount(){
+        Variables.state.selectedByTess = [];
+
+        //TheMaddyIce
+        firebase.database().ref(`users/upwadf76CrOBee8aSwzcCZR4kM33/podcasts`).limitToLast(1).once("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //Two Bros and a Pod
+        firebase.database().ref(`users/JHPYRdcWtOheHCkrddZjJaLXtPg2/podcasts`).limitToLast(1).once("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //Big Tay
+        firebase.database().ref(`users/1F1q9gRKWyMQ8cSATXqGT4PnCaK2/podcasts`).limitToLast(1).once("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //Tim Dulak
+        firebase.database().ref(`users/3tHL3dIcINUdMeKZn6ckf81e2Sk2/podcasts`).limitToLast(1).once("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //Joey Bradfield
+        firebase.database().ref(`users/gdGuN9v14qU9pSHXSk1KbDGlUsu1/podcasts`).limitToLast(1).once("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //Dom Gold
+        firebase.database().ref(`users/6px5go2E3USvYvkcNQejkLkJx3H3/podcasts`).limitToLast(1).once("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //Eat the fruit
+        firebase.database().ref(`users/7ubx6NftyyQbAwufE7BquuSJ6gJ3/podcasts`).limitToLast(1).once("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //Abbey
+        firebase.database().ref(`users/P2HAtFE3YKXe8uP9Mu1HyCE2cD83/podcasts`).limitToLast(1).once("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //ShakDaddy
+        firebase.database().ref(`users/u1osicyhjcR5j3EHx6m1SMe2LpJ3/podcasts`).limitToLast(1).once("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //Nick Ruspantini
+        firebase.database().ref(`users/pgIx9JAiq9aQWcyUZX8AuIdqNmP2/podcasts`).limitToLast(1).once("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+
+
+        //Tony
+        firebase.database().ref(`users/sJsB8XK4XRZ8tNpeGC14JNsa6Jj1/podcasts`).limitToLast(1).once("value", function (data) {
+            data.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                    if(snapshot.val()){
+                        Variables.state.selectedByTess.push(snapshot.val())
+                    }
+                })
+            })
+        });
+    }
+
     static state = { search: ''};
 
     searchActivate = () => {
@@ -45,9 +198,21 @@ class Discover extends Component{
 
     constructor(props) {
         super(props);
-        this.state = { volume }
+        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.state = {
+            dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess),
+            url: '',
+            refreshing: false,
+        };
+        this.timeout1 = setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},3000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},6000);
     }
 
+    componentWillUnmount(){
+        clearTimeout(this.timeout1);
+        clearTimeout(this.timeout2);
+    }
 
 
 
@@ -159,7 +324,32 @@ class Discover extends Component{
         });
     };
 
-    
+
+
+    _selectedByTess(length){
+        if (length > 0){
+            return(
+                <View style={{paddingBottom: 70}}>
+                    <ListView
+                        enableEmptySections
+                        dataSource={this.state.dataSourceSel}
+                        renderRow={this.renderRowNewPodcasts}
+                    />
+                </View>
+            )
+        }
+        else{
+            return(
+                <Text style = {styles.title3}>We are looking for content to select...</Text>
+            )
+        }
+    }
+
+
+    renderRowNewPodcasts(podcast) {
+        return <ListItem podcast={podcast} />;
+    }
+
 
 
     render() {
@@ -173,13 +363,13 @@ class Discover extends Component{
 
                 <ScrollView >
 
-                    <View style={{flexDirection: 'row', marginVertical: 20}}>
+                    <View style={{flexDirection: 'row', marginTop: 20}}>
                         <TouchableOpacity style={{flex:1, marginHorizontal: 20, padding: 10, borderBottomColor: '#3e416430', borderBottomWidth: 3}}>
                             <Text style={styles.title}>Trending</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity style={{flex:1, marginHorizontal: 20, padding: 10, borderBottomColor: '#3e416430', borderBottomWidth: 3}}>
-                            <Text style={styles.title}>New Releases</Text>
+                            <Text style={styles.title}>New</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -192,111 +382,112 @@ class Discover extends Component{
                                     style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/currEvents-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>News</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>News</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressFitness}>
                                 <Image
                                     style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/fitness-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Fitness</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Fitness</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingHorizontal: 10}} onPress={this.pressSociety}>
                                 <Image
                                     style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/politics-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Society & Culture</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Society & Culture</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressReligionSpirit}>
                                 <Image
                                     style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/religionSpirit-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Religion & Spirituality</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Religion & Spirituality</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingHorizontal: 10}} onPress={this.pressComedy}>
                                 <Image
                                     style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/comedy-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Comedy</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Comedy</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressLife}>
                                 <Image
                                     style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/lifestyle-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Lifestyle</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Lifestyle</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingHorizontal: 10}} onPress={this.pressSci}>
                                 <Image
                                     style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/scienceNature-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Science & Nature</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Science & Nature</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressTravel}>
                                 <Image
                                     style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/travel-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Travel</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Travel</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingHorizontal: 10}} onPress={this.pressLearn}>
                                 <Image
                                     style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/learnSomething-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Learn Something</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Learn Something</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressStory}>
                                 <Image
                                     style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/storytelling-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Storytelling</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Storytelling</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingHorizontal: 10}} onPress={this.pressSports}>
                                 <Image
                                     style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/sports-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Sports</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Sports</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressEntertainment}>
                                 <Image
                                     style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/entertainment-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Entertainment</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Entertainment</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressMusic}>
                                 <Image
                                     style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/music-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Music</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Music</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingHorizontal: 10}} onPress={this.pressTech}>
                                 <Image
                                     style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/tech-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Tech</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Tech</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressGaming}>
                                 <Image
                                     style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/gaming-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Gaming</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Gaming</Text>
                             </TouchableOpacity>
 
                         </ScrollView>
                     </View>
 
                     <Text style={styles.titleHeader}>Discover</Text>
+                    {this._selectedByTess(Variables.state.selectedByTess.length)}
 
 
 
@@ -336,8 +527,8 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-Regular',
         fontSize: 20,
         backgroundColor: 'transparent',
-        marginTop: 20,
-        marginVertical: 20,
+        marginTop: 30,
+        marginVertical: 10,
     },
 
 });

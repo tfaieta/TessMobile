@@ -154,7 +154,7 @@ class PlayerBottom extends Component {
             <Slider
                 minimumTrackTintColor='#5757FF'
                 maximumTrackTintColor='#E7E7F0'
-                thumbStyle={{width: 25, height: 25, borderRadius: 12.5, backgroundColor: '#fff', borderColor: '#5757FF', borderWidth: 2}}
+                thumbStyle={{width: 25, height: 25, borderRadius: 12.5, backgroundColor: '#fff', borderColor: '#506dcf', borderWidth: 2}}
                 animateTransitions = {true}
                 style={styles.sliderContainer}
                 step={0}
@@ -203,7 +203,7 @@ class PlayerBottom extends Component {
 
             if(this.state.buffering){
                 return(
-                    <ActivityIndicator style={{alignSelf:'center'}} color="#fff" size ="small" />
+                    <ActivityIndicator style={{alignSelf:'center'}} color="#00000090" size ="small" />
                 )
             }
             else{
@@ -217,7 +217,7 @@ class PlayerBottom extends Component {
                                 paddingTop: 0,
                                 paddingRight:5,
                                 fontSize: width/12.5,
-                                color: '#fff',
+                                color: '#00000090',
                             }} name="md-pause">
                             </Icon>
                         </TouchableOpacity>
@@ -233,7 +233,7 @@ class PlayerBottom extends Component {
                                 paddingTop: 0,
                                 paddingRight:5,
                                 fontSize: width/12.5,
-                                color: '#fff',
+                                color: '#00000090',
                             }} name="md-play">
                             </Icon>
                         </TouchableOpacity>
@@ -256,8 +256,8 @@ class PlayerBottom extends Component {
         else{
 
             var fixedTitle = '';
-            if(Variables.state.podcastTitle.toString().length > height/28 ){
-                fixedTitle = (Variables.state.podcastTitle.slice(0,height/28)+"...")
+            if(Variables.state.podcastTitle.toString().length > height/18 ){
+                fixedTitle = (Variables.state.podcastTitle.slice(0,height/18)+"...")
             }
             else{
                 fixedTitle = Variables.state.podcastTitle;
@@ -265,7 +265,7 @@ class PlayerBottom extends Component {
 
             var fixedUsername = '';
             if(profileName.length > height/26){
-                fixedUsername =  (profileName.slice(0,height/26)+"...");
+                fixedUsername =  (profileName.slice(0,height/20)+"...");
             }
             else{
                 fixedUsername = profileName;
@@ -470,7 +470,7 @@ class PlayerBottom extends Component {
             if(faved){
                 return(
                     <TouchableOpacity>
-                        <Icon style={{textAlign:'center', fontSize: 28,color: '#5757FF' }} name="md-add" onPress={()=>{
+                        <Icon style={{textAlign:'center', fontSize: 28,color: '#506dcf' }} name="md-add" onPress={()=>{
                             const {currentUser} = firebase.auth();
                             const podcastTitle = Variables.state.podcastTitle;
                             const podcastDescription = Variables.state.podcastDescription;
@@ -604,7 +604,7 @@ class PlayerBottom extends Component {
             if (liked) {
                 return (
                     <TouchableOpacity onPress = {this.pressLike}>
-                        <Icon style={{textAlign: 'center', fontSize: 28, color: '#5757FF', marginRight: 25}} name="ios-happy-outline">
+                        <Icon style={{textAlign: 'center', fontSize: 28, color: '#506dcf', marginRight: 25}} name="ios-happy-outline">
                         </Icon>
                         <View style={{flex:1}}>
                             <Text style={styles.podcastTextLikes}> {likers.length}</Text>
@@ -1061,7 +1061,7 @@ class PlayerBottom extends Component {
                             });
 
                         }}>
-                            <Icon style={{textAlign:'center', fontSize: 16,color:'#5757FF', }} name="md-add-circle">
+                            <Icon style={{textAlign:'center', fontSize: 16,color:'#506dcf', }} name="md-add-circle">
                             </Icon>
                             <Text style={styles.seeMore}>View More</Text>
 
@@ -1173,29 +1173,26 @@ class PlayerBottom extends Component {
     const styles = StyleSheet.create({
     barContainer:{
         flex: 1,
-        backgroundColor: '#5757FF',
+        backgroundColor: '#ffffff',
         position: 'absolute',
         left: 0,
         right: 0,
         bottom: 0,
-        borderWidth: 0.3,
-        borderColor: '#5757FF',
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        marginHorizontal: width/12.5,
+        borderTopWidth: 2,
+        borderTopColor: '#00000030',
     },
     playingText:{
-        color: '#fff',
+        color: '#00000090',
         flexDirection: 'row',
         backgroundColor: 'transparent',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: height/54,
         textAlign: 'left',
         paddingLeft: width/37.5
     },
     playingText2:{
-        color: '#fff',
+        color: '#00000090',
         flexDirection: 'row',
         backgroundColor: 'transparent',
         fontStyle: 'normal',
@@ -1282,7 +1279,7 @@ class PlayerBottom extends Component {
 
         containerOutsideModal:{
             flex: 1,
-            backgroundColor: '#5757FF',
+            backgroundColor: '#3e416490',
 
         },
 
@@ -1318,11 +1315,11 @@ class PlayerBottom extends Component {
             backgroundColor: 'transparent',
             alignSelf: 'center',
             textAlign: 'center',
-            fontFamily: 'Montserrat-Regular',
+            fontFamily: 'Montserrat-SemiBold',
         },
 
         seeMore:{
-            color: '#5757FF',
+            color: '#506dcf',
             fontSize: 14,
             marginTop:5,
             marginBottom:5,

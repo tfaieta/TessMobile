@@ -60,13 +60,15 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Tess will need to use your camera so that you can take a profile image.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Tess uses your microphone to create a podcast.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Tess will need to use your photo library so that you can upload an profile image.</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Montserrat-SemiBold.ttf</string>
+		<string>Montserrat-Regular.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>
 		<string>FontAwesome.ttf</string>
@@ -77,7 +79,6 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
-		<string>Montserrat-Regular.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

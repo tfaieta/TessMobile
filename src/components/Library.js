@@ -8,6 +8,9 @@ import firebase from 'firebase';
 import ListItemQueue from "./ListItemQueue";
 
 
+
+// 4th tab, library page
+
 class Library extends Component{
 
     static navigatorStyle = {
@@ -25,6 +28,26 @@ class Library extends Component{
         topBarShadowOffset: 20,
         topBarShadowRadius: 10,
     };
+
+
+    onNavigatorEvent(event) {
+        if (event.type == 'DeepLink') {
+            if (event.link === 'Account') {
+                this.props.navigator.push({
+                    screen:'Account',
+                    animated: true,
+                    animationType: 'fade',
+                })
+            }
+            else if (event.link === 'RecordFirst') {
+                this.props.navigator.push({
+                    screen:'RecordFirst',
+                    animated: true,
+                    animationType: 'fade',
+                })
+            }
+        }
+    }
 
 
     componentWillMount(){
@@ -53,6 +76,7 @@ class Library extends Component{
 
     constructor(props){
         super(props);
+        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.myQueue),
@@ -238,7 +262,7 @@ class Library extends Component{
                         </TouchableOpacity>
                     </View>
 
-                    <View>
+                    <View style={{paddingBottom: 70}}>
                     <ListView
                         enableEmptySections
                         dataSource={this.state.dataSource}

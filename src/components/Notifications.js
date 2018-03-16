@@ -22,33 +22,29 @@ class Notifications extends Component{
         topBarShadowRadius: 10,
     };
 
-    GoToRecentlyPlayed = () => {
-        this.props.navigator.push({
-            screen: 'RecentlyPlayed',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
 
-    GoToFavs = () => {
-        this.props.navigator.push({
-            screen: 'Favorites',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
+    onNavigatorEvent(event) {
+        if (event.type == 'DeepLink') {
+            if (event.link === 'Account') {
+                this.props.navigator.push({
+                    screen:'Account',
+                    animated: true,
+                    animationType: 'fade',
+                })
+            }
+            else if (event.link === 'RecordFirst') {
+                this.props.navigator.push({
+                    screen:'RecordFirst',
+                    animated: true,
+                    animationType: 'fade',
+                })
+            }
+        }
+    }
 
-    GoToFollowedContent = () => {
+    _pressSettings = () => {
         this.props.navigator.push({
-            screen: 'Followed',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-
-    GoToMyContent = () => {
-        this.props.navigator.push({
-            screen: 'MyContent',
+            screen: 'Settings',
             animated: true,
             animationType: 'fade',
         });
@@ -56,6 +52,7 @@ class Notifications extends Component{
 
     constructor(props) {
         super(props);
+        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
 
     render() {
@@ -69,7 +66,7 @@ class Notifications extends Component{
 
                 <ScrollView>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 15}}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 15}} onPress={this._pressSettings}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
