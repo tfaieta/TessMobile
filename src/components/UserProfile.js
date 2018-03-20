@@ -520,11 +520,11 @@ class UserProfile extends Component {
                 style={styles.containerMain}>
 
 
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 6}, shadowOpacity: 0.2, shadowRadius: 10}}>
+                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 3}, shadowOpacity: 0.1, shadowRadius: 5}}>
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
-                                textAlign:'left',marginLeft: 10, fontSize: 28, color:'#00000080'
+                                textAlign:'left',marginLeft: 10, fontSize: 28, color:'#007aff',
                             }} name="ios-arrow-back">
                             </Icon>
                         </TouchableOpacity>

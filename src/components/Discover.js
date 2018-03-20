@@ -4,8 +4,8 @@ import { View, StyleSheet,StatusBar, Text, TouchableOpacity, ScrollView, Image, 
 import PlayerBottom from './PlayerBottom';
 import { connect } from 'react-redux';
 import Variables from "./Variables";
-import ListItem from '../components/ListItem';
 import firebase from 'firebase';
+import ListItemUsers from "./ListItemUsers";
 
 
 
@@ -306,6 +306,19 @@ class Discover extends Component{
         });
     };
 
+    pressNew = () =>{
+        this.props.navigator.push({
+            screen: 'NewPodcasts',
+            title: 'New'
+        });
+    };
+
+    pressTrending = () =>{
+        this.props.navigator.push({
+            screen: 'TopCharts',
+            title: 'Trending'
+        });
+    };
 
 
     _selectedByTess(length){
@@ -313,6 +326,8 @@ class Discover extends Component{
             return(
                 <View style={{paddingBottom: 70}}>
                     <ListView
+                        showsHorizontalScrollIndicator={false}
+                        horizontal={true}
                         enableEmptySections
                         dataSource={this.state.dataSourceSel}
                         renderRow={this.renderRowNewPodcasts}
@@ -329,7 +344,7 @@ class Discover extends Component{
 
 
     renderRowNewPodcasts(podcast) {
-        return <ListItem podcast={podcast} />;
+        return <ListItemUsers podcast={podcast} />;
     }
 
 
@@ -346,11 +361,11 @@ class Discover extends Component{
                 <ScrollView >
 
                     <View style={{flexDirection: 'row', marginTop: 20}}>
-                        <TouchableOpacity style={{flex:1, marginHorizontal: 20, padding: 10, borderBottomColor: '#3e416430', borderBottomWidth: 3}}>
+                        <TouchableOpacity style={{flex:1, marginHorizontal: 20, padding: 10, borderBottomColor: '#3e416430', borderBottomWidth: 3}} onPress={this.pressTrending}>
                             <Text style={styles.title}>Trending</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={{flex:1, marginHorizontal: 20, padding: 10, borderBottomColor: '#3e416430', borderBottomWidth: 3}}>
+                        <TouchableOpacity style={{flex:1, marginHorizontal: 20, padding: 10, borderBottomColor: '#3e416430', borderBottomWidth: 3}} onPress={this.pressNew}>
                             <Text style={styles.title}>New</Text>
                         </TouchableOpacity>
                     </View>

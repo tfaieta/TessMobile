@@ -13,30 +13,14 @@ import ListItem from "./ListItem";
 // displays recently played podcasts
 
 
-class RecentlyPlayed extends Component{
+class Highlights extends Component{
 
     componentWillMount(){
-        const {currentUser} = firebase.auth();
-
-        firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).on("value", function (snapshot) {
-            Variables.state.recentlyPlayed = [];
-            snapshot.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.val().id}`).on("value", function (data) {
-                    if(data.val()){
-                        Variables.state.recentlyPlayed.push(data.val())
-                    }
-
-                })
-            });
-            Variables.state.recentlyPlayed.reverse();
-        });
 
     }
 
 
     componentWillUnmount(){
-        clearTimeout(this.timeout);
-        clearTimeout(this.timeout2);
     }
 
 
@@ -60,28 +44,6 @@ class RecentlyPlayed extends Component{
             topBarShadowRadius: 5,
         });
 
-        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
-        this.state = {
-            dataSource: dataSource.cloneWithRows(Variables.state.recentlyPlayed),
-        };
-        this.timeout = setTimeout(() => {
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.recentlyPlayed)})
-        },1000);
-        this.timeout2 = setTimeout(() => {
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.recentlyPlayed)})
-        },2500);
-    };
-
-    _pressBack = () => {
-        this.props.navigator.pop({
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-
-
-    renderRow = (rowData) => {
-        return <ListItem podcast={rowData} navigator={this.props.navigator} />;
     };
 
 
@@ -89,23 +51,6 @@ class RecentlyPlayed extends Component{
         return (
             <View
                 style={styles.container}>
-
-
-                <ScrollView>
-
-                    <ListView
-                        enableEmptySections
-                        dataSource={this.state.dataSource}
-                        renderRow={this.renderRow}
-                    />
-
-
-                    <View style={{paddingBottom:120}}>
-
-                    </View>
-
-                </ScrollView>
-
 
 
                 <PlayerBottom navigator={this.props.navigator}/>
@@ -161,4 +106,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default RecentlyPlayed;
+export default Highlights;

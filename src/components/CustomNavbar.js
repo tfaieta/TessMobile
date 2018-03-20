@@ -3,11 +3,12 @@ import {
     StyleSheet,
     View,
     TouchableOpacity,
-    Text
+    Text,
+    Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Navigation} from 'react-native-navigation';
 
+var {height, width} = Dimensions.get('window');
 
 
 // custom static nav bar, used throughout app
@@ -35,14 +36,22 @@ export default class CustomNavbar extends Component {
                         }} name="search"/>
                     </View>
 
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center', marginLeft: 10}}>
+                    <TouchableOpacity style={{flex:1,justifyContent: 'center', alignItems: 'center', marginLeft: 10}} onPress={() => {
+                        this.props.navigator.push({
+                            screen: 'Search',
+                            title: 'Search',
+                            animated: true,
+                            animationType: 'fade',
+                        })
+                    }}>
                         <Text style={styles.text}>Search</Text>
-                    </View>
+                    </TouchableOpacity>
 
                     <View style={{flex: 1, flexDirection: 'row', alignSelf:'flex-end'}}>
                         <TouchableOpacity onPress={() => {
                             this.props.navigator.push({
                                 screen: 'RecordFirst',
+                                title: 'Create a Podcast'
                             })
                         }}>
                             <Icon style={{
@@ -50,12 +59,13 @@ export default class CustomNavbar extends Component {
                                 fontSize: 20,
                                 backgroundColor: 'transparent',
                                 color: '#000',
-                                marginHorizontal: 12,
+                                marginHorizontal: 10,
                             }} name="microphone"/>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
                             this.props.navigator.push({
                                 screen: 'Account',
+                                title: 'Profile'
                             })
 
                         }}>
@@ -64,7 +74,7 @@ export default class CustomNavbar extends Component {
                                 fontSize: 20,
                                 backgroundColor: 'transparent',
                                 color: '#000',
-                                marginHorizontal: 12,
+                                marginHorizontal: 10,
                             }} name="user-circle"/>
                         </TouchableOpacity>
                     </View>
@@ -85,7 +95,7 @@ const styles = StyleSheet.create({
     text: {
         flex:1,
         fontSize: 14,
-        paddingRight: 140,
+        paddingRight: width/1.98,
         color: '#000',
         textAlign: 'left',
         backgroundColor: 'transparent',

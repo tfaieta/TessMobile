@@ -65,7 +65,7 @@ static navigatorStyle = {
 
     render() {
         return (
-            <View style = {{backgroundColor: '#414149', flex:1}}>
+            <View style = {{backgroundColor: 'transparent', flex:1}}>
             <View
                 style={styles.container}>
 
@@ -74,8 +74,8 @@ static navigatorStyle = {
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
-                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#9496A3'
-                            }} name="md-arrow-round-back">
+                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#007aff',
+                            }} name="ios-arrow-back">
                             </Icon>
                         </TouchableOpacity>
                     </View>

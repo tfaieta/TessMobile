@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 class Notifications extends Component{
-    
+
 
     constructor(props) {
         super(props);

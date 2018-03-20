@@ -32,9 +32,9 @@ class SetPlayerSpeed extends Component{
             <View style={styles.container}>
                 <Text style = {styles.textTitle}>Playback Speed: {this.state.speed.toFixed(2)}</Text>
                 <Slider
-                    minimumTrackTintColor='#5757FF'
+                    minimumTrackTintColor='#506dcf'
                     maximumTrackTintColor='#E7E7F0'
-                    thumbStyle={{width: 25, height: 50,  backgroundColor: '#fff', borderColor: '#5757FF', borderWidth: 2}}
+                    thumbStyle={{width: 25, height: 50,  backgroundColor: '#fff', borderColor: '#506dcf', borderWidth: 2}}
                     animateTransitions = {true}
                     style={styles.sliderContainer}
                     step={0.1}

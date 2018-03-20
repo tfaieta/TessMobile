@@ -117,11 +117,10 @@ class Account extends Component {
             statusBarHidden: false,
             statusBarTextColorScheme: 'light',
             navBarHidden: false,
+            navBarTextColor: '#000000', // change the text color of the title (remembered across pushes)
+            navBarTextFontSize: 18, // change the font size of the title
+            navBarTextFontFamily: 'Montserrat-Regular', // Changes the title font
             drawUnderTabBar: false,
-            navBarCustomView: 'CustomNavbar',
-            navBarCustomViewInitialProps: {
-                navigator: this.props.navigator
-            },
             navBarHideOnScroll: true,
             navBarBackgroundColor: '#fff',
             topBarElevationShadowEnabled: true,
@@ -292,10 +291,11 @@ class Account extends Component {
 
 
     _pressSettings = () => {
+        const {navigator} = this.props;
         this.props.navigator.push({
             screen: 'Settings',
-            animated: true,
-            animationType: 'fade',
+            title: 'Settings',
+            passProps: {navigator}
         });
     };
 
@@ -324,7 +324,7 @@ class Account extends Component {
 
                     {this._renderProfileName()}
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}} onPress={this._pressSettings}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginBottom: 20}} onPress={this._pressSettings}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
@@ -332,7 +332,7 @@ class Account extends Component {
                             marginHorizontal: 10,
                         }} name="ios-settings">
                         </Icon>
-                        <Text style = {styles.title}> Settings</Text>
+                        <Text style = {styles.title}>Settings</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: 22,

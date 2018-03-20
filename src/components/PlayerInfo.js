@@ -183,8 +183,8 @@ static navigatorStyle = {
                             Navigation.dismissModal();
                         }}>
                             <Icon style={{
-                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#9496A3'
-                            }} name="md-arrow-round-back">
+                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#007aff',
+                            }} name="ios-arrow-back">
                             </Icon>
                         </TouchableOpacity>
                     </View>
@@ -352,7 +352,7 @@ const styles = StyleSheet.create({
     },
 
     textLike:{
-        color: '#5757FF',
+        color: '#506dcf',
         flexDirection: 'column',
         textAlign: 'center',
         opacity: 1,

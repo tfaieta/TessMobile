@@ -21,14 +21,26 @@ import DropdownAlert from 'react-native-dropdownalert';
 
 class Settings extends Component {
 
-static navigatorStyle = {
+    static navigatorStyle = {
         statusBarHidden: false,
-        navBarHidden: true
+        statusBarTextColorScheme: 'light',
+        navBarHidden: false,
+        navBarTextColor: '#000000', // change the text color of the title (remembered across pushes)
+        navBarTextFontSize: 18, // change the font size of the title
+        navBarTextFontFamily: 'Montserrat-Regular', // Changes the title font
+        drawUnderTabBar: false,
+        navBarHideOnScroll: true,
+        navBarBackgroundColor: '#fff',
+        topBarElevationShadowEnabled: true,
+        topBarShadowColor: '#000',
+        topBarShadowOpacity: 0.1,
+        topBarShadowOffset: 3,
+        topBarShadowRadius: 5,
     };
-
 
     constructor(){
         super();
+
         this.state = {
             modalVisible: false,
             bioModalVisible: false,
@@ -132,24 +144,6 @@ static navigatorStyle = {
 
         return (
             <View style={{backgroundColor:'#fff',flex:1, paddingBottom: 118}}>
-
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 6}, shadowOpacity: 0.2, shadowRadius: 10}}>
-                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
-                        <TouchableOpacity onPress={this._pressBack}>
-                            <Icon style={{
-                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#9496A3'
-                            }} name="md-arrow-round-back">
-                            </Icon>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={styles.header}>Settings</Text>
-                    </View>
-
-                    <View>
-                    </View>
-
-                </View>
 
 
                 <View style={{backgroundColor:'#f6f6f6',flex:1}}>

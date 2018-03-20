@@ -78,42 +78,39 @@ class Library extends Component{
     GoToRecentlyPlayed = () => {
         this.props.navigator.push({
             screen: 'RecentlyPlayed',
-            animated: true,
-            animationType: 'fade',
+            title: 'History',
         });
     };
 
     GoToPlaylists = () => {
         this.props.navigator.push({
             screen: 'Playlists',
-            animated: true,
-            animationType: 'fade',
+            title: 'Playlists',
         });
     };
 
     GoToFavs = () => {
         this.props.navigator.push({
             screen: 'Favorites',
-            animated: true,
-            animationType: 'fade',
+            title: 'Podcasts'
         });
     };
 
     GoToFollowedContent = () => {
         this.props.navigator.push({
             screen: 'Followed',
-            animated: true,
-            animationType: 'fade',
+            title: 'Creators'
         });
     };
 
-    GoToMyContent = () => {
+    GoToHighlights = () => {
         this.props.navigator.push({
-            screen: 'MyContent',
-            animated: true,
-            animationType: 'fade',
+            screen: 'Highlights',
+            title: 'Highlights'
         });
     };
+
+
 
 
     render() {
@@ -201,7 +198,7 @@ class Library extends Component{
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}} onPress={this.GoToHighlights}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',

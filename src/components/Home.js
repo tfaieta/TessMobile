@@ -139,6 +139,7 @@ class Home extends Component{
             navBarCustomViewInitialProps: {
                 navigator: this.props.navigator
             },
+            navBarButtonColor: '#007aff',
             navBarHideOnScroll: true,
             navBarBackgroundColor: '#fff',
             topBarElevationShadowEnabled: true,
@@ -822,7 +823,7 @@ class Home extends Component{
 
         if(currentUser.uid == "pgIx9JAiq9aQWcyUZX8AuIdqNmP2" || currentUser.uid == "sJsB8XK4XRZ8tNpeGC14JNsa6Jj1"){
             return(
-                <TouchableOpacity style = {{marginVertical: 40, marginHorizontal: 10, backgroundColor: '#5757FF',}} onPress = {this.rssFetch}>
+                <TouchableOpacity style = {{marginVertical: 40, marginHorizontal: 10, backgroundColor: '#506dcf',}} onPress = {this.rssFetch}>
                     <Text style = {{color: "#fff", fontSize: 22, textAlign: 'center', padding: 15}}>Fetch RSS Feeds</Text>
                 </TouchableOpacity>
             )
@@ -852,7 +853,12 @@ class Home extends Component{
 
                     <Text style={styles.titleMini}>This is your home screen, you can add whatever you want.</Text>
 
-                    <TouchableOpacity stlye={{borderColor: '#000', borderStyle: 'dotted', borderWidth: 1, borderRadius: 10, padding: 10}}>
+                    <TouchableOpacity stlye={{borderColor: '#000', borderStyle: 'dotted', borderWidth: 1, borderRadius: 10, padding: 10}} onPress={() => {
+                        this.props.navigator.push({
+                            screen: 'AddWidget',
+                            title: 'Add a Widget'
+                        })
+                    }}>
                         <Text style={styles.titleAdd}>Add a widget</Text>
                     </TouchableOpacity>
 
@@ -947,7 +953,7 @@ const styles = StyleSheet.create({
     },
 
     viewAll: {
-        color: '#5757FF',
+        color: '#506dcf',
         textAlign: 'right',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',

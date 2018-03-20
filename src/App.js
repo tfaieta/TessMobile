@@ -61,6 +61,9 @@ import PlayerOptions from "./components/PlayerOptions";
 import CustomNavbar from "./components/CustomNavbar";
 import Notifications from "./components/Notifications";
 import Playlists from "./components/Playlists";
+import AddWidget from "./components/AddWidget";
+import Search from "./components/Search";
+import Highlights from "./components/Highlights";
 
 
 
@@ -75,13 +78,15 @@ Navigation.registerComponent('CustomNavbar', () => CustomNavbar, store, Provider
 
 Navigation.registerComponent('Home', () => Home, store, Provider);
 Navigation.registerComponent('ViewAll', () => ViewAll, store, Provider);
+Navigation.registerComponent('AddWidget', () => AddWidget, store, Provider);
 
 Navigation.registerComponent('Discover', () => Discover, store, Provider);
 Navigation.registerComponent('Categories', () => Categories, store, Provider);
 Navigation.registerComponent('Following', () => Following, store, Provider);
 Navigation.registerComponent('NewPodcasts', () => NewPodcasts, store, Provider);
 Navigation.registerComponent('TopCharts', () => TopCharts, store, Provider);
-Navigation.registerComponent('Search', () => SearchPage, store, Provider);
+Navigation.registerComponent('Search', () => Search, store, Provider);
+Navigation.registerComponent('SearchPage', () => SearchPage, store, Provider);
 
 Navigation.registerComponent('Notifications', () => Notifications, store, Provider);
 
@@ -115,6 +120,7 @@ Navigation.registerComponent('MyContent', () => MyContent, store, Provider);
 Navigation.registerComponent('Followed', () => FollowedContent, store, Provider);
 Navigation.registerComponent('RecentlyPlayed', () => RecentlyPlayed, store, Provider);
 Navigation.registerComponent('Playlists', () => Playlists, store, Provider);
+Navigation.registerComponent('Highlights', () => Highlights, store, Provider);
 
 Navigation.registerComponent('Account', () => Account, store, Provider);
 Navigation.registerComponent('MyFollowersPage', () => MyFollowersPage, store, Provider);

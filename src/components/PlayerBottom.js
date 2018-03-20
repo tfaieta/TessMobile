@@ -1270,10 +1270,10 @@ const styles = StyleSheet.create({
     containerModal:{
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: '#fff',
+        backgroundColor: 'transparent',
         marginTop: 5,
         marginHorizontal: 5,
-        borderColor: 'rgba(170,170,170,0.2)',
+        borderColor: 'transparent',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         borderWidth: 2
@@ -1281,7 +1281,7 @@ const styles = StyleSheet.create({
 
     containerOutsideModal:{
         flex: 1,
-        backgroundColor: '#3e416490',
+        backgroundColor: 'transparent',
 
     },
 

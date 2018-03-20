@@ -9,51 +9,19 @@ import InvertibleScrollView from 'react-native-invertible-scroll-view';
 import ListItem from "./ListItem";
 
 
-class SearchPage extends Component{
+class Search extends Component{
 
-static navigatorStyle = {
+    static navigatorStyle = {
         statusBarHidden: false,
         navBarHidden: true
     };
 
 
-    componentWillMount(){
-        Variables.state.mySearches = [];
-        const refMy = firebase.database().ref(`podcasts/`);
-
-
-        refMy.once("value", function (snapshot) {
-            Variables.state.mySearches = [];
-            snapshot.forEach(function (data) {
-
-                if(data.val().podcastTitle.toLowerCase().includes(Variables.state.searchWord.toLowerCase())) {
-                    Variables.state.mySearches.push(data.val());
-                }
-                else {
-                    firebase.database().ref(`/users/${data.val().podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
-                        if(snap.val().username.toLowerCase().includes(Variables.state.searchWord.toLowerCase())){
-                            Variables.state.mySearches.push(data.val())
-                        }
-                    });
-                }
-
-            })
-        });
-
-
-    }
-
-
-    componentWillUnmount(){
-        clearTimeout(this.timeout);
-        clearTimeout(this.timeout2);
-    }
-
 
     searchActivate = () => {
         Variables.state.searchWord = this.state.search;
         this.props.navigator.push({
-            screen: 'Search',
+            screen: 'SearchPage',
             animated: true,
             animationType: 'fade',
         });
@@ -61,45 +29,10 @@ static navigatorStyle = {
 
     constructor(props) {
         super(props);
-        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithRows(Variables.state.mySearches),
             search: Variables.state.searchWord
         };
-        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches)})},1000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches)})},3500);
     }
-
-    _renderResults(mySearches){
-        if(mySearches > 0){
-            return(
-                <View style={{flex:1}}>
-                    <ListView
-                        enableEmptySections
-                        dataSource={this.state.dataSource}
-                        renderRow={this.renderRow}
-                        renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
-                    />
-                </View>
-            )
-        }
-        else{
-           return(
-               <View >
-                   <Text style={styles.title2}>No results found...</Text>
-               </View>
-           )
-        }
-    }
-
-
-
-    renderRow = (rowData) => {
-        return <ListItem podcast={rowData} navigator={this.props.navigator} />;
-    };
-
-
-
 
 
 
@@ -120,7 +53,7 @@ static navigatorStyle = {
 
                     <View style={styles.backButtonContainer}>
                         <TouchableOpacity onPress={this.Back}>
-                            <Icon style={{textAlign:'left', marginRight:0,marginLeft: 0,paddingTop: 0, fontSize: 30,color: '#007aff', }} name="ios-arrow-back">
+                            <Icon style={{textAlign:'left', marginRight:0,marginLeft: 0,paddingTop: 0, fontSize: 30,color:'#007aff', }} name="ios-arrow-back">
                             </Icon>
                         </TouchableOpacity>
                     </View>
@@ -143,16 +76,6 @@ static navigatorStyle = {
                     />
 
                 </View>
-
-                <ScrollView>
-                    {this._renderResults(Variables.state.mySearches.length)}
-
-                    <View style={{paddingBottom:120}}>
-
-                    </View>
-                    
-                </ScrollView>
-
 
 
                 <PlayerBottom navigator={this.props.navigator}/>
@@ -342,4 +265,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default SearchPage;
+export default Search;
