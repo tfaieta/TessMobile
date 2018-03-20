@@ -13,10 +13,20 @@ import ListItem from "./ListItem";
 
 class Favorites extends Component{
 
-  static navigatorStyle = {
+    static navigatorStyle = {
         statusBarHidden: false,
-        navBarHidden: true,
-        statusBarTextColorScheme: 'light'
+        statusBarTextColorScheme: 'light',
+        navBarHidden: false,
+        drawUnderTabBar: false,
+        navBarCustomView: 'CustomNavbar',
+        navBarCustomViewInitialProps: {navigator},
+        navBarHideOnScroll: true,
+        navBarBackgroundColor: '#fff',
+        topBarElevationShadowEnabled: true,
+        topBarShadowColor: '#000',
+        topBarShadowOpacity: 1,
+        topBarShadowOffset: 20,
+        topBarShadowRadius: 10,
     };
 
 
@@ -94,25 +104,6 @@ class Favorites extends Component{
         return (
             <View
                 style={styles.containerMain}>
-
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, borderWidth: 2, borderBottomColor: 'rgba(187,188,205,0.3)', borderTopColor: '#fff', borderLeftColor: '#fff', borderRightColor: '#fff'}}>
-                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
-                        <TouchableOpacity onPress={this._pressBack}>
-                            <Icon style={{
-                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#9496A3'
-                            }} name="md-arrow-round-back">
-                            </Icon>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={styles.header}>Favorites</Text>
-                    </View>
-
-                    <View>
-                    </View>
-
-                </View>
-
 
 
                 <ScrollView>

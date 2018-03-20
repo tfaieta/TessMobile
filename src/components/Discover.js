@@ -30,25 +30,6 @@ class Discover extends Component{
     };
 
 
-    onNavigatorEvent(event) {
-        if (event.type == 'DeepLink') {
-            if (event.link === 'Account') {
-                this.props.navigator.push({
-                    screen:'Account',
-                    animated: true,
-                    animationType: 'fade',
-                })
-            }
-            else if (event.link === 'RecordFirst') {
-                this.props.navigator.push({
-                    screen:'RecordFirst',
-                    animated: true,
-                    animationType: 'fade',
-                })
-            }
-        }
-    }
-
 
     componentWillMount(){
         Variables.state.selectedByTess = [];
@@ -198,7 +179,6 @@ class Discover extends Component{
 
     constructor(props) {
         super(props);
-        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess),
@@ -379,108 +359,108 @@ class Discover extends Component{
                         <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} style={{flex: 1}} >
                             <TouchableOpacity style={{flex: 1, marginHorizontal: 10}} onPress={this.pressCurrEvents}>
                                 <Image
-                                    style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                                    style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/currEvents-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>News</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>News</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressFitness}>
                                 <Image
-                                    style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                                    style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/fitness-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Fitness</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Fitness</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingHorizontal: 10}} onPress={this.pressSociety}>
                                 <Image
-                                    style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                                    style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/politics-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Society & Culture</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Society & Culture</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressReligionSpirit}>
                                 <Image
-                                    style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                                    style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/religionSpirit-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Religion & Spirituality</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Religion & Spirituality</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingHorizontal: 10}} onPress={this.pressComedy}>
                                 <Image
-                                    style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                                    style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/comedy-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Comedy</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Comedy</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressLife}>
                                 <Image
-                                    style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                                    style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/lifestyle-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Lifestyle</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Lifestyle</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingHorizontal: 10}} onPress={this.pressSci}>
                                 <Image
-                                    style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                                    style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/scienceNature-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Science & Nature</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Science & Nature</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressTravel}>
                                 <Image
-                                    style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                                    style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/travel-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Travel</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Travel</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingHorizontal: 10}} onPress={this.pressLearn}>
                                 <Image
-                                    style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                                    style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/learnSomething-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Learn Something</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Learn Something</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressStory}>
                                 <Image
-                                    style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                                    style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/storytelling-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Storytelling</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Storytelling</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingHorizontal: 10}} onPress={this.pressSports}>
                                 <Image
-                                    style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                                    style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/sports-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Sports</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Sports</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressEntertainment}>
                                 <Image
-                                    style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                                    style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/entertainment-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Entertainment</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Entertainment</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressMusic}>
                                 <Image
-                                    style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                                    style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/music-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Music</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Music</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingHorizontal: 10}} onPress={this.pressTech}>
                                 <Image
-                                    style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                                    style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/tech-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Tech</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Tech</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressGaming}>
                                 <Image
-                                    style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                                    style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
                                     source={require('tess/src/images/gaming-cat.png')}
                                 />
-                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center'}}>Gaming</Text>
+                                <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Gaming</Text>
                             </TouchableOpacity>
 
                         </ScrollView>

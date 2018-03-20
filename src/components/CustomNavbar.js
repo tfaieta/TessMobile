@@ -3,11 +3,11 @@ import {
     StyleSheet,
     View,
     TouchableOpacity,
-    Image,
     Text
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Navigation} from 'react-native-navigation';
+
 
 
 // custom static nav bar, used throughout app
@@ -22,15 +22,18 @@ export default class CustomNavbar extends Component {
 
     goToRecord(){
 
-        Navigation.handleDeepLink({link:"RecordFirst"})
-
-
+        Navigation.showModal({
+            screen: 'RecordFirst',
+        })
 
     }
 
     goToAccount(){
 
-        Navigation.handleDeepLink({link:"Account"})
+        Navigation.showModal({
+            screen: 'Account',
+        })
+
     }
 
     render() {
@@ -91,7 +94,6 @@ const styles = StyleSheet.create({
     },
     button: {
         alignSelf: 'center',
-        // backgroundColor: 'green'
     },
     text: {
         fontSize: 14,
@@ -102,3 +104,4 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-Regular',
     }
 });
+

@@ -30,25 +30,6 @@ class Library extends Component{
     };
 
 
-    onNavigatorEvent(event) {
-        if (event.type == 'DeepLink') {
-            if (event.link === 'Account') {
-                this.props.navigator.push({
-                    screen:'Account',
-                    animated: true,
-                    animationType: 'fade',
-                })
-            }
-            else if (event.link === 'RecordFirst') {
-                this.props.navigator.push({
-                    screen:'RecordFirst',
-                    animated: true,
-                    animationType: 'fade',
-                })
-            }
-        }
-    }
-
 
     componentWillMount(){
         const {currentUser} = firebase.auth();
@@ -76,7 +57,6 @@ class Library extends Component{
 
     constructor(props){
         super(props);
-        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.myQueue),
@@ -96,6 +76,14 @@ class Library extends Component{
     GoToRecentlyPlayed = () => {
         this.props.navigator.push({
             screen: 'RecentlyPlayed',
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+
+    GoToPlaylists = () => {
+        this.props.navigator.push({
+            screen: 'Playlists',
             animated: true,
             animationType: 'fade',
         });
@@ -140,18 +128,18 @@ class Library extends Component{
 
 
                     <TouchableOpacity>
-                    <LinearGradient
+                        <LinearGradient
 
-                        colors={['#d15564', '#9a5e9a', '#506dcf' ]}
-                        style={styles.container2}
-                    >
-                        <Text style = {styles.titleTop}>154 minutes to catch up</Text>
-                    </LinearGradient>
+                            colors={['#d15564', '#9a5e9a', '#506dcf' ]}
+                            style={styles.container2}
+                        >
+                            <Text style = {styles.titleTop}>154 minutes to catch up</Text>
+                        </LinearGradient>
                     </TouchableOpacity>
 
 
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}} onPress={this.GoToRecentlyPlayed}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
@@ -171,7 +159,7 @@ class Library extends Component{
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}} onPress={this.GoToFavs} >
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
@@ -191,7 +179,7 @@ class Library extends Component{
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}} onPress={this.GoToPlaylists}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
@@ -231,7 +219,7 @@ class Library extends Component{
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}} onPress={this.GoToFollowedContent}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
@@ -263,11 +251,11 @@ class Library extends Component{
                     </View>
 
                     <View style={{paddingBottom: 70}}>
-                    <ListView
-                        enableEmptySections
-                        dataSource={this.state.dataSource}
-                        renderRow={this.renderRow}
-                    />
+                        <ListView
+                            enableEmptySections
+                            dataSource={this.state.dataSource}
+                            renderRow={this.renderRow}
+                        />
                     </View>
 
 

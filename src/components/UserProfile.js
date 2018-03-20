@@ -32,7 +32,7 @@ var {height, width} = Dimensions.get('window');
 
 class UserProfile extends Component {
 
-static navigatorStyle = {
+    static navigatorStyle = {
         statusBarHidden: false,
         navBarHidden: true
     };
@@ -153,7 +153,7 @@ static navigatorStyle = {
         };
         this.timeout = setTimeout(() =>{
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
-            username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
+                username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
                 following: Variables.state.following
             })
         },500);
@@ -524,18 +524,17 @@ static navigatorStyle = {
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
-                                textAlign: 'left', marginLeft: 10, fontSize: 30, color: '#9496A3'
-                            }} name="md-arrow-round-back">
+                                textAlign:'left',marginLeft: 10, fontSize: 28, color:'#00000080'
+                            }} name="ios-arrow-back">
                             </Icon>
                         </TouchableOpacity>
                     </View>
-                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
                         <Text style={styles.header}>{fixedTitle}</Text>
                     </View>
 
                     <View>
                     </View>
-
                 </View>
 
 
@@ -658,15 +657,14 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     header: {
-        marginTop:30,
-        marginLeft: -35,
+        marginTop: 25,
+        marginLeft: -12,
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: width/23.44,
         backgroundColor: 'transparent',
-
     },
     title2: {
         color: '#2A2A30',

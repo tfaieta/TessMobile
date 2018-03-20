@@ -29,27 +29,19 @@ var {height, width} = Dimensions.get('window');
 
 
 
-// 5th tab, my account page
+// nav bar button, my account page
 
 class Account extends Component {
 
     static navigatorStyle = {
         statusBarHidden: false,
         statusBarTextColorScheme: 'light',
-        navBarHidden: false,
+        navBarHidden: true,
+        tabBarHidden: false,
         drawUnderTabBar: false,
-        navBarCustomView: 'CustomNavbar',
-        navBarCustomViewInitialProps: {navigator},
-        navBarHideOnScroll: true,
-        navBarBackgroundColor: '#fff',
-        topBarElevationShadowEnabled: true,
-        topBarShadowColor: '#000',
-        topBarShadowOpacity: 1,
-        topBarShadowOffset: 20,
-        topBarShadowRadius: 10,
     };
 
-    componentDidMount(){
+    componentWillMount(){
         Variables.state.myPodcasts = [];
         Variables.state.myFollowers = [];
         Variables.state.myFollowing = [];
@@ -108,7 +100,7 @@ class Account extends Component {
         storageRef.getDownloadURL()
             .then(function(url) {
 
-               Variables.state.profileImage = url;
+                Variables.state.profileImage = url;
 
             }).catch(function(error) {
             //
@@ -121,7 +113,7 @@ class Account extends Component {
 
 
     componentWillUnmount(){
-        clearInterval(this.interval);
+        clearTimeout(this.timeout);
     }
 
 
@@ -136,7 +128,7 @@ class Account extends Component {
             profileImage: '',
             category: '',
         };
-        this.interval = setInterval(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username, profileImage: Variables.state.profileImage})},1500)
+        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username, profileImage: Variables.state.profileImage})},1000)
     }
 
 
@@ -144,10 +136,10 @@ class Account extends Component {
 
     _renderProfileName(){
 
-            return (
-                <Text style={styles.title2} >{this.state.username}</Text>
+        return (
+            <Text style={styles.title2} >{this.state.username}</Text>
 
-            )
+        )
 
     }
 
@@ -177,10 +169,10 @@ class Account extends Component {
         else{
             return(
                 <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:30, height: height/4.17, width: height/4.17, }}>
-                <Image
-                    style={{width: height/4.17, height: height/4.17, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4,}}
-                    source={{uri: this.state.profileImage}}
-                />
+                    <Image
+                        style={{width: height/4.17, height: height/4.17, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4,}}
+                        source={{uri: this.state.profileImage}}
+                    />
                 </View>
             )
         }
@@ -253,7 +245,7 @@ class Account extends Component {
                         })
 
                     });
-                  }
+                }
                 },
             ],
             { cancelable: false }
@@ -295,6 +287,13 @@ class Account extends Component {
         });
     };
 
+    _pressBack = () => {
+        Navigation.dismissModal({
+
+        })
+    };
+
+
 
     render() {
         return (
@@ -304,6 +303,23 @@ class Account extends Component {
                 <StatusBar
                     barStyle="dark-content"
                 />
+
+                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 6}, shadowOpacity: 0.2, shadowRadius: 10}}>
+                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
+                        <TouchableOpacity onPress={this._pressBack}>
+                            <Icon style={{
+                                textAlign:'left',marginLeft: 10, fontSize: 28, color:'#00000080'
+                            }} name="ios-arrow-back">
+                            </Icon>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
+                        <Text style={styles.header}>Account</Text>
+                    </View>
+
+                    <View>
+                    </View>
+                </View>
 
 
                 <ScrollView >
@@ -359,7 +375,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: width/23.44,
         backgroundColor: 'transparent'
     },
@@ -370,7 +386,7 @@ const styles = StyleSheet.create({
         flex:1,
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W3',
+        fontFamily: 'Montserrat-Regular',
         fontSize: 22,
         backgroundColor: 'transparent'
     },
@@ -381,17 +397,18 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'Montserrat-Regular',
         fontSize: width/25,
         marginHorizontal: 20,
         backgroundColor: 'transparent',
     },
     header: {
-        marginTop:30,
+        marginTop: 25,
+        marginLeft: -12,
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: width/23.44,
         backgroundColor: 'transparent',
     },
@@ -403,7 +420,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: width/25,
         backgroundColor: 'transparent',
         marginHorizontal: 20,
@@ -415,7 +432,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W3',
+        fontFamily: 'Montserrat-Regular',
         fontSize: width/23.44,
         backgroundColor: 'transparent'
     },
@@ -426,7 +443,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'Montserrat-Regular',
         fontSize: width/25,
         backgroundColor: 'transparent',
         marginLeft: 20,

@@ -21,42 +21,28 @@ var DomParser = require('react-native-html-parser').DOMParser;
 class Home extends Component{
 
 
-    static navigatorStyle = {
-        statusBarHidden: false,
-        statusBarTextColorScheme: 'light',
-        navBarHidden: false,
-        drawUnderTabBar: false,
-        navBarCustomView: 'CustomNavbar',
-        navBarCustomViewInitialProps: { navigator },
-        navBarHideOnScroll: true,
-        navBarBackgroundColor: '#fff',
-        topBarElevationShadowEnabled: true,
-        topBarShadowColor: '#000',
-        topBarShadowOpacity: 1,
-        topBarShadowOffset: 20,
-        topBarShadowRadius: 10,
-    };
 
-    onNavigatorEvent(event) {
-        if (event.type == 'DeepLink') {
-            if (event.link === 'Account') {
-                this.props.navigator.push({
-                    screen:'Account',
-                    animated: true,
-                    animationType: 'fade',
-                })
-            }
-            else if (event.link === 'RecordFirst') {
-                this.props.navigator.push({
-                    screen:'RecordFirst',
-                    animated: true,
-                    animationType: 'fade',
-                })
-            }
-        }
-    }
 
     componentDidMount(){
+
+
+        this.props.navigator.setStyle({
+            statusBarHidden: false,
+            statusBarTextColorScheme: 'light',
+            navBarHidden: false,
+            drawUnderTabBar: false,
+            navBarCustomView: 'CustomNavbar',
+            navBarCustomViewInitialProps: {
+                title: 'Hi!', navigator: this.props.navigator
+            },
+            navBarHideOnScroll: true,
+            navBarBackgroundColor: '#fff',
+            topBarElevationShadowEnabled: true,
+            topBarShadowColor: '#000',
+            topBarShadowOpacity: 1,
+            topBarShadowOffset: 20,
+            topBarShadowRadius: 10,
+        });
 
         this.props.podcastFetchNew();
 
@@ -162,7 +148,6 @@ class Home extends Component{
 
     constructor(props) {
         super(props);
-        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts),
@@ -218,7 +203,7 @@ class Home extends Component{
                 <View>
                     <View style={{flexDirection:'row'}}>
                         <View style={{alignSelf:'flex-start'}}>
-                            <Text style={styles.title}>From People You Follow</Text>
+                            <Text style={styles.title}>Listen Now</Text>
                         </View>
 
                         <View style={{alignSelf:'flex-end', flex:1}}>

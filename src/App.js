@@ -60,6 +60,7 @@ import MyQueue from "./components/MyQueue";
 import PlayerOptions from "./components/PlayerOptions";
 import CustomNavbar from "./components/CustomNavbar";
 import Notifications from "./components/Notifications";
+import Playlists from "./components/Playlists";
 
 
 
@@ -113,6 +114,7 @@ Navigation.registerComponent('Favorites', () => Favorites, store, Provider);
 Navigation.registerComponent('MyContent', () => MyContent, store, Provider);
 Navigation.registerComponent('Followed', () => FollowedContent, store, Provider);
 Navigation.registerComponent('RecentlyPlayed', () => RecentlyPlayed, store, Provider);
+Navigation.registerComponent('Playlists', () => Playlists, store, Provider);
 
 Navigation.registerComponent('Account', () => Account, store, Provider);
 Navigation.registerComponent('MyFollowersPage', () => MyFollowersPage, store, Provider);

@@ -23,24 +23,6 @@ class Notifications extends Component{
     };
 
 
-    onNavigatorEvent(event) {
-        if (event.type == 'DeepLink') {
-            if (event.link === 'Account') {
-                this.props.navigator.push({
-                    screen:'Account',
-                    animated: true,
-                    animationType: 'fade',
-                })
-            }
-            else if (event.link === 'RecordFirst') {
-                this.props.navigator.push({
-                    screen:'RecordFirst',
-                    animated: true,
-                    animationType: 'fade',
-                })
-            }
-        }
-    }
 
     _pressSettings = () => {
         this.props.navigator.push({
@@ -52,7 +34,6 @@ class Notifications extends Component{
 
     constructor(props) {
         super(props);
-        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
 
     render() {
