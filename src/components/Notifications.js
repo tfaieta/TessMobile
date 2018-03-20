@@ -5,35 +5,29 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 class Notifications extends Component{
-
-    static navigatorStyle = {
-        statusBarHidden: false,
-        statusBarTextColorScheme: 'light',
-        navBarHidden: false,
-        drawUnderTabBar: false,
-        navBarCustomView: 'CustomNavbar',
-        navBarCustomViewInitialProps: {navigator},
-        navBarHideOnScroll: true,
-        navBarBackgroundColor: '#fff',
-        topBarElevationShadowEnabled: true,
-        topBarShadowColor: '#000',
-        topBarShadowOpacity: 1,
-        topBarShadowOffset: 20,
-        topBarShadowRadius: 10,
-    };
-
-
-
-    _pressSettings = () => {
-        this.props.navigator.push({
-            screen: 'Settings',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
+    
 
     constructor(props) {
         super(props);
+        
+        this.props.navigator.setStyle({
+            statusBarHidden: false,
+            statusBarTextColorScheme: 'light',
+            navBarHidden: false,
+            drawUnderTabBar: false,
+            navBarCustomView: 'CustomNavbar',
+            navBarCustomViewInitialProps: {
+                navigator: this.props.navigator
+            },
+            navBarHideOnScroll: true,
+            navBarBackgroundColor: '#fff',
+            topBarElevationShadowEnabled: true,
+            topBarShadowColor: '#000',
+            topBarShadowOpacity: 0.1,
+            topBarShadowOffset: 3,
+            topBarShadowRadius: 5,
+        });
+
     }
 
     render() {
@@ -47,7 +41,7 @@ class Notifications extends Component{
 
                 <ScrollView>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 15}} onPress={this._pressSettings}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 15}}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',

@@ -129,7 +129,7 @@ export default class InitialScreen extends Component{
                     tabBarBackgroundColor: '#fff',
                     tabBarHideShadow: true,
                     initialTabIndex: 0,
-                    tabBarTextFontFamily: 'HiraginoSans-W3',
+                    tabBarTextFontFamily: 'Montserrat-Regular',
                 },
                 appStyle: {
                     navBarHidden: true,

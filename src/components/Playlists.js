@@ -15,22 +15,6 @@ import ListItem from "./ListItem";
 
 class Playlists extends Component{
 
-    static navigatorStyle = {
-        statusBarHidden: false,
-        statusBarTextColorScheme: 'light',
-        navBarHidden: false,
-        drawUnderTabBar: false,
-        navBarCustomView: 'CustomNavbar',
-        navBarCustomViewInitialProps: {navigator},
-        navBarHideOnScroll: true,
-        navBarBackgroundColor: '#fff',
-        topBarElevationShadowEnabled: true,
-        topBarShadowColor: '#000',
-        topBarShadowOpacity: 1,
-        topBarShadowOffset: 20,
-        topBarShadowRadius: 10,
-    };
-
     componentWillMount(){
 
     }
@@ -42,6 +26,25 @@ class Playlists extends Component{
 
     constructor(props){
         super(props);
+
+        this.props.navigator.setStyle({
+            statusBarHidden: false,
+            statusBarTextColorScheme: 'light',
+            navBarHidden: false,
+            drawUnderTabBar: false,
+            navBarCustomView: 'CustomNavbar',
+            navBarCustomViewInitialProps: {
+                navigator: this.props.navigator
+            },
+            navBarHideOnScroll: true,
+            navBarBackgroundColor: '#fff',
+            topBarElevationShadowEnabled: true,
+            topBarShadowColor: '#000',
+            topBarShadowOpacity: 0.1,
+            topBarShadowOffset: 3,
+            topBarShadowRadius: 5,
+        });
+
     };
 
     _pressBack = () => {

@@ -1178,8 +1178,10 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        borderTopWidth: 2,
-        borderTopColor: '#00000030',
+        shadowColor: '#000',
+        shadowOpacity: 0.1,
+        shadowOffset:{  width: 0,  height: -3},
+        shadowRadius: 5,
     },
     playingText:{
         color: '#00000090',

@@ -18,16 +18,26 @@ var {height, width} = Dimensions.get('window');
 
 class RecordFirstPage extends Component{
 
-    static navigatorStyle = {
-        statusBarHidden: false,
-        statusBarTextColorScheme: 'light',
-        navBarHidden: true,
-        tabBarHidden: false,
-        drawUnderTabBar: false,
-    };
-
     constructor(props) {
         super(props);
+
+        this.props.navigator.setStyle({
+            statusBarHidden: false,
+            statusBarTextColorScheme: 'light',
+            navBarHidden: false,
+            drawUnderTabBar: false,
+            navBarCustomView: 'CustomNavbar',
+            navBarCustomViewInitialProps: {
+                navigator: this.props.navigator
+            },
+            navBarBackgroundColor: '#fff',
+            topBarElevationShadowEnabled: true,
+            topBarShadowColor: '#000',
+            topBarShadowOpacity: 0.1,
+            topBarShadowOffset: 3,
+            topBarShadowRadius: 5,
+        });
+
         this.state={
             fileExists: false
         };
@@ -120,25 +130,7 @@ class RecordFirstPage extends Component{
             <View
                 style={styles.container}>
 
-
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 6}, shadowOpacity: 0.2, shadowRadius: 10}}>
-                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
-                        <TouchableOpacity onPress={this._pressBack}>
-                            <Icon style={{
-                                textAlign:'left',marginLeft: 10, fontSize: 28, color:'#00000080'
-                            }} name="ios-arrow-back">
-                            </Icon>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={styles.header}>Create a Podcast</Text>
-                    </View>
-
-                    <View>
-                    </View>
-                </View>
-
-                <TouchableOpacity style = {{marginTop: height / 9}} onPress={this.recordNewPodcast}>
+                <TouchableOpacity style = {{marginTop: height / 7}} onPress={this.recordNewPodcast}>
                     <Icon style={{
                         textAlign:'center',fontSize: 45,color:'#5757FF'
                     }} name="md-add">

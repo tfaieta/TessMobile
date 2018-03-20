@@ -15,22 +15,6 @@ import ListItem from "./ListItem";
 
 class RecentlyPlayed extends Component{
 
-static navigatorStyle = {
-    statusBarHidden: false,
-    statusBarTextColorScheme: 'light',
-    navBarHidden: false,
-    drawUnderTabBar: false,
-    navBarCustomView: 'CustomNavbar',
-    navBarCustomViewInitialProps: {navigator},
-    navBarHideOnScroll: true,
-    navBarBackgroundColor: '#fff',
-    topBarElevationShadowEnabled: true,
-    topBarShadowColor: '#000',
-    topBarShadowOpacity: 1,
-    topBarShadowOffset: 20,
-    topBarShadowRadius: 10,
-    };
-
     componentWillMount(){
         const {currentUser} = firebase.auth();
 
@@ -58,6 +42,25 @@ static navigatorStyle = {
 
     constructor(props){
         super(props);
+
+        this.props.navigator.setStyle({
+            statusBarHidden: false,
+            statusBarTextColorScheme: 'light',
+            navBarHidden: false,
+            drawUnderTabBar: false,
+            navBarCustomView: 'CustomNavbar',
+            navBarCustomViewInitialProps: {
+                navigator: this.props.navigator
+            },
+            navBarHideOnScroll: true,
+            navBarBackgroundColor: '#fff',
+            topBarElevationShadowEnabled: true,
+            topBarShadowColor: '#000',
+            topBarShadowOpacity: 0.1,
+            topBarShadowOffset: 3,
+            topBarShadowRadius: 5,
+        });
+
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.recentlyPlayed),
