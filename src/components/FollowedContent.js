@@ -15,12 +15,6 @@ import ListItemFollowed from "./ListItemFollowed";
 
 class FollowedContent extends Component{
 
-  static navigatorStyle = {
-        statusBarHidden: false,
-        navBarHidden: true,
-        statusBarTextColorScheme: 'light'
-    };
-
     componentWillMount(){
         Variables.state.usersFollowed = [];
 
@@ -44,6 +38,25 @@ class FollowedContent extends Component{
 
     constructor(props){
         super(props);
+
+        this.props.navigator.setStyle({
+            statusBarHidden: false,
+            statusBarTextColorScheme: 'light',
+            navBarHidden: false,
+            drawUnderTabBar: false,
+            navBarCustomView: 'CustomNavbar',
+            navBarCustomViewInitialProps: {
+                navigator: this.props.navigator
+            },
+            navBarHideOnScroll: true,
+            navBarBackgroundColor: '#fff',
+            topBarElevationShadowEnabled: true,
+            topBarShadowColor: '#000',
+            topBarShadowOpacity: 0.1,
+            topBarShadowOffset: 3,
+            topBarShadowRadius: 5,
+        });
+
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed),
@@ -86,33 +99,11 @@ class FollowedContent extends Component{
                 style={styles.container}>
 
 
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, borderWidth: 2,borderBottomColor: 'rgba(187,188,205,0.3)', borderTopColor: '#fff', borderLeftColor: '#fff', borderRightColor: '#fff'}}>
-                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
-                        <TouchableOpacity onPress={this._pressBack}>
-                            <Icon style={{
-                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#9496A3'
-                            }} name="md-arrow-round-back">
-                            </Icon>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={styles.header}>Following</Text>
-                    </View>
-
-                    <View>
-                    </View>
-
-                </View>
-
-
-
                     <ListView
                         enableEmptySections
                         dataSource={this.state.dataSource}
                         renderRow={this.renderRow}
                     />
-
-
 
 
 

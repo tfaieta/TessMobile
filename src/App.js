@@ -58,6 +58,9 @@ import ReligionSpirituality from "./components/Categories/ReligionSpirituality";
 import SetPlayerSpeed from "./components/SetPlayerSpeed";
 import MyQueue from "./components/MyQueue";
 import PlayerOptions from "./components/PlayerOptions";
+import CustomNavbar from "./components/CustomNavbar";
+import Notifications from "./components/Notifications";
+import Playlists from "./components/Playlists";
 
 
 
@@ -68,6 +71,8 @@ Navigation.registerComponent('Startup', () => StartUp, store, Provider);
 Navigation.registerComponent('Login', () => Login, store, Provider);
 Navigation.registerComponent('CreateAccount', () => CreateAccount, store, Provider);
 
+Navigation.registerComponent('CustomNavbar', () => CustomNavbar, store, Provider);
+
 Navigation.registerComponent('Home', () => Home, store, Provider);
 Navigation.registerComponent('ViewAll', () => ViewAll, store, Provider);
 
@@ -77,6 +82,8 @@ Navigation.registerComponent('Following', () => Following, store, Provider);
 Navigation.registerComponent('NewPodcasts', () => NewPodcasts, store, Provider);
 Navigation.registerComponent('TopCharts', () => TopCharts, store, Provider);
 Navigation.registerComponent('Search', () => SearchPage, store, Provider);
+
+Navigation.registerComponent('Notifications', () => Notifications, store, Provider);
 
 Navigation.registerComponent('Fitness', () => Fitness, store, Provider);
 Navigation.registerComponent('News', () => CurrentEvents, store, Provider);
@@ -107,6 +114,7 @@ Navigation.registerComponent('Favorites', () => Favorites, store, Provider);
 Navigation.registerComponent('MyContent', () => MyContent, store, Provider);
 Navigation.registerComponent('Followed', () => FollowedContent, store, Provider);
 Navigation.registerComponent('RecentlyPlayed', () => RecentlyPlayed, store, Provider);
+Navigation.registerComponent('Playlists', () => Playlists, store, Provider);
 
 Navigation.registerComponent('Account', () => Account, store, Provider);
 Navigation.registerComponent('MyFollowersPage', () => MyFollowersPage, store, Provider);

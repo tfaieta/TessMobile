@@ -72,7 +72,7 @@ class Login extends Component {
         return (
             <LinearGradient
 
-                colors={['#5555FF', '#9787FF' ]}
+                colors={['#d15564', '#9a5e9a', '#506dcf' ]}
                 style={styles.container}
             >
                 <ScrollView   scrollEnabled={false}>

@@ -425,7 +425,7 @@ class ListItem extends Component {
                                 marginLeft: 0,
                                 marginRight: height/44.47,
                                 fontSize: height/22.23,
-                                color: '#5757FF',
+                                color: '#506dcf',
                             }} name="ios-more">
                             </Icon>
                         </TouchableOpacity>
@@ -453,7 +453,7 @@ const styles = {
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 15,
         backgroundColor: 'transparent',
         marginHorizontal: 20,
@@ -466,7 +466,7 @@ const styles = {
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'Montserrat-Regular',
         fontSize: 15,
         backgroundColor: 'transparent',
         marginLeft: 20,

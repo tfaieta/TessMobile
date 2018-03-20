@@ -99,12 +99,12 @@ class PlayerBottom extends Component {
     componentWillMount(){
 
         this.interval = setInterval(() => {
-                this.setState({
-                    currentTime: Variables.state.currentTime,
-                    buffering: Variables.state.buffering,
-                    isPlaying: !Variables.state.paused,
-                    speed: Variables.state.podcastSpeed,
-                });
+            this.setState({
+                currentTime: Variables.state.currentTime,
+                buffering: Variables.state.buffering,
+                isPlaying: !Variables.state.paused,
+                speed: Variables.state.podcastSpeed,
+            });
         }, 100);
 
     }
@@ -141,7 +141,7 @@ class PlayerBottom extends Component {
 
 
     scrubForward = () => {
-       Variables.state.seekForward = true;
+        Variables.state.seekForward = true;
     };
 
     scrubBackward = () => {
@@ -154,7 +154,7 @@ class PlayerBottom extends Component {
             <Slider
                 minimumTrackTintColor='#5757FF'
                 maximumTrackTintColor='#E7E7F0'
-                thumbStyle={{width: 25, height: 25, borderRadius: 12.5, backgroundColor: '#fff', borderColor: '#5757FF', borderWidth: 2}}
+                thumbStyle={{width: 25, height: 25, borderRadius: 12.5, backgroundColor: '#fff', borderColor: '#506dcf', borderWidth: 2}}
                 animateTransitions = {true}
                 style={styles.sliderContainer}
                 step={0}
@@ -169,31 +169,31 @@ class PlayerBottom extends Component {
     _renderPodcastImage(){
         if(Variables.state.podcastTitle != ''){
 
-                if (this.state.profileImage == ''){
-                    return(
-                        <TouchableOpacity onPress={this.ExpandPlayer}>
-                            <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: width/8.3, width: width/8.3, borderRadius:4, borderWidth:1, borderColor:'rgba(320,320,320,1)'}}>
-                                <Icon style={{
-                                    textAlign: 'center',
-                                    fontSize: 24,
-                                    color: 'white',
-                                    marginTop: 10
-                                }} name="md-person">
-                                </Icon>
-                            </View>
-                        </TouchableOpacity>
-                    )
-                }
-                else{
-                    return(
-                        <View style={{backgroundColor:'transparent', alignSelf: 'center', height: width/8.3, width: width/8.3  }}>
-                            <Image
-                                style={{width: width/8.3, height: width/8.3, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
-                                source={{uri: Variables.state.userProfileImage}}
-                            />
+            if (this.state.profileImage == ''){
+                return(
+                    <TouchableOpacity onPress={this.ExpandPlayer}>
+                        <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: width/8.3, width: width/8.3, borderRadius:4, borderWidth:1, borderColor:'rgba(320,320,320,1)'}}>
+                            <Icon style={{
+                                textAlign: 'center',
+                                fontSize: 24,
+                                color: 'white',
+                                marginTop: 10
+                            }} name="md-person">
+                            </Icon>
                         </View>
-                    )
-                }
+                    </TouchableOpacity>
+                )
+            }
+            else{
+                return(
+                    <View style={{backgroundColor:'transparent', alignSelf: 'center', height: width/8.3, width: width/8.3  }}>
+                        <Image
+                            style={{width: width/8.3, height: width/8.3, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
+                            source={{uri: Variables.state.userProfileImage}}
+                        />
+                    </View>
+                )
+            }
 
         }
     }
@@ -203,7 +203,7 @@ class PlayerBottom extends Component {
 
             if(this.state.buffering){
                 return(
-                    <ActivityIndicator style={{alignSelf:'center'}} color="#fff" size ="small" />
+                    <ActivityIndicator style={{alignSelf:'center'}} color="#00000090" size ="small" />
                 )
             }
             else{
@@ -217,7 +217,7 @@ class PlayerBottom extends Component {
                                 paddingTop: 0,
                                 paddingRight:5,
                                 fontSize: width/12.5,
-                                color: '#fff',
+                                color: '#00000090',
                             }} name="md-pause">
                             </Icon>
                         </TouchableOpacity>
@@ -233,7 +233,7 @@ class PlayerBottom extends Component {
                                 paddingTop: 0,
                                 paddingRight:5,
                                 fontSize: width/12.5,
-                                color: '#fff',
+                                color: '#00000090',
                             }} name="md-play">
                             </Icon>
                         </TouchableOpacity>
@@ -256,8 +256,8 @@ class PlayerBottom extends Component {
         else{
 
             var fixedTitle = '';
-            if(Variables.state.podcastTitle.toString().length > height/28 ){
-                fixedTitle = (Variables.state.podcastTitle.slice(0,height/28)+"...")
+            if(Variables.state.podcastTitle.toString().length > height/18 ){
+                fixedTitle = (Variables.state.podcastTitle.slice(0,height/18)+"...")
             }
             else{
                 fixedTitle = Variables.state.podcastTitle;
@@ -265,7 +265,7 @@ class PlayerBottom extends Component {
 
             var fixedUsername = '';
             if(profileName.length > height/26){
-                fixedUsername =  (profileName.slice(0,height/26)+"...");
+                fixedUsername =  (profileName.slice(0,height/20)+"...");
             }
             else{
                 fixedUsername = profileName;
@@ -411,18 +411,18 @@ class PlayerBottom extends Component {
         if (Variables.state.podcastTitle == ''){
             return(
                 <View style={{ marginTop: 10}}>
-                <ScrollView style={{height: 70, marginHorizontal: 20, backgroundColor: '#c1cde0', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10, borderWidth:0.1,}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
-                    <Text style={{ color:'#fff', fontSize: 16, paddingBottom: 15, fontFamily: 'HiraginoSans-W6', textAlign: 'center'  }}>Select a Podcast to start listening....</Text>
-                </ScrollView>
+                    <ScrollView style={{height: 70, marginHorizontal: 20, backgroundColor: '#c1cde0', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10, borderWidth:0.1,}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                        <Text style={{ color:'#fff', fontSize: 16, paddingBottom: 15, fontFamily: 'Montserrat-SemiBold', textAlign: 'center'  }}>Select a Podcast to start listening....</Text>
+                    </ScrollView>
                 </View>
             )
         }
         else{
             return(
                 <View style={{ marginTop: 10}}>
-                <ScrollView style={{height: 70, marginHorizontal: 20, backgroundColor:'#c1cde0', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10, borderWidth:0.1}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
-                    <Text style={{ color:'#fff', fontSize: 16, paddingBottom: 15, fontFamily: 'HiraginoSans-W6' }}>{Variables.state.podcastDescription}</Text>
-                </ScrollView>
+                    <ScrollView style={{height: 70, marginHorizontal: 20, backgroundColor:'#c1cde0', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10, borderWidth:0.1}} showsVerticalScrollIndicator= {false} showsHorizontalScrollIndicator= {false}>
+                        <Text style={{ color:'#fff', fontSize: 16, paddingBottom: 15, fontFamily: 'Montserrat-SemiBold' }}>{Variables.state.podcastDescription}</Text>
+                    </ScrollView>
                 </View>
             )
         }
@@ -431,13 +431,13 @@ class PlayerBottom extends Component {
 
     _renderCategory(){
 
-            if(Variables.state.podcastCategory.length>0){
-                return(
-                    <TouchableOpacity onPress={this.onCategoryPress}>
-                        <Text style={styles.podcastTextCat}>{Variables.state.podcastCategory}</Text>
-                    </TouchableOpacity>
-                )
-            }
+        if(Variables.state.podcastCategory.length>0){
+            return(
+                <TouchableOpacity onPress={this.onCategoryPress}>
+                    <Text style={styles.podcastTextCat}>{Variables.state.podcastCategory}</Text>
+                </TouchableOpacity>
+            )
+        }
 
 
 
@@ -470,7 +470,7 @@ class PlayerBottom extends Component {
             if(faved){
                 return(
                     <TouchableOpacity>
-                        <Icon style={{textAlign:'center', fontSize: 28,color: '#5757FF' }} name="md-add" onPress={()=>{
+                        <Icon style={{textAlign:'center', fontSize: 28,color: '#506dcf' }} name="md-add" onPress={()=>{
                             const {currentUser} = firebase.auth();
                             const podcastTitle = Variables.state.podcastTitle;
                             const podcastDescription = Variables.state.podcastDescription;
@@ -604,7 +604,7 @@ class PlayerBottom extends Component {
             if (liked) {
                 return (
                     <TouchableOpacity onPress = {this.pressLike}>
-                        <Icon style={{textAlign: 'center', fontSize: 28, color: '#5757FF', marginRight: 25}} name="ios-happy-outline">
+                        <Icon style={{textAlign: 'center', fontSize: 28, color: '#506dcf', marginRight: 25}} name="ios-happy-outline">
                         </Icon>
                         <View style={{flex:1}}>
                             <Text style={styles.podcastTextLikes}> {likers.length}</Text>
@@ -1019,142 +1019,142 @@ class PlayerBottom extends Component {
                     config={config}
                 >
 
-                <Modal
-                    animationType="slide"
-                    transparent={false}
-                    visible={this.state.modalVisible}
-                    onRequestClose={() => {alert("Modal has been closed.")}}
-                >
+                    <Modal
+                        animationType="slide"
+                        transparent={false}
+                        visible={this.state.modalVisible}
+                        onRequestClose={() => {alert("Modal has been closed.")}}
+                    >
 
-                    <View style = {styles.containerOutsideModal}>
-                    <View
-                        style={styles.containerModal}>
+                        <View style = {styles.containerOutsideModal}>
+                            <View
+                                style={styles.containerModal}>
 
-                        <StatusBar
-                            hidden={true}
-                        />
+                                <StatusBar
+                                    hidden={true}
+                                />
 
-                        <View style = {{flexDirection: 'row'}}>
+                                <View style = {{flexDirection: 'row'}}>
 
-                            <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex:1, marginVertical: 10, marginHorizontal: 20}}>
-                                <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="ios-arrow-down">
-                                </Icon>
-                            </TouchableOpacity>
+                                    <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex:1, marginVertical: 10, marginHorizontal: 20}}>
+                                        <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="ios-arrow-down">
+                                        </Icon>
+                                    </TouchableOpacity>
 
-                            <TouchableOpacity onPress={this.goToMyQueue} style={{alignItems:'flex-end', flex:1, marginVertical: 10, marginHorizontal: 20}}>
-                                <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="md-list-box">
-                                </Icon>
-                            </TouchableOpacity>
+                                    <TouchableOpacity onPress={this.goToMyQueue} style={{alignItems:'flex-end', flex:1, marginVertical: 10, marginHorizontal: 20}}>
+                                        <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="md-list-box">
+                                        </Icon>
+                                    </TouchableOpacity>
 
-                        </View>
-
-
-                        {this._renderPodcastImageBig()}
+                                </View>
 
 
-                        <TouchableOpacity style={{marginTop:20}} onPress={() => {
-                            const navigator = this.props.navigator;
-
-                            Navigation.showModal({
-                                screen: "PlayerInfo",
-                                passProps: {navigator},
-                            });
-
-                        }}>
-                            <Icon style={{textAlign:'center', fontSize: 16,color:'#5757FF', }} name="md-add-circle">
-                            </Icon>
-                            <Text style={styles.seeMore}>View More</Text>
-
-                        </TouchableOpacity>
+                                {this._renderPodcastImageBig()}
 
 
+                                <TouchableOpacity style={{marginTop:20}} onPress={() => {
+                                    const navigator = this.props.navigator;
 
-                        <View style={{marginTop: 10, flex:1}}>
-                                {this._renderPodcastTitle(Variables.state.isPlaying)}
-                                <TouchableOpacity style={{alignSelf: 'center'}}>
-                                    {this._renderPodcastArtist(Variables.state.isPlaying)}
-                                </TouchableOpacity>
-                                {this._renderCategory()}
-                        </View>
+                                    Navigation.showModal({
+                                        screen: "PlayerInfo",
+                                        passProps: {navigator},
+                                    });
 
-
-
-
-
-                        <View style={styles.centerContainerButtons}>
-
-                            <View style={styles.leftContainerP}>
-                                <TouchableOpacity onPress={this.scrubBackward}>
-                                    <Icon style={{flex:1, textAlign:'center', fontSize: height/13.34,color:'#2A2A30' }} name="ios-undo">
+                                }}>
+                                    <Icon style={{textAlign:'center', fontSize: 16,color:'#506dcf', }} name="md-add-circle">
                                     </Icon>
-                                    <Text style={{textAlign: 'center',  color: '#2A2A30', fontSize: height/66.7, backgroundColor: 'transparent', fontFamily: 'HiraginoSans-W6',}}>15</Text>
-                                </TouchableOpacity>
-                            </View>
+                                    <Text style={styles.seeMore}>View More</Text>
 
-                            <View style={styles.middleContainer}>
-                                <TouchableOpacity>
-                                    {this._renderPlayButton2(this.state.isPlaying)}
                                 </TouchableOpacity>
-                            </View>
 
-                            <View style={styles.rightContainerP}>
-                                <TouchableOpacity onPress={this.scrubForward}>
-                                    <Icon style={{flex:1, textAlign:'center', fontSize: height/13.34,color:'#2A2A30' }} name="ios-redo">
-                                    </Icon>
-                                    <Text style={{textAlign: 'center',  color: '#2A2A30', fontSize: height/66.7, backgroundColor: 'transparent', fontFamily: 'HiraginoSans-W6',}}>15</Text>
-                                </TouchableOpacity>
-                            </View>
 
+
+                                <View style={{marginTop: 10, flex:1}}>
+                                    {this._renderPodcastTitle(Variables.state.isPlaying)}
+                                    <TouchableOpacity style={{alignSelf: 'center'}}>
+                                        {this._renderPodcastArtist(Variables.state.isPlaying)}
+                                    </TouchableOpacity>
+                                    {this._renderCategory()}
+                                </View>
+
+
+
+
+
+                                <View style={styles.centerContainerButtons}>
+
+                                    <View style={styles.leftContainerP}>
+                                        <TouchableOpacity onPress={this.scrubBackward}>
+                                            <Icon style={{flex:1, textAlign:'center', fontSize: height/13.34,color:'#2A2A30' }} name="ios-undo">
+                                            </Icon>
+                                            <Text style={{textAlign: 'center',  color: '#2A2A30', fontSize: height/66.7, backgroundColor: 'transparent', fontFamily: 'Montserrat-SemiBold',}}>15</Text>
+                                        </TouchableOpacity>
+                                    </View>
+
+                                    <View style={styles.middleContainer}>
+                                        <TouchableOpacity>
+                                            {this._renderPlayButton2(this.state.isPlaying)}
+                                        </TouchableOpacity>
+                                    </View>
+
+                                    <View style={styles.rightContainerP}>
+                                        <TouchableOpacity onPress={this.scrubForward}>
+                                            <Icon style={{flex:1, textAlign:'center', fontSize: height/13.34,color:'#2A2A30' }} name="ios-redo">
+                                            </Icon>
+                                            <Text style={{textAlign: 'center',  color: '#2A2A30', fontSize: height/66.7, backgroundColor: 'transparent', fontFamily: 'Montserrat-SemiBold',}}>15</Text>
+                                        </TouchableOpacity>
+                                    </View>
+
+                                </View>
+
+
+                                <View style={styles.centerContainerPlayer}>
+
+                                    <View style={styles.leftContainer}>
+                                        {this._renderCurrentTime(Variables.state.currentTime)}
+                                    </View>
+
+                                    <View style={styles.rightContainer}>
+                                        {this._renderEndTime()}
+                                    </View>
+
+                                </View>
+
+
+                                {this._renderSlider(Variables.state.currentTime)}
+
+
+                                <View style={{flexDirection: 'row', flex: 1, marginTop: 0}}>
+
+                                    <View style={{alignItems:'flex-start', flex:1}}>
+                                        {this._renderPodcastSpeed(this.state.speed)}
+                                    </View>
+
+                                    <View style={{alignItems: 'center', flex:1}}>
+
+                                        <TouchableOpacity onPress={this.openPlayerOptions} style={{alignItems:'center', flex: 1}}>
+                                            <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="ios-more">
+                                            </Icon>
+                                        </TouchableOpacity>
+
+                                    </View>
+
+                                    <View style={{alignItems: 'flex-end', flex:1}}>
+                                        {this._renderLikes(Variables.state.likers, Variables.state.liked)}
+                                    </View>
+
+
+                                </View>
+
+
+
+
+                            </View>
                         </View>
 
 
-                        <View style={styles.centerContainerPlayer}>
 
-                            <View style={styles.leftContainer}>
-                                {this._renderCurrentTime(Variables.state.currentTime)}
-                            </View>
-
-                            <View style={styles.rightContainer}>
-                                {this._renderEndTime()}
-                            </View>
-
-                        </View>
-
-
-                        {this._renderSlider(Variables.state.currentTime)}
-
-
-                        <View style={{flexDirection: 'row', flex: 1, marginTop: 0}}>
-
-                            <View style={{alignItems:'flex-start', flex:1}}>
-                                {this._renderPodcastSpeed(this.state.speed)}
-                            </View>
-
-                            <View style={{alignItems: 'center', flex:1}}>
-
-                                <TouchableOpacity onPress={this.openPlayerOptions} style={{alignItems:'center', flex: 1}}>
-                                    <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="ios-more">
-                                    </Icon>
-                                </TouchableOpacity>
-
-                            </View>
-
-                            <View style={{alignItems: 'flex-end', flex:1}}>
-                                {this._renderLikes(Variables.state.likers, Variables.state.liked)}
-                            </View>
-
-
-                        </View>
-
-
-
-
-                    </View>
-                    </View>
-
-
-
-                </Modal>
+                    </Modal>
 
                 </GestureRecognizer>
 
@@ -1170,36 +1170,35 @@ class PlayerBottom extends Component {
 }
 
 
-    const styles = StyleSheet.create({
+const styles = StyleSheet.create({
     barContainer:{
         flex: 1,
-        backgroundColor: '#5757FF',
+        backgroundColor: '#ffffff',
         position: 'absolute',
         left: 0,
         right: 0,
         bottom: 0,
-        borderWidth: 0.3,
-        borderColor: '#5757FF',
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        marginHorizontal: width/12.5,
+        shadowColor: '#000',
+        shadowOpacity: 0.1,
+        shadowOffset:{  width: 0,  height: -3},
+        shadowRadius: 5,
     },
     playingText:{
-        color: '#fff',
+        color: '#00000090',
         flexDirection: 'row',
         backgroundColor: 'transparent',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: height/54,
         textAlign: 'left',
         paddingLeft: width/37.5
     },
     playingText2:{
-        color: '#fff',
+        color: '#00000090',
         flexDirection: 'row',
         backgroundColor: 'transparent',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-Regular',
         fontSize: height/60,
         textAlign: 'left',
         paddingLeft: width/37.5
@@ -1226,13 +1225,13 @@ class PlayerBottom extends Component {
         justifyContent: 'center',
         alignItems:'flex-start',
     },
-        leftContainerP: {
-            flex:1,
-            marginTop: height/66.7,
-            paddingLeft: 0,
-            justifyContent: 'center',
-            alignItems:'flex-end',
-        },
+    leftContainerP: {
+        flex:1,
+        marginTop: height/66.7,
+        paddingLeft: 0,
+        justifyContent: 'center',
+        alignItems:'flex-end',
+    },
     centerContainer: {
         marginTop:5,
         flexDirection: 'row',
@@ -1254,153 +1253,153 @@ class PlayerBottom extends Component {
         justifyContent: 'center',
         alignItems: 'flex-end',
     },
-        rightContainerP: {
-            flex: 1,
-            paddingRight: 0,
-            marginTop: height/66.7,
-            justifyContent: 'center',
-            alignItems: 'flex-start',
-        },
+    rightContainerP: {
+        flex: 1,
+        paddingRight: 0,
+        marginTop: height/66.7,
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+    },
 
-        container:{
-            flex: 1,
-            backgroundColor: '#fff',
-            marginTop: 0,
-        },
+    container:{
+        flex: 1,
+        backgroundColor: '#fff',
+        marginTop: 0,
+    },
 
-        containerModal:{
-            flex: 1,
-            flexDirection: 'column',
-            backgroundColor: '#fff',
-            marginTop: 5,
-            marginHorizontal: 5,
-            borderColor: 'rgba(170,170,170,0.2)',
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-            borderWidth: 2
-        },
+    containerModal:{
+        flex: 1,
+        flexDirection: 'column',
+        backgroundColor: '#fff',
+        marginTop: 5,
+        marginHorizontal: 5,
+        borderColor: 'rgba(170,170,170,0.2)',
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        borderWidth: 2
+    },
 
-        containerOutsideModal:{
-            flex: 1,
-            backgroundColor: '#5757FF',
+    containerOutsideModal:{
+        flex: 1,
+        backgroundColor: '#3e416490',
 
-        },
+    },
 
 
-        homeContainer:{
-            marginTop: -15,
-        },
+    homeContainer:{
+        marginTop: -15,
+    },
 
-        title: {
-            color: '#2A2A30',
-            marginTop: 70,
-            flex:1,
-            textAlign: 'center',
-            fontStyle: 'normal',
-            fontFamily: 'Hiragino Sans',
-            fontSize: 25,
-            backgroundColor: 'transparent',
-            paddingBottom:10
-        },
-        title2: {
-            color: 'rgba(1,170,170,1)',
-            flex:1,
-            textAlign: 'center',
-            fontSize: 20,
-        },
+    title: {
+        color: '#2A2A30',
+        marginTop: 70,
+        flex:1,
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-Regular',
+        fontSize: 25,
+        backgroundColor: 'transparent',
+        paddingBottom:10
+    },
+    title2: {
+        color: 'rgba(1,170,170,1)',
+        flex:1,
+        textAlign: 'center',
+        fontSize: 20,
+    },
 
-        podcastText:{
-            color: '#2A2A30',
-            fontSize: height/44.47,
-            marginTop: 5,
-            marginHorizontal: 10,
-            flexDirection: 'row',
-            backgroundColor: 'transparent',
-            alignSelf: 'center',
-            textAlign: 'center',
-            fontFamily: 'HiraginoSans-W6',
-        },
+    podcastText:{
+        color: '#2A2A30',
+        fontSize: height/44.47,
+        marginTop: 5,
+        marginHorizontal: 10,
+        flexDirection: 'row',
+        backgroundColor: 'transparent',
+        alignSelf: 'center',
+        textAlign: 'center',
+        fontFamily: 'Montserrat-SemiBold',
+    },
 
-        seeMore:{
-            color: '#5757FF',
-            fontSize: 14,
-            marginTop:5,
-            marginBottom:5,
-            flexDirection: 'row',
-            backgroundColor: 'transparent',
-            alignSelf: 'center',
-            textAlign: 'center',
-            fontFamily: 'HiraginoSans-W6',
-        },
-        podcastTextNum:{
-            color: '#BBBCCD',
-            fontSize: 12,
-            marginTop: 5,
-            flexDirection: 'row',
-            backgroundColor: 'transparent',
-            marginHorizontal: 15,
-            fontFamily: 'Hiragino Sans',
-        },
+    seeMore:{
+        color: '#506dcf',
+        fontSize: 14,
+        marginTop:5,
+        marginBottom:5,
+        flexDirection: 'row',
+        backgroundColor: 'transparent',
+        alignSelf: 'center',
+        textAlign: 'center',
+        fontFamily: 'Montserrat-Regular',
+    },
+    podcastTextNum:{
+        color: '#BBBCCD',
+        fontSize: 12,
+        marginTop: 5,
+        flexDirection: 'row',
+        backgroundColor: 'transparent',
+        marginHorizontal: 15,
+        fontFamily: 'Montserrat-Regular',
+    },
 
-        middleContainer: {
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        podcastTextLikes:{
-            color: '#BBBCCD',
-            fontSize: 14,
-            backgroundColor: 'transparent',
-            textAlign: 'center'
-        },
-        podcastTextLikesActive:{
-            color: '#BBBCCD',
-            fontSize: 14,
-            backgroundColor: 'transparent',
-            textAlign: 'center'
-        },
-        podcastTextArtist:{
-            color:'#2A2A30',
-            fontSize: height/44.47,
-            marginHorizontal: 10,
-            flexDirection: 'row',
-            backgroundColor: 'transparent',
-            alignSelf: 'center',
-            fontFamily: 'HiraginoSans-W3',
-            marginTop: 6,
-        },
-        podcastTextSpeed:{
-            color: '#828393',
-            fontSize: height/33.35,
-            marginHorizontal: 30,
-            marginTop: 5,
-            backgroundColor: 'transparent',
-            textAlign: 'center'
-        },
+    middleContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    podcastTextLikes:{
+        color: '#BBBCCD',
+        fontSize: 14,
+        backgroundColor: 'transparent',
+        textAlign: 'center'
+    },
+    podcastTextLikesActive:{
+        color: '#BBBCCD',
+        fontSize: 14,
+        backgroundColor: 'transparent',
+        textAlign: 'center'
+    },
+    podcastTextArtist:{
+        color:'#2A2A30',
+        fontSize: height/44.47,
+        marginHorizontal: 10,
+        flexDirection: 'row',
+        backgroundColor: 'transparent',
+        alignSelf: 'center',
+        fontFamily: 'Montserrat-Regular',
+        marginTop: 6,
+    },
+    podcastTextSpeed:{
+        color: '#828393',
+        fontSize: height/33.35,
+        marginHorizontal: 30,
+        marginTop: 5,
+        backgroundColor: 'transparent',
+        textAlign: 'center'
+    },
 
-        podcastTextCat:{
-            color:'#828393',
-            fontSize: 14,
-            flexDirection: 'row',
-            backgroundColor: 'transparent',
-            alignSelf: 'center',
-            fontFamily: 'Hiragino Sans',
-            marginTop: 6,
-        },
+    podcastTextCat:{
+        color:'#828393',
+        fontSize: 14,
+        flexDirection: 'row',
+        backgroundColor: 'transparent',
+        alignSelf: 'center',
+        fontFamily: 'Montserrat-Regular',
+        marginTop: 6,
+    },
 
-        input: {
-            height: 40,
-            width: 300,
-            marginBottom: 10,
-            color:'#FFF',
-            paddingHorizontal: 10,
-            fontSize: 22,
-            alignSelf: 'center',
-            textAlign: 'center'
-        },
+    input: {
+        height: 40,
+        width: 300,
+        marginBottom: 10,
+        color:'#FFF',
+        paddingHorizontal: 10,
+        fontSize: 22,
+        alignSelf: 'center',
+        textAlign: 'center'
+    },
 
 
 });
 
 
-    export default PlayerBottom;
+export default PlayerBottom;

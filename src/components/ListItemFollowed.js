@@ -75,12 +75,12 @@ class ListItemFollowed extends Component {
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginBottom:10, marginLeft: 10, alignSelf: 'center', height: 70, width: 70, borderRadius:4, borderWidth:5, borderColor:'rgba(320,320,320,0.8)',  }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginBottom:10, marginLeft: 10, alignSelf: 'center', height: 50, width: 50, borderRadius:4, borderWidth:5, borderColor:'rgba(320,320,320,0.8)',  }}>
                     <Icon style={{
                         textAlign: 'center',
-                        fontSize: 45,
+                        fontSize: 35,
                         color: 'white',
-                        marginTop: 10
+                        marginTop: 2
                     }} name="md-person">
                     </Icon>
                 </View>
@@ -88,9 +88,9 @@ class ListItemFollowed extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom:10, marginLeft: 10, height: 70, width: 70, }}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom:10, marginLeft: 10, height: 50, width: 50, }}>
                     <Image
-                        style={{width: 70, height: 70, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
+                        style={{width: 50, height: 50, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -194,10 +194,10 @@ const styles = {
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        marginTop: 25,
+        fontFamily: 'Montserrat-SemiBold',
+        marginTop: 15,
         marginLeft: 20,
-        fontSize: 16,
+        fontSize: 14,
         backgroundColor: 'transparent'
     },
     centerContainer: {

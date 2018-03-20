@@ -29,16 +29,12 @@ var {height, width} = Dimensions.get('window');
 
 
 
-// 5th tab, my account page
+// nav bar button, my account page
 
 class Account extends Component {
 
-    static navigatorStyle = {
-            statusBarHidden: false,
-            navBarHidden: true
-        };
 
-    componentDidMount(){
+    componentWillMount(){
         Variables.state.myPodcasts = [];
         Variables.state.myFollowers = [];
         Variables.state.myFollowing = [];
@@ -97,7 +93,7 @@ class Account extends Component {
         storageRef.getDownloadURL()
             .then(function(url) {
 
-               Variables.state.profileImage = url;
+                Variables.state.profileImage = url;
 
             }).catch(function(error) {
             //
@@ -110,12 +106,31 @@ class Account extends Component {
 
 
     componentWillUnmount(){
-        clearInterval(this.interval);
+        clearTimeout(this.timeout);
     }
 
 
     constructor(props){
         super(props);
+
+        this.props.navigator.setStyle({
+            statusBarHidden: false,
+            statusBarTextColorScheme: 'light',
+            navBarHidden: false,
+            drawUnderTabBar: false,
+            navBarCustomView: 'CustomNavbar',
+            navBarCustomViewInitialProps: {
+                navigator: this.props.navigator
+            },
+            navBarHideOnScroll: true,
+            navBarBackgroundColor: '#fff',
+            topBarElevationShadowEnabled: true,
+            topBarShadowColor: '#000',
+            topBarShadowOpacity: 0.1,
+            topBarShadowOffset: 3,
+            topBarShadowRadius: 5,
+        });
+
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts),
@@ -125,7 +140,7 @@ class Account extends Component {
             profileImage: '',
             category: '',
         };
-        this.interval = setInterval(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username, profileImage: Variables.state.profileImage})},1500)
+        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username, profileImage: Variables.state.profileImage})},1000)
     }
 
 
@@ -133,10 +148,10 @@ class Account extends Component {
 
     _renderProfileName(){
 
-            return (
-                <Text style={styles.title2} >{this.state.username}</Text>
+        return (
+            <Text style={styles.title2} >{this.state.username}</Text>
 
-            )
+        )
 
     }
 
@@ -152,7 +167,7 @@ class Account extends Component {
     _renderProfileImage(){
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:30, height: height/4.17, width: height/4.17, borderRadius:4, borderWidth:5, borderColor:'rgba(320,320,320,0.8)', }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 50, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:30, height: height/4.17, width: height/4.17, borderRadius:4, borderWidth:5, borderColor:'rgba(320,320,320,0.8)', }}>
                     <Icon style={{
                         textAlign: 'center',
                         fontSize: 120,
@@ -165,11 +180,11 @@ class Account extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:30, height: height/4.17, width: height/4.17, }}>
-                <Image
-                    style={{width: height/4.17, height: height/4.17, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4,}}
-                    source={{uri: this.state.profileImage}}
-                />
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop: 50, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:30, height: height/4.17, width: height/4.17, }}>
+                    <Image
+                        style={{width: height/4.17, height: height/4.17, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4,}}
+                        source={{uri: this.state.profileImage}}
+                    />
                 </View>
             )
         }
@@ -242,7 +257,7 @@ class Account extends Component {
                         })
 
                     });
-                  }
+                }
                 },
             ],
             { cancelable: false }
@@ -284,6 +299,13 @@ class Account extends Component {
         });
     };
 
+    _pressBack = () => {
+        Navigation.dismissModal({
+
+        })
+    };
+
+
 
     render() {
         return (
@@ -294,28 +316,6 @@ class Account extends Component {
                     barStyle="dark-content"
                 />
 
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 6}, shadowOpacity: 0.2, shadowRadius: 10}}>
-                    <View style={{flex:1,alignItems: 'flex-start'}}>
-                    </View>
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center',}}>
-                        <Text style={styles.header}>Account</Text>
-                    </View>
-
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'flex-end', marginTop: 20}}>
-                        <TouchableOpacity onPress={this._pressSettings}>
-                        <Icon style={{
-                            textAlign: 'right',
-                            fontSize: 24,
-                            marginRight: 15,
-                            marginTop: 5,
-                            color: '#5757FF'
-                        }} name="md-settings">
-                        </Icon>
-                        </TouchableOpacity>
-                    </View>
-
-                </View>
-
 
                 <ScrollView >
 
@@ -323,6 +323,26 @@ class Account extends Component {
                     {this._renderProfileImage()}
 
                     {this._renderProfileName()}
+
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}} onPress={this._pressSettings}>
+                        <Icon style={{
+                            fontSize: 24,
+                            backgroundColor: 'transparent',
+                            color: '#797979',
+                            marginHorizontal: 10,
+                        }} name="ios-settings">
+                        </Icon>
+                        <Text style = {styles.title}> Settings</Text>
+                        <View style={{alignSelf:'flex-end'}}>
+                            <Icon style={{
+                                fontSize: 22,
+                                backgroundColor: 'transparent',
+                                color: '#797979',
+                                marginHorizontal: 10,
+                            }} name="ios-arrow-forward">
+                            </Icon>
+                        </View>
+                    </TouchableOpacity>
 
                     {this._renderProfileNumbers(Variables.state.myPodcasts.length, Variables.state.myFollowers.length, Variables.state.myFollowing.length)}
 
@@ -361,7 +381,7 @@ class Account extends Component {
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#FFF'
+        backgroundColor: '#FFF',
     },
     title2: {
         color: '#2A2A30',
@@ -370,7 +390,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: width/23.44,
         backgroundColor: 'transparent'
     },
@@ -381,7 +401,7 @@ const styles = StyleSheet.create({
         flex:1,
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W3',
+        fontFamily: 'Montserrat-Regular',
         fontSize: 22,
         backgroundColor: 'transparent'
     },
@@ -392,17 +412,18 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'Montserrat-Regular',
         fontSize: width/25,
         marginHorizontal: 20,
         backgroundColor: 'transparent',
     },
     header: {
-        marginTop:30,
+        marginTop: 25,
+        marginLeft: -12,
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: width/23.44,
         backgroundColor: 'transparent',
     },
@@ -414,7 +435,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: width/25,
         backgroundColor: 'transparent',
         marginHorizontal: 20,
@@ -426,7 +447,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W3',
+        fontFamily: 'Montserrat-Regular',
         fontSize: width/23.44,
         backgroundColor: 'transparent'
     },
@@ -437,7 +458,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'Montserrat-Regular',
         fontSize: width/25,
         backgroundColor: 'transparent',
         marginLeft: 20,

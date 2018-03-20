@@ -1,19 +1,91 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity, StatusBar} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, ScrollView, StatusBar, ListView} from 'react-native';
 import PlayerBottom from './PlayerBottom';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import LinearGradient from "react-native-linear-gradient/index.android";
+import Variables from "./Variables";
+import firebase from 'firebase';
+import ListItemQueue from "./ListItemQueue";
 
 
+
+// 4th tab, library page
 
 class Library extends Component{
 
-    static navigatorStyle = {
+
+    componentWillMount(){
+        const {currentUser} = firebase.auth();
+
+
+        firebase.database().ref(`users/${currentUser.uid}/queue`).on("value", function (snapshot) {
+            Variables.state.myQueue = [];
+            snapshot.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.val().id}`).on("value", function (data) {
+                    if(data.val()){
+                        Variables.state.myQueue.push(data.val())
+                    }
+
+                })
+            });
+        });
+
+    }
+
+
+    componentWillUnmount(){
+        clearInterval(this.interval);
+    }
+
+
+    constructor(props){
+        super(props);
+
+        this.props.navigator.setStyle({
             statusBarHidden: false,
-            navBarHidden: true
+            statusBarTextColorScheme: 'light',
+            navBarHidden: false,
+            drawUnderTabBar: false,
+            navBarCustomView: 'CustomNavbar',
+            navBarCustomViewInitialProps: {
+                navigator: this.props.navigator
+            },
+            navBarHideOnScroll: true,
+            navBarBackgroundColor: '#fff',
+            topBarElevationShadowEnabled: true,
+            topBarShadowColor: '#000',
+            topBarShadowOpacity: 0.1,
+            topBarShadowOffset: 3,
+            topBarShadowRadius: 5,
+        });
+
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.state = {
+            dataSource: dataSource.cloneWithRows(Variables.state.myQueue),
         };
+
+        this.interval = setInterval(() => {
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myQueue)})
+        },1000);
+
+    };
+
+
+    renderRow = (rowData) => {
+        return <ListItemQueue podcast={rowData} navigator={this.props.navigator} />;
+    };
 
     GoToRecentlyPlayed = () => {
         this.props.navigator.push({
             screen: 'RecentlyPlayed',
+            animated: true,
+            animationType: 'fade',
+        });
+    };
+
+    GoToPlaylists = () => {
+        this.props.navigator.push({
+            screen: 'Playlists',
             animated: true,
             animationType: 'fade',
         });
@@ -43,9 +115,6 @@ class Library extends Component{
         });
     };
 
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         return (
@@ -56,43 +125,144 @@ class Library extends Component{
                     barStyle="dark-content"
                 />
 
-
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 6}, shadowOpacity: 0.2, shadowRadius: 10}}>
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center', marginTop:5}}>
-                        <Text style={styles.header}>Library</Text>
-                    </View>
-                </View>
+                <ScrollView>
 
 
-                <Image
-                    style={{width: 260, height:260, alignSelf: 'center', marginTop: 100}}
-                    source={require('tess/src/images/library-nav.png')}
-                >
+
+                    <TouchableOpacity>
+                        <LinearGradient
+
+                            colors={['#d15564', '#9a5e9a', '#506dcf' ]}
+                            style={styles.container2}
+                        >
+                            <Text style = {styles.titleTop}>154 minutes to catch up</Text>
+                        </LinearGradient>
+                    </TouchableOpacity>
 
 
-                    <View style={{flexDirection: 'column'}}>
-                    <View style={{flexDirection: 'row'}}>
-                        <TouchableOpacity onPress={this.GoToFavs} style={{flex:1, width: 260, height:130, alignSelf: 'flex-start'}}>
 
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}} onPress={this.GoToRecentlyPlayed}>
+                        <Icon style={{
+                            fontSize: 24,
+                            backgroundColor: 'transparent',
+                            color: '#797979',
+                            marginHorizontal: 10,
+                        }} name="history">
+                        </Icon>
+                        <Text style = {styles.title}>   History</Text>
+                        <View style={{alignSelf:'flex-end'}}>
+                            <Icon style={{
+                                fontSize: 22,
+                                backgroundColor: 'transparent',
+                                color: '#797979',
+                                marginHorizontal: 10,
+                            }} name="chevron-right">
+                            </Icon>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}} onPress={this.GoToFavs} >
+                        <Icon style={{
+                            fontSize: 24,
+                            backgroundColor: 'transparent',
+                            color: '#797979',
+                            marginHorizontal: 10,
+                        }} name="podcast">
+                        </Icon>
+                        <Text style = {styles.title}>   Podcasts</Text>
+                        <View style={{alignSelf:'flex-end'}}>
+                            <Icon style={{
+                                fontSize: 22,
+                                backgroundColor: 'transparent',
+                                color: '#797979',
+                                marginHorizontal: 10,
+                            }} name="chevron-right">
+                            </Icon>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}} onPress={this.GoToPlaylists}>
+                        <Icon style={{
+                            fontSize: 24,
+                            backgroundColor: 'transparent',
+                            color: '#797979',
+                            marginHorizontal: 10,
+                        }} name="list-ul">
+                        </Icon>
+                        <Text style = {styles.title}>   Playlists</Text>
+                        <View style={{alignSelf:'flex-end'}}>
+                            <Icon style={{
+                                fontSize: 22,
+                                backgroundColor: 'transparent',
+                                color: '#797979',
+                                marginHorizontal: 10,
+                            }} name="chevron-right">
+                            </Icon>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}}>
+                        <Icon style={{
+                            fontSize: 24,
+                            backgroundColor: 'transparent',
+                            color: '#797979',
+                            marginHorizontal: 10,
+                        }} name="star">
+                        </Icon>
+                        <Text style = {styles.title}>   Highlights</Text>
+                        <View style={{alignSelf:'flex-end'}}>
+                            <Icon style={{
+                                fontSize: 22,
+                                backgroundColor: 'transparent',
+                                color: '#797979',
+                                marginHorizontal: 10,
+                            }} name="chevron-right">
+                            </Icon>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}} onPress={this.GoToFollowedContent}>
+                        <Icon style={{
+                            fontSize: 24,
+                            backgroundColor: 'transparent',
+                            color: '#797979',
+                            marginHorizontal: 10,
+                        }} name="users">
+                        </Icon>
+                        <Text style = {styles.title}>   Creators</Text>
+                        <View style={{alignSelf:'flex-end'}}>
+                            <Icon style={{
+                                fontSize: 22,
+                                backgroundColor: 'transparent',
+                                color: '#797979',
+                                marginHorizontal: 10,
+                            }} name="chevron-right">
+                            </Icon>
+                        </View>
+                    </TouchableOpacity>
+
+
+
+                    <View style={{flex:1, flexDirection: 'row'}}>
+                        <View style={{flex:1}}>
+                            <Text style = {styles.titleNext}>Up Next</Text>
+                        </View>
+                        <TouchableOpacity style={{flex:1, alignSelf: 'flex-end'}}>
+                            <Text style = {styles.titleEdit}>Edit</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={this.GoToRecentlyPlayed} style={{flex:1, width: 260, height:130, alignSelf: 'flex-start'}}>
-
-                        </TouchableOpacity>
                     </View>
 
-                    <View style={{flexDirection: 'row'}}>
-                        <TouchableOpacity onPress={this.GoToFollowedContent}  style={{flex:1, width: 260, height:130, alignSelf: 'flex-start'}}>
-
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={this.GoToMyContent} style={{flex:1, width: 260, height:130, alignSelf: 'flex-start'}}>
-
-                        </TouchableOpacity>
-                    </View>
+                    <View style={{paddingBottom: 70}}>
+                        <ListView
+                            enableEmptySections
+                            dataSource={this.state.dataSource}
+                            renderRow={this.renderRow}
+                        />
                     </View>
 
 
+                </ScrollView>
 
-                </Image>
 
 
                 <PlayerBottom navigator={this.props.navigator}/>
@@ -111,62 +281,59 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
-
+    container2:{
+        backgroundColor: 'transparent',
+        marginBottom: 10,
+    },
     title: {
-        color: '#804cc8',
-        marginTop: 70,
+        flex:1,
+        color: '#000',
+        textAlign: 'left',
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-Regular',
+        fontSize: 20,
+        backgroundColor: 'transparent',
+    },
+
+    titleNext: {
+        color: '#000',
+        flex:1,
+        textAlign: 'left',
+        marginVertical: 10,
+        marginTop: 20,
+        marginHorizontal: 10,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-Regular',
+        fontSize: 20,
+        backgroundColor: 'transparent',
+    },
+
+    titleEdit: {
+        color: '#000',
+        flex:1,
+        textAlign: 'right',
+        marginVertical: 10,
+        marginHorizontal: 10,
+        marginTop: 24,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-Regular',
+        fontSize: 14,
+        backgroundColor: 'transparent',
+    },
+
+    titleTop: {
+        color: '#fff',
         flex:1,
         textAlign: 'center',
-        opacity: 2,
+        marginVertical: 20,
         fontStyle: 'normal',
-        fontFamily: 'Futura',
+        fontFamily: 'Montserrat-Regular',
         fontSize: 25,
-        backgroundColor: 'transparent'
-    },
-
-
-    contentTitle: {
-        color: '#FFF',
-        fontSize: 25,
-        paddingBottom: 20,
-        textAlign: 'center',
-        fontStyle: 'normal',
-        fontFamily: 'Futura',
-
-    },
-
-    buttonPreview: {
-        backgroundColor: '#804cc8',
-        alignItems: 'center',
-        paddingBottom: 15,
-    },
-
-    buttonUpload: {
-        backgroundColor: '#804cc8',
-        alignItems: 'center',
-        paddingTop: 15,
-    },
-
-    buttonCancel: {
-        backgroundColor: '#804cc8',
-        alignItems: 'center',
-        paddingTop: 15,
-    },
-
-    buttonContainer: {
-        marginTop: 50,
-    },
-
-    header: {
-        marginTop:25,
-        color: '#2A2A30',
-        textAlign: 'center',
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
         backgroundColor: 'transparent',
+    },
 
-    }
+
+
 });
 
 export default Library;

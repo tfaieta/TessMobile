@@ -60,7 +60,7 @@ export  default class Login extends Component{
                 <View style={styles.slide1} level = {width/30}>
                     <LinearGradient
 
-                        colors={['#5555ff', '#9687ff' ]}
+                        colors={['#d15564', '#9a5e9a', '#506dcf' ]}
                         start={{x: 0.0, y: 0.0}} end={{x: 0, y: 1}}
                         style={{height: height, width: width}}>
 
