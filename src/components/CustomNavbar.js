@@ -58,7 +58,7 @@ export default class CustomNavbar extends Component {
                                 flex: 1,
                                 fontSize: 20,
                                 backgroundColor: 'transparent',
-                                color: '#000',
+                                color: '#506dcf',
                                 marginHorizontal: 10,
                             }} name="microphone"/>
                         </TouchableOpacity>
@@ -73,7 +73,7 @@ export default class CustomNavbar extends Component {
                                 flex: 1,
                                 fontSize: 20,
                                 backgroundColor: 'transparent',
-                                color: '#000',
+                                color: '#506dcf',
                                 marginHorizontal: 10,
                             }} name="user-circle"/>
                         </TouchableOpacity>
@@ -96,11 +96,11 @@ const styles = StyleSheet.create({
         flex:1,
         fontSize: 14,
         paddingRight: width/1.98,
-        color: '#000',
+        color: '#3e4164',
         textAlign: 'left',
         backgroundColor: 'transparent',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-SemiBold',
     }
 });
 

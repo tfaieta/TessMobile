@@ -294,7 +294,17 @@ class Account extends Component {
         const {navigator} = this.props;
         this.props.navigator.push({
             screen: 'Settings',
-            title: 'Settings',
+            title: 'Edit Profile',
+            passProps: {navigator}
+        });
+    };
+
+
+    _pressMyContent = () => {
+        const {navigator} = this.props;
+        this.props.navigator.push({
+            screen: 'MyContent',
+            title: 'My Content',
             passProps: {navigator}
         });
     };
@@ -324,6 +334,26 @@ class Account extends Component {
 
                     {this._renderProfileName()}
 
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginBottom: 20}} onPress={this._pressMyContent}>
+                        <Icon style={{
+                            fontSize: 24,
+                            backgroundColor: 'transparent',
+                            color: '#797979',
+                            marginHorizontal: 10,
+                        }} name="ios-menu">
+                        </Icon>
+                        <Text style = {styles.title}>My Content</Text>
+                        <View style={{alignSelf:'flex-end'}}>
+                            <Icon style={{
+                                fontSize: 22,
+                                backgroundColor: 'transparent',
+                                color: '#797979',
+                                marginHorizontal: 10,
+                            }} name="ios-arrow-forward">
+                            </Icon>
+                        </View>
+                    </TouchableOpacity>
+
                     <TouchableOpacity style={{flex:1, flexDirection:'row', marginBottom: 20}} onPress={this._pressSettings}>
                         <Icon style={{
                             fontSize: 24,
@@ -332,7 +362,7 @@ class Account extends Component {
                             marginHorizontal: 10,
                         }} name="ios-settings">
                         </Icon>
-                        <Text style = {styles.title}>Settings</Text>
+                        <Text style = {styles.title}>Edit Profile</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: 22,
@@ -347,14 +377,6 @@ class Account extends Component {
                     {this._renderProfileNumbers(Variables.state.myPodcasts.length, Variables.state.myFollowers.length, Variables.state.myFollowing.length)}
 
                     {this._renderBio()}
-
-
-                    <Text style={styles.title3 }>Content</Text>
-                    <View style={{height:1, backgroundColor:'#b5b6cd', borderRadius: 10, borderWidth:0.1, marginBottom: 10, marginHorizontal: 30 }} />
-
-                    <View style={{paddingBottom: 30}}>
-                        {this._renderContent(Variables.state.myPodcasts.length)}
-                    </View>
 
                     <View style={{paddingBottom:120}}>
 

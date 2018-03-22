@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Text, View, StyleSheet, ListView, ScrollView, TouchableOpacity, Image, Linking, RefreshControl} from 'react-native';
+import { Text, View, StyleSheet, ListView, ScrollView, TouchableOpacity, Linking, RefreshControl} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { podcastFetchNew} from "../actions/PodcastActions";
 import { connect } from 'react-redux';
@@ -201,7 +201,7 @@ class Home extends Component{
 
 
             return(
-                <View>
+                <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
                     <View style={{flexDirection:'row'}}>
                         <View style={{alignSelf:'flex-start'}}>
                             <Text style={styles.title}>Listen Now</Text>
@@ -839,6 +839,7 @@ class Home extends Component{
 
 
                 <ScrollView
+                    style={{marginBottom: 50}}
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.refreshing}
@@ -848,19 +849,25 @@ class Home extends Component{
                 >
 
 
+
+
+
+
                     {this._newFromFollow(Variables.state.homeFollowedContent.length)}
 
 
-                    <Text style={styles.titleMini}>This is your home screen, you can add whatever you want.</Text>
+                    <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
+                        <Text style={styles.titleMini}>This is your home screen, you can add whatever you want.</Text>
 
-                    <TouchableOpacity stlye={{borderColor: '#000', borderStyle: 'dotted', borderWidth: 1, borderRadius: 10, padding: 10}} onPress={() => {
-                        this.props.navigator.push({
-                            screen: 'AddWidget',
-                            title: 'Add a Widget'
-                        })
-                    }}>
-                        <Text style={styles.titleAdd}>Add a widget</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={() => {
+                            this.props.navigator.push({
+                                screen: 'AddWidget',
+                                title: 'Add a Widget'
+                            })
+                        }}>
+                            <Text style={styles.titleAdd}>Add a widget</Text>
+                        </TouchableOpacity>
+                    </View>
 
 
 
@@ -883,7 +890,7 @@ class Home extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: 'transparent',
+        backgroundColor: '#f5f4f9',
     },
     homeContainer:{
         flex:1,
@@ -897,7 +904,7 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        color: '#2A2A30',
+        color: '#3e4164',
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
@@ -907,12 +914,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     titleMini: {
-        color: '#2A2A30',
+        color: '#3e4164',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 18,
-        marginTop: 30,
+        marginTop: 20,
         paddingHorizontal: 20,
         marginHorizontal: 40,
         backgroundColor: 'transparent',
@@ -931,7 +938,7 @@ const styles = StyleSheet.create({
     },
 
     title3: {
-        color: '#2A2A30',
+        color: '#3e4164',
         textAlign: 'left',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
@@ -945,7 +952,7 @@ const styles = StyleSheet.create({
         color: '#506dcf',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 16,
         marginVertical: 20,
         marginHorizontal: 20,

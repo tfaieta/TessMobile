@@ -122,7 +122,7 @@ class ListItemUsers extends Component {
             return(
                 <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom:20, height: 130, width: 130  }}>
                     <Image
-                        style={{width: 130, height:130, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4}}
+                        style={{width: 130, height: 130, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -399,7 +399,7 @@ class ListItemUsers extends Component {
 
 const styles = {
     title: {
-        color: '#2A2A30',
+        color: '#3e4164',
         flex:1,
         textAlign: 'left',
         opacity: 1,
@@ -410,12 +410,12 @@ const styles = {
         backgroundColor: 'transparent'
     },
     artistTitle: {
-        color: '#9596A3',
+        color: '#828393',
         flex:1,
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-SemiBold',
         paddingVertical: 1,
         marginLeft: 10,
         fontSize: 12,
