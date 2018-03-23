@@ -337,7 +337,7 @@ class Discover extends Component{
         }
         else{
             return(
-                <Text style = {styles.title3}>We are looking for content to select...</Text>
+                <Text style = {styles.title3}> </Text>
             )
         }
     }

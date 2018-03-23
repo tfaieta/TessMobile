@@ -117,9 +117,9 @@ class Account extends Component {
             statusBarHidden: false,
             statusBarTextColorScheme: 'light',
             navBarHidden: false,
-            navBarTextColor: '#000000', // change the text color of the title (remembered across pushes)
+            navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
             navBarTextFontSize: 18, // change the font size of the title
-            navBarTextFontFamily: 'Montserrat-Regular', // Changes the title font
+            navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
             drawUnderTabBar: false,
             navBarHideOnScroll: true,
             navBarBackgroundColor: '#fff',
@@ -214,7 +214,7 @@ class Account extends Component {
 
     _renderProfileNumbers(totalPodcasts, totalFollowers, totalFollowing){
         return(
-            <View style={{flexDirection: 'row',  paddingBottom: height/16.675, paddingHorizontal: width/18.75 }}>
+            <View style={{flexDirection: 'row', paddingHorizontal: width/18.75 }}>
 
                 <View style={{flex: 1, alignSelf: 'flex-start', padding: 10}}>
                     <Text style={styles.stats}>podcasts</Text>
@@ -332,9 +332,11 @@ class Account extends Component {
 
                     {this._renderProfileImage()}
 
+                    <View style ={{backgroundColor: '#fff', }}>
                     {this._renderProfileName()}
+                    </View>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginBottom: 20}} onPress={this._pressMyContent}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff', paddingVertical: 10, marginVertical: 1}} onPress={this._pressMyContent}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
@@ -354,7 +356,7 @@ class Account extends Component {
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginBottom: 20}} onPress={this._pressSettings}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff', paddingVertical: 10, marginVertical: 1}} onPress={this._pressSettings}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
@@ -374,9 +376,14 @@ class Account extends Component {
                         </View>
                     </TouchableOpacity>
 
+                    <View style ={{backgroundColor: '#fff', }}>
                     {this._renderProfileNumbers(Variables.state.myPodcasts.length, Variables.state.myFollowers.length, Variables.state.myFollowing.length)}
+                    </View>
 
+
+                    <View style ={{backgroundColor: '#fff', }}>
                     {this._renderBio()}
+                    </View>
 
                     <View style={{paddingBottom:120}}>
 
@@ -403,11 +410,11 @@ class Account extends Component {
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#FFF',
+        backgroundColor: '#f5f4f9',
     },
     title2: {
         color: '#2A2A30',
-        marginBottom: 40,
+        marginVertical: 20,
         flex:1,
         textAlign: 'center',
         opacity: 2,

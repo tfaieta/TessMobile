@@ -41,7 +41,7 @@ class Notifications extends Component{
 
                 <ScrollView>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 15}}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff', paddingVertical: 10, marginVertical: 1}}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
@@ -61,7 +61,7 @@ class Notifications extends Component{
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 15}}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff', paddingVertical: 10, marginVertical: 1}}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
@@ -81,7 +81,7 @@ class Notifications extends Component{
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 15}}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff',  paddingVertical: 10, marginVertical: 1}}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
@@ -101,7 +101,7 @@ class Notifications extends Component{
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 15}}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff',  paddingVertical: 10, marginVertical: 1}}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
@@ -121,7 +121,7 @@ class Notifications extends Component{
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 15}}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff',  paddingVertical: 10, marginVertical: 1}}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
@@ -141,7 +141,7 @@ class Notifications extends Component{
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 15}}>
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff', paddingVertical: 10, marginVertical: 1}}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
@@ -179,26 +179,26 @@ class Notifications extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#f5f4f9',
     },
 
     title: {
         flex:1,
-        color: '#000',
+        color: '#3e4164',
         textAlign: 'left',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 20,
         backgroundColor: 'transparent',
     },
 
     titleTop: {
-        color: '#000',
+        color: '#3e4164',
         flex:1,
         textAlign: 'center',
         marginVertical: 10,
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 22,
         backgroundColor: 'transparent',
     },

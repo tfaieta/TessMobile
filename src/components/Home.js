@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Text, View, StyleSheet, ListView, ScrollView, TouchableOpacity, Linking, RefreshControl} from 'react-native';
+import { Text, View, StyleSheet, ListView, ScrollView, TouchableOpacity, Linking, RefreshControl, Dimensions} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { podcastFetchNew} from "../actions/PodcastActions";
 import { connect } from 'react-redux';
@@ -9,6 +9,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "./Variables";
 import firebase from 'firebase';
 import Player from "./Player";
+import SwipeCards from 'react-native-swipe-cards';
+import ListItemCard from "./ListItemCard";
+
+
+
+var {height, width} = Dimensions.get('window');
 
 
 var DomParser = require('react-native-html-parser').DOMParser;
@@ -151,14 +157,23 @@ class Home extends Component{
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
+            data: Variables.state.homeFollowedContent,
             dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts),
             dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent),
             dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess),
             dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess),
             url: '',
             refreshing: false,
+            cards: [
+                {text: 'Tomato', backgroundColor: 'red'},
+                {text: 'Aubergine', backgroundColor: 'purple'},
+                {text: 'Courgette', backgroundColor: 'green'},
+                {text: 'Blueberry', backgroundColor: 'blue'},
+                {text: 'Umm...', backgroundColor: 'cyan'},
+                {text: 'orange', backgroundColor: 'orange'},
+            ]
         };
-        this.timeout1 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},2000);
+        this.timeout1 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent), data: Variables.state.homeFollowedContent,})},2000);
         this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},2400);
         this.timeout3 = setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},3800);
         this.timeout4 = setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},3200);
@@ -173,6 +188,10 @@ class Home extends Component{
 
     renderRowNewPodcasts(podcast) {
         return <ListItemUsers podcast={podcast} />;
+    }
+
+    renderRowCard(podcast) {
+        return <ListItemCard podcast={podcast} />;
     }
 
 
@@ -831,6 +850,17 @@ class Home extends Component{
     }
 
 
+    handleYup (card) {
+        console.warn(`Yup for ${card.text}`)
+    }
+    handleNope (card) {
+        console.warn(`Nope for ${card.text}`)
+    }
+    handleMaybe (card) {
+        console.warn(`Maybe for ${card.text}`)
+    }
+
+
     render() {
 
         return (
@@ -847,6 +877,25 @@ class Home extends Component{
                         />
                     }
                 >
+
+
+
+
+
+                    <SwipeCards
+                        cards={this.state.data}
+                        renderCard={this.renderRowCard}
+                        renderNoMoreCards={() =>
+                            <View style = {{marginHorizontal: 10, marginVertical: 7}}>
+                                <View style={{backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20, paddingVertical: 50 }}>
+                                    <TouchableOpacity >
+                                        <Text style={styles.title}>You are all caught up!</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        }
+
+                    />
 
 
 
@@ -978,7 +1027,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-    }
+    },
 
 
 });

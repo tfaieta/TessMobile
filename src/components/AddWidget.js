@@ -28,9 +28,9 @@ class AddWidget extends Component{
             statusBarHidden: false,
             statusBarTextColorScheme: 'light',
             navBarHidden: false,
-            navBarTextColor: '#000000', // change the text color of the title (remembered across pushes)
+            navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
             navBarTextFontSize: 18, // change the font size of the title
-            navBarTextFontFamily: 'Montserrat-Regular', // Changes the title font
+            navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
             drawUnderTabBar: false,
             navBarHideOnScroll: true,
             navBarBackgroundColor: '#fff',

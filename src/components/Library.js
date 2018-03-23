@@ -138,7 +138,7 @@ class Library extends Component{
 
 
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}} onPress={this.GoToRecentlyPlayed}>
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 10, marginVertical: 1}} onPress={this.GoToRecentlyPlayed}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
@@ -158,7 +158,7 @@ class Library extends Component{
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}} onPress={this.GoToFavs} >
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 10, marginVertical: 1}} onPress={this.GoToFavs} >
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
@@ -178,7 +178,7 @@ class Library extends Component{
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}} onPress={this.GoToPlaylists}>
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 10, marginVertical: 1}} onPress={this.GoToPlaylists}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
@@ -198,7 +198,7 @@ class Library extends Component{
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}} onPress={this.GoToHighlights}>
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 10, marginVertical: 1}} onPress={this.GoToHighlights}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
@@ -218,7 +218,7 @@ class Library extends Component{
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', marginVertical: 12}} onPress={this.GoToFollowedContent}>
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 10, marginVertical: 1}} onPress={this.GoToFollowedContent}>
                         <Icon style={{
                             fontSize: 24,
                             backgroundColor: 'transparent',
@@ -240,7 +240,7 @@ class Library extends Component{
 
 
 
-                    <View style={{flex:1, flexDirection: 'row'}}>
+                    <View style={{flex:1, flexDirection: 'row', backgroundColor: '#fff',}}>
                         <View style={{flex:1}}>
                             <Text style = {styles.titleNext}>Up Next</Text>
                         </View>
@@ -276,7 +276,7 @@ class Library extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#f5f4f9',
     },
     container2:{
         backgroundColor: 'transparent',
@@ -284,36 +284,36 @@ const styles = StyleSheet.create({
     },
     title: {
         flex:1,
-        color: '#000',
+        color: '#3e4164',
         textAlign: 'left',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 20,
         backgroundColor: 'transparent',
     },
 
     titleNext: {
-        color: '#000',
+        color: '#3e4164',
         flex:1,
         textAlign: 'left',
         marginVertical: 10,
         marginTop: 20,
         marginHorizontal: 10,
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 20,
         backgroundColor: 'transparent',
     },
 
     titleEdit: {
-        color: '#000',
+        color: '#3e4164',
         flex:1,
         textAlign: 'right',
         marginVertical: 10,
         marginHorizontal: 10,
         marginTop: 24,
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 14,
         backgroundColor: 'transparent',
     },
@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginVertical: 20,
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 25,
         backgroundColor: 'transparent',
     },
