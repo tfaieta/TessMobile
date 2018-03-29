@@ -27,98 +27,284 @@ var DomParser = require('react-native-html-parser').DOMParser;
 class Home extends Component{
 
 
-
-
     componentDidMount(){
-
-        this.props.podcastFetchNew();
-
-        this.creataDataSourceNewPodcasts(this.props);
-
-
-        Variables.state.newPodcasts = [];
-        Variables.state.newPodcastsArtsts = [];
-        const refNew = firebase.database().ref(`podcasts/`);
-
-        refNew.limitToLast(250).once("value", function (snapshot) {
-            snapshot.forEach(function (data) {
-                if(data.val()){
-                    if(Variables.state.newPodcastsArtsts.includes(data.val().podcastArtist)){
-                        Variables.state.newPodcasts.splice(Variables.state.newPodcastsArtsts.indexOf(data.val().podcastArtist), 1);
-                        Variables.state.newPodcastsArtsts.splice(Variables.state.newPodcastsArtsts.indexOf(data.val().podcastArtist), 1);
-                        Variables.state.newPodcasts.push(data.val());
-                        Variables.state.newPodcastsArtsts.push(data.val().podcastArtist);
-                    }
-                    else{
-                        Variables.state.newPodcasts.push(data.val());
-                        Variables.state.newPodcastsArtsts.push(data.val().podcastArtist)
-                    }
-                }
-            });
-            Variables.state.newPodcasts.reverse();
-        });
-
-
-
-        Variables.state.homeFollowedContent = [];
         const {currentUser} = firebase.auth();
-        const refFol = firebase.database().ref(`users/${currentUser.uid}/following`);
 
-        refFol.on("value", function (snapshot) {
-            snapshot.forEach(function (data) {
 
-                firebase.database().ref(`users/${data.key}/podcasts`).limitToLast(1).once("value", function (snap) {
-                    snap.forEach(function (pod) {
+        var hasNewFromFollow = false;
+        const newFromFollowRef = firebase.database().ref(`users/${currentUser.uid}/widgets`).child("New From Following");
+        newFromFollowRef.once("value", function (data) {
+            if(data.val()){
+                hasNewFromFollow = true;
 
-                        firebase.database().ref(`podcasts/${pod.key}`).once("value", function (data2) {
-                            if(data2.val()){
-                                Variables.state.homeFollowedContent.push(data2.val());
-                                for(let i = Variables.state.homeFollowedContent.length-1; i > 0 && Variables.state.homeFollowedContent[i].id > Variables.state.homeFollowedContent[i-1].id; i--){
-                                    let temp = Variables.state.homeFollowedContent[i-1];
-                                    Variables.state.homeFollowedContent[i-1] = Variables.state.homeFollowedContent[i];
-                                    Variables.state.homeFollowedContent[i] = temp;
-                                }
-                            }
-                        })
 
-                    });
+                Variables.state.homeFollowedContent = [];
+                const refFol = firebase.database().ref(`users/${currentUser.uid}/following`);
 
+                refFol.on("value", function (snapshot) {
+                    snapshot.forEach(function (data) {
+
+                        firebase.database().ref(`users/${data.key}/podcasts`).limitToLast(1).once("value", function (snap) {
+                            snap.forEach(function (pod) {
+
+                                firebase.database().ref(`podcasts/${pod.key}`).once("value", function (data2) {
+                                    if(data2.val()){
+                                        Variables.state.homeFollowedContent.push(data2.val());
+                                        for(let i = Variables.state.homeFollowedContent.length-1; i > 0 && Variables.state.homeFollowedContent[i].id > Variables.state.homeFollowedContent[i-1].id; i--){
+                                            let temp = Variables.state.homeFollowedContent[i-1];
+                                            Variables.state.homeFollowedContent[i-1] = Variables.state.homeFollowedContent[i];
+                                            Variables.state.homeFollowedContent[i] = temp;
+                                        }
+                                    }
+                                })
+
+                            });
+
+                        });
+
+                    })
                 });
 
-            })
+
+            }
         });
 
 
+        var hasLatest = false;
+        const latestRef = firebase.database().ref(`users/${currentUser.uid}/widgets`).child("Latest");
+        latestRef.once("value", function (data) {
+            if(data.val()){
+                hasLatest = true;
 
 
-        Variables.state.fromTess = [];
-        firebase.database().ref(`users/dlUCIXXnXGTgJZwYLE1KUYWGkQ73/podcasts`).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.fromTess.push(snapshot.val())
-                    }
-                })
-            })
+                Variables.state.newPodcasts = [];
+                Variables.state.newPodcastsArtsts = [];
+                const refNew = firebase.database().ref(`podcasts/`);
+
+                refNew.limitToLast(250).once("value", function (snapshot) {
+                    snapshot.forEach(function (data) {
+                        if(data.val()){
+                            if(Variables.state.newPodcastsArtsts.includes(data.val().podcastArtist)){
+                                Variables.state.newPodcasts.splice(Variables.state.newPodcastsArtsts.indexOf(data.val().podcastArtist), 1);
+                                Variables.state.newPodcastsArtsts.splice(Variables.state.newPodcastsArtsts.indexOf(data.val().podcastArtist), 1);
+                                Variables.state.newPodcasts.push(data.val());
+                                Variables.state.newPodcastsArtsts.push(data.val().podcastArtist);
+                            }
+                            else{
+                                Variables.state.newPodcasts.push(data.val());
+                                Variables.state.newPodcastsArtsts.push(data.val().podcastArtist)
+                            }
+                        }
+                    });
+                    Variables.state.newPodcasts.reverse();
+                });
+
+
+            }
         });
 
-    }
+
+        var hasSelectedByTess = false;
+        const selectedByTessRef = firebase.database().ref(`users/${currentUser.uid}/widgets`).child("Selected By Tess");
+        selectedByTessRef.once("value", function (data) {
+            if(data.val()){
+                hasSelectedByTess = true;
 
 
+                Variables.state.selectedByTess = [];
 
-    componentWillReceiveProps(nextProps) {
+                //TheMaddyIce
+                firebase.database().ref(`users/upwadf76CrOBee8aSwzcCZR4kM33/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
 
-        this.creataDataSourceNewPodcasts(nextProps);
-    }
+
+                //Two Bros and a Pod
+                firebase.database().ref(`users/JHPYRdcWtOheHCkrddZjJaLXtPg2/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
 
 
-    creataDataSourceNewPodcasts({ podcast }) {
-        const ds = new ListView.DataSource({
-            rowHasChanged: (r1, r2) => r1 !== r2
+                //Big Tay
+                firebase.database().ref(`users/1F1q9gRKWyMQ8cSATXqGT4PnCaK2/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+                //Tim Dulak
+                firebase.database().ref(`users/3tHL3dIcINUdMeKZn6ckf81e2Sk2/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+                //Joey Bradfield
+                firebase.database().ref(`users/gdGuN9v14qU9pSHXSk1KbDGlUsu1/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+                //Dom Gold
+                firebase.database().ref(`users/6px5go2E3USvYvkcNQejkLkJx3H3/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+                //Eat the fruit
+                firebase.database().ref(`users/7ubx6NftyyQbAwufE7BquuSJ6gJ3/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+                //Abbey
+                firebase.database().ref(`users/P2HAtFE3YKXe8uP9Mu1HyCE2cD83/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+                //ShakDaddy
+                firebase.database().ref(`users/u1osicyhjcR5j3EHx6m1SMe2LpJ3/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+                //Nick Ruspantini
+                firebase.database().ref(`users/pgIx9JAiq9aQWcyUZX8AuIdqNmP2/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+                //Tony
+                firebase.database().ref(`users/sJsB8XK4XRZ8tNpeGC14JNsa6Jj1/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+            }
         });
 
-        this.dataSourceNewPodcasts = ds.cloneWithRows(podcast);
+
+        var hasFromTess = false;
+        const fromTessRef = firebase.database().ref(`users/${currentUser.uid}/widgets`).child("From Tess");
+        fromTessRef.once("value", function (data) {
+            if(data.val()){
+                hasFromTess = true;
+
+
+                Variables.state.fromTess = [];
+                firebase.database().ref(`users/dlUCIXXnXGTgJZwYLE1KUYWGkQ73/podcasts`).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.fromTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+            }
+        });
+
+
+        var hasTech = false;
+        const techRef = firebase.database().ref(`users/${currentUser.uid}/widgets`).child("Tech");
+        techRef.once("value", function (data) {
+            if(data.val()){
+                hasTech = true;
+
+
+                Variables.state.currCategory = [];
+                const refCat = firebase.database().ref(`podcasts/`);
+
+                refCat.on("value", function (snapshot) {
+                    snapshot.forEach(function (data) {
+                        if(data.val().podcastCategory == 'Tech') {
+                            Variables.state.currCategory.push(data.val());
+                        }
+                    })
+                });
+
+
+            }
+        });
+
+
+        this.timeout9 = setTimeout(() => {this.setState({hasNewFromFollowing: hasNewFromFollow})}, 1000);
+        this.timeout10 = setTimeout(() => {this.setState({hasLatest: hasLatest})}, 1000);
+        this.timeout11 = setTimeout(() => {this.setState({hasFromTess: hasFromTess})}, 1000);
+        this.timeout12 = setTimeout(() => {this.setState({hasSelectedByTess: hasSelectedByTess})}, 1000);
+        this.timeout13 = setTimeout(() => {this.setState({hasTech: hasTech})}, 1000);
+
+
+
     }
+
 
 
     componentWillUnmount(){
@@ -130,6 +316,11 @@ class Home extends Component{
         clearTimeout(this.timeout6);
         clearTimeout(this.timeout7);
         clearTimeout(this.timeout8);
+        clearTimeout(this.timeout9);
+        clearTimeout(this.timeout10);
+        clearTimeout(this.timeout11);
+        clearTimeout(this.timeout12);
+        clearTimeout(this.timeout13);
     }
 
 
@@ -146,7 +337,6 @@ class Home extends Component{
                 navigator: this.props.navigator
             },
             navBarButtonColor: '#007aff',
-            navBarHideOnScroll: true,
             navBarBackgroundColor: '#fff',
             topBarElevationShadowEnabled: true,
             topBarShadowColor: '#000',
@@ -157,28 +347,29 @@ class Home extends Component{
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
+            hasNewFromFollowing: false,
+            hasLatest: false,
+            hasFromTess: false,
+            hasSelectedByTess: false,
+            hasTech: false,
+
+
             data: Variables.state.homeFollowedContent,
             dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts),
             dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent),
             dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess),
             dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess),
+            dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory),
             url: '',
             refreshing: false,
-            cards: [
-                {text: 'Tomato', backgroundColor: 'red'},
-                {text: 'Aubergine', backgroundColor: 'purple'},
-                {text: 'Courgette', backgroundColor: 'green'},
-                {text: 'Blueberry', backgroundColor: 'blue'},
-                {text: 'Umm...', backgroundColor: 'cyan'},
-                {text: 'orange', backgroundColor: 'orange'},
-            ]
+            userProfileImage: ''
         };
-        this.timeout1 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent), data: Variables.state.homeFollowedContent,})},2000);
+        this.timeout1 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent), data: Variables.state.homeFollowedContent, dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory),})},2000);
         this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},2400);
         this.timeout3 = setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},3800);
         this.timeout4 = setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},3200);
 
-        this.timeout5 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},6000);
+        this.timeout5 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent), dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory)})},6000);
         this.timeout6 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},6400);
         this.timeout7 = setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},6800);
         this.timeout8 = setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},7200);
@@ -194,80 +385,6 @@ class Home extends Component{
         return <ListItemCard podcast={podcast} />;
     }
 
-
-
-    _selectedByTess(length){
-        if (length > 0){
-            return(
-                <ListView
-                    showsHorizontalScrollIndicator={false}
-                    horizontal={true}
-                    enableEmptySections
-                    dataSource={this.state.dataSourceSel}
-                    renderRow={this.renderRowNewPodcasts}
-                />
-            )
-        }
-        else{
-            return(
-                <Text style = {styles.title3}>We are looking for content to select...</Text>
-            )
-        }
-    }
-
-    _newFromFollow(length){
-        if(length > 0){
-
-
-            return(
-                <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
-                    <View style={{flexDirection:'row'}}>
-                        <View style={{alignSelf:'flex-start'}}>
-                            <Text style={styles.title}>Listen Now</Text>
-                        </View>
-
-                        <View style={{alignSelf:'flex-end', flex:1}}>
-                            <TouchableOpacity onPress={() => {
-                                let data = Variables.state.homeFollowedContent;
-                                let title = "From People You Follow ";
-
-                                this.props.navigator.push({
-                                    screen: 'ViewAll',
-                                    animated: true,
-                                    animationType: 'fade',
-                                    passProps: {data, title},
-                                });
-
-                            }}  style={{alignSelf:'flex-end', flexDirection:'row', marginTop: 3}}>
-                                <Text style={styles.viewAll}>View all</Text>
-                                <Icon style={{
-                                    fontSize: 14,
-                                    backgroundColor: 'transparent',
-                                    marginTop: 20,
-                                    color: '#506dcf',
-                                    marginLeft: 10,
-                                    marginRight: 15,
-                                }} name="ios-arrow-forward">
-                                </Icon>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-
-                    <ListView
-                        showsHorizontalScrollIndicator={false}
-                        horizontal={true}
-                        enableEmptySections
-                        dataSource={this.state.dataSourceFol}
-                        renderRow={this.renderRowNewPodcasts}
-                    />
-
-                </View>
-            );
-
-
-        }
-
-    }
 
 
     rssFetch(){
@@ -750,42 +867,280 @@ class Home extends Component{
 
 
     _onRefresh() {
-        this.setState({refreshing: true});
+        const {currentUser} = firebase.auth();
 
-        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
 
-        this.setState({
-            dataSourceFol: dataSource.cloneWithRows([]),
-            dataSource: dataSource.cloneWithRows([]),
-            dataSourceSel: dataSource.cloneWithRows([]),
-            dataSourceTess: dataSource.cloneWithRows([])
+        var hasNewFromFollow = false;
+        const newFromFollowRef = firebase.database().ref(`users/${currentUser.uid}/widgets`).child("New From Following");
+        newFromFollowRef.once("value", function (data) {
+            if(data.val()){
+                hasNewFromFollow = true;
+
+
+                Variables.state.homeFollowedContent = [];
+                const refFol = firebase.database().ref(`users/${currentUser.uid}/following`);
+
+                refFol.on("value", function (snapshot) {
+                    snapshot.forEach(function (data) {
+
+                        firebase.database().ref(`users/${data.key}/podcasts`).limitToLast(1).once("value", function (snap) {
+                            snap.forEach(function (pod) {
+
+                                firebase.database().ref(`podcasts/${pod.key}`).once("value", function (data2) {
+                                    if(data2.val()){
+                                        Variables.state.homeFollowedContent.push(data2.val());
+                                        for(let i = Variables.state.homeFollowedContent.length-1; i > 0 && Variables.state.homeFollowedContent[i].id > Variables.state.homeFollowedContent[i-1].id; i--){
+                                            let temp = Variables.state.homeFollowedContent[i-1];
+                                            Variables.state.homeFollowedContent[i-1] = Variables.state.homeFollowedContent[i];
+                                            Variables.state.homeFollowedContent[i] = temp;
+                                        }
+                                    }
+                                })
+
+                            });
+
+                        });
+
+                    })
+                });
+
+
+            }
         });
 
 
-        this.fetchData();
-        this.setState({
-            refreshing: false,
+        var hasLatest = false;
+        const latestRef = firebase.database().ref(`users/${currentUser.uid}/widgets`).child("Latest");
+        latestRef.once("value", function (data) {
+            if(data.val()){
+                hasLatest = true;
+
+
+                Variables.state.newPodcasts = [];
+                Variables.state.newPodcastsArtsts = [];
+                const refNew = firebase.database().ref(`podcasts/`);
+
+                refNew.limitToLast(250).once("value", function (snapshot) {
+                    snapshot.forEach(function (data) {
+                        if(data.val()){
+                            if(Variables.state.newPodcastsArtsts.includes(data.val().podcastArtist)){
+                                Variables.state.newPodcasts.splice(Variables.state.newPodcastsArtsts.indexOf(data.val().podcastArtist), 1);
+                                Variables.state.newPodcastsArtsts.splice(Variables.state.newPodcastsArtsts.indexOf(data.val().podcastArtist), 1);
+                                Variables.state.newPodcasts.push(data.val());
+                                Variables.state.newPodcastsArtsts.push(data.val().podcastArtist);
+                            }
+                            else{
+                                Variables.state.newPodcasts.push(data.val());
+                                Variables.state.newPodcastsArtsts.push(data.val().podcastArtist)
+                            }
+                        }
+                    });
+                    Variables.state.newPodcasts.reverse();
+                });
+
+
+            }
         });
 
-        setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},2000);
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},2400);
-        setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},3800);
-        setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},3200);
 
-        setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},5000);
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},5400);
-        setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},5800);
-        setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},6200);
+        var hasSelectedByTess = false;
+        const selectedByTessRef = firebase.database().ref(`users/${currentUser.uid}/widgets`).child("Selected By Tess");
+        selectedByTessRef.once("value", function (data) {
+            if(data.val()){
+                hasSelectedByTess = true;
 
-        setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},8000);
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},8400);
-        setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},8800);
-        setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},9200);
 
-        setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent)})},11000);
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},11400);
-        setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},11800);
-        setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},12200);
+                Variables.state.selectedByTess = [];
+
+                //TheMaddyIce
+                firebase.database().ref(`users/upwadf76CrOBee8aSwzcCZR4kM33/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+                //Two Bros and a Pod
+                firebase.database().ref(`users/JHPYRdcWtOheHCkrddZjJaLXtPg2/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+                //Big Tay
+                firebase.database().ref(`users/1F1q9gRKWyMQ8cSATXqGT4PnCaK2/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+                //Tim Dulak
+                firebase.database().ref(`users/3tHL3dIcINUdMeKZn6ckf81e2Sk2/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+                //Joey Bradfield
+                firebase.database().ref(`users/gdGuN9v14qU9pSHXSk1KbDGlUsu1/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+                //Dom Gold
+                firebase.database().ref(`users/6px5go2E3USvYvkcNQejkLkJx3H3/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+                //Eat the fruit
+                firebase.database().ref(`users/7ubx6NftyyQbAwufE7BquuSJ6gJ3/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+                //Abbey
+                firebase.database().ref(`users/P2HAtFE3YKXe8uP9Mu1HyCE2cD83/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+                //ShakDaddy
+                firebase.database().ref(`users/u1osicyhjcR5j3EHx6m1SMe2LpJ3/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+                //Nick Ruspantini
+                firebase.database().ref(`users/pgIx9JAiq9aQWcyUZX8AuIdqNmP2/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+                //Tony
+                firebase.database().ref(`users/sJsB8XK4XRZ8tNpeGC14JNsa6Jj1/podcasts`).limitToLast(1).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.selectedByTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+            }
+        });
+
+
+        var hasFromTess = false;
+        const fromTessRef = firebase.database().ref(`users/${currentUser.uid}/widgets`).child("From Tess");
+        fromTessRef.once("value", function (data) {
+            if(data.val()){
+                hasFromTess = true;
+
+
+                Variables.state.fromTess = [];
+                firebase.database().ref(`users/dlUCIXXnXGTgJZwYLE1KUYWGkQ73/podcasts`).once("value", function (data) {
+                    data.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.fromTess.push(snapshot.val())
+                            }
+                        })
+                    })
+                });
+
+
+            }
+        });
+
+
+        var hasTech = false;
+        const techRef = firebase.database().ref(`users/${currentUser.uid}/widgets`).child("Tech");
+        techRef.once("value", function (data) {
+            if(data.val()){
+                hasTech = true;
+
+
+                Variables.state.currCategory = [];
+                const refCat = firebase.database().ref(`podcasts/`);
+
+                refCat.on("value", function (snapshot) {
+                    snapshot.forEach(function (data) {
+                        if(data.val().podcastCategory == 'Tech') {
+                            Variables.state.currCategory.push(data.val());
+                        }
+                    })
+                });
+
+
+            }
+        });
+
+
+        this.timeout9 = setTimeout(() => {this.setState({hasNewFromFollowing: hasNewFromFollow})}, 1000);
+        this.timeout10 = setTimeout(() => {this.setState({hasLatest: hasLatest})}, 1000);
+        this.timeout11 = setTimeout(() => {this.setState({hasFromTess: hasFromTess})}, 1000);
+        this.timeout12 = setTimeout(() => {this.setState({hasSelectedByTess: hasSelectedByTess})}, 1000);
+        this.timeout13 = setTimeout(() => {this.setState({hasTech: hasTech})}, 1000);
+
+
 
 
     }
@@ -850,15 +1205,60 @@ class Home extends Component{
     }
 
 
-    handleYup (card) {
-        console.warn(`Yup for ${card.text}`)
+    _renderWidget(rawData, data, title){
+        if(rawData.length > 0){
+
+
+            return(
+                <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
+                    <View style={{flexDirection:'row'}}>
+                        <View style={{alignSelf:'flex-start'}}>
+                            <Text style={styles.title}>{title}</Text>
+                        </View>
+
+                        <View style={{alignSelf:'flex-end', flex:1}}>
+                            <TouchableOpacity onPress={() => {
+
+                                let data = rawData;
+
+                                this.props.navigator.push({
+                                    screen: 'ViewAll',
+                                    title: title,
+                                    passProps: {data},
+                                });
+
+
+                            }}  style={{alignSelf:'flex-end', flexDirection:'row', marginTop: 3}}>
+                                <Text style={styles.viewAll}>View all</Text>
+                                <Icon style={{
+                                    fontSize: 16,
+                                    backgroundColor: 'transparent',
+                                    marginTop: 20,
+                                    color: '#506dcf',
+                                    marginLeft: 10,
+                                    marginRight: 15,
+                                }} name="ios-arrow-forward">
+                                </Icon>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    <ListView
+                        showsHorizontalScrollIndicator={false}
+                        horizontal={true}
+                        enableEmptySections
+                        dataSource={data}
+                        renderRow={this.renderRowNewPodcasts}
+                    />
+
+                </View>
+            );
+
+
+        }
     }
-    handleNope (card) {
-        console.warn(`Nope for ${card.text}`)
-    }
-    handleMaybe (card) {
-        console.warn(`Maybe for ${card.text}`)
-    }
+
+
 
 
     render() {
@@ -879,30 +1279,42 @@ class Home extends Component{
                 >
 
 
-
-
-
                     <SwipeCards
                         cards={this.state.data}
-                        renderCard={this.renderRowCard}
+                        renderCard={(cardData) => <ListItemCard podcast={cardData} />}
+                        dragY={false}
+                        smoothTransition={true}
+                        hasMaybeAction={false}
+                        onClickHandler={()=>{}}
+                        showYup={false}
+                        showNope={false}
+                        showMaybe={false}
+                        yupText="Add to Queue"
+                        yupStyle={styles.textContainer}
+                        yupTextStyle={styles.yupTitle}
+                        nopeText="No Thanks"
+                        nopeStyle={styles.textContainer}
+                        nopeTextStyle={styles.nopeTitle}
                         renderNoMoreCards={() =>
                             <View style = {{marginHorizontal: 10, marginVertical: 7}}>
-                                <View style={{backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20, paddingVertical: 50 }}>
-                                    <TouchableOpacity >
-                                        <Text style={styles.title}>You are all caught up!</Text>
-                                    </TouchableOpacity>
+                                <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20, paddingVertical: 60 }}>
+                                    <Text style={styles.titleCard}>You're all caught up!</Text>
                                 </View>
                             </View>
                         }
-
                     />
 
 
+                    {this._renderWidget(Variables.state.homeFollowedContent, this.state.dataSourceFol, "New From Following")}
 
+                    {this._renderWidget(Variables.state.newPodcasts, this.state.dataSource, "Latest")}
 
+                    {this._renderWidget(Variables.state.selectedByTess, this.state.dataSourceSel, "Selected By Tess")}
 
+                    {this._renderWidget(Variables.state.fromTess, this.state.dataSourceTess, "From Tess")}
 
-                    {this._newFromFollow(Variables.state.homeFollowedContent.length)}
+                    {this._renderWidget(Variables.state.currCategory, this.state.dataSourceTech, "Tech")}
+
 
 
                     <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
@@ -962,6 +1374,14 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         backgroundColor: 'transparent',
     },
+    titleCard: {
+        color: '#3e4164',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 16,
+        backgroundColor: 'transparent',
+    },
     titleMini: {
         color: '#3e4164',
         textAlign: 'center',
@@ -1012,7 +1432,7 @@ const styles = StyleSheet.create({
         color: '#506dcf',
         textAlign: 'right',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 12,
         marginTop: 20,
         paddingBottom: 10,
@@ -1027,6 +1447,60 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
+    },
+
+
+    cardTitle: {
+        color: '#3e4164',
+        textAlign: 'left',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 14,
+        marginLeft: 10,
+        marginTop: 10,
+        backgroundColor: 'transparent'
+    },
+    artistTitle: {
+        color: '#828393',
+        textAlign: 'left',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 12,
+        backgroundColor: 'transparent',
+    },
+    whiteTitle: {
+        color: '#fff',
+        textAlign: 'center',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 14,
+        backgroundColor: 'transparent',
+    },
+
+    yupTitle: {
+        color: '#3e4164',
+        textAlign: 'center',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 18,
+        backgroundColor: 'transparent'
+    },
+    nopeTitle: {
+        color: '#d15564',
+        textAlign: 'center',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 18,
+        backgroundColor: 'transparent'
+    },
+    textContainer:{
+        padding:10,
+        backgroundColor: 'transparent',
+        borderColor:'transparent'
+
     },
 
 

@@ -447,7 +447,7 @@ class ListItem extends Component {
 
 const styles = {
     title: {
-        color: '#2A2A30',
+        color: '#3e4164',
         marginTop: 0,
         flex:1,
         textAlign: 'left',

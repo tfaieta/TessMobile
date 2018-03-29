@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ScrollView, ListView} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, ScrollView, TextInput, ListView} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Variables from "./Variables";
@@ -26,6 +26,10 @@ class Playlists extends Component{
 
     constructor(props){
         super(props);
+
+        this.state={
+            newPlaylist: ''
+        };
 
         this.props.navigator.setStyle({
             statusBarHidden: false,
@@ -62,19 +66,35 @@ class Playlists extends Component{
                 style={styles.container}>
 
 
-                <ScrollView>
+                <ScrollView style={{marginBottom: 50, paddingTop: 70}}>
 
-                    <TouchableOpacity style={{flex:1, marginVertical: 12}}>
-                        <Icon style={{
-                            fontSize: 20,
-                            backgroundColor: 'transparent',
-                            textAlign: 'center',
-                            color: '#5757FF',
-                            marginHorizontal: 15,
-                        }} name="plus-circle">
-                        <Text style = {styles.title}>  Create a New Playlist</Text>
-                        </Icon>
-                    </TouchableOpacity>
+
+                    <View style={styles.inputContainer}>
+                        <View style={{flexDirection:'row'}}>
+                            <View style={{alignItems:'flex-start', flex: 6,}}>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder={'New Playlist'}
+                                    placeholderTextColor= '#506dcf'
+                                    autoCapitalize={'sentences'}
+                                    autoCorrect={false}
+                                    returnKeyType='done'
+                                    keyboardType="default"
+                                    value={this.state.newPlaylist}
+                                    onChangeText={text => {this.setState({newPlaylist: text})}}
+                                />
+                            </View>
+                            <TouchableOpacity style={{alignItems: 'flex-end', flex: 1}}>
+                                <Icon style={{
+                                    textAlign: 'center',
+                                    marginTop: 18,
+                                    fontSize: 22,
+                                    color: '#506dcf',
+                                }} name="plus-circle">
+                                </Icon>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
 
 
                 </ScrollView>
@@ -96,11 +116,11 @@ class Playlists extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: 'transparent',
+        backgroundColor: '#f5f4f9',
     },
 
     title: {
-        color: '#2A2A30',
+        color: '#506dcf',
         flex: 1,
         textAlign: 'center',
         opacity: 1,
@@ -121,14 +141,33 @@ const styles = StyleSheet.create({
     header: {
         marginTop:25,
         marginLeft: -35,
-        color: '#2A2A30',
+        color: '#506dcf',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 16,
         backgroundColor: 'transparent',
 
-    }
+    },
+
+    input: {
+        height: 40,
+        backgroundColor: 'transparent',
+        marginTop: 10,
+        marginBottom: 5,
+        color: '#506dcf',
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 18,
+        paddingHorizontal: 10,
+        marginLeft: 10
+    },
+    inputContainer: {
+        backgroundColor:"#fff",
+        marginVertical: 5,
+        paddingBottom: 10,
+        paddingHorizontal: 10,
+    },
 
 });
 

@@ -19,44 +19,13 @@ class ListItemCard extends Component {
         keyID: 0,
     };
 
-    componentWillMount() {
-        const {podcastArtist} = this.props.podcast;
-        const {rss} = this.props.podcast;
-        let profileImage = '';
-
-        if(rss){
-            firebase.database().ref(`users/${podcastArtist}/profileImage`).once("value", function (snapshot) {
-                if(snapshot.val()){
-                    profileImage = snapshot.val().profileImage
-                }
-            });
-            this.timeout = setTimeout(() => {this.setState({profileImage: profileImage})},1200);
-            this. timeout2 = setTimeout(() => {this.setState({profileImage: profileImage})},3400);
-
-        }
-        else{
-            const storageRef = firebase.storage().ref(`/users/${podcastArtist}/image-profile-uploaded`);
-            storageRef.getDownloadURL()
-                .then(function(url) {
-                    profileImage = url;
-                }).catch(function(error) {
-                //
-            });
-            this.timeout = setTimeout(() => {this.setState({profileImage: profileImage})},1200);
-            this.timeout2 = setTimeout(() => {this.setState({profileImage: profileImage})},3400);
-
-        }
-    }
-
 
     componentWillUnmount(){
         clearTimeout(this.timeout);
         clearTimeout(this.timeout2);
     }
 
-    componentWillUpdate() {
-        LayoutAnimation.spring();
-    }
+
 
     constructor(state) {
         super(state);
@@ -115,6 +84,35 @@ class ListItemCard extends Component {
             }
 
         }, 500);
+
+
+
+
+        const {rss} = this.props.podcast;
+        let profileImage = '';
+
+        if(rss){
+            firebase.database().ref(`users/${podcastArtist}/profileImage`).once("value", function (snapshot) {
+                if(snapshot.val()){
+                    profileImage = snapshot.val().profileImage
+                }
+            });
+            this.timeout = setTimeout(() => {this.setState({profileImage: profileImage})},1200);
+            this. timeout2 = setTimeout(() => {this.setState({profileImage: profileImage})},3400);
+
+        }
+        else{
+            const storageRef = firebase.storage().ref(`/users/${podcastArtist}/image-profile-uploaded`);
+            storageRef.getDownloadURL()
+                .then(function(url) {
+                    profileImage = url;
+                }).catch(function(error) {
+                //
+            });
+            this.timeout = setTimeout(() => {this.setState({profileImage: profileImage})},1200);
+            this.timeout2 = setTimeout(() => {this.setState({profileImage: profileImage})},3400);
+
+        }
 
     }
 
@@ -399,7 +397,7 @@ class ListItemCard extends Component {
 
             <View style = {{marginHorizontal: 10, marginVertical: 7}}>
                 <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20 }}>
-                    <TouchableOpacity onPress={this.onRowPress.bind(this)}>
+                    <View>
                         <Text style={styles.title}>{this.state.title}</Text>
                         <View style={{padding: 10, flexDirection: 'row'}}>
 
@@ -410,7 +408,7 @@ class ListItemCard extends Component {
                             <View style = {{alignSelf: 'flex-end', flex:1, marginHorizontal: 10}}>
                                 <Text style={styles.artistTitle}>{this.state.description}</Text>
                                 <View style={{flexDirection: 'row'}}>
-                                    <TouchableOpacity style= {{backgroundColor:'#3e4164', flex: 1, alignSelf: 'flex-start', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 5, marginHorizontal: 7}}>
+                                    <TouchableOpacity style= {{backgroundColor:'#3e4164', flex: 1, alignSelf: 'flex-start', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 5, marginHorizontal: 7}} onPress={this.onRowPress.bind(this)}>
                                         <Icon style={{
                                             textAlign: 'center',
                                             fontSize: 16,
@@ -420,7 +418,23 @@ class ListItemCard extends Component {
                                             <Text style={styles.whiteTitle}> Play</Text>
                                         </Icon>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style= {{backgroundColor:'#3e4164', flex: 1, alignSelf: 'flex-end', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 5, marginHorizontal: 7}}>
+                                    <TouchableOpacity style= {{backgroundColor:'#3e4164', flex: 1, alignSelf: 'flex-end', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 5, marginHorizontal: 7}} onPress={() => {
+
+                                        const {currentUser} = firebase.auth();
+                                        const { id } = this.props.podcast;
+
+                                        firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
+                                            snap.forEach(function (data) {
+                                                if(data.val().id == id){
+                                                    firebase.database().ref(`users/${currentUser.uid}/queue/${data.key}`).remove()
+                                                }
+                                            });
+                                            firebase.database().ref(`users/${currentUser.uid}/queue/`).push({id});
+                                        });
+
+
+
+                                    }}>
                                         <Icon style={{
                                             textAlign: 'center',
                                             fontSize: 16,
@@ -434,7 +448,7 @@ class ListItemCard extends Component {
                             </View>
 
                         </View>
-                    </TouchableOpacity>
+                    </View>
                 </View>
             </View>
 

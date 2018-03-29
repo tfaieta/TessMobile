@@ -1184,7 +1184,7 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
     },
     playingText:{
-        color: '#00000090',
+        color: '#3e4164',
         flexDirection: 'row',
         backgroundColor: 'transparent',
         fontStyle: 'normal',
@@ -1291,7 +1291,7 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        color: '#2A2A30',
+        color: '#3e4164',
         marginTop: 70,
         flex:1,
         textAlign: 'center',
@@ -1309,7 +1309,7 @@ const styles = StyleSheet.create({
     },
 
     podcastText:{
-        color: '#2A2A30',
+        color: '#3e4164',
         fontSize: height/44.47,
         marginTop: 5,
         marginHorizontal: 10,
@@ -1359,7 +1359,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     podcastTextArtist:{
-        color:'#2A2A30',
+        color:'#3e4164',
         fontSize: height/44.47,
         marginHorizontal: 10,
         flexDirection: 'row',

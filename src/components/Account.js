@@ -190,27 +190,21 @@ class Account extends Component {
     }
 
 
-    onFollowersPress(){
-        Navigation.showModal({
+    onFollowersPress = () => {
+        this.props.navigator.push({
             screen: "MyFollowersPage",
-            title: "Modal",
+            title: "Followers",
             passProps: {},
-            navigatorStyle: {},
-            navigatorButtons: {},
-            animationType: 'slide-up'
         });
-    }
+    };
 
-    onFollowingPress(){
-        Navigation.showModal({
+    onFollowingPress = () =>{
+        this.props.navigator.push({
             screen: "Followed",
-            title: "Modal",
+            title: "Following",
             passProps: {},
-            navigatorStyle: {},
-            navigatorButtons: {},
-            animationType: 'slide-up'
         });
-    }
+    };
 
     _renderProfileNumbers(totalPodcasts, totalFollowers, totalFollowing){
         return(

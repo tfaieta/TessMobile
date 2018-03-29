@@ -210,7 +210,7 @@ const styles = {
         marginTop: 10
     },
     textCommentName:{
-        color: '#2A2A30',
+        color: '#3e4164',
         flexDirection: 'column',
         textAlign: 'left',
         opacity: 1,
