@@ -1269,7 +1269,6 @@ class Home extends Component{
 
 
                 <ScrollView
-                    style={{marginBottom: 50}}
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.refreshing}

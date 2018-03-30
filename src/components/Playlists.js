@@ -10,25 +10,45 @@ import ListItem from "./ListItem";
 
 
 
-// displays recently played podcasts
-
+// playlist page (on library tab)
 
 class Playlists extends Component{
 
-    componentWillMount(){
+    componentWillMount = () => {
 
-    }
+
+        Variables.state.playlists = [];
+        const {currentUser} = firebase.auth();
+        firebase.database().ref(`users/${currentUser.uid}/playlist`).on("value", function (snapshot) {
+
+            snapshot.forEach(function (data) {
+                if(data.val()){
+                    Variables.state.playlists.push(data.val());
+                }
+
+            })
+
+        })
+
+
+
+
+    };
 
 
     componentWillUnmount(){
+        clearTimeout(this.timeout1);
+        clearTimeout(this.timeout2);
     }
 
 
     constructor(props){
         super(props);
 
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state={
-            newPlaylist: ''
+            newPlaylist: '',
+            playlists: dataSource.cloneWithRows(Variables.state.playlists),
         };
 
         this.props.navigator.setStyle({
@@ -48,6 +68,9 @@ class Playlists extends Component{
             topBarShadowRadius: 5,
         });
 
+        this.timeout1 = setTimeout(() => {this.setState({playlists: dataSource.cloneWithRows(Variables.state.playlists)})},1000);
+        this.timeout2 = setTimeout(() => {this.setState({playlists: dataSource.cloneWithRows(Variables.state.playlists)})},2500);
+
     };
 
     _pressBack = () => {
@@ -55,6 +78,19 @@ class Playlists extends Component{
             animated: true,
             animationType: 'fade',
         });
+    };
+
+
+    createNewPlaylist = () => {
+        const title = this.state.newPlaylist;
+
+        if(title != ""){
+            const {currentUser} = firebase.auth();
+            firebase.database().ref(`users/${currentUser.uid}/playlist/${title}`).update({title})
+        }
+
+        this.setState({newPlaylist: ''})
+
     };
 
 
@@ -84,7 +120,7 @@ class Playlists extends Component{
                                     onChangeText={text => {this.setState({newPlaylist: text})}}
                                 />
                             </View>
-                            <TouchableOpacity style={{alignItems: 'flex-end', flex: 1}}>
+                            <TouchableOpacity style={{alignItems: 'flex-end', flex: 1}} onPress={this.createNewPlaylist}>
                                 <Icon style={{
                                     textAlign: 'center',
                                     marginTop: 18,
@@ -95,6 +131,49 @@ class Playlists extends Component{
                             </TouchableOpacity>
                         </View>
                     </View>
+
+
+
+                    <ListView
+                        showsHorizontalScrollIndicator={false}
+                        horizontal={false}
+                        enableEmptySections
+                        dataSource={this.state.playlists}
+                        renderRow={(data) =>
+                            <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5, paddingBottom: 20}}>
+                                <View style={{flexDirection:'row'}}>
+                                    <View style={{alignSelf:'flex-start'}}>
+                                        <Text style={styles.title}>{data.title}</Text>
+                                    </View>
+
+                                    <View style={{alignSelf:'flex-end', flex:1}}>
+                                        <TouchableOpacity onPress={() => {
+
+
+
+                                        }}  style={{alignSelf:'flex-end', flexDirection:'row', marginTop: 3}}>
+                                            <Icon style={{
+                                                fontSize: 22,
+                                                backgroundColor: 'transparent',
+                                                marginTop: 10,
+                                                color: '#506dcf',
+                                                marginLeft: 10,
+                                                marginRight: 15,
+                                            }} name="plus">
+                                            </Icon>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+
+
+
+
+                            </View>
+                        }
+                    />
+
+
+
 
 
                 </ScrollView>
@@ -120,14 +199,14 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        color: '#506dcf',
-        flex: 1,
+        color: '#3e4164',
         textAlign: 'center',
-        opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 18,
-        backgroundColor: 'transparent'
+        fontSize: 16,
+        marginTop: 20,
+        paddingLeft: 20,
+        backgroundColor: 'transparent',
     },
 
     contentTitle: {

@@ -474,7 +474,7 @@ class AddWidget extends Component{
 
 
                 <ScrollView
-                    style={{marginBottom: 50, paddingTop: 70}}
+                    style={{paddingBottom: 70, paddingTop: 40}}
                 >
 
                     {this._widget(Variables.state.homeFollowedContent.length, this.state.dataSourceFol, "New From Following")}
