@@ -61,7 +61,8 @@ class Variables extends Component{
         topCharts: [],
         recentlyPlayed: [],
         myQueue: [],
-        playlists: [],
+        playlists: [],  // stores all playlists
+        widgets: [],    // stores the titles of widgets for home page, in correct order
 
 
         podcastURL: '',

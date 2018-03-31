@@ -338,7 +338,19 @@ class AddWidget extends Component{
                             <TouchableOpacity onPress={() => {
 
                                 const {currentUser} = firebase.auth();
-                                firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).update({title})
+                                firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).once("value", function (data) {
+                                    if(data.val()){
+                                        console.warn("already a widget");
+                                    }
+                                    else{
+                                        firebase.database().ref(`users/${currentUser.uid}/widgets/`).once("value", function (snapshot) {
+                                            const position = snapshot.numChildren();
+                                            firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).update({title, position});
+                                        })
+
+                                    }
+                                })
+
 
 
                             }}  style={{alignSelf:'flex-end', flexDirection:'row', marginTop: 3}}>
@@ -473,9 +485,7 @@ class AddWidget extends Component{
                 style={styles.containerMain}>
 
 
-                <ScrollView
-                    style={{paddingBottom: 70, paddingTop: 40}}
-                >
+                <ScrollView>
 
                     {this._widget(Variables.state.homeFollowedContent.length, this.state.dataSourceFol, "New From Following")}
 

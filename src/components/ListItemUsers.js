@@ -107,7 +107,7 @@ class ListItemUsers extends Component {
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom:20, height: 130, width: 130, borderRadius: 4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)' }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom:20, height: 100, width: 100, borderRadius: 4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)' }}>
                     <Icon style={{
                         textAlign: 'center',
                         fontSize: 80,
@@ -382,7 +382,7 @@ class ListItemUsers extends Component {
         return (
 
             <TouchableOpacity onPress={this.onRowPress.bind(this)}>
-                <View style={{padding: 10}}>
+                <View style={{padding: 5}}>
 
                     {this._renderProfileImage()}
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Text, View, StyleSheet, ListView, ScrollView, TouchableOpacity, Linking, RefreshControl, Dimensions} from 'react-native';
+import { Text, View, StyleSheet, ListView, ScrollView, TouchableOpacity, Linking, RefreshControl, TouchableHighlight, Dimensions} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { podcastFetchNew} from "../actions/PodcastActions";
 import { connect } from 'react-redux';
@@ -11,6 +11,7 @@ import firebase from 'firebase';
 import Player from "./Player";
 import SwipeCards from 'react-native-swipe-cards';
 import ListItemCard from "./ListItemCard";
+import SortableListView from 'react-native-sortable-listview'
 
 
 
@@ -29,6 +30,17 @@ class Home extends Component{
 
     componentDidMount(){
         const {currentUser} = firebase.auth();
+
+
+        Variables.state.widgets = [];
+        firebase.database().ref(`users/${currentUser.uid}/widgets`).on("value", function (snapshot) {
+            
+            snapshot.forEach(function (data) {
+                if(data.val())
+                Variables.state.widgets[data.val().position] = data.val();
+            })
+            
+        });
 
 
         var hasNewFromFollow = false;
@@ -352,7 +364,8 @@ class Home extends Component{
             hasFromTess: false,
             hasSelectedByTess: false,
             hasTech: false,
-
+            widgets: Variables.state.widgets,
+            scroll: true,
 
             data: Variables.state.homeFollowedContent,
             dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts),
@@ -364,7 +377,7 @@ class Home extends Component{
             refreshing: false,
             userProfileImage: ''
         };
-        this.timeout1 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent), data: Variables.state.homeFollowedContent, dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory),})},2000);
+        this.timeout1 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent), data: Variables.state.homeFollowedContent, dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory), widgets: Variables.state.widgets})},2000);
         this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},2400);
         this.timeout3 = setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},3800);
         this.timeout4 = setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},3200);
@@ -1205,7 +1218,7 @@ class Home extends Component{
     }
 
 
-    _renderWidget(rawData, data, title){
+    _renderWidget2(rawData, data, title){
         if(rawData.length > 0){
 
 
@@ -1259,89 +1272,382 @@ class Home extends Component{
     }
 
 
+    returnList(title){
+        if(title == "New From Following"){
+            return Variables.state.homeFollowedContent;
+        }
+        else if(title == "Latest"){
+            return Variables.state.newPodcasts;
+        }
+        else if(title == "From Tess"){
+            return Variables.state.fromTess;
+        }
+        else if(title == "Selected By Tess"){
+            return Variables.state.selectedByTess;
+        }
+        else if(title == "Tech"){
+            return Variables.state.currCategory;
+        }
+
+    }
+
+
+    _renderWidget = (position, data) => {
+        if(data[position]){
+
+            var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+            let input = dataSource.cloneWithRows(this.returnList(data[position].title));
+
+
+            return(
+                <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
+                    <View style={{flexDirection:'row'}}>
+                        <View style={{alignSelf:'flex-start'}}>
+                            <Text style={styles.title}>{data[position].title}</Text>
+                        </View>
+
+                        <View style={{alignSelf:'flex-end', flex:1}}>
+                            <TouchableOpacity onPress={() => {
+
+                                const {title} = data[position];
+
+                                this.props.navigator.push({
+                                    screen: 'ViewAll',
+                                    title: title,
+                                    passProps: {data: this.returnList(data[position].title), title},
+                                });
+
+
+                            }}  style={{alignSelf:'flex-end', flexDirection:'row', marginTop: 3}}>
+                                <Text style={styles.viewAll}>View all</Text>
+                                <Icon style={{
+                                    fontSize: 16,
+                                    backgroundColor: 'transparent',
+                                    marginTop: 20,
+                                    color: '#506dcf',
+                                    marginLeft: 10,
+                                    marginRight: 15,
+                                }} name="ios-arrow-forward">
+                                </Icon>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    <ListView
+                        showsHorizontalScrollIndicator={false}
+                        horizontal={true}
+                        enableEmptySections
+                        dataSource={input}
+                        renderRow={this.renderRowNewPodcasts}
+                    />
+
+                </View>
+            );
+
+
+        }
+    };
+
+
 
 
     render() {
 
-        return (
-            <View
-                style={styles.container}>
+        if(this.state.widgets.length > 0){
+
+            return (
+                <View
+                    style={styles.container}>
 
 
-                <ScrollView
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.refreshing}
-                            onRefresh={this._onRefresh.bind(this)}
-                        />
-                    }
-                >
-
-
-                    <SwipeCards
-                        cards={this.state.data}
-                        renderCard={(cardData) => <ListItemCard podcast={cardData} />}
-                        dragY={false}
-                        smoothTransition={true}
-                        hasMaybeAction={false}
-                        onClickHandler={()=>{}}
-                        showYup={false}
-                        showNope={false}
-                        showMaybe={false}
-                        yupText="Add to Queue"
-                        yupStyle={styles.textContainer}
-                        yupTextStyle={styles.yupTitle}
-                        nopeText="No Thanks"
-                        nopeStyle={styles.textContainer}
-                        nopeTextStyle={styles.nopeTitle}
-                        renderNoMoreCards={() =>
-                            <View style = {{marginHorizontal: 10, marginVertical: 7}}>
-                                <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20, paddingVertical: 60 }}>
-                                    <Text style={styles.titleCard}>You're all caught up!</Text>
-                                </View>
-                            </View>
+                    <ScrollView
+                        // set scrollEnabled to state that turns to false when sortablelistview is activated
+                        scrollEnabled={this.state.scroll}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.refreshing}
+                                onRefresh={this._onRefresh.bind(this)}
+                            />
                         }
-                    />
+                    >
 
 
-                    {this._renderWidget(Variables.state.homeFollowedContent, this.state.dataSourceFol, "New From Following")}
-
-                    {this._renderWidget(Variables.state.newPodcasts, this.state.dataSource, "Latest")}
-
-                    {this._renderWidget(Variables.state.selectedByTess, this.state.dataSourceSel, "Selected By Tess")}
-
-                    {this._renderWidget(Variables.state.fromTess, this.state.dataSourceTess, "From Tess")}
-
-                    {this._renderWidget(Variables.state.currCategory, this.state.dataSourceTech, "Tech")}
-
-
-
-                    <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
-                        <Text style={styles.titleMini}>This is your home screen, you can add whatever you want.</Text>
-
-                        <TouchableOpacity onPress={() => {
-                            this.props.navigator.push({
-                                screen: 'AddWidget',
-                                title: 'Add a Widget'
-                            })
-                        }}>
-                            <Text style={styles.titleAdd}>Add a widget</Text>
-                        </TouchableOpacity>
-                    </View>
-
-
-
-                </ScrollView>
+                        <SwipeCards
+                            cards={this.state.data}
+                            renderCard={(cardData) => <ListItemCard podcast={cardData} />}
+                            dragY={false}
+                            smoothTransition={true}
+                            hasMaybeAction={false}
+                            onClickHandler={()=>{}}
+                            showYup={false}
+                            showNope={false}
+                            showMaybe={false}
+                            yupText="Add to Queue"
+                            yupStyle={styles.textContainer}
+                            yupTextStyle={styles.yupTitle}
+                            nopeText="No Thanks"
+                            nopeStyle={styles.textContainer}
+                            nopeTextStyle={styles.nopeTitle}
+                            renderNoMoreCards={() =>
+                                <View style = {{marginHorizontal: 10, marginVertical: 7}}>
+                                    <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20, paddingVertical: 60 }}>
+                                        <Text style={styles.titleCard}>You're all caught up!</Text>
+                                    </View>
+                                </View>
+                            }
+                        />
 
 
+                        <SortableListView
+                            style={{flex:1}}
+                            data={this.state.widgets}
+                            order={Object.keys(this.state.widgets)}
+                            onMoveStart={() => {this.setState({scroll:false})}}
+                            onMoveEnd={() => {this.setState({scroll:true})}}
+                            onMoveCancel={() => {this.setState({scroll:true})}}
+                            renderRow={(row) => {
+
+                                let data = Variables.state.widgets;
+                                let position = row.position;
 
 
-                <Player/>
-                <PlayerBottom navigator={this.props.navigator}/>
+                                if(data[position]){
 
-            </View>
+                                    var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+                                    let input = dataSource.cloneWithRows(this.returnList(data[position].title));
 
-        );
+
+                                    return(
+                                        <TouchableHighlight underlayColor="#fff" style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
+                                            <View>
+                                                <View style={{flexDirection:'row'}}>
+                                                    <View style={{alignSelf:'flex-start'}}>
+                                                        <Text style={styles.title}>{data[position].title}</Text>
+                                                    </View>
+
+                                                    <View style={{alignSelf:'flex-end', flex:1}}>
+                                                        <TouchableOpacity onPress={() => {
+
+                                                            const {title} = data[position];
+
+                                                            this.props.navigator.push({
+                                                                screen: 'ViewAll',
+                                                                title: title,
+                                                                passProps: {data: this.returnList(data[position].title), title},
+                                                            });
+
+
+                                                        }}  style={{alignSelf:'flex-end', flexDirection:'row', marginTop: 3}}>
+                                                            <Text style={styles.viewAll}>View all</Text>
+                                                            <Icon style={{
+                                                                fontSize: 16,
+                                                                backgroundColor: 'transparent',
+                                                                marginTop: 10,
+                                                                color: '#506dcf',
+                                                                marginLeft: 10,
+                                                                marginRight: 15,
+                                                            }} name="ios-arrow-forward">
+                                                            </Icon>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                </View>
+
+                                                <ListView
+                                                    showsHorizontalScrollIndicator={false}
+                                                    horizontal={true}
+                                                    enableEmptySections
+                                                    dataSource={input}
+                                                    renderRow={this.renderRowNewPodcasts}
+                                                />
+                                            </View>
+
+                                        </TouchableHighlight>
+                                    );
+
+                                }
+
+                            }}
+                        />
+
+
+
+
+                        <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
+                            <Text style={styles.titleMini}>This is your home screen, you can add whatever you want.</Text>
+
+                            <TouchableOpacity onPress={() => {
+                                this.props.navigator.push({
+                                    screen: 'AddWidget',
+                                    title: 'Add a Widget'
+                                })
+                            }}>
+                                <Text style={styles.titleAdd}>Add a widget</Text>
+                            </TouchableOpacity>
+                        </View>
+
+
+
+                    </ScrollView>
+
+
+
+
+                    <Player/>
+                    <PlayerBottom navigator={this.props.navigator}/>
+
+                </View>
+
+            );
+
+
+        }
+        else{
+
+            return (
+                <View
+                    style={styles.container}>
+
+
+                    <ScrollView
+                        // set scrollEnabled to state that turns to false when sortablelistview is activated
+                        scrollEnabled={this.state.scroll}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.refreshing}
+                                onRefresh={this._onRefresh.bind(this)}
+                            />
+                        }
+                    >
+
+
+                        <SwipeCards
+                            cards={this.state.data}
+                            renderCard={(cardData) => <ListItemCard podcast={cardData} />}
+                            dragY={false}
+                            smoothTransition={true}
+                            hasMaybeAction={false}
+                            onClickHandler={()=>{}}
+                            showYup={false}
+                            showNope={false}
+                            showMaybe={false}
+                            yupText="Add to Queue"
+                            yupStyle={styles.textContainer}
+                            yupTextStyle={styles.yupTitle}
+                            nopeText="No Thanks"
+                            nopeStyle={styles.textContainer}
+                            nopeTextStyle={styles.nopeTitle}
+                            renderNoMoreCards={() =>
+                                <View style = {{marginHorizontal: 10, marginVertical: 7}}>
+                                    <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20, paddingVertical: 60 }}>
+                                        <Text style={styles.titleCard}>You're all caught up!</Text>
+                                    </View>
+                                </View>
+                            }
+                        />
+
+
+                        <SortableListView
+                            style={{flex:1}}
+                            data={this.state.widgets}
+                            order={Object.keys(this.state.widgets)}
+                            onMoveStart={() => {this.setState({scroll:false})}}
+                            onMoveEnd={() => {this.setState({scroll:true})}}
+                            onMoveCancel={() => {this.setState({scroll:true})}}
+                            renderRow={(row) => {
+
+                                let data = Variables.state.widgets;
+                                let position = row.position;
+
+
+                                if(data[position]){
+
+                                    var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+                                    let input = dataSource.cloneWithRows(this.returnList(data[position].title));
+
+
+                                    return(
+                                        <TouchableHighlight underlayColor="#fff" style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
+                                            <View>
+                                                <View style={{flexDirection:'row'}}>
+                                                    <View style={{alignSelf:'flex-start'}}>
+                                                        <Text style={styles.title}>{data[position].title}</Text>
+                                                    </View>
+
+                                                    <View style={{alignSelf:'flex-end', flex:1}}>
+                                                        <TouchableOpacity onPress={() => {
+
+                                                            const {title} = data[position];
+
+                                                            this.props.navigator.push({
+                                                                screen: 'ViewAll',
+                                                                title: title,
+                                                                passProps: {data: this.returnList(data[position].title), title},
+                                                            });
+
+
+                                                        }}  style={{alignSelf:'flex-end', flexDirection:'row', marginTop: 3}}>
+                                                            <Text style={styles.viewAll}>View all</Text>
+                                                            <Icon style={{
+                                                                fontSize: 16,
+                                                                backgroundColor: 'transparent',
+                                                                marginTop: 10,
+                                                                color: '#506dcf',
+                                                                marginLeft: 10,
+                                                                marginRight: 15,
+                                                            }} name="ios-arrow-forward">
+                                                            </Icon>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                </View>
+
+                                                <ListView
+                                                    showsHorizontalScrollIndicator={false}
+                                                    horizontal={true}
+                                                    enableEmptySections
+                                                    dataSource={input}
+                                                    renderRow={this.renderRowNewPodcasts}
+                                                />
+                                            </View>
+
+                                        </TouchableHighlight>
+                                    );
+
+                                }
+
+                            }}
+                        />
+
+
+
+
+                        <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
+                            <Text style={styles.titleMini}>This is your home screen, you can add whatever you want.</Text>
+
+                            <TouchableOpacity onPress={() => {
+                                this.props.navigator.push({
+                                    screen: 'AddWidget',
+                                    title: 'Add a Widget'
+                                })
+                            }}>
+                                <Text style={styles.titleAdd}>Add a widget</Text>
+                            </TouchableOpacity>
+                        </View>
+
+
+
+                    </ScrollView>
+
+
+
+
+                    <Player/>
+                    <PlayerBottom navigator={this.props.navigator}/>
+
+                </View>
+
+            );
+
+        }
 
 
     }
@@ -1369,7 +1675,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 16,
-        marginTop: 20,
+        marginTop: 10,
         paddingLeft: 20,
         backgroundColor: 'transparent',
     },
@@ -1433,7 +1739,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 12,
-        marginTop: 20,
+        marginTop: 10,
         paddingBottom: 10,
         backgroundColor: 'transparent',
     },
