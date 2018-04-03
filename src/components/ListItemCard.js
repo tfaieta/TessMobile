@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, LayoutAnimation, TouchableOpacity, Image, AsyncStorage, Dimensions } from 'react-native';
+import { Text, View, LayoutAnimation, TouchableOpacity, Image, AsyncStorage, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from 'firebase';
 import Variables from "./Variables";
@@ -399,13 +399,14 @@ class ListItemCard extends Component {
                 <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20 }}>
                     <View>
                         <Text style={styles.title}>{this.state.title}</Text>
+                        <TouchableWithoutFeedback>
                         <View style={{padding: 10, flexDirection: 'row'}}>
 
-                            <View style = {{alignSelf: 'flex-end'}}>
+                            <View style = {{alignSelf: 'center'}}>
                                 {this._renderProfileImage()}
                             </View>
 
-                            <View style = {{alignSelf: 'flex-end', flex:1, marginHorizontal: 10}}>
+                            <View style = {{alignSelf: 'center', flex:1, marginHorizontal: 10}}>
                                 <Text style={styles.artistTitle}>{this.state.description}</Text>
                                 <View style={{flexDirection: 'row'}}>
                                     <TouchableOpacity style= {{backgroundColor:'#3e4164', flex: 1, alignSelf: 'flex-start', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 5, marginHorizontal: 7}} onPress={this.onRowPress.bind(this)}>
@@ -448,6 +449,7 @@ class ListItemCard extends Component {
                             </View>
 
                         </View>
+                        </TouchableWithoutFeedback>
                     </View>
                 </View>
             </View>
