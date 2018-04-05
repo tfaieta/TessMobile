@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Text, View, StyleSheet, ListView, ScrollView, TouchableOpacity, Linking, RefreshControl, Dimensions} from 'react-native';
+import { Text, View, StyleSheet, ListView, ScrollView, TouchableOpacity, Linking, RefreshControl, AsyncStorage, ActivityIndicator, Image, TouchableWithoutFeedback, TouchableHighlight, Dimensions} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { podcastFetchNew} from "../actions/PodcastActions";
 import { connect } from 'react-redux';
 import ListItemUsers from '../components/ListItemUsers';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import Variables from "./Variables";
 import firebase from 'firebase';
 import Player from "./Player";
 import SwipeCards from 'react-native-swipe-cards';
 import ListItemCard from "./ListItemCard";
+import SortableListView from 'react-native-sortable-listview'
 
 
 
@@ -22,6 +23,8 @@ var DomParser = require('react-native-html-parser').DOMParser;
 
 
 
+
+
 // 1st tab, home page
 
 class Home extends Component{
@@ -29,6 +32,17 @@ class Home extends Component{
 
     componentDidMount(){
         const {currentUser} = firebase.auth();
+
+
+        Variables.state.widgets = [];
+        firebase.database().ref(`users/${currentUser.uid}/widgets`).once("value", function (snapshot) {
+            
+            snapshot.forEach(function (data) {
+                if(data.val())
+                Variables.state.widgets[data.val().position] = data.val();
+            })
+            
+        });
 
 
         var hasNewFromFollow = false;
@@ -295,7 +309,35 @@ class Home extends Component{
         });
 
 
-        this.timeout9 = setTimeout(() => {this.setState({hasNewFromFollowing: hasNewFromFollow})}, 1000);
+
+        var hasRecent = false;
+        const recentRef = firebase.database().ref(`users/${currentUser.uid}/widgets`).child("Recently Played");
+        recentRef.once("value", function (data) {
+            if(data.val()){
+                hasRecent = true;
+
+
+                firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).on("value", function (snapshot) {
+                    Variables.state.recentlyPlayed = [];
+                    snapshot.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.val().id}`).on("value", function (data) {
+                            if(data.val()){
+                                Variables.state.recentlyPlayed.push(data.val())
+                            }
+
+                        })
+                    });
+                    Variables.state.recentlyPlayed.reverse();
+                });
+
+            }
+        });
+
+
+
+
+
+        this.timeout9 = setTimeout(() => {this.setState({hasNewFromFollowing: hasNewFromFollow, hasRecent: hasRecent})}, 1000);
         this.timeout10 = setTimeout(() => {this.setState({hasLatest: hasLatest})}, 1000);
         this.timeout11 = setTimeout(() => {this.setState({hasFromTess: hasFromTess})}, 1000);
         this.timeout12 = setTimeout(() => {this.setState({hasSelectedByTess: hasSelectedByTess})}, 1000);
@@ -352,7 +394,11 @@ class Home extends Component{
             hasFromTess: false,
             hasSelectedByTess: false,
             hasTech: false,
-
+            hasRecent: false,
+            widgets: Variables.state.widgets,
+            scroll: true,
+            order: Object.keys([]),
+            loading: true,
 
             data: Variables.state.homeFollowedContent,
             dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts),
@@ -364,29 +410,21 @@ class Home extends Component{
             refreshing: false,
             userProfileImage: ''
         };
-        this.timeout1 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent), data: Variables.state.homeFollowedContent, dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory),})},2000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},2400);
+        this.timeout1 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent),  data: Variables.state.homeFollowedContent, dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory), widgets: Variables.state.widgets, order: Object.keys(this.state.widgets), })},1000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts), loading: false})},1500);
         this.timeout3 = setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},3800);
         this.timeout4 = setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},3200);
 
-        this.timeout5 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent), dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory)})},6000);
+        this.timeout5 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent),  data: Variables.state.homeFollowedContent, dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory), widgets: Variables.state.widgets, order: Object.keys(this.state.widgets),})},3000);
         this.timeout6 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},6400);
         this.timeout7 = setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},6800);
         this.timeout8 = setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},7200);
+
+
     }
 
 
-
-    renderRowNewPodcasts(podcast) {
-        return <ListItemUsers podcast={podcast} />;
-    }
-
-    renderRowCard(podcast) {
-        return <ListItemCard podcast={podcast} />;
-    }
-
-
-
+    
     rssFetch(){
 
 
@@ -652,7 +690,6 @@ class Home extends Component{
 
     }
 
-
     fetchData(){
 
         this.props.podcastFetchNew();
@@ -865,9 +902,39 @@ class Home extends Component{
 
     }
 
-
     _onRefresh() {
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.setState({refreshing: true, widget: Variables.state.widgets,
+            hasNewFromFollowing: false,
+            hasLatest: false,
+            hasFromTess: false,
+            hasSelectedByTess: false,
+            hasTech: false,
+            hasRecent: false,
+            widgets: Variables.state.widgets,
+            scroll: true,
+            order: Object.keys([]),
+            loading: false,
+            data: Variables.state.homeFollowedContent,
+            dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts),
+            dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent),
+            dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess),
+            dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess),
+            dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory),
+            url: '',
+            userProfileImage: ''
+        });
+
         const {currentUser} = firebase.auth();
+        Variables.state.widgets = [];
+        firebase.database().ref(`users/${currentUser.uid}/widgets`).once("value", function (snapshot) {
+
+            snapshot.forEach(function (data) {
+                if(data.val())
+                    Variables.state.widgets[data.val().position] = data.val();
+            })
+
+        });
 
 
         var hasNewFromFollow = false;
@@ -1134,7 +1201,42 @@ class Home extends Component{
         });
 
 
-        this.timeout9 = setTimeout(() => {this.setState({hasNewFromFollowing: hasNewFromFollow})}, 1000);
+        var hasRecent = false;
+        const recentRef = firebase.database().ref(`users/${currentUser.uid}/widgets`).child("Recently Played");
+        recentRef.once("value", function (data) {
+            if(data.val()){
+                hasRecent = true;
+
+
+                firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).on("value", function (snapshot) {
+                    Variables.state.recentlyPlayed = [];
+                    snapshot.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.val().id}`).on("value", function (data) {
+                            if(data.val()){
+                                Variables.state.recentlyPlayed.push(data.val())
+                            }
+
+                        })
+                    });
+                    Variables.state.recentlyPlayed.reverse();
+                });
+
+            }
+        });
+
+
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.timeout1 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent),  data: Variables.state.homeFollowedContent, dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory), widgets: Variables.state.widgets, order: Object.keys(this.state.widgets),})},1000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},2400);
+        this.timeout3 = setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},3800);
+        this.timeout4 = setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},3200);
+
+        this.timeout5 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent),  data: Variables.state.homeFollowedContent, dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory), widgets: Variables.state.widgets, order: Object.keys(this.state.widgets),})},3000);
+        this.timeout6 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},6400);
+        this.timeout7 = setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},6800);
+        this.timeout8 = setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},7200);
+
+        this.timeout9 = setTimeout(() => {this.setState({hasNewFromFollowing: hasNewFromFollow, hasRecent: hasRecent, refreshing: false})}, 1000);
         this.timeout10 = setTimeout(() => {this.setState({hasLatest: hasLatest})}, 1000);
         this.timeout11 = setTimeout(() => {this.setState({hasFromTess: hasFromTess})}, 1000);
         this.timeout12 = setTimeout(() => {this.setState({hasSelectedByTess: hasSelectedByTess})}, 1000);
@@ -1142,40 +1244,7 @@ class Home extends Component{
 
 
 
-
     }
-
-
-
-    pressFitness = () => {
-        this.props.navigator.push({
-            screen: 'Fitness',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressCurrEvents = () => {
-        this.props.navigator.push({
-            screen: 'News',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressTech = () => {
-        this.props.navigator.push({
-            screen: 'Tech',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressTravel = () => {
-        this.props.navigator.push({
-            screen: 'Travel',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-
 
     pressTwit(){
         const url = 'https://twitter.com/discovertess';
@@ -1205,39 +1274,66 @@ class Home extends Component{
     }
 
 
-    _renderWidget(rawData, data, title){
-        if(rawData.length > 0){
+
+    returnList(title){
+        if(title == "New From Following"){
+            return Variables.state.homeFollowedContent;
+        }
+        else if(title == "Latest"){
+            return Variables.state.newPodcasts;
+        }
+        else if(title == "From Tess"){
+            return Variables.state.fromTess;
+        }
+        else if(title == "Selected By Tess"){
+            return Variables.state.selectedByTess;
+        }
+        else if(title == "Tech"){
+            return Variables.state.currCategory;
+        }
+        else if(title == "Recently Played"){
+            return Variables.state.recentlyPlayed;
+        }
+
+    }
+
+
+    _renderWidget = (position, data) => {
+        if(data[position]){
+
+            var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+            let input = dataSource.cloneWithRows(this.returnList(data[position].title));
 
 
             return(
                 <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
                     <View style={{flexDirection:'row'}}>
                         <View style={{alignSelf:'flex-start'}}>
-                            <Text style={styles.title}>{title}</Text>
+                            <Text style={styles.title}>{data[position].title}</Text>
                         </View>
 
                         <View style={{alignSelf:'flex-end', flex:1}}>
                             <TouchableOpacity onPress={() => {
 
-                                let data = rawData;
+                                const {title} = data[position];
 
                                 this.props.navigator.push({
                                     screen: 'ViewAll',
                                     title: title,
-                                    passProps: {data},
+                                    passProps: {data: this.returnList(data[position].title), title},
                                 });
 
 
                             }}  style={{alignSelf:'flex-end', flexDirection:'row', marginTop: 3}}>
                                 <Text style={styles.viewAll}>View all</Text>
                                 <Icon style={{
-                                    fontSize: 16,
+                                    fontSize: 18,
                                     backgroundColor: 'transparent',
                                     marginTop: 20,
                                     color: '#506dcf',
                                     marginLeft: 10,
                                     marginRight: 15,
-                                }} name="ios-arrow-forward">
+                                }} name="angle-right">
                                 </Icon>
                             </TouchableOpacity>
                         </View>
@@ -1247,7 +1343,7 @@ class Home extends Component{
                         showsHorizontalScrollIndicator={false}
                         horizontal={true}
                         enableEmptySections
-                        dataSource={data}
+                        dataSource={input}
                         renderRow={this.renderRowNewPodcasts}
                     />
 
@@ -1256,92 +1352,545 @@ class Home extends Component{
 
 
         }
+    };
+
+
+
+    renderRowNewPodcasts(podcast) {
+        return <ListItemUsers podcast={podcast} />;
     }
 
+
+
+    _renderProfileImage = () => {
+
+            return(
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: 130, width: 130, borderRadius: 4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)' }}>
+                    <Icon style={{
+                        textAlign: 'center',
+                        fontSize: 80,
+                        color: 'white',
+                        marginTop: 20,
+                    }} name="user-circle">
+                    </Icon>
+                </View>
+            )
+
+    };
+
+
+    renderRowCard(podcast) {
+
+        return (
+            <View style = {{marginHorizontal: 10, marginVertical: 7}}>
+                <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20 }}>
+                    <View>
+                        <Text style={styles.titleCard}>{podcast.podcastTitle.toString().slice(0,44)}</Text>
+                        <TouchableWithoutFeedback>
+                            <View style={{padding: 10, flexDirection: 'row'}}>
+
+                                <View style = {{alignSelf: 'center'}}>
+                                    {this._renderProfileImage()}
+                                </View>
+
+                                <View style = {{alignSelf: 'center', flex:1, marginHorizontal: 10}}>
+                                    <Text style={styles.artistTitle}>{podcast.podcastDescription.slice(0,140)}</Text>
+                                    <View style={{flexDirection: 'row', marginTop: 15}}>
+                                        <TouchableOpacity style= {{backgroundColor:'#3e4164', flex: 1, alignSelf: 'flex-start', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 5, marginHorizontal: 7}} onPress={() => {
+
+
+                                            const {currentUser} = firebase.auth();
+                                            const user = currentUser.uid;
+                                            const podcastTitle = podcast.podcastTitle;
+                                            const podcastDescription = podcast.podcastDescription;
+                                            const podcastCategory = podcast.podcastCategory;
+                                            const rss = podcast.rss;
+                                            const podcastURL = podcast.podcastURL;
+                                            const podcastArtist = podcast.podcastArtist;
+                                            const id = podcast.id;
+
+                                            if(rss){
+
+                                                AsyncStorage.setItem("currentPodcast", id);
+                                                AsyncStorage.setItem("currentTime", "0");
+                                                Variables.state.seekTo = 0;
+                                                Variables.state.currentTime = 0;
+
+                                                firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
+                                                    if(snap.val()){
+                                                        Variables.state.currentUsername = snap.val().username;
+                                                    }
+                                                    else {
+                                                        Variables.state.currentUsername = podcastArtist;
+                                                    }
+                                                });
+
+                                                firebase.database().ref(`podcasts/${id}/likes`).on("value", function (snap) {
+                                                    Variables.state.likers = [];
+                                                    Variables.state.liked = false;
+                                                    snap.forEach(function (data) {
+                                                        if (data.val()) {
+                                                            if(data.val().user == currentUser.uid){
+                                                                Variables.state.liked = true;
+                                                            }
+                                                            Variables.state.likers.push(data.val());
+                                                        }
+                                                    });
+                                                });
+
+
+                                                firebase.database().ref(`podcasts/${id}/plays`).on("value", function (snap) {
+                                                    Variables.state.podcastsPlays = 0;
+                                                    snap.forEach(function (data) {
+                                                        if (data.val()) {
+                                                            Variables.state.podcastsPlays++;
+                                                        }
+                                                    });
+                                                });
+
+
+                                                firebase.database().ref(`podcasts/${id}/plays`).child(user).update({user});
+
+
+
+                                                firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed/`).once("value", function (snap) {
+                                                    snap.forEach(function (data) {
+                                                        if(data.val().id == id){
+                                                            firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed/${data.key}`).remove()
+                                                        }
+                                                    });
+                                                    firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed/`).push({id});
+                                                });
+
+
+                                                Variables.pause();
+                                                Variables.setPodcastFile(podcastURL);
+                                                Variables.state.isPlaying = false;
+                                                Variables.state.podcastTitle = podcastTitle;
+                                                Variables.state.podcastArtist = podcastArtist;
+                                                Variables.state.podcastCategory = podcastCategory;
+                                                Variables.state.podcastDescription = podcastDescription;
+                                                Variables.state.podcastID = id;
+                                                Variables.state.favorited = false;
+                                                Variables.state.userProfileImage = '';
+                                                Variables.play();
+                                                Variables.state.isPlaying = true;
+                                                Variables.state.rss = true;
+
+
+
+                                                firebase.database().ref(`users/${podcastArtist}/profileImage`).once("value", function (snapshot) {
+                                                    if(snapshot.val()){
+                                                        Variables.state.userProfileImage = snapshot.val().profileImage
+                                                    }
+                                                });
+
+
+                                                firebase.database().ref(`users/${currentUser.uid}/favorites`).on("value", function (snapshot) {
+                                                    snapshot.forEach(function (data) {
+                                                        if(data.key == id){
+                                                            Variables.state.favorited = true;
+                                                        }
+                                                    })
+                                                })
+
+
+
+                                            }
+                                            else{
+                                                if(id){
+                                                    AsyncStorage.setItem("currentPodcast", id);
+                                                    AsyncStorage.setItem("currentTime", "0");
+
+                                                    firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL().catch(() => {console.warn("file not found")})
+                                                        .then(function(url) {
+
+
+                                                            firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
+                                                                if(snap.val()){
+                                                                    Variables.state.currentUsername = snap.val().username;
+                                                                }
+                                                                else {
+                                                                    Variables.state.currentUsername = podcastArtist;
+                                                                }
+                                                            });
+
+                                                            firebase.database().ref(`podcasts/${id}/likes`).on("value", function (snap) {
+                                                                Variables.state.likers = [];
+                                                                Variables.state.liked = false;
+                                                                snap.forEach(function (data) {
+                                                                    if (data.val()) {
+                                                                        if(data.val().user == currentUser.uid){
+                                                                            Variables.state.liked = true;
+                                                                        }
+                                                                        Variables.state.likers.push(data.val());
+                                                                    }
+                                                                });
+                                                            });
+
+
+                                                            firebase.database().ref(`podcasts/${id}/plays`).on("value", function (snap) {
+                                                                Variables.state.podcastsPlays = 0;
+                                                                snap.forEach(function (data) {
+                                                                    if (data.val()) {
+                                                                        Variables.state.podcastsPlays++;
+                                                                    }
+                                                                });
+                                                            });
+
+
+                                                            firebase.database().ref(`podcasts/${id}/plays`).child(user).update({user});
+
+
+
+                                                            firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed/`).once("value", function (snap) {
+                                                                snap.forEach(function (data) {
+                                                                    if(data.val().id == id){
+                                                                        firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed/${data.key}`).remove()
+                                                                    }
+                                                                });
+                                                                firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed/`).push({id});
+                                                            });
+
+
+                                                            Variables.pause();
+                                                            Variables.setPodcastFile(url);
+                                                            Variables.state.isPlaying = false;
+                                                            Variables.state.podcastTitle = podcastTitle;
+                                                            Variables.state.podcastArtist = podcastArtist;
+                                                            Variables.state.podcastCategory = podcastCategory;
+                                                            Variables.state.podcastDescription = podcastDescription;
+                                                            Variables.state.podcastID = id;
+                                                            Variables.state.favorited = false;
+                                                            Variables.state.userProfileImage = '';
+                                                            Variables.play();
+                                                            Variables.state.isPlaying = true;
+                                                            Variables.state.rss = false;
+
+
+                                                            const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
+                                                            if(storageRef.child('image-profile-uploaded')){
+                                                                storageRef.getDownloadURL()
+                                                                    .then(function(url) {
+                                                                        if(url){
+                                                                            Variables.state.userProfileImage = url;
+                                                                        }
+                                                                    }).catch(function(error) {
+                                                                    //
+                                                                });
+                                                            }
+
+                                                            firebase.database().ref(`users/${currentUser.uid}/favorites`).on("value", function (snapshot) {
+                                                                snapshot.forEach(function (data) {
+                                                                    if(data.key == id){
+                                                                        Variables.state.favorited = true;
+                                                                    }
+                                                                })
+                                                            })
+
+
+                                                        });
+                                                }
+                                                else{
+                                                    firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL().catch(() => {console.warn("file not found")})
+                                                        .then(function(url) {
+
+
+                                                            firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
+                                                                if(snap.val()){
+                                                                    Variables.state.currentUsername = snap.val().username;
+                                                                }
+                                                                else {
+                                                                    Variables.state.currentUsername = podcastArtist;
+                                                                }
+                                                            });
+
+                                                            Variables.pause();
+                                                            Variables.setPodcastFile(url);
+                                                            Variables.state.isPlaying = false;
+                                                            Variables.state.podcastTitle = podcastTitle;
+                                                            Variables.state.podcastArtist = podcastArtist;
+                                                            Variables.state.podcastCategory = podcastCategory;
+                                                            Variables.state.podcastDescription = podcastDescription;
+                                                            Variables.state.podcastID = '';
+                                                            Variables.state.liked = false;
+                                                            Variables.state.favorited = false;
+                                                            Variables.state.likers = [];
+                                                            Variables.state.userProfileImage = '';
+                                                            Variables.play();
+                                                            Variables.state.isPlaying = true;
+                                                            Variables.state.rss = false;
+
+
+                                                            const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
+                                                            if(storageRef.child('image-profile-uploaded')){
+                                                                storageRef.getDownloadURL()
+                                                                    .then(function(url) {
+                                                                        if(url){
+                                                                            Variables.state.userProfileImage = url;
+                                                                        }
+                                                                    }).catch(function(error) {
+                                                                    //
+                                                                });
+                                                            }
+
+                                                        });
+                                                }
+
+                                            }
+
+
+
+                                        }}>
+                                            <Icon style={{
+                                                textAlign: 'center',
+                                                fontSize: 16,
+                                                alignSelf: 'center',
+                                                color: 'white',
+                                            }} name="play">
+                                                <Text style={styles.whiteTitle}> Play</Text>
+                                            </Icon>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style= {{backgroundColor:'#3e4164', flex: 1, alignSelf: 'flex-end', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 5, marginHorizontal: 7}} onPress={() => {
+
+                                            const {currentUser} = firebase.auth();
+                                            const  id  = podcast.id;
+
+                                            firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
+                                                snap.forEach(function (data) {
+                                                    if(data.val().id == id){
+                                                        firebase.database().ref(`users/${currentUser.uid}/queue/${data.key}`).remove()
+                                                    }
+                                                });
+                                                firebase.database().ref(`users/${currentUser.uid}/queue/`).push({id});
+                                            });
+
+                                        }}>
+                                            <Icon style={{
+                                                textAlign: 'center',
+                                                fontSize: 16,
+                                                alignSelf: 'center',
+                                                color: 'white',
+                                            }} name="plus">
+                                                <Text style={styles.whiteTitle}> Queue</Text>
+                                            </Icon>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </View>
+                </View>
+            </View>
+
+        );
+    }
 
 
 
     render() {
 
-        return (
-            <View
-                style={styles.container}>
+        if(this.state.loading){
+            return(
+                <View style={styles.container}>
+                    <ActivityIndicator style={{paddingVertical: 20, alignSelf:'center'}} color='#3e4164' size ="large" />
+                </View>
+            )
+        }
+        else{
+
+            if(this.state.widgets.length > 0){
+
+                return (
+                    <View
+                        style={styles.container}>
 
 
-                <ScrollView
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.refreshing}
-                            onRefresh={this._onRefresh.bind(this)}
+                        <SortableListView
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={this.state.refreshing}
+                                    onRefresh={this._onRefresh.bind(this)}
+                                />}
+                            style={{flex:1}}
+                            data={this.state.widgets}
+                            order={this.state.order}
+                            activeOpacity={0.8}
+                            onMoveStart={() => {this.setState({scroll:false})}}
+                            onMoveEnd={() => {this.setState({scroll:true})}}
+                            onMoveCancel={() => {this.setState({scroll:true})}}
+                            onRowMoved={e => {
+                                this.state.order.splice(e.to, 0, this.state.order.splice(e.from, 1)[0]);
+                                this.forceUpdate();
+                                for(let i = 0; i < this.state.order.length; i++){
+
+                                    const {currentUser} = firebase.auth();
+                                    let position = i;
+                                    firebase.database().ref(`users/${currentUser.uid}/widgets/${this.state.widgets[this.state.order[i]].title}`).update({position})
+
+                                }
+                            }}
+                            renderRow={(row) => {
+
+                                let data = Variables.state.widgets;
+                                let position = row.position;
+
+
+                                if(data[position]){
+
+                                    if(data[position].title == "Catch Up"){
+
+                                        return(
+                                            <TouchableHighlight  underlayColor='#fff' style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 12, marginVertical: 5}} {...this.props.sortHandlers}>
+                                                <View>
+                                                    <ScrollView scrollEnabled = {false}>
+                                                        <SwipeCards
+                                                            cards={this.state.data}
+                                                            renderCard={(cardData) => this.renderRowCard(cardData)}
+                                                            dragY={false}
+                                                            smoothTransition={true}
+                                                            hasMaybeAction={false}
+                                                            onClickHandler={()=>{}}
+                                                            showYup={false}
+                                                            showNope={false}
+                                                            showMaybe={false}
+                                                            renderNoMoreCards={() =>
+                                                                <View style = {{marginHorizontal: 10, marginVertical: 7}}>
+                                                                    <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20, paddingVertical: 60 }}>
+                                                                        <Text style={styles.title}>You're all caught up!</Text>
+                                                                    </View>
+                                                                </View>
+                                                            }
+                                                        />
+                                                    </ScrollView>
+                                                </View>
+                                            </TouchableHighlight>
+                                        )
+
+
+                                    }
+                                    else{
+
+                                        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+                                        let input = dataSource.cloneWithRows(this.returnList(data[position].title));
+
+                                        return(
+                                            <TouchableHighlight underlayColor='#fff' style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 12, marginVertical: 5}} {...this.props.sortHandlers}>
+                                                <View>
+                                                    <View style={{flexDirection:'row'}}>
+                                                        <View style={{alignSelf:'flex-start'}}>
+                                                            <Text style={styles.title}>{data[position].title}</Text>
+                                                        </View>
+
+                                                        <View style={{alignSelf:'flex-end', flex:1}}>
+                                                            <TouchableOpacity onPress={() => {
+
+                                                                const {title} = data[position];
+
+                                                                this.props.navigator.push({
+                                                                    screen: 'ViewAll',
+                                                                    title: title,
+                                                                    passProps: {data: this.returnList(data[position].title), title},
+                                                                });
+
+
+                                                            }}  style={{alignSelf:'flex-end', flexDirection:'row', marginTop: 3}}>
+                                                                <Text style={styles.viewAll}>View all</Text>
+                                                                <Icon style={{
+                                                                    fontSize: 18,
+                                                                    backgroundColor: 'transparent',
+                                                                    marginTop: 8,
+                                                                    color: '#506dcf',
+                                                                    marginLeft: 10,
+                                                                    marginRight: 15,
+                                                                }} name="angle-right">
+                                                                </Icon>
+                                                            </TouchableOpacity>
+                                                        </View>
+                                                    </View>
+
+                                                    <ListView
+                                                        showsHorizontalScrollIndicator={false}
+                                                        horizontal={true}
+                                                        enableEmptySections
+                                                        dataSource={input}
+                                                        renderRow={this.renderRowNewPodcasts}
+                                                    />
+                                                </View>
+
+                                            </TouchableHighlight>
+                                        );
+
+                                    }
+
+                                }
+
+                            }}
                         />
-                    }
-                >
 
 
-                    <SwipeCards
-                        cards={this.state.data}
-                        renderCard={(cardData) => <ListItemCard podcast={cardData} />}
-                        dragY={false}
-                        smoothTransition={true}
-                        hasMaybeAction={false}
-                        onClickHandler={()=>{}}
-                        showYup={false}
-                        showNope={false}
-                        showMaybe={false}
-                        yupText="Add to Queue"
-                        yupStyle={styles.textContainer}
-                        yupTextStyle={styles.yupTitle}
-                        nopeText="No Thanks"
-                        nopeStyle={styles.textContainer}
-                        nopeTextStyle={styles.nopeTitle}
-                        renderNoMoreCards={() =>
-                            <View style = {{marginHorizontal: 10, marginVertical: 7}}>
-                                <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20, paddingVertical: 60 }}>
-                                    <Text style={styles.titleCard}>You're all caught up!</Text>
-                                </View>
-                            </View>
-                        }
-                    />
+                        <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
 
-
-                    {this._renderWidget(Variables.state.homeFollowedContent, this.state.dataSourceFol, "New From Following")}
-
-                    {this._renderWidget(Variables.state.newPodcasts, this.state.dataSource, "Latest")}
-
-                    {this._renderWidget(Variables.state.selectedByTess, this.state.dataSourceSel, "Selected By Tess")}
-
-                    {this._renderWidget(Variables.state.fromTess, this.state.dataSourceTess, "From Tess")}
-
-                    {this._renderWidget(Variables.state.currCategory, this.state.dataSourceTech, "Tech")}
+                            <TouchableOpacity onPress={() => {
+                                this.props.navigator.push({
+                                    screen: 'AddWidget',
+                                    title: 'Add a Widget'
+                                })
+                            }}>
+                                <Text style={styles.titleAdd}>Add a widget</Text>
+                            </TouchableOpacity>
+                        </View>
 
 
 
-                    <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
-                        <Text style={styles.titleMini}>This is your home screen, you can add whatever you want.</Text>
 
-                        <TouchableOpacity onPress={() => {
-                            this.props.navigator.push({
-                                screen: 'AddWidget',
-                                title: 'Add a Widget'
-                            })
-                        }}>
-                            <Text style={styles.titleAdd}>Add a widget</Text>
-                        </TouchableOpacity>
+                        <Player/>
+                        <PlayerBottom navigator={this.props.navigator}/>
+
                     </View>
 
+                );
 
 
-                </ScrollView>
+            }
+            else{
+
+                return (
+                    <View
+                        style={styles.container}>
+
+                        <ScrollView
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={this.state.refreshing}
+                                    onRefresh={this._onRefresh.bind(this)}
+                                />}
+                        >
+                            <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
+                                <Text style={styles.titleMini}>This is your home screen, you can add whatever you want.</Text>
+
+                                <TouchableOpacity onPress={() => {
+                                    this.props.navigator.push({
+                                        screen: 'AddWidget',
+                                        title: 'Add a Widget'
+                                    })
+                                }}>
+                                    <Text style={styles.titleAdd}>Add a widget</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </ScrollView>
 
 
+                        <Player/>
+                        <PlayerBottom navigator={this.props.navigator}/>
 
+                    </View>
 
-                <Player/>
-                <PlayerBottom navigator={this.props.navigator}/>
+                );
 
-            </View>
+            }
 
-        );
+        }
 
 
     }
@@ -1369,18 +1918,11 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 16,
-        marginTop: 20,
+        marginTop: 10,
         paddingLeft: 20,
         backgroundColor: 'transparent',
     },
-    titleCard: {
-        color: '#3e4164',
-        textAlign: 'center',
-        fontStyle: 'normal',
-        fontFamily: 'Montserrat-SemiBold',
-        fontSize: 16,
-        backgroundColor: 'transparent',
-    },
+
     titleMini: {
         color: '#3e4164',
         textAlign: 'center',
@@ -1433,7 +1975,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 12,
-        marginTop: 20,
+        marginTop: 10,
         paddingBottom: 10,
         backgroundColor: 'transparent',
     },
@@ -1502,6 +2044,17 @@ const styles = StyleSheet.create({
 
     },
 
+    titleCard: {
+        color: '#3e4164',
+        textAlign: 'left',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 14,
+        marginLeft: 10,
+        marginTop: 10,
+        backgroundColor: 'transparent'
+    },
 
 });
 

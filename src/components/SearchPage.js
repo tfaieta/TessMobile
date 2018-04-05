@@ -118,12 +118,12 @@ static navigatorStyle = {
 
                 <View style={styles.backColor}>
 
-                    <View style={styles.backButtonContainer}>
-                        <TouchableOpacity onPress={this.Back}>
+                    <TouchableOpacity style={styles.backButtonContainer} onPress={this.Back}>
+                        <View>
                             <Icon style={{textAlign:'left', marginRight:0,marginLeft: 0,paddingTop: 0, fontSize: 30,color: '#007aff', }} name="ios-arrow-back">
                             </Icon>
-                        </TouchableOpacity>
-                    </View>
+                        </View>
+                    </TouchableOpacity>
 
                     <SearchBar
                         lightTheme

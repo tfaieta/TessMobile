@@ -37,6 +37,7 @@
 		"react-native-settings-list": "^1.6.1",
 		"react-native-simple-picker": "^1.4.3",
 		"react-native-slider": "^0.10.0",
+		"react-native-sortable-listview": "^0.2.8",
 		"react-native-sound": "^0.10.4",
 		"react-native-swipe-cards": "^0.1.1",
 		"react-native-swipe-gestures": "^1.0.2",
