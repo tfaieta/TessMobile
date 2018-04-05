@@ -241,6 +241,21 @@ class AddWidget extends Component{
         });
 
 
+
+        firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).on("value", function (snapshot) {
+            Variables.state.recentlyPlayed = [];
+            snapshot.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.val().id}`).on("value", function (data) {
+                    if(data.val()){
+                        Variables.state.recentlyPlayed.push(data.val())
+                    }
+
+                })
+            });
+            Variables.state.recentlyPlayed.reverse();
+        });
+
+
     }
 
 
@@ -299,20 +314,34 @@ class AddWidget extends Component{
             dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess),
             dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess),
             dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory),
+            dataSourceRecent: dataSource.cloneWithRows(Variables.state.recentlyPlayed),
             url: '',
             refreshing: false,
-            userProfileImage: ''
+            userProfileImage: '',
+
+            techAdded: false,
+            travelAdded: false,
+            fitnessAdded: false,
+            newsAdded: false,
+            recentlyAdded: false
         };
-        this.timeout1 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent), dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory)  })},2000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},2400);
-        this.timeout3 = setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},3800);
-        this.timeout4 = setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},3200);
+        this.timeout1 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent), recentlyAdded: added,  dataSourceRecent: dataSource.cloneWithRows(Variables.state.recentlyPlayed), dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory)  })},2000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},2000);
+        this.timeout3 = setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},2000);
+        this.timeout4 = setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},2000);
 
-        this.timeout5 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent), dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory)  })},6000);
-        this.timeout6 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},6400);
-        this.timeout7 = setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},6800);
-        this.timeout8 = setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},7200);
+        this.timeout5 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent), dataSourceRecent: dataSource.cloneWithRows(Variables.state.recentlyPlayed), dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory)  })},4000);
+        this.timeout6 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},4400);
+        this.timeout7 = setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},4800);
+        this.timeout8 = setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},5200);
 
+        const {currentUser} = firebase.auth();
+        let added = false;
+        firebase.database().ref(`users/${currentUser.uid}/widgets/Recently Played`).once("value", function (data) {
+            if(data.val()){
+                added = true;
+            }
+        });
     }
 
 
@@ -332,54 +361,91 @@ class AddWidget extends Component{
 
     }
 
-    _widgetCat(title){
+    renderAdd(state,title){
+
+        if(!state){
+            return(
+                <TouchableOpacity style={{alignSelf:'flex-end'}} onPress={() => {
+                    const title = "Tech";
+
+                    const {currentUser} = firebase.auth();
+                    firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).once("value", function (data) {
+                        if(data.val()){
+                            console.warn("already a widget");
+                        }
+                        else{
+                            firebase.database().ref(`users/${currentUser.uid}/widgets/`).once("value", function (snapshot) {
+                                const position = snapshot.numChildren();
+                                firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).update({title, position});
+                            })
+
+                        }
+                    });
+                    state = true;
+
+
+                }}>
+                    <View style={{alignSelf:'flex-end', flexDirection:'row',}}>
+                        <Icon style={{
+                            fontSize: 26,
+                            backgroundColor: 'transparent',
+                            color: '#eaeaea',
+                            marginLeft: 10,
+                            marginRight: 15,
+                        }} name="md-add">
+                        </Icon>
+                    </View>
+                </TouchableOpacity>
+            )
+
+        }
+        else{
+            return(
+                <TouchableOpacity style={{alignSelf:'flex-end'}} onPress={(title) => {
+
+                    const {currentUser} = firebase.auth();
+                    firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).once("value", function (data) {
+                        if(data.val()){
+                            firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).remove();
+                        }
+                        else{
+                            console.warn("already is")
+                        }
+                    });
+                    state = false;
+
+
+                }}>
+                    <View style={{alignSelf:'center', flexDirection:'row',}}>
+                        <Icon style={{
+                            fontSize: 26,
+                            backgroundColor: 'transparent',
+                            color: '#d15564',
+                            marginLeft: 10,
+                            marginRight: 15,
+                        }} name="md-remove">
+                        </Icon>
+                    </View>
+                </TouchableOpacity>
+
+            )
+        }
+
+    }
+
+    _widgetCat = (title) => {
 
 
         return(
             <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
                 <View style={{flexDirection:'row'}}>
-                    <View style={{alignSelf:'flex-start'}}>
+                    <View style={{alignSelf:'flex-start', paddingVertical: 10}}>
                         <Text style={styles.title}>{title}</Text>
                     </View>
 
                 </View>
 
                 <ScrollView style={{height: 122, marginVertical: 10}} horizontal={true} showsHorizontalScrollIndicator={false}>
-
-                    <TouchableOpacity style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, borderRadius: 10, borderWidth: 0.1}} onPress={this.pressTech}>
-                        <Image
-                            style={{width: 218, height:122, position: 'absolute', alignSelf: 'center', opacity: 0.9, borderRadius: 10, borderWidth: 0.1}}
-                            source={require('tess/src/images/tech.jpeg')}
-                        >
-                            <Icon style={{
-                                textAlign: 'center',
-                                marginTop: 30,
-                                fontSize: 30,
-                                backgroundColor: 'transparent',
-                                color: '#FFF'
-                            }} name="md-phone-portrait">
-                            </Icon>
-                            <Text style={styles.catTitle}>Tech</Text>
-                        </Image>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, borderRadius: 10, borderWidth: 0.1}} onPress={this.pressTravel}>
-                        <Image
-                            style={{width: 218, height:122, position: 'absolute', alignSelf: 'center', opacity: 0.9, borderRadius: 10, borderWidth: 0.1}}
-                            source={require('tess/src/images/travel.png')}
-                        >
-                            <Icon style={{
-                                textAlign: 'center',
-                                marginTop: 30,
-                                fontSize: 30,
-                                backgroundColor: 'transparent',
-                                color: '#FFF'
-                            }} name="md-plane">
-                            </Icon>
-                            <Text style={styles.catTitle}>Travel</Text>
-                        </Image>
-                    </TouchableOpacity>
-
 
                     <TouchableOpacity style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, borderRadius: 10, borderWidth: 0.1}} onPress={this.pressFitness}>
                         <Image
@@ -395,6 +461,9 @@ class AddWidget extends Component{
                             }} name="ios-flash">
                             </Icon>
                             <Text style={styles.catTitle}>Fitness</Text>
+
+                            {this.renderAdd(this.state.fitnessAdded, "Fitness")}
+
                         </Image>
                     </TouchableOpacity>
 
@@ -412,6 +481,49 @@ class AddWidget extends Component{
                             }} name="md-globe">
                             </Icon>
                             <Text style={styles.catTitle}>News</Text>
+
+                            {this.renderAdd(this.state.newsAdded, "News")}
+
+                        </Image>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, borderRadius: 10, borderWidth: 0.1}} onPress={this.pressTech}>
+                        <Image
+                            style={{width: 218, height:122, position: 'absolute', alignSelf: 'center', opacity: 0.9, borderRadius: 10, borderWidth: 0.1}}
+                            source={require('tess/src/images/tech.jpeg')}
+                        >
+                            <Icon style={{
+                                textAlign: 'center',
+                                marginTop: 30,
+                                fontSize: 30,
+                                backgroundColor: 'transparent',
+                                color: '#FFF'
+                            }} name="md-phone-portrait">
+                            </Icon>
+                            <Text style={styles.catTitle}>Tech</Text>
+
+                            {this.renderAdd(this.state.techAdded, "Tech")}
+
+                        </Image>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{width:218, height:122, backgroundColor: '#2A2A30', opacity: 1, marginLeft: 20, paddingVertical: 20, borderRadius: 10, borderWidth: 0.1}} onPress={this.pressTravel}>
+                        <Image
+                            style={{width: 218, height:122, position: 'absolute', alignSelf: 'center', opacity: 0.9, borderRadius: 10, borderWidth: 0.1}}
+                            source={require('tess/src/images/travel.png')}
+                        >
+                            <Icon style={{
+                                textAlign: 'center',
+                                marginTop: 30,
+                                fontSize: 30,
+                                backgroundColor: 'transparent',
+                                color: '#FFF'
+                            }} name="md-plane">
+                            </Icon>
+                            <Text style={styles.catTitle}>Travel</Text>
+
+                            {this.renderAdd(this.state.travelAdded, "Travel")}
+
                         </Image>
                     </TouchableOpacity>
 
@@ -424,7 +536,139 @@ class AddWidget extends Component{
 
 
 
+    };
+
+
+    _widgetPlaylists(title){
+
+
+        return(
+            <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
+                <View style={{flexDirection:'row'}}>
+                    <View style={{alignSelf:'flex-start', paddingVertical: 10}}>
+                        <Text style={styles.title}>{title}</Text>
+                        <Text style={styles.artistTitle}>You do not have any playlists to add.</Text>
+                    </View>
+
+                </View>
+
+
+
+            </View>
+        );
+
     }
+
+
+    _widgetRecent = () => {
+
+
+        if(this.state.recentlyAdded){
+
+            return(
+                <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
+                    <View style={{flexDirection:'row',}}>
+                        <View style={{flex: 1, alignSelf:'flex-start', paddingVertical: 10}}>
+                                <Text style={styles.title}>Recently Played</Text>
+                            <Text style={styles.artistTitle}>View your play history.</Text>
+                        </View>
+
+                            <TouchableOpacity style={{alignSelf:'center'}} onPress={() => {
+
+                                const {currentUser} = firebase.auth();
+                                firebase.database().ref(`users/${currentUser.uid}/widgets/Recently Played`).once("value", function (data) {
+                                    if(data.val()){
+                                        firebase.database().ref(`users/${currentUser.uid}/widgets/Recently Played`).remove();
+                                    }
+                                    else{
+                                        console.warn("already is")
+                                    }
+                                });
+                                this.setState({recentlyAdded: false})
+
+
+                            }}>
+                                <View style={{alignSelf:'center', flexDirection:'row',}}>
+                                    <Icon style={{
+                                        fontSize: 26,
+                                        backgroundColor: 'transparent',
+                                        color: '#d15564',
+                                        marginLeft: 10,
+                                        marginRight: 15,
+                                    }} name="md-remove">
+                                    </Icon>
+                                </View>
+                            </TouchableOpacity>
+                    </View>
+
+                    <ListView
+                        showsHorizontalScrollIndicator={false}
+                        horizontal={true}
+                        enableEmptySections
+                        dataSource={this.state.dataSourceRecent}
+                        renderRow={this.renderRowPodcasts}
+                    />
+                </View>
+            );
+
+        }
+        else{
+
+            return(
+                <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
+                    <View style={{flexDirection:'row' ,}}>
+                        <View style={{flex: 1, alignSelf:'flex-start', paddingVertical: 10}}>
+                                <Text style={styles.title}>Recently Played</Text>
+                            <Text style={styles.artistTitle}>View your play history.</Text>
+                        </View>
+
+                            <TouchableOpacity style={{alignSelf:'center'}} onPress={() => {
+                                const title = "Recently Played";
+
+                                const {currentUser} = firebase.auth();
+                                firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).once("value", function (data) {
+                                    if(data.val()){
+                                        console.warn("already a widget");
+                                    }
+                                    else{
+                                        firebase.database().ref(`users/${currentUser.uid}/widgets/`).once("value", function (snapshot) {
+                                            const position = snapshot.numChildren();
+                                            firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).update({title, position});
+                                        })
+
+                                    }
+                                });
+                                this.setState({recentlyAdded: true})
+
+
+                            }}>
+                                <View style={{alignSelf:'center', flexDirection:'row',}}>
+                                    <Icon style={{
+                                        fontSize: 26,
+                                        backgroundColor: 'transparent',
+                                        color: '#506dcf',
+                                        marginLeft: 10,
+                                        marginRight: 15,
+                                    }} name="md-add">
+                                    </Icon>
+                                </View>
+                            </TouchableOpacity>
+                    </View>
+
+                    <ListView
+                        showsHorizontalScrollIndicator={false}
+                        horizontal={true}
+                        enableEmptySections
+                        dataSource={this.state.dataSourceRecent}
+                        renderRow={this.renderRowPodcasts}
+                    />
+                </View>
+            );
+
+        }
+
+
+    };
 
 
 
@@ -436,6 +680,13 @@ class AddWidget extends Component{
 
                 <ScrollView>
 
+
+                    {this._widgetCat("Categories")}
+
+                    {this._widgetPlaylists("Playlists")}
+
+                    {this._widgetRecent()}
+
                     {this._widget(Variables.state.homeFollowedContent.length, this.state.dataSourceFol, "Catch Up")}
 
                     {this._widget(Variables.state.homeFollowedContent.length, this.state.dataSourceFol, "New From Following")}
@@ -445,8 +696,6 @@ class AddWidget extends Component{
                     {this._widget(Variables.state.selectedByTess.length, this.state.dataSourceSel, "Selected By Tess")}
 
                     {this._widget(Variables.state.fromTess.length, this.state.dataSourceTess, "From Tess")}
-
-                    {this._widget(Variables.state.currCategory.length, this.state.dataSourceTech, "Tech")}
 
 
                 </ScrollView>
@@ -484,11 +733,10 @@ const styles = StyleSheet.create({
 
     title: {
         color: '#3e4164',
-        textAlign: 'center',
+        textAlign: 'left',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 16,
-        marginTop: 20,
         paddingLeft: 20,
         backgroundColor: 'transparent',
     },
@@ -500,7 +748,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         backgroundColor: 'transparent',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-SemiBold',
     },
 
     titleCatchUp: {
@@ -522,6 +770,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 12,
         backgroundColor: 'transparent',
+        marginHorizontal: 20
     },
 
 });

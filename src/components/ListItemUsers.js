@@ -109,7 +109,7 @@ class ListItemUsers extends Component {
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom:20, height: height/5.2, width: height/5.2, borderRadius: 4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)' }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom:10, height: height/5.2, width: height/5.2, borderRadius: 4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)' }}>
                     <Icon style={{
                         textAlign: 'center',
                         fontSize: 80,
@@ -122,7 +122,7 @@ class ListItemUsers extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom:20, height: height/5.2, width: height/5.2  }}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom:10, height: height/5.2, width: height/5.2  }}>
                     <Image
                         style={{height: height/5.2, width: height/5.2, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4}}
                         source={{uri: this.state.profileImage}}

@@ -35,7 +35,7 @@ class Home extends Component{
 
 
         Variables.state.widgets = [];
-        firebase.database().ref(`users/${currentUser.uid}/widgets`).on("value", function (snapshot) {
+        firebase.database().ref(`users/${currentUser.uid}/widgets`).once("value", function (snapshot) {
             
             snapshot.forEach(function (data) {
                 if(data.val())
@@ -309,7 +309,35 @@ class Home extends Component{
         });
 
 
-        this.timeout9 = setTimeout(() => {this.setState({hasNewFromFollowing: hasNewFromFollow})}, 1000);
+
+        var hasRecent = false;
+        const recentRef = firebase.database().ref(`users/${currentUser.uid}/widgets`).child("Recently Played");
+        recentRef.once("value", function (data) {
+            if(data.val()){
+                hasRecent = true;
+
+
+                firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).on("value", function (snapshot) {
+                    Variables.state.recentlyPlayed = [];
+                    snapshot.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.val().id}`).on("value", function (data) {
+                            if(data.val()){
+                                Variables.state.recentlyPlayed.push(data.val())
+                            }
+
+                        })
+                    });
+                    Variables.state.recentlyPlayed.reverse();
+                });
+
+            }
+        });
+
+
+
+
+
+        this.timeout9 = setTimeout(() => {this.setState({hasNewFromFollowing: hasNewFromFollow, hasRecent: hasRecent})}, 1000);
         this.timeout10 = setTimeout(() => {this.setState({hasLatest: hasLatest})}, 1000);
         this.timeout11 = setTimeout(() => {this.setState({hasFromTess: hasFromTess})}, 1000);
         this.timeout12 = setTimeout(() => {this.setState({hasSelectedByTess: hasSelectedByTess})}, 1000);
@@ -366,6 +394,7 @@ class Home extends Component{
             hasFromTess: false,
             hasSelectedByTess: false,
             hasTech: false,
+            hasRecent: false,
             widgets: Variables.state.widgets,
             scroll: true,
             order: Object.keys([]),
@@ -874,12 +903,31 @@ class Home extends Component{
     }
 
     _onRefresh() {
-        this.setState({refreshing: true});
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.setState({refreshing: true, widget: Variables.state.widgets,
+            hasNewFromFollowing: false,
+            hasLatest: false,
+            hasFromTess: false,
+            hasSelectedByTess: false,
+            hasTech: false,
+            hasRecent: false,
+            widgets: Variables.state.widgets,
+            scroll: true,
+            order: Object.keys([]),
+            loading: false,
+            data: Variables.state.homeFollowedContent,
+            dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts),
+            dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent),
+            dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess),
+            dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess),
+            dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory),
+            url: '',
+            userProfileImage: ''
+        });
+
         const {currentUser} = firebase.auth();
-
-
         Variables.state.widgets = [];
-        firebase.database().ref(`users/${currentUser.uid}/widgets`).on("value", function (snapshot) {
+        firebase.database().ref(`users/${currentUser.uid}/widgets`).once("value", function (snapshot) {
 
             snapshot.forEach(function (data) {
                 if(data.val())
@@ -1152,6 +1200,31 @@ class Home extends Component{
             }
         });
 
+
+        var hasRecent = false;
+        const recentRef = firebase.database().ref(`users/${currentUser.uid}/widgets`).child("Recently Played");
+        recentRef.once("value", function (data) {
+            if(data.val()){
+                hasRecent = true;
+
+
+                firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).on("value", function (snapshot) {
+                    Variables.state.recentlyPlayed = [];
+                    snapshot.forEach(function (snap) {
+                        firebase.database().ref(`podcasts/${snap.val().id}`).on("value", function (data) {
+                            if(data.val()){
+                                Variables.state.recentlyPlayed.push(data.val())
+                            }
+
+                        })
+                    });
+                    Variables.state.recentlyPlayed.reverse();
+                });
+
+            }
+        });
+
+
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.timeout1 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent),  data: Variables.state.homeFollowedContent, dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory), widgets: Variables.state.widgets, order: Object.keys(this.state.widgets),})},1000);
         this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},2400);
@@ -1163,7 +1236,7 @@ class Home extends Component{
         this.timeout7 = setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},6800);
         this.timeout8 = setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},7200);
 
-        this.timeout9 = setTimeout(() => {this.setState({hasNewFromFollowing: hasNewFromFollow, refreshing: false})}, 1000);
+        this.timeout9 = setTimeout(() => {this.setState({hasNewFromFollowing: hasNewFromFollow, hasRecent: hasRecent, refreshing: false})}, 1000);
         this.timeout10 = setTimeout(() => {this.setState({hasLatest: hasLatest})}, 1000);
         this.timeout11 = setTimeout(() => {this.setState({hasFromTess: hasFromTess})}, 1000);
         this.timeout12 = setTimeout(() => {this.setState({hasSelectedByTess: hasSelectedByTess})}, 1000);
@@ -1217,6 +1290,9 @@ class Home extends Component{
         }
         else if(title == "Tech"){
             return Variables.state.currCategory;
+        }
+        else if(title == "Recently Played"){
+            return Variables.state.recentlyPlayed;
         }
 
     }
@@ -1639,6 +1715,7 @@ class Home extends Component{
                             style={{flex:1}}
                             data={this.state.widgets}
                             order={this.state.order}
+                            activeOpacity={0.8}
                             onMoveStart={() => {this.setState({scroll:false})}}
                             onMoveEnd={() => {this.setState({scroll:true})}}
                             onMoveCancel={() => {this.setState({scroll:true})}}
@@ -1664,7 +1741,7 @@ class Home extends Component{
                                     if(data[position].title == "Catch Up"){
 
                                         return(
-                                            <TouchableHighlight  underlayColor='#fff' style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}} {...this.props.sortHandlers}>
+                                            <TouchableHighlight  underlayColor='#fff' style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 12, marginVertical: 5}} {...this.props.sortHandlers}>
                                                 <View>
                                                     <ScrollView scrollEnabled = {false}>
                                                         <SwipeCards
@@ -1698,20 +1775,11 @@ class Home extends Component{
                                         let input = dataSource.cloneWithRows(this.returnList(data[position].title));
 
                                         return(
-                                            <TouchableHighlight underlayColor='#fff' style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}} {...this.props.sortHandlers}>
+                                            <TouchableHighlight underlayColor='#fff' style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 12, marginVertical: 5}} {...this.props.sortHandlers}>
                                                 <View>
                                                     <View style={{flexDirection:'row'}}>
                                                         <View style={{alignSelf:'flex-start'}}>
-                                                            <Icon style={{
-                                                                fontSize: 16,
-                                                                backgroundColor: 'transparent',
-                                                                marginTop: 10,
-                                                                color: '#3e4164',
-                                                                marginLeft: 10,
-                                                                marginRight: 15,
-                                                            }} name="bars">
-                                                                <Text style={styles.title}>  {data[position].title}</Text>
-                                                            </Icon>
+                                                            <Text style={styles.title}>{data[position].title}</Text>
                                                         </View>
 
                                                         <View style={{alignSelf:'flex-end', flex:1}}>

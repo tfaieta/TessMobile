@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "./Variables";
 import firebase from 'firebase';
 import ListItemUsers from "./ListItemUsers";
+import SwipeCards from 'react-native-swipe-cards';
 
 
 var {height, width} = Dimensions.get('window');
@@ -24,19 +25,24 @@ class Widget extends Component{
     constructor(props){
         super(props);
 
-        this.state={
-            added: false,
-            data: "",
-            length: 0,
-            title: "",
-            description: '',
-        };
-
-
         const {currentUser} = firebase.auth();
         const {title} = this.props;
         const {data} = this.props;
         const {length} = this.props;
+
+        this.state={
+            added: false,
+            data: data,
+            length: length,
+            title: title,
+            description: '',
+            cards: [
+                {title: 'Swipe left or right'},
+                {title: 'Each new unheard episode will show up here'},
+                {title: 'Never miss out on your favorite podcast!'},
+            ]
+        };
+
 
         let added = false;
         firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).once("value", function (data) {
@@ -47,7 +53,7 @@ class Widget extends Component{
         this.timeout = setTimeout(() => {
             this.setState({added: added, title: title, data: data, length: length});
             if(this.state.title == "Catch Up"){
-                this.setState({description: "Don't miss out on new episodes since your last visit."})
+                this.setState({description: "Don't miss out on new episodes since your last visit. Swipe to catch up."})
             }
             else if(this.state.title == "New From Following"){
                 this.setState({description: "All the new episodes from the creators you care about."})
@@ -77,96 +83,227 @@ class Widget extends Component{
 
     render() {
 
-        if(this.state.added){
-                    return(
-                        <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
-                            <View style={{flexDirection:'row'}}>
-                                <View style={{flex:1, alignSelf:'flex-start', paddingVertical: 10}}>
-                                    <Text style={styles.title}>{this.state.title}</Text>
-                                    <Text style={styles.artistTitle}>{this.state.description}</Text>
-                                </View>
+        if(this.state.title == "Catch Up"){
 
-                                <TouchableOpacity style={{alignSelf:'center'}} onPress={() => {
-                                    let title = this.state.title;
-
-                                    const {currentUser} = firebase.auth();
-                                    firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).once("value", function (data) {
-                                        if(data.val()){
-                                            firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).remove();
-                                        }
-                                        else{
-                                            console.warn("already is")
-                                        }
-                                    });
-                                    this.setState({added: false})
-
-
-                                }}>
-                                    <View style={{alignSelf:'center', flexDirection:'row',}}>
-                                        <Icon style={{
-                                            fontSize: 26,
-                                            backgroundColor: 'transparent',
-                                            color: '#d15564',
-                                            marginLeft: 10,
-                                            marginRight: 15,
-                                        }} name="md-remove">
-                                        </Icon>
-                                    </View>
-                                </TouchableOpacity>
+            if(this.state.added){
+                return(
+                    <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
+                        <View style={{flexDirection:'row'}}>
+                            <View style={{flex:1, alignSelf:'flex-start', paddingVertical: 10}}>
+                                <Text style={styles.title}>{this.state.title}</Text>
+                                <Text style={styles.artistTitle}>{this.state.description}</Text>
                             </View>
 
+                            <TouchableOpacity style={{alignSelf:'center'}} onPress={() => {
+                                let title = this.state.title;
+
+                                const {currentUser} = firebase.auth();
+                                firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).once("value", function (data) {
+                                    if(data.val()){
+                                        firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).remove();
+                                    }
+                                    else{
+                                        console.warn("already is")
+                                    }
+                                });
+                                this.setState({added: false})
+
+
+                            }}>
+                                <View style={{alignSelf:'center', flexDirection:'row',}}>
+                                    <Icon style={{
+                                        fontSize: 26,
+                                        backgroundColor: 'transparent',
+                                        color: '#d15564',
+                                        marginLeft: 10,
+                                        marginRight: 15,
+                                    }} name="md-remove">
+                                    </Icon>
+                                </View>
+                            </TouchableOpacity>
                         </View>
-                    );
+
+
+                    </View>
+                );
+
+            }
+            else{
+                return(
+                    <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
+                        <View style={{flexDirection:'row'}}>
+                            <View style={{flex: 1, alignSelf:'flex-start', paddingVertical: 10}}>
+                                <Text style={styles.title}>{this.state.title}</Text>
+                                <Text style={styles.artistTitle}>{this.state.description}</Text>
+                            </View>
+
+                            <TouchableOpacity style={{alignSelf:'center'}} onPress={() => {
+                                let title = this.state.title;
+
+                                const {currentUser} = firebase.auth();
+                                firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).once("value", function (data) {
+                                    if(data.val()){
+                                        console.warn("already a widget");
+                                    }
+                                    else{
+                                        firebase.database().ref(`users/${currentUser.uid}/widgets/`).once("value", function (snapshot) {
+                                            const position = snapshot.numChildren();
+                                            firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).update({title, position});
+                                        })
+
+                                    }
+                                });
+                                this.setState({added: true})
+
+
+                            }}>
+                                <View style={{alignSelf:'center', flexDirection:'row',}}>
+                                    <Icon style={{
+                                        fontSize: 26,
+                                        backgroundColor: 'transparent',
+                                        color: '#506dcf',
+                                        marginLeft: 10,
+                                        marginRight: 15,
+                                    }} name="md-add">
+                                    </Icon>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+
+
+                    </View>
+                );
+
+
+
+            }
+
 
         }
         else{
-                    return(
-                        <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
-                            <View style={{flexDirection:'row'}}>
-                                <View style={{flex: 1, alignSelf:'flex-start', paddingVertical: 10}}>
-                                    <Text style={styles.title}>{this.state.title}</Text>
-                                    <Text style={styles.artistTitle}>{this.state.description}</Text>
-                                </View>
 
-                                <TouchableOpacity style={{alignSelf:'center'}} onPress={() => {
-                                    let title = this.state.title;
-
-                                    const {currentUser} = firebase.auth();
-                                    firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).once("value", function (data) {
-                                        if(data.val()){
-                                            console.warn("already a widget");
-                                        }
-                                        else{
-                                            firebase.database().ref(`users/${currentUser.uid}/widgets/`).once("value", function (snapshot) {
-                                                const position = snapshot.numChildren();
-                                                firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).update({title, position});
-                                            })
-
-                                        }
-                                    });
-                                    this.setState({added: true})
-
-
-                                }}>
-                                    <View style={{alignSelf:'center', flexDirection:'row',}}>
-                                        <Icon style={{
-                                            fontSize: 26,
-                                            backgroundColor: 'transparent',
-                                            color: '#506dcf',
-                                            marginLeft: 10,
-                                            marginRight: 15,
-                                        }} name="md-add">
-                                        </Icon>
-                                    </View>
-                                </TouchableOpacity>
+            if(this.state.added){
+                return(
+                    <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
+                        <View style={{flexDirection:'row'}}>
+                            <View style={{flex:1, alignSelf:'flex-start', paddingVertical: 10}}>
+                                <Text style={styles.title}>{this.state.title}</Text>
+                                <Text style={styles.artistTitle}>{this.state.description}</Text>
                             </View>
 
+                            <TouchableOpacity style={{alignSelf:'center'}} onPress={() => {
+                                let title = this.state.title;
+
+                                const {currentUser} = firebase.auth();
+                                firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).once("value", function (data) {
+                                    if(data.val()){
+                                        let currentPosition = data.val().position;
+                                        firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).remove();
+                                        firebase.database().ref(`users/${currentUser.uid}/widgets`).once("value", function (snapshot) {
+                                            snapshot.forEach(function (data) {
+                                                if(data.val().position >= currentPosition){
+                                                    let title = data.val().title;
+                                                    let position = data.val().position - 1;
+                                                    firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).update({title, position});
+                                                }
+
+                                            })
+
+                                        })
+
+                                    }
+                                    else{
+                                        console.warn("already is")
+                                    }
+                                });
+                                this.setState({added: false})
+
+
+                            }}>
+                                <View style={{alignSelf:'center', flexDirection:'row',}}>
+                                    <Icon style={{
+                                        fontSize: 26,
+                                        backgroundColor: 'transparent',
+                                        color: '#d15564',
+                                        marginLeft: 10,
+                                        marginRight: 15,
+                                    }} name="md-remove">
+                                    </Icon>
+                                </View>
+                            </TouchableOpacity>
                         </View>
-                    );
+
+                        <ListView
+                            showsHorizontalScrollIndicator={false}
+                            horizontal={true}
+                            enableEmptySections
+                            dataSource={this.state.data}
+                            renderRow={this.renderRowPodcasts}
+                        />
+
+                    </View>
+                );
+
+            }
+            else{
+                return(
+                    <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
+                        <View style={{flexDirection:'row'}}>
+                            <View style={{flex: 1, alignSelf:'flex-start', paddingVertical: 10}}>
+                                <Text style={styles.title}>{this.state.title}</Text>
+                                <Text style={styles.artistTitle}>{this.state.description}</Text>
+                            </View>
+
+                            <TouchableOpacity style={{alignSelf:'center'}} onPress={() => {
+                                let title = this.state.title;
+
+                                const {currentUser} = firebase.auth();
+                                firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).once("value", function (data) {
+                                    if(data.val()){
+                                        console.warn("already a widget");
+                                    }
+                                    else{
+                                        firebase.database().ref(`users/${currentUser.uid}/widgets/`).once("value", function (snapshot) {
+                                            const position = snapshot.numChildren();
+                                            firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).update({title, position});
+                                        })
+
+                                    }
+                                });
+                                this.setState({added: true})
 
 
+                            }}>
+                                <View style={{alignSelf:'center', flexDirection:'row',}}>
+                                    <Icon style={{
+                                        fontSize: 26,
+                                        backgroundColor: 'transparent',
+                                        color: '#506dcf',
+                                        marginLeft: 10,
+                                        marginRight: 15,
+                                    }} name="md-add">
+                                    </Icon>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+
+                        <ListView
+                            showsHorizontalScrollIndicator={false}
+                            horizontal={true}
+                            enableEmptySections
+                            dataSource={this.state.data}
+                            renderRow={this.renderRowPodcasts}
+                        />
+
+                    </View>
+                );
+
+
+
+            }
 
         }
+
 
 
     }
