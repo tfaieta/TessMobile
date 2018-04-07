@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Dimensions, Image, ListView} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Dimensions, ListView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "./Variables";
 import firebase from 'firebase';
@@ -87,7 +87,7 @@ class Widget extends Component{
 
             if(this.state.added){
                 return(
-                    <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
+                    <View style={{backgroundColor: '#fff', borderRadius: 10, borderColor: '#506dcf', borderWidth: 2, marginHorizontal: 10, marginVertical: 5}}>
                         <View style={{flexDirection:'row'}}>
                             <View style={{flex:1, alignSelf:'flex-start', paddingVertical: 10}}>
                                 <Text style={styles.title}>{this.state.title}</Text>
@@ -100,7 +100,20 @@ class Widget extends Component{
                                 const {currentUser} = firebase.auth();
                                 firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).once("value", function (data) {
                                     if(data.val()){
+                                        let currentPosition = data.val().position;
                                         firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).remove();
+                                        firebase.database().ref(`users/${currentUser.uid}/widgets`).once("value", function (snapshot) {
+                                            snapshot.forEach(function (data) {
+                                                if(data.val().position >= currentPosition){
+                                                    let title = data.val().title;
+                                                    let position = data.val().position - 1;
+                                                    firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).update({title, position});
+                                                }
+
+                                            })
+
+                                        })
+
                                     }
                                     else{
                                         console.warn("already is")
@@ -114,10 +127,10 @@ class Widget extends Component{
                                     <Icon style={{
                                         fontSize: 26,
                                         backgroundColor: 'transparent',
-                                        color: '#d15564',
+                                        color: '#506dcf',
                                         marginLeft: 10,
                                         marginRight: 15,
-                                    }} name="md-remove">
+                                    }} name="md-add">
                                     </Icon>
                                 </View>
                             </TouchableOpacity>
@@ -161,7 +174,7 @@ class Widget extends Component{
                                     <Icon style={{
                                         fontSize: 26,
                                         backgroundColor: 'transparent',
-                                        color: '#506dcf',
+                                        color: '#828393',
                                         marginLeft: 10,
                                         marginRight: 15,
                                     }} name="md-add">
@@ -184,7 +197,7 @@ class Widget extends Component{
 
             if(this.state.added){
                 return(
-                    <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
+                    <View style={{backgroundColor: '#fff', borderRadius: 10, borderColor: '#506dcf', borderWidth: 2, marginHorizontal: 10, marginVertical: 5}}>
                         <View style={{flexDirection:'row'}}>
                             <View style={{flex:1, alignSelf:'flex-start', paddingVertical: 10}}>
                                 <Text style={styles.title}>{this.state.title}</Text>
@@ -224,10 +237,10 @@ class Widget extends Component{
                                     <Icon style={{
                                         fontSize: 26,
                                         backgroundColor: 'transparent',
-                                        color: '#d15564',
+                                        color: '#506dcf',
                                         marginLeft: 10,
                                         marginRight: 15,
-                                    }} name="md-remove">
+                                    }} name="md-add">
                                     </Icon>
                                 </View>
                             </TouchableOpacity>
@@ -278,7 +291,7 @@ class Widget extends Component{
                                     <Icon style={{
                                         fontSize: 26,
                                         backgroundColor: 'transparent',
-                                        color: '#506dcf',
+                                        color: '#828393',
                                         marginLeft: 10,
                                         marginRight: 15,
                                     }} name="md-add">

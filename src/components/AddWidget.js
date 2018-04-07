@@ -566,7 +566,7 @@ class AddWidget extends Component{
         if(this.state.recentlyAdded){
 
             return(
-                <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
+                <View style={{backgroundColor: '#fff', borderRadius: 10, borderColor: '#506dcf', borderWidth: 2, marginHorizontal: 10, marginVertical: 5}}>
                     <View style={{flexDirection:'row',}}>
                         <View style={{flex: 1, alignSelf:'flex-start', paddingVertical: 10}}>
                                 <Text style={styles.title}>Recently Played</Text>
@@ -575,10 +575,25 @@ class AddWidget extends Component{
 
                             <TouchableOpacity style={{alignSelf:'center'}} onPress={() => {
 
+                                let title = 'Recently Played';
+
                                 const {currentUser} = firebase.auth();
-                                firebase.database().ref(`users/${currentUser.uid}/widgets/Recently Played`).once("value", function (data) {
+                                firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).once("value", function (data) {
                                     if(data.val()){
-                                        firebase.database().ref(`users/${currentUser.uid}/widgets/Recently Played`).remove();
+                                        let currentPosition = data.val().position;
+                                        firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).remove();
+                                        firebase.database().ref(`users/${currentUser.uid}/widgets`).once("value", function (snapshot) {
+                                            snapshot.forEach(function (data) {
+                                                if(data.val().position >= currentPosition){
+                                                    let title = data.val().title;
+                                                    let position = data.val().position - 1;
+                                                    firebase.database().ref(`users/${currentUser.uid}/widgets/${title}`).update({title, position});
+                                                }
+
+                                            })
+
+                                        })
+
                                     }
                                     else{
                                         console.warn("already is")
@@ -592,10 +607,10 @@ class AddWidget extends Component{
                                     <Icon style={{
                                         fontSize: 26,
                                         backgroundColor: 'transparent',
-                                        color: '#d15564',
+                                        color: '#506dcf',
                                         marginLeft: 10,
                                         marginRight: 15,
-                                    }} name="md-remove">
+                                    }} name="md-add">
                                     </Icon>
                                 </View>
                             </TouchableOpacity>
@@ -646,7 +661,7 @@ class AddWidget extends Component{
                                     <Icon style={{
                                         fontSize: 26,
                                         backgroundColor: 'transparent',
-                                        color: '#506dcf',
+                                        color: '#828393',
                                         marginLeft: 10,
                                         marginRight: 15,
                                     }} name="md-add">

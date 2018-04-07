@@ -399,6 +399,7 @@ class Home extends Component{
             scroll: true,
             order: Object.keys([]),
             loading: true,
+            cardsLeft: Variables.state.homeFollowedContent.length,
 
             data: Variables.state.homeFollowedContent,
             dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts),
@@ -410,12 +411,12 @@ class Home extends Component{
             refreshing: false,
             userProfileImage: ''
         };
-        this.timeout1 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent),  data: Variables.state.homeFollowedContent, dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory), widgets: Variables.state.widgets, order: Object.keys(this.state.widgets), })},1000);
+        this.timeout1 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent),  data: Variables.state.homeFollowedContent, cardsLeft: Variables.state.homeFollowedContent.length, dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory), widgets: Variables.state.widgets, order: Object.keys(this.state.widgets), })},1000);
         this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts), loading: false})},1500);
         this.timeout3 = setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},3800);
         this.timeout4 = setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},3200);
 
-        this.timeout5 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent),  data: Variables.state.homeFollowedContent, dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory), widgets: Variables.state.widgets, order: Object.keys(this.state.widgets),})},3000);
+        this.timeout5 = setTimeout(() => {this.setState({dataSourceFol: dataSource.cloneWithRows(Variables.state.homeFollowedContent),  data: Variables.state.homeFollowedContent, cardsLeft: Variables.state.homeFollowedContent.length, dataSourceTech: dataSource.cloneWithRows(Variables.state.currCategory), widgets: Variables.state.widgets, order: Object.keys(this.state.widgets),})},3000);
         this.timeout6 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts)})},6400);
         this.timeout7 = setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},6800);
         this.timeout8 = setTimeout(() => {this.setState({dataSourceTess: dataSource.cloneWithRows(Variables.state.fromTess)})},7200);
@@ -1361,6 +1362,10 @@ class Home extends Component{
     }
 
 
+    swipe = () =>{
+        this.setState({cardsLeft: this.state.cardsLeft - 1});
+    };
+
 
     _renderProfileImage = () => {
 
@@ -1382,7 +1387,7 @@ class Home extends Component{
     renderRowCard(podcast) {
 
         return (
-            <View style = {{marginHorizontal: 10, marginVertical: 7}}>
+            <View style = {{marginHorizontal: 10, marginBottom: 7}}>
                 <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20 }}>
                     <View>
                         <Text style={styles.titleCard}>{podcast.podcastTitle.toString().slice(0,44)}</Text>
@@ -1743,6 +1748,9 @@ class Home extends Component{
                                         return(
                                             <TouchableHighlight  underlayColor='#fff' style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 12, marginVertical: 5}} {...this.props.sortHandlers}>
                                                 <View>
+                                                    <View style={{backgroundColor: '#d15564', width: 40, height: 40, marginTop: -8, borderRadius: 25, alignSelf: 'flex-end'}} >
+                                                        <Text style={styles.numLeftText}>{this.state.cardsLeft}</Text>
+                                                    </View>
                                                     <ScrollView scrollEnabled = {false}>
                                                         <SwipeCards
                                                             cards={this.state.data}
@@ -1752,6 +1760,18 @@ class Home extends Component{
                                                             hasMaybeAction={false}
                                                             onClickHandler={()=>{}}
                                                             showYup={false}
+                                                            handleMaybe={() => {
+                                                                this.setState({cardsLeft: this.state.cardsLeft - 1});
+                                                                this.forceUpdate();
+                                                            }}
+                                                            handleNope={() => {
+                                                                this.setState({cardsLeft: this.state.cardsLeft - 1});
+                                                                this.forceUpdate();
+                                                            }}
+                                                            handleYup={() => {
+                                                                this.setState({cardsLeft: this.state.cardsLeft - 1});
+                                                                this.forceUpdate();
+                                                            }}
                                                             showNope={false}
                                                             showMaybe={false}
                                                             renderNoMoreCards={() =>
@@ -2053,6 +2073,17 @@ const styles = StyleSheet.create({
         fontSize: 14,
         marginLeft: 10,
         marginTop: 10,
+        backgroundColor: 'transparent'
+    },
+
+
+    numLeftText: {
+        color: '#fff',
+        textAlign: 'center',
+        opacity: 1,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 16,
+        marginTop: 8,
         backgroundColor: 'transparent'
     },
 
