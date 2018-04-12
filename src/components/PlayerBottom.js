@@ -43,7 +43,8 @@ class PlayerBottom extends Component {
         likes: 12,
         profileImage: '',
         buffering: Variables.state.buffering,
-        speed: Variables.state.podcastSpeed
+        speed: Variables.state.podcastSpeed,
+        highlight: false,
     };
 
     componentDidMount() {
@@ -762,6 +763,41 @@ class PlayerBottom extends Component {
     }
 
 
+    renderHighlight = () => {
+
+        if(this.state.highlight){
+            return(
+                <TouchableOpacity style = {{marginVertical: height/22, marginHorizontal: 90, borderRadius: 7, backgroundColor: '#3e4164', padding: 5}} onPress={() => {
+                    this.setState({highlight: false});
+                    this.props.navigator.showLightBox({
+                        screen: "Highlight", // unique ID registered with Navigation.registerScreen
+                        passProps: {}, // simple serializable object that will pass as props to the lightbox (optional)
+                        style: {
+                            backgroundBlur: "light", // 'dark' / 'light' / 'xlight' / 'none' - the type of blur on the background
+                            backgroundColor: '#54546080' // tint color for the background, you can specify alpha here (optional)
+                        },
+                        adjustSoftInput: "resize", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
+                    });
+                }}>
+                    <Text style = {styles.highlightText}>Save Highlight</Text>
+                </TouchableOpacity>
+
+            )
+        }
+        else{
+            return(
+                <TouchableOpacity style = {{marginVertical: height/22, marginHorizontal: 90, borderRadius: 7, backgroundColor: '#506dcf', padding: 5}} onPress={() => {
+                    this.setState({highlight: true})
+                }}>
+                    <Text style = {styles.highlightText}>Begin Highlight</Text>
+                </TouchableOpacity>
+
+            )
+        }
+
+    };
+
+
     onProfilePress = () => {
         const {navigator} = this.props;
         Variables.state.browsingArtist = Variables.state.podcastArtist;
@@ -1061,7 +1097,7 @@ class PlayerBottom extends Component {
                                     });
 
                                 }}>
-                                    <Icon style={{textAlign:'center', fontSize: 16,color:'#506dcf', }} name="md-add-circle">
+                                    <Icon style={{textAlign:'center', fontSize: 30, color:'#506dcf', }} name="md-add">
                                     </Icon>
                                     <Text style={styles.seeMore}>View More</Text>
 
@@ -1080,12 +1116,16 @@ class PlayerBottom extends Component {
 
 
 
+                                {this.renderHighlight()}
+
+
+
 
                                 <View style={styles.centerContainerButtons}>
 
                                     <View style={styles.leftContainerP}>
                                         <TouchableOpacity onPress={this.scrubBackward}>
-                                            <Icon style={{flex:1, textAlign:'center', fontSize: height/13.34,color:'#2A2A30' }} name="ios-undo">
+                                            <Icon style={{flex:1, textAlign:'center', fontSize: height/16,color:'#2A2A30' }} name="ios-undo">
                                             </Icon>
                                             <Text style={{textAlign: 'center',  color: '#2A2A30', fontSize: height/66.7, backgroundColor: 'transparent', fontFamily: 'Montserrat-SemiBold',}}>15</Text>
                                         </TouchableOpacity>
@@ -1099,7 +1139,7 @@ class PlayerBottom extends Component {
 
                                     <View style={styles.rightContainerP}>
                                         <TouchableOpacity onPress={this.scrubForward}>
-                                            <Icon style={{flex:1, textAlign:'center', fontSize: height/13.34,color:'#2A2A30' }} name="ios-redo">
+                                            <Icon style={{flex:1, textAlign:'center', fontSize: height/16,color:'#2A2A30' }} name="ios-redo">
                                             </Icon>
                                             <Text style={{textAlign: 'center',  color: '#2A2A30', fontSize: height/66.7, backgroundColor: 'transparent', fontFamily: 'Montserrat-SemiBold',}}>15</Text>
                                         </TouchableOpacity>
@@ -1245,7 +1285,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingTop: 10,
         paddingBottom: 10,
-        marginTop: 50
     },
     rightContainer: {
         flex: 1,
@@ -1329,7 +1368,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         alignSelf: 'center',
         textAlign: 'center',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-SemiBold',
     },
     podcastTextNum:{
         color: '#BBBCCD',
@@ -1397,6 +1436,15 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         textAlign: 'center'
     },
+
+    highlightText: {
+        color:'#fff',
+        fontSize: 16,
+        flexDirection: 'row',
+        backgroundColor: 'transparent',
+        alignSelf: 'center',
+        fontFamily: 'Montserrat-Regular',
+    }
 
 
 });
