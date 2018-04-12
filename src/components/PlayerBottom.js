@@ -6,6 +6,7 @@ import Slider from 'react-native-slider';
 import firebase from 'firebase';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import MusicControl from 'react-native-music-control';
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 import { Navigation } from 'react-native-navigation';
 
@@ -45,6 +46,7 @@ class PlayerBottom extends Component {
         buffering: Variables.state.buffering,
         speed: Variables.state.podcastSpeed,
         highlight: false,
+        highlightTime: [0, 1]
     };
 
     componentDidMount() {
@@ -151,20 +153,64 @@ class PlayerBottom extends Component {
 
 
     _renderSlider(currentTime){
-        return(
-            <Slider
-                minimumTrackTintColor='#5757FF'
-                maximumTrackTintColor='#E7E7F0'
-                thumbStyle={{width: 25, height: 25, borderRadius: 12.5, backgroundColor: '#fff', borderColor: '#506dcf', borderWidth: 2}}
-                animateTransitions = {true}
-                style={styles.sliderContainer}
-                step={0}
-                minimumValue={0}
-                maximumValue= { Math.abs( Variables.state.duration)}
-                value={ currentTime }
-                onValueChange={currentTime => Variables.state.seekTo = currentTime}
-            />
-        )
+        if(this.state.highlight){
+            return(
+                <MultiSlider
+                    values={[this.state.highlightTime[0], this.state.highlightTime[1]]}
+                    snapped
+                    min={0}
+                    max={Math.abs(Variables.state.duration)}
+                    step={1}
+                    sliderLength={width-40}
+                    selectedStyle={{
+                        backgroundColor: '#506dcf',
+                    }}
+                    unselectedStyle={{
+                        backgroundColor: '#E7E7F0',
+                    }}
+                    containerStyle={{
+                        width:  width-40,
+                        alignSelf: 'center'
+                    }}
+                    trackStyle={{
+                        height: 5,
+                        backgroundColor: '#506dcf',
+                        width:  width-40,
+                    }}
+                    touchDimensions={{
+                        height: 25,
+                        width: 25,
+                        borderRadius: 10,
+                        slipDisplacement: 40,
+                        color: '#3e4164',
+                    }}
+                    onValuesChange={(values) => {
+                        this.setState({
+                            highlightTime: [values[0],values[1]]
+                        });
+                    }}
+
+                />
+            )
+        }
+        else{
+            return(
+                <Slider
+                    minimumTrackTintColor='#5757FF'
+                    maximumTrackTintColor='#E7E7F0'
+                    thumbStyle={{width: 25, height: 25, borderRadius: 12.5, backgroundColor: '#506dcf', borderColor: '#506dcf', borderWidth: 2}}
+                    animateTransitions = {true}
+                    style={styles.sliderContainer}
+                    step={0}
+                    minimumValue={0}
+                    maximumValue= { Math.abs( Variables.state.duration)}
+                    value={ currentTime }
+                    onValueChange={currentTime => Variables.state.seekTo = currentTime}
+                />
+            )
+
+        }
+
     }
 
     _renderPodcastImage(){
@@ -787,7 +833,7 @@ class PlayerBottom extends Component {
         else{
             return(
                 <TouchableOpacity style = {{marginVertical: height/22, marginHorizontal: 90, borderRadius: 7, backgroundColor: '#506dcf', padding: 5}} onPress={() => {
-                    this.setState({highlight: true})
+                    this.setState({highlight: true, highlightTime: [Variables.state.currentTime, Variables.state.currentTime + 15]})
                 }}>
                     <Text style = {styles.highlightText}>Begin Highlight</Text>
                 </TouchableOpacity>
