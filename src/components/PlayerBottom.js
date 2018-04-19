@@ -155,6 +155,17 @@ class PlayerBottom extends Component {
     _renderSlider(currentTime){
         if(this.state.highlight){
             return(
+                <View style={{marginTop: 5, marginBottom: -25}}>
+                    <Text style={{
+                        color: '#3e4164',
+                        fontSize: 16,
+                        marginBottom: 20,
+                        flexDirection: 'row',
+                        backgroundColor: 'transparent',
+                        marginLeft:  ((this.state.highlightTime[1] + this.state.highlightTime[0] / 2) * (width / Math.abs(Variables.state.duration))) / 2 - (width/20),
+                        fontFamily: 'Montserrat-Regular',
+                    }}
+                    >{(this.state.highlightTime[0]/60).toFixed(0)}:{this.state.highlightTime[0]%60} - {(this.state.highlightTime[1]/60).toFixed(0)}:{this.state.highlightTime[1]%60}</Text>
                 <MultiSlider
                     values={[this.state.highlightTime[0], this.state.highlightTime[1]]}
                     snapped
@@ -173,24 +184,34 @@ class PlayerBottom extends Component {
                         alignSelf: 'center'
                     }}
                     trackStyle={{
-                        height: 5,
+                        height: 4,
                         backgroundColor: '#506dcf',
                         width:  width-40,
                     }}
                     touchDimensions={{
-                        height: 25,
-                        width: 25,
+                        height: 15,
+                        width: 15,
                         borderRadius: 10,
-                        slipDisplacement: 40,
                         color: '#3e4164',
                     }}
                     onValuesChange={(values) => {
+                        Variables.state.paused = false;
+                        clearTimeout(this.timeout);
+                        if(this.state.highlightTime[0] != values[0]){
+                            Variables.state.seekTo = values[0];
+                        }
+                        else{
+                            Variables.state.seekTo = values[1]-10;
+                            this.timeout = setTimeout(() => {Variables.state.paused = true}, 10000)
+                        }
                         this.setState({
                             highlightTime: [values[0],values[1]]
                         });
+
                     }}
 
                 />
+                </View>
             )
         }
         else{
@@ -207,6 +228,7 @@ class PlayerBottom extends Component {
                     value={ currentTime }
                     onValueChange={currentTime => Variables.state.seekTo = currentTime}
                 />
+
             )
 
         }
@@ -332,7 +354,7 @@ class PlayerBottom extends Component {
     _renderPodcastSpeed(speed){
         return(
             <TouchableOpacity onPress={this.setSpeed}>
-                <Text style = {styles.podcastTextSpeed}>x{speed.toFixed(2)}</Text>
+                <Text style = {styles.podcastTextSpeed}>{speed.toFixed(2)}x</Text>
             </TouchableOpacity>
         )
     }
@@ -651,11 +673,9 @@ class PlayerBottom extends Component {
             if (liked) {
                 return (
                     <TouchableOpacity onPress = {this.pressLike}>
-                        <Icon style={{textAlign: 'center', fontSize: 28, color: '#506dcf', marginRight: 25}} name="ios-happy-outline">
+                        <Icon style={{textAlign: 'center', fontSize: 28, color: '#506dcf', marginRight: 25}} name="md-happy">
+                            <Text style={styles.podcastTextLikes}>   {likers.length}</Text>
                         </Icon>
-                        <View style={{flex:1}}>
-                            <Text style={styles.podcastTextLikes}> {likers.length}</Text>
-                        </View>
 
                     </TouchableOpacity>
                 )
@@ -663,11 +683,9 @@ class PlayerBottom extends Component {
             else{
                 return(
                     <TouchableOpacity onPress = {this.pressLike}>
-                        <Icon style={{textAlign: 'center', fontSize: 28, color: '#BBBCCD', marginRight: 25}} name="ios-happy-outline">
+                        <Icon style={{textAlign: 'center', fontSize: 28, color: '#BBBCCD', marginRight: 25}} name="md-happy">
+                            <Text style={styles.podcastTextLikes}>   {likers.length}</Text>
                         </Icon>
-                        <View style={{flex:1}}>
-                            <Text style={styles.podcastTextLikes}> {likers.length}</Text>
-                        </View>
                     </TouchableOpacity>
                 )
             }
@@ -815,9 +833,11 @@ class PlayerBottom extends Component {
             return(
                 <TouchableOpacity style = {{marginVertical: height/22, marginHorizontal: 90, borderRadius: 7, backgroundColor: '#3e4164', padding: 5}} onPress={() => {
                     this.setState({highlight: false});
+                    const highlightTime = this.state.highlightTime;
+                    const podcastID = Variables.state.podcastID;
                     this.props.navigator.showLightBox({
                         screen: "Highlight", // unique ID registered with Navigation.registerScreen
-                        passProps: {}, // simple serializable object that will pass as props to the lightbox (optional)
+                        passProps: {highlightTime, podcastID}, // simple serializable object that will pass as props to the lightbox (optional)
                         style: {
                             backgroundBlur: "light", // 'dark' / 'light' / 'xlight' / 'none' - the type of blur on the background
                             backgroundColor: '#54546080' // tint color for the background, you can specify alpha here (optional)
@@ -1418,12 +1438,23 @@ const styles = StyleSheet.create({
     },
     podcastTextNum:{
         color: '#BBBCCD',
-        fontSize: 12,
+        fontSize: 16,
         marginTop: 5,
         flexDirection: 'row',
         backgroundColor: 'transparent',
         marginHorizontal: 15,
         fontFamily: 'Montserrat-Regular',
+    },
+
+    podcastHighlightNum:{
+        color: '#3e4164',
+        fontSize: 14,
+        marginBottom: 20,
+        flexDirection: 'row',
+        backgroundColor: 'transparent',
+        alignSelf: 'center',
+        textAlign: 'center',
+        fontFamily: 'Montserrat-SemiBold',
     },
 
     middleContainer: {

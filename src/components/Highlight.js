@@ -4,6 +4,7 @@ import Variables from './Variables';
 
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
+import firebase from 'firebase';
 
 
 
@@ -15,10 +16,14 @@ class Highlight extends Component{
 
     constructor(props) {
         super(props);
+        const {highlightTime} = this.props;
+        const {podcastID} = this.props;
         this.state = {
             highlightName: '',
-            description: ''
-
+            description: '',
+            podcastID: podcastID,
+            startTime: highlightTime[0],
+            endTime: highlightTime[1],
         }
 
     }
@@ -87,7 +92,29 @@ class Highlight extends Component{
                     <Text style= {styles.textButton}>Make Edits</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{marginVertical: 10, marginBottom: 50, marginHorizontal: 90, borderRadius: 7, backgroundColor: '#3e4164', padding: 8, paddingHorizontal: 25}}>
+                <TouchableOpacity style={{marginVertical: 10, marginBottom: 50, marginHorizontal: 90, borderRadius: 7, backgroundColor: '#3e4164', padding: 8, paddingHorizontal: 25}} onPress={()=>{
+
+                    const title = this.state.highlightName;
+                    const description = this.state.description;
+                    const startTime = this.state.startTime;
+                    const endTime = this.state.endTime;
+                    const podcastID = this.state.podcastID;
+
+                    if(title != ''){
+                        const {currentUser} = firebase.auth();
+                        firebase.database().ref(`users/${currentUser.uid}/highlights/`).push({title, description, startTime, endTime, podcastID}).then((snap) => {
+
+                            ref = snap.ref;
+                            key = snap.key;
+
+                            ref.update({key});
+                        })
+                    }
+
+                    console.warn("Created highlight: " + this.state.highlightName + ": "  + this.state.description + " " + this.state.startTime + " " + this.state.endTime);
+                    Navigation.dismissLightBox();
+
+                }}>
                     <Text style= {styles.textButton}>Save Highlight</Text>
                 </TouchableOpacity>
                 </View>
