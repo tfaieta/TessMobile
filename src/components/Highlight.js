@@ -88,7 +88,7 @@ class Highlight extends Component{
 
 
 
-                <TouchableOpacity style={{marginTop: 50, marginVertical: 10, marginHorizontal: 90, borderRadius: 7, backgroundColor: '#506dcf', padding: 8, paddingHorizontal: 25}}>
+                <TouchableOpacity style={{marginTop: 50, marginVertical: 10, marginHorizontal: 90, borderRadius: 7, backgroundColor: '#506dcf', padding: 8, paddingHorizontal: 25}} onPress={this.done}>
                     <Text style= {styles.textButton}>Make Edits</Text>
                 </TouchableOpacity>
 
