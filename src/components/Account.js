@@ -53,7 +53,8 @@ class Account extends Component {
                 if(currentUser.uid == data.val().podcastArtist) {
                     Variables.state.myPodcasts.push(data.val());
                 }
-            })
+            });
+            Variables.state.myPodcasts.reverse();
         });
 
         refFol.on("value", function (snapshot) {
@@ -118,10 +119,10 @@ class Account extends Component {
             statusBarHidden: false,
             statusBarTextColorScheme: 'light',
             navBarHidden: false,
-            navBarTextColor: '#fff', // change the text color of the title (remembered across pushes)
+            navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
             navBarTextFontSize: 18, // change the font size of the title
             navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
-            navBarBackgroundColor: '#3e4164',
+            navBarBackgroundColor: '#fff',
             drawUnderTabBar: false,
             navBarHideOnScroll: true,
             topBarElevationShadowEnabled: true,
@@ -212,14 +213,14 @@ class Account extends Component {
             <View style={{flexDirection: 'row',}}>
 
 
-                <TouchableOpacity style={{flex: 1, alignSelf: 'flex-end', padding: 10, borderTopWidth: 1, borderTopColor: '#fff', borderRightColor: '#fff', borderRightWidth: 1}} onPress={this.onFollowingPress}>
+                <TouchableOpacity style={{flex: 1, alignSelf: 'flex-end', padding: 10, borderTopWidth: 2, borderTopColor: '#3e416440', borderRightColor: '#3e416440', borderRightWidth: 1}} onPress={this.onFollowingPress}>
                     <Text style={styles.stats}>Following</Text>
                     <Text style={styles.stats}>{totalFollowing}</Text>
 
                 </TouchableOpacity>
 
 
-                <TouchableOpacity style={{flex: 1, alignSelf: 'center', padding: 10, borderTopWidth: 1, borderTopColor: '#fff', borderRightColor: '#fff', borderRightWidth: 1, borderLeftColor: '#fff', borderLeftWidth: 1}} onPress={this.onFollowersPress}>
+                <TouchableOpacity style={{flex: 1, alignSelf: 'center', padding: 10, borderTopWidth: 2, borderTopColor: '#3e416440', borderRightColor: '#3e416440', borderRightWidth: 1, borderLeftColor: '#3e416440', borderLeftWidth: 1}} onPress={this.onFollowersPress}>
                     <Text style={styles.stats}>Followers</Text>
                     <Text style={styles.stats}>{totalFollowers}</Text>
 
@@ -227,7 +228,7 @@ class Account extends Component {
 
 
 
-                <View style={{flex: 1, alignSelf: 'flex-start', padding: 10, borderTopWidth: 1, borderTopColor: '#fff', borderLeftColor: '#fff', borderLeftWidth: 1}}>
+                <View style={{flex: 1, alignSelf: 'flex-start', padding: 10, borderTopWidth: 2, borderTopColor: '#3e416440', borderLeftColor: '#3e416440', borderLeftWidth: 1}}>
                     <Text style={styles.stats}>Tracking</Text>
                     <Text style={styles.stats}>{totalPodcasts}</Text>
 
@@ -327,7 +328,7 @@ class Account extends Component {
 
 
                 <ScrollView >
-                    <View style={{backgroundColor: '#3e4164'}}>
+                    <View style={{backgroundColor: '#fff'}}>
 
 
                         {this._renderProfileImage()}
@@ -336,19 +337,22 @@ class Account extends Component {
 
                         {this._renderBio()}
 
+                        <TouchableOpacity style={{flex:1, backgroundColor: '#fff', paddingVertical: 10, marginVertical: 10}} onPress={this._pressSettings}>
+                            <Text style = {styles.title}>Edit Profile</Text>
+                        </TouchableOpacity>
+
                         {this._renderProfileNumbers(Variables.state.myPodcasts.length, Variables.state.myFollowers.length, Variables.state.myFollowing.length)}
 
                     </View>
 
 
-                    <View style={{backgroundColor: '#fff', marginVertical: 20, marginHorizontal: 7}}>
+                    <View style={{backgroundColor: '#fff', marginVertical: 15, marginHorizontal: 7}}>
                         <Text style={styles.myContentTitle}>My Content</Text>
                     <ListView
                         enableEmptySections
                         horizontal={true}
                         dataSource={this.state.dataSource}
                         renderRow={this.renderRow}
-                        renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
                     />
                     </View>
 
@@ -359,39 +363,77 @@ class Account extends Component {
                     <View style={{backgroundColor: '#fff', marginHorizontal: 8}}>
                         <Text style={styles.myContentTitle}>Hours Listened: 5h, 37min, 42s</Text>
                         <View style={{flexDirection: 'row', marginTop: 10}}>
-                            <View style ={{flex:1}}>
+                            <TouchableOpacity style ={{flex:1}}>
                             <Image
                                 style={{width: 60, height: 60, alignSelf: 'center', opacity: 1,}}
                                 source={require('tess/src/images/iconStar.png')}
                             />
                                 <Text style={styles.smallTitle}>First track</Text>
-                            </View>
-                            <View style ={{flex:1}}>
+                            </TouchableOpacity>
+                            <TouchableOpacity style ={{flex:1}}>
                             <Image
                                 style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 1,}}
                                 source={require('tess/src/images/iconLike.png')}
                             />
                                 <Text style={styles.smallTitle}>First Like</Text>
-                            </View>
-                            <View style ={{flex:1}}>
+                            </TouchableOpacity>
+                            <TouchableOpacity style ={{flex:1}}>
                             <Image
                                 style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1,}}
                                 source={require('tess/src/images/iconRocket.png')}
                             />
                                 <Text style={styles.smallTitle}>First Comment</Text>
-                            </View>
-                            <View style ={{flex:1}}>
+                            </TouchableOpacity>
+                            <TouchableOpacity style ={{flex:1}}>
                             <Image
-                                style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1,}}
+                                style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1, }}
                                 source={require('tess/src/images/iconAward.png')}
                             />
                                 <Text style={styles.smallTitle}>First Highlight</Text>
-                            </View>
+                            </TouchableOpacity>
 
 
                         </View>
 
+                    </View>
 
+
+
+
+                    <View style={{backgroundColor: '#fff', marginHorizontal: 8, marginVertical: 15}}>
+                        <Text style={styles.myContentTitle}>Listening Trends</Text>
+                        <View style={{flexDirection: 'row', marginTop: 10}}>
+                            <TouchableOpacity style ={{flex:1}}>
+                                <Image
+                                    style={{width: 60, height: 60, alignSelf: 'center', opacity: 1,}}
+                                    source={require('tess/src/images/currEvents-cat.png')}
+                                />
+                                <Text style={styles.smallTitle}>Current Events</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style ={{flex:1}}>
+                                <Image
+                                    style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 1,}}
+                                    source={require('tess/src/images/sports-cat.png')}
+                                />
+                                <Text style={styles.smallTitle}>Sports</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style ={{flex:1}}>
+                                <Image
+                                    style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1,}}
+                                    source={require('tess/src/images/gaming-cat.png')}
+                                />
+                                <Text style={styles.smallTitle}>Gaming</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style ={{flex:1}}>
+                                <Image
+                                    style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1,}}
+                                    source={require('tess/src/images/entertainment-cat.png')}
+                                />
+                                <Text style={styles.smallTitle}>Entertainment</Text>
+                            </TouchableOpacity>
+
+
+                        </View>
 
                     </View>
 
@@ -405,26 +447,6 @@ class Account extends Component {
 
 
 
-
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff', paddingVertical: 10, marginVertical: 1}} onPress={this._pressSettings}>
-                        <Icon style={{
-                            fontSize: 24,
-                            backgroundColor: 'transparent',
-                            color: '#797979',
-                            marginHorizontal: 10,
-                        }} name="ios-settings">
-                        </Icon>
-                        <Text style = {styles.title}>Edit Profile</Text>
-                        <View style={{alignSelf:'flex-end'}}>
-                            <Icon style={{
-                                fontSize: 22,
-                                backgroundColor: 'transparent',
-                                color: '#797979',
-                                marginHorizontal: 10,
-                            }} name="ios-arrow-forward">
-                            </Icon>
-                        </View>
-                    </TouchableOpacity>
 
 
                     <View style={{paddingBottom:120}}>
@@ -455,7 +477,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f4f9',
     },
     title2: {
-        color: '#fff',
+        color: '#3e4164',
         marginVertical: 10,
         marginTop: 10,
         flex:1,
@@ -479,7 +501,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     titleBio: {
-        color: '#fff',
+        color: '#3e4164',
         marginBottom: 10,
         flex:1,
         textAlign: 'center',
@@ -502,10 +524,10 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        color: '#2A2A30',
-        marginTop: 0,
+        color: '#506dcf',
+        marginTop: 5,
         flex:1,
-        textAlign: 'left',
+        textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
@@ -540,7 +562,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     stats: {
-        color: '#fff',
+        color: '#3e4164',
         flex:1,
         padding: 8,
         textAlign: 'center',
@@ -569,7 +591,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 0,
         backgroundColor: '#FFF',
         opacity: 1,
-        borderColor: '#FFF',
+        borderColor: '#3e4164',
         borderWidth: 0.5,
         borderRadius: 0,
         borderStyle: 'solid',
