@@ -22,6 +22,7 @@ import InvertibleScrollView from 'react-native-invertible-scroll-view';
 
 import { Navigation } from 'react-native-navigation';
 import ListItem from "./ListItem";
+import ListItemUsers from "./ListItemUsers";
 
 
 var {height, width} = Dimensions.get('window');
@@ -52,7 +53,8 @@ class Account extends Component {
                 if(currentUser.uid == data.val().podcastArtist) {
                     Variables.state.myPodcasts.push(data.val());
                 }
-            })
+            });
+            Variables.state.myPodcasts.reverse();
         });
 
         refFol.on("value", function (snapshot) {
@@ -120,9 +122,9 @@ class Account extends Component {
             navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
             navBarTextFontSize: 18, // change the font size of the title
             navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
+            navBarBackgroundColor: '#fff',
             drawUnderTabBar: false,
             navBarHideOnScroll: true,
-            navBarBackgroundColor: '#fff',
             topBarElevationShadowEnabled: true,
             topBarShadowColor: '#000',
             topBarShadowOpacity: 0.1,
@@ -166,10 +168,10 @@ class Account extends Component {
     _renderProfileImage(){
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 50, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:30, height: height/4.17, width: height/4.17, borderRadius:4, borderWidth:5, borderColor:'rgba(320,320,320,0.8)', }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10,  height: height/6, width: height/6, borderRadius:35, borderWidth:5, borderColor:'rgba(320,320,320,0.8)', }}>
                     <Icon style={{
                         textAlign: 'center',
-                        fontSize: 120,
+                        fontSize: 60,
                         color: 'white',
                         marginTop: 10
                     }} name="md-person">
@@ -179,9 +181,9 @@ class Account extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop: 50, marginRight:20,marginLeft: 20, paddingTop: 10, marginBottom:30, height: height/4.17, width: height/4.17, }}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, borderRadius: 35, height: height/6, width: height/6, }}>
                     <Image
-                        style={{width: height/4.17, height: height/4.17, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4,}}
+                        style={{width: height/6, height: height/6, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 35,}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -208,25 +210,29 @@ class Account extends Component {
 
     _renderProfileNumbers(totalPodcasts, totalFollowers, totalFollowing){
         return(
-            <View style={{flexDirection: 'row', paddingHorizontal: width/18.75 }}>
+            <View style={{flexDirection: 'row',}}>
 
-                <View style={{flex: 1, alignSelf: 'flex-start', padding: 10}}>
-                    <Text style={styles.stats}>podcasts</Text>
-                    <Text style={styles.stats}>{totalPodcasts}</Text>
 
-                </View>
+                <TouchableOpacity style={{flex: 1, alignSelf: 'flex-end', padding: 10, borderTopWidth: 2, borderTopColor: '#3e416440', borderRightColor: '#3e416440', borderRightWidth: 1}} onPress={this.onFollowingPress}>
+                    <Text style={styles.stats}>Following</Text>
+                    <Text style={styles.stats}>{totalFollowing}</Text>
 
-                <TouchableOpacity style={{flex: 1, alignSelf: 'center', padding: 10}} onPress={this.onFollowersPress}>
-                    <Text style={styles.stats}>followers</Text>
+                </TouchableOpacity>
+
+
+                <TouchableOpacity style={{flex: 1, alignSelf: 'center', padding: 10, borderTopWidth: 2, borderTopColor: '#3e416440', borderRightColor: '#3e416440', borderRightWidth: 1, borderLeftColor: '#3e416440', borderLeftWidth: 1}} onPress={this.onFollowersPress}>
+                    <Text style={styles.stats}>Followers</Text>
                     <Text style={styles.stats}>{totalFollowers}</Text>
 
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{flex: 1, alignSelf: 'flex-end', padding: 10}} onPress={this.onFollowingPress}>
-                    <Text style={styles.stats}>following</Text>
-                    <Text style={styles.stats}>{totalFollowing}</Text>
 
-                </TouchableOpacity>
+
+                <View style={{flex: 1, alignSelf: 'flex-start', padding: 10, borderTopWidth: 2, borderTopColor: '#3e416440', borderLeftColor: '#3e416440', borderLeftWidth: 1}}>
+                    <Text style={styles.stats}>Tracking</Text>
+                    <Text style={styles.stats}>{totalPodcasts}</Text>
+
+                </View>
 
             </View>
         )
@@ -260,7 +266,7 @@ class Account extends Component {
 
 
     renderRow = (rowData) => {
-        return <ListItem podcast={rowData} navigator={this.props.navigator} />;
+        return <ListItemUsers podcast={rowData} navigator={this.props.navigator} />;
     };
 
 
@@ -322,62 +328,126 @@ class Account extends Component {
 
 
                 <ScrollView >
+                    <View style={{backgroundColor: '#fff'}}>
 
 
-                    {this._renderProfileImage()}
+                        {this._renderProfileImage()}
 
-                    <View style ={{backgroundColor: '#fff', }}>
-                    {this._renderProfileName()}
+                        {this._renderProfileName()}
+
+                        {this._renderBio()}
+
+                        <TouchableOpacity style={{flex:1, backgroundColor: '#fff', paddingVertical: 10, marginVertical: 10}} onPress={this._pressSettings}>
+                            <Text style = {styles.title}>Edit Profile</Text>
+                        </TouchableOpacity>
+
+                        {this._renderProfileNumbers(Variables.state.myPodcasts.length, Variables.state.myFollowers.length, Variables.state.myFollowing.length)}
+
                     </View>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff', paddingVertical: 10, marginVertical: 1}} onPress={this._pressMyContent}>
-                        <Icon style={{
-                            fontSize: 24,
-                            backgroundColor: 'transparent',
-                            color: '#797979',
-                            marginHorizontal: 10,
-                        }} name="ios-menu">
-                        </Icon>
-                        <Text style = {styles.title}>My Content</Text>
-                        <View style={{alignSelf:'flex-end'}}>
-                            <Icon style={{
-                                fontSize: 22,
-                                backgroundColor: 'transparent',
-                                color: '#797979',
-                                marginHorizontal: 10,
-                            }} name="ios-arrow-forward">
-                            </Icon>
+
+                    <View style={{backgroundColor: '#fff', marginVertical: 15, marginHorizontal: 7}}>
+                        <Text style={styles.myContentTitle}>My Content</Text>
+                    <ListView
+                        enableEmptySections
+                        horizontal={true}
+                        dataSource={this.state.dataSource}
+                        renderRow={this.renderRow}
+                    />
+                    </View>
+
+
+
+
+
+                    <View style={{backgroundColor: '#fff', marginHorizontal: 8}}>
+                        <Text style={styles.myContentTitle}>Hours Listened: 5h, 37min, 42s</Text>
+                        <View style={{flexDirection: 'row', marginTop: 10}}>
+                            <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{width: 60, height: 60, alignSelf: 'center', opacity: 1,}}
+                                source={require('tess/src/images/iconStar.png')}
+                            />
+                                <Text style={styles.smallTitle}>First track</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 1,}}
+                                source={require('tess/src/images/iconLike.png')}
+                            />
+                                <Text style={styles.smallTitle}>First Like</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1,}}
+                                source={require('tess/src/images/iconRocket.png')}
+                            />
+                                <Text style={styles.smallTitle}>First Comment</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1, }}
+                                source={require('tess/src/images/iconAward.png')}
+                            />
+                                <Text style={styles.smallTitle}>First Highlight</Text>
+                            </TouchableOpacity>
+
+
                         </View>
-                    </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff', paddingVertical: 10, marginVertical: 1}} onPress={this._pressSettings}>
-                        <Icon style={{
-                            fontSize: 24,
-                            backgroundColor: 'transparent',
-                            color: '#797979',
-                            marginHorizontal: 10,
-                        }} name="ios-settings">
-                        </Icon>
-                        <Text style = {styles.title}>Edit Profile</Text>
-                        <View style={{alignSelf:'flex-end'}}>
-                            <Icon style={{
-                                fontSize: 22,
-                                backgroundColor: 'transparent',
-                                color: '#797979',
-                                marginHorizontal: 10,
-                            }} name="ios-arrow-forward">
-                            </Icon>
+                    </View>
+
+
+
+
+                    <View style={{backgroundColor: '#fff', marginHorizontal: 8, marginVertical: 15}}>
+                        <Text style={styles.myContentTitle}>Listening Trends</Text>
+                        <View style={{flexDirection: 'row', marginTop: 10}}>
+                            <TouchableOpacity style ={{flex:1}}>
+                                <Image
+                                    style={{width: 60, height: 60, alignSelf: 'center', opacity: 1,}}
+                                    source={require('tess/src/images/currEvents-cat.png')}
+                                />
+                                <Text style={styles.smallTitle}>Current Events</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style ={{flex:1}}>
+                                <Image
+                                    style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 1,}}
+                                    source={require('tess/src/images/sports-cat.png')}
+                                />
+                                <Text style={styles.smallTitle}>Sports</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style ={{flex:1}}>
+                                <Image
+                                    style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1,}}
+                                    source={require('tess/src/images/gaming-cat.png')}
+                                />
+                                <Text style={styles.smallTitle}>Gaming</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style ={{flex:1}}>
+                                <Image
+                                    style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1,}}
+                                    source={require('tess/src/images/entertainment-cat.png')}
+                                />
+                                <Text style={styles.smallTitle}>Entertainment</Text>
+                            </TouchableOpacity>
+
+
                         </View>
-                    </TouchableOpacity>
 
-                    <View style ={{backgroundColor: '#fff', }}>
-                    {this._renderProfileNumbers(Variables.state.myPodcasts.length, Variables.state.myFollowers.length, Variables.state.myFollowing.length)}
                     </View>
 
 
-                    <View style ={{backgroundColor: '#fff', }}>
-                    {this._renderBio()}
-                    </View>
+
+
+
+
+
+
+
+
+
+
 
                     <View style={{paddingBottom:120}}>
 
@@ -407,16 +477,18 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f4f9',
     },
     title2: {
-        color: '#2A2A30',
-        marginVertical: 20,
+        color: '#3e4164',
+        marginVertical: 10,
+        marginTop: 10,
         flex:1,
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: width/23.44,
+        fontSize: width/22,
         backgroundColor: 'transparent'
     },
+
     title3: {
         color: '#2A2A30',
         marginTop: 80,
@@ -429,8 +501,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     titleBio: {
-        color: '#828393',
-        marginVertical: 10,
+        color: '#3e4164',
+        marginBottom: 10,
         flex:1,
         textAlign: 'center',
         opacity: 2,
@@ -452,10 +524,10 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        color: '#2A2A30',
-        marginTop: 0,
+        color: '#506dcf',
+        marginTop: 5,
         flex:1,
-        textAlign: 'left',
+        textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
@@ -464,13 +536,39 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
 
     },
-    stats: {
-        color: '#2A2A30',
-        flex:1,
-        textAlign: 'left',
+
+    myContentTitle: {
+        color: '#3e4164',
+        paddingVertical: 10,
+        textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/22,
+        backgroundColor: 'transparent',
+        marginHorizontal: 5,
+
+    },
+
+    smallTitle: {
+        color: '#2A2A30',
+        marginVertical: 10,
+        flex:1,
+        textAlign: 'center',
+        opacity: 2,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/38,
+        backgroundColor: 'transparent'
+    },
+    stats: {
+        color: '#3e4164',
+        flex:1,
+        padding: 8,
+        textAlign: 'center',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: width/23.44,
         backgroundColor: 'transparent'
     },
@@ -493,7 +591,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 0,
         backgroundColor: '#FFF',
         opacity: 1,
-        borderColor: '#FFF',
+        borderColor: '#3e4164',
         borderWidth: 0.5,
         borderRadius: 0,
         borderStyle: 'solid',
