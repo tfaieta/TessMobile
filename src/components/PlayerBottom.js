@@ -1240,6 +1240,7 @@ class PlayerBottom extends Component {
     }
 
     onSwipeDown(gestureState) {
+        this.setState({highlight: false});
         this.setModalVisible(!this.state.modalVisible)
     }
 
