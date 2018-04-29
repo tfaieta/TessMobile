@@ -143,48 +143,48 @@ class Settings extends Component {
     render() {
 
         return (
-            <View style={{backgroundColor:'#fff',flex:1, paddingBottom: 118}}>
+            <View style={{backgroundColor:'#fff',flex:1,}}>
 
 
-                <View style={{backgroundColor:'#f6f6f6',flex:1}}>
-                    <SettingsList borderColor='#d6d5d9' defaultItemSize={50}>
+                <View style={{backgroundColor:'#f5f4f9',flex:1}}>
+                    <SettingsList borderColor='#3e416440' defaultItemSize={50}>
                         <SettingsList.Item
                             hasNavArrow={false}
                             title='Account'
-                            titleStyle={{color:'#5757FF', marginBottom:10, fontWeight:'500', fontFamily: 'Hiragino Sans'}}
+                            titleStyle={{color:'#506dcf', marginBottom:10, fontWeight:'500', fontFamily: 'Montserrat-Regular'}}
                             itemWidth={50}
                             borderHide={'Both'}
                         />
                         <SettingsList.Item
                             icon={
-                                <Icon style={{color: '#5757FF', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-image">
+                                <Icon style={{color: '#506dcf', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-image">
                                 </Icon>
                             }
                             hasNavArrow={true}
                             itemWidth={70}
-                            titleStyle={{color:'black', fontSize: 16, fontFamily: 'Hiragino Sans'}}
+                            titleStyle={{color:'#3e4164', fontSize: 16, fontFamily: 'Montserrat-Regular'}}
                             title='Change Profile Image'
                             onPress={this._handleButtonPressChangeImage}
                         />
                         <SettingsList.Item
                             icon={
-                                <Icon style={{color: '#5757FF', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-person">
+                                <Icon style={{color: '#506dcf', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-person">
                                 </Icon>
                             }
                             hasNavArrow={true}
                             itemWidth={70}
-                            titleStyle={{color:'black', fontSize: 16, fontFamily: 'Hiragino Sans'}}
+                            titleStyle={{color:'#3e4164', fontSize: 16, fontFamily: 'Montserrat-Regular'}}
                             title='Change Username'
                             onPress={this._handleButtonPressChangeUsername}
                         />
                         <SettingsList.Item
                             icon={
-                                <Icon style={{color: '#5757FF', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-browsers">
+                                <Icon style={{color: '#506dcf', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-browsers">
                                 </Icon>
                             }
                             title='Change Bio'
                             itemWidth={70}
-                            titleStyle={{color:'black', fontSize: 16, fontFamily: 'Hiragino Sans'}}
+                            titleStyle={{color:'#3e4164', fontSize: 16, fontFamily: 'Montserrat-Regular'}}
                             hasNavArrow={true}
                             onPress={this._handleButtonPressChangeBio}
                         />
@@ -193,7 +193,7 @@ class Settings extends Component {
                         <SettingsList.Item
                             hasNavArrow={true}
                             title='Log Out'
-                            titleStyle={{color:'#5757FF', marginBottom:10, fontWeight:'bold',fontFamily: 'Hiragino Sans' }}
+                            titleStyle={{color:'#506dcf', marginBottom:10, fontWeight:'bold',fontFamily: 'Montserrat-Regular'}}
                             itemWidth={70}
                             borderHide={'Both'}
                             onPress={this._handleButtonPressLogOut}
@@ -221,7 +221,7 @@ class Settings extends Component {
                                 value={this.state.username}
                                 maxLength={20}
                                 placeholder = "New Username"
-                                placeholderTextColor='#2A2A30'
+                                placeholderTextColor='#3e4164'
                                 onChangeText={text => this.setState({username: text})}
                                 onSubmitEditing={this.changeUsername}
                            />
@@ -263,7 +263,7 @@ class Settings extends Component {
                                 autoCorrect={false}
                                 value={this.state.bio}
                                 placeholder = "New Bio"
-                                placeholderTextColor='#2A2A30'
+                                placeholderTextColor='#3e4164'
                                 onChangeText={text => this.setState({bio: text})}
                                 multiline={true}
                                 maxLength={500}
@@ -462,61 +462,55 @@ const styles = StyleSheet.create({
     buttonStyle:{
         paddingTop:10,
         paddingVertical: 10,
-        marginHorizontal: 15,
+        marginHorizontal: 40,
         marginVertical: 4,
-        borderWidth: 4,
-        borderRadius: 10,
-        borderColor: '#856cff',
         backgroundColor: '#fff',
         alignItems: 'center',
     },
 
     buttonStyleCancel:{
-        paddingTop:10,
+        paddingTop:5,
         paddingVertical: 10,
         marginBottom:20,
-        marginHorizontal: 15,
+        marginHorizontal: 40,
         marginVertical: 4,
-        borderWidth: 4,
-        borderRadius: 10,
-        borderColor: '#ee617c',
         backgroundColor: '#fff',
         alignItems: 'center',
     },
     textStyle:{
         marginTop: 10,
-        color: '#856cff',
+        color: '#506dcf',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 25,
+        fontFamily: 'Montserrat-Regular',
+        fontSize: 18,
     },
     textStyleCancel:{
         marginTop: 10,
-        color: '#ee617c',
+        color: '#d15564',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 25,
+        fontFamily: 'Montserrat-Regular',
+        fontSize: 18,
     },
 
     inputStyle:{
         marginHorizontal: 15,
-        marginTop: 50,
-        height: 40,
+        marginTop: 80,
+        height: 20,
         backgroundColor: '#fff',
-        marginBottom: 40,
-        color: '#2A2A30',
+        marginBottom: 10,
+        color: '#3e4164',
         paddingHorizontal: 10,
-        fontSize: 20,
+        fontSize: 18,
     },
     input2: {
         marginHorizontal: 15,
-        marginTop: 50,
+        marginTop: 80,
         height: 100,
         backgroundColor: '#fff',
-        marginBottom: 40,
-        color: '#2A2A30',
+        marginBottom: 10,
+        color: '#3e4164',
         paddingHorizontal: 10,
-        fontSize: 20,
+        fontSize: 18,
     },
 
     header: {
@@ -525,7 +519,7 @@ const styles = StyleSheet.create({
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 16,
         backgroundColor: 'transparent',
 

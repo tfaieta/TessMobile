@@ -63,6 +63,7 @@ class Variables extends Component{
         myQueue: [],
         playlists: [],  // stores all playlists
         widgets: [],    // stores the titles of widgets for home page, in correct order
+        tracking: false, //bool of whether user is tracking certain podcast
 
 
         podcastURL: '',
