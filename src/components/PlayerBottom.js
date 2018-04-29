@@ -6,6 +6,7 @@ import Slider from 'react-native-slider';
 import firebase from 'firebase';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import MusicControl from 'react-native-music-control';
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 import { Navigation } from 'react-native-navigation';
 
@@ -43,7 +44,9 @@ class PlayerBottom extends Component {
         likes: 12,
         profileImage: '',
         buffering: Variables.state.buffering,
-        speed: Variables.state.podcastSpeed
+        speed: Variables.state.podcastSpeed,
+        highlight: false,
+        highlightTime: [0, 1]
     };
 
     componentDidMount() {
@@ -150,20 +153,80 @@ class PlayerBottom extends Component {
 
 
     _renderSlider(currentTime){
-        return(
-            <Slider
-                minimumTrackTintColor='#5757FF'
-                maximumTrackTintColor='#E7E7F0'
-                thumbStyle={{width: 25, height: 25, borderRadius: 12.5, backgroundColor: '#fff', borderColor: '#506dcf', borderWidth: 2}}
-                animateTransitions = {true}
-                style={styles.sliderContainer}
-                step={0}
-                minimumValue={0}
-                maximumValue= { Math.abs( Variables.state.duration)}
-                value={ currentTime }
-                onValueChange={currentTime => Variables.state.seekTo = currentTime}
-            />
-        )
+        if(this.state.highlight){
+            return(
+                <View style={{marginTop: 5, marginBottom: -25}}>
+                    <View style={{flexDirection: 'row',}}>
+                    {this._renderCurrentTimeHighlight(this.state.highlightTime[0])}
+                        {this._renderCurrentTimeHighlightEnd(this.state.highlightTime[1])}
+                    </View>
+                <MultiSlider
+                    values={[this.state.highlightTime[0], this.state.highlightTime[1]]}
+                    snapped
+                    min={0}
+                    max={Math.abs(Variables.state.duration)}
+                    step={1}
+                    sliderLength={width-40}
+                    selectedStyle={{
+                        backgroundColor: '#506dcf',
+                    }}
+                    unselectedStyle={{
+                        backgroundColor: '#E7E7F0',
+                    }}
+                    containerStyle={{
+                        width:  width-40,
+                        alignSelf: 'center'
+                    }}
+                    trackStyle={{
+                        height: 4,
+                        backgroundColor: '#506dcf',
+                        width:  width-40,
+                    }}
+                    touchDimensions={{
+                        height: 15,
+                        width: 15,
+                        borderRadius: 10,
+                        color: '#3e4164',
+                    }}
+                    onValuesChange={(values) => {
+                        Variables.state.paused = false;
+                        clearTimeout(this.timeout);
+                        if(this.state.highlightTime[0] != values[0]){
+                            Variables.state.seekTo = values[0];
+                        }
+                        else{
+                            Variables.state.seekTo = values[1]-10;
+                            this.timeout = setTimeout(() => {Variables.state.paused = true}, 10000)
+                        }
+                        this.setState({
+                            highlightTime: [values[0],values[1]]
+                        });
+
+                    }}
+
+                />
+                </View>
+            )
+        }
+        else{
+            return(
+                <Slider
+                    minimumTrackTintColor='#5757FF'
+                    maximumTrackTintColor='#E7E7F0'
+                    thumbStyle={{width: 25, height: 25, borderRadius: 12.5, backgroundColor: '#506dcf', borderColor: '#506dcf', borderWidth: 2}}
+                    animateTransitions = {true}
+                    style={styles.sliderContainer}
+                    step={0}
+                    minimumValue={0}
+                    maximumValue= { Math.abs( Variables.state.duration)}
+                    value={ currentTime }
+                    onValueChange={currentTime => Variables.state.seekTo = currentTime}
+                />
+
+            )
+
+        }
+
     }
 
     _renderPodcastImage(){
@@ -285,7 +348,7 @@ class PlayerBottom extends Component {
     _renderPodcastSpeed(speed){
         return(
             <TouchableOpacity onPress={this.setSpeed}>
-                <Text style = {styles.podcastTextSpeed}>x{speed.toFixed(2)}</Text>
+                <Text style = {styles.podcastTextSpeed}>{speed.toFixed(2)}x</Text>
             </TouchableOpacity>
         )
     }
@@ -604,11 +667,9 @@ class PlayerBottom extends Component {
             if (liked) {
                 return (
                     <TouchableOpacity onPress = {this.pressLike}>
-                        <Icon style={{textAlign: 'center', fontSize: 28, color: '#506dcf', marginRight: 25}} name="ios-happy-outline">
+                        <Icon style={{textAlign: 'center', fontSize: 28, color: '#506dcf', marginRight: 25}} name="md-happy">
+                            <Text style={styles.podcastTextLikes}>   {likers.length}</Text>
                         </Icon>
-                        <View style={{flex:1}}>
-                            <Text style={styles.podcastTextLikes}> {likers.length}</Text>
-                        </View>
 
                     </TouchableOpacity>
                 )
@@ -616,11 +677,9 @@ class PlayerBottom extends Component {
             else{
                 return(
                     <TouchableOpacity onPress = {this.pressLike}>
-                        <Icon style={{textAlign: 'center', fontSize: 28, color: '#BBBCCD', marginRight: 25}} name="ios-happy-outline">
+                        <Icon style={{textAlign: 'center', fontSize: 28, color: '#BBBCCD', marginRight: 25}} name="md-happy">
+                            <Text style={styles.podcastTextLikes}>   {likers.length}</Text>
                         </Icon>
-                        <View style={{flex:1}}>
-                            <Text style={styles.podcastTextLikes}> {likers.length}</Text>
-                        </View>
                     </TouchableOpacity>
                 )
             }
@@ -760,6 +819,234 @@ class PlayerBottom extends Component {
 
 
     }
+
+
+    _renderCurrentTimeHighlight(currentTime) {
+
+        var num = ((currentTime) % 60).toString();
+        var num2 = ((currentTime) / 60).toString();
+        var minutes = num2.slice(0,1);
+        Number(minutes.slice(0,1));
+
+
+        if (Variables.state.podcastTitle == '') {
+            return (
+                <Text style={styles.podcastTextNum}></Text>
+            );
+        }
+        else if (currentTime == -1){
+            return (
+                <Text style={styles.podcastTextNum}>0:00</Text>
+            )
+        }
+        else if(Number(num2) < 10){
+            var minutes = num2.slice(0,1);
+            Number(minutes.slice(0,1));
+            if(Number(num) < 10){
+                var seconds = num.slice(0,1);
+                Number(seconds.slice(0,1));
+                return (
+                    <Text style={{
+                        color: '#3e4164',
+                        fontSize: 16,
+                        marginBottom: 20,
+                        flexDirection: 'row',
+                        backgroundColor: 'transparent',
+                        marginLeft:  (((this.state.highlightTime[1] + this.state.highlightTime[0] / 2) * (width / Math.abs(Variables.state.duration))) / 2 - (width/20)) - ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
+                        fontFamily: 'Montserrat-Regular',
+                    }}
+                    >{minutes}:0{seconds}</Text>
+                )
+            }
+            else{
+                var seconds = num.slice(0,2);
+                Number(seconds.slice(0,2));
+                return (
+                    <Text style={{
+                        color: '#3e4164',
+                        fontSize: 16,
+                        marginBottom: 20,
+                        flexDirection: 'row',
+                        backgroundColor: 'transparent',
+                        marginLeft:  (((this.state.highlightTime[1] + this.state.highlightTime[0] / 2) * (width / Math.abs(Variables.state.duration))) / 2 - (width/20)) - ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
+                        fontFamily: 'Montserrat-Regular',
+                    }}
+                    >{minutes}:{seconds}</Text>
+                );
+            }
+        }
+        else{
+            var minutes = num2.slice(0,2);
+            Number(minutes.slice(0,2));
+            if(Number(num) < 10){
+                var seconds = num.slice(0,1);
+                Number(seconds.slice(0,1));
+                return (
+                    <Text style={{
+                        color: '#3e4164',
+                        fontSize: 16,
+                        marginBottom: 20,
+                        flexDirection: 'row',
+                        backgroundColor: 'transparent',
+                        marginLeft:  (((this.state.highlightTime[1] + this.state.highlightTime[0] / 2) * (width / Math.abs(Variables.state.duration))) / 2 - (width/20)) - ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
+                        fontFamily: 'Montserrat-Regular',
+                    }}
+                    >{minutes}:0{seconds}</Text>
+                )
+            }
+            else{
+                var seconds = num.slice(0,2);
+                Number(seconds.slice(0,2));
+                return (
+                    <Text style={{
+                        color: '#3e4164',
+                        fontSize: 16,
+                        marginBottom: 20,
+                        flexDirection: 'row',
+                        backgroundColor: 'transparent',
+                        marginLeft:  (((this.state.highlightTime[1] + this.state.highlightTime[0] / 2) * (width / Math.abs(Variables.state.duration))) / 2 - (width/20)) - ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
+                        fontFamily: 'Montserrat-Regular',
+                    }}
+                    >{minutes}:{seconds}</Text>
+                );
+            }
+        }
+
+
+
+    }
+
+    _renderCurrentTimeHighlightEnd(currentTime) {
+
+        var num = ((currentTime) % 60).toString();
+        var num2 = ((currentTime) / 60).toString();
+        var minutes = num2.slice(0,1);
+        Number(minutes.slice(0,1));
+
+
+        if (Variables.state.podcastTitle == '') {
+            return (
+                <Text style={styles.podcastTextNum}></Text>
+            );
+        }
+        else if (currentTime == -1){
+            return (
+                <Text style={styles.podcastTextNum}>0:00</Text>
+            )
+        }
+        else if(Number(num2) < 10){
+            var minutes = num2.slice(0,1);
+            Number(minutes.slice(0,1));
+            if(Number(num) < 10){
+                var seconds = num.slice(0,1);
+                Number(seconds.slice(0,1));
+                return (
+                    <Text style={{
+                        color: '#3e4164',
+                        fontSize: 16,
+                        marginBottom: 20,
+                        flexDirection: 'row',
+                        backgroundColor: 'transparent',
+                        marginLeft: ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
+                        fontFamily: 'Montserrat-Regular',
+                    }}
+                    >{minutes}:0{seconds}</Text>
+                )
+            }
+            else{
+                var seconds = num.slice(0,2);
+                Number(seconds.slice(0,2));
+                return (
+                    <Text style={{
+                        color: '#3e4164',
+                        fontSize: 16,
+                        marginBottom: 20,
+                        flexDirection: 'row',
+                        backgroundColor: 'transparent',
+                        marginLeft:  ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
+                        fontFamily: 'Montserrat-Regular',
+                    }}
+                    >{minutes}:{seconds}</Text>
+                );
+            }
+        }
+        else{
+            var minutes = num2.slice(0,2);
+            Number(minutes.slice(0,2));
+            if(Number(num) < 10){
+                var seconds = num.slice(0,1);
+                Number(seconds.slice(0,1));
+                return (
+                    <Text style={{
+                        color: '#3e4164',
+                        fontSize: 16,
+                        marginBottom: 20,
+                        flexDirection: 'row',
+                        backgroundColor: 'transparent',
+                        marginLeft: ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
+                        fontFamily: 'Montserrat-Regular',
+                    }}
+                    >{minutes}:0{seconds}</Text>
+                )
+            }
+            else{
+                var seconds = num.slice(0,2);
+                Number(seconds.slice(0,2));
+                return (
+                    <Text style={{
+                        color: '#3e4164',
+                        fontSize: 16,
+                        marginBottom: 20,
+                        flexDirection: 'row',
+                        backgroundColor: 'transparent',
+                        marginLeft:  ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
+                        fontFamily: 'Montserrat-Regular',
+                    }}
+                    >{minutes}:{seconds}</Text>
+                );
+            }
+        }
+
+
+
+    }
+
+
+    renderHighlight = () => {
+
+        if(this.state.highlight){
+            return(
+                <TouchableOpacity style = {{marginTop: height/14, marginBottom: height/22, marginHorizontal: 90, borderRadius: 7, backgroundColor: '#3e4164', padding: 5}} onPress={() => {
+                    this.setState({highlight: false});
+                    const highlightTime = this.state.highlightTime;
+                    const podcastID = Variables.state.podcastID;
+                    this.props.navigator.showLightBox({
+                        screen: "Highlight", // unique ID registered with Navigation.registerScreen
+                        passProps: {highlightTime, podcastID}, // simple serializable object that will pass as props to the lightbox (optional)
+                        style: {
+                            backgroundBlur: "light", // 'dark' / 'light' / 'xlight' / 'none' - the type of blur on the background
+                            backgroundColor: '#54546080' // tint color for the background, you can specify alpha here (optional)
+                        },
+                        adjustSoftInput: "resize", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
+                    });
+                }}>
+                    <Text style = {styles.highlightText}>Save Highlight</Text>
+                </TouchableOpacity>
+
+            )
+        }
+        else{
+            return(
+                <TouchableOpacity style = {{marginTop: height/14, marginBottom: height/22, marginHorizontal: 90, borderRadius: 7, backgroundColor: '#506dcf', padding: 5}} onPress={() => {
+                    this.setState({highlight: true, highlightTime: [Variables.state.currentTime, Variables.state.currentTime + 15]})
+                }}>
+                    <Text style = {styles.highlightText}>Begin Highlight</Text>
+                </TouchableOpacity>
+
+            )
+        }
+
+    };
 
 
     onProfilePress = () => {
@@ -953,6 +1240,7 @@ class PlayerBottom extends Component {
     }
 
     onSwipeDown(gestureState) {
+        this.setState({highlight: false});
         this.setModalVisible(!this.state.modalVisible)
     }
 
@@ -1061,7 +1349,7 @@ class PlayerBottom extends Component {
                                     });
 
                                 }}>
-                                    <Icon style={{textAlign:'center', fontSize: 16,color:'#506dcf', }} name="md-add-circle">
+                                    <Icon style={{textAlign:'center', fontSize: 30, color:'#506dcf', }} name="md-add">
                                     </Icon>
                                     <Text style={styles.seeMore}>View More</Text>
 
@@ -1080,14 +1368,17 @@ class PlayerBottom extends Component {
 
 
 
+                                {this.renderHighlight()}
+
+
+
 
                                 <View style={styles.centerContainerButtons}>
 
                                     <View style={styles.leftContainerP}>
                                         <TouchableOpacity onPress={this.scrubBackward}>
-                                            <Icon style={{flex:1, textAlign:'center', fontSize: height/13.34,color:'#2A2A30' }} name="ios-undo">
+                                            <Icon style={{flex:1, textAlign:'center', fontSize: height/25, color:'#2A2A30' }} name="ios-rewind">
                                             </Icon>
-                                            <Text style={{textAlign: 'center',  color: '#2A2A30', fontSize: height/66.7, backgroundColor: 'transparent', fontFamily: 'Montserrat-SemiBold',}}>15</Text>
                                         </TouchableOpacity>
                                     </View>
 
@@ -1099,9 +1390,8 @@ class PlayerBottom extends Component {
 
                                     <View style={styles.rightContainerP}>
                                         <TouchableOpacity onPress={this.scrubForward}>
-                                            <Icon style={{flex:1, textAlign:'center', fontSize: height/13.34,color:'#2A2A30' }} name="ios-redo">
+                                            <Icon style={{flex:1, textAlign:'center', fontSize: height/25,color:'#2A2A30' }} name="ios-fastforward">
                                             </Icon>
-                                            <Text style={{textAlign: 'center',  color: '#2A2A30', fontSize: height/66.7, backgroundColor: 'transparent', fontFamily: 'Montserrat-SemiBold',}}>15</Text>
                                         </TouchableOpacity>
                                     </View>
 
@@ -1245,7 +1535,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingTop: 10,
         paddingBottom: 10,
-        marginTop: 50
     },
     rightContainer: {
         flex: 1,
@@ -1323,22 +1612,32 @@ const styles = StyleSheet.create({
     seeMore:{
         color: '#506dcf',
         fontSize: 14,
-        marginTop:5,
         marginBottom:5,
         flexDirection: 'row',
         backgroundColor: 'transparent',
         alignSelf: 'center',
         textAlign: 'center',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-SemiBold',
     },
     podcastTextNum:{
         color: '#BBBCCD',
-        fontSize: 12,
+        fontSize: 16,
         marginTop: 5,
         flexDirection: 'row',
         backgroundColor: 'transparent',
         marginHorizontal: 15,
         fontFamily: 'Montserrat-Regular',
+    },
+
+    podcastHighlightNum:{
+        color: '#3e4164',
+        fontSize: 14,
+        marginBottom: 20,
+        flexDirection: 'row',
+        backgroundColor: 'transparent',
+        alignSelf: 'center',
+        textAlign: 'center',
+        fontFamily: 'Montserrat-SemiBold',
     },
 
     middleContainer: {
@@ -1348,15 +1647,17 @@ const styles = StyleSheet.create({
     },
     podcastTextLikes:{
         color: '#BBBCCD',
-        fontSize: 14,
+        fontSize: 16,
         backgroundColor: 'transparent',
-        textAlign: 'center'
+        textAlign: 'center',
+        fontFamily: 'Montserrat-Regular',
     },
     podcastTextLikesActive:{
         color: '#BBBCCD',
-        fontSize: 14,
+        fontSize: 16,
         backgroundColor: 'transparent',
-        textAlign: 'center'
+        textAlign: 'center',
+        fontFamily: 'Montserrat-Regular',
     },
     podcastTextArtist:{
         color:'#3e4164',
@@ -1397,6 +1698,15 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         textAlign: 'center'
     },
+
+    highlightText: {
+        color:'#fff',
+        fontSize: 16,
+        flexDirection: 'row',
+        backgroundColor: 'transparent',
+        alignSelf: 'center',
+        fontFamily: 'Montserrat-Regular',
+    }
 
 
 });

@@ -10,7 +10,7 @@ import ListItem from "./ListItem";
 
 
 
-// displays recently played podcasts
+// displays collection of highlights (in library)
 
 
 class Highlights extends Component{

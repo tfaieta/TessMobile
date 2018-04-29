@@ -1383,6 +1383,41 @@ class Home extends Component{
 
     };
 
+    renderAddWidget(title){
+
+        if(title == ''){
+            return(
+                <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
+
+                    <TouchableOpacity onPress={() => {
+                        this.props.navigator.push({
+                            screen: 'AddWidget',
+                            title: 'Add a Widget'
+                        })
+                    }}>
+                        <Text style={styles.titleAdd}>Add a widget</Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+        else{
+            return(
+                <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginTop: 5, marginBottom: 60}}>
+
+                    <TouchableOpacity onPress={() => {
+                        this.props.navigator.push({
+                            screen: 'AddWidget',
+                            title: 'Add a Widget'
+                        })
+                    }}>
+                        <Text style={styles.titleAdd}>Add a widget</Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+
+    }
+
 
     renderRowCard(podcast) {
 
@@ -1849,18 +1884,8 @@ class Home extends Component{
                         />
 
 
-                        <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
 
-                            <TouchableOpacity onPress={() => {
-                                this.props.navigator.push({
-                                    screen: 'AddWidget',
-                                    title: 'Add a Widget'
-                                })
-                            }}>
-                                <Text style={styles.titleAdd}>Add a widget</Text>
-                            </TouchableOpacity>
-                        </View>
-
+                        {this.renderAddWidget(Variables.state.podcastArtist)}
 
 
 

@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginVertical: 10,
         backgroundColor: 'transparent',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         textAlign: 'center'
     },
     textDone:{
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         marginTop: 30,
         backgroundColor: 'transparent',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         textAlign: 'center'
     }
 

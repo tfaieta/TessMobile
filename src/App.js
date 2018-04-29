@@ -64,6 +64,7 @@ import Playlists from "./components/Playlists";
 import AddWidget from "./components/AddWidget";
 import Search from "./components/Search";
 import Highlights from "./components/Highlights";
+import Highlight from "./components/Highlight";
 
 
 
@@ -137,6 +138,7 @@ Navigation.registerComponent('PlayerInfo', () => PlayerInfo, store, Provider);
 Navigation.registerComponent('SetPlayerSpeed', () => SetPlayerSpeed, store, Provider);
 Navigation.registerComponent('MyQueue', () => MyQueue, store, Provider);
 Navigation.registerComponent('PlayerOptions', () => PlayerOptions, store, Provider);
+Navigation.registerComponent('Highlight', () => Highlight, store, Provider);
 
 
 const config = {
