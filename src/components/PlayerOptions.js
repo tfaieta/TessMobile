@@ -83,6 +83,23 @@ class PlayerOptions extends Component {
 
                     <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
 
+
+
+                    <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+
+
+                    }}>
+                        <View style={{alignContent: 'center'}}>
+                            <Icon style={styles.iconStyle} name="ios-share-outline" />
+                        </View>
+
+                        <View style={{alignContent: 'center'}}>
+                            <Text style={styles.textStyle}>Share</Text>
+                        </View>
+                    </TouchableOpacity>
+
+
+
                     <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
 
 
@@ -118,6 +135,20 @@ class PlayerOptions extends Component {
                         </View>
                         <View style = {{alignContent: 'center'}}>
                             <Text style={styles.textStyle}>Go to Queue</Text>
+                        </View>
+                    </TouchableOpacity>
+
+
+                    <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+
+
+                    }}>
+                        <View style={{alignContent: 'center'}}>
+                            <Icon style={styles.iconStyle} name="ios-add-circle-outline" />
+                        </View>
+
+                        <View style={{alignContent: 'center'}}>
+                            <Text style={styles.textStyle}>Add to Playlist</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -177,6 +208,20 @@ class PlayerOptions extends Component {
 
                             <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
 
+
+                            }}>
+                                <View style={{alignContent: 'center'}}>
+                                    <Icon style={styles.iconStyle} name="ios-share-outline" />
+                                </View>
+
+                                <View style={{alignContent: 'center'}}>
+                                    <Text style={styles.textStyle}>Share</Text>
+                                </View>
+                            </TouchableOpacity>
+
+
+                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+
                                 firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
                                     snap.forEach(function (data) {
                                         if(data.val().id == id){
@@ -209,6 +254,19 @@ class PlayerOptions extends Component {
                                 </View>
                                 <View style = {{alignContent: 'center'}}>
                                     <Text style={styles.textStyle}>Go to Queue</Text>
+                                </View>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+
+
+                            }}>
+                                <View style={{alignContent: 'center'}}>
+                                    <Icon style={styles.iconStyle} name="ios-add-circle-outline" />
+                                </View>
+
+                                <View style={{alignContent: 'center'}}>
+                                    <Text style={styles.textStyle}>Add to Playlist</Text>
                                 </View>
                             </TouchableOpacity>
 
@@ -275,6 +333,21 @@ class PlayerOptions extends Component {
 
                             <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
 
+
+                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+
+
+                            }}>
+                                <View style={{alignContent: 'center'}}>
+                                    <Icon style={styles.iconStyle} name="ios-share-outline" />
+                                </View>
+
+                                <View style={{alignContent: 'center'}}>
+                                    <Text style={styles.textStyle}>Share</Text>
+                                </View>
+                            </TouchableOpacity>
+
+
                             <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
 
                                 firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
@@ -313,6 +386,19 @@ class PlayerOptions extends Component {
                                 </View>
                             </TouchableOpacity>
 
+
+                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+
+
+                            }}>
+                                <View style={{alignContent: 'center'}}>
+                                    <Icon style={styles.iconStyle} name="ios-add-circle-outline" />
+                                </View>
+
+                                <View style={{alignContent: 'center'}}>
+                                    <Text style={styles.textStyle}>Add to Playlist</Text>
+                                </View>
+                            </TouchableOpacity>
 
 
                             <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
@@ -528,7 +614,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: height/41.69,
         backgroundColor: 'transparent',
         marginVertical: height/33.35,
@@ -539,7 +625,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: height/51.3,
         backgroundColor: 'transparent',
         marginVertical: 5,
@@ -551,7 +637,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: height/51.3,
         backgroundColor: 'transparent',
         marginBottom: 20,

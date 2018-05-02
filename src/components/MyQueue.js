@@ -129,14 +129,14 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        color: '#2A2A30',
+        color: '#3e4164',
         marginTop:10,
         marginLeft: 20,
         flex:1,
         textAlign: 'left',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 20,
         backgroundColor: 'transparent'
     },
@@ -152,10 +152,10 @@ const styles = StyleSheet.create({
     header: {
         marginTop:25,
         marginLeft: -35,
-        color: '#2A2A30',
+        color: '#3e4164',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 16,
         backgroundColor: 'transparent',
 
