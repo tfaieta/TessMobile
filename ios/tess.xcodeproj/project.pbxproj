@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -69,7 +68,11 @@
 		ED6396761FFC38E8006863EF /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED6396731FFC38DA006863EF /* libRCTVideo.a */; };
 		EDA197FE1FBD37B100001991 /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA197F91FBD379400001991 /* libReactNativeNavigation.a */; };
 		EDBAF62E1EFB059800783B86 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDBAF62A1EFB059800783B86 /* Bolts.framework */; };
+		EDD89202209A3A84006E0ADF /* libRNShare.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDD891FF209A3A51006E0ADF /* libRNShare.a */; };
+		EDD89204209A3AE1006E0ADF /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDD89203209A3AE1006E0ADF /* Social.framework */; };
 		F350963F63FC4DA8B45AD7E9 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FED8E7F1CB6F4077B3EE2FB7 /* MaterialCommunityIcons.ttf */; };
+		CD1912E7F99643629E3441B7 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8E5EACCC43F44B219FC9ED9F /* Montserrat-Regular.ttf */; };
+		88FAE9D8EA8E4E8A9513F071 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5BC1429D1C34ED7A8AE0469 /* Montserrat-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -332,6 +335,13 @@
 			remoteGlobalIDString = D8AFADBD1BEE6F3F00A4592D;
 			remoteInfo = ReactNativeNavigation;
 		};
+		EDD891FE209A3A51006E0ADF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EDD891D8209A3A51006E0ADF /* RNShare.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNShare;
+		};
 		EDE28D681F05BD9B004B0041 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9373722E550E4A04A9D86A17 /* RNVectorIcons.xcodeproj */;
@@ -414,9 +424,13 @@
 		ED63966D1FFC38DA006863EF /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
 		EDA197D91FBD379400001991 /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
 		EDBAF62A1EFB059800783B86 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		EDD891D8209A3A51006E0ADF /* RNShare.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNShare.xcodeproj; path = "../node_modules/react-native-share/ios/RNShare.xcodeproj"; sourceTree = "<group>"; };
+		EDD89203209A3AE1006E0ADF /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		EE039E46CE1E446CBC86FCC0 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		FD0A5EAD43FF43D4AC16ED80 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		FED8E7F1CB6F4077B3EE2FB7 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		8E5EACCC43F44B219FC9ED9F /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A5BC1429D1C34ED7A8AE0469 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; name = "Montserrat-SemiBold.ttf"; path = "../assets/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -432,6 +446,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDD89204209A3AE1006E0ADF /* Social.framework in Frameworks */,
+				EDD89202209A3A84006E0ADF /* libRNShare.a in Frameworks */,
 				ED6396761FFC38E8006863EF /* libRCTVideo.a in Frameworks */,
 				ED63966C1FFC38BC006863EF /* libMusicControl.a in Frameworks */,
 				ED5FFEF41FC0E7DF00488D5D /* QBImagePicker.framework in Frameworks */,
@@ -597,6 +613,8 @@
 				A76163A2DFE84DE6BFA35747 /* Octicons.ttf */,
 				591BD6C348344FF69FFE410A /* SimpleLineIcons.ttf */,
 				08AD122220B34264B8B1E741 /* Zocial.ttf */,
+				8E5EACCC43F44B219FC9ED9F /* Montserrat-Regular.ttf */,
+				A5BC1429D1C34ED7A8AE0469 /* Montserrat-SemiBold.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -637,6 +655,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				EDD891D8209A3A51006E0ADF /* RNShare.xcodeproj */,
 				ED63966D1FFC38DA006863EF /* RCTVideo.xcodeproj */,
 				ED6396421FFC38A4006863EF /* MusicControl.xcodeproj */,
 				ED5FFEC91FC0E7BA00488D5D /* imageCropPicker.xcodeproj */,
@@ -765,6 +784,7 @@
 		EDBAF64E1EFB061100783B86 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EDD89203209A3AE1006E0ADF /* Social.framework */,
 				ED5FFEF51FC0E7DF00488D5D /* QBImagePicker.framework */,
 				ED5FFEF31FC0E7D800488D5D /* RSKImageCropper.framework */,
 				EDBAF62A1EFB059800783B86 /* Bolts.framework */,
@@ -779,6 +799,14 @@
 				2066727B820AADDE88BAA49F /* CoreVideo.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EDD891D9209A3A51006E0ADF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EDD891FF209A3A51006E0ADF /* libRNShare.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		EDE28D4A1F05BD9B004B0041 /* Products */ = {
@@ -987,6 +1015,10 @@
 				{
 					ProductGroup = ED04713A1F71CB4F00EE000D /* Products */;
 					ProjectRef = ED0471391F71CB4F00EE000D /* RNFetchBlob.xcodeproj */;
+				},
+				{
+					ProductGroup = EDD891D9209A3A51006E0ADF /* Products */;
+					ProjectRef = EDD891D8209A3A51006E0ADF /* RNShare.xcodeproj */;
 				},
 				{
 					ProductGroup = ED3A18EE1F2BCDE900ED4DFB /* Products */;
@@ -1253,6 +1285,13 @@
 			remoteRef = EDA197F81FBD379400001991 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		EDD891FF209A3A51006E0ADF /* libRNShare.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNShare.a;
+			remoteRef = EDD891FE209A3A51006E0ADF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		EDE28D691F05BD9B004B0041 /* libRNVectorIcons.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1287,6 +1326,8 @@
 				EBD71E8384754E3B973F97D0 /* Octicons.ttf in Resources */,
 				C3A628948A284C6C88A8790A /* SimpleLineIcons.ttf in Resources */,
 				BA533A666B784445A01BBAFB /* Zocial.ttf in Resources */,
+				CD1912E7F99643629E3441B7 /* Montserrat-Regular.ttf in Resources */,
+				88FAE9D8EA8E4E8A9513F071 /* Montserrat-SemiBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

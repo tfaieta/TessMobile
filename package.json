@@ -36,6 +36,7 @@
 		"react-native-scrollable-tab-view": "^0.8.0",
 		"react-native-search-bar": "^3.0.0",
 		"react-native-settings-list": "^1.6.1",
+		"react-native-share": "^1.0.27",
 		"react-native-simple-picker": "^1.4.3",
 		"react-native-slider": "^0.10.0",
 		"react-native-sortable-listview": "^0.2.8",

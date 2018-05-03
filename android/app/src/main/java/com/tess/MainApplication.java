@@ -15,6 +15,7 @@ import com.tanguyantoine.react.MusicControl;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.reactnativenavigation.NavigationApplication;
 import com.brentvatne.react.ReactVideoPackage;
+import cl.json.RNSharePackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +37,8 @@ public class MainApplication extends NavigationApplication {
         new LinearGradientPackage(),
         new MusicControl(),
         new RNFetchBlobPackage(),
-        new ReactVideoPackage()
+        new ReactVideoPackage(),
+        new RNSharePackage()
     );
   }
 

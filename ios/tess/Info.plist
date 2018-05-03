@@ -37,6 +37,8 @@
 	<string>Tess</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>mailto</string>
+		<string>whatsapp</string>
 		<string>fbapi</string>
 		<string>fb-messenger-api</string>
 		<string>fbauth2</string>
@@ -60,7 +62,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Tess will need to use your camera so that you can take a profile image.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Tess uses your microphone to create a podcast.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
