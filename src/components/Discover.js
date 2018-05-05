@@ -343,9 +343,9 @@ class Discover extends Component{
     }
 
 
-    renderRowNewPodcasts(podcast) {
-        return <ListItemUsers podcast={podcast} />;
-    }
+    renderRowNewPodcasts = (podcast) => {
+        return <ListItemUsers podcast={podcast} navigator={this.props.navigator} />;
+    };
 
 
 

@@ -1233,7 +1233,7 @@ class PlayerBottom extends Component {
             screen: "PlayerOptions",
             style: {
                 backgroundBlur: "dark",
-                backgroundColor: "#44434410",
+                backgroundColor: '#3e416430',
                 tapBackgroundToDismiss: true,
             },
         });

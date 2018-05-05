@@ -384,11 +384,31 @@ class ListItemUsers extends Component {
 
 
 
+
+
     render() {
 
         return (
 
-            <TouchableOpacity onPress={this.onRowPress.bind(this)}>
+            <TouchableOpacity onPress={this.onRowPress.bind(this)} onLongPress={() => {
+                const {currentUser} = firebase.auth();
+                const {podcast} = this.props;
+                const rowData = podcast;
+
+                const {navigator} = this.props;
+
+                this.props.navigator.showLightBox({
+                    screen: "PodcastOptions",
+                    passProps: {rowData, navigator},
+                    style: {
+                        backgroundBlur: "dark",
+                        backgroundColor: '#3e416430',
+                        tapBackgroundToDismiss: true,
+                        width: 100,
+                        height: 200
+                    },
+                });
+            }} >
                 <View style={{padding: 10}}>
 
                     {this._renderProfileImage()}

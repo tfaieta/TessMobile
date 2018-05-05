@@ -16,6 +16,10 @@ class Search extends Component{
         navBarHidden: true
     };
 
+    componentDidMount(){
+        this.refs.input.focus();
+    }
+
 
 
     searchActivate = () => {
@@ -62,6 +66,8 @@ class Search extends Component{
                         lightTheme
                         round
                         inputStyle={{backgroundColor: '#fff', color: '#2A2A30', marginLeft: 20}}
+                        textInputRef='input'
+                        ref='input'
                         containerStyle= {styles.containerSearch}
                         placeholder={this.state.search}
                         placeholderTextColor = '#2A2A30'

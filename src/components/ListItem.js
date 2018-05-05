@@ -396,6 +396,24 @@ class ListItem extends Component {
 
 
 
+                }} onLongPress={() => {
+                    const {currentUser} = firebase.auth();
+                    const {podcast} = this.props;
+                    const rowData = podcast;
+
+                    const {navigator} = this.props;
+
+                    this.props.navigator.showLightBox({
+                        screen: "PodcastOptions",
+                        passProps: {rowData, navigator},
+                        style: {
+                            backgroundBlur: "dark",
+                            backgroundColor: '#3e416430',
+                            tapBackgroundToDismiss: true,
+                            width: 100,
+                            height: 200
+                        },
+                    });
                 }}>
                     <View style={styles.container}>
 
@@ -419,7 +437,7 @@ class ListItem extends Component {
                                 passProps: {rowData, navigator},
                                 style: {
                                     backgroundBlur: "dark",
-                                    backgroundColor: "#44434410",
+                                    backgroundColor: '#3e416430',
                                     tapBackgroundToDismiss: true,
                                     width: 100,
                                     height: 200

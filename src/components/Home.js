@@ -1357,9 +1357,9 @@ class Home extends Component{
 
 
 
-    renderRowNewPodcasts(podcast) {
-        return <ListItemUsers podcast={podcast} />;
-    }
+    renderRowNewPodcasts = (podcast) => {
+        return <ListItemUsers podcast={podcast} navigator={this.props.navigator}  />;
+    };
 
 
     swipe = () =>{
@@ -1402,7 +1402,7 @@ class Home extends Component{
         }
         else{
             return(
-                <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginTop: 5, marginBottom: 60}}>
+                <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginTop: 5, marginBottom: 50}}>
 
                     <TouchableOpacity onPress={() => {
                         this.props.navigator.push({
