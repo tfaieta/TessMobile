@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import Variables from "./Variables";
 import { Navigation } from 'react-native-navigation';
+var Analytics = require('react-native-firebase-analytics');
 
 
 // A single podcast on the queue list
@@ -125,9 +126,14 @@ class ListItemQueue extends Component {
 
 
 
+
         return (
 
             <TouchableOpacity onPress={() =>  {
+
+                Analytics.logEvent('view_item', {
+                    'item_id': id
+                });
 
                 if(rss){
 

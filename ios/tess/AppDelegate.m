@@ -6,6 +6,7 @@
 // **********************************************
 #import "RCCManager.h"
 #import <BuddyBuildSDK/BuddyBuildSDK.h>
+@import Firebase;
 
 
 // IMPORTANT: if you're getting an Xcode error that RCCManager.h isn't found, you've probably ran "npm install"
@@ -18,6 +19,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [BuddyBuildSDK setup];
+    [FIRApp configure];
 
   NSURL *jsCodeLocation;
 #ifdef DEBUG

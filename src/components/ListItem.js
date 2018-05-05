@@ -3,6 +3,7 @@ import { Text, View, LayoutAnimation, TouchableOpacity, Alert, Image, Dimensions
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import Variables from "./Variables";
+var Analytics = require('react-native-firebase-analytics');
 
 var {height, width} = Dimensions.get('window');
 
@@ -156,6 +157,12 @@ class ListItem extends Component {
                     const {currentUser} = firebase.auth();
                     const user = currentUser.uid;
                     const {podcast} = this.props;
+
+
+                    Analytics.logEvent('view_item', {
+                        'item_id': id
+                    });
+
 
 
                     if(rss){

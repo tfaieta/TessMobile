@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {podFile, podTime} from './Record';
-import firebase from 'firebase';
 import MusicControl from 'react-native-music-control';
+import firebase from 'firebase';
 
 
 
@@ -126,8 +126,6 @@ class Variables extends Component{
         Variables.state.paused = true;
 
     };
-
-
 
 
 }

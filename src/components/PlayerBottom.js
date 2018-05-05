@@ -7,6 +7,7 @@ import firebase from 'firebase';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import MusicControl from 'react-native-music-control';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
+var Analytics = require('react-native-firebase-analytics');
 
 import { Navigation } from 'react-native-navigation';
 
@@ -1038,7 +1039,12 @@ class PlayerBottom extends Component {
         else{
             return(
                 <TouchableOpacity style = {{marginTop: height/14, marginBottom: height/22, marginHorizontal: 90, borderRadius: 7, backgroundColor: '#506dcf', padding: 5}} onPress={() => {
-                    this.setState({highlight: true, highlightTime: [Variables.state.currentTime, Variables.state.currentTime + 15]})
+                    this.setState({highlight: true, highlightTime: [Variables.state.currentTime, Variables.state.currentTime + 15]});
+
+                    Analytics.logEvent('view_item', {
+                        'item_id': id
+                    });
+
                 }}>
                     <Text style = {styles.highlightText}>Begin Highlight</Text>
                 </TouchableOpacity>
