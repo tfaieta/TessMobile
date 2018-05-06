@@ -16,11 +16,13 @@ import com.RNFetchBlob.RNFetchBlobPackage;
 import com.reactnativenavigation.NavigationApplication;
 import com.brentvatne.react.ReactVideoPackage;
 import cl.json.RNSharePackage;
+import cl.json.ShareApplication;
+import com.evollu.react.fa.FIRAnalyticsPackage;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class MainApplication extends NavigationApplication {
+public class MainApplication extends NavigationApplication implements ShareApplication  {
 
   @Override
   public boolean isDebug() {
@@ -38,10 +40,16 @@ public class MainApplication extends NavigationApplication {
         new MusicControl(),
         new RNFetchBlobPackage(),
         new ReactVideoPackage(),
-        new RNSharePackage()
+        new RNSharePackage(),
+        new FIRAnalyticsPackage()
     );
   }
 
+
+  @Override
+  public String getFileProviderAuthority() {
+    return "com.tess.provider";
+  }
 
   @Override
   public List<ReactPackage> createAdditionalReactPackages() {
