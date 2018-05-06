@@ -346,7 +346,7 @@ class Account extends Component {
                     </View>
 
 
-                    <View style={{backgroundColor: '#fff', marginVertical: 15, marginHorizontal: 7}}>
+                    <View style={{backgroundColor: '#fff', marginVertical: 15, marginHorizontal: 7, borderRadius: 10}}>
                         <Text style={styles.myContentTitle}>My Content</Text>
                     <ListView
                         enableEmptySections
@@ -360,7 +360,7 @@ class Account extends Component {
 
 
 
-                    <View style={{backgroundColor: '#fff', marginHorizontal: 8}}>
+                    <View style={{backgroundColor: '#fff', marginHorizontal: 8, borderRadius: 10}}>
                         <Text style={styles.myContentTitle}>Hours Listened: 5h, 37min, 42s</Text>
                         <View style={{flexDirection: 'row', marginTop: 10}}>
                             <TouchableOpacity style ={{flex:1}}>
@@ -400,7 +400,7 @@ class Account extends Component {
 
 
 
-                    <View style={{backgroundColor: '#fff', marginHorizontal: 8, marginVertical: 15}}>
+                    <View style={{backgroundColor: '#fff', marginHorizontal: 8, marginVertical: 15, borderRadius: 10}}>
                         <Text style={styles.myContentTitle}>Listening Trends</Text>
                         <View style={{flexDirection: 'row', marginTop: 10}}>
                             <TouchableOpacity style ={{flex:1}}>

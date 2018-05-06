@@ -7,6 +7,8 @@ import {
     Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import firebase from 'firebase';
+var Analytics = require('react-native-firebase-analytics');
 
 var {height, width} = Dimensions.get('window');
 
@@ -37,6 +39,11 @@ export default class CustomNavbar extends Component {
                     </View>
 
                     <TouchableOpacity style={{flex:1,justifyContent: 'center', alignItems: 'center', marginLeft: 10}} onPress={() => {
+                        const {currentUser} = firebase.auth();
+                        const user = currentUser.uid;
+                        Analytics.logEvent('goToSearch', {
+                            'user_id': user
+                        });
                         this.props.navigator.push({
                             screen: 'Search',
                             title: 'Search',
@@ -49,6 +56,11 @@ export default class CustomNavbar extends Component {
 
                     <View style={{flex: 1, flexDirection: 'row', alignSelf:'flex-end'}}>
                         <TouchableOpacity onPress={() => {
+                            const {currentUser} = firebase.auth();
+                            const user = currentUser.uid;
+                            Analytics.logEvent('goToCreate', {
+                                'user_id': user
+                            });
                             this.props.navigator.push({
                                 screen: 'RecordFirst',
                                 title: 'Create a Podcast'
@@ -63,6 +75,11 @@ export default class CustomNavbar extends Component {
                             }} name="microphone"/>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
+                            const {currentUser} = firebase.auth();
+                            const user = currentUser.uid;
+                            Analytics.logEvent('goToProfile', {
+                                'user_id': user
+                            });
                             this.props.navigator.push({
                                 screen: 'Account',
                                 title: 'Profile'

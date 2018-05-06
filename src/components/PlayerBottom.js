@@ -1041,8 +1041,13 @@ class PlayerBottom extends Component {
                 <TouchableOpacity style = {{marginTop: height/14, marginBottom: height/22, marginHorizontal: 90, borderRadius: 7, backgroundColor: '#506dcf', padding: 5}} onPress={() => {
                     this.setState({highlight: true, highlightTime: [Variables.state.currentTime, Variables.state.currentTime + 15]});
 
-                    Analytics.logEvent('view_item', {
-                        'item_id': id
+                    const {currentUser} = firebase.auth();
+                    const user = currentUser.uid;
+                    Analytics.logEvent('highlight', {
+                        'episodeID': Variables.state.podcastID,
+                        'epispdeTitle': Variables.state.podcastTitle,
+                        'episodeArtist': Variables.state.podcastArtist,
+                        'user_id': user
                     });
 
                 }}>
@@ -1260,6 +1265,12 @@ class PlayerBottom extends Component {
         AsyncStorage.setItem("currentTime", "0");
         AsyncStorage.setItem("currentPodcast", "");
         MusicControl.resetNowPlaying();
+
+        const {currentUser} = firebase.auth();
+        const user = currentUser.uid;
+        Analytics.logEvent('closePlayer', {
+            'user_id': user
+        });
     }
 
 

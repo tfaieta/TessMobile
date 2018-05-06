@@ -159,8 +159,11 @@ class ListItem extends Component {
                     const {podcast} = this.props;
 
 
-                    Analytics.logEvent('view_item', {
-                        'item_id': id
+                    Analytics.logEvent('play', {
+                        'episodeID': id,
+                        'epispdeTitle': podcastTitle,
+                        'episodeArtist': podcastArtist,
+                        'user_id': user
                     });
 
 

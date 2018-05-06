@@ -12,6 +12,7 @@ import Player from "./Player";
 import SwipeCards from 'react-native-swipe-cards';
 import ListItemCard from "./ListItemCard";
 import SortableListView from 'react-native-sortable-listview'
+var Analytics = require('react-native-firebase-analytics');
 
 
 
@@ -1390,6 +1391,11 @@ class Home extends Component{
                 <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
 
                     <TouchableOpacity onPress={() => {
+                        const {currentUser} = firebase.auth();
+                        const user = currentUser.uid;
+                        Analytics.logEvent('addWidgetPress', {
+                            'user_id': user
+                        });
                         this.props.navigator.push({
                             screen: 'AddWidget',
                             title: 'Add a Widget'
@@ -1405,6 +1411,11 @@ class Home extends Component{
                 <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginTop: 5, marginBottom: 50}}>
 
                     <TouchableOpacity onPress={() => {
+                        const {currentUser} = firebase.auth();
+                        const user = currentUser.uid;
+                        Analytics.logEvent('addWidgetPress', {
+                            'user_id': user
+                        });
                         this.props.navigator.push({
                             screen: 'AddWidget',
                             title: 'Add a Widget'
