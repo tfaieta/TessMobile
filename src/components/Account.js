@@ -39,12 +39,14 @@ class Account extends Component {
         Variables.state.myPodcasts = [];
         Variables.state.myFollowers = [];
         Variables.state.myFollowing = [];
+        Variables.state.myTracking = [];
         Variables.state.profileImage = '';
         const {currentUser} = firebase.auth();
         const refMy = firebase.database().ref(`podcasts/`);
         const storageRef = firebase.storage().ref(`/users/${currentUser.uid}/image-profile-uploaded`);
         const refFol = firebase.database().ref(`users/${currentUser.uid}/followers`);
         const refFollowing = firebase.database().ref(`users/${currentUser.uid}/following`);
+        const refTracking = firebase.database().ref(`users/${currentUser.uid}/tracking`);
 
 
         refMy.on("value", function (snapshot) {
@@ -68,6 +70,13 @@ class Account extends Component {
             Variables.state.myFollowing = [];
             snapshot.forEach(function (data) {
                 Variables.state.myFollowing.push(data.key);
+            })
+        });
+
+        refTracking.on("value", function (snapshot) {
+            Variables.state.myTracking = [];
+            snapshot.forEach(function (data) {
+                Variables.state.myTracking.push(data.key);
             })
         });
 
@@ -341,13 +350,13 @@ class Account extends Component {
                             <Text style = {styles.title}>Edit Profile</Text>
                         </TouchableOpacity>
 
-                        {this._renderProfileNumbers(Variables.state.myPodcasts.length, Variables.state.myFollowers.length, Variables.state.myFollowing.length)}
+                        {this._renderProfileNumbers(Variables.state.myTracking.length, Variables.state.myFollowers.length, Variables.state.myFollowing.length)}
 
                     </View>
 
 
                     <View style={{backgroundColor: '#fff', marginVertical: 15, marginHorizontal: 7, borderRadius: 10}}>
-                        <Text style={styles.myContentTitle}>My Content</Text>
+                        <Text style={styles.myContentTitle}>{Variables.state.myPodcasts.length} episodes</Text>
                     <ListView
                         enableEmptySections
                         horizontal={true}

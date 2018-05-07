@@ -38,11 +38,13 @@ class UserProfileModal extends Component {
         const storageRef = firebase.storage().ref(`/users/${Variables.state.browsingArtist}/image-profile-uploaded`);
         const refFol = firebase.database().ref(`users/${Variables.state.browsingArtist}/followers`);
         const refFollowing = firebase.database().ref(`users/${Variables.state.browsingArtist}/following`);
+        const refTracking = firebase.database().ref(`users/${Variables.state.browsingArtist}/tracking`);
 
         Variables.state.userPodcasts = [];
         Variables.state.onUserProfileImage = '';
         Variables.state.userFollowers = [];
         Variables.state.userFollowing = [];
+        Variables.state.userTracking = [];
 
 
         const ref = firebase.database().ref(`podcasts/`);
@@ -66,6 +68,13 @@ class UserProfileModal extends Component {
             Variables.state.userFollowing = [];
             snapshot.forEach(function (data) {
                 Variables.state.userFollowing.push(data.key);
+            })
+        });
+
+        refTracking.on("value", function (snapshot) {
+            Variables.state.userTracking = [];
+            snapshot.forEach(function (data) {
+                Variables.state.userTracking.push(data.key);
             })
         });
 
@@ -186,11 +195,13 @@ class UserProfileModal extends Component {
         const storageRef = firebase.storage().ref(`/users/${Variables.state.browsingArtist}/image-profile-uploaded`);
         const refFol = firebase.database().ref(`users/${Variables.state.browsingArtist}/followers`);
         const refFollowing = firebase.database().ref(`users/${Variables.state.browsingArtist}/following`);
+        const refTracking = firebase.database().ref(`users/${Variables.state.browsingArtist}/tracking`);
 
         Variables.state.userPodcasts = [];
         Variables.state.onUserProfileImage = '';
         Variables.state.userFollowers = [];
         Variables.state.userFollowing = [];
+        Variables.state.userTracking = [];
 
 
         const ref = firebase.database().ref(`podcasts/`);
@@ -214,6 +225,13 @@ class UserProfileModal extends Component {
             Variables.state.userFollowing = [];
             snapshot.forEach(function (data) {
                 Variables.state.userFollowing.push(data.key);
+            })
+        });
+
+        refTracking.on("value", function (snapshot) {
+            Variables.state.userTracking = [];
+            snapshot.forEach(function (data) {
+                Variables.state.userTracking.push(data.key);
             })
         });
 
@@ -635,13 +653,13 @@ class UserProfileModal extends Component {
                         </View>
 
 
-                        {this._renderProfileNumbers(Variables.state.userPodcasts.length, Variables.state.userFollowers.length, Variables.state.userFollowing.length)}
+                        {this._renderProfileNumbers(Variables.state.userTracking.length, Variables.state.userFollowers.length, Variables.state.userFollowing.length)}
 
                     </View>
 
 
                     <View style={{backgroundColor: '#fff', marginVertical: 15, marginHorizontal: 7, borderRadius: 10}}>
-                        <Text style={styles.myContentTitle}>Content</Text>
+                        <Text style={styles.myContentTitle}>{Variables.state.userPodcasts.length} episodes</Text>
                         <ListView
                             enableEmptySections
                             horizontal={true}
