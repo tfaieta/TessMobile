@@ -19,7 +19,7 @@ export const podcastUpdate = ({prop, value}) => {
     };
 };
 
-export const podcastCreate = ({ podcastTitle, podcastDescription, podcastCategory, podcastArtist, navigator }) => {
+export const podcastCreate = ({ podcastTitle, podcastDescription, podcastCategory, podcastArtist, podcastLength, navigator }) => {
     const {currentUser} = firebase.auth();
     const {user} = currentUser.uid;
     this.state = {
@@ -34,7 +34,7 @@ export const podcastCreate = ({ podcastTitle, podcastDescription, podcastCategor
         let id = '';
 
             firebase.database().ref(`/podcasts`)
-            .push({podcastTitle, podcastDescription, podcastCategory, podcastArtist, likes})
+            .push({podcastTitle, podcastDescription, podcastCategory, podcastArtist, podcastLength, likes})
             .then((snap) => {
 
                 dispatch({type: PODCAST_CREATE});

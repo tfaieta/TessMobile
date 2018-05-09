@@ -547,6 +547,18 @@ class Home extends Component{
                             podcastDescription = podcastDescription.replace("<sup>", " ");
                             podcastDescription = podcastDescription.replace("</sup>", " ");
 
+
+
+                            //length
+                            let length = "itunes duration:" + items[i].getElementsByTagName('itunes:duration');
+                            length = length.replace("itunes duration:", "");
+                            length = length.replace("<itunes:duration>", "");
+                            length = length.replace("</itunes:duration>", "");
+                            const podcastLength = length;
+                            console.warn(podcastLength);
+
+
+
                             //rss = true, need to tell firebase it's an rss podcast
                             const rss = true;
 
@@ -581,7 +593,7 @@ class Home extends Component{
                                         console.warn("EXISTS")
                                     }
                                     else{
-                                        firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID})
+                                        firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength})
                                             .then((snap) => {
 
                                                 const ref = snap.ref;
@@ -633,7 +645,7 @@ class Home extends Component{
                                         console.warn("EXISTS")
                                     }
                                     else{
-                                        firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID})
+                                        firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength})
                                             .then((snap) => {
 
                                                 const ref = snap.ref;

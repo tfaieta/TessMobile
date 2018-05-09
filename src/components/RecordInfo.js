@@ -50,8 +50,6 @@ class RecordInfo extends Component{
             podcastCategory: Variables.state.podcastCategory,
             podcastArtist: userID
         };
-        Variables.setPodcastFile(podFile);
-        Variables.state.paused=true;
     }
 
     state = {
@@ -66,6 +64,12 @@ class RecordInfo extends Component{
 
 
     componentWillMount(){
+        Variables.state.podcastURL = podFile;
+        Variables.state.podcastArtist = firebase.auth().currentUser.uid;
+        Variables.state.repeat = true;
+        Variables.state.seekTo = 0;
+        Variables.state.paused=true;
+
         const {currentUser} = firebase.auth();
         let userID = currentUser.uid;
         this.props.podcastUpdate({prop: 'podcastArtist', value: userID});
@@ -184,9 +188,10 @@ class RecordInfo extends Component{
             Variables.state.podcastDescription = podcastDescription;
             Variables.state.podcastCategory = podcastCategory;
             Variables.state.podcastArtist = podcastArtist;
+            const podcastLength = Variables.state.duration;
 
             this.setState({loading: true});
-            this.props.podcastCreate({podcastTitle, podcastDescription, podcastCategory, podcastArtist, navigator});
+            this.props.podcastCreate({podcastTitle, podcastDescription, podcastCategory, podcastArtist, podcastLength, navigator});
         }
     };
 
