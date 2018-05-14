@@ -100,6 +100,70 @@ class Account extends Component {
             }
         });
 
+        Variables.state.myPlayTime = 0;
+        firebase.database().ref(`/users/${currentUser.uid}/stats`).orderByChild("playTime").once("value", function(snap) {
+            if(snap.val()){
+                if(snap.val().playTime){
+                    Variables.state.myPlayTime = snap.val().playTime;
+
+                }
+                else {
+                    Variables.state.myPlayTime = 0;
+                }
+            }
+        });
+
+        Variables.state.myHighlightsAmount = 0;
+        firebase.database().ref(`/users/${currentUser.uid}/stats`).orderByChild("highlights").once("value", function(snap) {
+            if(snap.val()){
+                if(snap.val().highlights){
+                    Variables.state.myHighlightsAmount = snap.val().highlights;
+
+                }
+                else {
+                    Variables.state.myHighlightsAmount = 0;
+                }
+            }
+        });
+
+        Variables.state.myCommentsAmount = 0;
+        firebase.database().ref(`/users/${currentUser.uid}/stats`).orderByChild("comments").once("value", function(snap) {
+            if(snap.val()){
+                if(snap.val().comments){
+                    Variables.state.myCommentsAmount = snap.val().comments;
+
+                }
+                else {
+                    Variables.state.myCommentsAmount = 0;
+                }
+            }
+        });
+
+        Variables.state.myLikesAmount = 0;
+        firebase.database().ref(`/users/${currentUser.uid}/stats`).orderByChild("likes").once("value", function(snap) {
+            if(snap.val()){
+                if(snap.val().likes){
+                    Variables.state.myLikesAmount = snap.val().likes;
+
+                }
+                else {
+                    Variables.state.myLikesAmount = 0;
+                }
+            }
+        });
+
+        Variables.state.myTrackingAmount = 0;
+        firebase.database().ref(`/users/${currentUser.uid}/stats`).orderByChild("tracking").once("value", function(snap) {
+            if(snap.val()){
+                if(snap.val().tracking){
+                    Variables.state.myTrackingAmount = snap.val().tracking;
+
+                }
+                else {
+                    Variables.state.myTrackingAmount = 0;
+                }
+            }
+        });
 
         storageRef.getDownloadURL()
             .then(function(url) {
@@ -149,8 +213,13 @@ class Account extends Component {
             bio: '',
             profileImage: '',
             category: '',
+            playTime: 0,
+            myComments: 0,
+            myTracking: 0,
+            myHighlights: 0,
+            myLikes: 0,
         };
-        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username, profileImage: Variables.state.profileImage})},1000)
+        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username, profileImage: Variables.state.profileImage, playTime: Variables.state.myPlayTime, myComments: Variables.state.myCommentsAmount, myTracking: Variables.state.myTrackingAmount, myLikes: Variables.state.myLikesAmount, myHighlights: Variables.state.myHighlightsAmount})},1000)
     }
 
 
@@ -325,6 +394,390 @@ class Account extends Component {
     };
 
 
+    roundSeconds(seconds){
+        if(seconds % 1 >= 0.5){
+            return (seconds-1).toFixed(0)
+        }
+        else{
+            return seconds.toFixed(0)
+        }
+    }
+
+
+    renderAchievement = (achievement, level) =>{
+
+        if(achievement == "likes"){
+            if(level == 1){
+                if(this.state.myLikes >= 1){
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 1,}}
+                                source={require('tess/src/images/iconLike.png')}
+                            />
+                            <Text style={styles.smallTitle}>First Like</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myLikes}/1</Text>
+                        </TouchableOpacity>
+                    )
+                }
+                else{
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 0.3,}}
+                                source={require('tess/src/images/iconLike.png')}
+                            />
+                            <Text style={styles.smallTitleLight}>First Like</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myLikes}/1</Text>
+                        </TouchableOpacity>
+                    )
+                }
+            }
+            else if(level == 2){
+                if(this.state.myLikes >= 5){
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 1,}}
+                                source={require('tess/src/images/iconLike.png')}
+                            />
+                            <Text style={styles.smallTitle}>Likes Lv.2</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myLikes}/5</Text>
+                        </TouchableOpacity>
+                    )
+                }
+                else{
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 0.3,}}
+                                source={require('tess/src/images/iconLike.png')}
+                            />
+                            <Text style={styles.smallTitleLight}>Likes Lv.2</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myLikes}/5</Text>
+                        </TouchableOpacity>
+                    )
+                }
+            }
+            else if(level == 3){
+                if(this.state.myLikes >= 25){
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 1,}}
+                                source={require('tess/src/images/iconLike.png')}
+                            />
+                            <Text style={styles.smallTitle}>Likes Lv.3</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myLikes}/25</Text>
+                        </TouchableOpacity>
+                    )
+                }
+                else{
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 0.3,}}
+                                source={require('tess/src/images/iconLike.png')}
+                            />
+                            <Text style={styles.smallTitleLight}>Likes Lv.3</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myLikes}/25</Text>
+                        </TouchableOpacity>
+                    )
+                }
+            }
+
+        }
+        else if(achievement == "highlights"){
+            if(level == 1){
+                if(this.state.myHighlights >= 1){
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1, }}
+                                source={require('tess/src/images/iconAward.png')}
+                            />
+                            <Text style={styles.smallTitle}>First Highlight</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myHighlights}/1</Text>
+                        </TouchableOpacity>
+                    )
+                }
+                else{
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 0.3, }}
+                                source={require('tess/src/images/iconAward.png')}
+                            />
+                            <Text style={styles.smallTitleLight}>First Highlight</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myHighlights}/1</Text>
+                        </TouchableOpacity>
+                    )
+                }
+            }
+            else if(level == 2){
+                if(this.state.myHighlights >= 5){
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1, }}
+                                source={require('tess/src/images/iconAward.png')}
+                            />
+                            <Text style={styles.smallTitle}>Highlights Lv.2</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myHighlights}/5</Text>
+                        </TouchableOpacity>
+                    )
+                }
+                else{
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 0.3, }}
+                                source={require('tess/src/images/iconAward.png')}
+                            />
+                            <Text style={styles.smallTitleLight}>Highlights Lv.2</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myHighlights}/5</Text>
+                        </TouchableOpacity>
+                    )
+                }
+            }
+            else if(level == 3){
+                if(this.state.myHighlights >= 25){
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1, }}
+                                source={require('tess/src/images/iconAward.png')}
+                            />
+                            <Text style={styles.smallTitle}>Highlights Lv.3</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myHighlights}/25</Text>
+                        </TouchableOpacity>
+                    )
+                }
+                else{
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 0.3, }}
+                                source={require('tess/src/images/iconAward.png')}
+                            />
+                            <Text style={styles.smallTitleLight}>Highlights Lv.3</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myHighlights}/25</Text>
+                        </TouchableOpacity>
+                    )
+                }
+            }
+
+        }
+        else if(achievement == "tracking"){
+            if(level == 1){
+                if(this.state.myTracking >= 1){
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{width: 60, height: 60, alignSelf: 'center', opacity: 1,}}
+                                source={require('tess/src/images/iconStar.png')}
+                            />
+                            <Text style={styles.smallTitle}>First track</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myTracking}/1</Text>
+                        </TouchableOpacity>
+                    )
+                }
+                else{
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{width: 60, height: 60, alignSelf: 'center', opacity: 0.3,}}
+                                source={require('tess/src/images/iconStar.png')}
+                            />
+                            <Text style={styles.smallTitleLight}>First track</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myTracking}/1</Text>
+                        </TouchableOpacity>
+                    )
+                }
+            }
+            else if(level == 2){
+                if(this.state.myTracking >= 5){
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{width: 60, height: 60, alignSelf: 'center', opacity: 1,}}
+                                source={require('tess/src/images/iconStar.png')}
+                            />
+                            <Text style={styles.smallTitle}>Tracking Lv.2</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myTracking}/5</Text>
+                        </TouchableOpacity>
+                    )
+                }
+                else{
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{width: 60, height: 60, alignSelf: 'center', opacity: 0.3,}}
+                                source={require('tess/src/images/iconStar.png')}
+                            />
+                            <Text style={styles.smallTitleLight}>Tracking Lv.2</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myTracking}/5</Text>
+                        </TouchableOpacity>
+                    )
+                }
+            }
+            else if(level == 3){
+                if(this.state.myTracking >= 25){
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{width: 60, height: 60, alignSelf: 'center', opacity: 1,}}
+                                source={require('tess/src/images/iconStar.png')}
+                            />
+                            <Text style={styles.smallTitle}>Tracking Lv.3</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myTracking}/25</Text>
+                        </TouchableOpacity>
+                    )
+                }
+                else{
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{width: 60, height: 60, alignSelf: 'center', opacity: 0.3,}}
+                                source={require('tess/src/images/iconStar.png')}
+                            />
+                            <Text style={styles.smallTitleLight}>Tracking Lv.3</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myTracking}/25</Text>
+                        </TouchableOpacity>
+                    )
+                }
+            }
+        }
+        else if(achievement == "comments"){
+            if(level == 1){
+                if(this.state.myComments >= 1){
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1,}}
+                                source={require('tess/src/images/iconRocket.png')}
+                            />
+                            <Text style={styles.smallTitle}>First Comment</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myComments}/1</Text>
+                        </TouchableOpacity>
+                    )
+                }
+                else{
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 0.3,}}
+                                source={require('tess/src/images/iconRocket.png')}
+                            />
+                            <Text style={styles.smallTitleLight}>First Comment</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myComments}/1</Text>
+                        </TouchableOpacity>
+                    )
+                }
+            }
+            else if(level == 2){
+                if(this.state.myComments >= 5){
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1,}}
+                                source={require('tess/src/images/iconRocket.png')}
+                            />
+                            <Text style={styles.smallTitle}>Comments Lv.2</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myComments}/5</Text>
+                        </TouchableOpacity>
+                    )
+                }
+                else{
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 0.3,}}
+                                source={require('tess/src/images/iconRocket.png')}
+                            />
+                            <Text style={styles.smallTitleLight}>Comments Lv.2</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myComments}/5</Text>
+                        </TouchableOpacity>
+                    )
+                }
+            }
+            else if(level == 3){
+                if(this.state.myComments >= 25){
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1,}}
+                                source={require('tess/src/images/iconRocket.png')}
+                            />
+                            <Text style={styles.smallTitle}>Comments Lv.3</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myComments}/25</Text>
+                        </TouchableOpacity>
+                    )
+                }
+                else{
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 0.3,}}
+                                source={require('tess/src/images/iconRocket.png')}
+                            />
+                            <Text style={styles.smallTitleLight}>Comments Lv.3</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.myComments}/25</Text>
+                        </TouchableOpacity>
+                    )
+                }
+            }
+
+        }
+
+    };
+    renderAchievements = () => {
+
+        if(this.state.myLikes < 1 || this.state.myTracking < 1 || this.state.myComments < 1 || this.state.myHighlights < 1){
+            return(
+                <View style={{backgroundColor: '#fff', marginHorizontal: 8, borderRadius: 10}}>
+                    <Text style={styles.myContentTitle1}>Level 1 Listener</Text>
+                    <Text style={styles.myContentTitle}>Hours Listened: { this.roundSeconds(((this.state.playTime/60)/60)) }h { this.roundSeconds((this.state.playTime/60)) }m {(this.state.playTime%60).toFixed(0)}s</Text>
+                    <View style={{flexDirection: 'row', marginTop: 10}}>
+                        {this.renderAchievement('tracking', 1)}
+                        {this.renderAchievement('likes', 1)}
+                        {this.renderAchievement('comments', 1)}
+                        {this.renderAchievement('highlights', 1)}
+                    </View>
+                </View>
+            )
+        }
+        else if(this.state.myLikes < 5 || this.state.myTracking < 5 || this.state.myComments < 5 || this.state.myHighlights < 5){
+            return(
+                <View style={{backgroundColor: '#fff', marginHorizontal: 8, borderRadius: 10}}>
+                    <Text style={styles.myContentTitle1}>Level 2 Listener</Text>
+                    <Text style={styles.myContentTitle}>Hours Listened: { this.roundSeconds(((this.state.playTime/60)/60)) }h { this.roundSeconds((this.state.playTime/60)) }m {(this.state.playTime%60).toFixed(0)}s</Text>
+                    <View style={{flexDirection: 'row', marginTop: 10}}>
+                        {this.renderAchievement('tracking', 2)}
+                        {this.renderAchievement('likes', 2)}
+                        {this.renderAchievement('comments', 2)}
+                        {this.renderAchievement('highlights', 2)}
+                    </View>
+                </View>
+            )
+        }
+        else if(this.state.myLikes < 25 || this.state.myTracking < 25 || this.state.myComments < 25 || this.state.myHighlights < 25){
+            return(
+                <View style={{backgroundColor: '#fff', marginHorizontal: 8, borderRadius: 10}}>
+                    <Text style={styles.myContentTitle1}>Level 3 Listener</Text>
+                    <Text style={styles.myContentTitle}>Hours Listened: { this.roundSeconds(((this.state.playTime/60)/60)) }h { this.roundSeconds((this.state.playTime/60)) }m {(this.state.playTime%60).toFixed(0)}s</Text>
+                    <View style={{flexDirection: 'row', marginTop: 10}}>
+                        {this.renderAchievement('tracking', 3)}
+                        {this.renderAchievement('likes', 3)}
+                        {this.renderAchievement('comments', 3)}
+                        {this.renderAchievement('highlights', 3)}
+                    </View>
+                </View>
+            )
+        }
+
+    };
+
 
     render() {
         return (
@@ -369,42 +822,7 @@ class Account extends Component {
 
 
 
-                    <View style={{backgroundColor: '#fff', marginHorizontal: 8, borderRadius: 10}}>
-                        <Text style={styles.myContentTitle}>Hours Listened: 5h, 37min, 42s</Text>
-                        <View style={{flexDirection: 'row', marginTop: 10}}>
-                            <TouchableOpacity style ={{flex:1}}>
-                            <Image
-                                style={{width: 60, height: 60, alignSelf: 'center', opacity: 1,}}
-                                source={require('tess/src/images/iconStar.png')}
-                            />
-                                <Text style={styles.smallTitle}>First track</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style ={{flex:1}}>
-                            <Image
-                                style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 1,}}
-                                source={require('tess/src/images/iconLike.png')}
-                            />
-                                <Text style={styles.smallTitle}>First Like</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style ={{flex:1}}>
-                            <Image
-                                style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1,}}
-                                source={require('tess/src/images/iconRocket.png')}
-                            />
-                                <Text style={styles.smallTitle}>First Comment</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style ={{flex:1}}>
-                            <Image
-                                style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1, }}
-                                source={require('tess/src/images/iconAward.png')}
-                            />
-                                <Text style={styles.smallTitle}>First Highlight</Text>
-                            </TouchableOpacity>
-
-
-                        </View>
-
-                    </View>
+                    {this.renderAchievements()}
 
 
 
@@ -558,16 +976,50 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
 
     },
+    myContentTitle1: {
+        color: '#3e4164',
+        paddingTop: 10,
+        textAlign: 'center',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/22,
+        backgroundColor: 'transparent',
+        marginHorizontal: 5,
+
+    },
 
     smallTitle: {
         color: '#2A2A30',
-        marginVertical: 10,
+        marginVertical: 5,
         flex:1,
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/38,
+        backgroundColor: 'transparent'
+    },
+    smallTitleLight: {
+        color: '#2A2A3030',
+        marginVertical: 5,
+        flex:1,
+        textAlign: 'center',
+        opacity: 2,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/38,
+        backgroundColor: 'transparent'
+    },
+    smallTitleNum: {
+        color: '#506dcf',
+        marginBottom: 5,
+        flex:1,
+        textAlign: 'center',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/30,
         backgroundColor: 'transparent'
     },
     stats: {
