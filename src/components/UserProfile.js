@@ -242,6 +242,7 @@ class UserProfile extends Component {
             userTracking: 0,
             userHighlights: 0,
             userLikes: 0,
+            userShares: 0
         };
         this.timeout = setTimeout(() =>{
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
@@ -857,6 +858,32 @@ class UserProfile extends Component {
                     )
                 }
             }
+            else if(level == 4){
+                if(this.state.userLikes >= 50){
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 1,}}
+                                source={require('tess/src/images/iconLike.png')}
+                            />
+                            <Text style={styles.smallTitle}>Likes Lv.4</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.userLikes}/50</Text>
+                        </TouchableOpacity>
+                    )
+                }
+                else{
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 0.3,}}
+                                source={require('tess/src/images/iconLike.png')}
+                            />
+                            <Text style={styles.smallTitleLight}>Likes Lv.4</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.userLikes}/50</Text>
+                        </TouchableOpacity>
+                    )
+                }
+            }
 
         }
         else if(achievement == "highlights"){
@@ -913,7 +940,7 @@ class UserProfile extends Component {
                 }
             }
             else if(level == 3){
-                if(this.state.userHighlights >= 25){
+                if(this.state.userHighlights >= 10){
                     return(
                         <TouchableOpacity style ={{flex:1}}>
                             <Image
@@ -921,7 +948,7 @@ class UserProfile extends Component {
                                 source={require('tess/src/images/iconAward.png')}
                             />
                             <Text style={styles.smallTitle}>Highlights Lv.3</Text>
-                            <Text style={styles.smallTitleNum}>{this.state.userHighlights}/25</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.userHighlights}/10</Text>
                         </TouchableOpacity>
                     )
                 }
@@ -933,7 +960,7 @@ class UserProfile extends Component {
                                 source={require('tess/src/images/iconAward.png')}
                             />
                             <Text style={styles.smallTitleLight}>Highlights Lv.3</Text>
-                            <Text style={styles.smallTitleNum}>{this.state.userHighlights}/25</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.userHighlights}/10</Text>
                         </TouchableOpacity>
                     )
                 }
@@ -949,7 +976,7 @@ class UserProfile extends Component {
                                 style={{width: 60, height: 60, alignSelf: 'center', opacity: 1,}}
                                 source={require('tess/src/images/iconStar.png')}
                             />
-                            <Text style={styles.smallTitle}>First track</Text>
+                            <Text style={styles.smallTitle}>First Track</Text>
                             <Text style={styles.smallTitleNum}>{this.state.userTracking}/1</Text>
                         </TouchableOpacity>
                     )
@@ -961,7 +988,7 @@ class UserProfile extends Component {
                                 style={{width: 60, height: 60, alignSelf: 'center', opacity: 0.3,}}
                                 source={require('tess/src/images/iconStar.png')}
                             />
-                            <Text style={styles.smallTitleLight}>First track</Text>
+                            <Text style={styles.smallTitleLight}>First Track</Text>
                             <Text style={styles.smallTitleNum}>{this.state.userTracking}/1</Text>
                         </TouchableOpacity>
                     )
@@ -1099,18 +1126,126 @@ class UserProfile extends Component {
                     )
                 }
             }
+            else if(level == 4){
+                if(this.state.userComments >= 50){
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1,}}
+                                source={require('tess/src/images/iconRocket.png')}
+                            />
+                            <Text style={styles.smallTitle}>Comments Lv.4</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.userComments}/50</Text>
+                        </TouchableOpacity>
+                    )
+                }
+                else{
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 0.3,}}
+                                source={require('tess/src/images/iconRocket.png')}
+                            />
+                            <Text style={styles.smallTitleLight}>Comments Lv.4</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.userComments}/50</Text>
+                        </TouchableOpacity>
+                    )
+                }
+            }
 
+        }
+        else if(achievement == 'listens'){
+            if(level == 3){
+                if(this.roundSeconds(((this.state.playTime/60)/60)) >= 3){
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{width: 60, height: 60, alignSelf: 'center', opacity: 1,}}
+                                source={require('tess/src/images/iconStar.png')}
+                            />
+                            <Text style={styles.smallTitle}>Listens Lv.3</Text>
+                            <Text style={styles.smallTitleNum}>{this.roundSeconds(((this.state.playTime/60)/60))}/3</Text>
+                        </TouchableOpacity>
+                    )
+                }
+                else{
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{width: 60, height: 60, alignSelf: 'center', opacity: 0.3,}}
+                                source={require('tess/src/images/iconStar.png')}
+                            />
+                            <Text style={styles.smallTitleLight}>Listens Lv.3</Text>
+                            <Text style={styles.smallTitleNum}>{this.roundSeconds(((this.state.playTime/60)/60))}/3</Text>
+                        </TouchableOpacity>
+                    )
+                }
+            }
+            else if(level == 4){
+                if(this.roundSeconds(((this.state.playTime/60)/60)) >= 10){
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{width: 60, height: 60, alignSelf: 'center', opacity: 1,}}
+                                source={require('tess/src/images/iconStar.png')}
+                            />
+                            <Text style={styles.smallTitle}>Listens Lv.4</Text>
+                            <Text style={styles.smallTitleNum}>{this.roundSeconds(((this.state.playTime/60)/60))}/10</Text>
+                        </TouchableOpacity>
+                    )
+                }
+                else{
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{width: 60, height: 60, alignSelf: 'center', opacity: 0.3,}}
+                                source={require('tess/src/images/iconStar.png')}
+                            />
+                            <Text style={styles.smallTitleLight}>Listens Lv.4</Text>
+                            <Text style={styles.smallTitleNum}>{this.roundSeconds(((this.state.playTime/60)/60))}/10</Text>
+                        </TouchableOpacity>
+                    )
+                }
+            }
+        }
+        else if(achievement == 'shares'){
+            if(level == 4){
+                if(this.state.userShares >= 10){
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{width: 60, height: 60, alignSelf: 'center', opacity: 1,}}
+                                source={require('tess/src/images/iconStar.png')}
+                            />
+                            <Text style={styles.smallTitle}>Shares Lv.4</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.userShares}/10</Text>
+                        </TouchableOpacity>
+                    )
+                }
+                else{
+                    return(
+                        <TouchableOpacity style ={{flex:1}}>
+                            <Image
+                                style={{width: 60, height: 60, alignSelf: 'center', opacity: 0.3,}}
+                                source={require('tess/src/images/iconStar.png')}
+                            />
+                            <Text style={styles.smallTitleLight}>Shares Lv.4</Text>
+                            <Text style={styles.smallTitleNum}>{this.state.userShares}/10</Text>
+                        </TouchableOpacity>
+                    )
+                }
+            }
         }
 
     };
-
     renderAchievements = () => {
 
+        // Level 1
         if(this.state.userLikes < 1 || this.state.userTracking < 1 || this.state.userComments < 1 || this.state.userHighlights < 1){
             return(
                 <View style={{backgroundColor: '#fff', marginHorizontal: 8, borderRadius: 10}}>
                     <Text style={styles.myContentTitle1}>Level 1 Listener</Text>
-                    <Text style={styles.myContentTitle}>Hours Listened: { this.roundSeconds(((this.state.playTime/60)/60)) }h { this.roundSeconds((this.state.playTime/60)) }m {(this.state.playTime%60).toFixed(0)}s</Text>
+                    <Text style={styles.myContentTitle}>Hours Listened: { this.roundSeconds(((this.state.playTime/60)/60)) }h { this.roundSeconds(((this.state.playTime/60)%60)) }m {(this.state.playTime%60).toFixed(0)}s</Text>
                     <View style={{flexDirection: 'row', marginTop: 10}}>
                         {this.renderAchievement('tracking', 1)}
                         {this.renderAchievement('likes', 1)}
@@ -1120,11 +1255,12 @@ class UserProfile extends Component {
                 </View>
             )
         }
+        // Level 2
         else if(this.state.userLikes < 5 || this.state.userTracking < 5 || this.state.userComments < 5 || this.state.userHighlights < 5){
             return(
                 <View style={{backgroundColor: '#fff', marginHorizontal: 8, borderRadius: 10}}>
                     <Text style={styles.myContentTitle1}>Level 2 Listener</Text>
-                    <Text style={styles.myContentTitle}>Hours Listened: { this.roundSeconds(((this.state.playTime/60)/60)) }h { this.roundSeconds((this.state.playTime/60)) }m {(this.state.playTime%60).toFixed(0)}s</Text>
+                    <Text style={styles.myContentTitle}>Hours Listened: { this.roundSeconds(((this.state.playTime/60)/60)) }h { this.roundSeconds(((this.state.playTime/60)%60)) }m {(this.state.playTime%60).toFixed(0)}s</Text>
                     <View style={{flexDirection: 'row', marginTop: 10}}>
                         {this.renderAchievement('tracking', 2)}
                         {this.renderAchievement('likes', 2)}
@@ -1134,17 +1270,42 @@ class UserProfile extends Component {
                 </View>
             )
         }
-        else if(this.state.userLikes < 25 || this.state.userTracking < 25 || this.state.userComments < 25 || this.state.userHighlights < 25){
+        // Level 3
+        else if(this.state.userLikes < 25 || this.roundSeconds(((this.state.playTime/60)/60)) < 3 || this.state.userComments < 25 || this.state.userHighlights < 10){
             return(
                 <View style={{backgroundColor: '#fff', marginHorizontal: 8, borderRadius: 10}}>
                     <Text style={styles.myContentTitle1}>Level 3 Listener</Text>
-                    <Text style={styles.myContentTitle}>Hours Listened: { this.roundSeconds(((this.state.playTime/60)/60)) }h { this.roundSeconds((this.state.playTime/60)) }m {(this.state.playTime%60).toFixed(0)}s</Text>
+                    <Text style={styles.myContentTitle}>Hours Listened: { this.roundSeconds(((this.state.playTime/60)/60)) }h { this.roundSeconds(((this.state.playTime/60)%60)) }m {(this.state.playTime%60).toFixed(0)}s</Text>
                     <View style={{flexDirection: 'row', marginTop: 10}}>
-                        {this.renderAchievement('tracking', 3)}
+                        {this.renderAchievement('listens', 3)}
                         {this.renderAchievement('likes', 3)}
                         {this.renderAchievement('comments', 3)}
                         {this.renderAchievement('highlights', 3)}
                     </View>
+                </View>
+            )
+        }
+        // Level 4
+        else if(this.state.userLikes < 50 || this.roundSeconds(((this.state.playTime/60)/60)) < 10 || this.state.userComments < 50 || this.state.userHighlights < 25){ //highlights -> shares
+            return(
+                <View style={{backgroundColor: '#fff', marginHorizontal: 8, borderRadius: 10}}>
+                    <Text style={styles.myContentTitle1}>Level 4 Listener</Text>
+                    <Text style={styles.myContentTitle}>Hours Listened: { this.roundSeconds(((this.state.playTime/60)/60)) }h { this.roundSeconds(((this.state.playTime/60)%60)) }m {(this.state.playTime%60).toFixed(0)}s</Text>
+                    <View style={{flexDirection: 'row', marginTop: 10}}>
+                        {this.renderAchievement('listens', 4)}
+                        {this.renderAchievement('likes', 4)}
+                        {this.renderAchievement('comments', 4)}
+                        {this.renderAchievement('shares', 4)}
+                    </View>
+                </View>
+            )
+        }
+        //level 5
+        else{
+            return(
+                <View style={{backgroundColor: '#fff', marginHorizontal: 8, borderRadius: 10}}>
+                    <Text style={styles.myContentTitle1}>Level 5 Listener</Text>
+                    <Text style={styles.myContentTitle}>Hours Listened: { this.roundSeconds(((this.state.playTime/60)/60)) }h { this.roundSeconds(((this.state.playTime/60)%60)) }m {(this.state.playTime%60).toFixed(0)}s</Text>
                 </View>
             )
         }
