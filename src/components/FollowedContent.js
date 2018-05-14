@@ -74,9 +74,10 @@ class FollowedContent extends Component{
 
 
 
-    renderRow(podcast){
-        return <ListItemFollowed podcast={podcast} />;
-    }
+    renderRow = (podcast) => {
+        const {navigator} = this.props;
+        return <ListItemFollowed podcast={podcast} navigator={navigator}/>;
+    };
 
 
     _pressBack = () => {

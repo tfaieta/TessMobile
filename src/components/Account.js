@@ -287,6 +287,15 @@ class Account extends Component {
         });
     };
 
+    onTrackingPress = () =>{
+        const list = Variables.state.myTracking;
+        this.props.navigator.push({
+            screen: "Tracking",
+            title: "Tracking",
+            passProps: {list},
+        });
+    };
+
     _renderProfileNumbers(totalPodcasts, totalFollowers, totalFollowing){
         return(
             <View style={{flexDirection: 'row',}}>
@@ -307,11 +316,11 @@ class Account extends Component {
 
 
 
-                <View style={{flex: 1, alignSelf: 'flex-start', padding: 10, borderTopWidth: 2, borderTopColor: '#3e416440', borderLeftColor: '#3e416440', borderLeftWidth: 1}}>
+                <TouchableOpacity style={{flex: 1, alignSelf: 'flex-start', padding: 10, borderTopWidth: 2, borderTopColor: '#3e416440', borderLeftColor: '#3e416440', borderLeftWidth: 1}} onPress={this.onTrackingPress}>
                     <Text style={styles.stats}>Tracking</Text>
                     <Text style={styles.stats}>{totalPodcasts}</Text>
 
-                </View>
+                </TouchableOpacity>
 
             </View>
         )

@@ -216,13 +216,13 @@ class UserProfile extends Component {
         this.props.navigator.setStyle({
             statusBarHidden: false,
             statusBarTextColorScheme: 'light',
-            navBarHidden: false,
+            navBarHidden: true,
             navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
             navBarTextFontSize: 18, // change the font size of the title
             navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
             navBarBackgroundColor: '#fff',
             drawUnderTabBar: false,
-            navBarHideOnScroll: true,
+            navBarHideOnScroll: false,
             topBarElevationShadowEnabled: true,
             topBarShadowColor: '#000',
             topBarShadowOpacity: 0.1,
@@ -544,27 +544,30 @@ class UserProfile extends Component {
     }
 
 
-    onFollowersPress(){
+    onFollowersPress = () => {
         Navigation.showModal({
             screen: "UserFollowers",
-            title: "Modal",
+            title: "Followers",
             passProps: {},
-            navigatorStyle: {},
-            navigatorButtons: {},
-            animationType: 'slide-up'
-        });
-    }
+        })
+    };
 
-    onFollowingPress(){
+    onFollowingPress = () => {
         Navigation.showModal({
             screen: "UserFollowing",
-            title: "Modal",
+            title: "Following",
             passProps: {},
-            navigatorStyle: {},
-            navigatorButtons: {},
-            animationType: 'slide-up'
-        });
-    }
+        })
+    };
+
+    onTrackingPress = () =>{
+        const list = Variables.state.userTracking;
+        Navigation.showModal({
+            screen: "Tracking",
+            title: "Tracking",
+            passProps: {list},
+        })
+    };
 
 
     _renderProfileNumbers(totalPodcasts, totalFollowers, totalFollowing){
@@ -587,11 +590,11 @@ class UserProfile extends Component {
 
 
 
-                <View style={{flex: 1, alignSelf: 'flex-start', padding: 10, borderTopWidth: 2, borderTopColor: '#3e416440', borderLeftColor: '#3e416440', borderLeftWidth: 1}}>
+                <TouchableOpacity style={{flex: 1, alignSelf: 'flex-start', padding: 10, borderTopWidth: 2, borderTopColor: '#3e416440', borderLeftColor: '#3e416440', borderLeftWidth: 1}} onPress={this.onTrackingPress}>
                     <Text style={styles.stats}>Tracking</Text>
                     <Text style={styles.stats}>{totalPodcasts}</Text>
 
-                </View>
+                </TouchableOpacity>
 
             </View>
         )
@@ -1422,7 +1425,7 @@ class UserProfile extends Component {
                         <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                             <TouchableOpacity onPress={this._pressBack}>
                                 <Icon style={{
-                                    textAlign:'left',marginLeft: 10, fontSize: 28, color:'#007aff',
+                                    textAlign:'left',marginLeft: 10, fontSize: 35, color:'#007aff',
                                 }} name="ios-arrow-back">
                                 </Icon>
                             </TouchableOpacity>
@@ -1588,7 +1591,7 @@ const styles = StyleSheet.create({
     header: {
         marginTop: 25,
         marginLeft: -12,
-        color: '#2A2A30',
+        color: '#3e4164',
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',

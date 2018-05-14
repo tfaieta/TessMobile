@@ -84,9 +84,10 @@ static navigatorStyle = {
 
 
 
-    renderRow(podcast){
-        return <ListItemFollowed podcast={podcast} />;
-    }
+    renderRow = (podcast) => {
+        const {navigator} = this.props;
+        return <ListItemFollowed podcast={podcast} navigator={navigator}/>;
+    };
 
 
     _pressBack = () => {
@@ -112,8 +113,8 @@ static navigatorStyle = {
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
-                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#9496A3'
-                            }} name="md-arrow-round-back">
+                                textAlign:'left',marginLeft: 10, fontSize: 35,color: '#007aff'
+                            }} name="ios-arrow-back">
                             </Icon>
                         </TouchableOpacity>
                     </View>
@@ -235,16 +236,15 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        marginTop:25,
-        marginLeft: -35,
-        color: '#2A2A30',
+        marginTop: 25,
+        marginLeft: -12,
+        color: '#3e4164',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 18,
         backgroundColor: 'transparent',
-
-    }
+    },
 
 });
 

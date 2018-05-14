@@ -71,9 +71,10 @@ class MyFollowersPage extends Component{
 
 
 
-    renderRow(podcast){
-        return <ListItemFollowed podcast={podcast} />;
-    }
+    renderRow = (podcast) => {
+        const {navigator} = this.props;
+        return <ListItemFollowed podcast={podcast} navigator={navigator}/>;
+    };
 
 
     _pressBack = () => {
@@ -203,16 +204,15 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        marginTop:25,
-        marginLeft: -35,
-        color: '#2A2A30',
+        marginTop: 25,
+        marginLeft: -12,
+        color: '#3e4164',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 16,
         backgroundColor: 'transparent',
-
-    }
+    },
 
 });
 

@@ -65,6 +65,7 @@ import AddWidget from "./components/AddWidget";
 import Search from "./components/Search";
 import Highlights from "./components/Highlights";
 import Highlight from "./components/Highlight";
+import Tracking from "./components/Tracking";
 
 
 
@@ -127,6 +128,7 @@ Navigation.registerComponent('Account', () => Account, store, Provider);
 Navigation.registerComponent('MyFollowersPage', () => MyFollowersPage, store, Provider);
 Navigation.registerComponent('UserFollowing', () => UserFollowing, store, Provider);
 Navigation.registerComponent('UserFollowers', () => UserFollowers, store, Provider);
+Navigation.registerComponent('Tracking', () => Tracking, store, Provider);
 Navigation.registerComponent('Settings', () => Settings, store, Provider);
 
 Navigation.registerComponent('UserProfile', () => UserProfile, store, Provider);

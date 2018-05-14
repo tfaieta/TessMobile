@@ -12,6 +12,8 @@ class Variables extends Component{
 
 
     static state = {
+
+        // global variables
         isPlaying: false,
         podProgress: 0,
         uploadProgress: 0,
@@ -53,9 +55,9 @@ class Variables extends Component{
         myFollowers: [],
         userFollowers: [],
         myFollowing: [],
-        myTracking: [],
+        myTracking: [],  // holds my tracked podcasts
         userFollowing: [],
-        userTracking: [],
+        userTracking: [],  // holds user's tracked podcasts
         newFollowedContent: [],
         homeFollowedContent: [],
         selectedByTess: [],
@@ -78,6 +80,7 @@ class Variables extends Component{
         userCommentsAmount: 0, // number of user comments
 
 
+        // player variables
         podcastURL: '',
         podcastSpeed: 1.0,
         duration: 0,

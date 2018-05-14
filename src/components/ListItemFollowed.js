@@ -105,6 +105,8 @@ class ListItemFollowed extends Component {
 
     render() {
 
+        const podcastArtist = this.props.podcast;
+
         return (
 
             <TouchableOpacity underlayColor='#5757FF' onPress={ () =>{
@@ -115,9 +117,9 @@ class ListItemFollowed extends Component {
                 else{
                     Variables.state.rss = false;
                 }
-                Navigation.showModal({
+                this.props.navigator.push({
                     screen: "UserProfile",
-                    title: "Modal",
+                    title: this.state.profileName,
                     passProps: {},
                     navigatorStyle: {},
                     navigatorButtons: {},
