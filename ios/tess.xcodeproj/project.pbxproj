@@ -51,6 +51,7 @@
 		779B258E83770AADFFB71653 /* Pods_tessTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07B2DBF84DE5975A9D18F9E5 /* Pods_tessTests.framework */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		88FAE9D8EA8E4E8A9513F071 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5BC1429D1C34ED7A8AE0469 /* Montserrat-SemiBold.ttf */; };
+		8B4DA8F720AA06CB00FF6DB3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8B4DA8CF20AA06CB00FF6DB3 /* GoogleService-Info.plist */; };
 		8DCB9EC6117A42BAF5E8F491 /* Pods_tess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3B6FBD51140F53D39E9AD0C /* Pods_tess.framework */; };
 		95209DE2C4EA4BDBA9CC0E9F /* libRNAudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FB806780CAB43A19FAD2F0F /* libRNAudio.a */; };
 		A51A1B7CA9DB4DC585A292BB /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE039E46CE1E446CBC86FCC0 /* FontAwesome.ttf */; };
@@ -65,7 +66,6 @@
 		ED04715D1F71CB5B00EE000D /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED04715A1F71CB4F00EE000D /* libRNFetchBlob.a */; };
 		ED1582C8205A099500036844 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED1582A2205A092600036844 /* Montserrat-Regular.ttf */; };
 		ED1582C9205A099A00036844 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED1582C7205A093500036844 /* Montserrat-SemiBold.ttf */; };
-		ED3B0FA5209B9BC300522C88 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ED3B0F7F209B9BC200522C88 /* GoogleService-Info.plist */; };
 		ED5FFEF11FC0E7CF00488D5D /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED5FFED11FC0E7BA00488D5D /* libimageCropPicker.a */; };
 		ED5FFEF21FC0E7D800488D5D /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED5FFEF31FC0E7D800488D5D /* RSKImageCropper.framework */; };
 		ED5FFEF41FC0E7DF00488D5D /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED5FFEF51FC0E7DF00488D5D /* QBImagePicker.framework */; };
@@ -427,6 +427,7 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		87CE0BE24CA0CC33E2BDA999 /* Pods-tessTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tessTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tessTests/Pods-tessTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8B4DA8CF20AA06CB00FF6DB3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8D2228639A3AAACA3D466601 /* Pods_tess_tvOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tess_tvOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E5EACCC43F44B219FC9ED9F /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		8F8D6968440B4FE4AE96FD8E /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
@@ -448,7 +449,6 @@
 		ED0471391F71CB4F00EE000D /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/react-native-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
 		ED1582A2205A092600036844 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		ED1582C7205A093500036844 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
-		ED3B0F7F209B9BC200522C88 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED5FFEC91FC0E7BA00488D5D /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = imageCropPicker.xcodeproj; path = "../node_modules/react-native-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; };
 		ED5FFEF31FC0E7D800488D5D /* RSKImageCropper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED5FFEF51FC0E7DF00488D5D /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -632,7 +632,7 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				ED3B0F7F209B9BC200522C88 /* GoogleService-Info.plist */,
+				8B4DA8CF20AA06CB00FF6DB3 /* GoogleService-Info.plist */,
 			);
 			name = tess;
 			sourceTree = "<group>";
@@ -1422,9 +1422,9 @@
 				6CC13E3E2057494D882611A3 /* Foundation.ttf in Resources */,
 				B4DD47A4442E4760ABD3C488 /* Ionicons.ttf in Resources */,
 				F350963F63FC4DA8B45AD7E9 /* MaterialCommunityIcons.ttf in Resources */,
-				ED3B0FA5209B9BC300522C88 /* GoogleService-Info.plist in Resources */,
 				180745686169408EB349F86A /* MaterialIcons.ttf in Resources */,
 				EBD71E8384754E3B973F97D0 /* Octicons.ttf in Resources */,
+				8B4DA8F720AA06CB00FF6DB3 /* GoogleService-Info.plist in Resources */,
 				C3A628948A284C6C88A8790A /* SimpleLineIcons.ttf in Resources */,
 				BA533A666B784445A01BBAFB /* Zocial.ttf in Resources */,
 				CD1912E7F99643629E3441B7 /* Montserrat-Regular.ttf in Resources */,

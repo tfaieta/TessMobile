@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { Text, View, StyleSheet, ListView, ScrollView, TouchableOpacity, Linking, RefreshControl, AsyncStorage, ActivityIndicator, Image, TouchableWithoutFeedback, TouchableHighlight, Dimensions} from 'react-native';
 import PlayerBottom from './PlayerBottom';
-import { podcastFetchNew} from "../actions/PodcastActions";
+import { podcastFetchNew } from "../actions/PodcastActions";
 import { connect } from 'react-redux';
 import ListItemUsers from '../components/ListItemUsers';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -11,7 +11,8 @@ import firebase from 'firebase';
 import Player from "./Player";
 import SwipeCards from 'react-native-swipe-cards';
 import ListItemCard from "./ListItemCard";
-import SortableListView from 'react-native-sortable-listview'
+import SortableListView from 'react-native-sortable-listview';
+import Swiper from 'react-native-deck-swiper';
 var Analytics = require('react-native-firebase-analytics');
 
 
@@ -20,10 +21,6 @@ var {height, width} = Dimensions.get('window');
 
 
 var DomParser = require('react-native-html-parser').DOMParser;
-
-
-
-
 
 
 // 1st tab, home page
@@ -1312,7 +1309,7 @@ class Home extends Component{
     }
 
 
-    _renderWidget = (position, data) => {
+    renderWidget = (position, data) => {
         if(data[position]){
 
             var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
@@ -1809,30 +1806,25 @@ class Home extends Component{
                                                     <View style={{backgroundColor: '#d15564', width: 40, height: 40, marginTop: -8, borderRadius: 25, alignSelf: 'flex-end'}} >
                                                         <Text style={styles.numLeftText}>{this.state.cardsLeft}</Text>
                                                     </View>
-                                                    <ScrollView scrollEnabled = {false}>
-                                                        <SwipeCards
+                                                    <ScrollView scrollEnabled = {true}>
+                                                        <Swiper
                                                             cards={this.state.data}
                                                             renderCard={(cardData) => this.renderRowCard(cardData)}
-                                                            dragY={false}
-                                                            smoothTransition={true}
-                                                            hasMaybeAction={false}
-                                                            onClickHandler={()=>{}}
-                                                            showYup={false}
-                                                            handleMaybe={() => {
+                                                            verticalSwipe={false}
+                                                            onTapCard={()=>{}}
+                                                            onSwipedAborted={() => {
                                                                 this.setState({cardsLeft: this.state.cardsLeft - 1});
                                                                 this.forceUpdate();
                                                             }}
-                                                            handleNope={() => {
+                                                            onSwipedRight={() => {
                                                                 this.setState({cardsLeft: this.state.cardsLeft - 1});
                                                                 this.forceUpdate();
                                                             }}
-                                                            handleYup={() => {
+                                                            onSwipedLeft={() => {
                                                                 this.setState({cardsLeft: this.state.cardsLeft - 1});
                                                                 this.forceUpdate();
                                                             }}
-                                                            showNope={false}
-                                                            showMaybe={false}
-                                                            renderNoMoreCards={() =>
+                                                            onSwipedAll={() =>
                                                                 <View style = {{marginHorizontal: 10, marginVertical: 7}}>
                                                                     <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20, paddingVertical: 60 }}>
                                                                         <Text style={styles.title}>You're all caught up!</Text>
