@@ -66,6 +66,7 @@ import Search from "./components/Search";
 import Highlights from "./components/Highlights";
 import Highlight from "./components/Highlight";
 import Tracking from "./components/Tracking";
+import Achievement from "./components/Achievement";
 
 
 
@@ -130,6 +131,7 @@ Navigation.registerComponent('UserFollowing', () => UserFollowing, store, Provid
 Navigation.registerComponent('UserFollowers', () => UserFollowers, store, Provider);
 Navigation.registerComponent('Tracking', () => Tracking, store, Provider);
 Navigation.registerComponent('Settings', () => Settings, store, Provider);
+Navigation.registerComponent('Achievement', () => Achievement, store, Provider);
 
 Navigation.registerComponent('UserProfile', () => UserProfile, store, Provider);
 Navigation.registerComponent('UserProfileModal', () => UserProfileModal, store, Provider);

@@ -420,7 +420,24 @@ class Account extends Component {
             if(level == 1){
                 if(this.state.myLikes >= 1){
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 1;
+                            const title = 'Likes';
+                            const description = 'liked';
+                            const progress = this.state.myLikes;
+                            const goal = 1;
+                            const image = 'tess/src/images/iconLike.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 1,}}
                                 source={require('tess/src/images/iconLike.png')}
@@ -432,7 +449,24 @@ class Account extends Component {
                 }
                 else{
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 1;
+                            const title = 'Likes';
+                            const description = 'liked';
+                            const progress = this.state.myLikes;
+                            const goal = 1;
+                            const image = 'tess/src/images/iconLike.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 0.3,}}
                                 source={require('tess/src/images/iconLike.png')}
@@ -446,7 +480,24 @@ class Account extends Component {
             else if(level == 2){
                 if(this.state.myLikes >= 5){
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 2;
+                            const title = 'Likes';
+                            const description = 'liked';
+                            const progress = this.state.myLikes;
+                            const goal = 5;
+                            const image = 'tess/src/images/iconLike.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 1,}}
                                 source={require('tess/src/images/iconLike.png')}
@@ -458,7 +509,24 @@ class Account extends Component {
                 }
                 else{
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 2;
+                            const title = 'Likes';
+                            const description = 'liked';
+                            const progress = this.state.myLikes;
+                            const goal = 5;
+                            const image = 'tess/src/images/iconLike.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 0.3,}}
                                 source={require('tess/src/images/iconLike.png')}
@@ -472,7 +540,24 @@ class Account extends Component {
             else if(level == 3){
                 if(this.state.myLikes >= 25){
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 3;
+                            const title = 'Likes';
+                            const description = 'liked';
+                            const progress = this.state.myLikes;
+                            const goal = 25;
+                            const image = 'tess/src/images/iconLike.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 1,}}
                                 source={require('tess/src/images/iconLike.png')}
@@ -484,7 +569,24 @@ class Account extends Component {
                 }
                 else{
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 3;
+                            const title = 'Likes';
+                            const description = 'liked';
+                            const progress = this.state.myLikes;
+                            const goal = 25;
+                            const image = 'tess/src/images/iconLike.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 0.3,}}
                                 source={require('tess/src/images/iconLike.png')}
@@ -498,7 +600,24 @@ class Account extends Component {
             else if(level == 4){
                 if(this.state.myLikes >= 50){
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 4;
+                            const title = 'Likes';
+                            const description = 'liked';
+                            const progress = this.state.myLikes;
+                            const goal = 50;
+                            const image = 'tess/src/images/iconLike.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 1,}}
                                 source={require('tess/src/images/iconLike.png')}
@@ -510,7 +629,24 @@ class Account extends Component {
                 }
                 else{
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 4;
+                            const title = 'Likes';
+                            const description = 'liked';
+                            const progress = this.state.myLikes;
+                            const goal = 50;
+                            const image = 'tess/src/images/iconLike.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 0.3,}}
                                 source={require('tess/src/images/iconLike.png')}
@@ -527,7 +663,24 @@ class Account extends Component {
             if(level == 1){
                 if(this.state.myHighlights >= 1){
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 1;
+                            const title = 'Highlights';
+                            const description = 'highlights created';
+                            const progress = this.state.myHighlights;
+                            const goal = 1;
+                            const image = 'tess/src/images/iconAward.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1, }}
                                 source={require('tess/src/images/iconAward.png')}
@@ -539,7 +692,24 @@ class Account extends Component {
                 }
                 else{
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 1;
+                            const title = 'Highlights';
+                            const description = 'highlights created';
+                            const progress = this.state.myHighlights;
+                            const goal = 1;
+                            const image = 'tess/src/images/iconAward.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 0.3, }}
                                 source={require('tess/src/images/iconAward.png')}
@@ -553,7 +723,24 @@ class Account extends Component {
             else if(level == 2){
                 if(this.state.myHighlights >= 5){
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 2;
+                            const title = 'Highlights';
+                            const description = 'highlights created';
+                            const progress = this.state.myHighlights;
+                            const goal = 5;
+                            const image = 'tess/src/images/iconAward.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1, }}
                                 source={require('tess/src/images/iconAward.png')}
@@ -565,7 +752,24 @@ class Account extends Component {
                 }
                 else{
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 2;
+                            const title = 'Highlights';
+                            const description = 'highlights created';
+                            const progress = this.state.myHighlights;
+                            const goal = 5;
+                            const image = 'tess/src/images/iconAward.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 0.3, }}
                                 source={require('tess/src/images/iconAward.png')}
@@ -579,7 +783,24 @@ class Account extends Component {
             else if(level == 3){
                 if(this.state.myHighlights >= 10){
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 3;
+                            const title = 'Highlights';
+                            const description = 'highlights created';
+                            const progress = this.state.myHighlights;
+                            const goal = 10;
+                            const image = 'tess/src/images/iconAward.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1, }}
                                 source={require('tess/src/images/iconAward.png')}
@@ -591,7 +812,24 @@ class Account extends Component {
                 }
                 else{
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 3;
+                            const title = 'Highlights';
+                            const description = 'highlights created';
+                            const progress = this.state.myHighlights;
+                            const goal = 10;
+                            const image = 'tess/src/images/iconAward.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 0.3, }}
                                 source={require('tess/src/images/iconAward.png')}
@@ -608,7 +846,24 @@ class Account extends Component {
             if(level == 1){
                 if(this.state.myTracking >= 1){
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 1;
+                            const title = 'Tracking';
+                            const description = 'podcasts tracked';
+                            const progress = this.state.myTracking;
+                            const goal = 1;
+                            const image = 'tess/src/images/iconStar.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{width: 60, height: 60, alignSelf: 'center', opacity: 1,}}
                                 source={require('tess/src/images/iconStar.png')}
@@ -620,7 +875,24 @@ class Account extends Component {
                 }
                 else{
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 1;
+                            const title = 'Tracking';
+                            const description = 'podcasts tracked';
+                            const progress = this.state.myTracking;
+                            const goal = 1;
+                            const image = 'tess/src/images/iconStar.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{width: 60, height: 60, alignSelf: 'center', opacity: 0.3,}}
                                 source={require('tess/src/images/iconStar.png')}
@@ -634,7 +906,24 @@ class Account extends Component {
             else if(level == 2){
                 if(this.state.myTracking >= 5){
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 2;
+                            const title = 'Tracking';
+                            const description = 'podcasts tracked';
+                            const progress = this.state.myTracking;
+                            const goal = 5;
+                            const image = 'tess/src/images/iconStar.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{width: 60, height: 60, alignSelf: 'center', opacity: 1,}}
                                 source={require('tess/src/images/iconStar.png')}
@@ -646,7 +935,24 @@ class Account extends Component {
                 }
                 else{
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 2;
+                            const title = 'Tracking';
+                            const description = 'podcasts tracked';
+                            const progress = this.state.myTracking;
+                            const goal = 5;
+                            const image = 'tess/src/images/iconStar.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{width: 60, height: 60, alignSelf: 'center', opacity: 0.3,}}
                                 source={require('tess/src/images/iconStar.png')}
@@ -660,7 +966,24 @@ class Account extends Component {
             else if(level == 3){
                 if(this.state.myTracking >= 25){
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 3;
+                            const title = 'Tracking';
+                            const description = 'podcasts tracked';
+                            const progress = this.state.myTracking;
+                            const goal = 25;
+                            const image = 'tess/src/images/iconStar.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{width: 60, height: 60, alignSelf: 'center', opacity: 1,}}
                                 source={require('tess/src/images/iconStar.png')}
@@ -672,7 +995,24 @@ class Account extends Component {
                 }
                 else{
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 3;
+                            const title = 'Tracking';
+                            const description = 'podcasts tracked';
+                            const progress = this.state.myTracking;
+                            const goal = 25;
+                            const image = 'tess/src/images/iconStar.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{width: 60, height: 60, alignSelf: 'center', opacity: 0.3,}}
                                 source={require('tess/src/images/iconStar.png')}
@@ -688,7 +1028,24 @@ class Account extends Component {
             if(level == 1){
                 if(this.state.myComments >= 1){
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 1;
+                            const title = 'Comments';
+                            const description = 'comments made';
+                            const progress = this.state.myComments;
+                            const goal = 1;
+                            const image = 'tess/src/images/iconRocket.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1,}}
                                 source={require('tess/src/images/iconRocket.png')}
@@ -700,7 +1057,24 @@ class Account extends Component {
                 }
                 else{
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 1;
+                            const title = 'Comments';
+                            const description = 'comments made';
+                            const progress = this.state.myComments;
+                            const goal = 1;
+                            const image = 'tess/src/images/iconRocket.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 0.3,}}
                                 source={require('tess/src/images/iconRocket.png')}
@@ -714,7 +1088,24 @@ class Account extends Component {
             else if(level == 2){
                 if(this.state.myComments >= 5){
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 2;
+                            const title = 'Comments';
+                            const description = 'comments made';
+                            const progress = this.state.myComments;
+                            const goal = 5;
+                            const image = 'tess/src/images/iconRocket.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1,}}
                                 source={require('tess/src/images/iconRocket.png')}
@@ -726,7 +1117,24 @@ class Account extends Component {
                 }
                 else{
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 2;
+                            const title = 'Comments';
+                            const description = 'comments made';
+                            const progress = this.state.myComments;
+                            const goal = 5;
+                            const image = 'tess/src/images/iconRocket.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 0.3,}}
                                 source={require('tess/src/images/iconRocket.png')}
@@ -740,7 +1148,24 @@ class Account extends Component {
             else if(level == 3){
                 if(this.state.myComments >= 25){
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 3;
+                            const title = 'Comments';
+                            const description = 'comments made';
+                            const progress = this.state.myComments;
+                            const goal = 25;
+                            const image = 'tess/src/images/iconRocket.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1,}}
                                 source={require('tess/src/images/iconRocket.png')}
@@ -752,7 +1177,24 @@ class Account extends Component {
                 }
                 else{
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 3;
+                            const title = 'Comments';
+                            const description = 'comments made';
+                            const progress = this.state.myComments;
+                            const goal = 25;
+                            const image = 'tess/src/images/iconRocket.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 0.3,}}
                                 source={require('tess/src/images/iconRocket.png')}
@@ -766,7 +1208,24 @@ class Account extends Component {
             else if(level == 4){
                 if(this.state.myComments >= 50){
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 4;
+                            const title = 'Comments';
+                            const description = 'comments made';
+                            const progress = this.state.myComments;
+                            const goal = 50;
+                            const image = 'tess/src/images/iconRocket.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1,}}
                                 source={require('tess/src/images/iconRocket.png')}
@@ -778,7 +1237,24 @@ class Account extends Component {
                 }
                 else{
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 4;
+                            const title = 'Comments';
+                            const description = 'comments made';
+                            const progress = this.state.myComments;
+                            const goal = 50;
+                            const image = 'tess/src/images/iconRocket.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 0.3,}}
                                 source={require('tess/src/images/iconRocket.png')}
@@ -795,7 +1271,24 @@ class Account extends Component {
             if(level == 3){
                 if(this.roundSeconds(((this.state.playTime/60)/60)) >= 3){
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 3;
+                            const title = 'Listens';
+                            const description = 'hours listened';
+                            const progress = this.roundSeconds(((this.state.playTime/60)/60));
+                            const goal = 3;
+                            const image = 'tess/src/images/iconStar.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{width: 60, height: 60, alignSelf: 'center', opacity: 1,}}
                                 source={require('tess/src/images/iconStar.png')}
@@ -807,7 +1300,24 @@ class Account extends Component {
                 }
                 else{
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 3;
+                            const title = 'Listens';
+                            const description = 'hours listened';
+                            const progress = this.roundSeconds(((this.state.playTime/60)/60));
+                            const goal = 3;
+                            const image = 'tess/src/images/iconStar.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{width: 60, height: 60, alignSelf: 'center', opacity: 0.3,}}
                                 source={require('tess/src/images/iconStar.png')}
@@ -821,7 +1331,24 @@ class Account extends Component {
             else if(level == 4){
                 if(this.roundSeconds(((this.state.playTime/60)/60)) >= 10){
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 4;
+                            const title = 'Listens';
+                            const description = 'hours listened';
+                            const progress = this.roundSeconds(((this.state.playTime/60)/60));
+                            const goal = 10;
+                            const image = 'tess/src/images/iconStar.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{width: 60, height: 60, alignSelf: 'center', opacity: 1,}}
                                 source={require('tess/src/images/iconStar.png')}
@@ -833,7 +1360,24 @@ class Account extends Component {
                 }
                 else{
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 4;
+                            const title = 'Listens';
+                            const description = 'hours listened';
+                            const progress = this.roundSeconds(((this.state.playTime/60)/60));
+                            const goal = 10;
+                            const image = 'tess/src/images/iconStar.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{width: 60, height: 60, alignSelf: 'center', opacity: 0.3,}}
                                 source={require('tess/src/images/iconStar.png')}
@@ -849,7 +1393,23 @@ class Account extends Component {
             if(level == 4){
                 if(this.state.myShares >= 10){
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 4;
+                            const title = 'Shares';
+                            const description = 'shared';
+                            const progress = this.state.myShares;
+                            const goal = 10;
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal}
+                            })
+                        }}>
                             <Image
                                 style={{width: 60, height: 60, alignSelf: 'center', opacity: 1,}}
                                 source={require('tess/src/images/iconStar.png')}
@@ -861,7 +1421,24 @@ class Account extends Component {
                 }
                 else{
                     return(
-                        <TouchableOpacity style ={{flex:1}}>
+                        <TouchableOpacity style ={{flex:1}} onPress={() =>{
+                            const level = 4;
+                            const title = 'Shares';
+                            const description = 'shared';
+                            const progress = this.state.myShares;
+                            const goal = 10;
+                            const image = 'tess/src/images/iconStar.png';
+
+                            Navigation.showLightBox({
+                                screen: 'Achievement',
+                                style: {
+                                    backgroundBlur: "light",
+                                    backgroundColor: "#44434470",
+                                    tapBackgroundToDismiss: true,
+                                },
+                                passProps: {level, title, description, progress, goal, image}
+                            })
+                        }}>
                             <Image
                                 style={{width: 60, height: 60, alignSelf: 'center', opacity: 0.3,}}
                                 source={require('tess/src/images/iconStar.png')}
