@@ -1806,12 +1806,11 @@ class Home extends Component{
                                                     <View style={{backgroundColor: '#d15564', width: 40, height: 40, marginTop: -8, borderRadius: 25, alignSelf: 'flex-end'}} >
                                                         <Text style={styles.numLeftText}>{this.state.cardsLeft}</Text>
                                                     </View>
-                                                    <ScrollView scrollEnabled = {true}>
+                                                    <ScrollView scrollEnabled = {false}>
                                                         <Swiper
                                                             cards={this.state.data}
                                                             renderCard={(cardData) => this.renderRowCard(cardData)}
                                                             verticalSwipe={false}
-                                                            onTapCard={()=>{}}
                                                             onSwipedAborted={() => {
                                                                 this.setState({cardsLeft: this.state.cardsLeft - 1});
                                                                 this.forceUpdate();
@@ -1831,7 +1830,8 @@ class Home extends Component{
                                                                     </View>
                                                                 </View>
                                                             }
-                                                        />
+                                                        >
+                                                        </Swiper>
                                                     </ScrollView>
                                                 </View>
                                             </TouchableHighlight>
