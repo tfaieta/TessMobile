@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Text, View, StyleSheet, ListView, ScrollView, TouchableOpacity, Linking, RefreshControl, AsyncStorage, ActivityIndicator, Image, TouchableWithoutFeedback, TouchableHighlight, Dimensions} from 'react-native';
+import { Text, View, StyleSheet, ListView, ScrollView, TouchableOpacity, Linking, RefreshControl, AsyncStorage, ActivityIndicator, Image, Platform, TouchableWithoutFeedback, TouchableHighlight, Dimensions} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { podcastFetchNew} from "../actions/PodcastActions";
 import { connect } from 'react-redux';
@@ -15,6 +15,7 @@ import SortableListView from 'react-native-sortable-listview'
 var Analytics = require('react-native-firebase-analytics');
 
 
+import { Navigation } from 'react-native-navigation';
 
 var {height, width} = Dimensions.get('window');
 
@@ -32,8 +33,22 @@ class Home extends Component{
 
 
     componentDidMount(){
-        const {currentUser} = firebase.auth();
 
+        if (Platform.OS === 'android') {
+            Linking.getInitialURL().then(url => {
+                this.navigate(url);
+            });
+        } else {
+            Linking.addEventListener('url', this.handleOpenURL);
+            Linking.getInitialURL().then((url) => {
+                if (url) {
+                    this.navigate(url);
+                }
+            }).catch(err => console.warn('An error occurred', err));
+        }
+
+
+        const {currentUser} = firebase.auth();
 
         Variables.state.widgets = [];
         firebase.database().ref(`users/${currentUser.uid}/widgets`).once("value", function (snapshot) {
@@ -348,9 +363,36 @@ class Home extends Component{
 
     }
 
+    handleOpenURL = (event) => {
+        this.navigate(event.url);
+    };
+    navigate = (url) => {
+        console.warn("starting");
+        console.warn("url: " + url);
+        const { navigator } = this.props;
+        const route = url.replace(/.*?:\/\//g, '');
+        const id = route.match(/\/([^\/]+)\/?$/)[1];
+        const routeName = route.split('/')[0];
+
+        console.warn("route: " + route);
+        console.warn("id: " + id);
+        console.warn("route name: " + routeName);
+
+        if (routeName === 'listen') {
+            setTimeout(() => {
+                console.warn("pushing");
+                Navigation.showModal({
+                    screen: 'PlayerBottom'
+                });
+            }, 1000);
+        }
+    };
+
 
 
     componentWillUnmount(){
+        Linking.removeEventListener('url', this.handleOpenURL);
+
         clearTimeout(this.timeout1);
         clearTimeout(this.timeout2);
         clearTimeout(this.timeout3);
