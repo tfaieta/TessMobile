@@ -92,14 +92,14 @@ class PlayerOptions extends Component {
         let shareOptions = {
             title: Variables.state.podcastTitle,
             message: Variables.state.podcastTitle,
-            url: Variables.state.podcastURL,
+            url: `tess://listen/${Variables.state.podcastID}`,
             subject: "Share Link" //  for email
         };
 
         let shareImageBase64 = {
             title: Variables.state.podcastTitle,
             message: Variables.state.podcastTitle,
-            url: Variables.state.podcastURL,
+            url: `tess://listen/${Variables.state.podcastID}`,
             subject: "Share Link" //  for email
         };
 
@@ -276,9 +276,9 @@ class PlayerOptions extends Component {
                                     if(typeof shareOptions["url"] !== undefined) {
                                         Clipboard.setString(shareOptions["url"]);
                                         if (Platform.OS === "android") {
-                                            ToastAndroid.show('Link copied to clipboard', ToastAndroid.SHORT);
+                                            ToastAndroid.show('Link Copied to Clipboard', ToastAndroid.SHORT);
                                         } else if (Platform.OS === "ios") {
-                                            AlertIOS.alert('Link copied to clipboard');
+                                            AlertIOS.alert('Link Copied to Clipboard');
                                         }
                                     }
                                 },300);
@@ -475,9 +475,9 @@ class PlayerOptions extends Component {
                                             if(typeof shareOptions["url"] !== undefined) {
                                                 Clipboard.setString(shareOptions["url"]);
                                                 if (Platform.OS === "android") {
-                                                    ToastAndroid.show('Link copied to clipboard', ToastAndroid.SHORT);
+                                                    ToastAndroid.show('Link Copied to Clipboard', ToastAndroid.SHORT);
                                                 } else if (Platform.OS === "ios") {
-                                                    AlertIOS.alert('Link copied to clipboard');
+                                                    AlertIOS.alert('Link Copied to Clipboard');
                                                 }
                                             }
                                         },300);
@@ -676,9 +676,9 @@ class PlayerOptions extends Component {
                                             if(typeof shareOptions["url"] !== undefined) {
                                                 Clipboard.setString(shareOptions["url"]);
                                                 if (Platform.OS === "android") {
-                                                    ToastAndroid.show('Link copied to clipboard', ToastAndroid.SHORT);
+                                                    ToastAndroid.show('Link Copied to Clipboard', ToastAndroid.SHORT);
                                                 } else if (Platform.OS === "ios") {
-                                                    AlertIOS.alert('Link copied to clipboard');
+                                                    AlertIOS.alert('Link Copied to Clipboard');
                                                 }
                                             }
                                         },300);
