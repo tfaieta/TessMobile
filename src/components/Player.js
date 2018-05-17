@@ -187,7 +187,7 @@ class Player extends Component{
             muted: false,
             paused: Variables.state.paused,
             repeat: Variables.state.repeat,
-            currentTime: Variables.state.currentTime
+            currentTime: Variables.state.currentTime,
 
         };
     }
@@ -195,6 +195,17 @@ class Player extends Component{
 
 
     onProgress = (data) => {
+
+        var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+        ref.once("value", function(snapshot) {
+            if(snapshot.val().playTime){
+                ref.update({playTime: snapshot.val().playTime + .15})
+            }
+            else{
+                ref.update({playTime: 0})
+            }
+        });
+
 
         Variables.state.buffering = false;
         Variables.state.currentTime = data.currentTime;
@@ -206,7 +217,7 @@ class Player extends Component{
             muted: false,
             paused: Variables.state.paused,
             repeat: Variables.state.repeat,
-            currentTime: data.currentTime
+            currentTime: data.currentTime,
         });
 
         AsyncStorage.setItem("currentTime", data.currentTime.toString());

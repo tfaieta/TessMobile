@@ -16,6 +16,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import { Navigation } from 'react-native-navigation';
 import ListItemComment from "./ListItemComment";
+var Analytics = require('react-native-firebase-analytics');
 
 
 
@@ -237,6 +238,20 @@ static navigatorStyle = {
                                     const id = snap.key;
                                     ref.update({id});
 
+                                });
+
+                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                ref.once("value", function(snapshot) {
+                                    if(snapshot.val().comments){
+                                        ref.update({comments: snapshot.val().comments + 1})
+                                    }
+                                    else{
+                                        ref.update({comments: 1})
+                                    }
+                                });
+
+                                Analytics.logEvent('writeComment', {
+                                    'user_id': user
                                 });
 
                                 this.setState({comment: ''});
