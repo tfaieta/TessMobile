@@ -67,6 +67,8 @@ import Highlights from "./components/Highlights";
 import Highlight from "./components/Highlight";
 import Tracking from "./components/Tracking";
 import Achievement from "./components/Achievement";
+import PlayerBottom from "./components/PlayerBottom";
+
 
 
 
@@ -136,6 +138,7 @@ Navigation.registerComponent('Achievement', () => Achievement, store, Provider);
 Navigation.registerComponent('UserProfile', () => UserProfile, store, Provider);
 Navigation.registerComponent('UserProfileModal', () => UserProfileModal, store, Provider);
 
+Navigation.registerComponent('PlayerBottom', () => PlayerBottom, store, Provider);
 Navigation.registerComponent('PodcastOptions', () => PodcastOptions, store, Provider);
 Navigation.registerComponent('EditPodcast', () => EditPodcast, store, Provider);
 Navigation.registerComponent('PlayerInfo', () => PlayerInfo, store, Provider);
