@@ -65,6 +65,7 @@ import AddWidget from "./components/AddWidget";
 import Search from "./components/Search";
 import Highlights from "./components/Highlights";
 import Highlight from "./components/Highlight";
+import PlayerBottom from "./components/PlayerBottom";
 
 
 
@@ -132,6 +133,7 @@ Navigation.registerComponent('Settings', () => Settings, store, Provider);
 Navigation.registerComponent('UserProfile', () => UserProfile, store, Provider);
 Navigation.registerComponent('UserProfileModal', () => UserProfileModal, store, Provider);
 
+Navigation.registerComponent('PlayerBottom', () => PlayerBottom, store, Provider);
 Navigation.registerComponent('PodcastOptions', () => PodcastOptions, store, Provider);
 Navigation.registerComponent('EditPodcast', () => EditPodcast, store, Provider);
 Navigation.registerComponent('PlayerInfo', () => PlayerInfo, store, Provider);

@@ -16,6 +16,7 @@ import Variables from "./Variables";
 import Icon from 'react-native-vector-icons/Ionicons';
 import Share, {ShareSheet, Button} from 'react-native-share';
 
+var Analytics = require('react-native-firebase-analytics');
 
 var {height, width} = Dimensions.get('window');
 
@@ -92,14 +93,14 @@ class PlayerOptions extends Component {
         let shareOptions = {
             title: Variables.state.podcastTitle,
             message: Variables.state.podcastTitle,
-            url: Variables.state.podcastURL,
+            url: `tess://listen/${Variables.state.podcastID}`,
             subject: "Share Link" //  for email
         };
 
         let shareImageBase64 = {
             title: Variables.state.podcastTitle,
             message: Variables.state.podcastTitle,
-            url: Variables.state.podcastURL,
+            url: `tess://listen/${Variables.state.podcastID}`,
             subject: "Share Link" //  for email
         };
 
@@ -227,6 +228,21 @@ class PlayerOptions extends Component {
                                 onPress={()=>{
                                     this.onCancel();
                                     setTimeout(() => {
+                                        var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                        ref.once("value", function(snapshot) {
+                                            if(snapshot.val().shares){
+                                                ref.update({shares: snapshot.val().shares + 1})
+                                            }
+                                            else{
+                                                ref.update({shares: 1})
+                                            }
+                                        });
+                                        const {currentUser} = firebase.auth();
+                                        const user = currentUser.uid;
+                                        Analytics.logEvent('shareTwitter', {
+                                            'episodeID': Variables.state.podcastID,
+                                            'user_id': user
+                                        });
                                         Share.shareSingle(Object.assign(shareOptions, {
                                             "social": "twitter"
                                         }));
@@ -236,6 +252,21 @@ class PlayerOptions extends Component {
                                 onPress={()=>{
                                     this.onCancel();
                                     setTimeout(() => {
+                                        var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                        ref.once("value", function(snapshot) {
+                                            if(snapshot.val().shares){
+                                                ref.update({shares: snapshot.val().shares + 1})
+                                            }
+                                            else{
+                                                ref.update({shares: 1})
+                                            }
+                                        });
+                                        const {currentUser} = firebase.auth();
+                                        const user = currentUser.uid;
+                                        Analytics.logEvent('shareFacebook', {
+                                            'episodeID': Variables.state.podcastID,
+                                            'user_id': user
+                                        });
                                         Share.shareSingle(Object.assign(shareOptions, {
                                             "social": "facebook"
                                         }));
@@ -245,6 +276,21 @@ class PlayerOptions extends Component {
                                 onPress={()=>{
                                     this.onCancel();
                                     setTimeout(() => {
+                                        var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                        ref.once("value", function(snapshot) {
+                                            if(snapshot.val().shares){
+                                                ref.update({shares: snapshot.val().shares + 1})
+                                            }
+                                            else{
+                                                ref.update({shares: 1})
+                                            }
+                                        });
+                                        const {currentUser} = firebase.auth();
+                                        const user = currentUser.uid;
+                                        Analytics.logEvent('shareWhatsapp', {
+                                            'episodeID': Variables.state.podcastID,
+                                            'user_id': user
+                                        });
                                         Share.shareSingle(Object.assign(shareOptions, {
                                             "social": "whatsapp"
                                         }));
@@ -254,6 +300,21 @@ class PlayerOptions extends Component {
                                 onPress={()=>{
                                     this.onCancel();
                                     setTimeout(() => {
+                                        var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                        ref.once("value", function(snapshot) {
+                                            if(snapshot.val().shares){
+                                                ref.update({shares: snapshot.val().shares + 1})
+                                            }
+                                            else{
+                                                ref.update({shares: 1})
+                                            }
+                                        });
+                                        const {currentUser} = firebase.auth();
+                                        const user = currentUser.uid;
+                                        Analytics.logEvent('shareGooglePlus', {
+                                            'episodeID': Variables.state.podcastID,
+                                            'user_id': user
+                                        });
                                         Share.shareSingle(Object.assign(shareOptions, {
                                             "social": "googleplus"
                                         }));
@@ -263,6 +324,21 @@ class PlayerOptions extends Component {
                                 onPress={()=>{
                                     this.onCancel();
                                     setTimeout(() => {
+                                        var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                        ref.once("value", function(snapshot) {
+                                            if(snapshot.val().shares){
+                                                ref.update({shares: snapshot.val().shares + 1})
+                                            }
+                                            else{
+                                                ref.update({shares: 1})
+                                            }
+                                        });
+                                        const {currentUser} = firebase.auth();
+                                        const user = currentUser.uid;
+                                        Analytics.logEvent('shareEmail', {
+                                            'episodeID': Variables.state.podcastID,
+                                            'user_id': user
+                                        });
                                         Share.shareSingle(Object.assign(shareOptions, {
                                             "social": "email"
                                         }));
@@ -273,12 +349,27 @@ class PlayerOptions extends Component {
                             onPress={()=>{
                                 this.onCancel();
                                 setTimeout(() => {
+                                    var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                    ref.once("value", function(snapshot) {
+                                        if(snapshot.val().shares){
+                                            ref.update({shares: snapshot.val().shares + 1})
+                                        }
+                                        else{
+                                            ref.update({shares: 1})
+                                        }
+                                    });
+                                    const {currentUser} = firebase.auth();
+                                    const user = currentUser.uid;
+                                    Analytics.logEvent('shareCopyLink', {
+                                        'episodeID': Variables.state.podcastID,
+                                        'user_id': user
+                                    });
                                     if(typeof shareOptions["url"] !== undefined) {
                                         Clipboard.setString(shareOptions["url"]);
                                         if (Platform.OS === "android") {
-                                            ToastAndroid.show('Link copied to clipboard', ToastAndroid.SHORT);
+                                            ToastAndroid.show('Link Copied', ToastAndroid.SHORT);
                                         } else if (Platform.OS === "ios") {
-                                            AlertIOS.alert('Link copied to clipboard');
+                                            AlertIOS.alert('Link Copied');
                                         }
                                     }
                                 },300);
@@ -287,6 +378,21 @@ class PlayerOptions extends Component {
                                 onPress={()=>{
                                     this.onCancel();
                                     setTimeout(() => {
+                                        var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                        ref.once("value", function(snapshot) {
+                                            if(snapshot.val().shares){
+                                                ref.update({shares: snapshot.val().shares + 1})
+                                            }
+                                            else{
+                                                ref.update({shares: 1})
+                                            }
+                                        });
+                                        const {currentUser} = firebase.auth();
+                                        const user = currentUser.uid;
+                                        Analytics.logEvent('shareMore', {
+                                            'episodeID': Variables.state.podcastID,
+                                            'user_id': user
+                                        });
                                         Share.open(shareOptions)
                                     },300);
                                 }}>More</Button>
@@ -426,6 +532,21 @@ class PlayerOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareTwitter', {
+                                                    'episodeID': Variables.state.podcastID,
+                                                    'user_id': user
+                                                });
                                                 Share.shareSingle(Object.assign(shareOptions, {
                                                     "social": "twitter"
                                                 }));
@@ -435,6 +556,21 @@ class PlayerOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareFacebook', {
+                                                    'episodeID': Variables.state.podcastID,
+                                                    'user_id': user
+                                                });
                                                 Share.shareSingle(Object.assign(shareOptions, {
                                                     "social": "facebook"
                                                 }));
@@ -444,6 +580,21 @@ class PlayerOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareWhatsapp', {
+                                                    'episodeID': Variables.state.podcastID,
+                                                    'user_id': user
+                                                });
                                                 Share.shareSingle(Object.assign(shareOptions, {
                                                     "social": "whatsapp"
                                                 }));
@@ -453,6 +604,21 @@ class PlayerOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareGooglePlus', {
+                                                    'episodeID': Variables.state.podcastID,
+                                                    'user_id': user
+                                                });
                                                 Share.shareSingle(Object.assign(shareOptions, {
                                                     "social": "googleplus"
                                                 }));
@@ -462,6 +628,21 @@ class PlayerOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareEmail', {
+                                                    'episodeID': Variables.state.podcastID,
+                                                    'user_id': user
+                                                });
                                                 Share.shareSingle(Object.assign(shareOptions, {
                                                     "social": "email"
                                                 }));
@@ -472,12 +653,27 @@ class PlayerOptions extends Component {
                                     onPress={()=>{
                                         this.onCancel();
                                         setTimeout(() => {
+                                            var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                            ref.once("value", function(snapshot) {
+                                                if(snapshot.val().shares){
+                                                    ref.update({shares: snapshot.val().shares + 1})
+                                                }
+                                                else{
+                                                    ref.update({shares: 1})
+                                                }
+                                            });
+                                            const {currentUser} = firebase.auth();
+                                            const user = currentUser.uid;
+                                            Analytics.logEvent('shareCopyLink', {
+                                                'episodeID': Variables.state.podcastID,
+                                                'user_id': user
+                                            });
                                             if(typeof shareOptions["url"] !== undefined) {
                                                 Clipboard.setString(shareOptions["url"]);
                                                 if (Platform.OS === "android") {
-                                                    ToastAndroid.show('Link copied to clipboard', ToastAndroid.SHORT);
+                                                    ToastAndroid.show('Link Copied', ToastAndroid.SHORT);
                                                 } else if (Platform.OS === "ios") {
-                                                    AlertIOS.alert('Link copied to clipboard');
+                                                    AlertIOS.alert('Link Copied');
                                                 }
                                             }
                                         },300);
@@ -486,6 +682,21 @@ class PlayerOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareMore', {
+                                                    'episodeID': Variables.state.podcastID,
+                                                    'user_id': user
+                                                });
                                                 Share.open(shareOptions)
                                             },300);
                                         }}>More</Button>
@@ -627,6 +838,21 @@ class PlayerOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareTwitter', {
+                                                    'episodeID': Variables.state.podcastID,
+                                                    'user_id': user
+                                                });
                                                 Share.shareSingle(Object.assign(shareOptions, {
                                                     "social": "twitter"
                                                 }));
@@ -636,6 +862,21 @@ class PlayerOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareFacebook', {
+                                                    'episodeID': Variables.state.podcastID,
+                                                    'user_id': user
+                                                });
                                                 Share.shareSingle(Object.assign(shareOptions, {
                                                     "social": "facebook"
                                                 }));
@@ -645,6 +886,21 @@ class PlayerOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareWhatsapp', {
+                                                    'episodeID': Variables.state.podcastID,
+                                                    'user_id': user
+                                                });
                                                 Share.shareSingle(Object.assign(shareOptions, {
                                                     "social": "whatsapp"
                                                 }));
@@ -654,6 +910,21 @@ class PlayerOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareGooglePlus', {
+                                                    'episodeID': Variables.state.podcastID,
+                                                    'user_id': user
+                                                });
                                                 Share.shareSingle(Object.assign(shareOptions, {
                                                     "social": "googleplus"
                                                 }));
@@ -663,6 +934,21 @@ class PlayerOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareEmail', {
+                                                    'episodeID': Variables.state.podcastID,
+                                                    'user_id': user
+                                                });
                                                 Share.shareSingle(Object.assign(shareOptions, {
                                                     "social": "email"
                                                 }));
@@ -673,12 +959,27 @@ class PlayerOptions extends Component {
                                     onPress={()=>{
                                         this.onCancel();
                                         setTimeout(() => {
+                                            var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                            ref.once("value", function(snapshot) {
+                                                if(snapshot.val().shares){
+                                                    ref.update({shares: snapshot.val().shares + 1})
+                                                }
+                                                else{
+                                                    ref.update({shares: 1})
+                                                }
+                                            });
+                                            const {currentUser} = firebase.auth();
+                                            const user = currentUser.uid;
+                                            Analytics.logEvent('shareCopyLink', {
+                                                'episodeID': Variables.state.podcastID,
+                                                'user_id': user
+                                            });
                                             if(typeof shareOptions["url"] !== undefined) {
                                                 Clipboard.setString(shareOptions["url"]);
                                                 if (Platform.OS === "android") {
-                                                    ToastAndroid.show('Link copied to clipboard', ToastAndroid.SHORT);
+                                                    ToastAndroid.show('Link Copied', ToastAndroid.SHORT);
                                                 } else if (Platform.OS === "ios") {
-                                                    AlertIOS.alert('Link copied to clipboard');
+                                                    AlertIOS.alert('Link Copied');
                                                 }
                                             }
                                         },300);
@@ -687,6 +988,21 @@ class PlayerOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareMore', {
+                                                    'episodeID': Variables.state.podcastID,
+                                                    'user_id': user
+                                                });
                                                 Share.open(shareOptions)
                                             },300);
                                         }}>More</Button>
