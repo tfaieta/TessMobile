@@ -16,6 +16,8 @@ import Variables from "./Variables";
 import Icon from 'react-native-vector-icons/Ionicons';
 import Share, {ShareSheet, Button} from 'react-native-share';
 
+var Analytics = require('react-native-firebase-analytics');
+
 var {height, width} = Dimensions.get('window');
 
 
@@ -264,6 +266,21 @@ class PodcastOptions extends Component {
                                 onPress={()=>{
                                     this.onCancel();
                                     setTimeout(() => {
+                                        var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                        ref.once("value", function(snapshot) {
+                                            if(snapshot.val().shares){
+                                                ref.update({shares: snapshot.val().shares + 1})
+                                            }
+                                            else{
+                                                ref.update({shares: 1})
+                                            }
+                                        });
+                                        const {currentUser} = firebase.auth();
+                                        const user = currentUser.uid;
+                                        Analytics.logEvent('shareTwitter', {
+                                            'episodeID': id,
+                                            'user_id': user
+                                        });
                                         Share.shareSingle(Object.assign(shareOptions, {
                                             "social": "twitter"
                                         }));
@@ -273,6 +290,21 @@ class PodcastOptions extends Component {
                                 onPress={()=>{
                                     this.onCancel();
                                     setTimeout(() => {
+                                        var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                        ref.once("value", function(snapshot) {
+                                            if(snapshot.val().shares){
+                                                ref.update({shares: snapshot.val().shares + 1})
+                                            }
+                                            else{
+                                                ref.update({shares: 1})
+                                            }
+                                        });
+                                        const {currentUser} = firebase.auth();
+                                        const user = currentUser.uid;
+                                        Analytics.logEvent('shareFacebook', {
+                                            'episodeID': id,
+                                            'user_id': user
+                                        });
                                         Share.shareSingle(Object.assign(shareOptions, {
                                             "social": "facebook"
                                         }));
@@ -282,6 +314,21 @@ class PodcastOptions extends Component {
                                 onPress={()=>{
                                     this.onCancel();
                                     setTimeout(() => {
+                                        var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                        ref.once("value", function(snapshot) {
+                                            if(snapshot.val().shares){
+                                                ref.update({shares: snapshot.val().shares + 1})
+                                            }
+                                            else{
+                                                ref.update({shares: 1})
+                                            }
+                                        });
+                                        const {currentUser} = firebase.auth();
+                                        const user = currentUser.uid;
+                                        Analytics.logEvent('shareWhatsapp', {
+                                            'episodeID': id,
+                                            'user_id': user
+                                        });
                                         Share.shareSingle(Object.assign(shareOptions, {
                                             "social": "whatsapp"
                                         }));
@@ -291,6 +338,21 @@ class PodcastOptions extends Component {
                                 onPress={()=>{
                                     this.onCancel();
                                     setTimeout(() => {
+                                        var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                        ref.once("value", function(snapshot) {
+                                            if(snapshot.val().shares){
+                                                ref.update({shares: snapshot.val().shares + 1})
+                                            }
+                                            else{
+                                                ref.update({shares: 1})
+                                            }
+                                        });
+                                        const {currentUser} = firebase.auth();
+                                        const user = currentUser.uid;
+                                        Analytics.logEvent('shareGooglePlus', {
+                                            'episodeID': id,
+                                            'user_id': user
+                                        });
                                         Share.shareSingle(Object.assign(shareOptions, {
                                             "social": "googleplus"
                                         }));
@@ -300,6 +362,21 @@ class PodcastOptions extends Component {
                                 onPress={()=>{
                                     this.onCancel();
                                     setTimeout(() => {
+                                        var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                        ref.once("value", function(snapshot) {
+                                            if(snapshot.val().shares){
+                                                ref.update({shares: snapshot.val().shares + 1})
+                                            }
+                                            else{
+                                                ref.update({shares: 1})
+                                            }
+                                        });
+                                        const {currentUser} = firebase.auth();
+                                        const user = currentUser.uid;
+                                        Analytics.logEvent('shareEmail', {
+                                            'episodeID': id,
+                                            'user_id': user
+                                        });
                                         Share.shareSingle(Object.assign(shareOptions, {
                                             "social": "email"
                                         }));
@@ -310,6 +387,21 @@ class PodcastOptions extends Component {
                             onPress={()=>{
                                 this.onCancel();
                                 setTimeout(() => {
+                                    var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                    ref.once("value", function(snapshot) {
+                                        if(snapshot.val().shares){
+                                            ref.update({shares: snapshot.val().shares + 1})
+                                        }
+                                        else{
+                                            ref.update({shares: 1})
+                                        }
+                                    });
+                                    const {currentUser} = firebase.auth();
+                                    const user = currentUser.uid;
+                                    Analytics.logEvent('shareCopyLink', {
+                                        'episodeID': id,
+                                        'user_id': user
+                                    });
                                     if(typeof shareOptions["url"] !== undefined) {
                                         Clipboard.setString(shareOptions["url"]);
                                         if (Platform.OS === "android") {
@@ -324,6 +416,21 @@ class PodcastOptions extends Component {
                                 onPress={()=>{
                                     this.onCancel();
                                     setTimeout(() => {
+                                        var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                        ref.once("value", function(snapshot) {
+                                            if(snapshot.val().shares){
+                                                ref.update({shares: snapshot.val().shares + 1})
+                                            }
+                                            else{
+                                                ref.update({shares: 1})
+                                            }
+                                        });
+                                        const {currentUser} = firebase.auth();
+                                        const user = currentUser.uid;
+                                        Analytics.logEvent('shareMore', {
+                                            'episodeID': id,
+                                            'user_id': user
+                                        });
                                         Share.open(shareOptions)
                                     },300);
                                 }}>More</Button>
@@ -467,6 +574,21 @@ class PodcastOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareTwitter', {
+                                                    'episodeID': id,
+                                                    'user_id': user
+                                                });
                                                 Share.shareSingle(Object.assign(shareOptions, {
                                                     "social": "twitter"
                                                 }));
@@ -476,6 +598,21 @@ class PodcastOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareFacebook', {
+                                                    'episodeID': id,
+                                                    'user_id': user
+                                                });
                                                 Share.shareSingle(Object.assign(shareOptions, {
                                                     "social": "facebook"
                                                 }));
@@ -485,6 +622,21 @@ class PodcastOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareWhatsapp', {
+                                                    'episodeID': id,
+                                                    'user_id': user
+                                                });
                                                 Share.shareSingle(Object.assign(shareOptions, {
                                                     "social": "whatsapp"
                                                 }));
@@ -494,6 +646,21 @@ class PodcastOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareGooglePlus', {
+                                                    'episodeID': id,
+                                                    'user_id': user
+                                                });
                                                 Share.shareSingle(Object.assign(shareOptions, {
                                                     "social": "googleplus"
                                                 }));
@@ -503,6 +670,21 @@ class PodcastOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareEmail', {
+                                                    'episodeID': id,
+                                                    'user_id': user
+                                                });
                                                 Share.shareSingle(Object.assign(shareOptions, {
                                                     "social": "email"
                                                 }));
@@ -513,6 +695,21 @@ class PodcastOptions extends Component {
                                     onPress={()=>{
                                         this.onCancel();
                                         setTimeout(() => {
+                                            var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                            ref.once("value", function(snapshot) {
+                                                if(snapshot.val().shares){
+                                                    ref.update({shares: snapshot.val().shares + 1})
+                                                }
+                                                else{
+                                                    ref.update({shares: 1})
+                                                }
+                                            });
+                                            const {currentUser} = firebase.auth();
+                                            const user = currentUser.uid;
+                                            Analytics.logEvent('shareCopyLink', {
+                                                'episodeID': id,
+                                                'user_id': user
+                                            });
                                             if(typeof shareOptions["url"] !== undefined) {
                                                 Clipboard.setString(shareOptions["url"]);
                                                 if (Platform.OS === "android") {
@@ -527,6 +724,21 @@ class PodcastOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareMore', {
+                                                    'episodeID': id,
+                                                    'user_id': user
+                                                });
                                                 Share.open(shareOptions)
                                             },300);
                                         }}>More</Button>
@@ -668,6 +880,21 @@ class PodcastOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareTwitter', {
+                                                    'episodeID': id,
+                                                    'user_id': user
+                                                });
                                                 Share.shareSingle(Object.assign(shareOptions, {
                                                     "social": "twitter"
                                                 }));
@@ -677,6 +904,21 @@ class PodcastOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareFacebook', {
+                                                    'episodeID': id,
+                                                    'user_id': user
+                                                });
                                                 Share.shareSingle(Object.assign(shareOptions, {
                                                     "social": "facebook"
                                                 }));
@@ -686,6 +928,21 @@ class PodcastOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareWhatsapp', {
+                                                    'episodeID': id,
+                                                    'user_id': user
+                                                });
                                                 Share.shareSingle(Object.assign(shareOptions, {
                                                     "social": "whatsapp"
                                                 }));
@@ -695,6 +952,21 @@ class PodcastOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareGooglePlus', {
+                                                    'episodeID': id,
+                                                    'user_id': user
+                                                });
                                                 Share.shareSingle(Object.assign(shareOptions, {
                                                     "social": "googleplus"
                                                 }));
@@ -704,6 +976,21 @@ class PodcastOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareEmail', {
+                                                    'episodeID': id,
+                                                    'user_id': user
+                                                });
                                                 Share.shareSingle(Object.assign(shareOptions, {
                                                     "social": "email"
                                                 }));
@@ -714,6 +1001,21 @@ class PodcastOptions extends Component {
                                     onPress={()=>{
                                         this.onCancel();
                                         setTimeout(() => {
+                                            var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                            ref.once("value", function(snapshot) {
+                                                if(snapshot.val().shares){
+                                                    ref.update({shares: snapshot.val().shares + 1})
+                                                }
+                                                else{
+                                                    ref.update({shares: 1})
+                                                }
+                                            });
+                                            const {currentUser} = firebase.auth();
+                                            const user = currentUser.uid;
+                                            Analytics.logEvent('shareCopyLink', {
+                                                'episodeID': id,
+                                                'user_id': user
+                                            });
                                             if(typeof shareOptions["url"] !== undefined) {
                                                 Clipboard.setString(shareOptions["url"]);
                                                 if (Platform.OS === "android") {
@@ -728,6 +1030,21 @@ class PodcastOptions extends Component {
                                         onPress={()=>{
                                             this.onCancel();
                                             setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareMore', {
+                                                    'episodeID': id,
+                                                    'user_id': user
+                                                });
                                                 Share.open(shareOptions)
                                             },300);
                                         }}>More</Button>

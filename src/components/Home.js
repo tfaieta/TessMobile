@@ -801,7 +801,7 @@ class Home extends Component{
                             size = 4;
                         }
                         else{
-                            size = items.length
+                            size = items.length-1
                         }
                         for (var i=size; i >= 0; i--) {
 
@@ -843,12 +843,16 @@ class Home extends Component{
 
 
                             //length
-                            let length = "itunes duration:" + items[i].getElementsByTagName('itunes:duration');
-                            length = length.replace("itunes duration:", "");
-                            length = length.replace("<itunes:duration>", "");
-                            length = length.replace("</itunes:duration>", "");
+                            let length = '';
+                            if(items[i].getElementsByTagName('itunes:duration').length > 0){
+                                length = "itunes duration:" + items[i].getElementsByTagName('itunes:duration');
+                                length = length.replace("itunes duration:", "");
+                                length = length.replace("<itunes:duration>", "");
+                                length = length.replace("</itunes:duration>", "");
+                            }
                             const podcastLength = length;
                             console.warn(podcastLength);
+
 
 
 
@@ -856,7 +860,15 @@ class Home extends Component{
                             const rss = true;
 
                             //category
-                            const podcastCategory = ''; // no category
+                            let podcastCategory = '';
+                            if(items[i].getElementsByTagName('itunes:category').length > 0){
+                                podcastCategory = "itunes:category:" + items[i].getElementsByTagName('itunes:category');
+                                podcastCategory = podcastCategory.replace("itunes:category:", "");
+                                podcastCategory = podcastCategory.replace("<itunes:category>", "");
+                                podcastCategory = podcastCategory.replace("</itunes:category>", "");
+                                console.warn(podcastCategory);
+                            }
+
 
                             //likes = 0
                             const likes = 0;
