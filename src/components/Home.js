@@ -778,6 +778,16 @@ class Home extends Component{
                         usernameData = usernameData.replace("http://", "");
 
 
+                        // category
+                        let category = '';
+                        if(doc.getElementsByTagName('itunes:category').length > 0){
+                            category = doc.getElementsByTagName('itunes:category')[0].getAttribute('text');
+                        }
+                        const podcastCategory = category;
+                        console.warn(podcastCategory);
+
+
+
                         // create account for user if it doesn't exist
                         // reserve username & create user if needed
                         firebase.database().ref(`users`).child(usernameData).once("value", function (snapshot) {
@@ -855,19 +865,9 @@ class Home extends Component{
 
 
 
-
                             //rss = true, need to tell firebase it's an rss podcast
                             const rss = true;
 
-                            //category
-                            let podcastCategory = '';
-                            if(items[i].getElementsByTagName('itunes:category').length > 0){
-                                podcastCategory = "itunes:category:" + items[i].getElementsByTagName('itunes:category');
-                                podcastCategory = podcastCategory.replace("itunes:category:", "");
-                                podcastCategory = podcastCategory.replace("<itunes:category>", "");
-                                podcastCategory = podcastCategory.replace("</itunes:category>", "");
-                                console.warn(podcastCategory);
-                            }
 
 
                             //likes = 0
