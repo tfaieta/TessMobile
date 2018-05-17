@@ -367,9 +367,9 @@ class PlayerOptions extends Component {
                                     if(typeof shareOptions["url"] !== undefined) {
                                         Clipboard.setString(shareOptions["url"]);
                                         if (Platform.OS === "android") {
-                                            ToastAndroid.show('Link Copied to Clipboard', ToastAndroid.SHORT);
+                                            ToastAndroid.show('Link Copied', ToastAndroid.SHORT);
                                         } else if (Platform.OS === "ios") {
-                                            AlertIOS.alert('Link Copied to Clipboard');
+                                            AlertIOS.alert('Link Copied');
                                         }
                                     }
                                 },300);
@@ -671,9 +671,9 @@ class PlayerOptions extends Component {
                                             if(typeof shareOptions["url"] !== undefined) {
                                                 Clipboard.setString(shareOptions["url"]);
                                                 if (Platform.OS === "android") {
-                                                    ToastAndroid.show('Link Copied to Clipboard', ToastAndroid.SHORT);
+                                                    ToastAndroid.show('Link Copied', ToastAndroid.SHORT);
                                                 } else if (Platform.OS === "ios") {
-                                                    AlertIOS.alert('Link Copied to Clipboard');
+                                                    AlertIOS.alert('Link Copied');
                                                 }
                                             }
                                         },300);
@@ -977,9 +977,9 @@ class PlayerOptions extends Component {
                                             if(typeof shareOptions["url"] !== undefined) {
                                                 Clipboard.setString(shareOptions["url"]);
                                                 if (Platform.OS === "android") {
-                                                    ToastAndroid.show('Link Copied to Clipboard', ToastAndroid.SHORT);
+                                                    ToastAndroid.show('Link Copied', ToastAndroid.SHORT);
                                                 } else if (Platform.OS === "ios") {
-                                                    AlertIOS.alert('Link Copied to Clipboard');
+                                                    AlertIOS.alert('Link Copied');
                                                 }
                                             }
                                         },300);
