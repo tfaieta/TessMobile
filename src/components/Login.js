@@ -53,7 +53,7 @@ class Login extends Component {
     renderButton() {
         if (this.props.loading) {
             return (
-                <View style={{paddingTop: 30}} >
+                <View style={{paddingTop: height/22.23}} >
                     <Spinner size="large" />
                 </View>
             )
@@ -82,24 +82,24 @@ class Login extends Component {
 
 
                 <Image
-                    style={{ width: height/4.87, height: height/4.33, marginBottom: 40, alignSelf: 'center'}}
+                    style={{ width: height/4.87, height: height/4.33, marginBottom: height/16.68, alignSelf: 'center'}}
                     source={require('tess/src/images/White_Logo.png')}
                 />
 
 
                 <View style={styles.inputContainer}>
                     <View style={{flexDirection:'row'}}>
-                        <View style={{alignItems:'flex-start', flex:1,}}>
+                        <View style={{alignItems:'flex-start', flex: 1,}}>
                             <Icon style={{
                                 textAlign: 'center',
-                                marginTop: 18,
-                                marginLeft: 10,
-                                fontSize: 22,
+                                marginTop: height/37,
+                                marginLeft: width/33.5,
+                                fontSize: width/15.23,
                                 color: 'rgba(300,300,300,0.7)'
                             }} name="md-mail">
                             </Icon>
                         </View>
-                        <View style={{alignItems: 'flex-end', flex:8}}>
+                        <View style={{alignItems: 'flex-end', flex: 8}}>
                             <TextInput
                                 style={styles.input}
                                 placeholder={'Email'}
@@ -126,14 +126,14 @@ class Login extends Component {
                         <View style={{alignItems:'flex-start', flex:1,}}>
                             <Icon style={{
                                 textAlign: 'center',
-                                marginTop: 18,
-                                marginLeft: 10,
-                                fontSize: 22,
+                                marginTop: height/37,
+                                marginLeft: width/33.5,
+                                fontSize: width/15.23,
                                 color: 'rgba(300,300,300,0.7)'
                             }} name="md-key">
                             </Icon>
                         </View>
-                        <View style={{alignItems:'center', flex:6, marginLeft: 5}}>
+                        <View style={{alignItems:'center', flex: 6, marginLeft: width/67}}>
                             <TextInput
                                 style={styles.input}
                                 ref='SecondInput'
@@ -150,7 +150,7 @@ class Login extends Component {
 
                             />
                         </View>
-                        <TouchableOpacity style={{alignItems: 'flex-end', flex:3, marginTop:2}}>
+                        <TouchableOpacity style={{alignItems: 'flex-end', flex: 3, marginTop: height/333.5}}>
                             <Text style={styles.inputText}>Forgot</Text>
                         </TouchableOpacity>
                     </View>
@@ -179,39 +179,39 @@ class Login extends Component {
 const styles = {
     errorTextStyle: {
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 18,
+        fontFamily: 'Montserrat-Regular',
+        fontSize: width/18.61,
         alignSelf: 'center',
         color: 'rgba(300,10,10,1)',
-        marginTop: 5,
-        marginBottom:5,
+        marginTop: height/133.4,
+        marginBottom: height/133.4,
         backgroundColor: 'transparent'
     },
 
     container: {
         flex: 1,
         backgroundColor: '#856cff',
-        padding: 20,
-        paddingTop: 60
+        padding: height/33.35,
+        paddingTop: height/11.12
     },
 
     input: {
-        height: 40,
+        height: height/16.67,
         backgroundColor: 'transparent',
-        marginTop:10,
-        marginBottom: 5,
+        marginTop: height/66.7,
+        marginBottom: height/133.4,
         color: 'rgba(300,300,300,0.9)',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 14,
-        paddingHorizontal: 10,
-        marginLeft: 10
+        fontFamily: 'Montserrat-Regular',
+        fontSize: width/24,
+        paddingHorizontal: width/33.5,
+        marginLeft: width/33.5
     },
 
     buttonContainer: {
-        paddingVertical: 15,
-        paddingHorizontal: 15,
-        marginBottom:5,
+        paddingVertical: height/44.46,
+        paddingHorizontal: width/22.33,
+        marginBottom: height/133.4,
         borderWidth: 2,
         borderStyle: 'solid',
         borderRadius: 10,
@@ -225,8 +225,8 @@ const styles = {
     },
 
     formContainer4: {
-        paddingTop: 10,
-        paddingBottom: 10,
+        paddingTop: height/66.7,
+        paddingBottom: height/66.7,
         backgroundColor: '#5555FF'
     },
 
@@ -234,36 +234,36 @@ const styles = {
         textAlign: 'center',
         color: '#5555FF',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 18,
-        marginTop: 5,
+        fontFamily: 'Montserrat-Regular',
+        fontSize: width/18.61,
+        marginTop: height/133.4,
     },
 
     inputText: {
         textAlign: 'center',
         color: "rgba(300,300,300,0.7)",
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 14,
-        marginTop: 20,
-        marginRight: 10,
+        fontFamily: 'Montserrat-Regular',
+        fontSize: width/24,
+        marginTop: height/33.35,
+        marginRight: width/33.5,
     },
 
     inputContainer: {
         backgroundColor:"rgba(300,300,300,0.2)",
-        marginVertical: 5,
-        paddingBottom: 10,
-        paddingHorizontal: 10,
-        borderWidth:0.1,
-        borderRadius:10
+        marginVertical: height/133.4,
+        paddingBottom: height/66.7,
+        paddingHorizontal: width/33.5,
+        borderWidth: 0.1,
+        borderRadius: 10
     },
     textBottomStyle: {
-        marginTop: 20,
+        marginTop: height/33.35,
         textAlign: 'center',
         color: 'rgba(300,300,300,0.8)',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 15,
+        fontFamily: 'Montserrat-Regular',
+        fontSize: width/22.33,
         backgroundColor: 'transparent'
     }
 
