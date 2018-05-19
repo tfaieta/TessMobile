@@ -7,9 +7,6 @@ import Variables from "./Variables";
 
 var {height, width} = Dimensions.get('window');
 
-
-
-
 // A single podcast on scrollview slider list (on home page)
 
 class ListItemCard extends Component {
@@ -113,7 +110,6 @@ class ListItemCard extends Component {
             this.timeout2 = setTimeout(() => {this.setState({profileImage: profileImage})},3400);
 
         }
-
     }
 
 
@@ -313,7 +309,6 @@ class ListItemCard extends Component {
                         Variables.state.isPlaying = true;
                         Variables.state.rss = false;
 
-
                         const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
                         if(storageRef.child('image-profile-uploaded')){
                             storageRef.getDownloadURL()
@@ -325,7 +320,6 @@ class ListItemCard extends Component {
                                 //
                             });
                         }
-
                         firebase.database().ref(`users/${currentUser.uid}/favorites`).on("value", function (snapshot) {
                             snapshot.forEach(function (data) {
                                 if(data.key == id){
@@ -333,8 +327,6 @@ class ListItemCard extends Component {
                                 }
                             })
                         })
-
-
                     });
             }
             else{

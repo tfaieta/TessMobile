@@ -12,7 +12,6 @@ import Player from "./Player";
 import SwipeCards from 'react-native-swipe-cards';
 import ListItemCard from "./ListItemCard";
 import SortableListView from 'react-native-sortable-listview';
-import Swiper from 'react-native-deck-swiper';
 var Analytics = require('react-native-firebase-analytics');
 
 
@@ -26,7 +25,6 @@ var DomParser = require('react-native-html-parser').DOMParser;
 // 1st tab, home page
 
 class Home extends Component{
-
 
     componentDidMount(){
         const {currentUser} = firebase.auth();
@@ -1445,7 +1443,7 @@ class Home extends Component{
             <View style = {{marginHorizontal: 10, marginBottom: 7}}>
                 <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20 }}>
                     <View>
-                        <Text style={styles.titleCard}>{podcast.podcastTitle.toString().slice(0,44)}</Text>
+                        <Text style={styles.titleCard}>{podcast.podcastTitle.toString().slice(0,35)}</Text>
                         <TouchableWithoutFeedback>
                             <View style={{padding: 10, flexDirection: 'row'}}>
 
@@ -1801,45 +1799,51 @@ class Home extends Component{
                                     if(data[position].title == "Catch Up"){
 
                                         return(
-                                            <TouchableHighlight  underlayColor='#fff' style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 12, marginVertical: 5}} {...this.props.sortHandlers}>
                                                 <View>
-                                                    <View style={{backgroundColor: '#d15564', width: 40, height: 40, marginTop: -8, borderRadius: 25, alignSelf: 'flex-end'}} >
-                                                        <Text style={styles.numLeftText}>{this.state.cardsLeft}</Text>
-                                                    </View>
                                                     <ScrollView scrollEnabled = {false}>
-                                                        <Swiper
+                                                        <SwipeCards
                                                             cards={this.state.data}
                                                             renderCard={(cardData) => this.renderRowCard(cardData)}
-                                                            verticalSwipe={false}
-                                                            onSwipedAborted={() => {
+                                                            dragY={false}
+                                                            smoothTransition={true}
+                                                            hasMaybeAction={true}
+                                                            showYup={false}
+                                                            handleNope={() => {
                                                                 this.setState({cardsLeft: this.state.cardsLeft - 1});
                                                                 this.forceUpdate();
                                                             }}
-                                                            onSwipedRight={() => {
+                                                            handleYup={() => {
                                                                 this.setState({cardsLeft: this.state.cardsLeft - 1});
                                                                 this.forceUpdate();
                                                             }}
-                                                            onSwipedLeft={() => {
-                                                                this.setState({cardsLeft: this.state.cardsLeft - 1});
-                                                                this.forceUpdate();
-                                                            }}
-                                                            onSwipedAll={() =>
+                                                            showNope={false}
+                                                            showMaybe={false}
+                                                            renderNoMoreCards={() =>
                                                                 <View style = {{marginHorizontal: 10, marginVertical: 7}}>
                                                                     <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20, paddingVertical: 60 }}>
                                                                         <Text style={styles.title}>You're all caught up!</Text>
                                                                     </View>
                                                                 </View>
                                                             }
-                                                        >
-                                                        </Swiper>
+                                                        />
                                                     </ScrollView>
+                                                    <View style={{backgroundColor: '#d15564', width: 40, height: 40, marginTop: -6,
+                                                        borderRadius: 25, alignSelf: 'flex-end', position: 'absolute'}} >
+                                                        <Text style={styles.numLeftText}>
+                                                            {this.state.cardsLeft}
+                                                        </Text>
+                                                    </View>
                                                 </View>
-                                            </TouchableHighlight>
                                         )
-
-
                                     }
-                                    else{
+
+                                    /* COMMENTED
+
+
+
+                                         */
+
+                                    else {
 
                                         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
                                         let input = dataSource.cloneWithRows(this.returnList(data[position].title));
