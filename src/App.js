@@ -68,6 +68,7 @@ import Highlight from "./components/Highlight";
 import Tracking from "./components/Tracking";
 import Achievement from "./components/Achievement";
 import PlayerBottom from "./components/PlayerBottom";
+import CatchUp from "./components/CatchUp";
 
 
 
@@ -126,6 +127,7 @@ Navigation.registerComponent('Followed', () => FollowedContent, store, Provider)
 Navigation.registerComponent('RecentlyPlayed', () => RecentlyPlayed, store, Provider);
 Navigation.registerComponent('Playlists', () => Playlists, store, Provider);
 Navigation.registerComponent('Highlights', () => Highlights, store, Provider);
+Navigation.registerComponent('CatchUp', () => CatchUp, store, Provider);
 
 Navigation.registerComponent('Account', () => Account, store, Provider);
 Navigation.registerComponent('MyFollowersPage', () => MyFollowersPage, store, Provider);
