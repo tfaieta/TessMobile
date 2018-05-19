@@ -396,6 +396,7 @@ class Home extends Component{
             order: Object.keys([]),
             loading: true,
             cardsLeft: Variables.state.homeFollowedContent.length,
+            cardControl: false,
 
             data: Variables.state.homeFollowedContent,
             dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts),
@@ -541,6 +542,8 @@ class Home extends Component{
                             podcastDescription = podcastDescription.replace("</strong>", " ");
                             podcastDescription = podcastDescription.replace("<sup>", " ");
                             podcastDescription = podcastDescription.replace("</sup>", " ");
+                            podcastDescription = podcastDescription.replace("<br><br>", " ");
+                            podcastDescription = podcastDescription.replace("<br>", " ");
 
 
 
@@ -1436,9 +1439,7 @@ class Home extends Component{
 
     }
 
-
     renderRowCard(podcast) {
-
         return (
             <View style = {{marginHorizontal: 10, marginBottom: 7}}>
                 <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20 }}>
@@ -1796,8 +1797,8 @@ class Home extends Component{
 
                                 if(data[position]){
 
+                                    // Catch Up Widget
                                     if(data[position].title == "Catch Up"){
-
                                         return(
                                                 <View>
                                                     <ScrollView scrollEnabled = {false}>
@@ -1836,12 +1837,6 @@ class Home extends Component{
                                                 </View>
                                         )
                                     }
-
-                                    /* COMMENTED
-
-
-
-                                         */
 
                                     else {
 
