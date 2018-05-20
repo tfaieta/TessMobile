@@ -102,14 +102,14 @@ export  default class Login extends Component{
                         start={{x: 0.0, y: 0.0}} end={{x: 0, y: 1}}
                         style={{height: height, width: width}}>
 
-                        <View style = {{flexDirection: 'row'}} level={10}>
-                            <Icon style={{textAlign:'center', marginHorizontal: width/75,  marginTop: height/4, fontSize: height/8.33, color:'#fff', backgroundColor: 'transparent' }} name="facebook">
+                        <View style = {{flexDirection: 'row', alignSelf: 'center'}} level={10}>
+                            <Icon style={{textAlign:'center', marginHorizontal: width/75,  marginTop: height/4, fontSize: height/10, color:'#fff', backgroundColor: 'transparent' }} name="facebook">
                             </Icon>
-                            <Icon style={{textAlign:'center', marginHorizontal: width/75,  marginTop: height/4, fontSize: height/8.33, color:'#fff', backgroundColor: 'transparent' }} name="twitter">
+                            <Icon style={{textAlign:'center', marginHorizontal: width/75,  marginTop: height/4, fontSize: height/10, color:'#fff', backgroundColor: 'transparent' }} name="twitter">
                             </Icon>
-                            <Icon style={{textAlign:'center', marginHorizontal: width/75,  marginTop: height/4, fontSize: height/8.33, color:'#fff', backgroundColor: 'transparent' }} name="message">
+                            <Icon style={{textAlign:'center', marginHorizontal: width/75,  marginTop: height/4, fontSize: height/10, color:'#fff', backgroundColor: 'transparent' }} name="message">
                             </Icon>
-                            <Icon style={{textAlign:'center', marginHorizontal: width/75,  marginTop: height/4, fontSize: height/8.33, color:'#fff', backgroundColor: 'transparent' }} name="email">
+                            <Icon style={{textAlign:'center', marginHorizontal: width/75,  marginTop: height/4, fontSize: height/10, color:'#fff', backgroundColor: 'transparent' }} name="email">
                             </Icon>
                         </View>
                         <View level={10}>
