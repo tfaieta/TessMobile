@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { Text, View, StyleSheet, ListView, ScrollView, TouchableOpacity, Linking, RefreshControl, AsyncStorage, ActivityIndicator, Image, Platform, TouchableWithoutFeedback, TouchableHighlight, Dimensions} from 'react-native';
 import PlayerBottom from './PlayerBottom';
-import { podcastFetchNew} from "../actions/PodcastActions";
+import { podcastFetchNew } from "../actions/PodcastActions";
 import { connect } from 'react-redux';
 import ListItemUsers from '../components/ListItemUsers';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -11,7 +11,7 @@ import firebase from 'firebase';
 import Player from "./Player";
 import SwipeCards from 'react-native-swipe-cards';
 import ListItemCard from "./ListItemCard";
-import SortableListView from 'react-native-sortable-listview'
+import SortableListView from 'react-native-sortable-listview';
 var Analytics = require('react-native-firebase-analytics');
 
 
@@ -23,14 +23,9 @@ var {height, width} = Dimensions.get('window');
 var DomParser = require('react-native-html-parser').DOMParser;
 
 
-
-
-
-
 // 1st tab, home page
 
 class Home extends Component{
-
 
     componentDidMount(){
 
@@ -694,6 +689,7 @@ class Home extends Component{
             order: Object.keys([]),
             loading: true,
             cardsLeft: Variables.state.homeFollowedContent.length,
+            cardControl: false,
 
             data: Variables.state.homeFollowedContent,
             dataSource: dataSource.cloneWithRows(Variables.state.newPodcasts),
@@ -849,6 +845,8 @@ class Home extends Component{
                             podcastDescription = podcastDescription.replace("</strong>", " ");
                             podcastDescription = podcastDescription.replace("<sup>", " ");
                             podcastDescription = podcastDescription.replace("</sup>", " ");
+                            podcastDescription = podcastDescription.replace("<br><br>", " ");
+                            podcastDescription = podcastDescription.replace("<br>", " ");
 
 
 
@@ -1617,7 +1615,7 @@ class Home extends Component{
     }
 
 
-    _renderWidget = (position, data) => {
+    renderWidget = (position, data) => {
         if(data[position]){
 
             var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
@@ -1746,14 +1744,12 @@ class Home extends Component{
 
     }
 
-
     renderRowCard(podcast) {
-
         return (
             <View style = {{marginHorizontal: 10, marginBottom: 7}}>
                 <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20 }}>
                     <View>
-                        <Text style={styles.titleCard}>{podcast.podcastTitle.toString().slice(0,44)}</Text>
+                        <Text style={styles.titleCard}>{podcast.podcastTitle.toString().slice(0,35)}</Text>
                         <TouchableWithoutFeedback>
                             <View style={{padding: 10, flexDirection: 'row'}}>
 
@@ -2106,27 +2102,18 @@ class Home extends Component{
 
                                 if(data[position]){
 
+                                    // Catch Up Widget
                                     if(data[position].title == "Catch Up"){
-
                                         return(
-                                            <TouchableHighlight  underlayColor='#fff' style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 12, marginVertical: 5}} {...this.props.sortHandlers}>
                                                 <View>
-                                                    <View style={{backgroundColor: '#d15564', width: 40, height: 40, marginTop: -8, borderRadius: 25, alignSelf: 'flex-end'}} >
-                                                        <Text style={styles.numLeftText}>{this.state.cardsLeft}</Text>
-                                                    </View>
                                                     <ScrollView scrollEnabled = {false}>
                                                         <SwipeCards
                                                             cards={this.state.data}
                                                             renderCard={(cardData) => this.renderRowCard(cardData)}
                                                             dragY={false}
                                                             smoothTransition={true}
-                                                            hasMaybeAction={false}
-                                                            onClickHandler={()=>{}}
+                                                            hasMaybeAction={true}
                                                             showYup={false}
-                                                            handleMaybe={() => {
-                                                                this.setState({cardsLeft: this.state.cardsLeft - 1});
-                                                                this.forceUpdate();
-                                                            }}
                                                             handleNope={() => {
                                                                 this.setState({cardsLeft: this.state.cardsLeft - 1});
                                                                 this.forceUpdate();
@@ -2146,13 +2133,17 @@ class Home extends Component{
                                                             }
                                                         />
                                                     </ScrollView>
+                                                    <View style={{backgroundColor: '#d15564', width: 40, height: 40, marginTop: -6,
+                                                        borderRadius: 25, alignSelf: 'flex-end', position: 'absolute'}} >
+                                                        <Text style={styles.numLeftText}>
+                                                            {this.state.cardsLeft}
+                                                        </Text>
+                                                    </View>
                                                 </View>
-                                            </TouchableHighlight>
                                         )
-
-
                                     }
-                                    else{
+
+                                    else {
 
                                         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
                                         let input = dataSource.cloneWithRows(this.returnList(data[position].title));

@@ -435,7 +435,6 @@ class AddWidget extends Component{
 
     _widgetCat = (title) => {
 
-
         return(
             <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5}}>
                 <View style={{flexDirection:'row'}}>
@@ -692,9 +691,7 @@ class AddWidget extends Component{
             <View
                 style={styles.containerMain}>
 
-
                 <ScrollView>
-
 
                     {this._widgetCat("Categories")}
 
@@ -712,18 +709,11 @@ class AddWidget extends Component{
 
                     {this._widget(Variables.state.fromTess.length, this.state.dataSourceTess, "From Tess")}
 
-
                 </ScrollView>
-
-
 
                 <PlayerBottom navigator={this.props.navigator}/>
 
-
             </View>
-
-
-
 
         );
     }
