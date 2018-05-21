@@ -1082,14 +1082,34 @@ class PlayerBottom extends Component {
 
                 firebase.database().ref(`podcasts/${Variables.state.podcastID}/likes/${user}`).remove();
 
-                this.setState({ liked: false, likes: Variables.state.likers.length})
+                this.setState({ liked: false, likes: Variables.state.likers.length});
+
+                var refLike = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                refLike.once("value", function(snapshot) {
+                    if(snapshot.val().likes){
+                        refLike.update({likes: snapshot.val().likes - 1})
+                    }
+                    else{
+                        refLike.update({likes: 0})
+                    }
+                });
             }
             else if (!Variables.state.liked){
 
                 firebase.database().ref(`podcasts/${Variables.state.podcastID}/likes`).child(user).update({user});
 
 
-                this.setState({ liked: true, likes: Variables.state.likers.length})
+                this.setState({ liked: true, likes: Variables.state.likers.length});
+
+                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                ref.once("value", function(snapshot) {
+                    if(snapshot.val().likes){
+                        ref.update({likes: snapshot.val().likes + 1})
+                    }
+                    else{
+                        ref.update({likes: 1})
+                    }
+                });
             }
 
         }

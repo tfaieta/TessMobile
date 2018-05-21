@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ScrollView, StatusBar, ListView} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import LinearGradient from "react-native-linear-gradient/index.android";
 import Variables from "./Variables";
 import firebase from 'firebase';
-import ListItemQueue from "./ListItemQueue";
+import ListItemUsers from "./ListItemUsers";
 
 
 
@@ -72,7 +71,7 @@ class Library extends Component{
 
 
     renderRow = (rowData) => {
-        return <ListItemQueue podcast={rowData} navigator={this.props.navigator} />;
+        return <ListItemUsers podcast={rowData} navigator={this.props.navigator} />;
     };
 
     GoToRecentlyPlayed = () => {
@@ -99,7 +98,7 @@ class Library extends Component{
     GoToFollowedContent = () => {
         this.props.navigator.push({
             screen: 'Followed',
-            title: 'Creators'
+            title: 'Podcasts'
         });
     };
 
@@ -111,6 +110,43 @@ class Library extends Component{
     };
 
 
+
+    renderCatchUp = (data) => {
+        if(data.length == 1){
+            return(
+                <Text style = {styles.titleTop}>{data.length} New Episode</Text>
+            )
+        }
+        else if (data.length > 1){
+            return(
+                <Text style = {styles.titleTop}>{data.length} New Episodes</Text>
+            )
+        }
+        else{
+            return(
+                <Text style = {styles.titleTop}>All Caught Up!</Text>
+            )
+        }
+    };
+
+
+    renderUpNext = (data) => {
+        if(data.length > 0){
+            return(
+                <ListView
+                    horizontal={true}
+                    enableEmptySections
+                    dataSource={this.state.dataSource}
+                    renderRow={this.renderRow}
+                />
+            )
+        }
+        else{
+            return(
+                <Text style = {styles.titleUpNext}>Nothing is up next...  Add to your queue!</Text>
+            )
+        }
+    };
 
 
     render() {
@@ -126,113 +162,65 @@ class Library extends Component{
 
 
 
-                    <TouchableOpacity>
-                        <LinearGradient
-
-                            colors={['#d15564', '#9a5e9a', '#506dcf' ]}
-                            style={styles.container2}
-                        >
-                            <Text style = {styles.titleTop}>154 minutes to catch up</Text>
-                        </LinearGradient>
+                    <TouchableOpacity style = {{backgroundColor: '#3e4164', borderTopLeftRadius: 7, borderTopRightRadius: 7, marginTop: 15, marginHorizontal: 10,  shadowColor: 'black', shadowRadius: 4, shadowOpacity: 0.4  }} onPress={() => {
+                        this.props.navigator.showModal({
+                            screen: 'CatchUp',
+                        });
+                    }}>
+                        {this.renderCatchUp(Variables.state.myQueue)}
                     </TouchableOpacity>
 
 
-
-                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 10, marginVertical: 1}} onPress={this.GoToRecentlyPlayed}>
-                        <Icon style={{
-                            fontSize: 24,
-                            backgroundColor: 'transparent',
-                            color: '#797979',
-                            marginHorizontal: 10,
-                        }} name="history">
-                        </Icon>
-                        <Text style = {styles.title}>   History</Text>
-                        <View style={{alignSelf:'flex-end'}}>
-                            <Icon style={{
-                                fontSize: 22,
-                                backgroundColor: 'transparent',
-                                color: '#797979',
-                                marginHorizontal: 10,
-                            }} name="chevron-right">
-                            </Icon>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 10, marginVertical: 1}} onPress={this.GoToFavs} >
-                        <Icon style={{
-                            fontSize: 24,
-                            backgroundColor: 'transparent',
-                            color: '#797979',
-                            marginHorizontal: 10,
-                        }} name="podcast">
-                        </Icon>
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 15, marginVertical: 1}} onPress={this.GoToFollowedContent} >
                         <Text style = {styles.title}>   Podcasts</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: 22,
                                 backgroundColor: 'transparent',
-                                color: '#797979',
-                                marginHorizontal: 10,
+                                color: '#3e416460',
+                                marginHorizontal: 15,
                             }} name="chevron-right">
                             </Icon>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 10, marginVertical: 1}} onPress={this.GoToPlaylists}>
-                        <Icon style={{
-                            fontSize: 24,
-                            backgroundColor: 'transparent',
-                            color: '#797979',
-                            marginHorizontal: 10,
-                        }} name="list-ul">
-                        </Icon>
+
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 15, marginVertical: 1}} onPress={this.GoToPlaylists}>
                         <Text style = {styles.title}>   Playlists</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: 22,
                                 backgroundColor: 'transparent',
-                                color: '#797979',
-                                marginHorizontal: 10,
+                                color: '#3e416460',
+                                marginHorizontal: 15,
                             }} name="chevron-right">
                             </Icon>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 10, marginVertical: 1}} onPress={this.GoToHighlights}>
-                        <Icon style={{
-                            fontSize: 24,
-                            backgroundColor: 'transparent',
-                            color: '#797979',
-                            marginHorizontal: 10,
-                        }} name="star">
-                        </Icon>
+
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 15, marginVertical: 1}} onPress={this.GoToHighlights}>
                         <Text style = {styles.title}>   Highlights</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: 22,
                                 backgroundColor: 'transparent',
-                                color: '#797979',
-                                marginHorizontal: 10,
+                                color: '#3e416460',
+                                marginHorizontal: 15,
                             }} name="chevron-right">
                             </Icon>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 10, marginVertical: 1}} onPress={this.GoToFollowedContent}>
-                        <Icon style={{
-                            fontSize: 24,
-                            backgroundColor: 'transparent',
-                            color: '#797979',
-                            marginHorizontal: 10,
-                        }} name="users">
-                        </Icon>
-                        <Text style = {styles.title}>   Creators</Text>
+
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 15, marginVertical: 1}} onPress={this.GoToRecentlyPlayed}>
+                        <Text style = {styles.title}>   History</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: 22,
                                 backgroundColor: 'transparent',
-                                color: '#797979',
-                                marginHorizontal: 10,
+                                color: '#3e416460',
+                                marginHorizontal: 15,
                             }} name="chevron-right">
                             </Icon>
                         </View>
@@ -240,21 +228,21 @@ class Library extends Component{
 
 
 
-                    <View style={{flex:1, flexDirection: 'row', backgroundColor: '#fff',}}>
+                    <View style={{flex:1, flexDirection: 'row', backgroundColor: '#fff', marginTop: 10, marginHorizontal: 10, borderTopLeftRadius: 7, borderTopRightRadius: 7}}>
                         <View style={{flex:1}}>
                             <Text style = {styles.titleNext}>Up Next</Text>
                         </View>
-                        <TouchableOpacity style={{flex:1, alignSelf: 'flex-end'}}>
+                        <TouchableOpacity style={{flex:1, alignSelf: 'flex-end'}} onPress={() => {
+                            this.props.navigator.showModal({
+                                screen: 'MyQueue',
+                            });
+                        }}>
                             <Text style = {styles.titleEdit}>Edit</Text>
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{paddingBottom: 70}}>
-                        <ListView
-                            enableEmptySections
-                            dataSource={this.state.dataSource}
-                            renderRow={this.renderRow}
-                        />
+                    <View style={{backgroundColor: '#fff', marginHorizontal: 10, marginBottom: 10, borderBottomLeftRadius: 7, borderBottomRightRadius: 7}}>
+                        {this.renderUpNext(Variables.state.myQueue)}
                     </View>
 
 
@@ -297,11 +285,11 @@ const styles = StyleSheet.create({
         flex:1,
         textAlign: 'left',
         marginVertical: 10,
-        marginTop: 20,
-        marginHorizontal: 10,
+        marginTop: 10,
+        marginHorizontal: 15,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 20,
+        fontSize: 16,
         backgroundColor: 'transparent',
     },
 
@@ -311,7 +299,7 @@ const styles = StyleSheet.create({
         textAlign: 'right',
         marginVertical: 10,
         marginHorizontal: 10,
-        marginTop: 24,
+        marginTop: 16,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 14,
@@ -322,10 +310,21 @@ const styles = StyleSheet.create({
         color: '#fff',
         flex:1,
         textAlign: 'center',
-        marginVertical: 20,
-        fontStyle: 'normal',
+        marginVertical: 25,
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 25,
+        fontSize: 18,
+        backgroundColor: 'transparent',
+    },
+
+    titleUpNext: {
+        color: '#3e4164',
+        flex:1,
+        textAlign: 'center',
+        marginTop: 10,
+        marginBottom: 30,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-Regular',
+        fontSize: 14,
         backgroundColor: 'transparent',
     },
 

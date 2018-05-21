@@ -5,6 +5,7 @@ import Variables from './Variables';
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
+var Analytics = require('react-native-firebase-analytics');
 
 
 
@@ -101,6 +102,7 @@ class Highlight extends Component{
                     const podcastID = this.state.podcastID;
 
                     if(title != ''){
+
                         const {currentUser} = firebase.auth();
                         firebase.database().ref(`users/${currentUser.uid}/highlights/`).push({title, description, startTime, endTime, podcastID}).then((snap) => {
 
@@ -108,7 +110,23 @@ class Highlight extends Component{
                             key = snap.key;
 
                             ref.update({key});
-                        })
+                        });
+
+                        var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                        ref.once("value", function(snapshot) {
+                            if(snapshot.val().highlights){
+                                ref.update({highlights: snapshot.val().highlights + 1})
+                            }
+                            else{
+                                ref.update({highlights: 1})
+                            }
+                        });
+
+                        const user = currentUser.uid;
+                        Analytics.logEvent('createHighlight', {
+                            'user_id': user
+                        });
+
                     }
 
                     console.warn("Created highlight: " + this.state.highlightName + ": "  + this.state.description + " " + this.state.startTime + " " + this.state.endTime);

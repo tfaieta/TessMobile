@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity, TextInput, ScrollView, Dimensions} from 'react-native';
 import { Spinner } from './common';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser, createUser, usernameChanged } from '../actions';
@@ -8,6 +8,7 @@ import LinearGradient from "react-native-linear-gradient/index.android";
 import DropdownAlert from 'react-native-dropdownalert';
 import firebase from 'firebase';
 
+var {height, width} = Dimensions.get('window');
 
 export let profileName='';
 
@@ -77,7 +78,7 @@ class CreateAccount extends Component {
     renderButton() {
         if (this.props.loading) {
             return(
-            <View style={{paddingTop: 20}} >
+            <View style={{paddingTop: 33.35}} >
                 <Spinner size="large" />
             </View>
             )
@@ -102,12 +103,12 @@ class CreateAccount extends Component {
 
                 <ScrollView   scrollEnabled={false}>
 
-                <View style={{flexDirection: 'row',  paddingVertical:5, marginTop:10, marginBottom: 30   }}>
-                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
+                <View style={{flexDirection: 'row',  paddingVertical: height/133.4, marginTop: height/66.7, marginBottom: height/22.23}}>
+                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: height/26.68}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
-                                textAlign:'left',marginLeft: 10, backgroundColor: 'transparent', fontSize: 30,color:'#fff'
-                            }} name="md-arrow-round-back">
+                                textAlign:'left', marginLeft: width/33.5, backgroundColor: 'transparent', fontSize: width/11.16, color:'#fff'
+                            }} name="ios-arrow-back">
                             </Icon>
                         </TouchableOpacity>
                     </View>
@@ -123,17 +124,17 @@ class CreateAccount extends Component {
 
                 <View style={styles.inputContainer}>
                     <View style={{flexDirection:'row'}}>
-                        <View style={{alignItems:'flex-start', flex:1,}}>
+                        <View style={{alignItems:'flex-start', flex: 1}}>
                             <Icon style={{
                                 textAlign: 'center',
-                                marginTop: 18,
-                                marginLeft: 10,
-                                fontSize: 22,
+                                marginTop: height/37,
+                                marginLeft: width/33.5,
+                                fontSize: width/15.23,
                                 color: 'rgba(300,300,300,0.7)'
                             }} name="md-contact">
                             </Icon>
                         </View>
-                        <View style={{alignItems: 'flex-end', flex:8}}>
+                        <View style={{alignItems: 'flex-end', flex: 8}}>
                         <TextInput
                             style={styles.input}
                             placeholder={'Username'}
@@ -155,17 +156,17 @@ class CreateAccount extends Component {
 
                 <View style={styles.inputContainer}>
                     <View style={{flexDirection:'row'}}>
-                        <View style={{alignItems:'flex-start', flex:1,}}>
+                        <View style={{alignItems:'flex-start', flex: 1}}>
                             <Icon style={{
                                 textAlign: 'center',
-                                marginTop: 18,
-                                marginLeft: 10,
-                                fontSize: 22,
+                                marginTop: height/37,
+                                marginLeft: width/33.5,
+                                fontSize: width/15.23,
                                 color: 'rgba(300,300,300,0.7)'
                             }} name="md-mail">
                             </Icon>
                         </View>
-                        <View style={{alignItems: 'flex-end', flex:8}}>
+                        <View style={{alignItems: 'flex-end', flex: 8}}>
                             <TextInput
                                 ref='FirstInput'
                                 style={styles.input}
@@ -189,17 +190,17 @@ class CreateAccount extends Component {
 
                 <View style={styles.inputContainer}>
                     <View style={{flexDirection:'row'}}>
-                        <View style={{alignItems:'flex-start', flex:1,}}>
+                        <View style={{alignItems:'flex-start', flex: 1}}>
                             <Icon style={{
                                 textAlign: 'center',
-                                marginTop: 18,
-                                marginLeft: 10,
-                                fontSize: 22,
+                                marginTop: height/37,
+                                marginLeft: width/33.5,
+                                fontSize: width/15.23,
                                 color: 'rgba(300,300,300,0.7)'
                             }} name="md-key">
                             </Icon>
                         </View>
-                        <View style={{alignItems: 'flex-end', flex:8}}>
+                        <View style={{alignItems: 'flex-end', flex: 8}}>
                             <TextInput
                                 ref='SecondInput'
                                 style={styles.input}
@@ -246,36 +247,36 @@ class CreateAccount extends Component {
 const styles = {
     errorTextStyle: {
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 16,
+        fontFamily: 'Montserrat-Regular',
+        fontSize: width/21,
         alignSelf: 'center',
         color: 'rgba(300,10,10,1)',
-        marginTop: 5,
+        marginTop: height/133.4,
         backgroundColor: 'transparent'
     },
 
     container: {
         flex: 1,
         backgroundColor: 'rgba(1,170,170,1)',
-        paddingBottom:20,
-        paddingHorizontal: 20
+        paddingBottom: height/33.35,
+        paddingHorizontal: width/16.75
     },
 
     input: {
-        height: 40,
+        height: height/16.67,
         backgroundColor: 'transparent',
-        marginTop:10,
-        marginBottom: 5,
+        marginTop: height/66.7,
+        marginBottom: height/133.4,
         color: 'rgba(300,300,300,0.9)',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 14,
-        paddingHorizontal: 10,
+        fontFamily: 'Montserrat-Regular',
+        fontSize: width/24,
+        paddingHorizontal: width/33.5,
     },
 
     buttonContainer: {
-        paddingVertical: 15,
-        paddingHorizontal: 15,
+        paddingVertical: height/44.46,
+        paddingHorizontal: width/22.23,
         borderWidth: 2,
         borderStyle: 'solid',
         borderRadius: 10,
@@ -290,10 +291,10 @@ const styles = {
     },
 
     formContainer: {
-        paddingTop: 15,
-        paddingBottom: 15,
+        paddingTop: height/44.47,
+        paddingBottom: height/44.47,
         borderBottomWidth: 1,
-        padding: 5,
+        padding: height/133.4,
         backgroundColor: '#fff',
     },
 
@@ -301,27 +302,27 @@ const styles = {
         textAlign: 'center',
         color: '#5555FF',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 18,
-        marginTop: 5,
+        fontFamily: 'Montserrat-Regular',
+        fontSize: width/16.61,
+        marginTop: height/133.4,
     },
 
     inputContainer: {
         backgroundColor:"rgba(300,300,300,0.2)",
-        marginVertical: 5,
-        paddingBottom: 10,
-        paddingHorizontal: 10,
-        borderWidth:0.1,
-        borderRadius:10
+        marginVertical: height/133.4,
+        paddingBottom: height/66.7,
+        paddingHorizontal: width/33.5,
+        borderWidth: 0.1,
+        borderRadius: 10
     },
     header: {
-        marginTop:25,
-        marginLeft: -35,
+        marginTop: height/26.68,
+        marginLeft: -width/9.57,
         color: '#fff',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 18,
+        fontFamily: 'Montserrat-Regular',
+        fontSize: width/18.61,
         backgroundColor: 'transparent',
 
     },

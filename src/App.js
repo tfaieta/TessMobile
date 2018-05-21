@@ -65,6 +65,11 @@ import AddWidget from "./components/AddWidget";
 import Search from "./components/Search";
 import Highlights from "./components/Highlights";
 import Highlight from "./components/Highlight";
+import Tracking from "./components/Tracking";
+import Achievement from "./components/Achievement";
+import PlayerBottom from "./components/PlayerBottom";
+import CatchUp from "./components/CatchUp";
+
 
 
 
@@ -122,16 +127,20 @@ Navigation.registerComponent('Followed', () => FollowedContent, store, Provider)
 Navigation.registerComponent('RecentlyPlayed', () => RecentlyPlayed, store, Provider);
 Navigation.registerComponent('Playlists', () => Playlists, store, Provider);
 Navigation.registerComponent('Highlights', () => Highlights, store, Provider);
+Navigation.registerComponent('CatchUp', () => CatchUp, store, Provider);
 
 Navigation.registerComponent('Account', () => Account, store, Provider);
 Navigation.registerComponent('MyFollowersPage', () => MyFollowersPage, store, Provider);
 Navigation.registerComponent('UserFollowing', () => UserFollowing, store, Provider);
 Navigation.registerComponent('UserFollowers', () => UserFollowers, store, Provider);
+Navigation.registerComponent('Tracking', () => Tracking, store, Provider);
 Navigation.registerComponent('Settings', () => Settings, store, Provider);
+Navigation.registerComponent('Achievement', () => Achievement, store, Provider);
 
 Navigation.registerComponent('UserProfile', () => UserProfile, store, Provider);
 Navigation.registerComponent('UserProfileModal', () => UserProfileModal, store, Provider);
 
+Navigation.registerComponent('PlayerBottom', () => PlayerBottom, store, Provider);
 Navigation.registerComponent('PodcastOptions', () => PodcastOptions, store, Provider);
 Navigation.registerComponent('EditPodcast', () => EditPodcast, store, Provider);
 Navigation.registerComponent('PlayerInfo', () => PlayerInfo, store, Provider);
