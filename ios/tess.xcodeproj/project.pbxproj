@@ -44,7 +44,6 @@
 		EBD71E8384754E3B973F97D0 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A76163A2DFE84DE6BFA35747 /* Octicons.ttf */; };
 		ED1582C8205A099500036844 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED1582A2205A092600036844 /* Montserrat-Regular.ttf */; };
 		ED1582C9205A099A00036844 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED1582C7205A093500036844 /* Montserrat-SemiBold.ttf */; };
-		ED3B0FA5209B9BC300522C88 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ED3B0F7F209B9BC200522C88 /* GoogleService-Info.plist */; };
 		ED5A772C20B1EF6A00E81699 /* GTMSessionFetcher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED5A772B20B1EF6A00E81699 /* GTMSessionFetcher.framework */; };
 		ED5A772D20B1EF6A00E81699 /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED5A76A920B1EDB200E81699 /* libimageCropPicker.a */; };
 		ED5A772E20B1EF6A00E81699 /* libMusicControl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED5A76B620B1EDCC00E81699 /* libMusicControl.a */; };
@@ -422,7 +421,6 @@
 		ED1582A2205A092600036844 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		ED1582C7205A093500036844 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
 		ED299E9220B21D0B00572BDF /* tess.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = tess.entitlements; path = tess/tess.entitlements; sourceTree = "<group>"; };
-		ED3B0F7F209B9BC200522C88 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED5A768820B1ED4C00E81699 /* RNAudio.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNAudio.xcodeproj; path = "../node_modules/react-native-audio/ios/RNAudio.xcodeproj"; sourceTree = "<group>"; };
 		ED5A769620B1ED6A00E81699 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/react-native-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
 		ED5A76A220B1EDB200E81699 /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = imageCropPicker.xcodeproj; path = "../node_modules/react-native-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; };
