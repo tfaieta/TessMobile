@@ -6,6 +6,9 @@ import firebase from 'firebase';
 import ListItemAddtoPlaylist from "./ListItemAddtoPlaylist";
 
 
+
+// list view containing all of your playlists when choosing to add to a playlist
+
 class PlaylistList extends Component{
 
     static navigatorStyle = {

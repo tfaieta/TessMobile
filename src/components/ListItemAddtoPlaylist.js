@@ -10,7 +10,6 @@ import firebase from 'firebase';
 class ListItemAddtoPlaylist extends Component {
 
 
-
     constructor(props) {
         super(props);
         this.state = {
@@ -36,8 +35,6 @@ class ListItemAddtoPlaylist extends Component {
 
 
     }
-
-
 
 
 

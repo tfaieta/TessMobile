@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, ListView, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from 'firebase';
-import Variables from "./Variables";
 import ListItemUsers from "./ListItemUsers";
 var Analytics = require('react-native-firebase-analytics');
 
@@ -22,6 +21,7 @@ class ListItemPlaylist extends Component {
 
         this.state ={
             playlist: dataSource.cloneWithRows(myPlaylist),
+            length: 0
         };
 
         const {title} = this.props.data;
@@ -39,7 +39,7 @@ class ListItemPlaylist extends Component {
         });
 
         setTimeout(() => {
-            this.setState({playlist: dataSource.cloneWithRows(myPlaylist)})
+            this.setState({playlist: dataSource.cloneWithRows(myPlaylist), length: myPlaylist.length})
         }, 1200)
 
 
@@ -60,14 +60,17 @@ class ListItemPlaylist extends Component {
             <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5, paddingBottom: 20}}>
                 <View style={{flexDirection:'row'}}>
                     <View style={{alignSelf:'flex-start'}}>
-                        <Text style={styles.title}>{title}</Text>
+                        <Text style={styles.title}>{title}     <Text style={styles.smallTitle}>{this.state.length} episodes</Text></Text>
                     </View>
 
                     <View style={{alignSelf:'flex-end', flex:1}}>
                         <TouchableOpacity onPress={() => {
-
-
-
+                            const {navigator} = this.props;
+                            navigator.push({
+                                screen: 'PlaylistView',
+                                title: title,
+                                passProps: {title, navigator}
+                            })
                         }}  style={{alignSelf:'flex-end', flexDirection:'row', marginTop: 3}}>
                             <Icon style={{
                                 fontSize: 22,
@@ -105,7 +108,17 @@ const styles = {
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 16,
+        fontSize: 18,
+        marginTop: 20,
+        paddingLeft: 20,
+        backgroundColor: 'transparent',
+    },
+    smallTitle: {
+        color: '#3e4164',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 14,
         marginTop: 20,
         paddingLeft: 20,
         backgroundColor: 'transparent',

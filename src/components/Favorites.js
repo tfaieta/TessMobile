@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { View, StyleSheet, ListView, TouchableOpacity, Text, Alert, ScrollView} from 'react-native';
+import { View, StyleSheet, ListView, Alert, ScrollView} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { connect } from 'react-redux';
 import { podcastFetchFavs } from "../actions/PodcastActions"
 import firebase from 'firebase';
 import Variables from "./Variables";
-import Icon from 'react-native-vector-icons/Ionicons';
 import ListItem from "./ListItem";
 
 

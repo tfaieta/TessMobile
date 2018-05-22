@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ScrollView, TextInput, ListView} from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ScrollView, TextInput, ListView} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Variables from "./Variables";
@@ -9,13 +9,11 @@ import ListItemPlaylist from "./ListItemPlaylist";
 
 
 
-
 // playlist page (on library tab)
 
 class Playlists extends Component{
 
     componentWillMount = () => {
-
 
         Variables.state.playlists = [];
         const {currentUser} = firebase.auth();
@@ -29,9 +27,6 @@ class Playlists extends Component{
             })
 
         })
-
-
-
 
     };
 

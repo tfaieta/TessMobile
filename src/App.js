@@ -70,6 +70,7 @@ import Achievement from "./components/Achievement";
 import PlayerBottom from "./components/PlayerBottom";
 import CatchUp from "./components/CatchUp";
 import PlaylistList from "./components/PlaylistList";
+import PlaylistView from "./components/PlaylistView";
 
 
 
@@ -127,6 +128,7 @@ Navigation.registerComponent('MyContent', () => MyContent, store, Provider);
 Navigation.registerComponent('Followed', () => FollowedContent, store, Provider);
 Navigation.registerComponent('RecentlyPlayed', () => RecentlyPlayed, store, Provider);
 Navigation.registerComponent('Playlists', () => Playlists, store, Provider);
+Navigation.registerComponent('PlaylistView', () => PlaylistView, store, Provider);
 Navigation.registerComponent('Highlights', () => Highlights, store, Provider);
 Navigation.registerComponent('CatchUp', () => CatchUp, store, Provider);
 
