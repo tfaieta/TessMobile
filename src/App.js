@@ -69,6 +69,7 @@ import Tracking from "./components/Tracking";
 import Achievement from "./components/Achievement";
 import PlayerBottom from "./components/PlayerBottom";
 import CatchUp from "./components/CatchUp";
+import PlaylistList from "./components/PlaylistList";
 
 
 
@@ -148,6 +149,7 @@ Navigation.registerComponent('SetPlayerSpeed', () => SetPlayerSpeed, store, Prov
 Navigation.registerComponent('MyQueue', () => MyQueue, store, Provider);
 Navigation.registerComponent('PlayerOptions', () => PlayerOptions, store, Provider);
 Navigation.registerComponent('Highlight', () => Highlight, store, Provider);
+Navigation.registerComponent('PlaylistList', () => PlaylistList, store, Provider);
 
 
 const config = {

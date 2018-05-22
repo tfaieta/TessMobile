@@ -17,6 +17,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Share, {ShareSheet, Button} from 'react-native-share';
 
 var Analytics = require('react-native-firebase-analytics');
+import { Navigation } from 'react-native-navigation';
+
 
 var {height, width} = Dimensions.get('window');
 
@@ -175,7 +177,12 @@ class PlayerOptions extends Component {
 
 
                     <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+                        const id = Variables.state.podcastID;
 
+                        Navigation.showModal({
+                            screen: 'PlaylistList',
+                            passProps: {navigator, id}
+                        })
 
                     }}>
                         <View style={{alignContent: 'center'}}>
@@ -469,6 +476,12 @@ class PlayerOptions extends Component {
 
                             <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
 
+                                const id = Variables.state.podcastID;
+
+                                Navigation.showModal({
+                                    screen: 'PlaylistList',
+                                    passProps: {navigator, id}
+                                })
 
                             }}>
                                 <View style={{alignContent: 'center'}}>
@@ -775,6 +788,12 @@ class PlayerOptions extends Component {
 
                             <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
 
+                                const id = Variables.state.podcastID;
+
+                                Navigation.showModal({
+                                    screen: 'PlaylistList',
+                                    passProps: {navigator, id}
+                                })
 
                             }}>
                                 <View style={{alignContent: 'center'}}>

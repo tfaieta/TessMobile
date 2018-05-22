@@ -14,25 +14,33 @@ var {height, width} = Dimensions.get('window');
 
 class ListItemPlaylist extends Component {
 
-    componentWillMount() {
-
-    }
-
-
-    componentWillUnmount(){
-
-    }
-
-
 
     constructor(state) {
         super(state);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        let myPlaylist = [];
+
         this.state ={
-            playlist: dataSource.cloneWithRows(Variables.state.homeFollowedContent),
+            playlist: dataSource.cloneWithRows(myPlaylist),
         };
 
         const {title} = this.props.data;
+        const {currentUser} = firebase.auth();
+        firebase.database().ref(`users/${currentUser.uid}/playlist/${title}/items`).once("value", function (snapshot) {
+            snapshot.forEach(function (snap) {
+                if(snap.val().id){
+                    firebase.database().ref(`podcasts/${snap.val().id}`).once("value", function (snapAgain) {
+                        if(snapAgain.val()){
+                            myPlaylist.push(snapAgain.val());
+                        }
+                    })
+                }
+            });
+        });
+
+        setTimeout(() => {
+            this.setState({playlist: dataSource.cloneWithRows(myPlaylist)})
+        }, 1200)
 
 
     }
