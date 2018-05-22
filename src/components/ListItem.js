@@ -502,7 +502,7 @@ const styles = {
     container: {
         paddingHorizontal: 0,
         paddingVertical: 10,
-        marginVertical: 0,
+        marginVertical: 1,
         marginHorizontal: 0,
         backgroundColor: '#FFF',
         opacity: 1,

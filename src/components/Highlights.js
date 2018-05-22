@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ScrollView, ListView} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Text, View, StyleSheet, ScrollView, ListView} from 'react-native';
 import PlayerBottom from './PlayerBottom';
-import Variables from "./Variables";
 import firebase from 'firebase';
-import ListItem from "./ListItem";
-
+import ListItemHighlight from "./ListItemHighlight";
 
 
 
@@ -14,15 +11,6 @@ import ListItem from "./ListItem";
 
 
 class Highlights extends Component{
-
-    componentWillMount(){
-
-    }
-
-
-    componentWillUnmount(){
-    }
-
 
     constructor(props){
         super(props);
@@ -44,7 +32,38 @@ class Highlights extends Component{
             topBarShadowRadius: 5,
         });
 
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        let data = [];
+        this.state = {
+            myHighlights:   dataSource.cloneWithRows(data),
+            length: 0,
+
+        };
+
+
+        const {currentUser} = firebase.auth();
+        firebase.database().ref(`users/${currentUser.uid}/highlights`).once("value", function (snapshot) {
+            snapshot.forEach(function (snap) {
+                if(snap.val()){
+                    data.push(snap.val());
+                }
+            });
+        });
+
+        setTimeout(() => {
+            this.setState({myHighlights: dataSource.cloneWithRows(data), length: data.length})
+        }, 1200)
+
     };
+
+
+
+
+
+    renderRow = (data) => {
+        return <ListItemHighlight highlight={data} navigator={this.props.navigator}  />;
+    };
+
 
 
     render() {
@@ -53,8 +72,26 @@ class Highlights extends Component{
                 style={styles.container}>
 
 
-                <PlayerBottom navigator={this.props.navigator}/>
+                <ScrollView>
 
+                    <Text style={styles.title}>{this.state.length} highlights</Text>
+
+                    <ListView
+                        enableEmptySections
+                        dataSource={this.state.myHighlights}
+                        renderRow={this.renderRow}
+                    />
+
+
+                    <View style={{paddingBottom:120}}>
+
+                    </View>
+
+                </ScrollView>
+
+
+
+                <PlayerBottom navigator={this.props.navigator}/>
 
             </View>
 
@@ -68,41 +105,20 @@ class Highlights extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: 'transparent',
+        backgroundColor: '#f5f4f9',
     },
 
     title: {
-        color: '#2A2A30',
-        marginTop:10,
-        marginLeft: 20,
-        flex:1,
-        textAlign: 'left',
-        opacity: 2,
-        fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 20,
-        backgroundColor: 'transparent'
-    },
-
-    contentTitle: {
-        color: 'rgba(1,170,170,1)',
-        fontSize: 25,
-        paddingBottom: 20,
-        marginLeft: 20,
-
-    },
-
-    header: {
-        marginTop:25,
-        marginLeft: -35,
-        color: '#2A2A30',
+        backgroundColor: 'transparent',
+        color: '#506dcf',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
-        backgroundColor: 'transparent',
-
-    }
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 18,
+        marginTop: 80,
+        paddingVertical: 10,
+        marginBottom: 1,
+    },
 
 });
 

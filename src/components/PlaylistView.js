@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
-import { View, StyleSheet, ListView, TouchableOpacity, Text, Alert, ScrollView} from 'react-native';
+import { View, StyleSheet, ListView, Text, ScrollView} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import firebase from 'firebase';
-import Variables from "./Variables";
-import Icon from 'react-native-vector-icons/Ionicons';
 import ListItem from "./ListItem";
-import Tech from "./Categories/Tech";
-
 
 
 
@@ -112,11 +107,11 @@ class PlaylistView extends Component{
 const styles = StyleSheet.create({
     containerMain:{
         flex: 1,
-        backgroundColor: 'transparent',
+        backgroundColor: '#f5f4f9',
     },
 
     title: {
-        color: '#3e4164',
+        color: '#506dcf',
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
