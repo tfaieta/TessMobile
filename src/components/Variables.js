@@ -78,6 +78,9 @@ class Variables extends Component{
         userHighlightsAmount: 0, // number of user highlights
         userLikesAmount: 0,  // number of user likes
         userCommentsAmount: 0, // number of user comments
+        highlight: false, // whether item playing is a highlight or not
+        highlightStart: 0,  // start time for current highlight
+        highlightEnd: 0,  // end time for current highlight
 
 
         // player variables

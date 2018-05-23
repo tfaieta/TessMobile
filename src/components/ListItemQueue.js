@@ -130,6 +130,7 @@ class ListItemQueue extends Component {
         return (
 
             <TouchableOpacity onPress={() =>  {
+                Variables.state.highlight = false;
 
                 Analytics.logEvent('play', {
                     'episodeID': id,

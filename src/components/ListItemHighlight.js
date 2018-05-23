@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Text, View, LayoutAnimation, TouchableOpacity, Image, Dimensions, } from 'react-native';
+import { Text, View, LayoutAnimation, TouchableOpacity, Image, Dimensions, AsyncStorage } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 var Analytics = require('react-native-firebase-analytics');
+import Variables from "./Variables";
 
 var {height, width} = Dimensions.get('window');
 
@@ -24,11 +25,13 @@ class ListItemHighlight extends Component {
             endTime: endTime,
             startTime: startTime,
             totalTime: endTime-startTime,
+            episode: [],
+            podcastTitle: ''
         };
 
         const {podcastID} = this.props.highlight;
         let rss = false;
-        let podcastArtist = '';
+        let episode = [];
 
         firebase.database().ref(`podcasts/${podcastID}`).once("value", function (snapshot) {
 
@@ -36,9 +39,7 @@ class ListItemHighlight extends Component {
                 if(snapshot.val().rss == true){
                     rss = true;
                 }
-                if(snapshot.val().podcastArtist){
-                    podcastArtist = snapshot.val().podcastArtist;
-                }
+                    episode = snapshot.val();
             }
 
         });
@@ -46,24 +47,24 @@ class ListItemHighlight extends Component {
         setTimeout(() => {
 
             let profileName = 'loading';
-            firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").once("value", function (snap) {
+            firebase.database().ref(`/users/${episode.podcastArtist}/username`).orderByChild("username").once("value", function (snap) {
                 if (snap.val()) {
                     profileName = snap.val().username;
                 }
             });
 
             setTimeout(() => {
-                this.setState({username: profileName});
+                this.setState({username: profileName, episode: episode, podcastTitle: episode.podcastTitle});
             }, 300);
 
             setTimeout(() => {
-                this.setState({username: profileName});
+                this.setState({username: profileName, episode: episode, podcastTitle: episode.podcastTitle});
             }, 1000);
 
 
             let profileImage = '';
             if(rss){
-                firebase.database().ref(`users/${podcastArtist}/profileImage`).once("value", function (snapshot) {
+                firebase.database().ref(`users/${episode.podcastArtist}/profileImage`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         profileImage = snapshot.val().profileImage
                     }
@@ -73,7 +74,7 @@ class ListItemHighlight extends Component {
 
             }
             else{
-                const storageRef = firebase.storage().ref(`/users/${podcastArtist}/image-profile-uploaded`);
+                const storageRef = firebase.storage().ref(`/users/${episode.podcastArtist}/image-profile-uploaded`);
                 storageRef.getDownloadURL()
                     .then(function(url) {
                         profileImage = url;
@@ -127,6 +128,27 @@ class ListItemHighlight extends Component {
     }
 
 
+    renderInfo = () => {
+
+        if((this.state.username + ' • ' + this.state.podcastTitle).length > 60){
+            return(
+                (this.state.username + ' • ' + this.state.podcastTitle).slice(0,60) + '...'
+            )
+
+        }
+        if(this.state.username == '' && this.state.podcastTitle == ''){
+            return(
+                ''
+            )
+        }
+        else{
+            return(
+                (this.state.username + ' • ' + this.state.podcastTitle)
+            )
+        }
+
+
+    };
 
     render() {
 
@@ -134,14 +156,130 @@ class ListItemHighlight extends Component {
 
         return (
 
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => {
+
+                const {podcastArtist} = this.state.episode;
+                const {podcastTitle} = this.state.episode;
+                const {title} = this.props.highlight;
+                const {podcastCategory} = this.state.episode;
+                const {id} = this.state.episode;
+                const {description} = this.props.highlight;
+                Variables.state.highlightStart = this.state.startTime;
+                Variables.state.highlightEnd = this.state.endTime;
+                Variables.state.seekTo = 0;
+                Variables.state.currentTime = 0;
+
+
+                if(this.state.episode != []){
+                    if(this.state.episode.rss){
+                        AsyncStorage.setItem("currentPodcast", '');
+                        AsyncStorage.setItem("currentTime", "0");
+
+                        Variables.pause();
+                        Variables.setPodcastFile(this.state.episode.podcastURL);
+                        Variables.state.isPlaying = false;
+                        Variables.state.highlight = true;
+                        Variables.state.rss = true;
+                        Variables.state.podcastURL = this.state.episode.podcastURL;
+                        Variables.state.podcastArtist = podcastArtist;
+                        Variables.state.podcastTitle = title;
+                        Variables.state.podcastID = id;
+                        Variables.state.podcastCategory = podcastCategory;
+                        Variables.state.podcastDescription = description;
+                        Variables.state.favorited = false;
+                        Variables.state.userProfileImage = '';
+                        Variables.play();
+                        Variables.state.isPlaying = true;
+
+
+                        const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
+                        if(storageRef.child('image-profile-uploaded')){
+                            storageRef.getDownloadURL()
+                                .then(function(url) {
+                                    if(url){
+                                        Variables.state.userProfileImage = url;
+                                    }
+                                }).catch(function(error) {
+                                //
+                            });
+                        }
+
+                        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
+                            if(snap.val()){
+                                Variables.state.currentUsername = snap.val().username;
+                            }
+                            else {
+                                Variables.state.currentUsername = podcastArtist;
+                            }
+                        });
+
+
+                    }
+                    else if(id){
+                        AsyncStorage.setItem("currentPodcast", '');
+                        AsyncStorage.setItem("currentTime", "0");
+
+                        firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL().catch(() => {console.warn("file not found")})
+                            .then(function(url) {
+
+                                Variables.pause();
+                                Variables.setPodcastFile(url);
+                                Variables.state.highlight = true;
+                                Variables.state.rss = false;
+                                Variables.state.podcastURL = url;
+                                Variables.state.podcastArtist = podcastArtist;
+                                Variables.state.podcastTitle = title;
+                                Variables.state.podcastID = id;
+                                Variables.state.podcastCategory = podcastCategory;
+                                Variables.state.podcastDescription = description;
+                                Variables.state.favorited = false;
+                                Variables.state.userProfileImage = '';
+                                Variables.play();
+                                Variables.state.isPlaying = true;
+
+                            });
+
+
+                        const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
+                        if(storageRef.child('image-profile-uploaded')){
+                            storageRef.getDownloadURL()
+                                .then(function(url) {
+                                    if(url){
+                                        Variables.state.userProfileImage = url;
+                                    }
+                                }).catch(function(error) {
+                                //
+                            });
+                        }
+
+                        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
+                            if(snap.val()){
+                                Variables.state.currentUsername = (snap.val().username + ' • ' + podcastTitle).slice(0,35) + '...';
+                            }
+                            else {
+                                Variables.state.currentUsername = podcastArtist;
+                            }
+                        });
+
+
+
+                    }
+
+
+                }
+
+
+
+
+
+            }}>
                 <View style={styles.container}>
 
                     {this._renderProfileImage()}
 
                     <View style={styles.leftContainer}>
                         <Text style={styles.title}>{title}</Text>
-                        <Text style={styles.artistTitle}>{this.state.username}</Text>
+                        <Text style={styles.artistTitle}>{this.renderInfo()}</Text>
                     </View>
 
 

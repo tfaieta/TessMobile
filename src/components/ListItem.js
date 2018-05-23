@@ -157,6 +157,7 @@ class ListItem extends Component {
                     const {currentUser} = firebase.auth();
                     const user = currentUser.uid;
                     const {podcast} = this.props;
+                    Variables.state.highlight = false;
 
 
                     Analytics.logEvent('play', {

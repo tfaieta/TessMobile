@@ -143,6 +143,7 @@ class ListItemUsers extends Component {
         const {podcastURL} = this.props.podcast;
         const { podcastArtist } = this.props.podcast;
         const { id } = this.props.podcast;
+        Variables.state.highlight = false;
 
         Analytics.logEvent('play', {
             'episodeID': id,
