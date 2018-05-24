@@ -1325,7 +1325,54 @@ class PlayerBottom extends Component {
 
     renderOpenPlayer(highlight){
 
-        if(highlight){
+        if(Variables.state.podcastTitle == ''){
+            return(
+                <View style = {styles.containerOutsideModal}>
+                    <View
+                        style={styles.containerModal}>
+
+                        <StatusBar
+                            hidden={true}
+                        />
+
+                        <View style = {{flexDirection: 'row'}}>
+
+                            <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex:1, marginVertical: 10, marginHorizontal: 20}}>
+                                <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="ios-arrow-down">
+                                </Icon>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={this.goToMyQueue} style={{alignItems:'flex-end', flex:1, marginVertical: 10, marginHorizontal: 20}}>
+                                <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="md-list-box">
+                                </Icon>
+                            </TouchableOpacity>
+
+                        </View>
+
+
+                        <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom: 10, height: 140, width: 140, borderRadius:4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)',  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
+                            <Icon style={{
+                                textAlign: 'center',
+                                fontSize: height/7.41,
+                                color: 'white',
+                                marginTop: 20,
+                            }} name="ios-sad">
+                            </Icon>
+                        </View>
+
+
+                        <View style={{marginTop: 10, flex:1}}>
+                            <Text style={styles.podcastText}>Queue is Empty</Text>
+                        </View>
+
+
+                    </View>
+                </View>
+
+
+                )
+        }
+        else if(highlight){
             return(
                 <View style = {styles.containerOutsideModal}>
                     <View

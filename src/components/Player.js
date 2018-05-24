@@ -237,13 +237,10 @@ class Player extends Component{
             Variables.state.seekTo = 0;
         }
 
-        if(Variables.state.currentTime >= Variables.state.highlightEnd){
-            this.player.seek(Variables.state.duration);
-            Variables.state.highlight = false;
-            Variables.state.highlightStart = 0;
-            Variables.state.highlightEnd = 0;
-            Variables.state.currentTime = 0;
-            this.player.seek(0);
+        if(Variables.state.highlight){
+            if(Variables.state.currentTime >= Variables.state.highlightEnd){
+                this.onEnd();
+            }
         }
     };
 
@@ -256,6 +253,15 @@ class Player extends Component{
     onEnd(){
         const {currentUser} = firebase.auth();
         const user = currentUser.uid;
+
+        Variables.state.podcastURL = '';
+        Variables.state.podcastTitle = '';
+        Variables.state.podcastDescription = '';
+        Variables.state.podcastCategory = '';
+        Variables.state.highlight = false;
+        Variables.state.highlightStart = 0;
+        Variables.state.highlightEnd = 0;
+
 
         firebase.database().ref(`users/${currentUser.uid}/queue`).limitToFirst(1).once("value", function (snapshot) {
 

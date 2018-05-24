@@ -128,6 +128,61 @@ class ListItemHighlight extends Component {
     }
 
 
+    _renderCurrentTime(currentTime) {
+
+        var num = ((currentTime) % 60).toString();
+        var num2 = ((currentTime) / 60).toString();
+        var minutes = num2.slice(0,1);
+        Number(minutes.slice(0,1));
+
+
+        if (currentTime == -1){
+            return (
+                <Text style={styles.time}> 0:00</Text>
+            )
+        }
+        else if(Number(num2) < 10){
+            var minutes = num2.slice(0,1);
+            Number(minutes.slice(0,1));
+            if(Number(num) < 10){
+                var seconds = num.slice(0,1);
+                Number(seconds.slice(0,1));
+                return (
+                    <Text style={styles.time}> {minutes}:0{seconds}</Text>
+                )
+            }
+            else{
+                var seconds = num.slice(0,2);
+                Number(seconds.slice(0,2));
+                return (
+                    <Text style={styles.time}> {minutes}:{seconds}</Text>
+                );
+            }
+        }
+        else{
+            var minutes = num2.slice(0,2);
+            Number(minutes.slice(0,2));
+            if(Number(num) < 10){
+                var seconds = num.slice(0,1);
+                Number(seconds.slice(0,1));
+                return (
+                    <Text style={styles.time}> {minutes}:0{seconds}</Text>
+                )
+            }
+            else{
+                var seconds = num.slice(0,2);
+                Number(seconds.slice(0,2));
+                return (
+                    <Text style={styles.time}> {minutes}:{seconds}</Text>
+                );
+            }
+        }
+
+
+
+    }
+
+
     renderInfo = () => {
 
         if((this.state.username + ' • ' + this.state.podcastTitle).length > 60){
@@ -187,22 +242,16 @@ class ListItemHighlight extends Component {
                         Variables.state.podcastCategory = podcastCategory;
                         Variables.state.podcastDescription = description;
                         Variables.state.favorited = false;
-                        Variables.state.userProfileImage = '';
                         Variables.play();
                         Variables.state.isPlaying = true;
 
 
-                        const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
-                        if(storageRef.child('image-profile-uploaded')){
-                            storageRef.getDownloadURL()
-                                .then(function(url) {
-                                    if(url){
-                                        Variables.state.userProfileImage = url;
-                                    }
-                                }).catch(function(error) {
-                                //
-                            });
-                        }
+                        Variables.state.userProfileImage = '';
+                        firebase.database().ref(`users/${podcastArtist}/profileImage`).once("value", function (snapshot) {
+                            if(snapshot.val()){
+                                Variables.state.userProfileImage = snapshot.val().profileImage
+                            }
+                        });
 
                         firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
                             if(snap.val()){
@@ -233,14 +282,14 @@ class ListItemHighlight extends Component {
                                 Variables.state.podcastCategory = podcastCategory;
                                 Variables.state.podcastDescription = description;
                                 Variables.state.favorited = false;
-                                Variables.state.userProfileImage = '';
                                 Variables.play();
                                 Variables.state.isPlaying = true;
 
                             });
 
 
-                        const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
+                        Variables.state.userProfileImage = '';
+                        const storageRef = firebase.storage().ref(`/users/${podcastArtist}/image-profile-uploaded`);
                         if(storageRef.child('image-profile-uploaded')){
                             storageRef.getDownloadURL()
                                 .then(function(url) {
@@ -291,7 +340,7 @@ class ListItemHighlight extends Component {
                             fontSize: height/40,
                             color: '#3e4164',
                         }} name="md-time">
-                            <Text style = {styles.time}> {(this.state.totalTime/60).toFixed(0)}:{(this.state.totalTime%60).toFixed(0)}</Text>
+                            {this._renderCurrentTime(this.state.totalTime)}
                         </Icon>
                     </View>
 
