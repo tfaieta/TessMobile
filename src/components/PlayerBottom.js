@@ -154,62 +154,8 @@ class PlayerBottom extends Component {
 
 
     _renderSlider(currentTime){
-        if(this.state.highlight){
-            return(
-                <View style={{marginTop: 5, marginBottom: -25}}>
-                    <View style={{flexDirection: 'row',}}>
-                    {this._renderCurrentTimeHighlight(this.state.highlightTime[0])}
-                        {this._renderCurrentTimeHighlightEnd(this.state.highlightTime[1])}
-                    </View>
-                <MultiSlider
-                    values={[this.state.highlightTime[0], this.state.highlightTime[1]]}
-                    snapped
-                    min={0}
-                    max={Math.abs(Variables.state.duration)}
-                    step={1}
-                    sliderLength={width-40}
-                    selectedStyle={{
-                        backgroundColor: '#506dcf',
-                    }}
-                    unselectedStyle={{
-                        backgroundColor: '#E7E7F0',
-                    }}
-                    containerStyle={{
-                        width:  width-40,
-                        alignSelf: 'center'
-                    }}
-                    trackStyle={{
-                        height: 4,
-                        backgroundColor: '#506dcf',
-                        width:  width-40,
-                    }}
-                    touchDimensions={{
-                        height: 15,
-                        width: 15,
-                        borderRadius: 10,
-                        color: '#3e4164',
-                    }}
-                    onValuesChange={(values) => {
-                        Variables.state.paused = false;
-                        clearTimeout(this.timeout);
-                        if(this.state.highlightTime[0] != values[0]){
-                            Variables.state.seekTo = values[0];
-                        }
-                        else{
-                            Variables.state.seekTo = values[1]-10;
-                            this.timeout = setTimeout(() => {Variables.state.paused = true}, 10000)
-                        }
-                        this.setState({
-                            highlightTime: [values[0],values[1]]
-                        });
+        if(Variables.state.highlight){
 
-                    }}
-
-                />
-                </View>
-            )
-        }
-        else{
             return(
                 <Slider
                     minimumTrackTintColor='#5757FF'
@@ -218,14 +164,88 @@ class PlayerBottom extends Component {
                     animateTransitions = {true}
                     style={styles.sliderContainer}
                     step={0}
-                    minimumValue={0}
-                    maximumValue= { Math.abs( Variables.state.duration)}
+                    minimumValue={Variables.state.highlightStart}
+                    maximumValue= { Math.abs( Variables.state.highlightEnd)}
                     value={ currentTime }
                     onValueChange={currentTime => Variables.state.seekTo = currentTime}
                 />
-
             )
 
+        }
+        else{
+            if(this.state.highlight){
+                return(
+                    <View style={{marginTop: 5, marginBottom: -25}}>
+                        <View style={{flexDirection: 'row',}}>
+                            {this._renderCurrentTimeHighlight(this.state.highlightTime[0])}
+                            {this._renderCurrentTimeHighlightEnd(this.state.highlightTime[1])}
+                        </View>
+                        <MultiSlider
+                            values={[this.state.highlightTime[0], this.state.highlightTime[1]]}
+                            snapped
+                            min={0}
+                            max={Math.abs(Variables.state.duration)}
+                            step={1}
+                            sliderLength={width-40}
+                            selectedStyle={{
+                                backgroundColor: '#506dcf',
+                            }}
+                            unselectedStyle={{
+                                backgroundColor: '#E7E7F0',
+                            }}
+                            containerStyle={{
+                                width:  width-40,
+                                alignSelf: 'center'
+                            }}
+                            trackStyle={{
+                                height: 4,
+                                backgroundColor: '#506dcf',
+                                width:  width-40,
+                            }}
+                            touchDimensions={{
+                                height: 15,
+                                width: 15,
+                                borderRadius: 10,
+                                color: '#3e4164',
+                            }}
+                            onValuesChange={(values) => {
+                                Variables.state.paused = false;
+                                clearTimeout(this.timeout);
+                                if(this.state.highlightTime[0] != values[0]){
+                                    Variables.state.seekTo = values[0];
+                                }
+                                else{
+                                    Variables.state.seekTo = values[1]-10;
+                                    this.timeout = setTimeout(() => {Variables.state.paused = true}, 10000)
+                                }
+                                this.setState({
+                                    highlightTime: [values[0],values[1]]
+                                });
+
+                            }}
+
+                        />
+                    </View>
+                )
+            }
+            else{
+                return(
+                    <Slider
+                        minimumTrackTintColor='#5757FF'
+                        maximumTrackTintColor='#E7E7F0'
+                        thumbStyle={{width: 25, height: 25, borderRadius: 12.5, backgroundColor: '#506dcf', borderColor: '#506dcf', borderWidth: 2}}
+                        animateTransitions = {true}
+                        style={styles.sliderContainer}
+                        step={0}
+                        minimumValue={0}
+                        maximumValue= { Math.abs( Variables.state.duration)}
+                        value={ currentTime }
+                        onValueChange={currentTime => Variables.state.seekTo = currentTime}
+                    />
+
+                )
+
+            }
         }
 
     }
@@ -694,8 +714,17 @@ class PlayerBottom extends Component {
 
     _renderEndTime() {
 
-        var num = ((Variables.state.duration - Variables.state.currentTime) % 60).toString();
-        var num2 = ((Variables.state.duration - Variables.state.currentTime) / 60).toString();
+
+        if(Variables.state.highlight){
+            var num = ((Variables.state.duration - Variables.state.currentTime - (Variables.state.duration-Variables.state.highlightEnd)) % 60).toString();
+            var num2 = ((Variables.state.duration - Variables.state.currentTime - (Variables.state.duration-Variables.state.highlightEnd)) / 60).toString();
+
+        }
+        else{
+            var num = ((Variables.state.duration - Variables.state.currentTime) % 60).toString();
+            var num2 = ((Variables.state.duration - Variables.state.currentTime) / 60).toString();
+
+        }
         var minutes = num2.slice(0,1);
         Number(minutes.slice(0,1));
 
@@ -1335,7 +1364,8 @@ class PlayerBottom extends Component {
                         </View>
 
 
-                        <ScrollView style={{flex: 1, borderRadius: 10, borderColor: '#c6c5c980', borderWidth: 2}}>
+                        <ScrollView style={{flex: 1, borderTopColor: '#c6c5c960', height: 80, marginTop: 10, paddingVertical: 15, borderTopWidth: 2, borderBottomColor: '#c6c5c980', borderBottomWidth: 2}}>
+                            <Text style = {styles.podcastTextDescriptionTitle}>Highlight Description:</Text>
                             <Text style = {styles.podcastTextDescription}>{Variables.state.podcastDescription}</Text>
                         </ScrollView>
 
@@ -1345,7 +1375,7 @@ class PlayerBottom extends Component {
 
                             <View style={styles.leftContainerP}>
                                 <TouchableOpacity onPress={this.scrubBackward}>
-                                    <Icon style={{flex:1, marginTop: 20, textAlign:'center', fontSize: height/25, color:'#2A2A30' }} name="ios-rewind">
+                                    <Icon style={{flex:1, marginTop: 15, textAlign:'center', fontSize: height/25, color:'#2A2A30' }} name="ios-rewind">
                                     </Icon>
                                 </TouchableOpacity>
                             </View>
@@ -1358,7 +1388,7 @@ class PlayerBottom extends Component {
 
                             <View style={styles.rightContainerP}>
                                 <TouchableOpacity onPress={this.scrubForward}>
-                                    <Icon style={{flex:1, marginTop: 20, textAlign:'center', fontSize: height/25,color:'#2A2A30' }} name="ios-fastforward">
+                                    <Icon style={{flex:1, marginTop: 15, textAlign:'center', fontSize: height/25,color:'#2A2A30' }} name="ios-fastforward">
                                     </Icon>
                                 </TouchableOpacity>
                             </View>
@@ -1369,7 +1399,7 @@ class PlayerBottom extends Component {
                         <View style={styles.centerContainerPlayer}>
 
                             <View style={styles.leftContainer}>
-                                {this._renderCurrentTime(Variables.state.currentTime)}
+                                {this._renderCurrentTime(Variables.state.currentTime - Variables.state.highlightStart)}
                             </View>
 
                             <View style={styles.rightContainer}>
@@ -1774,6 +1804,16 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         textAlign: 'left',
         fontFamily: 'Montserrat-Regular',
+    },
+    podcastTextDescriptionTitle:{
+        color: '#3e4164',
+        fontSize: height/45,
+        marginTop: 5,
+        marginHorizontal: 10,
+        flexDirection: 'row',
+        backgroundColor: 'transparent',
+        textAlign: 'left',
+        fontFamily: 'Montserrat-SemiBold',
     },
 
     seeMore:{

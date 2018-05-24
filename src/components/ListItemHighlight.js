@@ -166,8 +166,8 @@ class ListItemHighlight extends Component {
                 const {description} = this.props.highlight;
                 Variables.state.highlightStart = this.state.startTime;
                 Variables.state.highlightEnd = this.state.endTime;
-                Variables.state.seekTo = 0;
-                Variables.state.currentTime = 0;
+                Variables.state.seekTo = this.state.startTime;
+                Variables.state.currentTime = this.state.startTime;
 
 
                 if(this.state.episode != []){
