@@ -118,20 +118,6 @@ class PlayerOptions extends Component {
 
                         <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
 
-                        <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
-
-                            this.onOpen();
-
-                        }}>
-                            <View style={{alignContent: 'center'}}>
-                                <Icon style={styles.iconStyle} name="ios-share-outline" />
-                            </View>
-
-                            <View style={{alignContent: 'center'}}>
-                                <Text style={styles.textStyle}>Share</Text>
-                            </View>
-                        </TouchableOpacity>
-
 
                         <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
 

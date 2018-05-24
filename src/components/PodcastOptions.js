@@ -102,7 +102,7 @@ class PodcastOptions extends Component {
         let shareOptionsHighlight = {
             title: podcastTitle,
             message: podcastTitle,
-            url: `tess://highlight/${key}`,
+            url: `tess://highlight/${currentUser.uid}~${key}`,
             subject: "Share Link" //  for email
         };
 
