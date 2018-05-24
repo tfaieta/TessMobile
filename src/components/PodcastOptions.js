@@ -94,16 +94,16 @@ class PodcastOptions extends Component {
 
         let shareOptions = {
             title: podcastTitle,
-            message: podcastTitle,
+            message: podcastTitle + " - " + profileName,
             url: `tess://listen/${id}`,
-            subject: "Share Link" //  for email
+            subject: podcastTitle + " - " + profileName  //  for email
         };
 
         let shareOptionsHighlight = {
             title: podcastTitle,
-            message: podcastTitle,
+            message: podcastTitle + ": " + podcastDescription + " - highlight from " + profileName,
             url: `tess://highlight/${currentUser.uid}~${key}`,
-            subject: "Share Link" //  for email
+            subject: podcastTitle //  for email
         };
 
         let shareImageBase64 = {

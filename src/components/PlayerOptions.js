@@ -94,9 +94,9 @@ class PlayerOptions extends Component {
 
         let shareOptions = {
             title: Variables.state.podcastTitle,
-            message: Variables.state.podcastTitle,
+            message: Variables.state.podcastTitle + ' - ' + Variables.state.currentUsername,
             url: `tess://listen/${Variables.state.podcastID}`,
-            subject: "Share Link" //  for email
+            subject: Variables.state.podcastTitle + ' - ' + Variables.state.currentUsername //  for email
         };
 
         let shareImageBase64 = {
