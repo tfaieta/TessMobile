@@ -18,7 +18,7 @@ class ListItemFollowed extends Component {
 
             firebase.database().ref(`users/${podcastArtist}/profileImage`).once("value", function (snapshot) {
                 if(snapshot.val()){
-                    profileImage = snapshot.val().profileImage
+                    profileImage = snapshot.val().profileImage;
                     rss = true;
                 }
                 else{
@@ -31,7 +31,7 @@ class ListItemFollowed extends Component {
                     });
                 }
             });
-            this.timeout = setTimeout(() => {this.setState({profileImage: profileImage, rss: rss})},1200);
+            this.timeout = setTimeout(() => {this.setState({profileImage: profileImage, rss: rss})},1400);
             this.timeout2 = setTimeout(() => {this.setState({profileImage: profileImage, rss: rss})},3400);
 
     }
@@ -54,7 +54,7 @@ class ListItemFollowed extends Component {
 
         const podcastArtist = this.props.podcast;
 
-        let profileName = 'loading';
+        let profileName = '';
         firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").once("value", function (snap) {
             if (snap.val()) {
                 profileName = snap.val().username;
@@ -64,7 +64,7 @@ class ListItemFollowed extends Component {
 
         setTimeout(() =>{
             this.setState({profileName: profileName})
-        },250);
+        },1400);
 
 
     }
@@ -126,14 +126,14 @@ class ListItemFollowed extends Component {
                     animationType: 'slide-up'
                 });
             }}>
-                <View style={styles.container2}>
+                <View style={styles.container}>
 
 
                     {this._renderProfileImage()}
 
 
                     <View style={styles.middleContainer}>
-                        <Text style={styles.title2}>{this.state.profileName}</Text>
+                        <Text style={styles.title}>{this.state.profileName}</Text>
                     </View>
 
 
@@ -147,34 +147,10 @@ class ListItemFollowed extends Component {
 }
 
 const styles = {
-    title: {
-        color: '#3e4164',
-        marginTop: 0,
-        flex:1,
-        textAlign: 'center',
-        paddingLeft: 0,
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 20,
-        backgroundColor: 'transparent'
-    },
-    artistTitle: {
-        color: '#828393',
-        marginTop: 0,
-        flex:1,
-        textAlign: 'center',
-        paddingLeft: 2,
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 15,
-        backgroundColor: 'transparent'
-    },
     container: {
         paddingHorizontal: 0,
-        paddingVertical: 0,
-        marginVertical: 0,
+        paddingVertical: 10,
+        marginVertical: 1,
         marginHorizontal: 0,
         backgroundColor: '#FFF',
         opacity: 1,
@@ -184,13 +160,7 @@ const styles = {
         borderStyle: 'solid',
         flexDirection: 'row',
     },
-    container2: {
-        marginVertical: 5,
-        backgroundColor: 'transparent',
-        opacity: 1,
-        flexDirection: 'row'
-    },
-    title2: {
+    title: {
         color: '#3e4164',
         flex:1,
         textAlign: 'center',
@@ -201,22 +171,6 @@ const styles = {
         marginLeft: 20,
         fontSize: 14,
         backgroundColor: 'transparent'
-    },
-    centerContainer: {
-        flexDirection: 'row'
-    },
-    leftContainer: {
-        flex: 1,
-        paddingLeft: 2,
-        justifyContent: 'center',
-        alignItems:'flex-start',
-    },
-    rightContainer: {
-        flex: 1,
-        paddingRight: 2,
-        justifyContent: 'center',
-        alignItems: 'flex-end',
-
     },
     middleContainer: {
         flex: 1,
