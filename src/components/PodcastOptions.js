@@ -69,6 +69,7 @@ class PodcastOptions extends Component {
         const podcastTitle = rowData.podcastTitle;
         const podcastDescription = rowData.podcastDescription;
         const podcastCategory = rowData.podcastCategory;
+        const key = rowData.key;
         const rss = rowData.rss;
 
         let podTitle = rowData.podcastTitle;
@@ -98,6 +99,13 @@ class PodcastOptions extends Component {
             subject: "Share Link" //  for email
         };
 
+        let shareOptionsHighlight = {
+            title: podcastTitle,
+            message: podcastTitle,
+            url: `tess://highlight/${key}`,
+            subject: "Share Link" //  for email
+        };
+
         let shareImageBase64 = {
             title: podcastTitle,
             message: podcastTitle,
@@ -106,168 +114,196 @@ class PodcastOptions extends Component {
         };
 
 
+        if(rowData.highlight){
 
-        if(rowData.podcastArtist == currentUser.uid){
-            return(
-                <View>
+                return(
                     <View>
-                        <Text style={styles.textTitle}>{podTitle}</Text>
-                        <Text style={styles.textArtist}>by {profileName}</Text>
-                    </View>
-
-                    <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
-
-
-                    <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
-
-                        this.onOpen();
-
-                    }}>
-                        <View style={{alignContent: 'center'}}>
-                            <Icon style={styles.iconStyle} name="ios-share-outline" />
+                        <View>
+                            <Text style={styles.textTitle}>{podTitle}</Text>
+                            <Text style={styles.textArtist}>{profileName}</Text>
                         </View>
 
-                        <View style={{alignContent: 'center'}}>
-                            <Text style={styles.textStyle}>Share</Text>
-                        </View>
-                    </TouchableOpacity>
+                        <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
 
 
+                        <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
 
-                    <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+                            this.onOpen();
 
-                        firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
-                            snap.forEach(function (data) {
-                                if(data.val().id == id){
-                                    firebase.database().ref(`users/${currentUser.uid}/queue/${data.key}`).remove()
-                                }
-                            });
-                            firebase.database().ref(`users/${currentUser.uid}/queue/`).push({id});
-                        });
+                        }}>
+                            <View style={{alignContent: 'center'}}>
+                                <Icon style={styles.iconStyle} name="ios-share-outline" />
+                            </View>
 
-                        navigator.dismissLightBox();
-
-                    }}>
-                        <View style={{alignContent: 'center'}}>
-                            <Icon style={styles.iconStyle} name="ios-add-circle-outline" />
-                        </View>
-
-                        <View style={{alignContent: 'center'}}>
-                            <Text style={styles.textStyle}>Add to Queue</Text>
-                        </View>
-                    </TouchableOpacity>
+                            <View style={{alignContent: 'center'}}>
+                                <Text style={styles.textStyle}>Share</Text>
+                            </View>
+                        </TouchableOpacity>
 
 
-                    <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}}  onPress = {() => {
-                        this.props.navigator.showModal({
-                            screen: 'MyQueue',
-                        });
-                    }}>
-                        <View style={{alignContent: 'center'}}>
-                            <Icon style={styles.iconStyle} name="ios-list-box-outline" />
-                        </View>
-                        <View style = {{alignContent: 'center'}}>
-                             <Text style={styles.textStyle}>Go to Queue</Text>
-                        </View>
-                    </TouchableOpacity>
+                        <TouchableOpacity  style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+                            Alert.alert(
+                                'Are you sure you want to delete?',
+                                '',
+                                [
+                                    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                                    {text: 'Yes', onPress: () => {
 
-
-                    <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
-
-                        Navigation.showModal({
-                            screen: 'PlaylistList',
-                            passProps: {navigator, id}
-                        })
-
-                    }}>
-                        <View style={{alignContent: 'center'}}>
-                            <Icon style={styles.iconStyle} name="ios-add-circle-outline" />
-                        </View>
-
-                        <View style={{alignContent: 'center'}}>
-                            <Text style={styles.textStyle}>Add to Playlist</Text>
-                        </View>
-                    </TouchableOpacity>
-
-
-                    <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}}  onPress={() => {
-                        navigator.showModal({
-                            screen: 'EditPodcast',
-                            passProps: {rowData, navigator},
-                        })
-
-                    }}>
-                        <View style={{alignContent: 'center'}}>
-                            <Icon style={styles.iconStyle} name="ios-create-outline" />
-                        </View>
-                        <View style = {{alignContent: 'center'}}>
-                            <Text style={styles.textStyle}>Edit</Text>
-                        </View>
-                    </TouchableOpacity>
-
-
-
-
-
-                    <TouchableOpacity  style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
-                        Alert.alert(
-                            'Are you sure you want to delete?',
-                            '',
-                            [
-                                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                                {text: 'Yes', onPress: () => {
-
-                                    if(rowData.id){
-                                        firebase.storage().ref(`/users/${rowData.podcastArtist}/${rowData.id}`).delete();
-                                        firebase.database().ref(`/podcasts/${rowData.id}`).remove();
-                                        firebase.database().ref(`/users/${rowData.podcastArtist}/podcasts/${rowData.id}`).remove();
+                                        firebase.database().ref(`users/${currentUser.uid}/highlights/${key}`).remove();
                                         navigator.dismissLightBox();
+
                                     }
-                                    else{
-                                        firebase.storage().ref(`/users/${rowData.podcastArtist}/${rowData.podcastTitle}`).delete();
-                                        firebase.database().ref(`/podcasts`).on("value", function (snapshot) {
-                                            snapshot.forEach(function (data) {
-                                                if(data.val().podcastTitle == rowData.podcastTitle && data.val().podcastArtist == rowData.podcastArtist){
-                                                    data.ref.remove()
+                                    },
+                                ],
+                                { cancelable: false }
+                            )
+                        }}>
+                            <View style={{alignContent: 'center'}}>
+                                <Icon style={styles.iconStyle} name="ios-trash-outline" />
+                            </View>
+                            <View style = {{alignContent: 'center'}}>
+                                <Text style={styles.textStyle}>Delete</Text>
+                            </View>
+                        </TouchableOpacity>
+
+
+
+                        <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+                            navigator.dismissLightBox();
+                        }}>
+                            <View style={{alignContent: 'center'}}>
+                                <Icon style={styles.iconStyle} name="ios-close" />
+                            </View>
+                            <View style = {{alignContent: 'center'}}>
+                                <Text style={styles.textStyle}>Cancel</Text>
+                            </View>
+                        </TouchableOpacity>
+
+
+
+                        <ShareSheet visible={this.state.visible} onCancel={this.onCancel.bind(this)}>
+                            <Button iconSrc={{ uri: TWITTER_ICON }}
+                                    onPress={()=>{
+                                        this.onCancel();
+                                        setTimeout(() => {
+                                            var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                            ref.once("value", function(snapshot) {
+                                                if(snapshot.val().shares){
+                                                    ref.update({shares: snapshot.val().shares + 1})
                                                 }
-                                            })
-                                        });
-                                        navigator.dismissLightBox();
-                                    }
-
-                                }
-                                },
-                            ],
-                            { cancelable: false }
-                        )
-                    }}>
-                        <View style={{alignContent: 'center'}}>
-                            <Icon style={styles.iconStyle} name="ios-trash-outline" />
-                        </View>
-                        <View style = {{alignContent: 'center'}}>
-                            <Text style={styles.textStyle}>Delete</Text>
-                        </View>
-                    </TouchableOpacity>
-
-
-
-
-
-                    <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
-                        navigator.dismissLightBox();
-                    }}>
-                        <View style={{alignContent: 'center'}}>
-                            <Icon style={styles.iconStyle} name="ios-close" />
-                        </View>
-                        <View style = {{alignContent: 'center'}}>
-                            <Text style={styles.textStyle}>Cancel</Text>
-                        </View>
-                    </TouchableOpacity>
-
-
-
-                    <ShareSheet visible={this.state.visible} onCancel={this.onCancel.bind(this)}>
-                        <Button iconSrc={{ uri: TWITTER_ICON }}
+                                                else{
+                                                    ref.update({shares: 1})
+                                                }
+                                            });
+                                            const {currentUser} = firebase.auth();
+                                            const user = currentUser.uid;
+                                            Analytics.logEvent('shareTwitter', {
+                                                'episodeID': id,
+                                                'user_id': user
+                                            });
+                                            Share.shareSingle(Object.assign(shareOptionsHighlight, {
+                                                "social": "twitter"
+                                            }));
+                                        },300);
+                                    }}>Twitter</Button>
+                            <Button iconSrc={{ uri: FACEBOOK_ICON }}
+                                    onPress={()=>{
+                                        this.onCancel();
+                                        setTimeout(() => {
+                                            var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                            ref.once("value", function(snapshot) {
+                                                if(snapshot.val().shares){
+                                                    ref.update({shares: snapshot.val().shares + 1})
+                                                }
+                                                else{
+                                                    ref.update({shares: 1})
+                                                }
+                                            });
+                                            const {currentUser} = firebase.auth();
+                                            const user = currentUser.uid;
+                                            Analytics.logEvent('shareFacebook', {
+                                                'episodeID': id,
+                                                'user_id': user
+                                            });
+                                            Share.shareSingle(Object.assign(shareOptionsHighlight, {
+                                                "social": "facebook"
+                                            }));
+                                        },300);
+                                    }}>Facebook</Button>
+                            <Button iconSrc={{ uri: WHATSAPP_ICON }}
+                                    onPress={()=>{
+                                        this.onCancel();
+                                        setTimeout(() => {
+                                            var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                            ref.once("value", function(snapshot) {
+                                                if(snapshot.val().shares){
+                                                    ref.update({shares: snapshot.val().shares + 1})
+                                                }
+                                                else{
+                                                    ref.update({shares: 1})
+                                                }
+                                            });
+                                            const {currentUser} = firebase.auth();
+                                            const user = currentUser.uid;
+                                            Analytics.logEvent('shareWhatsapp', {
+                                                'episodeID': id,
+                                                'user_id': user
+                                            });
+                                            Share.shareSingle(Object.assign(shareOptionsHighlight, {
+                                                "social": "whatsapp"
+                                            }));
+                                        },300);
+                                    }}>Whatsapp</Button>
+                            <Button iconSrc={{ uri: GOOGLE_PLUS_ICON }}
+                                    onPress={()=>{
+                                        this.onCancel();
+                                        setTimeout(() => {
+                                            var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                            ref.once("value", function(snapshot) {
+                                                if(snapshot.val().shares){
+                                                    ref.update({shares: snapshot.val().shares + 1})
+                                                }
+                                                else{
+                                                    ref.update({shares: 1})
+                                                }
+                                            });
+                                            const {currentUser} = firebase.auth();
+                                            const user = currentUser.uid;
+                                            Analytics.logEvent('shareGooglePlus', {
+                                                'episodeID': id,
+                                                'user_id': user
+                                            });
+                                            Share.shareSingle(Object.assign(shareOptionsHighlight, {
+                                                "social": "googleplus"
+                                            }));
+                                        },300);
+                                    }}>Google +</Button>
+                            <Button iconSrc={{ uri: EMAIL_ICON }}
+                                    onPress={()=>{
+                                        this.onCancel();
+                                        setTimeout(() => {
+                                            var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                            ref.once("value", function(snapshot) {
+                                                if(snapshot.val().shares){
+                                                    ref.update({shares: snapshot.val().shares + 1})
+                                                }
+                                                else{
+                                                    ref.update({shares: 1})
+                                                }
+                                            });
+                                            const {currentUser} = firebase.auth();
+                                            const user = currentUser.uid;
+                                            Analytics.logEvent('shareEmail', {
+                                                'episodeID': id,
+                                                'user_id': user
+                                            });
+                                            Share.shareSingle(Object.assign(shareOptionsHighlight, {
+                                                "social": "email"
+                                            }));
+                                        },300);
+                                    }}>Email</Button>
+                            <Button
+                                iconSrc={{ uri: CLIPBOARD_ICON }}
                                 onPress={()=>{
                                     this.onCancel();
                                     setTimeout(() => {
@@ -282,735 +318,212 @@ class PodcastOptions extends Component {
                                         });
                                         const {currentUser} = firebase.auth();
                                         const user = currentUser.uid;
-                                        Analytics.logEvent('shareTwitter', {
+                                        Analytics.logEvent('shareCopyLink', {
                                             'episodeID': id,
                                             'user_id': user
                                         });
-                                        Share.shareSingle(Object.assign(shareOptions, {
-                                            "social": "twitter"
-                                        }));
-                                    },300);
-                                }}>Twitter</Button>
-                        <Button iconSrc={{ uri: FACEBOOK_ICON }}
-                                onPress={()=>{
-                                    this.onCancel();
-                                    setTimeout(() => {
-                                        var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
-                                        ref.once("value", function(snapshot) {
-                                            if(snapshot.val().shares){
-                                                ref.update({shares: snapshot.val().shares + 1})
+                                        if(typeof shareOptionsHighlight["url"] !== undefined) {
+                                            Clipboard.setString(shareOptionsHighlight["url"]);
+                                            if (Platform.OS === "android") {
+                                                ToastAndroid.show('Link Copied', ToastAndroid.SHORT);
+                                            } else if (Platform.OS === "ios") {
+                                                AlertIOS.alert('Link Copied');
                                             }
-                                            else{
-                                                ref.update({shares: 1})
-                                            }
-                                        });
-                                        const {currentUser} = firebase.auth();
-                                        const user = currentUser.uid;
-                                        Analytics.logEvent('shareFacebook', {
-                                            'episodeID': id,
-                                            'user_id': user
-                                        });
-                                        Share.shareSingle(Object.assign(shareOptions, {
-                                            "social": "facebook"
-                                        }));
-                                    },300);
-                                }}>Facebook</Button>
-                        <Button iconSrc={{ uri: WHATSAPP_ICON }}
-                                onPress={()=>{
-                                    this.onCancel();
-                                    setTimeout(() => {
-                                        var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
-                                        ref.once("value", function(snapshot) {
-                                            if(snapshot.val().shares){
-                                                ref.update({shares: snapshot.val().shares + 1})
-                                            }
-                                            else{
-                                                ref.update({shares: 1})
-                                            }
-                                        });
-                                        const {currentUser} = firebase.auth();
-                                        const user = currentUser.uid;
-                                        Analytics.logEvent('shareWhatsapp', {
-                                            'episodeID': id,
-                                            'user_id': user
-                                        });
-                                        Share.shareSingle(Object.assign(shareOptions, {
-                                            "social": "whatsapp"
-                                        }));
-                                    },300);
-                                }}>Whatsapp</Button>
-                        <Button iconSrc={{ uri: GOOGLE_PLUS_ICON }}
-                                onPress={()=>{
-                                    this.onCancel();
-                                    setTimeout(() => {
-                                        var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
-                                        ref.once("value", function(snapshot) {
-                                            if(snapshot.val().shares){
-                                                ref.update({shares: snapshot.val().shares + 1})
-                                            }
-                                            else{
-                                                ref.update({shares: 1})
-                                            }
-                                        });
-                                        const {currentUser} = firebase.auth();
-                                        const user = currentUser.uid;
-                                        Analytics.logEvent('shareGooglePlus', {
-                                            'episodeID': id,
-                                            'user_id': user
-                                        });
-                                        Share.shareSingle(Object.assign(shareOptions, {
-                                            "social": "googleplus"
-                                        }));
-                                    },300);
-                                }}>Google +</Button>
-                        <Button iconSrc={{ uri: EMAIL_ICON }}
-                                onPress={()=>{
-                                    this.onCancel();
-                                    setTimeout(() => {
-                                        var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
-                                        ref.once("value", function(snapshot) {
-                                            if(snapshot.val().shares){
-                                                ref.update({shares: snapshot.val().shares + 1})
-                                            }
-                                            else{
-                                                ref.update({shares: 1})
-                                            }
-                                        });
-                                        const {currentUser} = firebase.auth();
-                                        const user = currentUser.uid;
-                                        Analytics.logEvent('shareEmail', {
-                                            'episodeID': id,
-                                            'user_id': user
-                                        });
-                                        Share.shareSingle(Object.assign(shareOptions, {
-                                            "social": "email"
-                                        }));
-                                    },300);
-                                }}>Email</Button>
-                        <Button
-                            iconSrc={{ uri: CLIPBOARD_ICON }}
-                            onPress={()=>{
-                                this.onCancel();
-                                setTimeout(() => {
-                                    var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
-                                    ref.once("value", function(snapshot) {
-                                        if(snapshot.val().shares){
-                                            ref.update({shares: snapshot.val().shares + 1})
                                         }
-                                        else{
-                                            ref.update({shares: 1})
-                                        }
-                                    });
-                                    const {currentUser} = firebase.auth();
-                                    const user = currentUser.uid;
-                                    Analytics.logEvent('shareCopyLink', {
-                                        'episodeID': id,
-                                        'user_id': user
-                                    });
-                                    if(typeof shareOptions["url"] !== undefined) {
-                                        Clipboard.setString(shareOptions["url"]);
-                                        if (Platform.OS === "android") {
-                                            ToastAndroid.show('Link Copied', ToastAndroid.SHORT);
-                                        } else if (Platform.OS === "ios") {
-                                            AlertIOS.alert('Link Copied');
-                                        }
-                                    }
-                                },300);
-                            }}>Copy Link</Button>
-                        <Button iconSrc={{ uri: MORE_ICON }}
-                                onPress={()=>{
-                                    this.onCancel();
-                                    setTimeout(() => {
-                                        var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
-                                        ref.once("value", function(snapshot) {
-                                            if(snapshot.val().shares){
-                                                ref.update({shares: snapshot.val().shares + 1})
-                                            }
-                                            else{
-                                                ref.update({shares: 1})
-                                            }
-                                        });
-                                        const {currentUser} = firebase.auth();
-                                        const user = currentUser.uid;
-                                        Analytics.logEvent('shareMore', {
-                                            'episodeID': id,
-                                            'user_id': user
-                                        });
-                                        Share.open(shareOptions)
                                     },300);
-                                }}>More</Button>
-                    </ShareSheet>
+                                }}>Copy Link</Button>
+                            <Button iconSrc={{ uri: MORE_ICON }}
+                                    onPress={()=>{
+                                        this.onCancel();
+                                        setTimeout(() => {
+                                            var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                            ref.once("value", function(snapshot) {
+                                                if(snapshot.val().shares){
+                                                    ref.update({shares: snapshot.val().shares + 1})
+                                                }
+                                                else{
+                                                    ref.update({shares: 1})
+                                                }
+                                            });
+                                            const {currentUser} = firebase.auth();
+                                            const user = currentUser.uid;
+                                            Analytics.logEvent('shareMore', {
+                                                'episodeID': id,
+                                                'user_id': user
+                                            });
+                                            Share.open(shareOptionsHighlight)
+                                        },300);
+                                    }}>More</Button>
+                        </ShareSheet>
 
 
-                </View>
-            )
+                    </View>
+                )
+
         }
         else{
-            if(id){
-                if(this.state.favorite){
 
-                    return(
+            if(rowData.podcastArtist == currentUser.uid){
+                return(
+                    <View>
                         <View>
-                            <View>
-                                <Text style={styles.textTitle}>{podTitle}</Text>
-                                <Text style={styles.textArtist}>{profileName}</Text>
-                            </View>
-
-                            <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
-
-
-
-                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
-
-                                this.onOpen();
-
-                            }}>
-                                <View style={{alignContent: 'center'}}>
-                                    <Icon style={styles.iconStyle} name="ios-share-outline" />
-                                </View>
-
-                                <View style={{alignContent: 'center'}}>
-                                    <Text style={styles.textStyle}>Share</Text>
-                                </View>
-                            </TouchableOpacity>
-
-
-
-                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}}  onPress = {() => {
-
-                                firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
-                                    snap.forEach(function (data) {
-                                        if(data.val().id == id){
-                                            firebase.database().ref(`users/${currentUser.uid}/queue/${data.key}`).remove()
-                                        }
-                                    });
-                                    firebase.database().ref(`users/${currentUser.uid}/queue/`).push({id});
-                                });
-
-                                navigator.dismissLightBox();
-
-                            }}>
-                                <View style={{alignContent: 'center'}}>
-                                    <Icon style={styles.iconStyle} name="ios-add-circle-outline" />
-                                </View>
-
-                                <View style={{alignContent: 'center'}}>
-                                    <Text style={styles.textStyle}>Add to Queue</Text>
-                                </View>
-                            </TouchableOpacity>
-
-
-                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}}  onPress = {() => {
-                                this.props.navigator.showModal({
-                                    screen: 'MyQueue',
-                                });
-                            }}>
-                                <View style={{alignContent: 'center'}}>
-                                    <Icon style={styles.iconStyle} name="ios-list-box-outline" />
-                                </View>
-                                <View style = {{alignContent: 'center'}}>
-                                    <Text style={styles.textStyle}>Go to Queue</Text>
-                                </View>
-                            </TouchableOpacity>
-
-
-                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
-
-                                Navigation.showModal({
-                                    screen: 'PlaylistList',
-                                    passProps: {navigator, id}
-                                })
-
-                            }}>
-                                <View style={{alignContent: 'center'}}>
-                                    <Icon style={styles.iconStyle} name="ios-add-circle-outline" />
-                                </View>
-
-                                <View style={{alignContent: 'center'}}>
-                                    <Text style={styles.textStyle}>Add to Playlist</Text>
-                                </View>
-                            </TouchableOpacity>
-
-
-                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}}  onPress={() => {
-
-                                firebase.database().ref(`users/${currentUser.uid}/favorites/${id}`).remove();
-                                this.setState({favorite: false})
-
-                            }}>
-                                <View style={{alignContent: 'center'}}>
-                                    <Icon style={styles.iconStyle} name="ios-heart" />
-                                </View>
-                                <View style = {{alignContent: 'center'}}>
-                                    <Text style={styles.textStyle}>Remove from Favorites</Text>
-                                </View>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
-                                Variables.state.browsingArtist = rowData.podcastArtist;
-                                if(rss){
-                                    Variables.state.rss = true;
-                                }
-                                else{
-                                    Variables.state.rss = false;
-                                }
-                                navigator.showModal({
-                                    screen: 'UserProfile',
-                                    passProps: {rowData, navigator},
-                                })
-                            }}>
-                                <View style={{alignContent: 'center'}}>
-                                    <Icon style={styles.iconStyle} name="ios-contact-outline" />
-                                </View>
-                                <View style = {{alignContent: 'center'}}>
-                                    <Text style={styles.textStyle}>Go to Profile</Text>
-                                </View>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
-                                navigator.dismissLightBox();
-                            }}>
-                                <View style={{alignContent: 'center'}}>
-                                    <Icon style={styles.iconStyle} name="ios-close" />
-                                </View>
-                                <View style = {{alignContent: 'center'}}>
-                                    <Text style={styles.textStyle}>Cancel</Text>
-                                </View>
-                            </TouchableOpacity>
-
-                            <ShareSheet visible={this.state.visible} onCancel={this.onCancel.bind(this)}>
-                                <Button iconSrc={{ uri: TWITTER_ICON }}
-                                        onPress={()=>{
-                                            this.onCancel();
-                                            setTimeout(() => {
-                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
-                                                ref.once("value", function(snapshot) {
-                                                    if(snapshot.val().shares){
-                                                        ref.update({shares: snapshot.val().shares + 1})
-                                                    }
-                                                    else{
-                                                        ref.update({shares: 1})
-                                                    }
-                                                });
-                                                const {currentUser} = firebase.auth();
-                                                const user = currentUser.uid;
-                                                Analytics.logEvent('shareTwitter', {
-                                                    'episodeID': id,
-                                                    'user_id': user
-                                                });
-                                                Share.shareSingle(Object.assign(shareOptions, {
-                                                    "social": "twitter"
-                                                }));
-                                            },300);
-                                        }}>Twitter</Button>
-                                <Button iconSrc={{ uri: FACEBOOK_ICON }}
-                                        onPress={()=>{
-                                            this.onCancel();
-                                            setTimeout(() => {
-                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
-                                                ref.once("value", function(snapshot) {
-                                                    if(snapshot.val().shares){
-                                                        ref.update({shares: snapshot.val().shares + 1})
-                                                    }
-                                                    else{
-                                                        ref.update({shares: 1})
-                                                    }
-                                                });
-                                                const {currentUser} = firebase.auth();
-                                                const user = currentUser.uid;
-                                                Analytics.logEvent('shareFacebook', {
-                                                    'episodeID': id,
-                                                    'user_id': user
-                                                });
-                                                Share.shareSingle(Object.assign(shareOptions, {
-                                                    "social": "facebook"
-                                                }));
-                                            },300);
-                                        }}>Facebook</Button>
-                                <Button iconSrc={{ uri: WHATSAPP_ICON }}
-                                        onPress={()=>{
-                                            this.onCancel();
-                                            setTimeout(() => {
-                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
-                                                ref.once("value", function(snapshot) {
-                                                    if(snapshot.val().shares){
-                                                        ref.update({shares: snapshot.val().shares + 1})
-                                                    }
-                                                    else{
-                                                        ref.update({shares: 1})
-                                                    }
-                                                });
-                                                const {currentUser} = firebase.auth();
-                                                const user = currentUser.uid;
-                                                Analytics.logEvent('shareWhatsapp', {
-                                                    'episodeID': id,
-                                                    'user_id': user
-                                                });
-                                                Share.shareSingle(Object.assign(shareOptions, {
-                                                    "social": "whatsapp"
-                                                }));
-                                            },300);
-                                        }}>Whatsapp</Button>
-                                <Button iconSrc={{ uri: GOOGLE_PLUS_ICON }}
-                                        onPress={()=>{
-                                            this.onCancel();
-                                            setTimeout(() => {
-                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
-                                                ref.once("value", function(snapshot) {
-                                                    if(snapshot.val().shares){
-                                                        ref.update({shares: snapshot.val().shares + 1})
-                                                    }
-                                                    else{
-                                                        ref.update({shares: 1})
-                                                    }
-                                                });
-                                                const {currentUser} = firebase.auth();
-                                                const user = currentUser.uid;
-                                                Analytics.logEvent('shareGooglePlus', {
-                                                    'episodeID': id,
-                                                    'user_id': user
-                                                });
-                                                Share.shareSingle(Object.assign(shareOptions, {
-                                                    "social": "googleplus"
-                                                }));
-                                            },300);
-                                        }}>Google +</Button>
-                                <Button iconSrc={{ uri: EMAIL_ICON }}
-                                        onPress={()=>{
-                                            this.onCancel();
-                                            setTimeout(() => {
-                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
-                                                ref.once("value", function(snapshot) {
-                                                    if(snapshot.val().shares){
-                                                        ref.update({shares: snapshot.val().shares + 1})
-                                                    }
-                                                    else{
-                                                        ref.update({shares: 1})
-                                                    }
-                                                });
-                                                const {currentUser} = firebase.auth();
-                                                const user = currentUser.uid;
-                                                Analytics.logEvent('shareEmail', {
-                                                    'episodeID': id,
-                                                    'user_id': user
-                                                });
-                                                Share.shareSingle(Object.assign(shareOptions, {
-                                                    "social": "email"
-                                                }));
-                                            },300);
-                                        }}>Email</Button>
-                                <Button
-                                    iconSrc={{ uri: CLIPBOARD_ICON }}
-                                    onPress={()=>{
-                                        this.onCancel();
-                                        setTimeout(() => {
-                                            var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
-                                            ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
-                                                }
-                                            });
-                                            const {currentUser} = firebase.auth();
-                                            const user = currentUser.uid;
-                                            Analytics.logEvent('shareCopyLink', {
-                                                'episodeID': id,
-                                                'user_id': user
-                                            });
-                                            if(typeof shareOptions["url"] !== undefined) {
-                                                Clipboard.setString(shareOptions["url"]);
-                                                if (Platform.OS === "android") {
-                                                    ToastAndroid.show('Link Copied', ToastAndroid.SHORT);
-                                                } else if (Platform.OS === "ios") {
-                                                    AlertIOS.alert('Link Copied');
-                                                }
-                                            }
-                                        },300);
-                                    }}>Copy Link</Button>
-                                <Button iconSrc={{ uri: MORE_ICON }}
-                                        onPress={()=>{
-                                            this.onCancel();
-                                            setTimeout(() => {
-                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
-                                                ref.once("value", function(snapshot) {
-                                                    if(snapshot.val().shares){
-                                                        ref.update({shares: snapshot.val().shares + 1})
-                                                    }
-                                                    else{
-                                                        ref.update({shares: 1})
-                                                    }
-                                                });
-                                                const {currentUser} = firebase.auth();
-                                                const user = currentUser.uid;
-                                                Analytics.logEvent('shareMore', {
-                                                    'episodeID': id,
-                                                    'user_id': user
-                                                });
-                                                Share.open(shareOptions)
-                                            },300);
-                                        }}>More</Button>
-                            </ShareSheet>
-
+                            <Text style={styles.textTitle}>{podTitle}</Text>
+                            <Text style={styles.textArtist}>by {profileName}</Text>
                         </View>
-                    )
 
-                }
+                        <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
 
-                else{
 
-                    return(
-                        <View>
-                            <View>
-                                <Text style={styles.textTitle}>{podTitle}</Text>
-                                <Text style={styles.textArtist}>{profileName}</Text>
+                        <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+
+                            this.onOpen();
+
+                        }}>
+                            <View style={{alignContent: 'center'}}>
+                                <Icon style={styles.iconStyle} name="ios-share-outline" />
                             </View>
 
-                            <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
-
-
-                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
-
-                                this.onOpen();
-
-                            }}>
-                                <View style={{alignContent: 'center'}}>
-                                    <Icon style={styles.iconStyle} name="ios-share-outline" />
-                                </View>
-
-                                <View style={{alignContent: 'center'}}>
-                                    <Text style={styles.textStyle}>Share</Text>
-                                </View>
-                            </TouchableOpacity>
+                            <View style={{alignContent: 'center'}}>
+                                <Text style={styles.textStyle}>Share</Text>
+                            </View>
+                        </TouchableOpacity>
 
 
 
-                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+                        <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
 
-                                firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
-                                    snap.forEach(function (data) {
-                                        if(data.val().id == id){
-                                            firebase.database().ref(`users/${currentUser.uid}/queue/${data.key}`).remove()
-                                        }
-                                    });
-                                    firebase.database().ref(`users/${currentUser.uid}/queue/`).push({id});
+                            firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
+                                snap.forEach(function (data) {
+                                    if(data.val().id == id){
+                                        firebase.database().ref(`users/${currentUser.uid}/queue/${data.key}`).remove()
+                                    }
                                 });
+                                firebase.database().ref(`users/${currentUser.uid}/queue/`).push({id});
+                            });
 
-                                navigator.dismissLightBox();
+                            navigator.dismissLightBox();
 
-                            }}>
-                                <View style={{alignContent: 'center'}}>
-                                    <Icon style={styles.iconStyle} name="ios-add-circle-outline" />
-                                </View>
-                                <View style = {{alignContent: 'center'}}>
+                        }}>
+                            <View style={{alignContent: 'center'}}>
+                                <Icon style={styles.iconStyle} name="ios-add-circle-outline" />
+                            </View>
+
+                            <View style={{alignContent: 'center'}}>
                                 <Text style={styles.textStyle}>Add to Queue</Text>
-                                </View>
-                            </TouchableOpacity>
+                            </View>
+                        </TouchableOpacity>
 
 
-                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
-                                this.props.navigator.showModal({
-                                    screen: 'MyQueue',
-                                });
-                            }}>
-                                <View style={{alignContent: 'center'}}>
-                                    <Icon style={styles.iconStyle} name="ios-list-box-outline" />
-                                </View>
-                                <View style = {{alignContent: 'center'}}>
-                                     <Text style={styles.textStyle}>Go to Queue</Text>
-                                </View>
-                            </TouchableOpacity>
+                        <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}}  onPress = {() => {
+                            this.props.navigator.showModal({
+                                screen: 'MyQueue',
+                            });
+                        }}>
+                            <View style={{alignContent: 'center'}}>
+                                <Icon style={styles.iconStyle} name="ios-list-box-outline" />
+                            </View>
+                            <View style = {{alignContent: 'center'}}>
+                                <Text style={styles.textStyle}>Go to Queue</Text>
+                            </View>
+                        </TouchableOpacity>
 
 
-                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+                        <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
 
-                                Navigation.showModal({
-                                    screen: 'PlaylistList',
-                                    passProps: {navigator, id}
-                                })
+                            Navigation.showModal({
+                                screen: 'PlaylistList',
+                                passProps: {navigator, id}
+                            })
 
-                            }}>
-                                <View style={{alignContent: 'center'}}>
-                                    <Icon style={styles.iconStyle} name="ios-add-circle-outline" />
-                                </View>
+                        }}>
+                            <View style={{alignContent: 'center'}}>
+                                <Icon style={styles.iconStyle} name="ios-add-circle-outline" />
+                            </View>
 
-                                <View style={{alignContent: 'center'}}>
-                                    <Text style={styles.textStyle}>Add to Playlist</Text>
-                                </View>
-                            </TouchableOpacity>
+                            <View style={{alignContent: 'center'}}>
+                                <Text style={styles.textStyle}>Add to Playlist</Text>
+                            </View>
+                        </TouchableOpacity>
+
+
+                        <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}}  onPress={() => {
+                            navigator.showModal({
+                                screen: 'EditPodcast',
+                                passProps: {rowData, navigator},
+                            })
+
+                        }}>
+                            <View style={{alignContent: 'center'}}>
+                                <Icon style={styles.iconStyle} name="ios-create-outline" />
+                            </View>
+                            <View style = {{alignContent: 'center'}}>
+                                <Text style={styles.textStyle}>Edit</Text>
+                            </View>
+                        </TouchableOpacity>
 
 
 
-                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
 
-                                firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(id).update({id});
-                                this.setState({favorite: true})
 
-                            }}>
-                                <View style={{alignContent: 'center'}}>
-                                    <Icon style={styles.iconStyle} name="ios-heart-outline" />
-                                </View>
-                                <View style = {{alignContent: 'center'}}>
-                                    <Text style={styles.textStyle}>Add to Favorites</Text>
-                                </View>
-                            </TouchableOpacity>
+                        <TouchableOpacity  style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+                            Alert.alert(
+                                'Are you sure you want to delete?',
+                                '',
+                                [
+                                    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                                    {text: 'Yes', onPress: () => {
 
-                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
-                                Variables.state.browsingArtist = rowData.podcastArtist;
-                                if(rss){
-                                    Variables.state.rss = true;
-                                }
-                                else{
-                                    Variables.state.rss = false;
-                                }
-                                navigator.showModal({
-                                    screen: 'UserProfile',
-                                    passProps: {rowData, navigator},
-                                })
-                            }}>
-                                <View style={{alignContent: 'center'}}>
-                                    <Icon style={styles.iconStyle} name="ios-contact-outline" />
-                                </View>
-                                <View style = {{alignContent: 'center'}}>
-                                <Text style={styles.textStyle}>Go to Profile</Text>
-                                </View>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
-                                navigator.dismissLightBox();
-                            }}>
-                                <View style={{alignContent: 'center'}}>
-                                    <Icon style={styles.iconStyle} name="ios-close" />
-                                </View>
-                                <View style= {{alignContent: 'center'}}>
-                                    <Text style={styles.textStyle}>Cancel</Text>
-                                </View>
-                            </TouchableOpacity>
-
-                            <ShareSheet visible={this.state.visible} onCancel={this.onCancel.bind(this)}>
-                                <Button iconSrc={{ uri: TWITTER_ICON }}
-                                        onPress={()=>{
-                                            this.onCancel();
-                                            setTimeout(() => {
-                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
-                                                ref.once("value", function(snapshot) {
-                                                    if(snapshot.val().shares){
-                                                        ref.update({shares: snapshot.val().shares + 1})
+                                        if(rowData.id){
+                                            firebase.storage().ref(`/users/${rowData.podcastArtist}/${rowData.id}`).delete();
+                                            firebase.database().ref(`/podcasts/${rowData.id}`).remove();
+                                            firebase.database().ref(`/users/${rowData.podcastArtist}/podcasts/${rowData.id}`).remove();
+                                            navigator.dismissLightBox();
+                                        }
+                                        else{
+                                            firebase.storage().ref(`/users/${rowData.podcastArtist}/${rowData.podcastTitle}`).delete();
+                                            firebase.database().ref(`/podcasts`).on("value", function (snapshot) {
+                                                snapshot.forEach(function (data) {
+                                                    if(data.val().podcastTitle == rowData.podcastTitle && data.val().podcastArtist == rowData.podcastArtist){
+                                                        data.ref.remove()
                                                     }
-                                                    else{
-                                                        ref.update({shares: 1})
-                                                    }
-                                                });
-                                                const {currentUser} = firebase.auth();
-                                                const user = currentUser.uid;
-                                                Analytics.logEvent('shareTwitter', {
-                                                    'episodeID': id,
-                                                    'user_id': user
-                                                });
-                                                Share.shareSingle(Object.assign(shareOptions, {
-                                                    "social": "twitter"
-                                                }));
-                                            },300);
-                                        }}>Twitter</Button>
-                                <Button iconSrc={{ uri: FACEBOOK_ICON }}
-                                        onPress={()=>{
-                                            this.onCancel();
-                                            setTimeout(() => {
-                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
-                                                ref.once("value", function(snapshot) {
-                                                    if(snapshot.val().shares){
-                                                        ref.update({shares: snapshot.val().shares + 1})
-                                                    }
-                                                    else{
-                                                        ref.update({shares: 1})
-                                                    }
-                                                });
-                                                const {currentUser} = firebase.auth();
-                                                const user = currentUser.uid;
-                                                Analytics.logEvent('shareFacebook', {
-                                                    'episodeID': id,
-                                                    'user_id': user
-                                                });
-                                                Share.shareSingle(Object.assign(shareOptions, {
-                                                    "social": "facebook"
-                                                }));
-                                            },300);
-                                        }}>Facebook</Button>
-                                <Button iconSrc={{ uri: WHATSAPP_ICON }}
-                                        onPress={()=>{
-                                            this.onCancel();
-                                            setTimeout(() => {
-                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
-                                                ref.once("value", function(snapshot) {
-                                                    if(snapshot.val().shares){
-                                                        ref.update({shares: snapshot.val().shares + 1})
-                                                    }
-                                                    else{
-                                                        ref.update({shares: 1})
-                                                    }
-                                                });
-                                                const {currentUser} = firebase.auth();
-                                                const user = currentUser.uid;
-                                                Analytics.logEvent('shareWhatsapp', {
-                                                    'episodeID': id,
-                                                    'user_id': user
-                                                });
-                                                Share.shareSingle(Object.assign(shareOptions, {
-                                                    "social": "whatsapp"
-                                                }));
-                                            },300);
-                                        }}>Whatsapp</Button>
-                                <Button iconSrc={{ uri: GOOGLE_PLUS_ICON }}
-                                        onPress={()=>{
-                                            this.onCancel();
-                                            setTimeout(() => {
-                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
-                                                ref.once("value", function(snapshot) {
-                                                    if(snapshot.val().shares){
-                                                        ref.update({shares: snapshot.val().shares + 1})
-                                                    }
-                                                    else{
-                                                        ref.update({shares: 1})
-                                                    }
-                                                });
-                                                const {currentUser} = firebase.auth();
-                                                const user = currentUser.uid;
-                                                Analytics.logEvent('shareGooglePlus', {
-                                                    'episodeID': id,
-                                                    'user_id': user
-                                                });
-                                                Share.shareSingle(Object.assign(shareOptions, {
-                                                    "social": "googleplus"
-                                                }));
-                                            },300);
-                                        }}>Google +</Button>
-                                <Button iconSrc={{ uri: EMAIL_ICON }}
-                                        onPress={()=>{
-                                            this.onCancel();
-                                            setTimeout(() => {
-                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
-                                                ref.once("value", function(snapshot) {
-                                                    if(snapshot.val().shares){
-                                                        ref.update({shares: snapshot.val().shares + 1})
-                                                    }
-                                                    else{
-                                                        ref.update({shares: 1})
-                                                    }
-                                                });
-                                                const {currentUser} = firebase.auth();
-                                                const user = currentUser.uid;
-                                                Analytics.logEvent('shareEmail', {
-                                                    'episodeID': id,
-                                                    'user_id': user
-                                                });
-                                                Share.shareSingle(Object.assign(shareOptions, {
-                                                    "social": "email"
-                                                }));
-                                            },300);
-                                        }}>Email</Button>
-                                <Button
-                                    iconSrc={{ uri: CLIPBOARD_ICON }}
+                                                })
+                                            });
+                                            navigator.dismissLightBox();
+                                        }
+
+                                    }
+                                    },
+                                ],
+                                { cancelable: false }
+                            )
+                        }}>
+                            <View style={{alignContent: 'center'}}>
+                                <Icon style={styles.iconStyle} name="ios-trash-outline" />
+                            </View>
+                            <View style = {{alignContent: 'center'}}>
+                                <Text style={styles.textStyle}>Delete</Text>
+                            </View>
+                        </TouchableOpacity>
+
+
+
+
+
+                        <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+                            navigator.dismissLightBox();
+                        }}>
+                            <View style={{alignContent: 'center'}}>
+                                <Icon style={styles.iconStyle} name="ios-close" />
+                            </View>
+                            <View style = {{alignContent: 'center'}}>
+                                <Text style={styles.textStyle}>Cancel</Text>
+                            </View>
+                        </TouchableOpacity>
+
+
+
+                        <ShareSheet visible={this.state.visible} onCancel={this.onCancel.bind(this)}>
+                            <Button iconSrc={{ uri: TWITTER_ICON }}
                                     onPress={()=>{
                                         this.onCancel();
                                         setTimeout(() => {
@@ -1025,190 +538,937 @@ class PodcastOptions extends Component {
                                             });
                                             const {currentUser} = firebase.auth();
                                             const user = currentUser.uid;
-                                            Analytics.logEvent('shareCopyLink', {
+                                            Analytics.logEvent('shareTwitter', {
                                                 'episodeID': id,
                                                 'user_id': user
                                             });
-                                            if(typeof shareOptions["url"] !== undefined) {
-                                                Clipboard.setString(shareOptions["url"]);
-                                                if (Platform.OS === "android") {
-                                                    ToastAndroid.show('Link Copied', ToastAndroid.SHORT);
-                                                } else if (Platform.OS === "ios") {
-                                                    AlertIOS.alert('Link Copied');
-                                                }
-                                            }
+                                            Share.shareSingle(Object.assign(shareOptions, {
+                                                "social": "twitter"
+                                            }));
                                         },300);
-                                    }}>Copy Link</Button>
-                                <Button iconSrc={{ uri: MORE_ICON }}
-                                        onPress={()=>{
-                                            this.onCancel();
-                                            setTimeout(() => {
-                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
-                                                ref.once("value", function(snapshot) {
-                                                    if(snapshot.val().shares){
-                                                        ref.update({shares: snapshot.val().shares + 1})
-                                                    }
-                                                    else{
-                                                        ref.update({shares: 1})
-                                                    }
-                                                });
-                                                const {currentUser} = firebase.auth();
-                                                const user = currentUser.uid;
-                                                Analytics.logEvent('shareMore', {
-                                                    'episodeID': id,
-                                                    'user_id': user
-                                                });
-                                                Share.open(shareOptions)
-                                            },300);
-                                        }}>More</Button>
-                            </ShareSheet>
+                                    }}>Twitter</Button>
+                            <Button iconSrc={{ uri: FACEBOOK_ICON }}
+                                    onPress={()=>{
+                                        this.onCancel();
+                                        setTimeout(() => {
+                                            var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                            ref.once("value", function(snapshot) {
+                                                if(snapshot.val().shares){
+                                                    ref.update({shares: snapshot.val().shares + 1})
+                                                }
+                                                else{
+                                                    ref.update({shares: 1})
+                                                }
+                                            });
+                                            const {currentUser} = firebase.auth();
+                                            const user = currentUser.uid;
+                                            Analytics.logEvent('shareFacebook', {
+                                                'episodeID': id,
+                                                'user_id': user
+                                            });
+                                            Share.shareSingle(Object.assign(shareOptions, {
+                                                "social": "facebook"
+                                            }));
+                                        },300);
+                                    }}>Facebook</Button>
+                            <Button iconSrc={{ uri: WHATSAPP_ICON }}
+                                    onPress={()=>{
+                                        this.onCancel();
+                                        setTimeout(() => {
+                                            var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                            ref.once("value", function(snapshot) {
+                                                if(snapshot.val().shares){
+                                                    ref.update({shares: snapshot.val().shares + 1})
+                                                }
+                                                else{
+                                                    ref.update({shares: 1})
+                                                }
+                                            });
+                                            const {currentUser} = firebase.auth();
+                                            const user = currentUser.uid;
+                                            Analytics.logEvent('shareWhatsapp', {
+                                                'episodeID': id,
+                                                'user_id': user
+                                            });
+                                            Share.shareSingle(Object.assign(shareOptions, {
+                                                "social": "whatsapp"
+                                            }));
+                                        },300);
+                                    }}>Whatsapp</Button>
+                            <Button iconSrc={{ uri: GOOGLE_PLUS_ICON }}
+                                    onPress={()=>{
+                                        this.onCancel();
+                                        setTimeout(() => {
+                                            var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                            ref.once("value", function(snapshot) {
+                                                if(snapshot.val().shares){
+                                                    ref.update({shares: snapshot.val().shares + 1})
+                                                }
+                                                else{
+                                                    ref.update({shares: 1})
+                                                }
+                                            });
+                                            const {currentUser} = firebase.auth();
+                                            const user = currentUser.uid;
+                                            Analytics.logEvent('shareGooglePlus', {
+                                                'episodeID': id,
+                                                'user_id': user
+                                            });
+                                            Share.shareSingle(Object.assign(shareOptions, {
+                                                "social": "googleplus"
+                                            }));
+                                        },300);
+                                    }}>Google +</Button>
+                            <Button iconSrc={{ uri: EMAIL_ICON }}
+                                    onPress={()=>{
+                                        this.onCancel();
+                                        setTimeout(() => {
+                                            var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                            ref.once("value", function(snapshot) {
+                                                if(snapshot.val().shares){
+                                                    ref.update({shares: snapshot.val().shares + 1})
+                                                }
+                                                else{
+                                                    ref.update({shares: 1})
+                                                }
+                                            });
+                                            const {currentUser} = firebase.auth();
+                                            const user = currentUser.uid;
+                                            Analytics.logEvent('shareEmail', {
+                                                'episodeID': id,
+                                                'user_id': user
+                                            });
+                                            Share.shareSingle(Object.assign(shareOptions, {
+                                                "social": "email"
+                                            }));
+                                        },300);
+                                    }}>Email</Button>
+                            <Button
+                                iconSrc={{ uri: CLIPBOARD_ICON }}
+                                onPress={()=>{
+                                    this.onCancel();
+                                    setTimeout(() => {
+                                        var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                        ref.once("value", function(snapshot) {
+                                            if(snapshot.val().shares){
+                                                ref.update({shares: snapshot.val().shares + 1})
+                                            }
+                                            else{
+                                                ref.update({shares: 1})
+                                            }
+                                        });
+                                        const {currentUser} = firebase.auth();
+                                        const user = currentUser.uid;
+                                        Analytics.logEvent('shareCopyLink', {
+                                            'episodeID': id,
+                                            'user_id': user
+                                        });
+                                        if(typeof shareOptions["url"] !== undefined) {
+                                            Clipboard.setString(shareOptions["url"]);
+                                            if (Platform.OS === "android") {
+                                                ToastAndroid.show('Link Copied', ToastAndroid.SHORT);
+                                            } else if (Platform.OS === "ios") {
+                                                AlertIOS.alert('Link Copied');
+                                            }
+                                        }
+                                    },300);
+                                }}>Copy Link</Button>
+                            <Button iconSrc={{ uri: MORE_ICON }}
+                                    onPress={()=>{
+                                        this.onCancel();
+                                        setTimeout(() => {
+                                            var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                            ref.once("value", function(snapshot) {
+                                                if(snapshot.val().shares){
+                                                    ref.update({shares: snapshot.val().shares + 1})
+                                                }
+                                                else{
+                                                    ref.update({shares: 1})
+                                                }
+                                            });
+                                            const {currentUser} = firebase.auth();
+                                            const user = currentUser.uid;
+                                            Analytics.logEvent('shareMore', {
+                                                'episodeID': id,
+                                                'user_id': user
+                                            });
+                                            Share.open(shareOptions)
+                                        },300);
+                                    }}>More</Button>
+                        </ShareSheet>
 
-                        </View>
-                    )
 
-                }
-
+                    </View>
+                )
             }
             else{
-                if(this.state.favorite){
+                if(id){
+                    if(this.state.favorite){
 
-                    return(
-                        <View>
+                        return(
                             <View>
-                                <Text style={styles.textTitle}>{podTitle}</Text>
-                                <Text style={styles.textArtist}>{profileName}</Text>
+                                <View>
+                                    <Text style={styles.textTitle}>{podTitle}</Text>
+                                    <Text style={styles.textArtist}>{profileName}</Text>
+                                </View>
+
+                                <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
+
+
+
+                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+
+                                    this.onOpen();
+
+                                }}>
+                                    <View style={{alignContent: 'center'}}>
+                                        <Icon style={styles.iconStyle} name="ios-share-outline" />
+                                    </View>
+
+                                    <View style={{alignContent: 'center'}}>
+                                        <Text style={styles.textStyle}>Share</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+
+
+                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}}  onPress = {() => {
+
+                                    firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
+                                        snap.forEach(function (data) {
+                                            if(data.val().id == id){
+                                                firebase.database().ref(`users/${currentUser.uid}/queue/${data.key}`).remove()
+                                            }
+                                        });
+                                        firebase.database().ref(`users/${currentUser.uid}/queue/`).push({id});
+                                    });
+
+                                    navigator.dismissLightBox();
+
+                                }}>
+                                    <View style={{alignContent: 'center'}}>
+                                        <Icon style={styles.iconStyle} name="ios-add-circle-outline" />
+                                    </View>
+
+                                    <View style={{alignContent: 'center'}}>
+                                        <Text style={styles.textStyle}>Add to Queue</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+
+                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}}  onPress = {() => {
+                                    this.props.navigator.showModal({
+                                        screen: 'MyQueue',
+                                    });
+                                }}>
+                                    <View style={{alignContent: 'center'}}>
+                                        <Icon style={styles.iconStyle} name="ios-list-box-outline" />
+                                    </View>
+                                    <View style = {{alignContent: 'center'}}>
+                                        <Text style={styles.textStyle}>Go to Queue</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+
+                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+
+                                    Navigation.showModal({
+                                        screen: 'PlaylistList',
+                                        passProps: {navigator, id}
+                                    })
+
+                                }}>
+                                    <View style={{alignContent: 'center'}}>
+                                        <Icon style={styles.iconStyle} name="ios-add-circle-outline" />
+                                    </View>
+
+                                    <View style={{alignContent: 'center'}}>
+                                        <Text style={styles.textStyle}>Add to Playlist</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+
+                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}}  onPress={() => {
+
+                                    firebase.database().ref(`users/${currentUser.uid}/favorites/${id}`).remove();
+                                    this.setState({favorite: false})
+
+                                }}>
+                                    <View style={{alignContent: 'center'}}>
+                                        <Icon style={styles.iconStyle} name="ios-heart" />
+                                    </View>
+                                    <View style = {{alignContent: 'center'}}>
+                                        <Text style={styles.textStyle}>Remove from Favorites</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
+                                    Variables.state.browsingArtist = rowData.podcastArtist;
+                                    if(rss){
+                                        Variables.state.rss = true;
+                                    }
+                                    else{
+                                        Variables.state.rss = false;
+                                    }
+                                    navigator.showModal({
+                                        screen: 'UserProfile',
+                                        passProps: {rowData, navigator},
+                                    })
+                                }}>
+                                    <View style={{alignContent: 'center'}}>
+                                        <Icon style={styles.iconStyle} name="ios-contact-outline" />
+                                    </View>
+                                    <View style = {{alignContent: 'center'}}>
+                                        <Text style={styles.textStyle}>Go to Profile</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+                                    navigator.dismissLightBox();
+                                }}>
+                                    <View style={{alignContent: 'center'}}>
+                                        <Icon style={styles.iconStyle} name="ios-close" />
+                                    </View>
+                                    <View style = {{alignContent: 'center'}}>
+                                        <Text style={styles.textStyle}>Cancel</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+                                <ShareSheet visible={this.state.visible} onCancel={this.onCancel.bind(this)}>
+                                    <Button iconSrc={{ uri: TWITTER_ICON }}
+                                            onPress={()=>{
+                                                this.onCancel();
+                                                setTimeout(() => {
+                                                    var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                    ref.once("value", function(snapshot) {
+                                                        if(snapshot.val().shares){
+                                                            ref.update({shares: snapshot.val().shares + 1})
+                                                        }
+                                                        else{
+                                                            ref.update({shares: 1})
+                                                        }
+                                                    });
+                                                    const {currentUser} = firebase.auth();
+                                                    const user = currentUser.uid;
+                                                    Analytics.logEvent('shareTwitter', {
+                                                        'episodeID': id,
+                                                        'user_id': user
+                                                    });
+                                                    Share.shareSingle(Object.assign(shareOptions, {
+                                                        "social": "twitter"
+                                                    }));
+                                                },300);
+                                            }}>Twitter</Button>
+                                    <Button iconSrc={{ uri: FACEBOOK_ICON }}
+                                            onPress={()=>{
+                                                this.onCancel();
+                                                setTimeout(() => {
+                                                    var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                    ref.once("value", function(snapshot) {
+                                                        if(snapshot.val().shares){
+                                                            ref.update({shares: snapshot.val().shares + 1})
+                                                        }
+                                                        else{
+                                                            ref.update({shares: 1})
+                                                        }
+                                                    });
+                                                    const {currentUser} = firebase.auth();
+                                                    const user = currentUser.uid;
+                                                    Analytics.logEvent('shareFacebook', {
+                                                        'episodeID': id,
+                                                        'user_id': user
+                                                    });
+                                                    Share.shareSingle(Object.assign(shareOptions, {
+                                                        "social": "facebook"
+                                                    }));
+                                                },300);
+                                            }}>Facebook</Button>
+                                    <Button iconSrc={{ uri: WHATSAPP_ICON }}
+                                            onPress={()=>{
+                                                this.onCancel();
+                                                setTimeout(() => {
+                                                    var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                    ref.once("value", function(snapshot) {
+                                                        if(snapshot.val().shares){
+                                                            ref.update({shares: snapshot.val().shares + 1})
+                                                        }
+                                                        else{
+                                                            ref.update({shares: 1})
+                                                        }
+                                                    });
+                                                    const {currentUser} = firebase.auth();
+                                                    const user = currentUser.uid;
+                                                    Analytics.logEvent('shareWhatsapp', {
+                                                        'episodeID': id,
+                                                        'user_id': user
+                                                    });
+                                                    Share.shareSingle(Object.assign(shareOptions, {
+                                                        "social": "whatsapp"
+                                                    }));
+                                                },300);
+                                            }}>Whatsapp</Button>
+                                    <Button iconSrc={{ uri: GOOGLE_PLUS_ICON }}
+                                            onPress={()=>{
+                                                this.onCancel();
+                                                setTimeout(() => {
+                                                    var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                    ref.once("value", function(snapshot) {
+                                                        if(snapshot.val().shares){
+                                                            ref.update({shares: snapshot.val().shares + 1})
+                                                        }
+                                                        else{
+                                                            ref.update({shares: 1})
+                                                        }
+                                                    });
+                                                    const {currentUser} = firebase.auth();
+                                                    const user = currentUser.uid;
+                                                    Analytics.logEvent('shareGooglePlus', {
+                                                        'episodeID': id,
+                                                        'user_id': user
+                                                    });
+                                                    Share.shareSingle(Object.assign(shareOptions, {
+                                                        "social": "googleplus"
+                                                    }));
+                                                },300);
+                                            }}>Google +</Button>
+                                    <Button iconSrc={{ uri: EMAIL_ICON }}
+                                            onPress={()=>{
+                                                this.onCancel();
+                                                setTimeout(() => {
+                                                    var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                    ref.once("value", function(snapshot) {
+                                                        if(snapshot.val().shares){
+                                                            ref.update({shares: snapshot.val().shares + 1})
+                                                        }
+                                                        else{
+                                                            ref.update({shares: 1})
+                                                        }
+                                                    });
+                                                    const {currentUser} = firebase.auth();
+                                                    const user = currentUser.uid;
+                                                    Analytics.logEvent('shareEmail', {
+                                                        'episodeID': id,
+                                                        'user_id': user
+                                                    });
+                                                    Share.shareSingle(Object.assign(shareOptions, {
+                                                        "social": "email"
+                                                    }));
+                                                },300);
+                                            }}>Email</Button>
+                                    <Button
+                                        iconSrc={{ uri: CLIPBOARD_ICON }}
+                                        onPress={()=>{
+                                            this.onCancel();
+                                            setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareCopyLink', {
+                                                    'episodeID': id,
+                                                    'user_id': user
+                                                });
+                                                if(typeof shareOptions["url"] !== undefined) {
+                                                    Clipboard.setString(shareOptions["url"]);
+                                                    if (Platform.OS === "android") {
+                                                        ToastAndroid.show('Link Copied', ToastAndroid.SHORT);
+                                                    } else if (Platform.OS === "ios") {
+                                                        AlertIOS.alert('Link Copied');
+                                                    }
+                                                }
+                                            },300);
+                                        }}>Copy Link</Button>
+                                    <Button iconSrc={{ uri: MORE_ICON }}
+                                            onPress={()=>{
+                                                this.onCancel();
+                                                setTimeout(() => {
+                                                    var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                    ref.once("value", function(snapshot) {
+                                                        if(snapshot.val().shares){
+                                                            ref.update({shares: snapshot.val().shares + 1})
+                                                        }
+                                                        else{
+                                                            ref.update({shares: 1})
+                                                        }
+                                                    });
+                                                    const {currentUser} = firebase.auth();
+                                                    const user = currentUser.uid;
+                                                    Analytics.logEvent('shareMore', {
+                                                        'episodeID': id,
+                                                        'user_id': user
+                                                    });
+                                                    Share.open(shareOptions)
+                                                },300);
+                                            }}>More</Button>
+                                </ShareSheet>
+
                             </View>
+                        )
 
-                            <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
+                    }
 
-                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
+                    else{
 
-
-                                /*
-                                firebase.database().ref(`users/${currentUser.uid}/favorites/${podcastTitle}`).remove();
-                                this.setState({favorite: false})
-                                */
-
-                            }}>
-                                <View style={{alignContent: 'center'}}>
-                                    <Icon style={styles.iconStyle} name="ios-heart" />
+                        return(
+                            <View>
+                                <View>
+                                    <Text style={styles.textTitle}>{podTitle}</Text>
+                                    <Text style={styles.textArtist}>{profileName}</Text>
                                 </View>
-                                <View style = {{alignContent: 'center'}}>
-                                    <Text style={styles.textStyle}>Remove from Favorites</Text>
-                                </View>
-                            </TouchableOpacity>
 
-                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
-                                Variables.state.browsingArtist = rowData.podcastArtist;
-                                if(rss){
-                                    Variables.state.rss = true;
-                                }
-                                else{
-                                    Variables.state.rss = false;
-                                }
-                                navigator.showModal({
-                                    screen: 'UserProfile',
-                                    passProps: {rowData, navigator},
-                                })
-                            }}>
-                                <View style={{alignContent: 'center'}}>
-                                    <Icon style={styles.iconStyle} name="ios-contact-outline" />
-                                </View>
-                                <View style = {{alignContent: 'center'}}>
-                                    <Text style={styles.textStyle}>Go to Profile</Text>
-                                </View>
-                            </TouchableOpacity>
+                                <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
 
-                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
-                                navigator.dismissLightBox();
-                            }}>
-                                <View style={{alignContent: 'center'}}>
-                                    <Icon style={styles.iconStyle} name="ios-close" />
-                                </View>
-                                <View style = {{alignContent: 'center'}}>
-                                    <Text style={styles.textStyle}>Cancel</Text>
-                                </View>
-                            </TouchableOpacity>
 
-                        </View>
-                    )
+                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+
+                                    this.onOpen();
+
+                                }}>
+                                    <View style={{alignContent: 'center'}}>
+                                        <Icon style={styles.iconStyle} name="ios-share-outline" />
+                                    </View>
+
+                                    <View style={{alignContent: 'center'}}>
+                                        <Text style={styles.textStyle}>Share</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+
+
+                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+
+                                    firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
+                                        snap.forEach(function (data) {
+                                            if(data.val().id == id){
+                                                firebase.database().ref(`users/${currentUser.uid}/queue/${data.key}`).remove()
+                                            }
+                                        });
+                                        firebase.database().ref(`users/${currentUser.uid}/queue/`).push({id});
+                                    });
+
+                                    navigator.dismissLightBox();
+
+                                }}>
+                                    <View style={{alignContent: 'center'}}>
+                                        <Icon style={styles.iconStyle} name="ios-add-circle-outline" />
+                                    </View>
+                                    <View style = {{alignContent: 'center'}}>
+                                        <Text style={styles.textStyle}>Add to Queue</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+
+                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+                                    this.props.navigator.showModal({
+                                        screen: 'MyQueue',
+                                    });
+                                }}>
+                                    <View style={{alignContent: 'center'}}>
+                                        <Icon style={styles.iconStyle} name="ios-list-box-outline" />
+                                    </View>
+                                    <View style = {{alignContent: 'center'}}>
+                                        <Text style={styles.textStyle}>Go to Queue</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+
+                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+
+                                    Navigation.showModal({
+                                        screen: 'PlaylistList',
+                                        passProps: {navigator, id}
+                                    })
+
+                                }}>
+                                    <View style={{alignContent: 'center'}}>
+                                        <Icon style={styles.iconStyle} name="ios-add-circle-outline" />
+                                    </View>
+
+                                    <View style={{alignContent: 'center'}}>
+                                        <Text style={styles.textStyle}>Add to Playlist</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+
+
+                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
+
+                                    firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(id).update({id});
+                                    this.setState({favorite: true})
+
+                                }}>
+                                    <View style={{alignContent: 'center'}}>
+                                        <Icon style={styles.iconStyle} name="ios-heart-outline" />
+                                    </View>
+                                    <View style = {{alignContent: 'center'}}>
+                                        <Text style={styles.textStyle}>Add to Favorites</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
+                                    Variables.state.browsingArtist = rowData.podcastArtist;
+                                    if(rss){
+                                        Variables.state.rss = true;
+                                    }
+                                    else{
+                                        Variables.state.rss = false;
+                                    }
+                                    navigator.showModal({
+                                        screen: 'UserProfile',
+                                        passProps: {rowData, navigator},
+                                    })
+                                }}>
+                                    <View style={{alignContent: 'center'}}>
+                                        <Icon style={styles.iconStyle} name="ios-contact-outline" />
+                                    </View>
+                                    <View style = {{alignContent: 'center'}}>
+                                        <Text style={styles.textStyle}>Go to Profile</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+                                    navigator.dismissLightBox();
+                                }}>
+                                    <View style={{alignContent: 'center'}}>
+                                        <Icon style={styles.iconStyle} name="ios-close" />
+                                    </View>
+                                    <View style= {{alignContent: 'center'}}>
+                                        <Text style={styles.textStyle}>Cancel</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+                                <ShareSheet visible={this.state.visible} onCancel={this.onCancel.bind(this)}>
+                                    <Button iconSrc={{ uri: TWITTER_ICON }}
+                                            onPress={()=>{
+                                                this.onCancel();
+                                                setTimeout(() => {
+                                                    var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                    ref.once("value", function(snapshot) {
+                                                        if(snapshot.val().shares){
+                                                            ref.update({shares: snapshot.val().shares + 1})
+                                                        }
+                                                        else{
+                                                            ref.update({shares: 1})
+                                                        }
+                                                    });
+                                                    const {currentUser} = firebase.auth();
+                                                    const user = currentUser.uid;
+                                                    Analytics.logEvent('shareTwitter', {
+                                                        'episodeID': id,
+                                                        'user_id': user
+                                                    });
+                                                    Share.shareSingle(Object.assign(shareOptions, {
+                                                        "social": "twitter"
+                                                    }));
+                                                },300);
+                                            }}>Twitter</Button>
+                                    <Button iconSrc={{ uri: FACEBOOK_ICON }}
+                                            onPress={()=>{
+                                                this.onCancel();
+                                                setTimeout(() => {
+                                                    var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                    ref.once("value", function(snapshot) {
+                                                        if(snapshot.val().shares){
+                                                            ref.update({shares: snapshot.val().shares + 1})
+                                                        }
+                                                        else{
+                                                            ref.update({shares: 1})
+                                                        }
+                                                    });
+                                                    const {currentUser} = firebase.auth();
+                                                    const user = currentUser.uid;
+                                                    Analytics.logEvent('shareFacebook', {
+                                                        'episodeID': id,
+                                                        'user_id': user
+                                                    });
+                                                    Share.shareSingle(Object.assign(shareOptions, {
+                                                        "social": "facebook"
+                                                    }));
+                                                },300);
+                                            }}>Facebook</Button>
+                                    <Button iconSrc={{ uri: WHATSAPP_ICON }}
+                                            onPress={()=>{
+                                                this.onCancel();
+                                                setTimeout(() => {
+                                                    var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                    ref.once("value", function(snapshot) {
+                                                        if(snapshot.val().shares){
+                                                            ref.update({shares: snapshot.val().shares + 1})
+                                                        }
+                                                        else{
+                                                            ref.update({shares: 1})
+                                                        }
+                                                    });
+                                                    const {currentUser} = firebase.auth();
+                                                    const user = currentUser.uid;
+                                                    Analytics.logEvent('shareWhatsapp', {
+                                                        'episodeID': id,
+                                                        'user_id': user
+                                                    });
+                                                    Share.shareSingle(Object.assign(shareOptions, {
+                                                        "social": "whatsapp"
+                                                    }));
+                                                },300);
+                                            }}>Whatsapp</Button>
+                                    <Button iconSrc={{ uri: GOOGLE_PLUS_ICON }}
+                                            onPress={()=>{
+                                                this.onCancel();
+                                                setTimeout(() => {
+                                                    var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                    ref.once("value", function(snapshot) {
+                                                        if(snapshot.val().shares){
+                                                            ref.update({shares: snapshot.val().shares + 1})
+                                                        }
+                                                        else{
+                                                            ref.update({shares: 1})
+                                                        }
+                                                    });
+                                                    const {currentUser} = firebase.auth();
+                                                    const user = currentUser.uid;
+                                                    Analytics.logEvent('shareGooglePlus', {
+                                                        'episodeID': id,
+                                                        'user_id': user
+                                                    });
+                                                    Share.shareSingle(Object.assign(shareOptions, {
+                                                        "social": "googleplus"
+                                                    }));
+                                                },300);
+                                            }}>Google +</Button>
+                                    <Button iconSrc={{ uri: EMAIL_ICON }}
+                                            onPress={()=>{
+                                                this.onCancel();
+                                                setTimeout(() => {
+                                                    var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                    ref.once("value", function(snapshot) {
+                                                        if(snapshot.val().shares){
+                                                            ref.update({shares: snapshot.val().shares + 1})
+                                                        }
+                                                        else{
+                                                            ref.update({shares: 1})
+                                                        }
+                                                    });
+                                                    const {currentUser} = firebase.auth();
+                                                    const user = currentUser.uid;
+                                                    Analytics.logEvent('shareEmail', {
+                                                        'episodeID': id,
+                                                        'user_id': user
+                                                    });
+                                                    Share.shareSingle(Object.assign(shareOptions, {
+                                                        "social": "email"
+                                                    }));
+                                                },300);
+                                            }}>Email</Button>
+                                    <Button
+                                        iconSrc={{ uri: CLIPBOARD_ICON }}
+                                        onPress={()=>{
+                                            this.onCancel();
+                                            setTimeout(() => {
+                                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                ref.once("value", function(snapshot) {
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
+                                                });
+                                                const {currentUser} = firebase.auth();
+                                                const user = currentUser.uid;
+                                                Analytics.logEvent('shareCopyLink', {
+                                                    'episodeID': id,
+                                                    'user_id': user
+                                                });
+                                                if(typeof shareOptions["url"] !== undefined) {
+                                                    Clipboard.setString(shareOptions["url"]);
+                                                    if (Platform.OS === "android") {
+                                                        ToastAndroid.show('Link Copied', ToastAndroid.SHORT);
+                                                    } else if (Platform.OS === "ios") {
+                                                        AlertIOS.alert('Link Copied');
+                                                    }
+                                                }
+                                            },300);
+                                        }}>Copy Link</Button>
+                                    <Button iconSrc={{ uri: MORE_ICON }}
+                                            onPress={()=>{
+                                                this.onCancel();
+                                                setTimeout(() => {
+                                                    var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                                    ref.once("value", function(snapshot) {
+                                                        if(snapshot.val().shares){
+                                                            ref.update({shares: snapshot.val().shares + 1})
+                                                        }
+                                                        else{
+                                                            ref.update({shares: 1})
+                                                        }
+                                                    });
+                                                    const {currentUser} = firebase.auth();
+                                                    const user = currentUser.uid;
+                                                    Analytics.logEvent('shareMore', {
+                                                        'episodeID': id,
+                                                        'user_id': user
+                                                    });
+                                                    Share.open(shareOptions)
+                                                },300);
+                                            }}>More</Button>
+                                </ShareSheet>
+
+                            </View>
+                        )
+
+                    }
 
                 }
-
                 else{
+                    if(this.state.favorite){
 
-                    return(
-                        <View>
+                        return(
                             <View>
-                                <Text style={styles.textTitle}>{podTitle}</Text>
-                                <Text style={styles.textArtist}>{profileName}</Text>
+                                <View>
+                                    <Text style={styles.textTitle}>{podTitle}</Text>
+                                    <Text style={styles.textArtist}>{profileName}</Text>
+                                </View>
+
+                                <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
+
+                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
+
+
+                                    /*
+                                    firebase.database().ref(`users/${currentUser.uid}/favorites/${podcastTitle}`).remove();
+                                    this.setState({favorite: false})
+                                    */
+
+                                }}>
+                                    <View style={{alignContent: 'center'}}>
+                                        <Icon style={styles.iconStyle} name="ios-heart" />
+                                    </View>
+                                    <View style = {{alignContent: 'center'}}>
+                                        <Text style={styles.textStyle}>Remove from Favorites</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
+                                    Variables.state.browsingArtist = rowData.podcastArtist;
+                                    if(rss){
+                                        Variables.state.rss = true;
+                                    }
+                                    else{
+                                        Variables.state.rss = false;
+                                    }
+                                    navigator.showModal({
+                                        screen: 'UserProfile',
+                                        passProps: {rowData, navigator},
+                                    })
+                                }}>
+                                    <View style={{alignContent: 'center'}}>
+                                        <Icon style={styles.iconStyle} name="ios-contact-outline" />
+                                    </View>
+                                    <View style = {{alignContent: 'center'}}>
+                                        <Text style={styles.textStyle}>Go to Profile</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+                                    navigator.dismissLightBox();
+                                }}>
+                                    <View style={{alignContent: 'center'}}>
+                                        <Icon style={styles.iconStyle} name="ios-close" />
+                                    </View>
+                                    <View style = {{alignContent: 'center'}}>
+                                        <Text style={styles.textStyle}>Cancel</Text>
+                                    </View>
+                                </TouchableOpacity>
+
                             </View>
+                        )
 
-                            <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
+                    }
 
-                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
+                    else{
 
-                                /*
-                                firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle).update({podcastArtist, podcastTitle});
-                                this.setState({favorite: true})
-                                */
-
-
-                            }}>
-                                <View style={{alignContent: 'center'}}>
-                                    <Icon style={styles.iconStyle} name="ios-heart-outline" />
+                        return(
+                            <View>
+                                <View>
+                                    <Text style={styles.textTitle}>{podTitle}</Text>
+                                    <Text style={styles.textArtist}>{profileName}</Text>
                                 </View>
-                                <View style = {{alignContent: 'center'}}>
-                                    <Text style={styles.textStyle}>Add to Favorites</Text>
-                                </View>
-                            </TouchableOpacity>
 
-                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
-                                Variables.state.browsingArtist = rowData.podcastArtist;
-                                if(rss){
-                                    Variables.state.rss = true;
-                                }
-                                else{
-                                    Variables.state.rss = false;
-                                }
-                                navigator.showModal({
-                                    screen: 'UserProfile',
-                                    passProps: {rowData, navigator},
-                                })
-                            }}>
+                                <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
 
-                                <View style={{alignContent: 'center'}}>
-                                    <Icon style={styles.iconStyle} name="ios-contact-outline" />
-                                </View>
-                                <View style = {{alignContent: 'center'}}>
-                                    <Text style={styles.textStyle}>Go to Profile</Text>
-                                </View>
-                            </TouchableOpacity>
+                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
 
-                            <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
-                                navigator.dismissLightBox();
-                            }}>
-                                <View style={{alignContent: 'center'}}>
-                                    <Icon style={styles.iconStyle} name="ios-close" />
-                                </View>
-                                <View style = {{alignContent: 'center'}}>
-                                    <Text style={styles.textStyle}>Cancel</Text>
-                                </View>
-                            </TouchableOpacity>
+                                    /*
+                                    firebase.database().ref(`users/${currentUser.uid}/favorites/`).child(podcastTitle).update({podcastArtist, podcastTitle});
+                                    this.setState({favorite: true})
+                                    */
 
-                        </View>
-                    )
+
+                                }}>
+                                    <View style={{alignContent: 'center'}}>
+                                        <Icon style={styles.iconStyle} name="ios-heart-outline" />
+                                    </View>
+                                    <View style = {{alignContent: 'center'}}>
+                                        <Text style={styles.textStyle}>Add to Favorites</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
+                                    Variables.state.browsingArtist = rowData.podcastArtist;
+                                    if(rss){
+                                        Variables.state.rss = true;
+                                    }
+                                    else{
+                                        Variables.state.rss = false;
+                                    }
+                                    navigator.showModal({
+                                        screen: 'UserProfile',
+                                        passProps: {rowData, navigator},
+                                    })
+                                }}>
+
+                                    <View style={{alignContent: 'center'}}>
+                                        <Icon style={styles.iconStyle} name="ios-contact-outline" />
+                                    </View>
+                                    <View style = {{alignContent: 'center'}}>
+                                        <Text style={styles.textStyle}>Go to Profile</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
+                                    navigator.dismissLightBox();
+                                }}>
+                                    <View style={{alignContent: 'center'}}>
+                                        <Icon style={styles.iconStyle} name="ios-close" />
+                                    </View>
+                                    <View style = {{alignContent: 'center'}}>
+                                        <Text style={styles.textStyle}>Cancel</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+                            </View>
+                        )
+
+                    }
 
                 }
+
+
+
+
+
 
             }
 
-
-
-
-
-
         }
+
+
 
 
     }

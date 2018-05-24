@@ -26,7 +26,7 @@ class ListItemHighlight extends Component {
             startTime: startTime,
             totalTime: endTime-startTime,
             episode: [],
-            podcastTitle: ''
+            podcastTitle: '',
         };
 
         const {podcastID} = this.props.highlight;
@@ -206,19 +206,18 @@ class ListItemHighlight extends Component {
     };
 
     render() {
-
+        const {podcastArtist} = this.state.episode;
+        const {podcastTitle} = this.state.episode;
         const {title} = this.props.highlight;
+        const {podcastCategory} = this.state.episode;
+        const {id} = this.state.episode;
+        const {description} = this.props.highlight;
+        const {key} = this.props.highlight;
+
 
         return (
 
             <TouchableOpacity onPress={() => {
-
-                const {podcastArtist} = this.state.episode;
-                const {podcastTitle} = this.state.episode;
-                const {title} = this.props.highlight;
-                const {podcastCategory} = this.state.episode;
-                const {id} = this.state.episode;
-                const {description} = this.props.highlight;
                 Variables.state.highlightStart = this.state.startTime;
                 Variables.state.highlightEnd = this.state.endTime;
                 Variables.state.seekTo = this.state.startTime;
@@ -321,6 +320,30 @@ class ListItemHighlight extends Component {
 
 
 
+            }}
+            onLongPress={() => {
+                let rowData = [];
+                rowData.highlight = true;
+                rowData.podcastTitle = title;
+                rowData.podcastArtist = podcastArtist;
+                rowData.podcastCategory = podcastCategory;
+                rowData.id = id;
+                rowData.podcastDescription = description;
+                rowData.key = key;
+
+                const {navigator} = this.props;
+
+                this.props.navigator.showLightBox({
+                    screen: "PodcastOptions",
+                    passProps: {rowData, navigator},
+                    style: {
+                        backgroundBlur: "dark",
+                        backgroundColor: '#3e416430',
+                        tapBackgroundToDismiss: true,
+                        width: 100,
+                        height: 200
+                    },
+                });
             }}>
                 <View style={styles.container}>
 
