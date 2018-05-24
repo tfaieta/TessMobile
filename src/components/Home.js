@@ -490,6 +490,8 @@ class Home extends Component{
                             if(id){
                                 AsyncStorage.setItem("currentPodcast", id);
                                 AsyncStorage.setItem("currentTime", "0");
+                                Variables.state.seekTo = 0;
+                                Variables.state.currentTime = 0;
 
                                 firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL().catch(() => {console.warn("file not found")})
                                     .then(function(url) {
