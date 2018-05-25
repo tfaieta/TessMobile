@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, ListView, Dimensions } from 'react-native';
+import { Text, View, TouchableOpacity, ListView, } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from 'firebase';
 import ListItemUsers from "./ListItemUsers";
-import Variables from "./Variables";
-var Analytics = require('react-native-firebase-analytics');
-
-var {height, width} = Dimensions.get('window');
 
 
 
@@ -80,11 +76,12 @@ class ListItemCatchUp extends Component {
                     <View style={{alignSelf:'flex-end', flex:1}}>
                         <TouchableOpacity onPress={() => {
                             const title = this.state.username;
+                            const episodes = this.state.length;
 
                             this.props.navigator.push({
                                 screen: 'ViewAll',
                                 title: title,
-                                passProps: {data: this.state.podcastData, title},
+                                passProps: {data: this.state.podcastData, title, episodes},
                             });
 
                         }} style={{alignSelf:'flex-end', flexDirection:'row', marginTop: 3}}>

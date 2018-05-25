@@ -139,6 +139,8 @@ class ListItemQueue extends Component {
                     'user_id': user
                 });
 
+                firebase.database().ref(`users/${currentUser.uid}/tracking/${podcastArtist}/episodes/${id}`).remove();
+
                 if(rss){
 
 

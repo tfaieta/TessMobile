@@ -77,7 +77,7 @@ class CatchUp extends Component{
                             </TouchableOpacity>
                         </View>
                         <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                            <Text style={styles.header}>Catch Up</Text>
+                            <Text style={styles.header}>Tracked List</Text>
                         </View>
 
                         <View>
