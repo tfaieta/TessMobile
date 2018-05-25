@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { View, StyleSheet, ListView, Text, TouchableOpacity, Image} from 'react-native';
+import { View, StyleSheet, ListView, Text, ScrollView} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { connect } from 'react-redux';
 import { podcastFetchFollowed } from "../actions/PodcastActions"
 import Variables from "./Variables";
-import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 
 import { Navigation } from 'react-native-navigation';
@@ -59,11 +58,12 @@ class FollowedContent extends Component{
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed),
+            length: 0,
             loading: true,
         };
 
-        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed)})},1000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed)})},3000);
+        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed), length: Variables.state.usersFollowed.length})},1000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed), length: Variables.state.usersFollowed.length})},3000);
     }
 
     state={
@@ -98,6 +98,9 @@ class FollowedContent extends Component{
             <View
                 style={styles.container}>
 
+                <ScrollView>
+
+                    <Text style={styles.title}>{this.state.length} podcasts</Text>
 
                     <ListView
                         enableEmptySections
@@ -106,9 +109,12 @@ class FollowedContent extends Component{
                     />
 
 
+                    <View style={{paddingBottom:120}} />
+
+                </ScrollView>
+
 
                 <PlayerBottom navigator={this.props.navigator}/>
-
 
             </View>
 
@@ -122,98 +128,20 @@ class FollowedContent extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: 'transparent',
-    },
-    container2: {
-        paddingHorizontal: 0,
-        paddingVertical: 10,
-        marginVertical: 0,
-        marginHorizontal: 0,
-        backgroundColor: 'transparent',
-        opacity: 1,
-        borderColor: '#FFF',
-        borderWidth: 0.5,
-        borderRadius: 0,
-        borderStyle: 'solid',
-        flexDirection: 'row',
+        backgroundColor: '#f5f4f9',
     },
 
     title: {
-        color: '#804cc8',
-        marginTop: 70,
-        flex:1,
-        textAlign: 'center',
-        opacity: 2,
-        fontStyle: 'normal',
-        fontFamily: 'Futura',
-        fontSize: 25,
-        backgroundColor: 'transparent'
-    },
-    title2: {
-        color:  '#2A2A30',
-        marginTop: 20,
-        flex:1,
-        textAlign: 'left',
-        paddingLeft: 0,
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W3',
-        fontSize: 18,
-        backgroundColor: 'transparent'
-    },
-
-    contentTitle: {
-        color: 'rgba(1,170,170,1)',
-        fontSize: 25,
-        paddingBottom: 20,
-        marginLeft: 20,
-
-    },
-    artistTitle: {
-        color: '#804cc8',
-        marginTop: 0,
-        flex:1,
-        textAlign: 'center',
-        paddingLeft: 2,
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'Futura',
-        fontSize: 15,
-        backgroundColor: 'transparent'
-    },
-    centerContainer: {
-        flexDirection: 'row'
-    },
-    leftContainer: {
-        paddingLeft: 2,
-        justifyContent: 'center',
-        alignItems:'flex-start',
-    },
-    rightContainer: {
-        flex: 1,
-        paddingRight: 2,
-        justifyContent: 'center',
-        alignItems: 'flex-end',
-
-    },
-    middleContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-        marginTop: 3,
-    },
-
-    header: {
-        marginTop:25,
-        marginLeft: -35,
-        color: '#2A2A30',
-        textAlign: 'center',
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
         backgroundColor: 'transparent',
-
-    }
+        color: '#506dcf',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 18,
+        marginTop: 80,
+        paddingVertical: 10,
+        marginBottom: 1,
+    },
 
 });
 

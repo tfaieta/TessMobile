@@ -130,6 +130,7 @@ class ListItemQueue extends Component {
         return (
 
             <TouchableOpacity onPress={() =>  {
+                Variables.state.highlight = false;
 
                 Analytics.logEvent('play', {
                     'episodeID': id,
@@ -137,6 +138,8 @@ class ListItemQueue extends Component {
                     'episodeArtist': podcastArtist,
                     'user_id': user
                 });
+
+                firebase.database().ref(`users/${currentUser.uid}/tracking/${podcastArtist}/episodes/${id}`).remove();
 
                 if(rss){
 

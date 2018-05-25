@@ -154,62 +154,8 @@ class PlayerBottom extends Component {
 
 
     _renderSlider(currentTime){
-        if(this.state.highlight){
-            return(
-                <View style={{marginTop: 5, marginBottom: -25}}>
-                    <View style={{flexDirection: 'row',}}>
-                    {this._renderCurrentTimeHighlight(this.state.highlightTime[0])}
-                        {this._renderCurrentTimeHighlightEnd(this.state.highlightTime[1])}
-                    </View>
-                <MultiSlider
-                    values={[this.state.highlightTime[0], this.state.highlightTime[1]]}
-                    snapped
-                    min={0}
-                    max={Math.abs(Variables.state.duration)}
-                    step={1}
-                    sliderLength={width-40}
-                    selectedStyle={{
-                        backgroundColor: '#506dcf',
-                    }}
-                    unselectedStyle={{
-                        backgroundColor: '#E7E7F0',
-                    }}
-                    containerStyle={{
-                        width:  width-40,
-                        alignSelf: 'center'
-                    }}
-                    trackStyle={{
-                        height: 4,
-                        backgroundColor: '#506dcf',
-                        width:  width-40,
-                    }}
-                    touchDimensions={{
-                        height: 15,
-                        width: 15,
-                        borderRadius: 10,
-                        color: '#3e4164',
-                    }}
-                    onValuesChange={(values) => {
-                        Variables.state.paused = false;
-                        clearTimeout(this.timeout);
-                        if(this.state.highlightTime[0] != values[0]){
-                            Variables.state.seekTo = values[0];
-                        }
-                        else{
-                            Variables.state.seekTo = values[1]-10;
-                            this.timeout = setTimeout(() => {Variables.state.paused = true}, 10000)
-                        }
-                        this.setState({
-                            highlightTime: [values[0],values[1]]
-                        });
+        if(Variables.state.highlight){
 
-                    }}
-
-                />
-                </View>
-            )
-        }
-        else{
             return(
                 <Slider
                     minimumTrackTintColor='#5757FF'
@@ -218,14 +164,88 @@ class PlayerBottom extends Component {
                     animateTransitions = {true}
                     style={styles.sliderContainer}
                     step={0}
-                    minimumValue={0}
-                    maximumValue= { Math.abs( Variables.state.duration)}
+                    minimumValue={Variables.state.highlightStart}
+                    maximumValue= { Math.abs( Variables.state.highlightEnd)}
                     value={ currentTime }
                     onValueChange={currentTime => Variables.state.seekTo = currentTime}
                 />
-
             )
 
+        }
+        else{
+            if(this.state.highlight){
+                return(
+                    <View style={{marginTop: 5, marginBottom: -25}}>
+                        <View style={{flexDirection: 'row',}}>
+                            {this._renderCurrentTimeHighlight(this.state.highlightTime[0])}
+                            {this._renderCurrentTimeHighlightEnd(this.state.highlightTime[1])}
+                        </View>
+                        <MultiSlider
+                            values={[this.state.highlightTime[0], this.state.highlightTime[1]]}
+                            snapped
+                            min={0}
+                            max={Math.abs(Variables.state.duration)}
+                            step={1}
+                            sliderLength={width-40}
+                            selectedStyle={{
+                                backgroundColor: '#506dcf',
+                            }}
+                            unselectedStyle={{
+                                backgroundColor: '#E7E7F0',
+                            }}
+                            containerStyle={{
+                                width:  width-40,
+                                alignSelf: 'center'
+                            }}
+                            trackStyle={{
+                                height: 4,
+                                backgroundColor: '#506dcf',
+                                width:  width-40,
+                            }}
+                            touchDimensions={{
+                                height: 15,
+                                width: 15,
+                                borderRadius: 10,
+                                color: '#3e4164',
+                            }}
+                            onValuesChange={(values) => {
+                                Variables.state.paused = false;
+                                clearTimeout(this.timeout);
+                                if(this.state.highlightTime[0] != values[0]){
+                                    Variables.state.seekTo = values[0];
+                                }
+                                else{
+                                    Variables.state.seekTo = values[1]-10;
+                                    this.timeout = setTimeout(() => {Variables.state.paused = true}, 10000)
+                                }
+                                this.setState({
+                                    highlightTime: [values[0],values[1]]
+                                });
+
+                            }}
+
+                        />
+                    </View>
+                )
+            }
+            else{
+                return(
+                    <Slider
+                        minimumTrackTintColor='#5757FF'
+                        maximumTrackTintColor='#E7E7F0'
+                        thumbStyle={{width: 25, height: 25, borderRadius: 12.5, backgroundColor: '#506dcf', borderColor: '#506dcf', borderWidth: 2}}
+                        animateTransitions = {true}
+                        style={styles.sliderContainer}
+                        step={0}
+                        minimumValue={0}
+                        maximumValue= { Math.abs( Variables.state.duration)}
+                        value={ currentTime }
+                        onValueChange={currentTime => Variables.state.seekTo = currentTime}
+                    />
+
+                )
+
+            }
         }
 
     }
@@ -340,7 +360,7 @@ class PlayerBottom extends Component {
             return (
                 <View style={{marginTop:4}}>
                     <Text style={styles.playingText}>{fixedTitle}</Text>
-                    <Text style={styles.playingText2}>by {fixedUsername}</Text>
+                    <Text style={styles.playingText2}>{fixedUsername}</Text>
                 </View>
             )
         }
@@ -521,7 +541,7 @@ class PlayerBottom extends Component {
         }
         else{
             return (
-                <Text onPress = {this.onProfilePress} style={styles.podcastTextArtist}>by {profileName}</Text>
+                <Text onPress = {this.onProfilePress} style={styles.podcastTextArtist}>{profileName}</Text>
             );
         }
 
@@ -694,8 +714,17 @@ class PlayerBottom extends Component {
 
     _renderEndTime() {
 
-        var num = ((Variables.state.duration - Variables.state.currentTime) % 60).toString();
-        var num2 = ((Variables.state.duration - Variables.state.currentTime) / 60).toString();
+
+        if(Variables.state.highlight){
+            var num = ((Variables.state.duration - Variables.state.currentTime - (Variables.state.duration-Variables.state.highlightEnd)) % 60).toString();
+            var num2 = ((Variables.state.duration - Variables.state.currentTime - (Variables.state.duration-Variables.state.highlightEnd)) / 60).toString();
+
+        }
+        else{
+            var num = ((Variables.state.duration - Variables.state.currentTime) % 60).toString();
+            var num2 = ((Variables.state.duration - Variables.state.currentTime) / 60).toString();
+
+        }
         var minutes = num2.slice(0,1);
         Number(minutes.slice(0,1));
 
@@ -1294,6 +1323,301 @@ class PlayerBottom extends Component {
     }
 
 
+    renderOpenPlayer(highlight){
+
+        if(Variables.state.podcastTitle == ''){
+            return(
+                <View style = {styles.containerOutsideModal}>
+                    <View
+                        style={styles.containerModal}>
+
+                        <StatusBar
+                            hidden={true}
+                        />
+
+                        <View style = {{flexDirection: 'row'}}>
+
+                            <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex:1, marginVertical: 10, marginHorizontal: 20}}>
+                                <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="ios-arrow-down">
+                                </Icon>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={this.goToMyQueue} style={{alignItems:'flex-end', flex:1, marginVertical: 10, marginHorizontal: 20}}>
+                                <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="md-list-box">
+                                </Icon>
+                            </TouchableOpacity>
+
+                        </View>
+
+
+                        <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom: 10, height: 140, width: 140, borderRadius:4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)',  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
+                            <Icon style={{
+                                textAlign: 'center',
+                                fontSize: height/7.41,
+                                color: 'white',
+                                marginTop: 20,
+                            }} name="ios-sad">
+                            </Icon>
+                        </View>
+
+
+                        <View style={{marginTop: 10, flex:1}}>
+                            <Text style={styles.podcastText}>Queue is Empty</Text>
+                        </View>
+
+
+                    </View>
+                </View>
+
+
+                )
+        }
+        else if(highlight){
+            return(
+                <View style = {styles.containerOutsideModal}>
+                    <View
+                        style={styles.containerModal}>
+
+                        <StatusBar
+                            hidden={true}
+                        />
+
+                        <View style = {{flexDirection: 'row'}}>
+
+                            <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex:1, marginVertical: 10, marginHorizontal: 20}}>
+                                <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="ios-arrow-down">
+                                </Icon>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={this.goToMyQueue} style={{alignItems:'flex-end', flex:1, marginVertical: 10, marginHorizontal: 20}}>
+                                <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="md-list-box">
+                                </Icon>
+                            </TouchableOpacity>
+
+                        </View>
+
+
+                        {this._renderPodcastImageBig()}
+
+
+
+
+                        <View style={{marginTop: 10, flex:1}}>
+                            {this._renderPodcastTitle(Variables.state.isPlaying)}
+                            <TouchableOpacity style={{alignSelf: 'center'}}>
+                                {this._renderPodcastArtist(Variables.state.isPlaying)}
+                            </TouchableOpacity>
+                            {this._renderCategory()}
+                        </View>
+
+
+                        <ScrollView style={{flex: 1, borderTopColor: '#c6c5c960', height: 80, marginTop: 10, paddingVertical: 15, borderTopWidth: 2, borderBottomColor: '#c6c5c980', borderBottomWidth: 2}}>
+                            <Text style = {styles.podcastTextDescriptionTitle}>Highlight Description:</Text>
+                            <Text style = {styles.podcastTextDescription}>{Variables.state.podcastDescription}</Text>
+                        </ScrollView>
+
+
+
+                        <View style={styles.centerContainerButtons}>
+
+                            <View style={styles.leftContainerP}>
+                                <TouchableOpacity onPress={this.scrubBackward}>
+                                    <Icon style={{flex:1, marginTop: 15, textAlign:'center', fontSize: height/25, color:'#2A2A30' }} name="ios-rewind">
+                                    </Icon>
+                                </TouchableOpacity>
+                            </View>
+
+                            <View style={styles.middleContainer}>
+                                <TouchableOpacity>
+                                    {this._renderPlayButton2(this.state.isPlaying)}
+                                </TouchableOpacity>
+                            </View>
+
+                            <View style={styles.rightContainerP}>
+                                <TouchableOpacity onPress={this.scrubForward}>
+                                    <Icon style={{flex:1, marginTop: 15, textAlign:'center', fontSize: height/25,color:'#2A2A30' }} name="ios-fastforward">
+                                    </Icon>
+                                </TouchableOpacity>
+                            </View>
+
+                        </View>
+
+
+                        <View style={styles.centerContainerPlayer}>
+
+                            <View style={styles.leftContainer}>
+                                {this._renderCurrentTime(Variables.state.currentTime - Variables.state.highlightStart)}
+                            </View>
+
+                            <View style={styles.rightContainer}>
+                                {this._renderEndTime()}
+                            </View>
+
+                        </View>
+
+
+                        {this._renderSlider(Variables.state.currentTime)}
+
+
+                        <View style={{flexDirection: 'row', flex: 1, marginTop: 0}}>
+
+                            <View style={{alignItems:'flex-start', flex:1}}>
+                                {this._renderPodcastSpeed(this.state.speed)}
+                            </View>
+
+                            <View style={{alignItems: 'center', flex:1}}>
+
+                                <TouchableOpacity onPress={this.openPlayerOptions} style={{alignItems:'center', flex: 1}}>
+                                    <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="ios-more">
+                                    </Icon>
+                                </TouchableOpacity>
+
+                            </View>
+
+
+                        </View>
+
+
+
+
+                    </View>
+                </View>
+            )
+        }
+        else{
+            return(
+                <View style = {styles.containerOutsideModal}>
+                    <View
+                        style={styles.containerModal}>
+
+                        <StatusBar
+                            hidden={true}
+                        />
+
+                        <View style = {{flexDirection: 'row'}}>
+
+                            <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex:1, marginVertical: 10, marginHorizontal: 20}}>
+                                <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="ios-arrow-down">
+                                </Icon>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={this.goToMyQueue} style={{alignItems:'flex-end', flex:1, marginVertical: 10, marginHorizontal: 20}}>
+                                <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="md-list-box">
+                                </Icon>
+                            </TouchableOpacity>
+
+                        </View>
+
+
+                        {this._renderPodcastImageBig()}
+
+
+                        <TouchableOpacity style={{marginTop:20}} onPress={() => {
+                            const navigator = this.props.navigator;
+
+                            Navigation.showModal({
+                                screen: "PlayerInfo",
+                                passProps: {navigator},
+                            });
+
+                        }}>
+                            <Icon style={{textAlign:'center', fontSize: 30, color:'#506dcf', }} name="md-add">
+                            </Icon>
+                            <Text style={styles.seeMore}>View More</Text>
+
+                        </TouchableOpacity>
+
+
+
+                        <View style={{marginTop: 10, flex:1}}>
+                            {this._renderPodcastTitle(Variables.state.isPlaying)}
+                            <TouchableOpacity style={{alignSelf: 'center'}}>
+                                {this._renderPodcastArtist(Variables.state.isPlaying)}
+                            </TouchableOpacity>
+                            {this._renderCategory()}
+                        </View>
+
+
+
+
+                        {this.renderHighlight()}
+
+
+
+
+                        <View style={styles.centerContainerButtons}>
+
+                            <View style={styles.leftContainerP}>
+                                <TouchableOpacity onPress={this.scrubBackward}>
+                                    <Icon style={{flex:1, textAlign:'center', fontSize: height/25, color:'#2A2A30' }} name="ios-rewind">
+                                    </Icon>
+                                </TouchableOpacity>
+                            </View>
+
+                            <View style={styles.middleContainer}>
+                                <TouchableOpacity>
+                                    {this._renderPlayButton2(this.state.isPlaying)}
+                                </TouchableOpacity>
+                            </View>
+
+                            <View style={styles.rightContainerP}>
+                                <TouchableOpacity onPress={this.scrubForward}>
+                                    <Icon style={{flex:1, textAlign:'center', fontSize: height/25,color:'#2A2A30' }} name="ios-fastforward">
+                                    </Icon>
+                                </TouchableOpacity>
+                            </View>
+
+                        </View>
+
+
+                        <View style={styles.centerContainerPlayer}>
+
+                            <View style={styles.leftContainer}>
+                                {this._renderCurrentTime(Variables.state.currentTime)}
+                            </View>
+
+                            <View style={styles.rightContainer}>
+                                {this._renderEndTime()}
+                            </View>
+
+                        </View>
+
+
+                        {this._renderSlider(Variables.state.currentTime)}
+
+
+                        <View style={{flexDirection: 'row', flex: 1, marginTop: 0}}>
+
+                            <View style={{alignItems:'flex-start', flex:1}}>
+                                {this._renderPodcastSpeed(this.state.speed)}
+                            </View>
+
+                            <View style={{alignItems: 'center', flex:1}}>
+
+                                <TouchableOpacity onPress={this.openPlayerOptions} style={{alignItems:'center', flex: 1}}>
+                                    <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="ios-more">
+                                    </Icon>
+                                </TouchableOpacity>
+
+                            </View>
+
+                            <View style={{alignItems: 'flex-end', flex:1}}>
+                                {this._renderLikes(Variables.state.likers, Variables.state.liked)}
+                            </View>
+
+
+                        </View>
+
+
+
+
+                    </View>
+                </View>
+            )
+        }
+
+    }
+
 
     render() {
         const config = {
@@ -1351,134 +1675,7 @@ class PlayerBottom extends Component {
                         onRequestClose={() => {alert("Modal has been closed.")}}
                     >
 
-                        <View style = {styles.containerOutsideModal}>
-                            <View
-                                style={styles.containerModal}>
-
-                                <StatusBar
-                                    hidden={true}
-                                />
-
-                                <View style = {{flexDirection: 'row'}}>
-
-                                    <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex:1, marginVertical: 10, marginHorizontal: 20}}>
-                                        <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="ios-arrow-down">
-                                        </Icon>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity onPress={this.goToMyQueue} style={{alignItems:'flex-end', flex:1, marginVertical: 10, marginHorizontal: 20}}>
-                                        <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="md-list-box">
-                                        </Icon>
-                                    </TouchableOpacity>
-
-                                </View>
-
-
-                                {this._renderPodcastImageBig()}
-
-
-                                <TouchableOpacity style={{marginTop:20}} onPress={() => {
-                                    const navigator = this.props.navigator;
-
-                                    Navigation.showModal({
-                                        screen: "PlayerInfo",
-                                        passProps: {navigator},
-                                    });
-
-                                }}>
-                                    <Icon style={{textAlign:'center', fontSize: 30, color:'#506dcf', }} name="md-add">
-                                    </Icon>
-                                    <Text style={styles.seeMore}>View More</Text>
-
-                                </TouchableOpacity>
-
-
-
-                                <View style={{marginTop: 10, flex:1}}>
-                                    {this._renderPodcastTitle(Variables.state.isPlaying)}
-                                    <TouchableOpacity style={{alignSelf: 'center'}}>
-                                        {this._renderPodcastArtist(Variables.state.isPlaying)}
-                                    </TouchableOpacity>
-                                    {this._renderCategory()}
-                                </View>
-
-
-
-
-                                {this.renderHighlight()}
-
-
-
-
-                                <View style={styles.centerContainerButtons}>
-
-                                    <View style={styles.leftContainerP}>
-                                        <TouchableOpacity onPress={this.scrubBackward}>
-                                            <Icon style={{flex:1, textAlign:'center', fontSize: height/25, color:'#2A2A30' }} name="ios-rewind">
-                                            </Icon>
-                                        </TouchableOpacity>
-                                    </View>
-
-                                    <View style={styles.middleContainer}>
-                                        <TouchableOpacity>
-                                            {this._renderPlayButton2(this.state.isPlaying)}
-                                        </TouchableOpacity>
-                                    </View>
-
-                                    <View style={styles.rightContainerP}>
-                                        <TouchableOpacity onPress={this.scrubForward}>
-                                            <Icon style={{flex:1, textAlign:'center', fontSize: height/25,color:'#2A2A30' }} name="ios-fastforward">
-                                            </Icon>
-                                        </TouchableOpacity>
-                                    </View>
-
-                                </View>
-
-
-                                <View style={styles.centerContainerPlayer}>
-
-                                    <View style={styles.leftContainer}>
-                                        {this._renderCurrentTime(Variables.state.currentTime)}
-                                    </View>
-
-                                    <View style={styles.rightContainer}>
-                                        {this._renderEndTime()}
-                                    </View>
-
-                                </View>
-
-
-                                {this._renderSlider(Variables.state.currentTime)}
-
-
-                                <View style={{flexDirection: 'row', flex: 1, marginTop: 0}}>
-
-                                    <View style={{alignItems:'flex-start', flex:1}}>
-                                        {this._renderPodcastSpeed(this.state.speed)}
-                                    </View>
-
-                                    <View style={{alignItems: 'center', flex:1}}>
-
-                                        <TouchableOpacity onPress={this.openPlayerOptions} style={{alignItems:'center', flex: 1}}>
-                                            <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="ios-more">
-                                            </Icon>
-                                        </TouchableOpacity>
-
-                                    </View>
-
-                                    <View style={{alignItems: 'flex-end', flex:1}}>
-                                        {this._renderLikes(Variables.state.likers, Variables.state.liked)}
-                                    </View>
-
-
-                                </View>
-
-
-
-
-                            </View>
-                        </View>
-
+                        {this.renderOpenPlayer(Variables.state.highlight)}
 
 
                     </Modal>
@@ -1643,6 +1840,26 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         alignSelf: 'center',
         textAlign: 'center',
+        fontFamily: 'Montserrat-SemiBold',
+    },
+    podcastTextDescription:{
+        color: '#3e4164',
+        fontSize: height/36,
+        marginTop: 5,
+        marginHorizontal: 10,
+        flexDirection: 'row',
+        backgroundColor: 'transparent',
+        textAlign: 'left',
+        fontFamily: 'Montserrat-Regular',
+    },
+    podcastTextDescriptionTitle:{
+        color: '#3e4164',
+        fontSize: height/45,
+        marginTop: 5,
+        marginHorizontal: 10,
+        flexDirection: 'row',
+        backgroundColor: 'transparent',
+        textAlign: 'left',
         fontFamily: 'Montserrat-SemiBold',
     },
 

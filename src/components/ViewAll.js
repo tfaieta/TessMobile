@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
-import { View, StyleSheet, ListView, ScrollView} from 'react-native';
+import { View, StyleSheet, ListView, ScrollView, Text} from 'react-native';
 import PlayerBottom from './PlayerBottom';
-import { connect } from 'react-redux';
-import { podcastFetchFavs } from "../actions/PodcastActions";
 import ListItem from "./ListItem";
 
 
+
+// view all list component when expanding horizontal list view to vertical
 
 class ViewAll extends Component{
 
@@ -56,6 +55,15 @@ class ViewAll extends Component{
         return <ListItem podcast={rowData} navigator={this.props.navigator} />;
     };
 
+    renderEpisodesLeft = () => {
+        const {episodes} = this.props;
+        if(episodes){
+            return(
+                <Text style={styles.title}>{episodes} Episodes Left</Text>
+            )
+        }
+
+    };
 
 
     render() {
@@ -65,8 +73,8 @@ class ViewAll extends Component{
                 style={styles.containerMain}>
 
 
-
                 <ScrollView>
+                    {this.renderEpisodesLeft()}
 
                     <ListView
                         enableEmptySections
@@ -98,45 +106,21 @@ class ViewAll extends Component{
 const styles = StyleSheet.create({
     containerMain:{
         flex: 1,
-        backgroundColor: 'transparent',
+        backgroundColor: '#f5f4f9',
     },
-
-
     title: {
-        color: '#2A2A30',
-        marginTop: 0,
-        flex:1,
-        textAlign: 'left',
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 15,
         backgroundColor: 'transparent',
-        marginHorizontal: 20,
-
-    },
-
-    header: {
-        marginTop:25,
-        marginLeft: -35,
-        color: '#2A2A30',
+        color: '#506dcf',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
-        backgroundColor: 'transparent',
-
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 18,
+        marginTop: 80,
+        paddingVertical: 10,
+        marginBottom: 1,
     },
-
 
 });
 
 
-const mapStateToProps = state => {
-    const podcast = _.map(state.podcast, (val, uid) => {
-        return { ...val, uid };
-    });
-    return {podcast};
-};
-
-export default connect(mapStateToProps, { podcastFetchFavs })(ViewAll);
+export default ViewAll;

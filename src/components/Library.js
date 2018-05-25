@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ScrollView, StatusBar, ListView} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, ScrollView, StatusBar, ListView, RefreshControl} from 'react-native';
 import PlayerBottom from './PlayerBottom';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "./Variables";
 import firebase from 'firebase';
 import ListItemUsers from "./ListItemUsers";
@@ -29,6 +29,21 @@ class Library extends Component{
             });
         });
 
+
+        Variables.state.catchUp = [];
+        firebase.database().ref(`users/${currentUser.uid}/tracking`).on("value", function (snapshot) {
+            snapshot.forEach(function (snap) {
+                firebase.database().ref(`users/${currentUser.uid}/tracking/${snap.val().podcastArtist}/episodes`).on("value", function (snapAgain) {
+                    snapAgain.forEach(function (episode) {
+                        firebase.database().ref(`podcasts/${episode.val().id}`).on("value", function (snapOnceMore) {
+                            Variables.state.catchUp.push(snapOnceMore.val())
+                        })
+                    })
+                })
+            })
+        })
+
+
     }
 
 
@@ -49,7 +64,7 @@ class Library extends Component{
             navBarCustomViewInitialProps: {
                 navigator: this.props.navigator
             },
-            navBarHideOnScroll: true,
+            navBarHideOnScroll: false,
             navBarBackgroundColor: '#fff',
             topBarElevationShadowEnabled: true,
             topBarShadowColor: '#000',
@@ -61,11 +76,53 @@ class Library extends Component{
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.myQueue),
+            dataCatchUp: dataSource.cloneWithRows(Variables.state.catchUp),
+            refreshing: false,
         };
 
         this.interval = setInterval(() => {
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myQueue)})
-        },1000);
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myQueue), dataCatchUp: dataSource.cloneWithRows(Variables.state.catchUp)})
+        },1500);
+
+    };
+
+
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+        const {currentUser} = firebase.auth();
+
+
+        firebase.database().ref(`users/${currentUser.uid}/queue`).on("value", function (snapshot) {
+            Variables.state.myQueue = [];
+            snapshot.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.val().id}`).on("value", function (data) {
+                    if(data.val()){
+                        Variables.state.myQueue.push(data.val())
+                    }
+
+                })
+            });
+        });
+
+
+        Variables.state.catchUp = [];
+        firebase.database().ref(`users/${currentUser.uid}/tracking`).once("value", function (snapshot) {
+            snapshot.forEach(function (snap) {
+                firebase.database().ref(`users/${currentUser.uid}/tracking/${snap.val().podcastArtist}/episodes`).once("value", function (snapAgain) {
+                    snapAgain.forEach(function (episode) {
+                        firebase.database().ref(`podcasts/${episode.val().id}`).once("value", function (snapOnceMore) {
+                            Variables.state.catchUp.push(snapOnceMore.val())
+                        })
+                    })
+                })
+            })
+        });
+
+
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.timeout = setTimeout(() => {
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myQueue), dataCatchUp: dataSource.cloneWithRows(Variables.state.catchUp), refreshing: false})
+        },1500);
 
     };
 
@@ -143,7 +200,18 @@ class Library extends Component{
         }
         else{
             return(
-                <Text style = {styles.titleUpNext}>Nothing is up next...  Add to your queue!</Text>
+                <View style={{paddingBottom: 20}}>
+                <Icon style={{
+                    fontSize: 25,
+                    backgroundColor: 'transparent',
+                    color: '#3e4164',
+                    textAlign: 'center',
+                    marginHorizontal: 15,
+                }} name="md-sad">
+                    <Text style = {styles.titleUpNext}>  Queue is empty...</Text>
+                </Icon>
+                </View>
+
             )
         }
     };
@@ -158,7 +226,13 @@ class Library extends Component{
                     barStyle="dark-content"
                 />
 
-                <ScrollView>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                        />}
+                >
 
 
 
@@ -167,7 +241,7 @@ class Library extends Component{
                             screen: 'CatchUp',
                         });
                     }}>
-                        {this.renderCatchUp(Variables.state.myQueue)}
+                        {this.renderCatchUp(Variables.state.catchUp)}
                     </TouchableOpacity>
 
 
@@ -179,7 +253,7 @@ class Library extends Component{
                                 backgroundColor: 'transparent',
                                 color: '#3e416460',
                                 marginHorizontal: 15,
-                            }} name="chevron-right">
+                            }} name="ios-arrow-forward">
                             </Icon>
                         </View>
                     </TouchableOpacity>
@@ -193,7 +267,21 @@ class Library extends Component{
                                 backgroundColor: 'transparent',
                                 color: '#3e416460',
                                 marginHorizontal: 15,
-                            }} name="chevron-right">
+                            }} name="ios-arrow-forward">
+                            </Icon>
+                        </View>
+                    </TouchableOpacity>
+
+
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 15, marginVertical: 1}} onPress={this.GoToFavs} >
+                        <Text style = {styles.title}>   Favorites</Text>
+                        <View style={{alignSelf:'flex-end'}}>
+                            <Icon style={{
+                                fontSize: 22,
+                                backgroundColor: 'transparent',
+                                color: '#3e416460',
+                                marginHorizontal: 15,
+                            }} name="ios-arrow-forward">
                             </Icon>
                         </View>
                     </TouchableOpacity>
@@ -207,7 +295,7 @@ class Library extends Component{
                                 backgroundColor: 'transparent',
                                 color: '#3e416460',
                                 marginHorizontal: 15,
-                            }} name="chevron-right">
+                            }} name="ios-arrow-forward">
                             </Icon>
                         </View>
                     </TouchableOpacity>
@@ -221,7 +309,7 @@ class Library extends Component{
                                 backgroundColor: 'transparent',
                                 color: '#3e416460',
                                 marginHorizontal: 15,
-                            }} name="chevron-right">
+                            }} name="ios-arrow-forward">
                             </Icon>
                         </View>
                     </TouchableOpacity>
@@ -246,6 +334,7 @@ class Library extends Component{
                     </View>
 
 
+                    <View style={{paddingBottom: 60}}/>
                 </ScrollView>
 
 
@@ -320,11 +409,9 @@ const styles = StyleSheet.create({
         color: '#3e4164',
         flex:1,
         textAlign: 'center',
-        marginTop: 10,
-        marginBottom: 30,
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
-        fontSize: 14,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 18,
         backgroundColor: 'transparent',
     },
 

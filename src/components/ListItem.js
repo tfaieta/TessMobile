@@ -157,6 +157,7 @@ class ListItem extends Component {
                     const {currentUser} = firebase.auth();
                     const user = currentUser.uid;
                     const {podcast} = this.props;
+                    Variables.state.highlight = false;
 
 
                     Analytics.logEvent('play', {
@@ -166,6 +167,7 @@ class ListItem extends Component {
                         'user_id': user
                     });
 
+                    firebase.database().ref(`users/${currentUser.uid}/tracking/${podcastArtist}/episodes/${id}`).remove();
 
 
                     if(rss){
@@ -502,7 +504,7 @@ const styles = {
     container: {
         paddingHorizontal: 0,
         paddingVertical: 10,
-        marginVertical: 0,
+        marginVertical: 1,
         marginHorizontal: 0,
         backgroundColor: '#FFF',
         opacity: 1,

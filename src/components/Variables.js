@@ -64,7 +64,7 @@ class Variables extends Component{
         fromTess : [],
         topCharts: [],
         recentlyPlayed: [],
-        myQueue: [],
+        myQueue: [],    // stores episodes for queue
         playlists: [],  // stores all playlists
         widgets: [],    // stores the titles of widgets for home page, in correct order
         tracking: false, // bool of whether user is tracking certain podcast
@@ -78,6 +78,11 @@ class Variables extends Component{
         userHighlightsAmount: 0, // number of user highlights
         userLikesAmount: 0,  // number of user likes
         userCommentsAmount: 0, // number of user comments
+        highlight: false, // whether item playing is a highlight or not
+        highlightStart: 0,  // start time for current highlight
+        highlightEnd: 0,  // end time for current highlight
+        catchUp: [],    // stores episodes needed to catch up (obtained from tracking)
+        catchUpLength: [],    // stores number of episodes needed to catch up (obtained from tracking)
 
 
         // player variables

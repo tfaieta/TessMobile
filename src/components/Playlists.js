@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ScrollView, TextInput, ListView} from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ScrollView, TextInput, ListView} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Variables from "./Variables";
 import firebase from 'firebase';
-import ListItem from "./ListItem";
-
+import ListItemPlaylist from "./ListItemPlaylist";
 
 
 
@@ -15,7 +14,6 @@ import ListItem from "./ListItem";
 class Playlists extends Component{
 
     componentWillMount = () => {
-
 
         Variables.state.playlists = [];
         const {currentUser} = firebase.auth();
@@ -29,9 +27,6 @@ class Playlists extends Component{
             })
 
         })
-
-
-
 
     };
 
@@ -59,7 +54,7 @@ class Playlists extends Component{
             navBarTextFontSize: 18, // change the font size of the title
             navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
             drawUnderTabBar: false,
-            navBarHideOnScroll: true,
+            navBarHideOnScroll: false,
             navBarBackgroundColor: '#fff',
             topBarElevationShadowEnabled: true,
             topBarShadowColor: '#000',
@@ -94,6 +89,9 @@ class Playlists extends Component{
     };
 
 
+    renderPlaylist(data){
+        return <ListItemPlaylist data={data} navigator={this.props.navigator}  />;
+    }
 
 
     render() {
@@ -102,7 +100,7 @@ class Playlists extends Component{
                 style={styles.container}>
 
 
-                <ScrollView style={{marginBottom: 50, paddingTop: 70}}>
+                <ScrollView style={{paddingTop: 70}}>
 
 
                     <View style={styles.inputContainer}>
@@ -133,47 +131,15 @@ class Playlists extends Component{
                     </View>
 
 
-
                     <ListView
                         showsHorizontalScrollIndicator={false}
                         horizontal={false}
                         enableEmptySections
                         dataSource={this.state.playlists}
-                        renderRow={(data) =>
-                            <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5, paddingBottom: 20}}>
-                                <View style={{flexDirection:'row'}}>
-                                    <View style={{alignSelf:'flex-start'}}>
-                                        <Text style={styles.title}>{data.title}</Text>
-                                    </View>
-
-                                    <View style={{alignSelf:'flex-end', flex:1}}>
-                                        <TouchableOpacity onPress={() => {
-
-
-
-                                        }}  style={{alignSelf:'flex-end', flexDirection:'row', marginTop: 3}}>
-                                            <Icon style={{
-                                                fontSize: 22,
-                                                backgroundColor: 'transparent',
-                                                marginTop: 10,
-                                                color: '#506dcf',
-                                                marginLeft: 10,
-                                                marginRight: 15,
-                                            }} name="plus">
-                                            </Icon>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-
-
-
-
-                            </View>
-                        }
+                        renderRow={(data) => this.renderPlaylist(data)}
                     />
 
-
-
+                    <View style={{paddingBottom: 150}}/>
 
 
                 </ScrollView>

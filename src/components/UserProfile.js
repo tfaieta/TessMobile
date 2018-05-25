@@ -722,7 +722,21 @@ class UserProfile extends Component {
         }
         else if (this.state.tracking == false){
             const {currentUser} = firebase.auth();
-            firebase.database().ref(`users/${currentUser.uid}/tracking`).child(Variables.state.browsingArtist).push(Variables.state.browsingArtist);
+
+            firebase.database().ref(`users/${currentUser.uid}/tracking`).child(Variables.state.browsingArtist).update({podcastArtist: Variables.state.browsingArtist});
+            firebase.database().ref(`users/${Variables.state.browsingArtist}/podcasts`).once("value", function (snapshot) {
+
+                snapshot.forEach(function (snap) {
+                    firebase.database().ref(`podcasts/${snap.val().id}`).once("value", function (episode) {
+                        if(episode.val()){
+                            const {id} = episode.val();
+                            firebase.database().ref(`users/${currentUser.uid}/tracking/${Variables.state.browsingArtist}/episodes/${id}`).update({id})
+                        }
+                    })
+                });
+            });
+
+
             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
             ref.once("value", function(snapshot) {
                 if(snapshot.val().tracking){

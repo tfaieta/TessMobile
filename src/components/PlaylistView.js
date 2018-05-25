@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ScrollView, ListView} from 'react-native';
+import { View, StyleSheet, ListView, Text, ScrollView} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import firebase from 'firebase';
-import ListItemHighlight from "./ListItemHighlight";
+import ListItem from "./ListItem";
 
 
 
+// expanded view of single playlist, from playlists
 
-// displays collection of highlights (in library)
-
-
-class Highlights extends Component{
+class PlaylistView extends Component{
 
     constructor(props){
         super(props);
@@ -32,53 +30,55 @@ class Highlights extends Component{
             topBarShadowRadius: 5,
         });
 
+        let myPlaylist = [];
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
-        let data = [];
         this.state = {
-            myHighlights:   dataSource.cloneWithRows(data),
+            dataSource: dataSource.cloneWithRows(myPlaylist),
             length: 0,
-
         };
 
-
+        const {title} = this.props;
         const {currentUser} = firebase.auth();
-        firebase.database().ref(`users/${currentUser.uid}/highlights`).once("value", function (snapshot) {
+        firebase.database().ref(`users/${currentUser.uid}/playlist/${title}/items`).once("value", function (snapshot) {
             snapshot.forEach(function (snap) {
-                if(snap.val()){
-                    data.push(snap.val());
+                if(snap.val().id){
+                    firebase.database().ref(`podcasts/${snap.val().id}`).once("value", function (snapAgain) {
+                        if(snapAgain.val()){
+                            myPlaylist.push(snapAgain.val());
+                        }
+                    })
                 }
             });
         });
 
         setTimeout(() => {
-            this.setState({myHighlights: dataSource.cloneWithRows(data), length: data.length})
+            this.setState({dataSource: dataSource.cloneWithRows(myPlaylist), length: myPlaylist.length})
         }, 1200)
 
+    }
+
+
+
+    renderRow = (rowData) => {
+        return <ListItem podcast={rowData} navigator={this.props.navigator} />;
     };
 
-
-
-
-
-    renderRow = (data) => {
-        return <ListItemHighlight highlight={data} navigator={this.props.navigator}  />;
-    };
 
 
 
     render() {
         return (
             <View
-                style={styles.container}>
+                style={styles.containerMain}>
 
 
                 <ScrollView>
 
-                    <Text style={styles.title}>{this.state.length} highlights</Text>
+                    <Text style={styles.title}>{this.state.length} episodes</Text>
 
                     <ListView
                         enableEmptySections
-                        dataSource={this.state.myHighlights}
+                        dataSource={this.state.dataSource}
                         renderRow={this.renderRow}
                     />
 
@@ -91,7 +91,9 @@ class Highlights extends Component{
 
 
 
+
                 <PlayerBottom navigator={this.props.navigator}/>
+
 
             </View>
 
@@ -103,23 +105,24 @@ class Highlights extends Component{
 }
 
 const styles = StyleSheet.create({
-    container:{
+    containerMain:{
         flex: 1,
         backgroundColor: '#f5f4f9',
     },
 
     title: {
-        backgroundColor: 'transparent',
         color: '#506dcf',
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 18,
         marginTop: 80,
-        paddingVertical: 10,
-        marginBottom: 1,
+        marginBottom: 15,
+        backgroundColor: 'transparent',
     },
 
 });
 
-export default Highlights;
+
+
+export default PlaylistView;

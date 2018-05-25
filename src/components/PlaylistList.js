@@ -3,13 +3,13 @@ import { Text, View, StyleSheet, TouchableOpacity, ScrollView, ListView} from 'r
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "./Variables";
 import firebase from 'firebase';
-import ListItemQueue from "./ListItemQueue";
-import ListItemCatchUp from "./ListItemCatchUp";
+import ListItemAddtoPlaylist from "./ListItemAddtoPlaylist";
 
 
-// catch up pop up for library page (x episodes left...)
 
-class CatchUp extends Component{
+// list view containing all of your playlists when choosing to add to a playlist
+
+class PlaylistList extends Component{
 
     static navigatorStyle = {
         statusBarHidden: false,
@@ -17,13 +17,18 @@ class CatchUp extends Component{
     };
 
     componentWillMount(){
-        const {currentUser} = firebase.auth();
 
-        Variables.state.catchUpLength = [];
-        firebase.database().ref(`users/${currentUser.uid}/tracking`).once("value", function (snapshot) {
-            snapshot.forEach(function (snap) {
-                Variables.state.catchUpLength.push(snap.val());
+        Variables.state.playlists = [];
+        const {currentUser} = firebase.auth();
+        firebase.database().ref(`users/${currentUser.uid}/playlist`).once("value", function (snapshot) {
+
+            snapshot.forEach(function (data) {
+                if(data.val()){
+                    Variables.state.playlists.push(data.val());
+                }
+
             })
+
         })
 
     }
@@ -38,11 +43,11 @@ class CatchUp extends Component{
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithRows(Variables.state.catchUpLength),
+            dataSource: dataSource.cloneWithRows(Variables.state.playlists),
         };
 
         this.interval = setInterval(() => {
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.catchUpLength)})
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.playlists)})
         },1000);
 
     };
@@ -56,7 +61,8 @@ class CatchUp extends Component{
 
 
     renderRow = (rowData) => {
-        return <ListItemCatchUp podcast={rowData} navigator={this.props.navigator} />;
+        const {id} = this.props;
+        return <ListItemAddtoPlaylist data={rowData} id = {id} navigator={this.props.navigator} />;
     };
 
 
@@ -77,7 +83,7 @@ class CatchUp extends Component{
                             </TouchableOpacity>
                         </View>
                         <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                            <Text style={styles.header}>Tracked List</Text>
+                            <Text style={styles.header}>Select a Playlist</Text>
                         </View>
 
                         <View>
@@ -117,7 +123,12 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#fff',
-        marginTop: 10,
+        borderColor: '#fff',
+        borderWidth: 1,
+        marginTop: 20,
+        marginHorizontal: 20,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
     },
 
     title: {
@@ -131,6 +142,14 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 20,
         backgroundColor: 'transparent'
+    },
+
+    contentTitle: {
+        color: 'rgba(1,170,170,1)',
+        fontSize: 25,
+        paddingBottom: 20,
+        marginLeft: 20,
+
     },
 
     header: {
@@ -147,4 +166,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default CatchUp;
+export default PlaylistList;
