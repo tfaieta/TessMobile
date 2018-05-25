@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ScrollView, StatusBar, ListView} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, ScrollView, StatusBar, ListView, RefreshControl} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "./Variables";
@@ -77,11 +77,52 @@ class Library extends Component{
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.myQueue),
             dataCatchUp: dataSource.cloneWithRows(Variables.state.catchUp),
+            refreshing: false,
         };
 
         this.interval = setInterval(() => {
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myQueue), dataCatchUp: dataSource.cloneWithRows(Variables.state.catchUp)})
-        },1000);
+        },1500);
+
+    };
+
+
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+        const {currentUser} = firebase.auth();
+
+
+        firebase.database().ref(`users/${currentUser.uid}/queue`).on("value", function (snapshot) {
+            Variables.state.myQueue = [];
+            snapshot.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.val().id}`).on("value", function (data) {
+                    if(data.val()){
+                        Variables.state.myQueue.push(data.val())
+                    }
+
+                })
+            });
+        });
+
+
+        Variables.state.catchUp = [];
+        firebase.database().ref(`users/${currentUser.uid}/tracking`).once("value", function (snapshot) {
+            snapshot.forEach(function (snap) {
+                firebase.database().ref(`users/${currentUser.uid}/tracking/${snap.val().podcastArtist}/episodes`).once("value", function (snapAgain) {
+                    snapAgain.forEach(function (episode) {
+                        firebase.database().ref(`podcasts/${episode.val().id}`).once("value", function (snapOnceMore) {
+                            Variables.state.catchUp.push(snapOnceMore.val())
+                        })
+                    })
+                })
+            })
+        });
+
+
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.timeout = setTimeout(() => {
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myQueue), dataCatchUp: dataSource.cloneWithRows(Variables.state.catchUp), refreshing: false})
+        },1500);
 
     };
 
@@ -185,7 +226,13 @@ class Library extends Component{
                     barStyle="dark-content"
                 />
 
-                <ScrollView>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                        />}
+                >
 
 
 
@@ -287,6 +334,7 @@ class Library extends Component{
                     </View>
 
 
+                    <View style={{paddingBottom: 60}}/>
                 </ScrollView>
 
 

@@ -738,7 +738,7 @@ class UserProfileModal extends Component {
                     firebase.database().ref(`podcasts/${snap.val().id}`).once("value", function (episode) {
                         if(episode.val()){
                             const {id} = episode.val();
-                            firebase.database().ref(`users/${currentUser.uid}/tracking/${Variables.state.browsingArtist}/episodes`).push({id})
+                            firebase.database().ref(`users/${currentUser.uid}/tracking/${Variables.state.browsingArtist}/episodes/${id}`).update({id})
                         }
                     })
                 });
