@@ -4,7 +4,10 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "./Variables";
 import firebase from 'firebase';
 import ListItemQueue from "./ListItemQueue";
+import ListItemCatchUp from "./ListItemCatchUp";
 
+
+// catch up pop up for library page (x episodes left...)
 
 class CatchUp extends Component{
 
@@ -16,18 +19,12 @@ class CatchUp extends Component{
     componentWillMount(){
         const {currentUser} = firebase.auth();
 
-
-        firebase.database().ref(`users/${currentUser.uid}/queue`).on("value", function (snapshot) {
-            Variables.state.myQueue = [];
+        Variables.state.catchUpLength = [];
+        firebase.database().ref(`users/${currentUser.uid}/tracking`).once("value", function (snapshot) {
             snapshot.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.val().id}`).on("value", function (data) {
-                    if(data.val()){
-                        Variables.state.myQueue.push(data.val())
-                    }
-
-                })
-            });
-        });
+                Variables.state.catchUpLength.push(snap.val());
+            })
+        })
 
     }
 
@@ -41,11 +38,11 @@ class CatchUp extends Component{
         super(props);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithRows(Variables.state.myQueue),
+            dataSource: dataSource.cloneWithRows(Variables.state.catchUpLength),
         };
 
         this.interval = setInterval(() => {
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myQueue)})
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.catchUpLength)})
         },1000);
 
     };
@@ -59,7 +56,7 @@ class CatchUp extends Component{
 
 
     renderRow = (rowData) => {
-        return <ListItemQueue podcast={rowData} navigator={this.props.navigator} />;
+        return <ListItemCatchUp podcast={rowData} navigator={this.props.navigator} />;
     };
 
 
@@ -120,12 +117,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#fff',
-        borderColor: '#fff',
-        borderWidth: 1,
-        marginTop: 20,
-        marginHorizontal: 20,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
+        marginTop: 10,
     },
 
     title: {
@@ -139,14 +131,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 20,
         backgroundColor: 'transparent'
-    },
-
-    contentTitle: {
-        color: 'rgba(1,170,170,1)',
-        fontSize: 25,
-        paddingBottom: 20,
-        marginLeft: 20,
-
     },
 
     header: {

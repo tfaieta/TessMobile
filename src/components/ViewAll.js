@@ -98,36 +98,8 @@ class ViewAll extends Component{
 const styles = StyleSheet.create({
     containerMain:{
         flex: 1,
-        backgroundColor: 'transparent',
+        backgroundColor: '#f5f4f9',
     },
-
-
-    title: {
-        color: '#2A2A30',
-        marginTop: 0,
-        flex:1,
-        textAlign: 'left',
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 15,
-        backgroundColor: 'transparent',
-        marginHorizontal: 20,
-
-    },
-
-    header: {
-        marginTop:25,
-        marginLeft: -35,
-        color: '#2A2A30',
-        textAlign: 'center',
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
-        backgroundColor: 'transparent',
-
-    },
-
 
 });
 

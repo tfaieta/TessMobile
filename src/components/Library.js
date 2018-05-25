@@ -29,6 +29,21 @@ class Library extends Component{
             });
         });
 
+
+        Variables.state.catchUp = [];
+        firebase.database().ref(`users/${currentUser.uid}/tracking`).on("value", function (snapshot) {
+            snapshot.forEach(function (snap) {
+                firebase.database().ref(`users/${currentUser.uid}/tracking/${snap.val().podcastArtist}/episodes`).on("value", function (snapAgain) {
+                    snapAgain.forEach(function (episode) {
+                        firebase.database().ref(`podcasts/${episode.val().id}`).on("value", function (snapOnceMore) {
+                            Variables.state.catchUp.push(snapOnceMore.val())
+                        })
+                    })
+                })
+            })
+        })
+
+
     }
 
 
@@ -61,10 +76,11 @@ class Library extends Component{
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.myQueue),
+            dataCatchUp: dataSource.cloneWithRows(Variables.state.catchUp),
         };
 
         this.interval = setInterval(() => {
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myQueue)})
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myQueue), dataCatchUp: dataSource.cloneWithRows(Variables.state.catchUp)})
         },1000);
 
     };
@@ -178,7 +194,7 @@ class Library extends Component{
                             screen: 'CatchUp',
                         });
                     }}>
-                        {this.renderCatchUp(Variables.state.myQueue)}
+                        {this.renderCatchUp(Variables.state.catchUp)}
                     </TouchableOpacity>
 
 

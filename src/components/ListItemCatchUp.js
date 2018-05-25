@@ -1,42 +1,60 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, ListView,} from 'react-native';
+import { Text, View, TouchableOpacity, ListView, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from 'firebase';
 import ListItemUsers from "./ListItemUsers";
+import Variables from "./Variables";
+var Analytics = require('react-native-firebase-analytics');
+
+var {height, width} = Dimensions.get('window');
 
 
 
 // A single playlist in Playlist.js
 
-class ListItemPlaylist extends Component {
+class ListItemCatchUp extends Component {
 
 
     constructor(state) {
         super(state);
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
-        let myPlaylist = [];
+        let podcast = [];
 
         this.state ={
-            playlist: dataSource.cloneWithRows(myPlaylist),
-            length: 0
+            podcast: dataSource.cloneWithRows(podcast),
+            length: 0,
+            username: '',
+            podcastData: podcast,
         };
 
-        const {title} = this.props.data;
+        const {podcastArtist} = this.props.podcast;
         const {currentUser} = firebase.auth();
-        firebase.database().ref(`users/${currentUser.uid}/playlist/${title}/items`).once("value", function (snapshot) {
+        firebase.database().ref(`users/${currentUser.uid}/tracking/${podcastArtist}/episodes`).once("value", function (snapshot) {
             snapshot.forEach(function (snap) {
                 if(snap.val().id){
                     firebase.database().ref(`podcasts/${snap.val().id}`).once("value", function (snapAgain) {
                         if(snapAgain.val()){
-                            myPlaylist.push(snapAgain.val());
+                            podcast.push(snapAgain.val());
                         }
                     })
                 }
             });
         });
 
+        let username = '';
+        firebase.database().ref(`users/${podcastArtist}/username`).once("value", function (snap) {
+            if(snap.val()){
+                if(snap.val().username.length > 16){
+                    username = snap.val().username.slice(0,13) + '...'
+                }
+                else{
+                    username = snap.val().username;
+                }
+            }
+        });
+
         setTimeout(() => {
-            this.setState({playlist: dataSource.cloneWithRows(myPlaylist), length: myPlaylist.length})
+            this.setState({podcast: dataSource.cloneWithRows(podcast), podcastData: podcast, length: podcast.length, username: username})
         }, 1200)
 
 
@@ -50,33 +68,34 @@ class ListItemPlaylist extends Component {
 
 
     render() {
-        const {title} = this.props.data;
 
         return (
 
             <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5, paddingBottom: 20}}>
                 <View style={{flexDirection:'row'}}>
                     <View style={{alignSelf:'flex-start'}}>
-                        <Text style={styles.title}>{title}     <Text style={styles.smallTitle}>{this.state.length} episodes</Text></Text>
+                        <Text style={styles.title}>{this.state.username}     <Text style={styles.smallTitle}>{this.state.length} episodes</Text></Text>
                     </View>
 
                     <View style={{alignSelf:'flex-end', flex:1}}>
                         <TouchableOpacity onPress={() => {
-                            const {navigator} = this.props;
-                            navigator.push({
-                                screen: 'PlaylistView',
+                            const title = this.state.username;
+
+                            this.props.navigator.push({
+                                screen: 'ViewAll',
                                 title: title,
-                                passProps: {title, navigator}
-                            })
-                        }}  style={{alignSelf:'flex-end', flexDirection:'row', marginTop: 3}}>
+                                passProps: {data: this.state.podcastData, title},
+                            });
+
+                        }} style={{alignSelf:'flex-end', flexDirection:'row', marginTop: 3}}>
+                            <Text style={styles.viewAll}>View all</Text>
                             <Icon style={{
-                                fontSize: 22,
+                                fontSize: 18,
                                 backgroundColor: 'transparent',
-                                marginTop: 10,
+                                marginTop: 20,
                                 color: '#506dcf',
-                                marginLeft: 10,
-                                marginRight: 15,
-                            }} name="plus">
+                                marginHorizontal: 3
+                            }} name="angle-right">
                             </Icon>
                         </TouchableOpacity>
                     </View>
@@ -87,7 +106,7 @@ class ListItemPlaylist extends Component {
                     showsHorizontalScrollIndicator={false}
                     horizontal={true}
                     enableEmptySections
-                    dataSource={this.state.playlist}
+                    dataSource={this.state.podcast}
                     renderRow={(data) => this.renderRow(data)}
                 />
 
@@ -120,9 +139,20 @@ const styles = {
         paddingLeft: 20,
         backgroundColor: 'transparent',
     },
+    viewAll: {
+        color: '#506dcf',
+        textAlign: 'right',
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 12,
+        marginTop: 22,
+        marginRight: 4,
+        paddingBottom: 10,
+        backgroundColor: 'transparent',
+    },
 };
 
 
 
 
-export default ListItemPlaylist;
+export default ListItemCatchUp;
