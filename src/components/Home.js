@@ -1722,9 +1722,10 @@ class Home extends Component{
 
         if(currentUser.uid == "pgIx9JAiq9aQWcyUZX8AuIdqNmP2" || currentUser.uid == "sJsB8XK4XRZ8tNpeGC14JNsa6Jj1"){
             return(
-                <TouchableOpacity style = {{marginVertical: 40, marginHorizontal: 10, backgroundColor: '#506dcf',}} onPress = {this.rssFetch}>
-                    <Text style = {{color: "#fff", fontSize: 22, textAlign: 'center', padding: 15}}>Fetch RSS Feeds</Text>
+                <TouchableOpacity onPress={this.rssFetch}>
+                    <Text style={styles.titleFetch}>Fetch Feeds</Text>
                 </TouchableOpacity>
+
             )
         }
     }
@@ -2344,7 +2345,7 @@ class Home extends Component{
 
 
                         {this.renderAddWidget(Variables.state.podcastArtist)}
-
+                        {this.renderRSSFetcher()}
 
 
                         <Player/>
@@ -2380,6 +2381,7 @@ class Home extends Component{
                                 }}>
                                     <Text style={styles.titleAdd}>Add a widget</Text>
                                 </TouchableOpacity>
+                                {this.renderRSSFetcher()}
                             </View>
                         </ScrollView>
 
@@ -2468,6 +2470,17 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 14,
         marginVertical: 15,
+        marginHorizontal: 20,
+        backgroundColor: 'transparent',
+    },
+    titleFetch: {
+        color: '#506dcf',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 14,
+        marginTop: 5,
+        marginBottom: 15,
         marginHorizontal: 20,
         backgroundColor: 'transparent',
     },
