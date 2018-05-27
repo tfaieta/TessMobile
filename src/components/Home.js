@@ -1722,7 +1722,7 @@ class Home extends Component{
 
         if(currentUser.uid == "pgIx9JAiq9aQWcyUZX8AuIdqNmP2" || currentUser.uid == "sJsB8XK4XRZ8tNpeGC14JNsa6Jj1"){
             return(
-                <View>
+                <View style={{marginVertical: 10}}>
                     <TouchableOpacity onPress={this.rssFetch}>
                         <Text style={styles.titleFetch}>Fetch Feeds</Text>
                     </TouchableOpacity>
@@ -1886,7 +1886,7 @@ class Home extends Component{
 
     }
 
-    renderRowCard(podcast) {
+    renderRowCard = (podcast) => {
         return (
             <View style = {{marginHorizontal: 10, marginBottom: 7}}>
                 <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20 }}>
@@ -2190,7 +2190,7 @@ class Home extends Component{
             </View>
 
         );
-    }
+    };
 
 
 
@@ -2211,13 +2211,53 @@ class Home extends Component{
                     <View
                         style={styles.container}>
 
-
-                        <SortableListView
+                        <ScrollView
+                            style={{paddingTop:10}}
+                            scrollEnabled = {this.state.scroll}
                             refreshControl={
                                 <RefreshControl
                                     refreshing={this.state.refreshing}
                                     onRefresh={this._onRefresh.bind(this)}
                                 />}
+                        >
+
+                            <View>
+                                <ScrollView scrollEnabled = {false}>
+                                    <SwipeCards
+                                        cards={this.state.data}
+                                        renderCard={this.renderRowCard}
+                                        dragY={false}
+                                        smoothTransition={true}
+                                        hasMaybeAction={true}
+                                        showYup={false}
+                                        handleNope={() => {
+                                            this.setState({cardsLeft: this.state.cardsLeft - 1});
+                                            this.forceUpdate();
+                                        }}
+                                        handleYup={() => {
+                                            this.setState({cardsLeft: this.state.cardsLeft - 1});
+                                            this.forceUpdate();
+                                        }}
+                                        showNope={false}
+                                        showMaybe={false}
+                                        renderNoMoreCards={() =>
+                                            <View style = {{marginHorizontal: 10, marginVertical: 7}}>
+                                                <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20, paddingVertical: 60 }}>
+                                                    <Text style={styles.title}>You're all caught up!</Text>
+                                                </View>
+                                            </View>
+                                        }
+                                    />
+                                </ScrollView>
+                                <View style={{backgroundColor: '#d15564', width: 40, height: 40, marginTop: -6,
+                                    borderRadius: 25, alignSelf: 'flex-end', position: 'absolute'}} >
+                                    <Text style={styles.numLeftText}>
+                                        {this.state.cardsLeft}
+                                    </Text>
+                                </View>
+                            </View>
+
+                        <SortableListView
                             style={{flex:1}}
                             data={this.state.widgets}
                             order={this.state.order}
@@ -2236,6 +2276,7 @@ class Home extends Component{
 
                                 }
                             }}
+
                             renderRow={(row) => {
 
                                 let data = Variables.state.widgets;
@@ -2248,39 +2289,7 @@ class Home extends Component{
                                     if(data[position].title == "Catch Up"){
                                         return(
                                                 <View>
-                                                    <ScrollView scrollEnabled = {false}>
-                                                        <SwipeCards
-                                                            cards={this.state.data}
-                                                            renderCard={(cardData) => this.renderRowCard(cardData)}
-                                                            dragY={false}
-                                                            smoothTransition={true}
-                                                            hasMaybeAction={true}
-                                                            showYup={false}
-                                                            handleNope={() => {
-                                                                this.setState({cardsLeft: this.state.cardsLeft - 1});
-                                                                this.forceUpdate();
-                                                            }}
-                                                            handleYup={() => {
-                                                                this.setState({cardsLeft: this.state.cardsLeft - 1});
-                                                                this.forceUpdate();
-                                                            }}
-                                                            showNope={false}
-                                                            showMaybe={false}
-                                                            renderNoMoreCards={() =>
-                                                                <View style = {{marginHorizontal: 10, marginVertical: 7}}>
-                                                                    <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20, paddingVertical: 60 }}>
-                                                                        <Text style={styles.title}>You're all caught up!</Text>
-                                                                    </View>
-                                                                </View>
-                                                            }
-                                                        />
-                                                    </ScrollView>
-                                                    <View style={{backgroundColor: '#d15564', width: 40, height: 40, marginTop: -6,
-                                                        borderRadius: 25, alignSelf: 'flex-end', position: 'absolute'}} >
-                                                        <Text style={styles.numLeftText}>
-                                                            {this.state.cardsLeft}
-                                                        </Text>
-                                                    </View>
+
                                                 </View>
                                         )
                                     }
@@ -2349,6 +2358,7 @@ class Home extends Component{
                         {this.renderAddWidget(Variables.state.podcastArtist)}
                         {this.renderRSSFetcher()}
 
+                        </ScrollView>
 
                         <Player/>
                         <PlayerBottom navigator={this.props.navigator}/>
