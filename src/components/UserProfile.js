@@ -54,7 +54,8 @@ class UserProfile extends Component {
                 if(Variables.state.browsingArtist == data.val().podcastArtist) {
                     Variables.state.userPodcasts.push(data.val());
                 }
-            })
+            });
+            Variables.state.userPodcasts.reverse();
         });
 
         refFol.on("value", function (snapshot) {
@@ -324,7 +325,8 @@ class UserProfile extends Component {
                 if(Variables.state.browsingArtist == data.val().podcastArtist) {
                     Variables.state.userPodcasts.push(data.val());
                 }
-            })
+            });
+            Variables.state.userPodcasts.reverse();
         });
 
         refFol.on("value", function (snapshot) {

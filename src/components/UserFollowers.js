@@ -109,7 +109,7 @@ static navigatorStyle = {
                 style={styles.container}>
 
 
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, borderWidth: 2,borderBottomColor: 'rgba(187,188,205,0.3)', borderTopColor: '#fff', borderLeftColor: '#fff', borderRightColor: '#fff'}}>
+                <View style={{backgroundColor: '#fff', flexDirection: 'row', paddingVertical:5, paddingBottom: 15, borderWidth: 2,borderBottomColor: 'rgba(187,188,205,0.3)', borderTopColor: '#fff', borderLeftColor: '#fff', borderRightColor: '#fff'}}>
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
@@ -154,7 +154,7 @@ static navigatorStyle = {
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: 'transparent',
+        backgroundColor: '#f5f4f9',
     },
     container2: {
         paddingHorizontal: 0,
@@ -168,30 +168,6 @@ const styles = StyleSheet.create({
         borderRadius: 0,
         borderStyle: 'solid',
         flexDirection: 'row',
-    },
-
-    title: {
-        color: '#804cc8',
-        marginTop: 70,
-        flex:1,
-        textAlign: 'center',
-        opacity: 2,
-        fontStyle: 'normal',
-        fontFamily: 'Futura',
-        fontSize: 25,
-        backgroundColor: 'transparent'
-    },
-    title2: {
-        color:  '#2A2A30',
-        marginTop: 20,
-        flex:1,
-        textAlign: 'left',
-        paddingLeft: 0,
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W3',
-        fontSize: 18,
-        backgroundColor: 'transparent'
     },
 
     contentTitle: {

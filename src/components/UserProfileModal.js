@@ -54,7 +54,8 @@ class UserProfileModal extends Component {
                 if(Variables.state.browsingArtist == data.val().podcastArtist) {
                     Variables.state.userPodcasts.push(data.val());
                 }
-            })
+            });
+            Variables.state.userPodcasts.reverse();
         });
 
         refFol.on("value", function (snapshot) {
@@ -332,7 +333,8 @@ class UserProfileModal extends Component {
             Variables.state.userFollowers = [];
             snapshot.forEach(function (data) {
                 Variables.state.userFollowers.push(data.key);
-            })
+            });
+            Variables.state.userPodcasts.reverse();
         });
 
         refFollowing.on("value", function (snapshot) {
