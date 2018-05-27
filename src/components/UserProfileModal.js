@@ -215,6 +215,21 @@ class UserProfileModal extends Component {
 
         }
 
+        Variables.state.userRecentlyPlayed = [];
+        firebase.database().ref(`users/${Variables.state.browsingArtist}/recentlyPlayed`).limitToLast(10).once("value", function (snapshot) {
+            snapshot.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.val().id}`).once("value", function (data) {
+                    if(data.val()){
+                        Variables.state.userRecentlyPlayed.push(data.val())
+                    }
+                })
+            });
+
+            setTimeout(()=>{
+                Variables.state.userRecentlyPlayed.reverse();
+            }, 500);
+        });
+
 
     }
 
@@ -257,6 +272,7 @@ class UserProfileModal extends Component {
             userHighlights: 0,
             userLikes: 0,
             userShares: 0,
+            dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
         };
         this.timeout = setTimeout(() =>{
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
@@ -268,6 +284,7 @@ class UserProfileModal extends Component {
                 userHighlights: Variables.state.userHighlightsAmount,
                 userLikes: Variables.state.userLikesAmount,
                 userShares: Variables.state.userSharesAmount,
+                dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
             })
         },500);
         this.timeout2 = setTimeout(() =>{
@@ -280,6 +297,7 @@ class UserProfileModal extends Component {
                 userHighlights: Variables.state.userHighlightsAmount,
                 userLikes: Variables.state.userLikesAmount,
                 userShares: Variables.state.userSharesAmount,
+                dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
             })
         },3500)
     }
@@ -468,6 +486,21 @@ class UserProfileModal extends Component {
 
         }
 
+        Variables.state.userRecentlyPlayed = [];
+        firebase.database().ref(`users/${Variables.state.browsingArtist}/recentlyPlayed`).limitToLast(10).once("value", function (snapshot) {
+            snapshot.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.val().id}`).once("value", function (data) {
+                    if(data.val()){
+                        Variables.state.userRecentlyPlayed.push(data.val())
+                    }
+                })
+            });
+
+            setTimeout(()=>{
+                Variables.state.userRecentlyPlayed.reverse();
+            }, 500);
+        });
+
 
     }
 
@@ -492,6 +525,7 @@ class UserProfileModal extends Component {
                 userHighlights: Variables.state.userHighlightsAmount,
                 userLikes: Variables.state.userLikesAmount,
                 userShares: Variables.state.userSharesAmount,
+                dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
             })
         },500);
         this.timeout2 = setTimeout(() =>{
@@ -504,6 +538,7 @@ class UserProfileModal extends Component {
                 userHighlights: Variables.state.userHighlightsAmount,
                 userLikes: Variables.state.userLikesAmount,
                 userShares: Variables.state.userSharesAmount,
+                dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
             })
         },3500)
 
@@ -511,23 +546,6 @@ class UserProfileModal extends Component {
     }
 
 
-
-    _renderPodcast(PodcastTitle){
-
-        if(Variables.state.podcastTitle == '') {
-            return (
-                <Text style={styles.playingText}> </Text>
-            )
-        }
-        else{
-            return (
-                <Icon style={{textAlign:'left', marginLeft: 20,fontSize: 35,color:'#804cc8' }} name="ios-play">
-                    <Text style={styles.title} >  {PodcastTitle}</Text>
-                </Icon>
-            )
-        }
-
-    }
 
     _renderProfileName = () => {
 
@@ -3214,6 +3232,34 @@ class UserProfileModal extends Component {
     };
 
 
+    renderRecent(data){
+        if(data.length > 0){
+            return(
+                <View style={{backgroundColor: '#fff', marginHorizontal: 8, marginVertical: 15, borderRadius: 10}}>
+                    <Text style={styles.myContentTitle}>Recently Listened</Text>
+                    <View style={{flexDirection: 'row', marginTop: 10}}>
+                        <ListView
+                            enableEmptySections
+                            horizontal={true}
+                            dataSource={this.state.dataSourceRecent}
+                            renderRow={this.renderRow}
+                        />
+                    </View>
+                </View>
+            )
+        }
+        else{
+            return(
+                <View style={{backgroundColor: '#fff', marginHorizontal: 8, marginVertical: 15, borderRadius: 10}}>
+                    <Text style={styles.myContentTitle}>Recently Listened</Text>
+                    <View>
+                        <Text style={styles.titleSmall}>No recent listening activity</Text>
+                    </View>
+                </View>
+            )
+        }
+    }
+
 
 
     render() {
@@ -3376,50 +3422,9 @@ class UserProfileModal extends Component {
                         </View>
 
 
-
                         {this.renderAchievements()}
 
-
-
-
-                        <View style={{backgroundColor: '#fff', marginHorizontal: 8, marginVertical: 15, borderRadius: 10}}>
-                            <Text style={styles.myContentTitle}>Listening Trends</Text>
-                            <View style={{flexDirection: 'row', marginTop: 10}}>
-                                <TouchableOpacity style ={{flex:1}}>
-                                    <Image
-                                        style={{width: 60, height: 60, alignSelf: 'center', opacity: 1,}}
-                                        source={require('tess/src/images/currEvents-cat.png')}
-                                    />
-                                    <Text style={styles.smallTitle}>Current Events</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style ={{flex:1}}>
-                                    <Image
-                                        style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 1,}}
-                                        source={require('tess/src/images/sports-cat.png')}
-                                    />
-                                    <Text style={styles.smallTitle}>Sports</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style ={{flex:1}}>
-                                    <Image
-                                        style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1,}}
-                                        source={require('tess/src/images/gaming-cat.png')}
-                                    />
-                                    <Text style={styles.smallTitle}>Gaming</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style ={{flex:1}}>
-                                    <Image
-                                        style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1,}}
-                                        source={require('tess/src/images/entertainment-cat.png')}
-                                    />
-                                    <Text style={styles.smallTitle}>Entertainment</Text>
-                                </TouchableOpacity>
-
-
-                            </View>
-
-                        </View>
-
-
+                        {this.renderRecent(Variables.state.userRecentlyPlayed)}
 
 
 
@@ -3510,7 +3515,17 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
 
     },
-
+    titleSmall: {
+        color: '#3e4164',
+        paddingVertical: 10,
+        textAlign: 'center',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/26,
+        backgroundColor: 'transparent',
+        marginHorizontal: 5,
+    },
     myContentTitle: {
         color: '#3e4164',
         paddingVertical: 10,

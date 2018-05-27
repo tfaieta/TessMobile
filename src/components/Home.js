@@ -328,7 +328,7 @@ class Home extends Component{
                 hasRecent = true;
 
 
-                firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).on("value", function (snapshot) {
+                firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).limitToLast(20).on("value", function (snapshot) {
                     Variables.state.recentlyPlayed = [];
                     snapshot.forEach(function (snap) {
                         firebase.database().ref(`podcasts/${snap.val().id}`).on("value", function (data) {

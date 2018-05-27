@@ -188,6 +188,21 @@ class Account extends Component {
         });
 
 
+        firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).limitToLast(10).once("value", function (snapshot) {
+            Variables.state.recentlyPlayed = [];
+            snapshot.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.val().id}`).once("value", function (data) {
+                    if(data.val()){
+                        Variables.state.recentlyPlayed.push(data.val())
+                    }
+                })
+            });
+
+            setTimeout(()=>{
+                Variables.state.recentlyPlayed.reverse();
+            }, 500);
+        });
+
 
     }
 
@@ -232,8 +247,9 @@ class Account extends Component {
             myHighlights: 0,
             myLikes: 0,
             myShares: 0,
+            dataSourceRecent: dataSource.cloneWithRows(Variables.state.recentlyPlayed)
         };
-        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username, profileImage: Variables.state.profileImage, playTime: Variables.state.myPlayTime, myComments: Variables.state.myCommentsAmount, myTracking: Variables.state.myTrackingAmount, myLikes: Variables.state.myLikesAmount, myHighlights: Variables.state.myHighlightsAmount, myShares: Variables.state.mySharesAmount})},1000)
+        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username, profileImage: Variables.state.profileImage, playTime: Variables.state.myPlayTime, myComments: Variables.state.myCommentsAmount, myTracking: Variables.state.myTrackingAmount, myLikes: Variables.state.myLikesAmount, myHighlights: Variables.state.myHighlightsAmount, myShares: Variables.state.mySharesAmount, dataSourceRecent: dataSource.cloneWithRows(Variables.state.recentlyPlayed)})},1000)
     }
 
 
@@ -2813,6 +2829,35 @@ class Account extends Component {
     };
 
 
+    renderRecent(data){
+        if(data.length > 0){
+            return(
+                <View style={{backgroundColor: '#fff', marginHorizontal: 8, marginVertical: 15, borderRadius: 10}}>
+                    <Text style={styles.myContentTitle}>Recently Listened</Text>
+                    <View style={{flexDirection: 'row', marginTop: 10}}>
+                        <ListView
+                            enableEmptySections
+                            horizontal={true}
+                            dataSource={this.state.dataSourceRecent}
+                            renderRow={this.renderRow}
+                        />
+                    </View>
+                </View>
+            )
+        }
+        else{
+            return(
+                <View style={{backgroundColor: '#fff', marginHorizontal: 8, marginVertical: 15, borderRadius: 10}}>
+                    <Text style={styles.myContentTitle}>Recently Listened</Text>
+                    <View>
+                        <Text style={styles.titleSmall}>No recent listening activity</Text>
+                    </View>
+                </View>
+            )
+        }
+    }
+
+
     render() {
         return (
             <View
@@ -2854,59 +2899,9 @@ class Account extends Component {
 
 
 
-
-
                     {this.renderAchievements()}
 
-
-
-
-                    <View style={{backgroundColor: '#fff', marginHorizontal: 8, marginVertical: 15, borderRadius: 10}}>
-                        <Text style={styles.myContentTitle}>Listening Trends</Text>
-                        <View style={{flexDirection: 'row', marginTop: 10}}>
-                            <TouchableOpacity style ={{flex:1}}>
-                                <Image
-                                    style={{width: 60, height: 60, alignSelf: 'center', opacity: 1,}}
-                                    source={require('tess/src/images/currEvents-cat.png')}
-                                />
-                                <Text style={styles.smallTitle}>Current Events</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style ={{flex:1}}>
-                                <Image
-                                    style={{ width: 60, height: 60,  alignSelf: 'center', opacity: 1,}}
-                                    source={require('tess/src/images/sports-cat.png')}
-                                />
-                                <Text style={styles.smallTitle}>Sports</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style ={{flex:1}}>
-                                <Image
-                                    style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1,}}
-                                    source={require('tess/src/images/gaming-cat.png')}
-                                />
-                                <Text style={styles.smallTitle}>Gaming</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style ={{flex:1}}>
-                                <Image
-                                    style={{ width: 60, height: 60,   alignSelf: 'center', opacity: 1,}}
-                                    source={require('tess/src/images/entertainment-cat.png')}
-                                />
-                                <Text style={styles.smallTitle}>Entertainment</Text>
-                            </TouchableOpacity>
-
-
-                        </View>
-
-                    </View>
-
-
-
-
-
-
-
-
-
-
+                    {this.renderRecent(Variables.state.recentlyPlayed)}
 
 
 
@@ -2973,15 +2968,16 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         backgroundColor: 'transparent',
     },
-    header: {
-        marginTop: 25,
-        marginLeft: -12,
-        color: '#2A2A30',
+    titleSmall: {
+        color: '#3e4164',
+        paddingVertical: 10,
         textAlign: 'center',
+        opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: width/23.44,
+        fontSize: width/26,
         backgroundColor: 'transparent',
+        marginHorizontal: 5,
     },
 
     title: {

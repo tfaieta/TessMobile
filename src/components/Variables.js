@@ -63,7 +63,8 @@ class Variables extends Component{
         selectedByTess: [],
         fromTess : [],
         topCharts: [],
-        recentlyPlayed: [],
+        recentlyPlayed: [], // my recently played
+        userRecentlyPlayed: [], // user recently played
         myQueue: [],    // stores episodes for queue
         playlists: [],  // stores all playlists
         widgets: [],    // stores the titles of widgets for home page, in correct order
