@@ -36,20 +36,85 @@ class Achievement extends Component{
         Navigation.dismissLightBox();
     }
 
+    renderImage(title){
+        if(title == 'Likes'){
+            return(
+                <Image
+                    style={{width: 90, height: 90, alignSelf: 'center', opacity: 1}}
+                    source={require('tess/src/images/iconLike.png')}
+                />
+            )
+        }
+        else if(title == 'Listens'){
+            return(
+                <Image
+                    style={{width: 90, height: 90, alignSelf: 'center', opacity: 1}}
+                    source={require('tess/src/images/iconListen.png')}
+                />
+            )
+        }
+        else if(title == 'Highlights'){
+            return(
+                <Image
+                    style={{width: 90, height: 90, alignSelf: 'center', opacity: 1}}
+                    source={require('tess/src/images/iconHighlight.png')}
+                />
+            )
+        }
+        else if(title == 'Tracking'){
+            return(
+                <Image
+                    style={{width: 90, height: 90, alignSelf: 'center', opacity: 1}}
+                    source={require('tess/src/images/iconStar.png')}
+                />
+            )
+        }
+        else if(title == 'Comments'){
+            return(
+                <Image
+                    style={{width: 90, height: 90, alignSelf: 'center', opacity: 1}}
+                    source={require('tess/src/images/iconComment.png')}
+                />
+            )
+        }
+        else if(title == 'Shares'){
+            return(
+                <Image
+                    style={{width: 90, height: 90, alignSelf: 'center', opacity: 1}}
+                    source={require('tess/src/images/iconShares.png')}
+                />
+            )
+        }
+
+    }
+
+    renderBar(){
+        if(this.state.progress >= this.state.goal){
+            return(
+                <View style = {{marginVertical: 10, backgroundColor: '#3e416450', width: width-60, borderRadius: 10,}}>
+                    <View style={{backgroundColor: '#506dcf', width: (width-60), paddingVertical: 10, borderRadius: 10}} />
+                </View>
+            )
+        }
+        else{
+            return(
+                <View style = {{marginVertical: 10, backgroundColor: '#3e416450', width: width-60, borderRadius: 10,}}>
+                    <View style={{backgroundColor: '#506dcf', width: this.state.progress/this.state.goal * (width-60), paddingVertical: 10, borderRadius: 10}} />
+                </View>
+            )
+        }
+
+    }
+
 
 
     render() {
         return (
             <View style={styles.container}>
-                <Image
-                    style={{width: 90, height: 90, alignSelf: 'center', opacity: 1}}
-                    source={require(`${this.state.image}`)}
-                />
+                {this.renderImage(this.state.title)}
                 <Text style = {styles.textTitle}>{this.state.title} Lv.{this.state.level}</Text>
 
-                <View style = {{marginVertical: 10, backgroundColor: '#3e416450', width: width-60, borderRadius: 10,}}>
-                    <View style={{backgroundColor: '#506dcf', width: this.state.progress/this.state.goal * (width-60), paddingVertical: 10, borderRadius: 10}} />
-                </View>
+                {this.renderBar()}
 
                 <Text style={styles.textDescription}>{this.state.progress}/{this.state.goal} {this.state.description}</Text>
 

@@ -1722,9 +1722,11 @@ class Home extends Component{
 
         if(currentUser.uid == "pgIx9JAiq9aQWcyUZX8AuIdqNmP2" || currentUser.uid == "sJsB8XK4XRZ8tNpeGC14JNsa6Jj1"){
             return(
-                <TouchableOpacity onPress={this.rssFetch}>
-                    <Text style={styles.titleFetch}>Fetch Feeds</Text>
-                </TouchableOpacity>
+                <View>
+                    <TouchableOpacity onPress={this.rssFetch}>
+                        <Text style={styles.titleFetch}>Fetch Feeds</Text>
+                    </TouchableOpacity>
+                </View>
 
             )
         }
