@@ -328,7 +328,7 @@ class Home extends Component{
                 hasRecent = true;
 
 
-                firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).on("value", function (snapshot) {
+                firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).limitToLast(20).on("value", function (snapshot) {
                     Variables.state.recentlyPlayed = [];
                     snapshot.forEach(function (snap) {
                         firebase.database().ref(`podcasts/${snap.val().id}`).on("value", function (data) {
@@ -1722,9 +1722,11 @@ class Home extends Component{
 
         if(currentUser.uid == "pgIx9JAiq9aQWcyUZX8AuIdqNmP2" || currentUser.uid == "sJsB8XK4XRZ8tNpeGC14JNsa6Jj1"){
             return(
-                <TouchableOpacity onPress={this.rssFetch}>
-                    <Text style={styles.titleFetch}>Fetch Feeds</Text>
-                </TouchableOpacity>
+                <View>
+                    <TouchableOpacity onPress={this.rssFetch}>
+                        <Text style={styles.titleFetch}>Fetch Feeds</Text>
+                    </TouchableOpacity>
+                </View>
 
             )
         }

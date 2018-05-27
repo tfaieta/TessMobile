@@ -63,7 +63,8 @@ class Variables extends Component{
         selectedByTess: [],
         fromTess : [],
         topCharts: [],
-        recentlyPlayed: [],
+        recentlyPlayed: [], // my recently played
+        userRecentlyPlayed: [], // user recently played
         myQueue: [],    // stores episodes for queue
         playlists: [],  // stores all playlists
         widgets: [],    // stores the titles of widgets for home page, in correct order
@@ -73,11 +74,13 @@ class Variables extends Component{
         myHighlightsAmount: 0, // number of my highlights
         myLikesAmount: 0,  // number of my likes
         myCommentsAmount: 0, // number of my comments
+        mySharesAmount: 0,  // number of my shares
         userPlayTime: 0, // user seconds listened
         userTrackingAmount: 0, // number of user tracks
         userHighlightsAmount: 0, // number of user highlights
         userLikesAmount: 0,  // number of user likes
         userCommentsAmount: 0, // number of user comments
+        userSharesAmount: 0, // number of user shares
         highlight: false, // whether item playing is a highlight or not
         highlightStart: 0,  // start time for current highlight
         highlightEnd: 0,  // end time for current highlight
