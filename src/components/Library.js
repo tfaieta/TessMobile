@@ -148,7 +148,7 @@ class Library extends Component{
     GoToFavs = () => {
         this.props.navigator.push({
             screen: 'Favorites',
-            title: 'Podcasts'
+            title: 'Favorites'
         });
     };
 

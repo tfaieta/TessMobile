@@ -93,7 +93,7 @@ static navigatorStyle = {
                                 <Text style={styles.textLike}>{Variables.state.likers.length} likes</Text>
                             </View>
                             <View style={{flex:1}}>
-                                <Text style={styles.textLike}>{Variables.state.podcastsPlays} play</Text>
+                                <Text style={styles.textLike}>{Variables.state.podcastsPlays} listen</Text>
                             </View>
                         </View>
                 )
@@ -105,7 +105,7 @@ static navigatorStyle = {
                                 <Text style={styles.textLike}>{Variables.state.likers.length} like</Text>
                             </View>
                             <View style={{flex:1}}>
-                                <Text style={styles.textLike}>{Variables.state.podcastsPlays} play</Text>
+                                <Text style={styles.textLike}>{Variables.state.podcastsPlays} listen</Text>
                             </View>
                         </View>
                 )
@@ -119,7 +119,7 @@ static navigatorStyle = {
                                 <Text style={styles.textLike}>{Variables.state.likers.length} likes</Text>
                             </View>
                             <View style={{flex:1}}>
-                                <Text style={styles.textLike}>{Variables.state.podcastsPlays} plays</Text>
+                                <Text style={styles.textLike}>{Variables.state.podcastsPlays} listens</Text>
                             </View>
                         </View>
                 )
@@ -131,7 +131,7 @@ static navigatorStyle = {
                                 <Text style={styles.textLike}>{Variables.state.likers.length} like</Text>
                             </View>
                             <View style={{flex:1}}>
-                                <Text style={styles.textLike}>{Variables.state.podcastsPlays} plays</Text>
+                                <Text style={styles.textLike}>{Variables.state.podcastsPlays} listens</Text>
                             </View>
                         </View>
                 )

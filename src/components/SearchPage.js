@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ListView, TouchableOpacity, Alert, ScrollView} from 'react-native';
+import { Text, View, StyleSheet, ListView, TouchableOpacity, ActivityIndicator, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { SearchBar } from 'react-native-elements';
 import PlayerBottom from './PlayerBottom';
@@ -64,33 +64,44 @@ static navigatorStyle = {
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.mySearches),
-            search: Variables.state.searchWord
+            search: Variables.state.searchWord,
+            searchFinished: false,
         };
         this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches)})},1000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches)})},3500);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches), searchFinished: true})},3500);
     }
 
-    _renderResults(mySearches){
-        if(mySearches > 0){
+    _renderResults =(mySearches) => {
+        if(this.state.searchFinished){
+            if(mySearches > 0){
+                return(
+                    <View style={{flex:1}}>
+                        <ListView
+                            enableEmptySections
+                            dataSource={this.state.dataSource}
+                            renderRow={this.renderRow}
+                            renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
+                        />
+                    </View>
+                )
+            }
+            else{
+                return(
+                    <View >
+                        <Text style={styles.title2}>No results found...</Text>
+                    </View>
+                )
+            }
+        }
+        else{
             return(
-                <View style={{flex:1}}>
-                    <ListView
-                        enableEmptySections
-                        dataSource={this.state.dataSource}
-                        renderRow={this.renderRow}
-                        renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
-                    />
+                <View>
+                    <ActivityIndicator style={{paddingVertical: 20, alignSelf:'center'}} color='#3e4164' size ="large" />
                 </View>
             )
         }
-        else{
-           return(
-               <View >
-                   <Text style={styles.title2}>No results found...</Text>
-               </View>
-           )
-        }
-    }
+
+    };
 
 
 

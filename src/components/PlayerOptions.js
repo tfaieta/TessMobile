@@ -639,6 +639,12 @@ class PlayerOptions extends Component {
 
 
                             firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
+
+                                Analytics.logEvent('addToQueue', {
+                                    'episodeID': id,
+                                    'user_id': currentUser.uid
+                                });
+
                                 snap.forEach(function (data) {
                                     if(data.val().id == id){
                                         firebase.database().ref(`users/${currentUser.uid}/queue/${data.key}`).remove()
@@ -938,6 +944,12 @@ class PlayerOptions extends Component {
                                 <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
 
                                     firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
+
+                                        Analytics.logEvent('addToQueue', {
+                                            'episodeID': id,
+                                            'user_id': currentUser.uid
+                                        });
+
                                         snap.forEach(function (data) {
                                             if(data.val().id == id){
                                                 firebase.database().ref(`users/${currentUser.uid}/queue/${data.key}`).remove()
@@ -1248,6 +1260,12 @@ class PlayerOptions extends Component {
                                 <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
 
                                     firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
+
+                                        Analytics.logEvent('addToQueue', {
+                                            'episodeID': id,
+                                            'user_id': currentUser.uid
+                                        });
+
                                         snap.forEach(function (data) {
                                             if(data.val().id == id){
                                                 firebase.database().ref(`users/${currentUser.uid}/queue/${data.key}`).remove()
