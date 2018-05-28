@@ -504,6 +504,7 @@ class Home extends Component{
             navBarCustomViewInitialProps: {
                 navigator: this.props.navigator
             },
+            navBarHideOnScroll: true,
             navBarButtonColor: '#007aff',
             navBarBackgroundColor: '#fff',
             topBarElevationShadowEnabled: true,
@@ -889,7 +890,7 @@ class Home extends Component{
         if(this.state.loading){
             return(
                 <View style={styles.container}>
-                    <ActivityIndicator style={{paddingVertical: 20, alignSelf:'center'}} color='#3e4164' size ="large" />
+                    <ActivityIndicator style={{paddingVertical: height/33.35, alignSelf:'center'}} color='#3e4164' size ="large" />
                 </View>
             )
         }
@@ -905,7 +906,7 @@ class Home extends Component{
                                 />
                             }
                         >
-                            <View style={{marginLeft: -10}}>
+                            <View style={{marginLeft: -width/37.5}}>
                                 <ListView
                                     enableEmptySections
                                     dataSource={this.state.dataSource}
@@ -913,7 +914,9 @@ class Home extends Component{
                                 />
                             </View>
 
-                            <View style={{paddingBottom: 20}} />
+                            {this.renderRSSFetcher()}
+
+                            <View style={{paddingBottom: height/33.35}} />
 
                         </ScrollView>
                         <Player/>
@@ -936,7 +939,7 @@ class Home extends Component{
                             />
                         }
                     >
-                        <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20, marginTop: 20, paddingVertical: 20}}>
+                        <View style={{ backgroundColor: '#fff', marginHorizontal: width/37.5, borderRadius: 10, width: width-20, marginTop: height/33.35, paddingVertical: height/33.35}}>
                             <Text style={styles.titleTop}>Follow podcasts to populate your feed!</Text>
                             <TouchableOpacity onPress={() => {
                                 this.props.navigator.switchToTab({
@@ -946,6 +949,9 @@ class Home extends Component{
                                 <Text style={styles.titleBrowse}>Go to Browse</Text>
                             </TouchableOpacity>
                         </View>
+
+                        {this.renderRSSFetcher()}
+
                     </ScrollView>
 
                     <Player/>
@@ -972,9 +978,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 16,
-        marginTop: 10,
-        paddingLeft: 20,
+        fontSize: width/23.44,
+        marginTop: height/66.7,
+        paddingLeft: width/18.75,
         backgroundColor: 'transparent',
     },
     titleTop: {
@@ -982,8 +988,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 20,
-        marginHorizontal: 20,
+        fontSize: width/18.75,
+        marginHorizontal: width/18.75,
         backgroundColor: 'transparent',
     },
 
@@ -993,12 +999,12 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: 16,
-        marginTop: 10,
-        paddingBottom: 10,
-        paddingLeft: 20,
+        fontSize: width/23.44,
+        marginTop: height/66.7,
+        paddingBottom: height/66.7,
+        paddingLeft: width/18.75,
         backgroundColor: 'transparent',
-        marginRight: 10
+        marginRight: width/33.5
     },
 
 
@@ -1007,9 +1013,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 16,
-        marginTop: 25,
-        marginHorizontal: 20,
+        fontSize: width/23.44,
+        marginTop: height/26.68,
+        marginHorizontal: width/18.75,
         backgroundColor: 'transparent',
     },
 
@@ -1018,10 +1024,10 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 14,
-        marginTop: 5,
-        marginBottom: 15,
-        marginHorizontal: 20,
+        fontSize: width/26.79,
+        marginTop: height/133.4,
+        marginBottom: height/44.47,
+        marginHorizontal: width/18.75,
         backgroundColor: 'transparent',
     },
 

@@ -46,33 +46,33 @@ class ListItemCard extends Component {
 
         if(this.state.profileName == ''){
             setTimeout(() =>{
-                this.setState({profileName: profileName.slice(0,55)})
+                this.setState({profileName: profileName.slice(0,(width/6.82))})
             },500);
         }
 
         if(this.state.description == ''){
             setTimeout(() =>{
-                this.setState({description: podcastDescription.slice(0,190)})
+                this.setState({description: podcastDescription.slice(0,(width/1.97))})
             },500);
         }
 
         setTimeout(() => {
-            if(podcastTitle.toString().length > 80 ){
-                this.setState({title: (podcastTitle.toString().slice(0,80)+"...")});
+            if(podcastTitle.toString().length > (width/4.69) ){
+                this.setState({title: (podcastTitle.toString().slice(0,(width/4.69))+"...")});
             }
             else{
                 this.setState({title: podcastTitle});
             }
 
-            if(this.state.profileName.length > 50){
-                this.setState({username: (profileName.slice(0,50)+"...")});
+            if(this.state.profileName.length > (width/7.5)){
+                this.setState({username: (profileName.slice(0,(width/7.5))+"...")});
             }
             else{
                 this.setState({username: this.state.profileName});
             }
 
-            if(this.state.description.length > 185){
-                this.setState({description: (podcastDescription.slice(0,185)+"...")});
+            if(this.state.description.length > (width/2.03)){
+                this.setState({description: (podcastDescription.slice(0,(width/2.03))+"...")});
             }
 
         }, 900);
@@ -126,12 +126,12 @@ class ListItemCard extends Component {
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: 160, width: 160, borderRadius: 4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)' }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: (height/4.17), width: (height/4.17), borderRadius: 4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)' }}>
                     <Icon style={{
                         textAlign: 'center',
-                        fontSize: 80,
+                        fontSize: height/8.34,
                         color: 'white',
-                        marginTop: 35,
+                        marginTop: height/19,
                     }} name="user-circle">
                     </Icon>
                 </View>
@@ -139,9 +139,9 @@ class ListItemCard extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', height: 160, width: 160}}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', height: (height/4.17), width: (height/4.17)}}>
                     <Image
-                        style={{width: 160, height: 160, alignSelf: 'center', opacity: 1, borderRadius: 4}}
+                        style={{width: (height/4.17), height: (height/4.17), alignSelf: 'center', opacity: 1, borderRadius: 4}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -456,10 +456,10 @@ class ListItemCard extends Component {
     render() {
 
         return (
-            <View style = {{marginHorizontal: 10, marginVertical: 5}}>
-                <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20 }}>
-                    <View style={{marginVertical: 10}}>
-                        <View style={{flexDirection: 'row', marginVertical: 5}}>
+            <View style = {{marginHorizontal: width/33.5, marginVertical: height/133.4}}>
+                <View style={{ backgroundColor: '#fff', marginHorizontal: width/33.5, borderRadius: 10, width: width-20 }}>
+                    <View style={{marginVertical: height/66.7}}>
+                        <View style={{flexDirection: 'row', marginVertical: height/133.4}}>
                             <View style={{flex: 8, alignSelf: 'flex-start'}}>
                                 <Text style={styles.titleCard}>{this.state.title}</Text>
                             </View>
@@ -477,15 +477,13 @@ class ListItemCard extends Component {
                                             backgroundBlur: "dark",
                                             backgroundColor: '#3e416430',
                                             tapBackgroundToDismiss: true,
-                                            width: 100,
-                                            height: 200
                                         },
                                     });
 
                                 }} style={styles.rightContainer}>
                                     <Icon style={{
                                         textAlign: 'right',
-                                        marginTop: 5,
+                                        marginTop: height/133.4,
                                         marginRight: height/44.47,
                                         fontSize: height/26,
                                         color: '#506dcf',
@@ -501,23 +499,23 @@ class ListItemCard extends Component {
                                     {this._renderProfileImage()}
                                 </View>
 
-                                <View style = {{alignSelf: 'center', flex:1, marginHorizontal: 10}}>
+                                <View style = {{alignSelf: 'center', flex:1, marginHorizontal: width/33.5}}>
                                     <Text style={styles.artistTitle}>{this.state.description}</Text>
-                                    <View style={{flexDirection: 'row', marginTop: 15}}>
-                                        <TouchableOpacity style= {{backgroundColor:'#3e4164', flex: 1, alignSelf: 'flex-start', paddingHorizontal: 2, paddingVertical: 5, borderRadius: 5, marginHorizontal: 4}} onPress={this.onPressPlay}>
+                                    <View style={{flexDirection: 'row', marginTop: height/44.47}}>
+                                        <TouchableOpacity style= {{backgroundColor:'#3e4164', flex: 1, alignSelf: 'flex-start', paddingHorizontal: width/187.5, paddingVertical: height/133.4, borderRadius: 5, marginHorizontal: width/93.75}} onPress={this.onPressPlay}>
                                             <Icon style={{
                                                 textAlign: 'center',
-                                                fontSize: 14,
+                                                fontSize: width/26.79,
                                                 alignSelf: 'center',
                                                 color: 'white',
                                             }} name="play">
                                                 <Text style={styles.whiteTitle}> Play</Text>
                                             </Icon>
                                         </TouchableOpacity>
-                                        <TouchableOpacity style= {{backgroundColor:'#3e4164', flex: 1, alignSelf: 'flex-end', paddingHorizontal: 2, paddingVertical: 5, borderRadius: 5, marginHorizontal: 4}} onPress={this.onPressQueue}>
+                                        <TouchableOpacity style= {{backgroundColor:'#3e4164', flex: 1, alignSelf: 'flex-end', paddingHorizontal: width/187.5, paddingVertical: height/133.4, borderRadius: 5, marginHorizontal: width/93.75}} onPress={this.onPressQueue}>
                                             <Icon style={{
                                                 textAlign: 'center',
-                                                fontSize: 14,
+                                                fontSize: width/26.79,
                                                 alignSelf: 'center',
                                                 color: 'white',
                                             }} name="plus">
@@ -528,7 +526,7 @@ class ListItemCard extends Component {
                                 </View>
                             </View>
                         </TouchableWithoutFeedback>
-                        <View style={{flexDirection: 'row', paddingBottom: 5}}>
+                        <View style={{flexDirection: 'row', paddingBottom: height/133.4}}>
                             <View style={{flex:1, alignSelf: 'flex-start'}}>
                                 <Text style={styles.bottomTitle}>{this.state.profileName}</Text>
                             </View>
@@ -553,9 +551,9 @@ const styles = {
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 14,
-        marginLeft: 10,
-        marginTop: 10,
+        fontSize: width/26.79,
+        marginLeft: width/33.5,
+        marginTop: height/66.7,
         backgroundColor: 'transparent'
     },
     artistTitle: {
@@ -564,7 +562,7 @@ const styles = {
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 12,
+        fontSize: width/31.25,
         backgroundColor: 'transparent',
     },
     bottomTitle: {
@@ -573,14 +571,14 @@ const styles = {
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 12,
+        fontSize: width/31.25,
         backgroundColor: 'transparent',
     },
     whiteTitle: {
         color: '#fff',
         textAlign: 'center',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 12,
+        fontSize: width/31.25,
         backgroundColor: 'transparent',
     },
     titleCard: {
@@ -589,9 +587,9 @@ const styles = {
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 14,
-        marginLeft: 10,
-        marginTop: 10,
+        fontSize: width/26.79,
+        marginLeft: width/33.5,
+        marginTop: height/66.7,
         backgroundColor: 'transparent'
     },
     numLeftText: {
@@ -599,8 +597,8 @@ const styles = {
         textAlign: 'center',
         opacity: 1,
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 16,
-        marginTop: 8,
+        fontSize: width/23.44,
+        marginTop: height/83.38,
         backgroundColor: 'transparent'
     },
 };
