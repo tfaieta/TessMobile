@@ -693,10 +693,6 @@ class AddWidget extends Component{
 
                 <ScrollView>
 
-                    {this._widgetCat("Categories")}
-
-                    {this._widgetPlaylists("Playlists")}
-
                     {this._widgetRecent()}
 
                     {this._widget(Variables.state.homeFollowedContent.length, this.state.dataSourceFol, "Catch Up")}

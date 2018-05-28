@@ -19,7 +19,7 @@ class Notifications extends Component{
             navBarCustomViewInitialProps: {
                 navigator: this.props.navigator
             },
-            navBarHideOnScroll: true,
+            navBarHideOnScroll: false,
             navBarBackgroundColor: '#fff',
             topBarElevationShadowEnabled: true,
             topBarShadowColor: '#000',

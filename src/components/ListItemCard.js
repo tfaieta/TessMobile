@@ -1,28 +1,21 @@
 import React, { Component } from 'react';
-import { Text, View, LayoutAnimation, TouchableOpacity, Image, AsyncStorage, Dimensions, TouchableWithoutFeedback } from 'react-native';
+import { Text, View, TouchableOpacity, Image, AsyncStorage, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from 'firebase';
 import Variables from "./Variables";
-
+var Analytics = require('react-native-firebase-analytics');
 
 var {height, width} = Dimensions.get('window');
 
-// A single podcast on scrollview slider list (on home page)
+
+
+// A single episode on home feed
 
 class ListItemCard extends Component {
 
-    state = {
-        favorite: false,
-        keyID: 0,
-    };
-
-
     componentWillUnmount(){
         clearTimeout(this.timeout);
-        clearTimeout(this.timeout2);
     }
-
-
 
     constructor(state) {
         super(state);
@@ -31,12 +24,14 @@ class ListItemCard extends Component {
             profileImage: '',
             username: '',
             title: '',
-            description: ''
+            description: '',
+            listens: 0,
         };
 
         const {podcastTitle} = this.props.podcast;
         const {podcastArtist} = this.props.podcast;
         const { podcastDescription } = this.props.podcast;
+        const { id } = this.props.podcast;
         const {currentUser} = firebase.auth();
 
         let profileName = '';
@@ -51,36 +46,36 @@ class ListItemCard extends Component {
 
         if(this.state.profileName == ''){
             setTimeout(() =>{
-                this.setState({profileName: profileName})
-            },250);
+                this.setState({profileName: profileName.slice(0,(width/6.82))})
+            },500);
         }
 
         if(this.state.description == ''){
             setTimeout(() =>{
-                this.setState({description: podcastDescription})
-            },250);
+                this.setState({description: podcastDescription.slice(0,(width/1.97))})
+            },500);
         }
 
         setTimeout(() => {
-            if(podcastTitle.toString().length > 50 ){
-                this.setState({title: (podcastTitle.toString().slice(0,50)+"...")});
+            if(podcastTitle.toString().length > (width/4.69) ){
+                this.setState({title: (podcastTitle.toString().slice(0,(width/4.69))+"...")});
             }
             else{
                 this.setState({title: podcastTitle});
             }
 
-            if(this.state.profileName.length > 50){
-                this.setState({username: (profileName.slice(0,50)+"...")});
+            if(this.state.profileName.length > (width/7.5)){
+                this.setState({username: (profileName.slice(0,(width/7.5))+"...")});
             }
             else{
                 this.setState({username: this.state.profileName});
             }
 
-            if(this.state.description.length > 140){
-                this.setState({description: (podcastDescription.slice(0,140)+"...")});
+            if(this.state.description.length > (width/2.03)){
+                this.setState({description: (podcastDescription.slice(0,(width/2.03))+"...")});
             }
 
-        }, 500);
+        }, 900);
 
 
 
@@ -94,8 +89,7 @@ class ListItemCard extends Component {
                     profileImage = snapshot.val().profileImage
                 }
             });
-            this.timeout = setTimeout(() => {this.setState({profileImage: profileImage})},1200);
-            this. timeout2 = setTimeout(() => {this.setState({profileImage: profileImage})},3400);
+            this.timeout = setTimeout(() => {this.setState({profileImage: profileImage})},1800);
 
         }
         else{
@@ -106,23 +100,38 @@ class ListItemCard extends Component {
                 }).catch(function(error) {
                 //
             });
-            this.timeout = setTimeout(() => {this.setState({profileImage: profileImage})},1200);
-            this.timeout2 = setTimeout(() => {this.setState({profileImage: profileImage})},3400);
+            this.timeout = setTimeout(() => {this.setState({profileImage: profileImage})},1800);
 
         }
+
+        let listens = 0;
+        if(id){
+            firebase.database().ref(`podcasts/${id}/plays`).once("value", function (snapshot) {
+                snapshot.forEach(function (data) {
+                    listens = listens + 1;
+                })
+            });
+
+            setTimeout(() => {
+                this.setState({listens: listens})
+            }, 750)
+        }
+
+
+
     }
 
 
-    _renderProfileImage(){
+    _renderProfileImage = () => {
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: 130, width: 130, borderRadius: 4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)' }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: (height/4.17), width: (height/4.17), borderRadius: 4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)' }}>
                     <Icon style={{
                         textAlign: 'center',
-                        fontSize: 80,
+                        fontSize: height/8.34,
                         color: 'white',
-                        marginTop: 20,
+                        marginTop: height/19,
                     }} name="user-circle">
                     </Icon>
                 </View>
@@ -130,26 +139,42 @@ class ListItemCard extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', height: 130, width: 130}}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', height: (height/4.17), width: (height/4.17)}}>
                     <Image
-                        style={{width: 130, height: 130, alignSelf: 'center', opacity: 1, borderRadius: 4}}
+                        style={{width: (height/4.17), height: (height/4.17), alignSelf: 'center', opacity: 1, borderRadius: 4}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
             )
         }
-    }
+    };
 
-    onRowPress(){
-        const {currentUser} = firebase.auth();
-        const user = currentUser.uid;
-        const { podcastTitle } = this.props.podcast;
-        const { podcastDescription } = this.props.podcast;
-        const { podcastCategory } = this.props.podcast;
+
+
+    onPressPlay = () => {
+
+        const {podcastArtist} = this.props.podcast;
+        const {podcastTitle} = this.props.podcast;
+        const {podcastDescription} = this.props.podcast;
+        const {podcastCategory} = this.props.podcast;
+        const {id} = this.props.podcast;
         const {rss} = this.props.podcast;
         const {podcastURL} = this.props.podcast;
-        const { podcastArtist } = this.props.podcast;
-        const { id } = this.props.podcast;
+        const {currentUser} = firebase.auth();
+        const user = currentUser.uid;
+        const {podcast} = this.props;
+        Variables.state.highlight = false;
+
+
+        Analytics.logEvent('play', {
+            'episodeID': id,
+            'epispdeTitle': podcastTitle,
+            'episodeArtist': podcastArtist,
+            'user_id': user
+        });
+
+        firebase.database().ref(`users/${currentUser.uid}/tracking/${podcastArtist}/episodes/${id}`).remove();
+
 
         if(rss){
 
@@ -157,6 +182,7 @@ class ListItemCard extends Component {
             AsyncStorage.setItem("currentTime", "0");
             Variables.state.seekTo = 0;
             Variables.state.currentTime = 0;
+
 
             firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
                 if(snap.val()){
@@ -218,7 +244,6 @@ class ListItemCard extends Component {
             Variables.play();
             Variables.state.isPlaying = true;
             Variables.state.rss = true;
-
 
 
             firebase.database().ref(`users/${podcastArtist}/profileImage`).once("value", function (snapshot) {
@@ -320,6 +345,7 @@ class ListItemCard extends Component {
                                 //
                             });
                         }
+
                         firebase.database().ref(`users/${currentUser.uid}/favorites`).on("value", function (snapshot) {
                             snapshot.forEach(function (data) {
                                 if(data.key == id){
@@ -327,6 +353,8 @@ class ListItemCard extends Component {
                                 }
                             })
                         })
+
+
                     });
             }
             else{
@@ -359,7 +387,6 @@ class ListItemCard extends Component {
                         Variables.state.isPlaying = true;
                         Variables.state.rss = false;
 
-
                         const storageRef = firebase.storage().ref(`/users/${Variables.state.podcastArtist}/image-profile-uploaded`);
                         if(storageRef.child('image-profile-uploaded')){
                             storageRef.getDownloadURL()
@@ -378,70 +405,135 @@ class ListItemCard extends Component {
 
         }
 
+
+    };
+
+
+
+    onPressQueue = () => {
+
+        const {currentUser} = firebase.auth();
+        const {id} = this.props.podcast;
+
+        Analytics.logEvent('addToQueue', {
+            'episodeID': id,
+            'user_id': currentUser.uid
+        });
+
+        firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
+            snap.forEach(function (data) {
+                if(data.val().id == id){
+                    firebase.database().ref(`users/${currentUser.uid}/queue/${data.key}`).remove()
+                }
+            });
+            firebase.database().ref(`users/${currentUser.uid}/queue/`).push({id});
+        });
+
+    };
+
+    renderListens(){
+        if(this.state.username != ''){
+            if(this.state.listens > 1){
+                return(
+                    <Text style={styles.bottomTitle}>{this.state.listens} listens</Text>
+                )
+            }
+            else if (this.state.listens == 1){
+                return(
+                    <Text style={styles.bottomTitle}>{this.state.listens} listen</Text>
+                )
+            }
+            else{
+                return(
+                    <Text style={styles.bottomTitle}>{this.state.listens} listens</Text>
+                )
+            }
+        }
+
     }
-
-
 
 
     render() {
 
         return (
-
-            <View style = {{marginHorizontal: 10, marginVertical: 7}}>
-                <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10, width: width-20 }}>
-                    <View>
-                        <Text style={styles.title}>{this.state.title}</Text>
-                        <TouchableWithoutFeedback>
-                        <View style={{padding: 10, flexDirection: 'row'}}>
-
-                            <View style = {{alignSelf: 'center'}}>
-                                {this._renderProfileImage()}
+            <View style = {{marginHorizontal: width/33.5, marginVertical: height/133.4}}>
+                <View style={{ backgroundColor: '#fff', marginHorizontal: width/33.5, borderRadius: 10, width: width-20 }}>
+                    <View style={{marginVertical: height/66.7}}>
+                        <View style={{flexDirection: 'row', marginVertical: height/133.4}}>
+                            <View style={{flex: 8, alignSelf: 'flex-start'}}>
+                                <Text style={styles.titleCard}>{this.state.title}</Text>
                             </View>
+                            <View style={{flex: 1, alignSelf: 'flex-end'}}>
+                                <TouchableOpacity onPress={() => {
+                                    const {podcast} = this.props;
+                                    const rowData = podcast;
 
-                            <View style = {{alignSelf: 'center', flex:1, marginHorizontal: 10}}>
-                                <Text style={styles.artistTitle}>{this.state.description}</Text>
-                                <View style={{flexDirection: 'row'}}>
-                                    <TouchableOpacity style= {{backgroundColor:'#3e4164', flex: 1, alignSelf: 'flex-start', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 5, marginHorizontal: 7}} onPress={this.onRowPress.bind(this)}>
-                                        <Icon style={{
-                                            textAlign: 'center',
-                                            fontSize: 16,
-                                            alignSelf: 'center',
-                                            color: 'white',
-                                        }} name="play">
-                                            <Text style={styles.whiteTitle}> Play</Text>
-                                        </Icon>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style= {{backgroundColor:'#3e4164', flex: 1, alignSelf: 'flex-end', paddingHorizontal: 5, paddingVertical: 5, borderRadius: 5, marginHorizontal: 7}} onPress={() => {
+                                    const {navigator} = this.props;
 
-                                        const {currentUser} = firebase.auth();
-                                        const { id } = this.props.podcast;
+                                    this.props.navigator.showLightBox({
+                                        screen: "PodcastOptions",
+                                        passProps: {rowData, navigator},
+                                        style: {
+                                            backgroundBlur: "dark",
+                                            backgroundColor: '#3e416430',
+                                            tapBackgroundToDismiss: true,
+                                        },
+                                    });
 
-                                        firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
-                                            snap.forEach(function (data) {
-                                                if(data.val().id == id){
-                                                    firebase.database().ref(`users/${currentUser.uid}/queue/${data.key}`).remove()
-                                                }
-                                            });
-                                            firebase.database().ref(`users/${currentUser.uid}/queue/`).push({id});
-                                        });
+                                }} style={styles.rightContainer}>
+                                    <Icon style={{
+                                        textAlign: 'right',
+                                        marginTop: height/133.4,
+                                        marginRight: height/44.47,
+                                        fontSize: height/26,
+                                        color: '#506dcf',
+                                    }} name="ellipsis-h">
+                                    </Icon>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <TouchableWithoutFeedback>
+                            <View style={{padding: 10, flexDirection: 'row'}}>
 
+                                <View style = {{alignSelf: 'center'}}>
+                                    {this._renderProfileImage()}
+                                </View>
 
-
-                                    }}>
-                                        <Icon style={{
-                                            textAlign: 'center',
-                                            fontSize: 16,
-                                            alignSelf: 'center',
-                                            color: 'white',
-                                        }} name="plus">
-                                            <Text style={styles.whiteTitle}> Queue</Text>
-                                        </Icon>
-                                    </TouchableOpacity>
+                                <View style = {{alignSelf: 'center', flex:1, marginHorizontal: width/33.5}}>
+                                    <Text style={styles.artistTitle}>{this.state.description}</Text>
+                                    <View style={{flexDirection: 'row', marginTop: height/44.47}}>
+                                        <TouchableOpacity style= {{backgroundColor:'#3e4164', flex: 1, alignSelf: 'flex-start', paddingHorizontal: width/187.5, paddingVertical: height/133.4, borderRadius: 5, marginHorizontal: width/93.75}} onPress={this.onPressPlay}>
+                                            <Icon style={{
+                                                textAlign: 'center',
+                                                fontSize: width/26.79,
+                                                alignSelf: 'center',
+                                                color: 'white',
+                                            }} name="play">
+                                                <Text style={styles.whiteTitle}> Play</Text>
+                                            </Icon>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style= {{backgroundColor:'#3e4164', flex: 1, alignSelf: 'flex-end', paddingHorizontal: width/187.5, paddingVertical: height/133.4, borderRadius: 5, marginHorizontal: width/93.75}} onPress={this.onPressQueue}>
+                                            <Icon style={{
+                                                textAlign: 'center',
+                                                fontSize: width/26.79,
+                                                alignSelf: 'center',
+                                                color: 'white',
+                                            }} name="plus">
+                                                <Text style={styles.whiteTitle}> Queue</Text>
+                                            </Icon>
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
                             </View>
-
-                        </View>
                         </TouchableWithoutFeedback>
+                        <View style={{flexDirection: 'row', paddingBottom: height/133.4}}>
+                            <View style={{flex:1, alignSelf: 'flex-start'}}>
+                                <Text style={styles.bottomTitle}>{this.state.profileName}</Text>
+                            </View>
+                            <View style={{flex:1, alignSelf: 'flex-end'}}>
+                                {this.renderListens()}
+                            </View>
+                        </View>
                     </View>
                 </View>
             </View>
@@ -459,9 +551,9 @@ const styles = {
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 14,
-        marginLeft: 10,
-        marginTop: 10,
+        fontSize: width/26.79,
+        marginLeft: width/33.5,
+        marginTop: height/66.7,
         backgroundColor: 'transparent'
     },
     artistTitle: {
@@ -470,15 +562,44 @@ const styles = {
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 12,
+        fontSize: width/31.25,
+        backgroundColor: 'transparent',
+    },
+    bottomTitle: {
+        color: '#828393',
+        textAlign: 'center',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/31.25,
         backgroundColor: 'transparent',
     },
     whiteTitle: {
         color: '#fff',
         textAlign: 'center',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 14,
+        fontSize: width/31.25,
         backgroundColor: 'transparent',
+    },
+    titleCard: {
+        color: '#3e4164',
+        textAlign: 'left',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/26.79,
+        marginLeft: width/33.5,
+        marginTop: height/66.7,
+        backgroundColor: 'transparent'
+    },
+    numLeftText: {
+        color: '#fff',
+        textAlign: 'center',
+        opacity: 1,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/23.44,
+        marginTop: height/83.38,
+        backgroundColor: 'transparent'
     },
 };
 

@@ -392,6 +392,11 @@ class PodcastOptions extends Component {
 
                         <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
 
+                            Analytics.logEvent('addToQueue', {
+                                'episodeID': id,
+                                'user_id': currentUser.uid
+                            });
+
                             firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
                                 snap.forEach(function (data) {
                                     if(data.val().id == id){
@@ -734,6 +739,11 @@ class PodcastOptions extends Component {
 
                                 <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}}  onPress = {() => {
 
+                                    Analytics.logEvent('addToQueue', {
+                                        'episodeID': id,
+                                        'user_id': currentUser.uid
+                                    });
+
                                     firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
                                         snap.forEach(function (data) {
                                             if(data.val().id == id){
@@ -1045,6 +1055,12 @@ class PodcastOptions extends Component {
                                 <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
 
                                     firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
+
+                                        Analytics.logEvent('addToQueue', {
+                                            'episodeID': id,
+                                            'user_id': currentUser.uid
+                                        });
+
                                         snap.forEach(function (data) {
                                             if(data.val().id == id){
                                                 firebase.database().ref(`users/${currentUser.uid}/queue/${data.key}`).remove()
