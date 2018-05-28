@@ -278,6 +278,7 @@ class UserProfile extends Component {
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
                 username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
                 following: Variables.state.following,
+                tracking: tracking,
                 playTime: Variables.state.userPlayTime,
                 userComments: Variables.state.userCommentsAmount,
                 userTracking: Variables.state.userTrackingAmount,
@@ -291,6 +292,7 @@ class UserProfile extends Component {
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
                 username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
                 following: Variables.state.following,
+                tracking: tracking,
                 playTime: Variables.state.userPlayTime,
                 userComments: Variables.state.userCommentsAmount,
                 userTracking: Variables.state.userTrackingAmount,
@@ -299,7 +301,20 @@ class UserProfile extends Component {
                 userShares: Variables.state.userSharesAmount,
                 dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
             })
-        },3500)
+        },3500);
+
+
+        const {currentUser} = firebase.auth();
+        let tracking = false;
+        firebase.database().ref(`users/${currentUser.uid}/tracking/`).orderByChild(Variables.state.browsingArtist).once("value", function (snap){
+            if(snap.hasChild(Variables.state.browsingArtist)){
+                tracking = true;
+            }
+            else{
+                tracking = false;
+            }
+        });
+
     }
 
 
@@ -465,6 +480,21 @@ class UserProfile extends Component {
                 Variables.state.following = false;
             }
         });
+
+
+        let tracking = false;
+        firebase.database().ref(`users/${currentUser.uid}/tracking/`).orderByChild(Variables.state.browsingArtist).once("value", function (snap){
+            if(snap.hasChild(Variables.state.browsingArtist)){
+                tracking = true;
+            }
+            else{
+                tracking = false;
+            }
+        });
+        setTimeout(() =>{
+            this.setState({tracking: tracking})
+        }, 350);
+
 
 
         if(Variables.state.rss){
