@@ -41,10 +41,10 @@ class Home extends Component{
         Variables.state.homeFollowedContent = [];
         const refFol = firebase.database().ref(`users/${currentUser.uid}/following`);
 
-        refFol.on("value", function (snapshot) {
+        refFol.once("value", function (snapshot) {
             snapshot.forEach(function (data) {
 
-                firebase.database().ref(`users/${data.key}/podcasts`).limitToLast(1).once("value", function (snap) {
+                firebase.database().ref(`users/${data.key}/podcasts`).limitToLast(3).once("value", function (snap) {
                     snap.forEach(function (pod) {
 
                         firebase.database().ref(`podcasts/${pod.key}`).once("value", function (data2) {
@@ -530,7 +530,7 @@ class Home extends Component{
 
 
         // loop for every rss feed in database
-        firebase.database().ref('feeds').once("value", function (snapshot) {
+        firebase.database().ref('feeds').on("value", function (snapshot) {
             snapshot.forEach(function (snap) {
                 console.warn(snap.val());
 
@@ -610,7 +610,7 @@ class Home extends Component{
 
 
 
-                        // get info for each podcast
+                        // get info for each episode
                         // items.length gets max size of rss feed, 0 is most recent
                         let size = 0;
                         if(items.length >= 4){
@@ -693,7 +693,7 @@ class Home extends Component{
                             jointTitle = jointTitle.replace(".", "_");
                             const RSSID = jointTitle;
 
-                            //url
+                            // get url -> upload
                             if(items[i].getElementsByTagName('enclosure').length > 0){
                                 var link = items[i].getElementsByTagName('enclosure')[0].getAttribute('url');
                                 console.warn(link);
@@ -706,46 +706,19 @@ class Home extends Component{
                                         console.warn("EXISTS")
                                     }
                                     else{
-                                        firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength})
-                                            .then((snap) => {
-
-                                                const ref = snap.ref;
-                                                const id = snap.key;
-
-                                                ref.update({id});
-                                                firebase.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
-
-                                            });
+                                        let item = firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength})
+                                        const ref = item.ref;
+                                        const id = item.key;
+                                        ref.update({id});
+                                        firebase.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
 
                                     }
 
                                 });
-
-
-
-                                /*
-                                firebase.database().ref(`podcasts`).child(jointTitle).once("value", function (snapshot) {
-                                    if(snapshot.val()){
-                                        console.warn("Podcast Exists")
-                                    }
-                                    else{
-                                        firebase.database().ref(`podcasts`).child(jointTitle).update({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes})
-                                            .then((snap) => {
-
-                                                const ref = firebase.database().ref(`podcasts`).child(jointTitle);
-                                                const id = jointTitle;
-
-                                                ref.update({id});
-                                                firebase.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
-
-                                            })
-                                    }
-                                });
-                                */
 
 
                             }
-                            //another way of getting url
+                            // another way of getting url -> upload
                             else if(items[i].getElementsByTagName('link').length > 0){
                                 var link = items[i].getElementsByTagName('link');
                                 console.warn(link[0].textContent);
@@ -758,42 +731,15 @@ class Home extends Component{
                                         console.warn("EXISTS")
                                     }
                                     else{
-                                        firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength})
-                                            .then((snap) => {
-
-                                                const ref = snap.ref;
-                                                const id = snap.key;
-
-                                                ref.update({id});
-                                                firebase.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
-
-                                            });
+                                        let item = firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength});
+                                        const ref = item.ref;
+                                        const id = item.key;
+                                        ref.update({id});
+                                        firebase.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
 
                                     }
 
                                 });
-
-
-                                /*
-                                firebase.database().ref(`podcasts`).child(jointTitle).once("value", function (snapshot) {
-                                    if(snapshot.val()){
-                                        console.warn("Podcast Exists")
-                                    }
-                                    else{
-                                        firebase.database().ref(`podcasts`).child(jointTitle).update({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes})
-                                            .then((snap) => {
-
-                                                const ref = firebase.database().ref(`podcasts`).child(jointTitle);
-                                                const id = jointTitle;
-
-                                                ref.update({id});
-                                                firebase.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
-
-                                            })
-                                    }
-                                });
-                                */
-
 
                             }
                             else{
@@ -831,10 +777,10 @@ class Home extends Component{
         Variables.state.homeFollowedContent = [];
         const refFol = firebase.database().ref(`users/${currentUser.uid}/following`);
 
-        refFol.on("value", function (snapshot) {
+        refFol.once("value", function (snapshot) {
             snapshot.forEach(function (data) {
 
-                firebase.database().ref(`users/${data.key}/podcasts`).limitToLast(1).once("value", function (snap) {
+                firebase.database().ref(`users/${data.key}/podcasts`).limitToLast(3).once("value", function (snap) {
                     snap.forEach(function (pod) {
 
                         firebase.database().ref(`podcasts/${pod.key}`).once("value", function (data2) {
