@@ -16,6 +16,21 @@ class Library extends Component{
     componentWillMount(){
         const {currentUser} = firebase.auth();
 
+        firebase.database().ref(`users/${currentUser.uid}/tracking`).once("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+                firebase.database().ref(`users/${data.key}/podcasts`).once("value", function (ep) {
+                    ep.forEach(function (episode) {
+                        if(episode.val().id > data.val().lastEpisode){
+                            const id = episode.val().id;
+                            console.warn("added " + episode.val().id + " to tracking");
+                            firebase.database().ref(`users/${currentUser.uid}/tracking/${data.key}/episodes/${id}`).update({id});
+                            firebase.database().ref(`users/${currentUser.uid}/tracking/${data.key}`).update({lastEpisode: id});
+                        }
+                    })
+                });
+            })
+        });
+
 
         firebase.database().ref(`users/${currentUser.uid}/queue`).on("value", function (snapshot) {
             Variables.state.myQueue = [];
