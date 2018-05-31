@@ -12,7 +12,8 @@ class RecordSuccess extends Component{
   static navigatorStyle = {
         statusBarHidden: false,
         navBarHidden: true,
-        statusBarTextColorScheme: 'light'
+        statusBarTextColorScheme: 'light',
+        statusBarColor: '#3e279b',
     };
 
 

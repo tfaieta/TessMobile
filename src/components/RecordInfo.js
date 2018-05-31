@@ -35,7 +35,8 @@ class RecordInfo extends Component{
         statusBarHidden: false,
         navBarHidden: true,
         statusBarTextColorScheme: 'light',
-        tabBarHidden: true
+        tabBarHidden: true,
+        statusBarColor: '#3e279b',
     };
 
 
@@ -454,6 +455,7 @@ class RecordInfo extends Component{
                     value={this.props.podcastTitle}
                     onChangeText={text => this.props.podcastUpdate({prop: 'podcastTitle', value: text})}
                     maxLength={75}
+                    underlineColorAndroid = 'transparent'
                     onSubmitEditing={(event) => {
                         this.refs.input2.focus();
                     }}
@@ -472,6 +474,7 @@ class RecordInfo extends Component{
                     value={this.props.podcastDescription}
                     onChangeText={text => this.props.podcastUpdate({prop: 'podcastDescription', value: text})}
                     multiline={true}
+                    underlineColorAndroid = 'transparent'
                     maxLength={500}
                 />
 
