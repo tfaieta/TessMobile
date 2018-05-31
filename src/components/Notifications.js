@@ -26,6 +26,7 @@ class Notifications extends Component{
             topBarShadowOpacity: 0.1,
             topBarShadowOffset: 3,
             topBarShadowRadius: 5,
+            statusBarColor: '#fff',
         });
 
     }

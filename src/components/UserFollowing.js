@@ -17,7 +17,9 @@ class UserFollowing extends Component{
 
 static navigatorStyle = {
         statusBarHidden: false,
-        navBarHidden: true
+        navBarHidden: true,
+        statusBarTextColorScheme: 'dark',
+        statusBarColor: '#fff',
     };
 
     componentWillMount(){

@@ -258,6 +258,7 @@ class UserProfileModal extends Component {
             topBarShadowOpacity: 0.1,
             topBarShadowOffset: 3,
             topBarShadowRadius: 5,
+            statusBarColor: '#fff',
         });
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});

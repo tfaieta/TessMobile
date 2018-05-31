@@ -99,11 +99,12 @@ class Login extends Component {
                             }} name="md-mail">
                             </Icon>
                         </View>
-                        <View style={{alignItems: 'flex-end', flex: 8}}>
+                        <View style={{alignItems: 'center', flex: 8}}>
                             <TextInput
-                                style={styles.input}
+                                style={styles.inputEmail}
                                 placeholder={'Email'}
                                 placeholderTextColor='rgba(300,300,300,0.7)'
+                                underlineColorAndroid = 'transparent'
 
                                 autoCapitalize={'none'}
                                 autoCorrect={false}
@@ -135,10 +136,11 @@ class Login extends Component {
                         </View>
                         <View style={{alignItems:'center', flex: 6, marginLeft: width/67}}>
                             <TextInput
-                                style={styles.input}
+                                style={styles.inputPassword}
                                 ref='SecondInput'
                                 placeholder={'Password'}
                                 placeholderTextColor='rgba(300,300,300,0.7)'
+                                underlineColorAndroid = 'transparent'
 
                                 autoCapitalize={'none'}
                                 autoCorrect={false}
@@ -195,8 +197,23 @@ const styles = {
         paddingTop: height/11.12
     },
 
-    input: {
+    inputEmail: {
         height: height/16.67,
+        width: width/1.37,
+        backgroundColor: 'transparent',
+        marginTop: height/66.7,
+        marginBottom: height/133.4,
+        color: 'rgba(300,300,300,0.9)',
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-Regular',
+        fontSize: width/24,
+        paddingHorizontal: width/33.5,
+        marginLeft: width/33.5
+    },
+
+    inputPassword: {
+        height: height/16.67,
+        width: width/2.05,
         backgroundColor: 'transparent',
         marginTop: height/66.7,
         marginBottom: height/133.4,

@@ -9,33 +9,32 @@ import {
     LOGIN_USER,
     USER_CREATE
 } from "./types"
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Foundation';
+var FontAwesome = require('react-native-vector-icons/FontAwesome');
+
 
 
 var homeIcon;
-Icon.getImageSource('ios-home-outline', 30, '#F5002A').then((source) => { homeIcon = source});
-var homeIconSelected;
-Icon.getImageSource('ios-home', 30, '#F5002A').then((source) => { homeIconSelected = source});
+Icon.getImageSource('home', 26, '#b1b3c8').then((source) => { homeIcon = source});
+var homeIconSelected = require('tess/src/images/iconHome.png');
+Icon.getImageSource('home', 30, '#506dcf').then((source) => { homeIconSelected = source});
+
+
 
 var discoverIcon;
-Icon.getImageSource('ios-search-outline', 30, '#F5002A').then((source) => { discoverIcon = source});
+Icon.getImageSource('compass', 30, '#b1b3c8').then((source) => { discoverIcon = source});
 var discoverIconSelected;
-Icon.getImageSource('ios-search', 30, '#F5002A').then((source) => { discoverIconSelected = source});
-
-var recordIcon;
-Icon.getImageSource('ios-microphone-outline', 30, '#F5002A').then((source) => { recordIcon = source});
-var recordIconSelected;
-Icon.getImageSource('ios-microphone', 30, '#F5002A').then((source) => { recordIconSelected = source});
+Icon.getImageSource('compass', 34, '#506dcf').then((source) => { discoverIconSelected = source});
 
 var libraryIcon;
-Icon.getImageSource('ios-headset-outline', 30, '#F5002A').then((source) => { libraryIcon = source});
+FontAwesome.getImageSource('bars', 22, '#b1b3c8').then((source) => { libraryIcon = source});
 var libraryIconSelected;
-Icon.getImageSource('ios-headset', 30, '#F5002A').then((source) => { libraryIconSelected = source});
+FontAwesome.getImageSource('bars', 26, '#506dcf').then((source) => { libraryIconSelected = source});
 
-var accountIcon;
-Icon.getImageSource('ios-person-outline', 30, '#F5002A').then((source) => { accountIcon = source});
-var accountIconSelected;
-Icon.getImageSource('ios-person', 30, '#F5002A').then((source) => { accountIconSelected = source});
+var notificationsIcon;
+FontAwesome.getImageSource('bell', 22, '#b1b3c8').then((source) => { notificationsIcon = source});
+var notificationsIconSelected;
+FontAwesome.getImageSource('bell', 26, '#506dcf').then((source) => { notificationsIconSelected = source});
 
 
 
@@ -73,86 +72,84 @@ export const loginUser = ({email, password}) => {
                 loginUserSuccess(dispatch, user);
 
                 Navigation.startTabBasedApp({
-                    tabs: [
-                        {
-                            screen: 'Home',
-                            icon: homeIcon,
-                            selectedIcon: homeIconSelected,
-                            iconInsets: {
-                                top: 5,
-                                left: 0,
-                                bottom: -5,
-                                right: 0
-                            },
-                            navBarHidden: true,
-                        },
-                        {
-                            screen: 'Discover',
-                            icon: discoverIcon,
-                            selectedIcon: discoverIconSelected,
-                            iconInsets: {
-                                top: 5,
-                                left: 0,
-                                bottom: -5,
-                                right: 0
-                            },
-                            navBarHidden: true
-                        },
-                        {
-                            screen: 'RecordFirst',
-                            icon: recordIcon,
-                            selectedIcon: recordIconSelected,
-                            iconInsets: {
-                                top: 5,
-                                left: 0,
-                                bottom: -5,
-                                right: 0
-                            },
-                            navBarHidden: true
-                        },
-                        {
-                            screen: 'Library',
-                            icon: libraryIcon,
-                            selectedIcon: libraryIconSelected,
-                            iconInsets: {
-                                top: 5,
-                                left: 0,
-                                bottom: -5,
-                                right: 0
-                            },
-                            navBarHidden: true
-                        },
-                        {
-                            screen: 'Account',
-                            icon: accountIcon,
-                            selectedIcon: accountIconSelected,
-                            iconInsets: {
-                                top: 5,
-                                left: 0,
-                                bottom: -5,
-                                right: 0
-                            },
-                            navBarHidden: true
-                        }
-                    ],
-                    tabsStyle: {
-                        tabBarButtonColor: '#6a6b78',
-                        tabBarSelectedButtonColor: '#5757FF',
-                        tabBarBackgroundColor: '#fff',
-                        initialTabIndex: 0,
-                        tabBarTextFontFamily: 'HiraginoSans-W3',
-                        paddingTop: 25, paddingBottom:10, marginHorizontal: 10, borderRadius: 10, borderWidth:2, borderColor: 'rgba(100,100,100,0.1)'
-                    },
-                    appStyle: {
-                        navBarHidden: true,
-                        orientation: 'portrait',
-                        bottomTabBadgeTextColor: 'white',
-                        bottomTabBadgeBackgroundColor: 'white',
-                        hideBackButtonTitle: true/false
-                    },
-                    passProps: {},
-                    animationType: 'slide-down'
-                });
+                                tabs: [
+                                    {
+                                        screen: 'Home',
+                                        icon: homeIcon,
+                                        selectedIcon: homeIconSelected,
+                                        iconInsets: {
+                                            top: 5,
+                                            left: 0,
+                                            bottom: -5,
+                                            right: 0
+                                        },
+                                        navBarHidden: true,
+                                        navigatorStyle: {screenBackgroundColor: '#fff'},
+                                        navigatorButtons: {screenBackgroundColor: '#fff'}
+                                    },
+                                    {
+                                        screen: 'Discover',
+                                        icon: discoverIcon,
+                                        selectedIcon: discoverIconSelected,
+                                        iconInsets: {
+                                            top: 5,
+                                            left: 0,
+                                            bottom: -5,
+                                            right: 0
+                                        },
+                                        navBarHidden: true,
+                                        navigatorStyle: {screenBackgroundColor: '#fff'},
+                                        navigatorButtons: {screenBackgroundColor: '#fff'}
+                                    },
+                                    {
+                                        screen: 'Notifications',
+                                        icon: notificationsIcon,
+                                        selectedIcon: notificationsIconSelected,
+                                        iconInsets: {
+                                            top: 5,
+                                            left: 0,
+                                            bottom: -5,
+                                            right: 0
+                                        },
+                                        navBarHidden: true,
+                                        navigatorStyle: {screenBackgroundColor: '#fff'},
+                                        navigatorButtons: {screenBackgroundColor: '#fff'}
+                                    },
+                                    {
+                                        screen: 'Library',
+                                        icon: libraryIcon,
+                                        selectedIcon: libraryIconSelected,
+                                        iconInsets: {
+                                            top: 5,
+                                            left: 0,
+                                            bottom: -5,
+                                            right: 0
+                                        },
+                                        navBarHidden: true,
+                                        navigatorStyle: {screenBackgroundColor: '#fff'},
+                                        navigatorButtons: {screenBackgroundColor: '#fff'}
+                                    },
+                                ],
+                                tabsStyle: {
+                                    tabBarButtonColor: '#b1b3c8',
+                                    tabBarSelectedButtonColor: '#506dcf',
+                                    tabBarBackgroundColor: '#fff',
+                                    tabBarHideShadow: true,
+                                    initialTabIndex: 0,
+                                    tabBarTextFontFamily: 'Montserrat-Regular',
+                                },
+                                appStyle: {
+                                    navBarHidden: true,
+                                    orientation: 'portrait',
+                                    bottomTabBadgeTextColor: 'white',
+                                    bottomTabBadgeBackgroundColor: 'white',
+                                    hideBackButtonTitle: true/false,
+                                     tabBarButtonColor: '#b1b3c8',
+                                     tabBarSelectedButtonColor: '#506dcf',
+                                },
+                                passProps: {},
+                                animationType: 'slide-down'
+                            });
             })
 
 
@@ -185,86 +182,84 @@ export const createUser = ({email, password, username}) => {
 
 
                     Navigation.startTabBasedApp({
-                        tabs: [
-                            {
-                                screen: 'Home',
-                                icon: homeIcon,
-                                selectedIcon: homeIconSelected,
-                                iconInsets: {
-                                    top: 5,
-                                    left: 0,
-                                    bottom: -5,
-                                    right: 0
-                                },
-                                navBarHidden: true,
-                            },
-                            {
-                                screen: 'Discover',
-                                icon: discoverIcon,
-                                selectedIcon: discoverIconSelected,
-                                iconInsets: {
-                                    top: 5,
-                                    left: 0,
-                                    bottom: -5,
-                                    right: 0
-                                },
-                                navBarHidden: true
-                            },
-                            {
-                                screen: 'RecordFirst',
-                                icon: recordIcon,
-                                selectedIcon: recordIconSelected,
-                                iconInsets: {
-                                    top: 5,
-                                    left: 0,
-                                    bottom: -5,
-                                    right: 0
-                                },
-                                navBarHidden: true
-                            },
-                            {
-                                screen: 'Library',
-                                icon: libraryIcon,
-                                selectedIcon: libraryIconSelected,
-                                iconInsets: {
-                                    top: 5,
-                                    left: 0,
-                                    bottom: -5,
-                                    right: 0
-                                },
-                                navBarHidden: true
-                            },
-                            {
-                                screen: 'Account',
-                                icon: accountIcon,
-                                selectedIcon: accountIconSelected,
-                                iconInsets: {
-                                    top: 5,
-                                    left: 0,
-                                    bottom: -5,
-                                    right: 0
-                                },
-                                navBarHidden: true
-                            }
-                        ],
-                        tabsStyle: {
-                            tabBarButtonColor: '#6a6b78',
-                            tabBarSelectedButtonColor: '#5757FF',
-                            tabBarBackgroundColor: '#fff',
-                            initialTabIndex: 0,
-                            tabBarTextFontFamily: 'HiraginoSans-W3',
-                            paddingTop: 25, paddingBottom:10, marginHorizontal: 10, borderRadius: 10, borderWidth:2, borderColor: 'rgba(100,100,100,0.1)'
-                        },
-                        appStyle: {
-                            navBarHidden: true,
-                            orientation: 'portrait',
-                            bottomTabBadgeTextColor: 'white',
-                            bottomTabBadgeBackgroundColor: 'white',
-                            hideBackButtonTitle: true/false
-                        },
-                        passProps: {},
-                        animationType: 'slide-down'
-                    });
+                                    tabs: [
+                                        {
+                                            screen: 'Home',
+                                            icon: homeIcon,
+                                            selectedIcon: homeIconSelected,
+                                            iconInsets: {
+                                                top: 5,
+                                                left: 0,
+                                                bottom: -5,
+                                                right: 0
+                                            },
+                                            navBarHidden: true,
+                                            navigatorStyle: {screenBackgroundColor: '#fff'},
+                                            navigatorButtons: {screenBackgroundColor: '#fff'}
+                                        },
+                                        {
+                                            screen: 'Discover',
+                                            icon: discoverIcon,
+                                            selectedIcon: discoverIconSelected,
+                                            iconInsets: {
+                                                top: 5,
+                                                left: 0,
+                                                bottom: -5,
+                                                right: 0
+                                            },
+                                            navBarHidden: true,
+                                            navigatorStyle: {screenBackgroundColor: '#fff'},
+                                            navigatorButtons: {screenBackgroundColor: '#fff'}
+                                        },
+                                        {
+                                            screen: 'Notifications',
+                                            icon: notificationsIcon,
+                                            selectedIcon: notificationsIconSelected,
+                                            iconInsets: {
+                                                top: 5,
+                                                left: 0,
+                                                bottom: -5,
+                                                right: 0
+                                            },
+                                            navBarHidden: true,
+                                            navigatorStyle: {screenBackgroundColor: '#fff'},
+                                            navigatorButtons: {screenBackgroundColor: '#fff'}
+                                        },
+                                        {
+                                            screen: 'Library',
+                                            icon: libraryIcon,
+                                            selectedIcon: libraryIconSelected,
+                                            iconInsets: {
+                                                top: 5,
+                                                left: 0,
+                                                bottom: -5,
+                                                right: 0
+                                            },
+                                            navBarHidden: true,
+                                            navigatorStyle: {screenBackgroundColor: '#fff'},
+                                            navigatorButtons: {screenBackgroundColor: '#fff'}
+                                        },
+                                    ],
+                                    tabsStyle: {
+                                        tabBarButtonColor: '#b1b3c8',
+                                        tabBarSelectedButtonColor: '#506dcf',
+                                        tabBarBackgroundColor: '#fff',
+                                        tabBarHideShadow: true,
+                                        initialTabIndex: 0,
+                                        tabBarTextFontFamily: 'Montserrat-Regular',
+                                    },
+                                    appStyle: {
+                                        navBarHidden: true,
+                                        orientation: 'portrait',
+                                        bottomTabBadgeTextColor: 'white',
+                                        bottomTabBadgeBackgroundColor: 'white',
+                                        hideBackButtonTitle: true/false,
+                                         tabBarButtonColor: '#b1b3c8',
+                                         tabBarSelectedButtonColor: '#506dcf',
+                                    },
+                                    passProps: {},
+                                    animationType: 'slide-down'
+                                });
 
 
                 })
