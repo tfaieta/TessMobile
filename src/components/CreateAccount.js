@@ -139,6 +139,7 @@ class CreateAccount extends Component {
                             style={styles.input}
                             placeholder={'Username'}
                             placeholderTextColor='rgba(300,300,300,0.7)'
+                            underlineColorAndroid = 'transparent'
                             maxLength={20}
                             autoCapitalize={'none'}
                             autoCorrect={false}
@@ -172,6 +173,7 @@ class CreateAccount extends Component {
                                 style={styles.input}
                                 placeholder={'Email'}
                                 placeholderTextColor='rgba(300,300,300,0.7)'
+                                underlineColorAndroid = 'transparent'
 
                                 autoCapitalize={'none'}
                                 autoCorrect={false}
@@ -206,6 +208,7 @@ class CreateAccount extends Component {
                                 style={styles.input}
                                 placeholder={'Password'}
                                 placeholderTextColor='rgba(300,300,300,0.7)'
+                                underlineColorAndroid = 'transparent'
 
                                 autoCapitalize={'none'}
                                 autoCorrect={false}
@@ -264,6 +267,7 @@ const styles = {
 
     input: {
         height: height/16.67,
+        width: width/1.37,
         backgroundColor: 'transparent',
         marginTop: height/66.7,
         marginBottom: height/133.4,

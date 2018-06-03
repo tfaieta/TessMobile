@@ -110,7 +110,7 @@ class PlayerOptions extends Component {
         if(Variables.state.highlight){
 
                 return(
-                    <View>
+                    <View style={styles.container}>
                         <View>
                             <Text style={styles.textTitle}>{Variables.state.podcastTitle}</Text>
                             <Text style={styles.textArtist}>{Variables.state.currentUsername}</Text>
@@ -389,28 +389,6 @@ class PlayerOptions extends Component {
                         </TouchableOpacity>
 
 
-                        <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
-                            Variables.state.browsingArtist = podcastArtist;
-                            if(rss){
-                                Variables.state.rss = true;
-                            }
-                            else{
-                                Variables.state.rss = false;
-                            }
-                            navigator.showModal({
-                                screen: 'UserProfile',
-                                passProps: {navigator},
-                            })
-                        }}>
-                            <View style={{alignContent: 'center'}}>
-                                <Icon style={styles.iconStyle} name="ios-contact-outline" />
-                            </View>
-                            <View style = {{alignContent: 'center'}}>
-                                <Text style={styles.textStyle}>Go to Profile</Text>
-                            </View>
-                        </TouchableOpacity>
-
-
                         <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
                             navigator.dismissLightBox();
                         }}>
@@ -608,7 +586,7 @@ class PlayerOptions extends Component {
 
             if(podcastArtist == currentUser.uid){
                 return(
-                    <View>
+                    <View style={styles.container}>
                         <View>
                             <Text style={styles.textTitle}>{podcastTitle}</Text>
                             <Text style={styles.textArtist}>by {profileName}</Text>
@@ -695,28 +673,6 @@ class PlayerOptions extends Component {
 
                             <View style={{alignContent: 'center'}}>
                                 <Text style={styles.textStyle}>Add to Playlist</Text>
-                            </View>
-                        </TouchableOpacity>
-
-
-                        <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
-                            Variables.state.browsingArtist = podcastArtist;
-                            if(rss){
-                                Variables.state.rss = true;
-                            }
-                            else{
-                                Variables.state.rss = false;
-                            }
-                            navigator.showModal({
-                                screen: 'UserProfile',
-                                passProps: {navigator},
-                            })
-                        }}>
-                            <View style={{alignContent: 'center'}}>
-                                <Icon style={styles.iconStyle} name="ios-contact-outline" />
-                            </View>
-                            <View style = {{alignContent: 'center'}}>
-                                <Text style={styles.textStyle}>Go to Profile</Text>
                             </View>
                         </TouchableOpacity>
 
@@ -917,7 +873,7 @@ class PlayerOptions extends Component {
                     if(this.state.favorite){
 
                         return(
-                            <View>
+                            <View style={styles.container}>
                                 <View>
                                     <Text style={styles.textTitle}>{podcastTitle}</Text>
                                     <Text style={styles.textArtist}>{profileName}</Text>
@@ -1018,26 +974,6 @@ class PlayerOptions extends Component {
                                     </View>
                                 </TouchableOpacity>
 
-                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
-                                    Variables.state.browsingArtist = podcastArtist;
-                                    if(rss){
-                                        Variables.state.rss = true;
-                                    }
-                                    else{
-                                        Variables.state.rss = false;
-                                    }
-                                    navigator.showModal({
-                                        screen: 'UserProfile',
-                                        passProps: {navigator},
-                                    })
-                                }}>
-                                    <View style={{alignContent: 'center'}}>
-                                        <Icon style={styles.iconStyle} name="ios-contact-outline" />
-                                    </View>
-                                    <View style = {{alignContent: 'center'}}>
-                                        <Text style={styles.textStyle}>Go to Profile</Text>
-                                    </View>
-                                </TouchableOpacity>
 
                                 <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
                                     navigator.dismissLightBox();
@@ -1233,7 +1169,7 @@ class PlayerOptions extends Component {
                     else{
 
                         return(
-                            <View>
+                            <View style={styles.container}>
                                 <View>
                                     <Text style={styles.textTitle}>{podcastTitle}</Text>
                                     <Text style={styles.textArtist}>{profileName}</Text>
@@ -1336,26 +1272,6 @@ class PlayerOptions extends Component {
                                     </View>
                                 </TouchableOpacity>
 
-                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
-                                    Variables.state.browsingArtist = podcastArtist;
-                                    if(rss){
-                                        Variables.state.rss = true;
-                                    }
-                                    else{
-                                        Variables.state.rss = false;
-                                    }
-                                    navigator.showModal({
-                                        screen: 'UserProfile',
-                                        passProps: {navigator},
-                                    })
-                                }}>
-                                    <View style={{alignContent: 'center'}}>
-                                        <Icon style={styles.iconStyle} name="ios-contact-outline" />
-                                    </View>
-                                    <View style = {{alignContent: 'center'}}>
-                                        <Text style={styles.textStyle}>Go to Profile</Text>
-                                    </View>
-                                </TouchableOpacity>
 
                                 <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
                                     navigator.dismissLightBox();
@@ -1553,7 +1469,7 @@ class PlayerOptions extends Component {
                     if(this.state.favorite){
 
                         return(
-                            <View>
+                            <View style={styles.container}>
                                 <View>
                                     <Text style={styles.textTitle}>{podcastTitle}</Text>
                                     <Text style={styles.textArtist}>{profileName}</Text>
@@ -1578,26 +1494,6 @@ class PlayerOptions extends Component {
                                     </View>
                                 </TouchableOpacity>
 
-                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
-                                    Variables.state.browsingArtist = podcastArtist;
-                                    if(rss){
-                                        Variables.state.rss = true;
-                                    }
-                                    else{
-                                        Variables.state.rss = false;
-                                    }
-                                    navigator.showModal({
-                                        screen: 'UserProfile',
-                                        passProps: {navigator},
-                                    })
-                                }}>
-                                    <View style={{alignContent: 'center'}}>
-                                        <Icon style={styles.iconStyle} name="ios-contact-outline" />
-                                    </View>
-                                    <View style = {{alignContent: 'center'}}>
-                                        <Text style={styles.textStyle}>Go to Profile</Text>
-                                    </View>
-                                </TouchableOpacity>
 
                                 <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
                                     navigator.dismissLightBox();
@@ -1618,7 +1514,7 @@ class PlayerOptions extends Component {
                     else{
 
                         return(
-                            <View>
+                            <View style={styles.container}>
                                 <View>
                                     <Text style={styles.textTitle}>{podcastTitle}</Text>
                                     <Text style={styles.textArtist}>{profileName}</Text>
@@ -1643,26 +1539,6 @@ class PlayerOptions extends Component {
                                     </View>
                                 </TouchableOpacity>
 
-                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
-                                    Variables.state.browsingArtist = podcastArtist;
-                                    if(rss){
-                                        Variables.state.rss = true;
-                                    }
-                                    else{
-                                        Variables.state.rss = false;
-                                    }
-                                    navigator.showModal({
-                                        screen: 'UserProfile',
-                                        passProps: {navigator},
-                                    })
-                                }}>
-                                    <View style={{alignContent: 'center'}}>
-                                        <Icon style={styles.iconStyle} name="ios-contact-outline" />
-                                    </View>
-                                    <View style = {{alignContent: 'center'}}>
-                                        <Text style={styles.textStyle}>Go to Profile</Text>
-                                    </View>
-                                </TouchableOpacity>
 
                                 <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
                                     navigator.dismissLightBox();
@@ -1699,12 +1575,14 @@ class PlayerOptions extends Component {
 const styles = StyleSheet.create({
 
     container:{
-        flex: 1,
-        backgroundColor: '#FFF'
+       flex: 1,
+       paddingTop: height/7.59,
+       backgroundColor: '#3e416495',
+       height: height,
+       width: width
     },
     textStyle:{
         color: '#fff',
-        flex:1,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
@@ -1715,7 +1593,6 @@ const styles = StyleSheet.create({
     },
     textTitle:{
         color: '#fff',
-        flex:1,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
@@ -1727,7 +1604,6 @@ const styles = StyleSheet.create({
     },
     textArtist:{
         color: '#fff',
-        flex:1,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',

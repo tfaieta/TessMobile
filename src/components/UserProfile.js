@@ -14,7 +14,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { podcastFetchUser } from "../actions/PodcastActions";
 import PlayerBottom from './PlayerBottom';
-import {profileNameL} from './LoginForm.js';
 import {profileName} from './CreateAccount.js';
 import Variables from './Variables';
 import firebase from 'firebase';
@@ -31,6 +30,14 @@ var {height, width} = Dimensions.get('window');
 
 class UserProfile extends Component {
 
+static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: false,
+        statusBarTextColorScheme: 'light',
+        tabBarHidden: false,
+        statusBarColor: '#fff',
+    };
+
 
     componentWillMount(){
 
@@ -45,6 +52,8 @@ class UserProfile extends Component {
         Variables.state.userFollowers = [];
         Variables.state.userFollowing = [];
         Variables.state.userTracking = [];
+
+        const {rss} = this.props;
 
 
         const ref = firebase.database().ref(`podcasts/`);
@@ -195,7 +204,7 @@ class UserProfile extends Component {
         });
 
 
-        if(Variables.state.rss){
+        if(rss){
             firebase.database().ref(`users/${Variables.state.browsingArtist}/profileImage`).once("value", function (snapshot) {
                 if(snapshot.val()){
                     Variables.state.onUserProfileImage = snapshot.val().profileImage
@@ -245,7 +254,7 @@ class UserProfile extends Component {
         this.props.navigator.setStyle({
             statusBarHidden: false,
             statusBarTextColorScheme: 'light',
-            navBarHidden: true,
+            navBarHidden: false,
             navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
             navBarTextFontSize: 18, // change the font size of the title
             navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
@@ -257,11 +266,12 @@ class UserProfile extends Component {
             topBarShadowOpacity: 0.1,
             topBarShadowOffset: 3,
             topBarShadowRadius: 5,
+            statusBarColor: '#fff',
         });
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = { username: '' , bio: '', profileImage: '',
-            category: '', profileName: profileName, following: false, profileNameL: profileNameL,
+            category: '', profileName: profileName, following: false,
             dataSource: dataSource.cloneWithRows([]),
             loading: true,
             refreshing: false,
@@ -325,6 +335,8 @@ class UserProfile extends Component {
         const refFol = firebase.database().ref(`users/${Variables.state.browsingArtist}/followers`);
         const refFollowing = firebase.database().ref(`users/${Variables.state.browsingArtist}/following`);
         const refTracking = firebase.database().ref(`users/${Variables.state.browsingArtist}/tracking`);
+
+        const {rss} = this.props;
 
         Variables.state.userPodcasts = [];
         Variables.state.onUserProfileImage = '';
@@ -497,7 +509,7 @@ class UserProfile extends Component {
 
 
 
-        if(Variables.state.rss){
+        if(rss){
             firebase.database().ref(`users/${Variables.state.browsingArtist}/profileImage`).once("value", function (snapshot) {
                 if(snapshot.val()){
                     Variables.state.onUserProfileImage = snapshot.val().profileImage
@@ -3299,31 +3311,13 @@ class UserProfile extends Component {
         else{
             fixedTitle = this.state.username;
         }
+        const {rss} = this.props;
 
-        if(Variables.state.rss){
+        if(rss){
 
             return (
                 <View
                     style={styles.container}>
-
-
-                    <View style={{flexDirection: 'row', backgroundColor: '#fff', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 3}, shadowOpacity: 0.1, shadowRadius: 5}}>
-                        <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
-                            <TouchableOpacity onPress={this._pressBack}>
-                                <Icon style={{
-                                    textAlign:'left',marginLeft: 10, fontSize: 28, color:'#007aff',
-                                }} name="ios-arrow-back">
-                                </Icon>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                            <Text style={styles.header}>{fixedTitle}</Text>
-                        </View>
-
-                        <View>
-                        </View>
-                    </View>
-
 
                     <ScrollView
                         refreshControl={
@@ -3391,25 +3385,6 @@ class UserProfile extends Component {
             return (
                 <View
                     style={styles.container}>
-
-
-                    <View style={{flexDirection: 'row', backgroundColor: '#fff', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 3}, shadowOpacity: 0.1, shadowRadius: 5}}>
-                        <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
-                            <TouchableOpacity onPress={this._pressBack}>
-                                <Icon style={{
-                                    textAlign:'left',marginLeft: 10, fontSize: 35, color:'#007aff',
-                                }} name="ios-arrow-back">
-                                </Icon>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                            <Text style={styles.header}>{fixedTitle}</Text>
-                        </View>
-
-                        <View>
-                        </View>
-                    </View>
-
 
                     <ScrollView
                         refreshControl={

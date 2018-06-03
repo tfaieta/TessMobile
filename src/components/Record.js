@@ -46,7 +46,8 @@ class Record extends Component{
             statusBarHidden: false,
             navBarHidden: true,
             statusBarTextColorScheme: 'light',
-            tabBarHidden: true
+            tabBarHidden: true,
+            statusBarColor: '#3e279b',
       };
 
 

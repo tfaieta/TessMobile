@@ -29,16 +29,16 @@ export default class CustomNavbar extends Component {
             <View style={styles.container}>
 
 
-                    <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <View style={{}}>
                         <Icon style={{
-                            fontSize: 18,
+                            fontSize: width/22.83,
                             backgroundColor: 'transparent',
                             color: '#506dcf',
-                            marginHorizontal: 10,
+                            marginHorizontal: width/41.1,
                         }} name="search"/>
                     </View>
 
-                    <TouchableOpacity style={{flex:1,justifyContent: 'center', alignItems: 'center', marginLeft: 10}} onPress={() => {
+                    <TouchableOpacity style={{ marginLeft: width/41.1, paddingRight: width/1.92,}} onPress={() => {
                         const {currentUser} = firebase.auth();
                         const user = currentUser.uid;
                         Analytics.logEvent('goToSearch', {
@@ -54,8 +54,8 @@ export default class CustomNavbar extends Component {
                         <Text style={styles.text}>Search</Text>
                     </TouchableOpacity>
 
-                    <View style={{flex: 1, flexDirection: 'row', alignSelf:'flex-end'}}>
-                        <TouchableOpacity onPress={() => {
+                    <View style={{flexDirection: 'row',}}>
+                        <TouchableOpacity style={{paddingLeft: width/35, paddingRight: width/65 }} onPress={() => {
                             const {currentUser} = firebase.auth();
                             const user = currentUser.uid;
                             Analytics.logEvent('goToCreate', {
@@ -67,14 +67,12 @@ export default class CustomNavbar extends Component {
                             })
                         }}>
                             <Icon style={{
-                                flex: 1,
-                                fontSize: 20,
+                                fontSize: width/20.55,
                                 backgroundColor: 'transparent',
                                 color: '#506dcf',
-                                marginHorizontal: 10,
                             }} name="microphone"/>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => {
+                        <TouchableOpacity style={{paddingLeft: width/65, paddingRight: width/35 }} onPress={() => {
                             const {currentUser} = firebase.auth();
                             const user = currentUser.uid;
                             Analytics.logEvent('goToProfile', {
@@ -87,11 +85,10 @@ export default class CustomNavbar extends Component {
 
                         }}>
                             <Icon style={{
-                                flex: 1,
-                                fontSize: 20,
+                                fontSize: width/20.55,
                                 backgroundColor: 'transparent',
                                 color: '#506dcf',
-                                marginHorizontal: 10,
+                                marginHorizontal: width/41.1,
                             }} name="user-circle"/>
                         </TouchableOpacity>
                     </View>
@@ -103,18 +100,16 @@ export default class CustomNavbar extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginTop: width/34,
+        backgroundColor: '#fff'
     },
     button: {
         alignSelf: 'center',
     },
     text: {
-        flex:1,
-        fontSize: 14,
-        paddingRight: width/1.98,
+        fontSize: width/29.36,
         color: '#3e4164',
-        textAlign: 'left',
         backgroundColor: 'transparent',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',

@@ -14,7 +14,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { podcastFetchUser } from "../actions/PodcastActions";
 import PlayerBottom from './PlayerBottom';
-import {profileNameL} from './LoginForm.js';
 import {profileName} from './CreateAccount.js';
 import Variables from './Variables';
 import firebase from 'firebase';
@@ -26,7 +25,7 @@ var {height, width} = Dimensions.get('window');
 
 
 
-
+// NOT IN USE, see UserProfile.js
 // contains a profile that you can view (any profile that is not yours)
 
 class UserProfileModal extends Component {
@@ -258,11 +257,12 @@ class UserProfileModal extends Component {
             topBarShadowOpacity: 0.1,
             topBarShadowOffset: 3,
             topBarShadowRadius: 5,
+            statusBarColor: '#fff',
         });
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = { username: '' , bio: '', profileImage: '',
-            category: '', profileName: profileName, following: false, profileNameL: profileNameL,
+            category: '', profileName: profileName, following: false,
             dataSource: dataSource.cloneWithRows([]),
             loading: true,
             refreshing: false,
@@ -3310,12 +3310,11 @@ class UserProfileModal extends Component {
                 <View
                     style={styles.container}>
 
-
                     <View style={{flexDirection: 'row', backgroundColor: '#fff', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 3}, shadowOpacity: 0.1, shadowRadius: 5}}>
                         <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                             <TouchableOpacity onPress={this._pressBack}>
                                 <Icon style={{
-                                    textAlign:'left',marginLeft: 10, fontSize: 35, color:'#007aff',
+                                    textAlign:'left',marginLeft: 10, fontSize: 28, color:'#007aff',
                                 }} name="ios-arrow-back">
                                 </Icon>
                             </TouchableOpacity>
@@ -3327,7 +3326,6 @@ class UserProfileModal extends Component {
                         <View>
                         </View>
                     </View>
-
 
                     <ScrollView
                         refreshControl={
@@ -3396,7 +3394,6 @@ class UserProfileModal extends Component {
                 <View
                     style={styles.container}>
 
-
                     <View style={{flexDirection: 'row', backgroundColor: '#fff', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 3}, shadowOpacity: 0.1, shadowRadius: 5}}>
                         <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                             <TouchableOpacity onPress={this._pressBack}>
@@ -3413,7 +3410,6 @@ class UserProfileModal extends Component {
                         <View>
                         </View>
                     </View>
-
 
                     <ScrollView
                         refreshControl={

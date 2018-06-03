@@ -1092,12 +1092,18 @@ class PlayerBottom extends Component {
     onProfilePress = () => {
         const {navigator} = this.props;
         Variables.state.browsingArtist = Variables.state.podcastArtist;
-        Navigation.showModal({
-            screen: 'UserProfileModal',
+        const rss = Variables.state.rss;
+        setTimeout(() => {
+        navigator.push({
+            screen: 'UserProfile',
+            title: Variables.state.currentUsername,
             animated: true,
             animationType: 'fade',
-            passProps: {navigator},
+            passProps: {navigator, rss},
         });
+        }, 450);
+        this.Close();
+
     };
 
 

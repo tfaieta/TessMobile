@@ -117,7 +117,7 @@ class PodcastOptions extends Component {
         if(rowData.highlight){
 
                 return(
-                    <View>
+                    <View style={styles.container} >
                         <View>
                             <Text style={styles.textTitle}>{podTitle}</Text>
                             <Text style={styles.textArtist}>{profileName}</Text>
@@ -365,7 +365,7 @@ class PodcastOptions extends Component {
 
             if(rowData.podcastArtist == currentUser.uid){
                 return(
-                    <View>
+                    <View style={styles.container}>
                         <View>
                             <Text style={styles.textTitle}>{podTitle}</Text>
                             <Text style={styles.textArtist}>by {profileName}</Text>
@@ -711,7 +711,7 @@ class PodcastOptions extends Component {
                     if(this.state.favorite){
 
                         return(
-                            <View>
+                            <View style={styles.container}>
                                 <View>
                                     <Text style={styles.textTitle}>{podTitle}</Text>
                                     <Text style={styles.textArtist}>{profileName}</Text>
@@ -814,16 +814,16 @@ class PodcastOptions extends Component {
 
                                 <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
                                     Variables.state.browsingArtist = rowData.podcastArtist;
-                                    if(rss){
-                                        Variables.state.rss = true;
-                                    }
-                                    else{
-                                        Variables.state.rss = false;
-                                    }
-                                    navigator.showModal({
-                                        screen: 'UserProfile',
-                                        passProps: {rowData, navigator},
-                                    })
+
+                                    setTimeout(() => {
+                                        navigator.push({
+                                            screen: 'UserProfile',
+                                            title: profileName,
+                                            passProps: {rowData, navigator, rss},
+                                        })
+                                    }, 450)
+                                     navigator.dismissLightBox();
+
                                 }}>
                                     <View style={{alignContent: 'center'}}>
                                         <Icon style={styles.iconStyle} name="ios-contact-outline" />
@@ -1027,7 +1027,7 @@ class PodcastOptions extends Component {
                     else{
 
                         return(
-                            <View>
+                            <View style={styles.container}>
                                 <View>
                                     <Text style={styles.textTitle}>{podTitle}</Text>
                                     <Text style={styles.textArtist}>{profileName}</Text>
@@ -1130,16 +1130,14 @@ class PodcastOptions extends Component {
 
                                 <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
                                     Variables.state.browsingArtist = rowData.podcastArtist;
-                                    if(rss){
-                                        Variables.state.rss = true;
-                                    }
-                                    else{
-                                        Variables.state.rss = false;
-                                    }
-                                    navigator.showModal({
-                                        screen: 'UserProfile',
-                                        passProps: {rowData, navigator},
-                                    })
+                                    setTimeout(() => {
+                                        navigator.push({
+                                            screen: 'UserProfile',
+                                            title: profileName,
+                                            passProps: {rowData, navigator, rss},
+                                        })
+                                    }, 450)
+                                     navigator.dismissLightBox();
                                 }}>
                                     <View style={{alignContent: 'center'}}>
                                         <Icon style={styles.iconStyle} name="ios-contact-outline" />
@@ -1345,7 +1343,7 @@ class PodcastOptions extends Component {
                     if(this.state.favorite){
 
                         return(
-                            <View>
+                            <View style={styles.container}>
                                 <View>
                                     <Text style={styles.textTitle}>{podTitle}</Text>
                                     <Text style={styles.textArtist}>{profileName}</Text>
@@ -1372,16 +1370,14 @@ class PodcastOptions extends Component {
 
                                 <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
                                     Variables.state.browsingArtist = rowData.podcastArtist;
-                                    if(rss){
-                                        Variables.state.rss = true;
-                                    }
-                                    else{
-                                        Variables.state.rss = false;
-                                    }
-                                    navigator.showModal({
-                                        screen: 'UserProfile',
-                                        passProps: {rowData, navigator},
-                                    })
+                                    setTimeout(() => {
+                                        navigator.push({
+                                            screen: 'UserProfile',
+                                            title: profileName,
+                                            passProps: {rowData, navigator, rss},
+                                        })
+                                    }, 450)
+                                     navigator.dismissLightBox();
                                 }}>
                                     <View style={{alignContent: 'center'}}>
                                         <Icon style={styles.iconStyle} name="ios-contact-outline" />
@@ -1410,7 +1406,7 @@ class PodcastOptions extends Component {
                     else{
 
                         return(
-                            <View>
+                            <View style={styles.container}>
                                 <View>
                                     <Text style={styles.textTitle}>{podTitle}</Text>
                                     <Text style={styles.textArtist}>{profileName}</Text>
@@ -1437,16 +1433,14 @@ class PodcastOptions extends Component {
 
                                 <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
                                     Variables.state.browsingArtist = rowData.podcastArtist;
-                                    if(rss){
-                                        Variables.state.rss = true;
-                                    }
-                                    else{
-                                        Variables.state.rss = false;
-                                    }
-                                    navigator.showModal({
-                                        screen: 'UserProfile',
-                                        passProps: {rowData, navigator},
-                                    })
+                                    setTimeout(() => {
+                                        navigator.push({
+                                            screen: 'UserProfile',
+                                            title: profileName,
+                                            passProps: {rowData, navigator, rss},
+                                        })
+                                    }, 450)
+                                     navigator.dismissLightBox();
                                 }}>
 
                                     <View style={{alignContent: 'center'}}>
@@ -1499,7 +1493,10 @@ const styles = StyleSheet.create({
 
     container:{
         flex: 1,
-        backgroundColor: '#FFF'
+        paddingTop: height/7.59,
+        backgroundColor: '#3e416495',
+        height: height,
+        width: width
     },
     textStyle:{
         color: '#fff',
@@ -1513,7 +1510,6 @@ const styles = StyleSheet.create({
     },
     textTitle:{
         color: '#fff',
-        flex:1,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
@@ -1525,7 +1521,6 @@ const styles = StyleSheet.create({
     },
     textArtist:{
         color: '#fff',
-        flex:1,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',

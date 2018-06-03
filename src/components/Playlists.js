@@ -61,6 +61,7 @@ class Playlists extends Component{
             topBarShadowOpacity: 0.1,
             topBarShadowOffset: 3,
             topBarShadowRadius: 5,
+            statusBarColor: '#fff',
         });
 
         this.timeout1 = setTimeout(() => {this.setState({playlists: dataSource.cloneWithRows(Variables.state.playlists)})},1000);
@@ -113,6 +114,7 @@ class Playlists extends Component{
                                     autoCapitalize={'sentences'}
                                     autoCorrect={false}
                                     returnKeyType='done'
+                                    underlineColorAndroid = 'transparent'
                                     keyboardType="default"
                                     value={this.state.newPlaylist}
                                     onChangeText={text => {this.setState({newPlaylist: text})}}
@@ -197,6 +199,7 @@ const styles = StyleSheet.create({
 
     input: {
         height: 40,
+        width: 250,
         backgroundColor: 'transparent',
         marginTop: 10,
         marginBottom: 5,

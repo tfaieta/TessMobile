@@ -110,20 +110,13 @@ class ListItemFollowed extends Component {
         return (
 
             <TouchableOpacity underlayColor='#5757FF' onPress={ () =>{
+            const {navigator} = this.props;
                 Variables.state.browsingArtist = podcastArtist;
-                if(this.state.rss){
-                    Variables.state.rss = true;
-                }
-                else{
-                    Variables.state.rss = false;
-                }
+                const {rss} = this.state;
                 this.props.navigator.push({
                     screen: "UserProfile",
                     title: this.state.profileName,
-                    passProps: {},
-                    navigatorStyle: {},
-                    navigatorButtons: {},
-                    animationType: 'slide-up'
+                    passProps: {navigator, rss},
                 });
             }}>
                 <View style={styles.container}>
@@ -142,7 +135,6 @@ class ListItemFollowed extends Component {
         )
 
     }
-
 
 }
 

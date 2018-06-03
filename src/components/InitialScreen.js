@@ -17,26 +17,26 @@ import { Navigation } from 'react-native-navigation';
 
 
 var homeIcon;
-Icon.getImageSource('home', 26, '#F5002A').then((source) => { homeIcon = source});
+Icon.getImageSource('home', 26, '#b1b3c8').then((source) => { homeIcon = source});
 var homeIconSelected = require('tess/src/images/iconHome.png');
-Icon.getImageSource('home', 30, '#F5002A').then((source) => { homeIconSelected = source});
+Icon.getImageSource('home', 30, '#506dcf').then((source) => { homeIconSelected = source});
 
 
 
 var discoverIcon;
-Icon.getImageSource('compass', 30, '#F5002A').then((source) => { discoverIcon = source});
+Icon.getImageSource('compass', 30, '#b1b3c8').then((source) => { discoverIcon = source});
 var discoverIconSelected;
-Icon.getImageSource('compass', 34, '#F5002A').then((source) => { discoverIconSelected = source});
+Icon.getImageSource('compass', 34, '#506dcf').then((source) => { discoverIconSelected = source});
 
 var libraryIcon;
-FontAwesome.getImageSource('bars', 22, '#F5002A').then((source) => { libraryIcon = source});
+FontAwesome.getImageSource('bars', 22, '#b1b3c8').then((source) => { libraryIcon = source});
 var libraryIconSelected;
-FontAwesome.getImageSource('bars', 26, '#F5002A').then((source) => { libraryIconSelected = source});
+FontAwesome.getImageSource('bars', 26, '#506dcf').then((source) => { libraryIconSelected = source});
 
 var notificationsIcon;
-FontAwesome.getImageSource('bell', 22, '#F5002A').then((source) => { notificationsIcon = source});
+FontAwesome.getImageSource('bell', 22, '#b1b3c8').then((source) => { notificationsIcon = source});
 var notificationsIconSelected;
-FontAwesome.getImageSource('bell', 26, '#F5002A').then((source) => { notificationsIconSelected = source});
+FontAwesome.getImageSource('bell', 26, '#506dcf').then((source) => { notificationsIconSelected = source});
 
 
 var {height, width} = Dimensions.get('window');
@@ -136,7 +136,9 @@ export default class InitialScreen extends Component{
                     orientation: 'portrait',
                     bottomTabBadgeTextColor: 'white',
                     bottomTabBadgeBackgroundColor: 'white',
-                    hideBackButtonTitle: true/false
+                    hideBackButtonTitle: true/false,
+                    tabBarButtonColor: '#b1b3c8',
+                    tabBarSelectedButtonColor: '#506dcf',
                 },
                 passProps: {},
                 animationType: 'slide-down'
