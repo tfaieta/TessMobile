@@ -14,7 +14,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { podcastFetchUser } from "../actions/PodcastActions";
 import PlayerBottom from './PlayerBottom';
-import {profileNameL} from './LoginForm.js';
 import {profileName} from './CreateAccount.js';
 import Variables from './Variables';
 import firebase from 'firebase';
@@ -31,6 +30,14 @@ var {height, width} = Dimensions.get('window');
 
 class UserProfile extends Component {
 
+static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: false,
+        statusBarTextColorScheme: 'light',
+        tabBarHidden: false,
+        statusBarColor: '#fff',
+    };
+
 
     componentWillMount(){
 
@@ -45,6 +52,8 @@ class UserProfile extends Component {
         Variables.state.userFollowers = [];
         Variables.state.userFollowing = [];
         Variables.state.userTracking = [];
+
+        const {rss} = this.props;
 
 
         const ref = firebase.database().ref(`podcasts/`);
@@ -195,7 +204,7 @@ class UserProfile extends Component {
         });
 
 
-        if(Variables.state.rss){
+        if(rss){
             firebase.database().ref(`users/${Variables.state.browsingArtist}/profileImage`).once("value", function (snapshot) {
                 if(snapshot.val()){
                     Variables.state.onUserProfileImage = snapshot.val().profileImage
@@ -262,7 +271,7 @@ class UserProfile extends Component {
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = { username: '' , bio: '', profileImage: '',
-            category: '', profileName: profileName, following: false, profileNameL: profileNameL,
+            category: '', profileName: profileName, following: false,
             dataSource: dataSource.cloneWithRows([]),
             loading: true,
             refreshing: false,
@@ -326,6 +335,8 @@ class UserProfile extends Component {
         const refFol = firebase.database().ref(`users/${Variables.state.browsingArtist}/followers`);
         const refFollowing = firebase.database().ref(`users/${Variables.state.browsingArtist}/following`);
         const refTracking = firebase.database().ref(`users/${Variables.state.browsingArtist}/tracking`);
+
+        const {rss} = this.props;
 
         Variables.state.userPodcasts = [];
         Variables.state.onUserProfileImage = '';
@@ -498,7 +509,7 @@ class UserProfile extends Component {
 
 
 
-        if(Variables.state.rss){
+        if(rss){
             firebase.database().ref(`users/${Variables.state.browsingArtist}/profileImage`).once("value", function (snapshot) {
                 if(snapshot.val()){
                     Variables.state.onUserProfileImage = snapshot.val().profileImage
@@ -3300,13 +3311,13 @@ class UserProfile extends Component {
         else{
             fixedTitle = this.state.username;
         }
+        const {rss} = this.props;
 
-        if(Variables.state.rss){
+        if(rss){
 
             return (
                 <View
                     style={styles.container}>
-
 
                     <ScrollView
                         refreshControl={

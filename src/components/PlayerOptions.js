@@ -389,29 +389,6 @@ class PlayerOptions extends Component {
                         </TouchableOpacity>
 
 
-                        <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
-                            Variables.state.browsingArtist = podcastArtist;
-                            if(rss){
-                                Variables.state.rss = true;
-                            }
-                            else{
-                                Variables.state.rss = false;
-                            }
-                            navigator.showModal({
-                                screen: 'UserProfile',
-                                title: profileName,
-                                passProps: {navigator},
-                            })
-                        }}>
-                            <View style={{alignContent: 'center'}}>
-                                <Icon style={styles.iconStyle} name="ios-contact-outline" />
-                            </View>
-                            <View style = {{alignContent: 'center'}}>
-                                <Text style={styles.textStyle}>Go to Profile</Text>
-                            </View>
-                        </TouchableOpacity>
-
-
                         <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
                             navigator.dismissLightBox();
                         }}>
@@ -696,29 +673,6 @@ class PlayerOptions extends Component {
 
                             <View style={{alignContent: 'center'}}>
                                 <Text style={styles.textStyle}>Add to Playlist</Text>
-                            </View>
-                        </TouchableOpacity>
-
-
-                        <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
-                            Variables.state.browsingArtist = podcastArtist;
-                            if(rss){
-                                Variables.state.rss = true;
-                            }
-                            else{
-                                Variables.state.rss = false;
-                            }
-                            navigator.showModal({
-                                screen: 'UserProfile',
-                                title: profileName,
-                                passProps: {navigator},
-                            })
-                        }}>
-                            <View style={{alignContent: 'center'}}>
-                                <Icon style={styles.iconStyle} name="ios-contact-outline" />
-                            </View>
-                            <View style = {{alignContent: 'center'}}>
-                                <Text style={styles.textStyle}>Go to Profile</Text>
                             </View>
                         </TouchableOpacity>
 
@@ -1020,27 +974,6 @@ class PlayerOptions extends Component {
                                     </View>
                                 </TouchableOpacity>
 
-                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
-                                    Variables.state.browsingArtist = podcastArtist;
-                                    if(rss){
-                                        Variables.state.rss = true;
-                                    }
-                                    else{
-                                        Variables.state.rss = false;
-                                    }
-                                    navigator.showModal({
-                                        screen: 'UserProfile',
-                                        title: profileName,
-                                        passProps: {navigator},
-                                    })
-                                }}>
-                                    <View style={{alignContent: 'center'}}>
-                                        <Icon style={styles.iconStyle} name="ios-contact-outline" />
-                                    </View>
-                                    <View style = {{alignContent: 'center'}}>
-                                        <Text style={styles.textStyle}>Go to Profile</Text>
-                                    </View>
-                                </TouchableOpacity>
 
                                 <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
                                     navigator.dismissLightBox();
@@ -1339,27 +1272,6 @@ class PlayerOptions extends Component {
                                     </View>
                                 </TouchableOpacity>
 
-                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
-                                    Variables.state.browsingArtist = podcastArtist;
-                                    if(rss){
-                                        Variables.state.rss = true;
-                                    }
-                                    else{
-                                        Variables.state.rss = false;
-                                    }
-                                    navigator.showModal({
-                                        screen: 'UserProfile',
-                                        title: profileName,
-                                        passProps: {navigator},
-                                    })
-                                }}>
-                                    <View style={{alignContent: 'center'}}>
-                                        <Icon style={styles.iconStyle} name="ios-contact-outline" />
-                                    </View>
-                                    <View style = {{alignContent: 'center'}}>
-                                        <Text style={styles.textStyle}>Go to Profile</Text>
-                                    </View>
-                                </TouchableOpacity>
 
                                 <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
                                     navigator.dismissLightBox();
@@ -1582,27 +1494,6 @@ class PlayerOptions extends Component {
                                     </View>
                                 </TouchableOpacity>
 
-                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
-                                    Variables.state.browsingArtist = podcastArtist;
-                                    if(rss){
-                                        Variables.state.rss = true;
-                                    }
-                                    else{
-                                        Variables.state.rss = false;
-                                    }
-                                    navigator.showModal({
-                                        screen: 'UserProfile',
-                                        title: profileName,
-                                        passProps: {navigator},
-                                    })
-                                }}>
-                                    <View style={{alignContent: 'center'}}>
-                                        <Icon style={styles.iconStyle} name="ios-contact-outline" />
-                                    </View>
-                                    <View style = {{alignContent: 'center'}}>
-                                        <Text style={styles.textStyle}>Go to Profile</Text>
-                                    </View>
-                                </TouchableOpacity>
 
                                 <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
                                     navigator.dismissLightBox();
@@ -1648,27 +1539,6 @@ class PlayerOptions extends Component {
                                     </View>
                                 </TouchableOpacity>
 
-                                <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
-                                    Variables.state.browsingArtist = podcastArtist;
-                                    if(rss){
-                                        Variables.state.rss = true;
-                                    }
-                                    else{
-                                        Variables.state.rss = false;
-                                    }
-                                    navigator.showModal({
-                                        screen: 'UserProfile',
-                                        title: profileName,
-                                        passProps: {navigator},
-                                    })
-                                }}>
-                                    <View style={{alignContent: 'center'}}>
-                                        <Icon style={styles.iconStyle} name="ios-contact-outline" />
-                                    </View>
-                                    <View style = {{alignContent: 'center'}}>
-                                        <Text style={styles.textStyle}>Go to Profile</Text>
-                                    </View>
-                                </TouchableOpacity>
 
                                 <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress = {() => {
                                     navigator.dismissLightBox();

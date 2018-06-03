@@ -101,7 +101,7 @@ export default class CustomNavbar extends Component {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        marginTop: width/27.4,
+        marginTop: width/34,
         backgroundColor: '#fff'
     },
     button: {
