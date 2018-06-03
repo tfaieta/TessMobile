@@ -38,7 +38,7 @@ export default class CustomNavbar extends Component {
                         }} name="search"/>
                     </View>
 
-                    <TouchableOpacity style={{ marginLeft: width/41.1}} onPress={() => {
+                    <TouchableOpacity style={{ marginLeft: width/41.1, paddingRight: width/1.92,}} onPress={() => {
                         const {currentUser} = firebase.auth();
                         const user = currentUser.uid;
                         Analytics.logEvent('goToSearch', {
@@ -54,8 +54,8 @@ export default class CustomNavbar extends Component {
                         <Text style={styles.text}>Search</Text>
                     </TouchableOpacity>
 
-                    <View style={{flexDirection: 'row', }}>
-                        <TouchableOpacity onPress={() => {
+                    <View style={{flexDirection: 'row',}}>
+                        <TouchableOpacity style={{paddingLeft: width/35, paddingRight: width/65 }} onPress={() => {
                             const {currentUser} = firebase.auth();
                             const user = currentUser.uid;
                             Analytics.logEvent('goToCreate', {
@@ -70,11 +70,9 @@ export default class CustomNavbar extends Component {
                                 fontSize: width/20.55,
                                 backgroundColor: 'transparent',
                                 color: '#506dcf',
-                                marginLeft: width/1.83,
-                                marginRight: width/41.1,
                             }} name="microphone"/>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => {
+                        <TouchableOpacity style={{paddingLeft: width/65, paddingRight: width/35 }} onPress={() => {
                             const {currentUser} = firebase.auth();
                             const user = currentUser.uid;
                             Analytics.logEvent('goToProfile', {

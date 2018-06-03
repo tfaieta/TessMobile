@@ -399,6 +399,7 @@ class PlayerOptions extends Component {
                             }
                             navigator.showModal({
                                 screen: 'UserProfile',
+                                title: profileName,
                                 passProps: {navigator},
                             })
                         }}>
@@ -709,6 +710,7 @@ class PlayerOptions extends Component {
                             }
                             navigator.showModal({
                                 screen: 'UserProfile',
+                                title: profileName,
                                 passProps: {navigator},
                             })
                         }}>
@@ -1028,6 +1030,7 @@ class PlayerOptions extends Component {
                                     }
                                     navigator.showModal({
                                         screen: 'UserProfile',
+                                        title: profileName,
                                         passProps: {navigator},
                                     })
                                 }}>
@@ -1346,6 +1349,7 @@ class PlayerOptions extends Component {
                                     }
                                     navigator.showModal({
                                         screen: 'UserProfile',
+                                        title: profileName,
                                         passProps: {navigator},
                                     })
                                 }}>
@@ -1588,6 +1592,7 @@ class PlayerOptions extends Component {
                                     }
                                     navigator.showModal({
                                         screen: 'UserProfile',
+                                        title: profileName,
                                         passProps: {navigator},
                                     })
                                 }}>
@@ -1653,6 +1658,7 @@ class PlayerOptions extends Component {
                                     }
                                     navigator.showModal({
                                         screen: 'UserProfile',
+                                        title: profileName,
                                         passProps: {navigator},
                                     })
                                 }}>

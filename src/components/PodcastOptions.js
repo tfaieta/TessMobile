@@ -822,6 +822,7 @@ class PodcastOptions extends Component {
                                     }
                                     navigator.showModal({
                                         screen: 'UserProfile',
+                                        title: profileName,
                                         passProps: {rowData, navigator},
                                     })
                                 }}>
@@ -1138,6 +1139,7 @@ class PodcastOptions extends Component {
                                     }
                                     navigator.showModal({
                                         screen: 'UserProfile',
+                                        title: profileName,
                                         passProps: {rowData, navigator},
                                     })
                                 }}>
@@ -1380,6 +1382,7 @@ class PodcastOptions extends Component {
                                     }
                                     navigator.showModal({
                                         screen: 'UserProfile',
+                                        title: profileName,
                                         passProps: {rowData, navigator},
                                     })
                                 }}>
@@ -1445,6 +1448,7 @@ class PodcastOptions extends Component {
                                     }
                                     navigator.showModal({
                                         screen: 'UserProfile',
+                                        title: profileName,
                                         passProps: {rowData, navigator},
                                     })
                                 }}>

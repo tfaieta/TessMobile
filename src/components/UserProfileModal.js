@@ -246,7 +246,7 @@ class UserProfileModal extends Component {
         this.props.navigator.setStyle({
             statusBarHidden: false,
             statusBarTextColorScheme: 'light',
-            navBarHidden: true,
+            navBarHidden: false,
             navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
             navBarTextFontSize: 18, // change the font size of the title
             navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
@@ -3311,25 +3311,6 @@ class UserProfileModal extends Component {
                 <View
                     style={styles.container}>
 
-
-                    <View style={{flexDirection: 'row', backgroundColor: '#fff', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 3}, shadowOpacity: 0.1, shadowRadius: 5}}>
-                        <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
-                            <TouchableOpacity onPress={this._pressBack}>
-                                <Icon style={{
-                                    textAlign:'left',marginLeft: 10, fontSize: 35, color:'#007aff',
-                                }} name="ios-arrow-back">
-                                </Icon>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                            <Text style={styles.header}>{fixedTitle}</Text>
-                        </View>
-
-                        <View>
-                        </View>
-                    </View>
-
-
                     <ScrollView
                         refreshControl={
                             <RefreshControl
@@ -3396,25 +3377,6 @@ class UserProfileModal extends Component {
             return (
                 <View
                     style={styles.container}>
-
-
-                    <View style={{flexDirection: 'row', backgroundColor: '#fff', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 3}, shadowOpacity: 0.1, shadowRadius: 5}}>
-                        <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
-                            <TouchableOpacity onPress={this._pressBack}>
-                                <Icon style={{
-                                    textAlign:'left',marginLeft: 10, fontSize: 28, color:'#007aff',
-                                }} name="ios-arrow-back">
-                                </Icon>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                            <Text style={styles.header}>{fixedTitle}</Text>
-                        </View>
-
-                        <View>
-                        </View>
-                    </View>
-
 
                     <ScrollView
                         refreshControl={
