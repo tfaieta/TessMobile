@@ -1,164 +1,17 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
-import { View, StyleSheet,StatusBar, Text, TouchableOpacity, ScrollView, Image, ListView} from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, ListView} from 'react-native';
 import PlayerBottom from './PlayerBottom';
-import { connect } from 'react-redux';
 import Variables from "./Variables";
 import firebase from 'firebase';
 import ListItemUsers from "./ListItemUsers";
+import Icon from 'react-native-vector-icons/Ionicons';
+import Swiper from 'react-native-swiper';
 
 
 
-// 2nd tab, discover page
+// 2nd tab, discover (browse) page
 
 class Discover extends Component{
-
-
-    componentWillMount(){
-        Variables.state.selectedByTess = [];
-
-        //TheMaddyIce
-        firebase.database().ref(`users/upwadf76CrOBee8aSwzcCZR4kM33/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-        //Two Bros and a Pod
-        firebase.database().ref(`users/JHPYRdcWtOheHCkrddZjJaLXtPg2/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-        //Big Tay
-        firebase.database().ref(`users/1F1q9gRKWyMQ8cSATXqGT4PnCaK2/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-        //Tim Dulak
-        firebase.database().ref(`users/3tHL3dIcINUdMeKZn6ckf81e2Sk2/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-        //Joey Bradfield
-        firebase.database().ref(`users/gdGuN9v14qU9pSHXSk1KbDGlUsu1/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-        //Dom Gold
-        firebase.database().ref(`users/6px5go2E3USvYvkcNQejkLkJx3H3/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-        //Eat the fruit
-        firebase.database().ref(`users/7ubx6NftyyQbAwufE7BquuSJ6gJ3/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-        //Abbey
-        firebase.database().ref(`users/P2HAtFE3YKXe8uP9Mu1HyCE2cD83/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-        //ShakDaddy
-        firebase.database().ref(`users/u1osicyhjcR5j3EHx6m1SMe2LpJ3/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-        //Nick Ruspantini
-        firebase.database().ref(`users/pgIx9JAiq9aQWcyUZX8AuIdqNmP2/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-
-
-        //Tony
-        firebase.database().ref(`users/sJsB8XK4XRZ8tNpeGC14JNsa6Jj1/podcasts`).limitToLast(1).once("value", function (data) {
-            data.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.key}`).once("value", function (snapshot) {
-                    if(snapshot.val()){
-                        Variables.state.selectedByTess.push(snapshot.val())
-                    }
-                })
-            })
-        });
-    }
-
-    static state = { search: ''};
-
-    searchActivate = () => {
-        Variables.state.searchWord = this.state.search;
-        this.props.navigator.push({
-            screen: 'Search',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
 
     constructor(props) {
         super(props);
@@ -184,13 +37,40 @@ class Discover extends Component{
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
-            dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess),
+            podcastOfTheWeekTitle: '',
+            dataSource: dataSource.cloneWithRows(Variables.state.selectedByTess),
             url: '',
             refreshing: false,
         };
-        this.timeout1 = setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},3000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSourceSel: dataSource.cloneWithRows(Variables.state.selectedByTess)})},6000);
+
+
+        let podOfTheWeek = [];
+        let podUsername = '';
+        firebase.database().ref(`podcastOfTheWeek/`).once("value", function (snapshot) {
+            if(snapshot.val()){
+                firebase.database().ref(`users/${snapshot.val()}/username`).once("value", function (name) {
+                    if(name.val().username){
+                        podUsername = name.val().username;
+                    }
+                });
+                firebase.database().ref(`users/${snapshot.val()}/podcasts`).limitToLast(10).once("value", function (snap) {
+                    snap.forEach(function (data) {
+                        firebase.database().ref(`podcasts/${data.val().id}`).once("value", function (podcast) {
+                            if(podcast.val()){
+                                podOfTheWeek.push(podcast.val());
+                            }
+                        })
+                    })
+                })
+            }
+        });
+
+        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(podOfTheWeek), podcastOfTheWeekTitle: podUsername,})},3000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(podOfTheWeek), podcastOfTheWeekTitle: podUsername,})},6000);
     }
+
+
+
 
     componentWillUnmount(){
         clearTimeout(this.timeout1);
@@ -344,8 +224,8 @@ class Discover extends Component{
     }
 
 
-    renderRowNewPodcasts = (podcast) => {
-        return <ListItemUsers podcast={podcast} navigator={this.props.navigator} />;
+    renderRow = (rowData) => {
+        return <ListItemUsers podcast={rowData} navigator={this.props.navigator} />;
     };
 
 
@@ -354,144 +234,85 @@ class Discover extends Component{
         return (
             <View style={styles.container}>
 
+                <ScrollView>
 
-                <StatusBar
-                    barStyle="dark-content"
-                />
-
-                <ScrollView >
-
-                    <View style={{flexDirection: 'row', marginTop: 20}}>
-                        <TouchableOpacity style={{backgroundColor: '#fff', borderBottomRightRadius: 10, borderTopRightRadius: 10, flex:1, marginRight: 5, padding: 20}} onPress={this.pressTrending}>
-                            <Text style={styles.title}>Trending</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={{backgroundColor: '#fff', borderBottomLeftRadius: 10, borderTopLeftRadius: 10, flex:1,marginLeft: 5, padding: 20}} onPress={this.pressNew}>
-                            <Text style={styles.title}>New</Text>
-                        </TouchableOpacity>
-                    </View>
-
-
-                    <View style={{backgroundColor: '#fff', marginVertical: 10, paddingBottom: 40}}>
-                        <Text style={styles.titleHeader}>Categories</Text>
-                        <View style={{flex:1}}>
-                            <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} style={{flex: 1}} >
-                                <TouchableOpacity style={{flex: 1, marginHorizontal: 10}} onPress={this.pressCurrEvents}>
-                                    <Image
-                                        style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
-                                        source={require('tess/src/images/currEvents-cat.png')}
-                                    />
-                                    <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>News</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressFitness}>
-                                    <Image
-                                        style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
-                                        source={require('tess/src/images/fitness-cat.png')}
-                                    />
-                                    <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Fitness</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingHorizontal: 10}} onPress={this.pressSociety}>
-                                    <Image
-                                        style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
-                                        source={require('tess/src/images/politics-cat.png')}
-                                    />
-                                    <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Society & Culture</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressReligionSpirit}>
-                                    <Image
-                                        style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
-                                        source={require('tess/src/images/religionSpirit-cat.png')}
-                                    />
-                                    <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Religion & Spirituality</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingHorizontal: 10}} onPress={this.pressComedy}>
-                                    <Image
-                                        style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
-                                        source={require('tess/src/images/comedy-cat.png')}
-                                    />
-                                    <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Comedy</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressLife}>
-                                    <Image
-                                        style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
-                                        source={require('tess/src/images/lifestyle-cat.png')}
-                                    />
-                                    <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Lifestyle</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingHorizontal: 10}} onPress={this.pressSci}>
-                                    <Image
-                                        style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
-                                        source={require('tess/src/images/scienceNature-cat.png')}
-                                    />
-                                    <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Science & Nature</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressTravel}>
-                                    <Image
-                                        style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
-                                        source={require('tess/src/images/travel-cat.png')}
-                                    />
-                                    <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Travel</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingHorizontal: 10}} onPress={this.pressLearn}>
-                                    <Image
-                                        style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
-                                        source={require('tess/src/images/learnSomething-cat.png')}
-                                    />
-                                    <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Learn Something</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressStory}>
-                                    <Image
-                                        style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
-                                        source={require('tess/src/images/storytelling-cat.png')}
-                                    />
-                                    <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Storytelling</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingHorizontal: 10}} onPress={this.pressSports}>
-                                    <Image
-                                        style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
-                                        source={require('tess/src/images/sports-cat.png')}
-                                    />
-                                    <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Sports</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressEntertainment}>
-                                    <Image
-                                        style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
-                                        source={require('tess/src/images/entertainment-cat.png')}
-                                    />
-                                    <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Entertainment</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressMusic}>
-                                    <Image
-                                        style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
-                                        source={require('tess/src/images/music-cat.png')}
-                                    />
-                                    <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Music</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingHorizontal: 10}} onPress={this.pressTech}>
-                                    <Image
-                                        style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
-                                        source={require('tess/src/images/tech-cat.png')}
-                                    />
-                                    <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Tech</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingHorizontal: 10}} onPress={this.pressGaming}>
-                                    <Image
-                                        style={{ width: 120, height: 120, alignSelf: 'center', opacity: 1}}
-                                        source={require('tess/src/images/gaming-cat.png')}
-                                    />
-                                    <Text style={{marginTop: 5, fontFamily: 'Montserrat-Regular', alignSelf:'center', fontSize: 12}}>Gaming</Text>
-                                </TouchableOpacity>
-
-                            </ScrollView>
+                    <Text style = {styles.titleHeader}>Featured</Text>
+                    <Swiper style={styles.wrapper}>
+                        <View style={styles.slide}>
+                            <Text style={styles.text1}>The Best Ideas Podcast</Text>
+                            <Text style={styles.text2}>by Tess Media</Text>
                         </View>
+                        <View style={styles.slide}>
+                            <Text style={styles.text1}>IDK Podcast</Text>
+                            <Text style={styles.text2}>by Tess Media</Text>
+                        </View>
+                        <View style={styles.slide}>
+                            <Text style={styles.text1}>Green Light Sports</Text>
+                            <Text style={styles.text2}>by Tess Media</Text>
+                        </View>
+                    </Swiper>
+
+
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 18, marginVertical: 1}} onPress={this.GoToHighlights}>
+                        <Text style = {styles.title}>   Discover</Text>
+                        <View style={{alignSelf:'flex-end'}}>
+                            <Icon style={{
+                                fontSize: 22,
+                                backgroundColor: 'transparent',
+                                color: '#3e416460',
+                                marginHorizontal: 15,
+                            }} name="ios-arrow-forward">
+                            </Icon>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 18, marginVertical: 1}} onPress={this.GoToHighlights}>
+                        <Text style = {styles.title}>   Charts</Text>
+                        <View style={{alignSelf:'flex-end'}}>
+                            <Icon style={{
+                                fontSize: 22,
+                                backgroundColor: 'transparent',
+                                color: '#3e416460',
+                                marginHorizontal: 15,
+                            }} name="ios-arrow-forward">
+                            </Icon>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 18, marginVertical: 1}} onPress={this.GoToHighlights}>
+                        <Text style = {styles.title}>   Categories</Text>
+                        <View style={{alignSelf:'flex-end'}}>
+                            <Icon style={{
+                                fontSize: 22,
+                                backgroundColor: 'transparent',
+                                color: '#3e416460',
+                                marginHorizontal: 15,
+                            }} name="ios-arrow-forward">
+                            </Icon>
+                        </View>
+                    </TouchableOpacity>
+
+
+                    <Text style = {styles.titleHeader}>Podcast of the Week</Text>
+
+                    <View style={{flex:1, flexDirection: 'row', backgroundColor: '#fff', marginTop: 10, marginHorizontal: 15, borderTopLeftRadius: 15, borderTopRightRadius: 15}}>
+                        <View style={{flex:6}}>
+                            <Text style = {styles.titleWeek}>{this.state.podcastOfTheWeekTitle}</Text>
+                        </View>
+
+                        <View style={{flex:1, alignSelf: 'flex-start'}}>
+                        </View>
+
                     </View>
 
-                    <View style={{backgroundColor: '#fff', marginVertical: 10, marginBottom: 50}}>
-                        <Text style={styles.titleHeader}>Discover</Text>
-                        {this._selectedByTess(Variables.state.selectedByTess.length)}
+                    <View style={{backgroundColor: '#fff', marginHorizontal: 15, marginBottom: 20, borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}>
+                        <ListView
+                            horizontal={true}
+                            enableEmptySections
+                            dataSource={this.state.dataSource}
+                            renderRow={this.renderRow}
+                        />
                     </View>
-
-
 
                 </ScrollView>
 
@@ -514,7 +335,7 @@ const styles = StyleSheet.create({
     title: {
         flex:1,
         color: '#3e4164',
-        textAlign: 'center',
+        textAlign: 'left',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 20,
@@ -524,22 +345,57 @@ const styles = StyleSheet.create({
     titleHeader: {
         flex:1,
         color: '#3e4164',
-        textAlign: 'center',
+        textAlign: 'left',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 22,
+        marginTop: 25,
+        marginBottom: 5,
+        marginLeft: 10,
+        backgroundColor: 'transparent',
+    },
+
+    wrapper: {
+    },
+
+    slide: {
+        backgroundColor: 'blue'
+
+    },
+
+    text1: {
+        flex:1,
+        color: '#3e4164',
+        textAlign: 'left',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 20,
+        marginLeft: 10,
+        fontSize: 16,
         backgroundColor: 'transparent',
-        marginTop: 30,
-        marginVertical: 10,
+    },
+    text2: {
+        flex:1,
+        color: '#3e4164',
+        textAlign: 'left',
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        marginLeft: 10,
+        fontSize: 14,
+        backgroundColor: 'transparent',
+    },
+
+    titleWeek: {
+        color: '#3e4164',
+        flex:1,
+        textAlign: 'left',
+        marginVertical: 15,
+        marginLeft: 15,
+        marginRight: 5,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 24,
+        backgroundColor: 'transparent',
     },
 
 });
 
-const mapStateToProps = state => {
-    const podcast = _.map(state.podcast, (val, uid) => {
-        return { ...val, uid };
-    });
-    return {podcast};
-};
 
-export default connect(mapStateToProps) (Discover);
+export default Discover;
