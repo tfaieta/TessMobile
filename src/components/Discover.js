@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Image, ListView} from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Image, ListView, Dimensions} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import Variables from "./Variables";
 import firebase from 'firebase';
 import ListItemUsers from "./ListItemUsers";
 import Icon from 'react-native-vector-icons/Ionicons';
-import Swiper from 'react-native-swiper';
+import Carousel from 'react-native-looped-carousel';
+
+var {height, width} = Dimensions.get('window');
 
 
 
@@ -35,6 +37,7 @@ class Discover extends Component{
             statusBarColor: '#fff',
         });
 
+
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             podcastOfTheWeekTitle: '',
@@ -42,6 +45,7 @@ class Discover extends Component{
             dataSource: dataSource.cloneWithRows(Variables.state.selectedByTess),
             url: '',
             refreshing: false,
+            size: {width: width, height: height/2.15}
         };
 
 
@@ -87,19 +91,11 @@ class Discover extends Component{
 
 
 
-
     componentWillUnmount(){
         clearTimeout(this.timeout1);
         clearTimeout(this.timeout2);
     }
 
-
-    pressNew = () =>{
-        this.props.navigator.push({
-            screen: 'NewPodcasts',
-            title: 'New'
-        });
-    };
 
     pressCategories = () =>{
         this.props.navigator.push({
@@ -115,27 +111,6 @@ class Discover extends Component{
         });
     };
 
-
-    _selectedByTess(length){
-        if (length > 0){
-            return(
-                <View style={{paddingBottom: 20}}>
-                    <ListView
-                        showsHorizontalScrollIndicator={false}
-                        horizontal={true}
-                        enableEmptySections
-                        dataSource={this.state.dataSourceSel}
-                        renderRow={this.renderRowNewPodcasts}
-                    />
-                </View>
-            )
-        }
-        else{
-            return(
-                <Text style = {styles.title3}> </Text>
-            )
-        }
-    }
 
     renderImage = () => {
         if(this.state.podImage != ''){
@@ -178,20 +153,53 @@ class Discover extends Component{
                 <ScrollView>
 
                     <Text style = {styles.titleHeader}>Featured</Text>
-                    <Swiper style={styles.wrapper}>
-                        <View style={styles.slide}>
-                            <Text style={styles.text1}>The Best Ideas Podcast</Text>
-                            <Text style={styles.text2}>by Tess Media</Text>
+                    <Carousel
+                        delay={5000}
+                        style={this.state.size}
+                        autoplay
+                        bullets
+                        chosenBulletStyle={{backgroundColor: '#3e4164',}}
+                        bulletStyle={{backgroundColor:   '#f5f4f9', borderWidth: 1.2, borderColor: '#3e4164',}}
+                        bulletsContainerStyle={{marginTop: 30,}}
+                        onAnimateNextPage={(p) => console.log(p)}
+                    >
+                        <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
+                            <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: 5}}>
+                                <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginVertical: 10, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                                    <Image
+                                        style={{width: 330, height: 190, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
+                                        source={require('tess/src/images/podArtBigIdeas.png')}
+                                    />
+                                </View>
+                                <Text style={styles.text1}>The Best Ideas Podcast</Text>
+                                <Text style={styles.text2}>by Tess Media</Text>
+                            </View>
                         </View>
-                        <View style={styles.slide}>
-                            <Text style={styles.text1}>IDK Podcast</Text>
-                            <Text style={styles.text2}>by Tess Media</Text>
+                        <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
+                            <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: 5}}>
+                                <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginVertical: 10, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                                    <Image
+                                        style={{width: 330, height: 190, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
+                                        source={require('tess/src/images/podArtIDK.png')}
+                                    />
+                                </View>
+                                <Text style={styles.text1}>IDK Podcast</Text>
+                                <Text style={styles.text2}>by Tess Media</Text>
+                            </View>
                         </View>
-                        <View style={styles.slide}>
-                            <Text style={styles.text1}>Green Light Sports</Text>
-                            <Text style={styles.text2}>by Tess Media</Text>
+                        <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
+                            <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: 5}}>
+                                <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginVertical: 10, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                                    <Image
+                                        style={{width: 330, height: 190, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
+                                        source={require('tess/src/images/podArtIDK.png')}
+                                    />
+                                </View>
+                                <Text style={styles.text1}>Green Light Sports</Text>
+                                <Text style={styles.text2}>by Tess Media</Text>
+                            </View>
                         </View>
-                    </Swiper>
+                    </Carousel>
 
 
                     <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 18, marginVertical: 1}} onPress={this.GoToHighlights}>
@@ -236,7 +244,7 @@ class Discover extends Component{
 
                     <Text style = {styles.titleHeader}>Podcast of the Week</Text>
 
-                    <View style={{flex:1, flexDirection: 'row', backgroundColor: '#fff', marginTop: 10, marginHorizontal: 15, borderTopLeftRadius: 15, borderTopRightRadius: 15}}>
+                    <View style={{flex:1, flexDirection: 'row', backgroundColor: '#fff', marginTop: 10, marginHorizontal: 12, borderTopLeftRadius: 15, borderTopRightRadius: 15}}>
                         <View style={{flex:6}}>
                             <Text style = {styles.titleWeek}>{this.state.podcastOfTheWeekTitle}</Text>
                         </View>
@@ -247,7 +255,7 @@ class Discover extends Component{
 
                     </View>
 
-                    <View style={{backgroundColor: '#fff', marginHorizontal: 15, marginBottom: 20, borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}>
+                    <View style={{backgroundColor: '#fff', marginHorizontal: 12, marginBottom: 20, borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}>
                         <ListView
                             horizontal={true}
                             enableEmptySections
@@ -291,8 +299,8 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 22,
         marginTop: 25,
-        marginBottom: 5,
-        marginLeft: 10,
+        marginBottom: 10,
+        marginLeft: 15,
         backgroundColor: 'transparent',
     },
 
@@ -305,24 +313,24 @@ const styles = StyleSheet.create({
     },
 
     text1: {
-        flex:1,
         color: '#3e4164',
         textAlign: 'left',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        marginLeft: 10,
+        marginTop: 10,
+        marginLeft: 20,
         fontSize: 16,
         backgroundColor: 'transparent',
     },
     text2: {
-        flex:1,
         color: '#3e4164',
         textAlign: 'left',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        marginLeft: 10,
+        marginLeft: 20,
         fontSize: 14,
         backgroundColor: 'transparent',
+        marginBottom: 12,
     },
 
     titleWeek: {

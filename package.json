@@ -30,6 +30,7 @@
 		"react-native-image-crop-picker": "^0.18.1",
 		"react-native-invertible-scroll-view": "^1.1.0",
 		"react-native-linear-gradient": "^2.0.0",
+		"react-native-looped-carousel": "^0.1.13",
 		"react-native-music-control": "^0.5.1",
 		"react-native-navigation": "^1.1.411",
 		"react-native-popup-dialog": "^0.9.35",
