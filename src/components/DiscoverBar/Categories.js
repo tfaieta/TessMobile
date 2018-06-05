@@ -11,10 +11,10 @@ class Categories extends Component{
             statusBarTextColorScheme: 'light',
             navBarHidden: false,
             navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
-            navBarTextFontSize: 18, // change the font size of the title
-            navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
+            navBarTextFontSize: 22, // change the font size of the title
+            navBarTextFontFamily: 'Montserrat-Bold', // Changes the title font
             drawUnderTabBar: false,
-            navBarHideOnScroll: true,
+            navBarHideOnScroll: false,
             navBarBackgroundColor: '#fff',
             topBarElevationShadowEnabled: true,
             topBarShadowColor: '#000',

@@ -21,8 +21,8 @@ class Discover extends Component{
             statusBarTextColorScheme: 'light',
             navBarHidden: false,
             navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
-            navBarTextFontSize: 18, // change the font size of the title
-            navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
+            navBarTextFontSize: 22, // change the font size of the title
+            navBarTextFontFamily: 'Montserrat-Bold', // Changes the title font
             drawUnderTabBar: false,
             navBarHideOnScroll: false,
             navBarBackgroundColor: '#fff',
@@ -104,8 +104,8 @@ class Discover extends Component{
                         onAnimateNextPage={(p) => console.log(p)}
                     >
                         <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
-                            <View style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: 5}}>
-                                <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginVertical: 10, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                            <View style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: 15}}>
+                                <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginVertical: 0, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
                                     <Image
                                         style={{width: 330, height: 190, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
                                         source={require('tess/src/images/podArtGimlet.png')}
@@ -114,8 +114,8 @@ class Discover extends Component{
                             </View>
                         </View>
                         <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
-                            <View style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: 5}}>
-                                <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginVertical: 10, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                            <View style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: 15}}>
+                                <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginVertical: 0, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
                                     <Image
                                         style={{width: 330, height: 190, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
                                         source={require('tess/src/images/podArtNPR.png')}
@@ -185,9 +185,9 @@ const styles = StyleSheet.create({
         flex:1,
         color: '#3e4164',
         textAlign: 'left',
-        fontFamily: 'Montserrat-SemiBold',
-        fontSize: 22,
-        marginTop: 25,
+        fontFamily: 'Montserrat-Bold',
+        fontSize: 20,
+        marginTop: 15,
         marginBottom: 10,
         marginLeft: 15,
         backgroundColor: 'transparent',
@@ -201,38 +201,6 @@ const styles = StyleSheet.create({
 
     },
 
-    text1: {
-        color: '#3e4164',
-        textAlign: 'left',
-        fontStyle: 'normal',
-        fontFamily: 'Montserrat-SemiBold',
-        marginTop: 10,
-        marginLeft: 20,
-        fontSize: 16,
-        backgroundColor: 'transparent',
-    },
-    text2: {
-        color: '#3e4164',
-        textAlign: 'left',
-        fontStyle: 'normal',
-        fontFamily: 'Montserrat-SemiBold',
-        marginLeft: 20,
-        fontSize: 14,
-        backgroundColor: 'transparent',
-        marginBottom: 12,
-    },
-
-    titleWeek: {
-        color: '#3e4164',
-        flex:1,
-        textAlign: 'left',
-        marginVertical: 15,
-        marginLeft: 15,
-        marginRight: 5,
-        fontFamily: 'Montserrat-SemiBold',
-        fontSize: 24,
-        backgroundColor: 'transparent',
-    },
 
 });
 

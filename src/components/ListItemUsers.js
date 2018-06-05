@@ -438,7 +438,7 @@ const styles = {
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-Bold',
         fontSize: 14,
         marginLeft: 10,
         backgroundColor: 'transparent'

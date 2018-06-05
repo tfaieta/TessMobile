@@ -70,6 +70,7 @@
 	<string>Tess will need to use your photo library so that you can upload an profile image.</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Montserrat-Bold.ttf</string>
 		<string>Montserrat-SemiBold.ttf</string>
 		<string>Montserrat-Regular.ttf</string>
 		<string>Entypo.ttf</string>

@@ -250,7 +250,7 @@ class Browse extends Component{
 
                     <Text style = {styles.titleHeader}>Podcast of the Week</Text>
 
-                    <View style={{flex:1, flexDirection: 'row', backgroundColor: '#fff', marginTop: 10, marginHorizontal: 12, borderTopLeftRadius: 15, borderTopRightRadius: 15}}>
+                    <View style={{flex:1, flexDirection: 'row', backgroundColor: '#fff', marginTop: 0, marginHorizontal: 12, borderTopLeftRadius: 15, borderTopRightRadius: 15}}>
                         <View style={{flex:6}}>
                             <Text style = {styles.titleWeek}>{this.state.podcastOfTheWeekTitle}</Text>
                         </View>
@@ -302,8 +302,8 @@ const styles = StyleSheet.create({
         flex:1,
         color: '#3e4164',
         textAlign: 'left',
-        fontFamily: 'Montserrat-SemiBold',
-        fontSize: 22,
+        fontFamily: 'Montserrat-Bold',
+        fontSize: 20,
         marginTop: 25,
         marginBottom: 10,
         marginLeft: 15,
@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
         color: '#3e4164',
         textAlign: 'left',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-SemiBold',
+        fontFamily: 'Montserrat-Bold',
         marginTop: 10,
         marginLeft: 20,
         fontSize: 16,
@@ -345,9 +345,9 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         marginVertical: 15,
         marginLeft: 15,
-        marginRight: 5,
-        fontFamily: 'Montserrat-SemiBold',
-        fontSize: 24,
+        marginRight: 15,
+        fontFamily: 'Montserrat-Bold',
+        fontSize: 20,
         backgroundColor: 'transparent',
     },
 
