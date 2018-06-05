@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Image, ListView, Dimensions} from 'react-native';
+import { View, StyleSheet, Text,ScrollView, Image, ListView, Dimensions} from 'react-native';
 import PlayerBottom from './PlayerBottom';
-import Variables from "./Variables";
 import firebase from 'firebase';
 import ListItemUsers from "./ListItemUsers";
-import Icon from 'react-native-vector-icons/Ionicons';
 import Carousel from 'react-native-looped-carousel';
 
 var {height, width} = Dimensions.get('window');
 
 
 
-// 2nd tab, discover (browse) page
+// Discover page, from Browse
 
 class Discover extends Component{
 
@@ -22,11 +20,10 @@ class Discover extends Component{
             statusBarHidden: false,
             statusBarTextColorScheme: 'light',
             navBarHidden: false,
+            navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
+            navBarTextFontSize: 18, // change the font size of the title
+            navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
             drawUnderTabBar: false,
-            navBarCustomView: 'CustomNavbar',
-            navBarCustomViewInitialProps: {
-                navigator: this.props.navigator
-            },
             navBarHideOnScroll: false,
             navBarBackgroundColor: '#fff',
             topBarElevationShadowEnabled: true,
@@ -40,53 +37,41 @@ class Discover extends Component{
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
-            podcastOfTheWeekTitle: '',
-            podImage: '',
-            dataSource: dataSource.cloneWithRows(Variables.state.selectedByTess),
+            dataSourceFresh: dataSource.cloneWithRows([]),
+            dataSourceSmall: dataSource.cloneWithRows([]),
             url: '',
             refreshing: false,
-            size: {width: width, height: height/2.15}
+            size: {width: width, height: height/3}
         };
 
-
-        let podOfTheWeek = [];
-        let podUsername = '';
-        let podImage = '';
-        firebase.database().ref(`podcastOfTheWeek/`).once("value", function (snapshot) {
-            if(snapshot.val()){
-                firebase.database().ref(`users/${snapshot.val()}/username`).once("value", function (name) {
-                    if(name.val().username){
-                        podUsername = name.val().username;
+        let fresh = [];
+        firebase.database().ref(`podcasts`).limitToLast(50).once("value", function (snapshot) {
+            snapshot.forEach(function (snap) {
+                if(snap.val()){
+                    if(snap.val().rss){
+                        fresh.push(snap.val())
                     }
-                });
-                firebase.database().ref(`users/${snapshot.val()}/podcasts`).limitToLast(10).once("value", function (snap) {
-                    snap.forEach(function (data) {
-                        firebase.database().ref(`podcasts/${data.val().id}`).once("value", function (podcast) {
-                            if(podcast.val()){
-                                podOfTheWeek.push(podcast.val());
-                            }
-                        })
-                    })
-                });
-                firebase.database().ref(`users/${snapshot.val()}/profileImage`).once("value", function (image) {
-                    if(image.val()){
-                        podImage = image.val().profileImage;
-                    }
-                    else{
-                        const storageRef = firebase.storage().ref(`/users/${snapshot.val()}/image-profile-uploaded`);
-                        storageRef.getDownloadURL()
-                            .then(function(url) {
-                                podImage = url;
-                            }).catch(function(error) {
-                            //
-                        });
-                    }
-                })
-            }
+                }
+            });
         });
 
-        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(podOfTheWeek), podcastOfTheWeekTitle: podUsername, podImage: podImage})},3000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(podOfTheWeek), podcastOfTheWeekTitle: podUsername, podImage: podImage})},6000);
+
+        let small = [];
+        firebase.database().ref(`podcasts`).limitToLast(150).once("value", function (snapshot) {
+            snapshot.forEach(function (snap) {
+                if(snap.val()){
+                    if(snap.val().rss){
+                    }
+                    else{
+                        small.push(snap.val())
+                    }
+                }
+            });
+        });
+
+
+        this.timeout1 = setTimeout(() => {this.setState({dataSourceFresh: dataSource.cloneWithRows(fresh.reverse()), dataSourceSmall: dataSource.cloneWithRows(small.reverse()), })},1000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSourceFresh: dataSource.cloneWithRows(fresh.reverse()), dataSourceSmall: dataSource.cloneWithRows(small.reverse()), })},4000);
     }
 
 
@@ -95,49 +80,6 @@ class Discover extends Component{
         clearTimeout(this.timeout1);
         clearTimeout(this.timeout2);
     }
-
-
-    pressCategories = () =>{
-        this.props.navigator.push({
-            screen: 'Categories',
-            title: 'Categories'
-        });
-    };
-
-    pressCharts = () =>{
-        this.props.navigator.push({
-            screen: 'TopCharts',
-            title: 'Charts'
-        });
-    };
-
-
-    renderImage = () => {
-        if(this.state.podImage != ''){
-            return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'flex-end', height: 65, width: 65, borderTopRightRadius: 15, borderWidth: 0.1, borderColor: "#fff"}}>
-                    <Image
-                        style={{width: 65, height: 65, position: 'absolute', alignSelf: 'flex-end', opacity: 1, borderRadius: 15}}
-                        source={{uri: this.state.podImage}}
-                    />
-                </View>
-            )
-        }
-        else{
-            return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'flex-end', height: 65, width: 65, borderTopRightRadius: 15, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)'}}>
-                    <Icon style={{
-                        textAlign: 'center',
-                        fontSize: 35,
-                        marginTop: 15,
-                        color: 'white',
-                    }} name="md-person">
-                    </Icon>
-                </View>
-            )
-        }
-
-    };
 
 
     renderRow = (rowData) => {
@@ -152,117 +94,63 @@ class Discover extends Component{
 
                 <ScrollView>
 
-                    <Text style = {styles.titleHeader}>Featured</Text>
+                    <Text style = {styles.titleHeader}>Favorites</Text>
                     <Carousel
                         delay={5000}
                         style={this.state.size}
                         autoplay
-                        bullets
                         chosenBulletStyle={{backgroundColor: '#3e4164',}}
                         bulletStyle={{backgroundColor:   '#f5f4f9', borderWidth: 1.2, borderColor: '#3e4164',}}
-                        bulletsContainerStyle={{marginTop: 30,}}
                         onAnimateNextPage={(p) => console.log(p)}
                     >
                         <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
-                            <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: 5}}>
+                            <View style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: 5}}>
                                 <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginVertical: 10, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
                                     <Image
                                         style={{width: 330, height: 190, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
-                                        source={require('tess/src/images/podArtBigIdeas.png')}
+                                        source={require('tess/src/images/podArtGimlet.png')}
                                     />
                                 </View>
-                                <Text style={styles.text1}>The Best Ideas Podcast</Text>
-                                <Text style={styles.text2}>by Tess Media</Text>
                             </View>
                         </View>
                         <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
-                            <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: 5}}>
+                            <View style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: 5}}>
                                 <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginVertical: 10, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
                                     <Image
                                         style={{width: 330, height: 190, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
-                                        source={require('tess/src/images/podArtIDK.png')}
+                                        source={require('tess/src/images/podArtNPR.png')}
                                     />
                                 </View>
-                                <Text style={styles.text1}>IDK Podcast</Text>
-                                <Text style={styles.text2}>by Tess Media</Text>
-                            </View>
-                        </View>
-                        <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
-                            <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: 5}}>
-                                <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginVertical: 10, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
-                                    <Image
-                                        style={{width: 330, height: 190, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
-                                        source={require('tess/src/images/podArtIDK.png')}
-                                    />
-                                </View>
-                                <Text style={styles.text1}>Green Light Sports</Text>
-                                <Text style={styles.text2}>by Tess Media</Text>
                             </View>
                         </View>
                     </Carousel>
 
 
-                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 18, marginVertical: 1}} onPress={this.GoToHighlights}>
-                        <Text style = {styles.title}>   Discover</Text>
-                        <View style={{alignSelf:'flex-end'}}>
-                            <Icon style={{
-                                fontSize: 22,
-                                backgroundColor: 'transparent',
-                                color: '#3e416460',
-                                marginHorizontal: 15,
-                            }} name="ios-arrow-forward">
-                            </Icon>
-                        </View>
-                    </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 18, marginVertical: 1}} onPress={this.pressCharts}>
-                        <Text style = {styles.title}>   Charts</Text>
-                        <View style={{alignSelf:'flex-end'}}>
-                            <Icon style={{
-                                fontSize: 22,
-                                backgroundColor: 'transparent',
-                                color: '#3e416460',
-                                marginHorizontal: 15,
-                            }} name="ios-arrow-forward">
-                            </Icon>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 18, marginVertical: 1}} onPress={this.pressCategories}>
-                        <Text style = {styles.title}>   Categories</Text>
-                        <View style={{alignSelf:'flex-end'}}>
-                            <Icon style={{
-                                fontSize: 22,
-                                backgroundColor: 'transparent',
-                                color: '#3e416460',
-                                marginHorizontal: 15,
-                            }} name="ios-arrow-forward">
-                            </Icon>
-                        </View>
-                    </TouchableOpacity>
-
-
-                    <Text style = {styles.titleHeader}>Podcast of the Week</Text>
-
-                    <View style={{flex:1, flexDirection: 'row', backgroundColor: '#fff', marginTop: 10, marginHorizontal: 12, borderTopLeftRadius: 15, borderTopRightRadius: 15}}>
-                        <View style={{flex:6}}>
-                            <Text style = {styles.titleWeek}>{this.state.podcastOfTheWeekTitle}</Text>
-                        </View>
-
-                        <View style={{flex:1, alignSelf: 'flex-start'}}>
-                            {this.renderImage()}
-                        </View>
-
-                    </View>
-
-                    <View style={{backgroundColor: '#fff', marginHorizontal: 12, marginBottom: 20, borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}>
+                    <Text style = {styles.titleHeader}>Fresh & New</Text>
+                    <View style={{backgroundColor: 'transparent', marginBottom: 20,}}>
                         <ListView
                             horizontal={true}
                             enableEmptySections
-                            dataSource={this.state.dataSource}
+                            dataSource={this.state.dataSourceFresh}
                             renderRow={this.renderRow}
                         />
                     </View>
+
+
+
+                    <Text style = {styles.titleHeader}>Noteworthy Small Creators</Text>
+                    <View style={{backgroundColor: 'transparent', marginBottom: 20,}}>
+                        <ListView
+                            horizontal={true}
+                            enableEmptySections
+                            dataSource={this.state.dataSourceSmall}
+                            renderRow={this.renderRow}
+                        />
+                    </View>
+
+
+                    <View style={{paddingBottom: 60}} />
 
                 </ScrollView>
 
@@ -280,6 +168,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
+        paddingTop: 60,
     },
 
     title: {
