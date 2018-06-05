@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, ListView,  RefreshControl, View} from 'react-native';
+import { StyleSheet, ScrollView, ListView, View, Text, TouchableOpacity} from 'react-native';
+import PlayerBottom from '../PlayerBottom';
 import Variables from "../Variables";
 import firebase from 'firebase';
 import ListItem from "../ListItem";
+import ListItemChart from "../ListItemChart";
 
 
 
-// popular tab on discover page
+// Charts page on discover (browse) page
 
 class TopCharts extends Component{
 
@@ -38,8 +40,6 @@ class TopCharts extends Component{
     componentWillUnmount(){
         clearTimeout(this.timeout1);
         clearTimeout(this.timeout2);
-        clearTimeout(this.timeout3);
-        clearTimeout(this.timeout4);
     }
 
 
@@ -50,110 +50,122 @@ class TopCharts extends Component{
             statusBarHidden: false,
             statusBarTextColorScheme: 'light',
             navBarHidden: false,
-            navBarTextColor: '#000000', // change the text color of the title (remembered across pushes)
+            navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
             navBarTextFontSize: 18, // change the font size of the title
-            navBarTextFontFamily: 'Montserrat-Regular', // Changes the title font
+            navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
             drawUnderTabBar: false,
-            navBarHideOnScroll: true,
+            navBarHideOnScroll: false,
             navBarBackgroundColor: '#fff',
-            topBarElevationShadowEnabled: true,
+            topBarElevationShadowEnabled: false,
             topBarShadowColor: '#000',
             topBarShadowOpacity: 0.1,
             topBarShadowOffset: 3,
             topBarShadowRadius: 5,
+            statusBarColor: '#fff',
         });
 
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithRows([]),
-            refreshing: false
+            refreshing: false,
+            episodesActive: true,
+            podcastsActive: false,
         };
         this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},1000);
 
         this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},3000);
-
-        this.timeout3 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},5000);
-
-        this.timeout4 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},7000);
     }
-
-
-
-    fetchData(){
-
-        Variables.state.topCharts = [];
-        const ref = firebase.database().ref(`podcasts/`);
-
-        ref.limitToLast(400).once("value", function (snapshot) {
-
-            snapshot.forEach(function (data) {
-
-                if(data.child("plays").numChildren() > 0){
-                    Variables.state.topCharts.push(data.val());
-                    for(let i = Variables.state.topCharts.length-1; i > 0 && Object.keys(Variables.state.topCharts[i].plays).length > Object.keys(Variables.state.topCharts[i-1].plays).length; i--){
-                        let temp = Variables.state.topCharts[i-1];
-                        Variables.state.topCharts[i-1] = Variables.state.topCharts[i];
-                        Variables.state.topCharts[i] = temp;
-                    }
-                }
-
-            })
-
-        });
-
-
-    }
-
-
-    _onRefresh() {
-        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
-        this.setState({refreshing: true});
-        this.setState({dataSource: dataSource.cloneWithRows([])});
-
-        this.fetchData();
-
-        this.setState({
-            refreshing: false,
-        });
-
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},1000);
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},3000);
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},5000);
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},7000);
-
-
-    }
-
 
 
     renderRow = (podcast) => {
-        return <ListItem podcast={podcast} navigator={this.props.navigator} />;
+        return <ListItemChart podcast={podcast} navigator={this.props.navigator} />;
+    };
+
+    renderTitleEps = () => {
+        if(this.state.episodesActive){
+            return(
+                <View style = {{flex: 1, alignSelf: 'flex-start', marginLeft: 16, marginRight: 8,}}>
+                    <TouchableOpacity style = {styles.boxActive}>
+                        <Text style = {styles.titleActive}>Top Episodes</Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+        else{
+            return(
+                <View style = {{flex: 1, alignSelf: 'flex-start', marginLeft: 16, marginRight: 8,}}>
+                    <TouchableOpacity style = {styles.box} onPress={() => {
+                        this.setState({episodesActive: true, podcastsActive: false})
+                    }}>
+                        <Text style = {styles.title}>Top Episodes</Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+    };
+
+    renderTitlePods = () => {
+        if(this.state.podcastsActive){
+            return(
+                <View style = {{flex: 1, alignSelf: 'flex-end', marginLeft: 8, marginRight: 16,}}>
+                    <TouchableOpacity style = {styles.boxActive}>
+                        <Text style = {styles.titleActive}>Top Podcasts</Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+        else{
+            return(
+                <View style = {{flex: 1, alignSelf: 'flex-end', marginLeft: 8, marginRight: 16,}}>
+                    <TouchableOpacity style = {styles.box} onPress={() => {
+                        this.setState({episodesActive: false, podcastsActive: true})
+                    }}>
+                        <Text style = {styles.title}>Top Podcasts</Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+    };
+
+    renderData = () => {
+
+        if(this.state.episodesActive){
+            return(
+                <ListView
+                    enableEmptySections
+                    dataSource={this.state.dataSource}
+                    renderRow={this.renderRow}
+                />
+            )
+        }
+        else if(this.state.podcastsActive){
+
+        }
+
     };
 
 
     render() {
         return (
-            <ScrollView
-                refreshControl={
-                    <RefreshControl
-                        refreshing={this.state.refreshing}
-                        onRefresh={this._onRefresh.bind(this)}
-                    />
-                }
-            >
+            <View style={styles.container}>
 
-                <View style={{flex:1}}>
-                    <ListView
-                        enableEmptySections
-                        dataSource={this.state.dataSource}
-                        renderRow={this.renderRow}
-                    />
+                <View style = {{marginTop: 80, marginBottom: 10, flexDirection: 'row'}}>
+                    {this.renderTitleEps()}
+                    {this.renderTitlePods()}
                 </View>
 
-                <View style={{paddingBottom: 120}}/>
+                <ScrollView>
 
-            </ScrollView>
+                    {this.renderData()}
+
+                    <View style={{paddingBottom: 120}}/>
+
+                </ScrollView>
+
+                <PlayerBottom/>
+
+            </View>
 
 
 
@@ -166,20 +178,30 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: 'transparent',
-        marginTop: 0,
     },
 
     title: {
-        color: '#2A2A30',
-        marginTop:10,
-        marginLeft: 20,
-        flex:1,
-        textAlign: 'left',
-        opacity: 2,
-        fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 20,
-        backgroundColor: 'transparent'
+        color: '#3e4164',
+        textAlign: 'center',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 18,
+        backgroundColor: 'transparent',
+    },
+
+    titleActive: {
+        color: '#fff',
+        textAlign: 'center',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 18,
+        backgroundColor: 'transparent',
+    },
+
+    box: {
+        backgroundColor: '#f5f4f9', borderRadius: 12, padding: 15,
+    },
+
+    boxActive: {
+        backgroundColor: '#3e4164', borderRadius: 12, padding: 15,
     },
 
 });

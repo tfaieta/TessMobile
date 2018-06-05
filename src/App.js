@@ -71,6 +71,7 @@ import PlayerBottom from "./components/PlayerBottom";
 import CatchUp from "./components/CatchUp";
 import PlaylistList from "./components/PlaylistList";
 import PlaylistView from "./components/PlaylistView";
+import Category from "./components/DiscoverBar/Category";
 
 
 
@@ -90,6 +91,7 @@ Navigation.registerComponent('AddWidget', () => AddWidget, store, Provider);
 
 Navigation.registerComponent('Discover', () => Discover, store, Provider);
 Navigation.registerComponent('Categories', () => Categories, store, Provider);
+Navigation.registerComponent('Category', () => Category, store, Provider);
 Navigation.registerComponent('Following', () => Following, store, Provider);
 Navigation.registerComponent('NewPodcasts', () => NewPodcasts, store, Provider);
 Navigation.registerComponent('TopCharts', () => TopCharts, store, Provider);

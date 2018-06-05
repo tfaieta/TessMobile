@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, ListView} from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Image, ListView} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import Variables from "./Variables";
 import firebase from 'firebase';
@@ -38,6 +38,7 @@ class Discover extends Component{
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             podcastOfTheWeekTitle: '',
+            podImage: '',
             dataSource: dataSource.cloneWithRows(Variables.state.selectedByTess),
             url: '',
             refreshing: false,
@@ -46,6 +47,7 @@ class Discover extends Component{
 
         let podOfTheWeek = [];
         let podUsername = '';
+        let podImage = '';
         firebase.database().ref(`podcastOfTheWeek/`).once("value", function (snapshot) {
             if(snapshot.val()){
                 firebase.database().ref(`users/${snapshot.val()}/username`).once("value", function (name) {
@@ -61,12 +63,26 @@ class Discover extends Component{
                             }
                         })
                     })
+                });
+                firebase.database().ref(`users/${snapshot.val()}/profileImage`).once("value", function (image) {
+                    if(image.val()){
+                        podImage = image.val().profileImage;
+                    }
+                    else{
+                        const storageRef = firebase.storage().ref(`/users/${snapshot.val()}/image-profile-uploaded`);
+                        storageRef.getDownloadURL()
+                            .then(function(url) {
+                                podImage = url;
+                            }).catch(function(error) {
+                            //
+                        });
+                    }
                 })
             }
         });
 
-        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(podOfTheWeek), podcastOfTheWeekTitle: podUsername,})},3000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(podOfTheWeek), podcastOfTheWeekTitle: podUsername,})},6000);
+        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(podOfTheWeek), podcastOfTheWeekTitle: podUsername, podImage: podImage})},3000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(podOfTheWeek), podcastOfTheWeekTitle: podUsername, podImage: podImage})},6000);
     }
 
 
@@ -78,115 +94,6 @@ class Discover extends Component{
     }
 
 
-
-    pressFitness =()=>{
-        this.props.navigator.push({
-            screen: 'Fitness',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressCurrEvents = () => {
-        this.props.navigator.push({
-            screen: 'News',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressGaming =()=>{
-        this.props.navigator.push({
-            screen: 'Gaming',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressSports =()=>{
-        this.props.navigator.push({
-            screen: 'Sports',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressEntertainment =()=>{
-        this.props.navigator.push({
-            screen: 'Entertainment',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressSci =()=>{
-        this.props.navigator.push({
-            screen: 'ScienceNature',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressTravel =()=>{
-        this.props.navigator.push({
-            screen: 'Travel',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressLearn =()=>{
-        this.props.navigator.push({
-            screen: 'LearnSomething',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressStory =()=>{
-        this.props.navigator.push({
-            screen: 'Storytelling',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressComedy =()=>{
-        this.props.navigator.push({
-            screen: 'Comedy',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressLife =()=>{
-        this.props.navigator.push({
-            screen: 'Lifestyle',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressSociety =()=>{
-        this.props.navigator.push({
-            screen: 'SocietyCulture',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressTech =()=>{
-        this.props.navigator.push({
-            screen: 'Tech',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-
-    pressMusic =()=>{
-        this.props.navigator.push({
-            screen: 'Music',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-
-    pressReligionSpirit =()=>{
-        this.props.navigator.push({
-            screen: 'ReligionSpirituality',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-
     pressNew = () =>{
         this.props.navigator.push({
             screen: 'NewPodcasts',
@@ -194,10 +101,17 @@ class Discover extends Component{
         });
     };
 
-    pressTrending = () =>{
+    pressCategories = () =>{
+        this.props.navigator.push({
+            screen: 'Categories',
+            title: 'Categories'
+        });
+    };
+
+    pressCharts = () =>{
         this.props.navigator.push({
             screen: 'TopCharts',
-            title: 'Trending'
+            title: 'Charts'
         });
     };
 
@@ -222,6 +136,33 @@ class Discover extends Component{
             )
         }
     }
+
+    renderImage = () => {
+        if(this.state.podImage != ''){
+            return(
+                <View style={{backgroundColor:'transparent', alignSelf: 'flex-end', height: 65, width: 65, borderTopRightRadius: 15, borderWidth: 0.1, borderColor: "#fff"}}>
+                    <Image
+                        style={{width: 65, height: 65, position: 'absolute', alignSelf: 'flex-end', opacity: 1, borderRadius: 15}}
+                        source={{uri: this.state.podImage}}
+                    />
+                </View>
+            )
+        }
+        else{
+            return(
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'flex-end', height: 65, width: 65, borderTopRightRadius: 15, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)'}}>
+                    <Icon style={{
+                        textAlign: 'center',
+                        fontSize: 35,
+                        marginTop: 15,
+                        color: 'white',
+                    }} name="md-person">
+                    </Icon>
+                </View>
+            )
+        }
+
+    };
 
 
     renderRow = (rowData) => {
@@ -266,7 +207,7 @@ class Discover extends Component{
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 18, marginVertical: 1}} onPress={this.GoToHighlights}>
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 18, marginVertical: 1}} onPress={this.pressCharts}>
                         <Text style = {styles.title}>   Charts</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
@@ -279,7 +220,7 @@ class Discover extends Component{
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 18, marginVertical: 1}} onPress={this.GoToHighlights}>
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 18, marginVertical: 1}} onPress={this.pressCategories}>
                         <Text style = {styles.title}>   Categories</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
@@ -301,6 +242,7 @@ class Discover extends Component{
                         </View>
 
                         <View style={{flex:1, alignSelf: 'flex-start'}}>
+                            {this.renderImage()}
                         </View>
 
                     </View>
