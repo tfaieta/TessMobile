@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Image, ListView, Dimensions} from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Image, ListView, Dimensions, TouchableWithoutFeedback} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import Variables from "./Variables";
 import firebase from 'firebase';
@@ -41,6 +41,8 @@ class Browse extends Component{
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             podcastOfTheWeekTitle: '',
+            podcastOfTheWeekID: '',
+            podcastOftheWeekRSS: false,
             podImage: '',
             dataSource: dataSource.cloneWithRows(Variables.state.selectedByTess),
             url: '',
@@ -50,10 +52,13 @@ class Browse extends Component{
 
 
         let podOfTheWeek = [];
+        let podID = '';
         let podUsername = '';
         let podImage = '';
+        let podRSS = false;
         firebase.database().ref(`podcastOfTheWeek/`).once("value", function (snapshot) {
             if(snapshot.val()){
+                podID = snapshot.val();
                 firebase.database().ref(`users/${snapshot.val()}/username`).once("value", function (name) {
                     if(name.val().username){
                         podUsername = name.val().username;
@@ -71,6 +76,7 @@ class Browse extends Component{
                 firebase.database().ref(`users/${snapshot.val()}/profileImage`).once("value", function (image) {
                     if(image.val()){
                         podImage = image.val().profileImage;
+                        podRSS = true;
                     }
                     else{
                         const storageRef = firebase.storage().ref(`/users/${snapshot.val()}/image-profile-uploaded`);
@@ -85,8 +91,8 @@ class Browse extends Component{
             }
         });
 
-        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(podOfTheWeek), podcastOfTheWeekTitle: podUsername, podImage: podImage})},3000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(podOfTheWeek), podcastOfTheWeekTitle: podUsername, podImage: podImage})},6000);
+        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(podOfTheWeek), podcastOfTheWeekTitle: podUsername, podImage: podImage, podcastOfTheWeekID: podID, podcastOftheWeekRSS: podRSS})},3000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(podOfTheWeek), podcastOfTheWeekTitle: podUsername, podImage: podImage, podcastOfTheWeekID: podID, podcastOftheWeekRSS: podRSS})},6000);
     }
 
 
@@ -122,12 +128,24 @@ class Browse extends Component{
     renderImage = () => {
         if(this.state.podImage != ''){
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'flex-end', height: 65, width: 65, borderTopRightRadius: 15, borderWidth: 0.1, borderColor: "#fff"}}>
+                <TouchableWithoutFeedback style={{backgroundColor:'transparent', alignSelf: 'flex-end', height: 65, width: 65, borderTopRightRadius: 15, borderWidth: 0.1, borderColor: "#fff"}} onPress={() => {
+                    let rss = false;
+                    if(this.state.podcastOftheWeekRSS){
+                        rss = true;
+                    }
+                    const {navigator} = this.props;
+                    Variables.state.browsingArtist = this.state.podcastOfTheWeekID;
+                    navigator.push({
+                        screen: 'UserProfile',
+                        title: this.state.podcastOfTheWeekTitle,
+                        passProps: {navigator, rss},
+                    })
+                }}>
                     <Image
                         style={{width: 65, height: 65, position: 'absolute', alignSelf: 'flex-end', opacity: 1, borderRadius: 15}}
                         source={{uri: this.state.podImage}}
                     />
-                </View>
+                </TouchableWithoutFeedback>
             )
         }
         else{
@@ -170,18 +188,39 @@ class Browse extends Component{
                         onAnimateNextPage={(p) => console.log(p)}
                     >
                         <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
+                            <TouchableWithoutFeedback onPress={() => {
+                                const {navigator} = this.props;
+                                const rss = true;
+                                Variables.state.browsingArtist = 'The Best Ideas Podcast';
+                                navigator.push({
+                                    screen: 'UserProfile',
+                                    title: "The Best Ideas Podcast",
+                                    passProps: {navigator, rss},
+                                })
+                            }}>
                             <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: 5}}>
                                 <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginVertical: 10, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
                                     <Image
                                         style={{width: 330, height: 190, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
-                                        source={require('tess/src/images/podArtBigIdeas.png')}
+                                        source={require('tess/src/images/podArtBestIdeas.png')}
                                     />
                                 </View>
                                 <Text style={styles.text1}>The Best Ideas Podcast</Text>
                                 <Text style={styles.text2}>by Tess Media</Text>
                             </View>
+                            </TouchableWithoutFeedback>
                         </View>
                         <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
+                            <TouchableWithoutFeedback onPress={() => {
+                                const {navigator} = this.props;
+                                const rss = true;
+                                Variables.state.browsingArtist = 'IDK Podcast';
+                                navigator.push({
+                                    screen: 'UserProfile',
+                                    title: "IDK Podcast",
+                                    passProps: {navigator, rss},
+                                })
+                            }}>
                             <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: 5}}>
                                 <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginVertical: 10, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
                                     <Image
@@ -192,8 +231,19 @@ class Browse extends Component{
                                 <Text style={styles.text1}>IDK Podcast</Text>
                                 <Text style={styles.text2}>by Tess Media</Text>
                             </View>
+                            </TouchableWithoutFeedback>
                         </View>
                         <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
+                            <TouchableWithoutFeedback onPress={() => {
+                                const {navigator} = this.props;
+                                const rss = true;
+                                Variables.state.browsingArtist = 'IDK Podcast';
+                                navigator.push({
+                                    screen: 'UserProfile',
+                                    title: "IDK Podcast",
+                                    passProps: {navigator, rss},
+                                })
+                            }}>
                             <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: 5}}>
                                 <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginVertical: 10, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
                                     <Image
@@ -204,6 +254,7 @@ class Browse extends Component{
                                 <Text style={styles.text1}>Green Light Sports</Text>
                                 <Text style={styles.text2}>by Tess Media</Text>
                             </View>
+                            </TouchableWithoutFeedback>
                         </View>
                     </Carousel>
 
@@ -261,7 +312,7 @@ class Browse extends Component{
 
                     </View>
 
-                    <View style={{backgroundColor: '#fff', marginHorizontal: 12, marginBottom: 20, borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}>
+                    <View style={{backgroundColor: '#fff', marginHorizontal: 12, marginBottom: 60, borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}>
                         <ListView
                             horizontal={true}
                             enableEmptySections
@@ -304,7 +355,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         fontFamily: 'Montserrat-Bold',
         fontSize: 20,
-        marginTop: 25,
+        marginTop: 20,
         marginBottom: 10,
         marginLeft: 15,
         backgroundColor: 'transparent',
