@@ -16,13 +16,18 @@ class Categories extends Component{
             drawUnderTabBar: false,
             navBarHideOnScroll: false,
             navBarBackgroundColor: '#fff',
-            topBarElevationShadowEnabled: true,
-            topBarShadowColor: '#000',
+            topBarElevationShadowEnabled: false,
+            topBarShadowColor: 'transparent',
             topBarShadowOpacity: 0.1,
             topBarShadowOffset: 3,
             topBarShadowRadius: 5,
             statusBarColor: '#fff',
+            drawUnderNavBar: true,
+            navBarTranslucent: true,
+            navBarNoBorder: true
+
         });
+
     }
 
 

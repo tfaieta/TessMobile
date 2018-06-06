@@ -916,7 +916,7 @@ class Home extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#f5f4f9',
+        backgroundColor: '#fff',
     },
 
 

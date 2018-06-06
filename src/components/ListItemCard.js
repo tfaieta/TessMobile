@@ -457,7 +457,7 @@ class ListItemCard extends Component {
 
         return (
             <View style = {{marginHorizontal: width/33.5, marginVertical: height/133.4}}>
-                <View style={{ backgroundColor: '#fff', marginHorizontal: width/33.5, borderRadius: 10, width: width-20 }}>
+                <View style={{ backgroundColor: '#fff', marginHorizontal: width/33.5, borderRadius: 10, width: width-20, paddingBottom: height/44, borderBottomColor: '#00000030', borderBottomWidth: 1, }}>
                     <View style={{marginVertical: height/66.7}}>
                         <View style={{flexDirection: 'row', marginVertical: height/133.4}}>
                             <View style={{flex: 8, alignSelf: 'flex-start'}}>
@@ -502,24 +502,24 @@ class ListItemCard extends Component {
                                 <View style = {{alignSelf: 'center', flex:1, marginHorizontal: width/33.5}}>
                                     <Text style={styles.artistTitle}>{this.state.description}</Text>
                                     <View style={{flexDirection: 'row', marginTop: height/44.47}}>
-                                        <TouchableOpacity style= {{backgroundColor:'#3e4164', flex: 1, alignSelf: 'flex-start', paddingHorizontal: width/187.5, paddingVertical: height/133.4, borderRadius: 5, marginHorizontal: width/93.75}} onPress={this.onPressPlay}>
+                                        <TouchableOpacity style= {{backgroundColor:'#fff', flex: 1, alignSelf: 'flex-start', borderRadius: 5,}} onPress={this.onPressPlay}>
                                             <Icon style={{
                                                 textAlign: 'center',
-                                                fontSize: width/26.79,
+                                                fontSize: width/27,
                                                 alignSelf: 'center',
-                                                color: 'white',
+                                                color: '#3e4164'
                                             }} name="play">
-                                                <Text style={styles.whiteTitle}> Play</Text>
+                                                <Text style={styles.whiteTitle}>  Play</Text>
                                             </Icon>
                                         </TouchableOpacity>
-                                        <TouchableOpacity style= {{backgroundColor:'#3e4164', flex: 1, alignSelf: 'flex-end', paddingHorizontal: width/187.5, paddingVertical: height/133.4, borderRadius: 5, marginHorizontal: width/93.75}} onPress={this.onPressQueue}>
+                                        <TouchableOpacity style= {{backgroundColor:'#fff', flex: 1, alignSelf: 'flex-end',  borderRadius: 5,}} onPress={this.onPressQueue}>
                                             <Icon style={{
                                                 textAlign: 'center',
-                                                fontSize: width/26.79,
+                                                fontSize: width/27,
                                                 alignSelf: 'center',
-                                                color: 'white',
+                                                color: '#3e4164'
                                             }} name="plus">
-                                                <Text style={styles.whiteTitle}> Queue</Text>
+                                                <Text style={styles.whiteTitle}>  Queue</Text>
                                             </Icon>
                                         </TouchableOpacity>
                                     </View>
@@ -575,10 +575,10 @@ const styles = {
         backgroundColor: 'transparent',
     },
     whiteTitle: {
-        color: '#fff',
+        color: '#3e4164',
         textAlign: 'center',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: width/31.25,
+        fontSize: width/27,
         backgroundColor: 'transparent',
     },
     titleCard: {

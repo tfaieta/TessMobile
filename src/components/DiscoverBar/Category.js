@@ -43,6 +43,10 @@ class Category extends Component{
             topBarShadowOffset: 3,
             topBarShadowRadius: 5,
             statusBarColor: '#fff',
+            drawUnderNavBar: true,
+            navBarTranslucent: true,
+            navBarNoBorder: true
+            
         });
 
 

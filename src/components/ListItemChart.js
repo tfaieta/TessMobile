@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, LayoutAnimation, TouchableOpacity, Alert, Image, Dimensions, AsyncStorage } from 'react-native';
+import { Text, View, LayoutAnimation, TouchableHighlight, Image, Dimensions, AsyncStorage } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import Variables from "./Variables";
@@ -10,7 +10,7 @@ var {height, width} = Dimensions.get('window');
 
 
 
-// A single podcast on a list
+// A single episode on a list, used for top charts
 
 class ListItemChart extends Component {
 
@@ -105,7 +105,7 @@ class ListItemChart extends Component {
                     <Icon style={{
                         textAlign: 'center',
                         fontSize: 35,
-                        marginTop: 12,
+                        marginTop: 15,
                         color: 'white',
                     }} name="md-person">
                     </Icon>
@@ -131,7 +131,7 @@ class ListItemChart extends Component {
 
         return (
 
-            <TouchableOpacity onPress={() =>  {
+            <TouchableHighlight onPress={() =>  {
 
                 const {podcastArtist} = this.props.podcast;
                 const {podcastTitle} = this.props.podcast;
@@ -405,11 +405,12 @@ class ListItemChart extends Component {
                         height: 200
                     },
                 });
-            }}>
+            }} style={{backgroundColor: '#f5f4f9',}} underlayColor='#f5f4f9'>
+                <View>
                 <View style={styles.container}>
 
                     <View style={styles.leftContainer}>
-                        <Text style={styles.titleNum}>1</Text>
+                        <Text style={styles.titleNum}>{this.props.index}</Text>
                     </View>
 
                     <View style={styles.middleContainer}>
@@ -421,9 +422,11 @@ class ListItemChart extends Component {
                         {this._renderProfileImage()}
                     </View>
 
-
                 </View>
-            </TouchableOpacity>
+                <View style={{backgroundColor: '#00000030', marginHorizontal: 70, paddingBottom: 1}}/>
+                </View>
+
+            </TouchableHighlight>
 
         );
 
@@ -453,14 +456,12 @@ const styles = {
     titleNum: {
         color: '#828393',
         marginTop: 0,
-        flex:1,
+        flex: 1,
         textAlign: 'center',
         opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
         fontSize: 20,
         backgroundColor: 'transparent',
-        marginHorizontal: 20,
+        marginLeft: 15,
 
     },
     artistTitle: {
@@ -476,17 +477,10 @@ const styles = {
         marginLeft: 20,
     },
     container: {
-        paddingHorizontal: 0,
-        paddingVertical: 10,
-        marginVertical: 1,
-        marginHorizontal: 0,
         backgroundColor: '#f5f4f9',
         opacity: 1,
-        borderColor: '#f5f4f9',
-        borderWidth: 0.5,
-        borderRadius: 0,
-        borderStyle: 'solid',
         flexDirection: 'row',
+        paddingVertical: 15,
     },
     centerContainer: {
         flexDirection: 'row'
@@ -497,7 +491,7 @@ const styles = {
         alignItems:'flex-start',
     },
     rightContainer: {
-        flex: 1,
+        flex: 1.5,
         justifyContent: 'center',
         alignItems: 'flex-end',
 

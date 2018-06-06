@@ -3,8 +3,8 @@ import { StyleSheet, ScrollView, ListView, View, Text, TouchableOpacity} from 'r
 import PlayerBottom from '../PlayerBottom';
 import Variables from "../Variables";
 import firebase from 'firebase';
-import ListItem from "../ListItem";
 import ListItemChart from "../ListItemChart";
+import ListItemChartPodcast from "../ListItemChartPodcast";
 
 
 
@@ -57,29 +57,55 @@ class TopCharts extends Component{
             navBarHideOnScroll: false,
             navBarBackgroundColor: '#fff',
             topBarElevationShadowEnabled: false,
-            topBarShadowColor: '#000',
+            topBarShadowColor: 'transparent',
             topBarShadowOpacity: 0.1,
             topBarShadowOffset: 3,
             topBarShadowRadius: 5,
             statusBarColor: '#fff',
+            drawUnderNavBar: true,
+            navBarTranslucent: true,
+            navBarNoBorder: true
+
         });
 
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithRows([]),
+            dataSourceEps: dataSource.cloneWithRows([]),
+            dataSourcePods: dataSource.cloneWithRows([]),
             refreshing: false,
             episodesActive: true,
             podcastsActive: false,
         };
-        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},1000);
 
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},3000);
+
+        let topPods = [];
+        setTimeout(() => {
+
+            Variables.state.topCharts.forEach(function (data) {
+
+                if(!topPods.includes(data.podcastArtist)){
+                    topPods.push(data.podcastArtist)
+                }
+
+            })
+
+        },2000);
+
+
+        this.timeout1 = setTimeout(() => {this.setState({dataSourceEps: dataSource.cloneWithRows(Variables.state.topCharts), })},1000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSourceEps: dataSource.cloneWithRows(Variables.state.topCharts), dataSourcePods: dataSource.cloneWithRows(topPods), })},4000);
     }
 
 
-    renderRow = (podcast) => {
-        return <ListItemChart podcast={podcast} navigator={this.props.navigator} />;
+    renderRowEps = (rowData, sectionID, rowID) => {
+        let id = parseInt(rowID) + 1;
+        return <ListItemChart podcast={rowData} index={id} navigator={this.props.navigator} />;
+    };
+
+    renderRowPods = (rowData, sectionID, rowID) => {
+        let id = parseInt(rowID) + 1;
+        return <ListItemChartPodcast podcast={rowData} index={id} navigator={this.props.navigator} />;
     };
 
     renderTitleEps = () => {
@@ -128,19 +154,43 @@ class TopCharts extends Component{
         }
     };
 
-    renderData = () => {
+    renderDataEps = (active) => {
 
-        if(this.state.episodesActive){
+        if(active){
             return(
                 <ListView
                     enableEmptySections
-                    dataSource={this.state.dataSource}
-                    renderRow={this.renderRow}
+                    dataSource={this.state.dataSourceEps}
+                    renderRow={this.renderRowEps}
+                    scrollRenderAheadDistance={400}
+                />
+            )
+
+        }
+        else{
+            return(
+                <View/>
+            )
+        }
+
+    };
+
+    renderDataPods = (active) => {
+
+        if(active){
+            return(
+                <ListView
+                    enableEmptySections
+                    dataSource={this.state.dataSourcePods}
+                    renderRow={this.renderRowPods}
+                    scrollRenderAheadDistance={400}
                 />
             )
         }
-        else if(this.state.podcastsActive){
-
+        else{
+            return(
+                <View/>
+            )
         }
 
     };
@@ -150,25 +200,23 @@ class TopCharts extends Component{
         return (
             <View style={styles.container}>
 
-                <View style = {{marginTop: 80, marginBottom: 10, flexDirection: 'row'}}>
+                <View style = {{paddingBottom: 15, flexDirection: 'row', backgroundColor: '#fff'}}>
                     {this.renderTitleEps()}
                     {this.renderTitlePods()}
                 </View>
 
                 <ScrollView>
 
-                    {this.renderData()}
+                    {this.renderDataEps(this.state.episodesActive)}
+                    {this.renderDataPods(this.state.podcastsActive)}
 
-                    <View style={{paddingBottom: 120}}/>
+                    <View style={{paddingBottom: 60}}/>
 
                 </ScrollView>
 
                 <PlayerBottom/>
 
             </View>
-
-
-
 
         );
     }
@@ -177,7 +225,8 @@ class TopCharts extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: 'transparent',
+        backgroundColor: '#f5f4f9',
+        marginTop: 80,
     },
 
     title: {
