@@ -73,6 +73,7 @@ import PlaylistList from "./components/PlaylistList";
 import PlaylistView from "./components/PlaylistView";
 import Category from "./components/DiscoverBar/Category";
 import Discover from "./components/Discover";
+import Media from "./components/Media";
 
 
 
@@ -92,6 +93,7 @@ Navigation.registerComponent('AddWidget', () => AddWidget, store, Provider);
 
 Navigation.registerComponent('Browse', () => Browse, store, Provider);
 Navigation.registerComponent('Discover', () => Discover, store, Provider);
+Navigation.registerComponent('Media', () => Media, store, Provider);
 Navigation.registerComponent('Categories', () => Categories, store, Provider);
 Navigation.registerComponent('Category', () => Category, store, Provider);
 Navigation.registerComponent('Following', () => Following, store, Provider);

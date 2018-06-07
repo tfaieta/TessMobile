@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text,ScrollView, Image, ListView, Dimensions} from 'react-native';
+import { View, StyleSheet, Text,ScrollView, Image, ListView, Dimensions, TouchableWithoutFeedback} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import firebase from 'firebase';
 import ListItemUsers from "./ListItemUsers";
@@ -108,24 +108,40 @@ class Discover extends Component{
                         onAnimateNextPage={(p) => console.log(p)}
                     >
                         <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
-                            <View style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: 15}}>
-                                <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginVertical: 0, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                            <TouchableWithoutFeedback style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: 15}} onPress={() => {
+                                const {navigator} = this.props;
+                                let title = 'Gimlet Media';
+                                navigator.push({
+                                    screen: 'Media',
+                                    title: "Gimlet Media",
+                                    passProps: {title, navigator},
+                                })
+                            }}>
+                                <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginLeft: 20, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
                                     <Image
                                         style={{width: 330, height: 190, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
                                         source={require('tess/src/images/podArtGimlet.png')}
                                     />
                                 </View>
-                            </View>
+                            </TouchableWithoutFeedback>
                         </View>
                         <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
-                            <View style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: 15}}>
-                                <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginVertical: 0, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                            <TouchableWithoutFeedback style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: 15}} onPress={() => {
+                                const {navigator} = this.props;
+                                let title = 'NPR';
+                                navigator.push({
+                                    screen: 'Media',
+                                    title: "NPR",
+                                    passProps: {title, navigator},
+                                })
+                            }}>
+                                <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginLeft: 20, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
                                     <Image
                                         style={{width: 330, height: 190, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
                                         source={require('tess/src/images/podArtNPR.png')}
                                     />
                                 </View>
-                            </View>
+                            </TouchableWithoutFeedback>
                         </View>
                     </Carousel>
 

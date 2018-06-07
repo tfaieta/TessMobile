@@ -128,7 +128,7 @@ class Browse extends Component{
     renderImage = () => {
         if(this.state.podImage != ''){
             return(
-                <TouchableWithoutFeedback style={{backgroundColor:'transparent', alignSelf: 'flex-end', height: 65, width: 65, borderTopRightRadius: 15, borderWidth: 0.1, borderColor: "#fff"}} onPress={() => {
+                <TouchableWithoutFeedback onPress={() => {
                     let rss = false;
                     if(this.state.podcastOftheWeekRSS){
                         rss = true;
@@ -141,10 +141,12 @@ class Browse extends Component{
                         passProps: {navigator, rss},
                     })
                 }}>
+                    <View style = {{backgroundColor:'transparent', alignSelf: 'flex-end', height: 65, width: 65, borderTopRightRadius: 15, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)', overflow: 'hidden'}}>
                     <Image
-                        style={{width: 65, height: 65, position: 'absolute', alignSelf: 'flex-end', opacity: 1, borderRadius: 15}}
+                        style={{width: 65, height: 65, alignSelf: 'flex-end', opacity: 1,}}
                         source={{uri: this.state.podImage}}
                     />
+                    </View>
                 </TouchableWithoutFeedback>
             )
         }
@@ -396,7 +398,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         marginVertical: 15,
         marginLeft: 15,
-        marginRight: 15,
+        marginRight: 25,
         fontFamily: 'Montserrat-Bold',
         fontSize: 20,
         backgroundColor: 'transparent',
