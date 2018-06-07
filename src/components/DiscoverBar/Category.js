@@ -46,7 +46,7 @@ class Category extends Component{
             drawUnderNavBar: true,
             navBarTranslucent: true,
             navBarNoBorder: true
-            
+
         });
 
 

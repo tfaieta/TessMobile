@@ -57,6 +57,7 @@ class ListItemChart extends Component {
         this.state = {
             profileImage: '',
             username: '',
+            title: '',
         };
 
         const {podcastArtist} = this.props.podcast;
@@ -101,11 +102,11 @@ class ListItemChart extends Component {
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', height: 70, width: 70, borderRadius: 4, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)'}}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', height: 90, width: 90, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)'}}>
                     <Icon style={{
                         textAlign: 'center',
-                        fontSize: 35,
-                        marginTop: 15,
+                        fontSize: 60,
+                        marginTop: 10,
                         color: 'white',
                     }} name="md-person">
                     </Icon>
@@ -114,9 +115,9 @@ class ListItemChart extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', height: 70, width: 70}}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', height: 90, width: 90}}>
                     <Image
-                        style={{width: 70, height: 70, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
+                        style={{width: 90, height: 90, position: 'absolute', alignSelf: 'center', opacity: 1,}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -125,6 +126,14 @@ class ListItemChart extends Component {
     }
 
 
+    renderTitle(title){
+        if(title.length > 60){
+            return title.slice(0,60)+"..."
+        }else{
+            return title;
+        }
+
+    }
 
 
     render() {
@@ -414,7 +423,7 @@ class ListItemChart extends Component {
                     </View>
 
                     <View style={styles.middleContainer}>
-                        <Text style={styles.title}>{this.state.title}</Text>
+                        <Text style={styles.title}>{this.renderTitle(this.state.title)}</Text>
                         <Text style={styles.artistTitle}>{this.state.username}</Text>
                     </View>
 
@@ -423,7 +432,7 @@ class ListItemChart extends Component {
                     </View>
 
                 </View>
-                <View style={{backgroundColor: '#00000030', marginHorizontal: 70, paddingBottom: 1}}/>
+                <View style={{backgroundColor: '#00000030', paddingBottom: 1}}/>
                 </View>
 
             </TouchableHighlight>
@@ -442,20 +451,19 @@ class ListItemChart extends Component {
 const styles = {
     title: {
         color: '#000',
-        marginTop: 0,
-        flex:1,
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: 18,
+        fontSize: 15,
         backgroundColor: 'transparent',
         marginHorizontal: 20,
+        marginTop: 5,
 
     },
     titleNum: {
         color: '#828393',
-        marginTop: 0,
+        marginTop: 5,
         flex: 1,
         textAlign: 'center',
         opacity: 1,
@@ -466,21 +474,20 @@ const styles = {
     },
     artistTitle: {
         color: '#828393',
-        marginTop: 0,
-        flex:1,
+        marginTop: 2,
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: 15,
+        fontSize: 14,
         backgroundColor: 'transparent',
         marginLeft: 20,
+        marginHorizontal: 20,
     },
     container: {
         backgroundColor: '#f5f4f9',
         opacity: 1,
         flexDirection: 'row',
-        paddingVertical: 15,
     },
     centerContainer: {
         flexDirection: 'row'
@@ -491,7 +498,7 @@ const styles = {
         alignItems:'flex-start',
     },
     rightContainer: {
-        flex: 1.5,
+        flex: 1.8,
         justifyContent: 'center',
         alignItems: 'flex-end',
 

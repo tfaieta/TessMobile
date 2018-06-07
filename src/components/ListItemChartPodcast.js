@@ -79,11 +79,11 @@ class ListItemChartPodcast extends Component {
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', height: 70, width: 70, borderRadius: 4, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)'}}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', height: 90, width: 90, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)'}}>
                     <Icon style={{
                         textAlign: 'center',
-                        fontSize: 35,
-                        marginTop: 15,
+                        fontSize: 60,
+                        marginTop: 10,
                         color: 'white',
                     }} name="md-person">
                     </Icon>
@@ -92,9 +92,9 @@ class ListItemChartPodcast extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', height: 70, width: 70}}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', height: 90, width: 90}}>
                     <Image
-                        style={{width: 70, height: 70, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
+                        style={{width: 90, height: 90, position: 'absolute', alignSelf: 'center', opacity: 1,}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -139,7 +139,7 @@ class ListItemChartPodcast extends Component {
                     </View>
 
                 </View>
-                <View style={{backgroundColor: '#00000030', marginHorizontal: 70, paddingBottom: 1}}/>
+                    <View style={{backgroundColor: '#00000030', paddingBottom: 1}}/>
                 </View>
             </TouchableHighlight>
         )
@@ -149,28 +149,21 @@ class ListItemChartPodcast extends Component {
 }
 
 const styles = {
-    container: {
-        backgroundColor: '#f5f4f9',
-        opacity: 1,
-        flexDirection: 'row',
-        paddingVertical: 15,
-    },
     title: {
         color: '#000',
-        marginTop: 0,
-        flex:1,
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: 18,
+        fontSize: 15,
         backgroundColor: 'transparent',
         marginHorizontal: 20,
+        marginTop: 5,
 
     },
     titleNum: {
         color: '#828393',
-        marginTop: 0,
+        marginTop: 5,
         flex: 1,
         textAlign: 'center',
         opacity: 1,
@@ -179,13 +172,21 @@ const styles = {
         marginLeft: 15,
 
     },
+    container: {
+        backgroundColor: '#f5f4f9',
+        opacity: 1,
+        flexDirection: 'row',
+    },
+    centerContainer: {
+        flexDirection: 'row'
+    },
     leftContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems:'flex-start',
     },
     rightContainer: {
-        flex: 1.5,
+        flex: 1.8,
         justifyContent: 'center',
         alignItems: 'flex-end',
 

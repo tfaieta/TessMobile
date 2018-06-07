@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image, AsyncStorage, Dimensions, TouchableWithoutFeedback } from 'react-native';
+import { Text, View, TouchableOpacity, Image, AsyncStorage, Dimensions, TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from 'firebase';
 import Variables from "./Variables";
@@ -126,12 +126,12 @@ class ListItemCard extends Component {
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: (height/4.17), width: (height/4.17), borderRadius: 4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)' }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: (height/5.5), width: (height/5.5), borderRadius: 4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)' }}>
                     <Icon style={{
                         textAlign: 'center',
                         fontSize: height/8.34,
                         color: 'white',
-                        marginTop: height/19,
+                        marginTop: height/46,
                     }} name="user-circle">
                     </Icon>
                 </View>
@@ -139,9 +139,9 @@ class ListItemCard extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', height: (height/4.17), width: (height/4.17)}}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', height: (height/5.5), width: (height/5.5)}}>
                     <Image
-                        style={{width: (height/4.17), height: (height/4.17), alignSelf: 'center', opacity: 1, borderRadius: 4}}
+                        style={{width: (height/5.5), height: (height/5.5), alignSelf: 'center', opacity: 1, borderRadius: 4}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -456,10 +456,27 @@ class ListItemCard extends Component {
     render() {
 
         return (
-            <View style = {{marginHorizontal: width/33.5, marginVertical: height/133.4}}>
-                <View style={{ backgroundColor: '#fff', marginHorizontal: width/33.5, borderRadius: 10, width: width-20, paddingBottom: height/44, borderBottomColor: '#00000030', borderBottomWidth: 1, }}>
-                    <View style={{marginVertical: height/66.7}}>
-                        <View style={{flexDirection: 'row', marginVertical: height/133.4}}>
+            <TouchableHighlight underlayColor = '#f5f4f9' onPress = {this.onPressPlay} onLongPress={() => {
+                const {podcast} = this.props;
+                const rowData = podcast;
+
+                const {navigator} = this.props;
+
+                this.props.navigator.showLightBox({
+                    screen: "PodcastOptions",
+                    passProps: {rowData, navigator},
+                    style: {
+                        backgroundBlur: "dark",
+                        backgroundColor: '#3e416430',
+                        tapBackgroundToDismiss: true,
+                    },
+                });
+
+            }}  style = {{backgroundColor: '#fff', borderBottomColor: '#00000030', borderBottomWidth: 1,}}>
+            <View style = {{backgroundColor: '#fff', paddingHorizontal: width/33.5,}}>
+                <View style={{ backgroundColor: '#fff', paddingHorizontal: width/33.5, width: width-20, paddingBottom: height/44, }}>
+                    <View>
+                        <View style={{backgroundColor: '#fff', flexDirection: 'row', marginVertical: height/200}}>
                             <View style={{flex: 8, alignSelf: 'flex-start'}}>
                                 <Text style={styles.titleCard}>{this.state.title}</Text>
                             </View>
@@ -480,11 +497,10 @@ class ListItemCard extends Component {
                                         },
                                     });
 
-                                }} style={styles.rightContainer}>
+                                }} style={{flex: 1, backgroundColor: '#fff',}}>
                                     <Icon style={{
                                         textAlign: 'right',
                                         marginTop: height/133.4,
-                                        marginRight: height/44.47,
                                         fontSize: height/26,
                                         color: '#506dcf',
                                     }} name="ellipsis-h">
@@ -492,41 +508,19 @@ class ListItemCard extends Component {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <TouchableWithoutFeedback>
+                        <View style = {{backgroundColor: '#fff',}}>
                             <View style={{padding: 10, flexDirection: 'row'}}>
 
                                 <View style = {{alignSelf: 'center'}}>
                                     {this._renderProfileImage()}
                                 </View>
 
-                                <View style = {{alignSelf: 'center', flex:1, marginHorizontal: width/33.5}}>
+                                <View style = {{alignSelf: 'center', flex: 1,}}>
                                     <Text style={styles.artistTitle}>{this.state.description}</Text>
-                                    <View style={{flexDirection: 'row', marginTop: height/44.47}}>
-                                        <TouchableOpacity style= {{backgroundColor:'#fff', flex: 1, alignSelf: 'flex-start', borderRadius: 5,}} onPress={this.onPressPlay}>
-                                            <Icon style={{
-                                                textAlign: 'center',
-                                                fontSize: width/27,
-                                                alignSelf: 'center',
-                                                color: '#3e4164'
-                                            }} name="play">
-                                                <Text style={styles.whiteTitle}>  Play</Text>
-                                            </Icon>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style= {{backgroundColor:'#fff', flex: 1, alignSelf: 'flex-end',  borderRadius: 5,}} onPress={this.onPressQueue}>
-                                            <Icon style={{
-                                                textAlign: 'center',
-                                                fontSize: width/27,
-                                                alignSelf: 'center',
-                                                color: '#3e4164'
-                                            }} name="plus">
-                                                <Text style={styles.whiteTitle}>  Queue</Text>
-                                            </Icon>
-                                        </TouchableOpacity>
-                                    </View>
                                 </View>
                             </View>
-                        </TouchableWithoutFeedback>
-                        <View style={{flexDirection: 'row', paddingBottom: height/133.4}}>
+                        </View>
+                        <View style={{backgroundColor: '#fff', flexDirection: 'row', paddingBottom: height/200}}>
                             <View style={{flex:1, alignSelf: 'flex-start'}}>
                                 <Text style={styles.bottomTitle}>{this.state.profileName}</Text>
                             </View>
@@ -537,6 +531,7 @@ class ListItemCard extends Component {
                     </View>
                 </View>
             </View>
+            </TouchableHighlight>
 
         );
 
@@ -559,6 +554,7 @@ const styles = {
     artistTitle: {
         color: '#828393',
         textAlign: 'left',
+        paddingLeft: width/25,
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
