@@ -117,7 +117,7 @@ class Discover extends Component{
                                     passProps: {title, navigator},
                                 })
                             }}>
-                                <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginLeft: 20, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                                <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginLeft: 15, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
                                     <Image
                                         style={{width: 330, height: 190, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
                                         source={require('tess/src/images/podArtGimlet.png')}
@@ -135,7 +135,7 @@ class Discover extends Component{
                                     passProps: {title, navigator},
                                 })
                             }}>
-                                <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginLeft: 20, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                                <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginLeft: 15, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
                                     <Image
                                         style={{width: 330, height: 190, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
                                         source={require('tess/src/images/podArtNPR.png')}

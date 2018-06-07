@@ -47,8 +47,8 @@ class ListItemPodcast extends Component{
         });
 
 
-        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(eps), podImage: podImage, })}, 1000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(eps), podImage: podImage, })}, 4000);
+        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(eps.reverse()), podImage: podImage, })}, 1000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(eps.reverse()), podImage: podImage, })}, 4000);
     }
 
 
@@ -118,7 +118,7 @@ class ListItemPodcast extends Component{
 
                 </View>
 
-                <View style={{backgroundColor: '#fff', marginHorizontal: 12, marginBottom: 60, borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}>
+                <View style={{backgroundColor: '#fff', marginHorizontal: 12, marginBottom: 30, borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}>
                     <ListView
                         horizontal={true}
                         enableEmptySections

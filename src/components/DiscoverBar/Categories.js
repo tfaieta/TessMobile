@@ -45,12 +45,12 @@ class Categories extends Component{
             <ScrollView style={styles.container}>
 
                 <View style={{flexDirection: 'row', flex:1}}>
-                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10}} onPress={() => this.pressCategory('Current Events')}>
+                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10}} onPress={() => this.pressCategory('News')}>
                     <Image
                         style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
                         source={require('tess/src/images/currEvents-cat.png')}
                     />
-                    <Text style={styles.text}>Current Events</Text>
+                    <Text style={styles.text}>News</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: 10}} onPress={() => this.pressCategory('Fitness')}>
                     <Image
@@ -153,14 +153,14 @@ class Categories extends Component{
                 </View>
 
                 <View style={{flexDirection: 'row', flex:1}}>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: 10}} onPress={() => this.pressCategory('Music')}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10}} onPress={() => this.pressCategory('Music')}>
                         <Image
                             style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/music-cat.png')}
                         />
                         <Text style={styles.text}>Music</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10}} onPress={() => this.pressCategory('Tech')}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: 10}} onPress={() => this.pressCategory('Tech')}>
                         <Image
                             style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/tech-cat.png')}
@@ -170,8 +170,15 @@ class Categories extends Component{
                 </View>
 
 
-                <View style={{flexDirection: 'row', flex:1}}>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: 10, paddingBottom: 125}} onPress={() => this.pressCategory('Gaming')}>
+                <View style={{flexDirection: 'row', flex: 1, paddingBottom: 125}}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10}} onPress={() => this.pressCategory('Business')}>
+                        <Image
+                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            source={require('tess/src/images/iconMoney.png')}
+                        />
+                        <Text style={styles.text}>Business</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: 10,}} onPress={() => this.pressCategory('Gaming')}>
                         <Image
                             style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/gaming-cat.png')}
