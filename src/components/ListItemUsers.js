@@ -64,10 +64,12 @@ class ListItemUsers extends Component {
             profileImage: '',
             username: '',
             title: '',
+            duration: ''
         };
 
         const {podcastTitle} = this.props.podcast;
         const {podcastArtist} = this.props.podcast;
+        const { id } = this.props.podcast;
         const {currentUser} = firebase.auth();
 
         let profileName = '';
@@ -79,6 +81,15 @@ class ListItemUsers extends Component {
                 profileName = podcastArtist;
             }
         });
+
+        let duration = '';
+        firebase.database().ref(`podcasts/${id}/podcastLength`).once("value", function (snapshot) {
+            if(snapshot.val()){
+                duration = snapshot.val();
+            }
+        });
+
+
 
         if(this.state.profileName == ''){
             setTimeout(() =>{
@@ -94,16 +105,18 @@ class ListItemUsers extends Component {
                 this.setState({title: podcastTitle});
             }
 
-            if(this.state.profileName.length > 15){
+            if(profileName.length > 15){
                 this.setState({username: (profileName.slice(0,15)+"...")});
             }
             else{
-                this.setState({username: this.state.profileName});
+                this.setState({username: profileName});
             }
-        }, 500);
+            this.setState({duration: duration})
+        }, 1000);
 
 
     }
+
 
 
     _renderProfileImage(){
@@ -391,6 +404,112 @@ class ListItemUsers extends Component {
     }
 
 
+    renderSecondaryTitle = () => {
+        if(this.state.duration != ''){
+            if(this.state.duration.includes(':')){
+                return(
+                    <Icon style={{
+                        fontSize: 14,
+                        backgroundColor: 'transparent',
+                        color: '#000',
+                        marginHorizontal: 5,
+                    }} name="md-time">
+                        <Text style={styles.numTitle}> {this.state.duration}</Text>
+                    </Icon>
+                )
+            }
+            else{
+                let currentTime = this.state.duration;
+                var num = ((currentTime) % 60).toString();
+                var num2 = ((currentTime) / 60).toString();
+                var minutes = num2.slice(0,1);
+                Number(minutes.slice(0,1));
+
+
+                if (currentTime == -1){
+                    return (
+                        <Icon style={{
+                            fontSize: 14,
+                            backgroundColor: 'transparent',
+                            color: '#000',
+                            marginLeft: 10,
+                        }} name="md-time">
+                            <Text style={styles.numTitle}> 0:00</Text>
+                        </Icon>
+                    )
+                }
+                else if(Number(num2) < 10){
+                    var minutes = num2.slice(0,1);
+                    Number(minutes.slice(0,1));
+                    if(Number(num) < 10){
+                        var seconds = num.slice(0,1);
+                        Number(seconds.slice(0,1));
+                        return (
+                            <Icon style={{
+                                fontSize: 14,
+                                backgroundColor: 'transparent',
+                                color: '#000',
+                                marginLeft: 10,
+                            }} name="md-time">
+                                <Text style={styles.numTitle}> {minutes}:0{seconds}</Text>
+                            </Icon>
+                        )
+                    }
+                    else{
+                        var seconds = num.slice(0,2);
+                        Number(seconds.slice(0,2));
+                        return (
+                            <Icon style={{
+                                fontSize: 14,
+                                backgroundColor: 'transparent',
+                                color: '#000',
+                                marginLeft: 10,
+                            }} name="md-time">
+                                <Text style={styles.numTitle}> {minutes}:{seconds}</Text>
+                            </Icon>
+                        );
+                    }
+                }
+                else{
+                    var minutes = num2.slice(0,2);
+                    Number(minutes.slice(0,2));
+                    if(Number(num) < 10){
+                        var seconds = num.slice(0,1);
+                        Number(seconds.slice(0,1));
+                        return (
+                            <Icon style={{
+                                fontSize: 14,
+                                backgroundColor: 'transparent',
+                                color: '#000',
+                                marginLeft: 10,
+                            }} name="md-time">
+                                <Text style={styles.numTitle}> {minutes}:0{seconds}</Text>
+                            </Icon>
+                        )
+                    }
+                    else{
+                        var seconds = num.slice(0,2);
+                        Number(seconds.slice(0,2));
+                        return (
+                            <Icon style={{
+                                fontSize: 14,
+                                backgroundColor: 'transparent',
+                                color: '#000',
+                                marginLeft: 10,
+                            }} name="md-time">
+                                <Text style={styles.numTitle}> {minutes}:{seconds}</Text>
+                            </Icon>
+                        );
+                    }
+                }
+            }
+        }
+        else{
+            return(
+                <Text style={styles.artistTitle}>{this.state.username}</Text>
+            )
+        }
+    };
 
 
 
@@ -422,8 +541,10 @@ class ListItemUsers extends Component {
 
                     {this._renderProfileImage()}
 
-                <Text style={styles.title}>{this.state.title}</Text>
-                <Text style={styles.artistTitle}>{this.state.username}</Text>
+                    <Text style={styles.title}>{this.state.title}</Text>
+
+                    {this.renderSecondaryTitle()}
+
                 </View>
             </TouchableHighlight>
 
@@ -455,6 +576,18 @@ const styles = {
         paddingVertical: 1,
         marginLeft: 10,
         fontSize: 12,
+        backgroundColor: 'transparent',
+    },
+    numTitle: {
+        color: '#828393',
+        flex:1,
+        textAlign: 'center',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-Regular',
+        paddingVertical: 1,
+        marginLeft: 10,
+        fontSize: 14,
         backgroundColor: 'transparent',
     },
     container: {
