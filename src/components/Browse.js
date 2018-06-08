@@ -200,10 +200,10 @@ class Browse extends Component{
                                     passProps: {navigator, rss},
                                 })
                             }}>
-                            <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: 5}}>
-                                <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginVertical: 10, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                            <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: width/75}}>
+                                <View style = {{ backgroundColor: 'transparent', width: width/1.15, height: height/3.51, marginVertical: height/66.7, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
                                     <Image
-                                        style={{width: 330, height: 190, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
+                                        style={{width: width/1.15, height: height/3.51, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
                                         source={require('tess/src/images/podArtBestIdeas.png')}
                                     />
                                 </View>
@@ -223,10 +223,10 @@ class Browse extends Component{
                                     passProps: {navigator, rss},
                                 })
                             }}>
-                            <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: 5}}>
-                                <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginVertical: 10, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                            <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: width/75}}>
+                                <View style = {{ backgroundColor: 'transparent', width: width/1.15, height: height/3.51, marginVertical: height/66.7, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
                                     <Image
-                                        style={{width: 330, height: 190, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
+                                        style={{width: width/1.15, height: height/3.51, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
                                         source={require('tess/src/images/podArtIDK.png')}
                                     />
                                 </View>
@@ -246,10 +246,10 @@ class Browse extends Component{
                                     passProps: {navigator, rss},
                                 })
                             }}>
-                            <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: 5}}>
-                                <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginVertical: 10, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                            <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: width/75}}>
+                                <View style = {{ backgroundColor: 'transparent', width: width/1.15, height: height/3.51, marginVertical: height/66.7, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
                                     <Image
-                                        style={{width: 330, height: 190, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
+                                        style={{width: width/1.15, height: height/3.51, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
                                         source={require('tess/src/images/podArtIDK.png')}
                                     />
                                 </View>
@@ -261,40 +261,40 @@ class Browse extends Component{
                     </Carousel>
 
 
-                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 18, marginVertical: 1}} onPress={this.pressDiscover}>
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: height/37, marginVertical: 1}} onPress={this.pressDiscover}>
                         <Text style = {styles.title}>   Discover</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
-                                fontSize: 22,
+                                fontSize: width/17,
                                 backgroundColor: 'transparent',
                                 color: '#3e416460',
-                                marginHorizontal: 15,
+                                marginHorizontal: width/25,
                             }} name="ios-arrow-forward">
                             </Icon>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 18, marginVertical: 1}} onPress={this.pressCharts}>
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: height/37, marginVertical: 1}} onPress={this.pressCharts}>
                         <Text style = {styles.title}>   Charts</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
-                                fontSize: 22,
+                                fontSize: width/17,
                                 backgroundColor: 'transparent',
                                 color: '#3e416460',
-                                marginHorizontal: 15,
+                                marginHorizontal: width/25,
                             }} name="ios-arrow-forward">
                             </Icon>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 18, marginVertical: 1}} onPress={this.pressCategories}>
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: height/37, marginVertical: 1}} onPress={this.pressCategories}>
                         <Text style = {styles.title}>   Categories</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
-                                fontSize: 22,
+                                fontSize: width/17,
                                 backgroundColor: 'transparent',
                                 color: '#3e416460',
-                                marginHorizontal: 15,
+                                marginHorizontal: width/25,
                             }} name="ios-arrow-forward">
                             </Icon>
                         </View>
@@ -303,7 +303,7 @@ class Browse extends Component{
 
                     <Text style = {styles.titleHeader}>Podcast of the Week</Text>
 
-                    <View style={{flex:1, flexDirection: 'row', backgroundColor: '#fff', marginTop: 0, marginHorizontal: 12, borderTopLeftRadius: 15, borderTopRightRadius: 15}}>
+                    <View style={{flex:1, flexDirection: 'row', backgroundColor: '#fff', marginTop: 0, marginHorizontal: width/31.25, borderTopLeftRadius: 15, borderTopRightRadius: 15}}>
                         <View style={{flex:6}}>
                             <Text style = {styles.titleWeek}>{this.state.podcastOfTheWeekTitle}</Text>
                         </View>
@@ -314,7 +314,7 @@ class Browse extends Component{
 
                     </View>
 
-                    <View style={{backgroundColor: '#fff', marginHorizontal: 12, marginBottom: 60, borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}>
+                    <View style={{backgroundColor: '#fff', marginHorizontal: width/31.25, marginBottom: height/33.35, borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}>
                         <ListView
                             horizontal={true}
                             enableEmptySections
@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 20,
+        fontSize: width/18.75,
         backgroundColor: 'transparent',
     },
 
@@ -356,10 +356,10 @@ const styles = StyleSheet.create({
         color: '#3e4164',
         textAlign: 'left',
         fontFamily: 'Montserrat-Bold',
-        fontSize: 20,
-        marginTop: 20,
-        marginBottom: 10,
-        marginLeft: 15,
+        fontSize: width/18.75,
+        marginTop: height/33.35,
+        marginBottom: height/66.7,
+        marginLeft: width/25,
         backgroundColor: 'transparent',
     },
 
@@ -376,9 +376,9 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Bold',
-        marginTop: 10,
-        marginLeft: 20,
-        fontSize: 16,
+        marginTop: height/66.7,
+        marginLeft: width/18.75,
+        fontSize: width/23.48,
         backgroundColor: 'transparent',
     },
     text2: {
@@ -386,21 +386,21 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        marginLeft: 20,
-        fontSize: 14,
+        marginLeft: width/18.75,
+        fontSize: width/26.79,
         backgroundColor: 'transparent',
-        marginBottom: 12,
+        marginBottom: height/55.58,
     },
 
     titleWeek: {
         color: '#3e4164',
         flex:1,
         textAlign: 'left',
-        marginVertical: 15,
-        marginLeft: 15,
-        marginRight: 25,
+        marginVertical: height/44.47,
+        marginLeft: width/25,
+        marginRight: width/15,
         fontFamily: 'Montserrat-Bold',
-        fontSize: 20,
+        fontSize: width/18.75,
         backgroundColor: 'transparent',
     },
 

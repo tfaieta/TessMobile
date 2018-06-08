@@ -79,11 +79,11 @@ class ListItemChartPodcast extends Component {
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', height: 90, width: 90, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)'}}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', height: width/4.17, width: width/4.17, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)'}}>
                     <Icon style={{
                         textAlign: 'center',
-                        fontSize: 60,
-                        marginTop: 10,
+                        fontSize: width/6.25,
+                        marginTop: height/66.7,
                         color: 'white',
                     }} name="md-person">
                     </Icon>
@@ -92,9 +92,9 @@ class ListItemChartPodcast extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', height: 90, width: 90}}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', height: width/4.17, width: width/4.17,}}>
                     <Image
-                        style={{width: 90, height: 90, position: 'absolute', alignSelf: 'center', opacity: 1,}}
+                        style={{height: width/4.17, width: width/4.17, position: 'absolute', alignSelf: 'center', opacity: 1,}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -155,21 +155,21 @@ const styles = {
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: 15,
+        fontSize: width/25,
         backgroundColor: 'transparent',
-        marginHorizontal: 20,
-        marginTop: 5,
+        marginHorizontal: width/18.75,
+        marginTop: height/133.4,
 
     },
     titleNum: {
         color: '#828393',
-        marginTop: 5,
+        marginTop: height/133.4,
         flex: 1,
         textAlign: 'center',
         opacity: 1,
-        fontSize: 20,
+        fontSize: width/18.75,
         backgroundColor: 'transparent',
-        marginLeft: 15,
+        marginLeft: width/25,
 
     },
     container: {

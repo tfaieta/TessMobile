@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, ListView, View, Text, TouchableOpacity} from 'react-native';
+import { StyleSheet, ScrollView, ListView, View, Text, TouchableOpacity, Dimensions} from 'react-native';
 import PlayerBottom from '../PlayerBottom';
 import Variables from "../Variables";
 import firebase from 'firebase';
 import ListItemChart from "../ListItemChart";
 import ListItemChartPodcast from "../ListItemChartPodcast";
 
+var {height, width} = Dimensions.get('window');
 
 
 // Charts page on discover (browse) page
@@ -111,7 +112,7 @@ class TopCharts extends Component{
     renderTitleEps = () => {
         if(this.state.episodesActive){
             return(
-                <View style = {{flex: 1, alignSelf: 'flex-start', marginLeft: 16, marginRight: 8,}}>
+                <View style = {{flex: 1, alignSelf: 'flex-start', marginLeft: width/23.44, marginRight: width/46.88,}}>
                     <TouchableOpacity style = {styles.boxActive}>
                         <Text style = {styles.titleActive}>Top Episodes</Text>
                     </TouchableOpacity>
@@ -120,7 +121,7 @@ class TopCharts extends Component{
         }
         else{
             return(
-                <View style = {{flex: 1, alignSelf: 'flex-start', marginLeft: 16, marginRight: 8,}}>
+                <View style = {{flex: 1, alignSelf: 'flex-start', marginLeft: width/23.44, marginRight: width/46.88,}}>
                     <TouchableOpacity style = {styles.box} onPress={() => {
                         this.setState({episodesActive: true, podcastsActive: false})
                     }}>
@@ -134,7 +135,7 @@ class TopCharts extends Component{
     renderTitlePods = () => {
         if(this.state.podcastsActive){
             return(
-                <View style = {{flex: 1, alignSelf: 'flex-end', marginLeft: 8, marginRight: 16,}}>
+                <View style = {{flex: 1, alignSelf: 'flex-end', marginLeft: width/46.88, marginRight: width/23.44,}}>
                     <TouchableOpacity style = {styles.boxActive}>
                         <Text style = {styles.titleActive}>Top Podcasts</Text>
                     </TouchableOpacity>
@@ -143,7 +144,7 @@ class TopCharts extends Component{
         }
         else{
             return(
-                <View style = {{flex: 1, alignSelf: 'flex-end', marginLeft: 8, marginRight: 16,}}>
+                <View style = {{flex: 1, alignSelf: 'flex-end', marginLeft: width/46.88, marginRight: width/23.44,}}>
                     <TouchableOpacity style = {styles.box} onPress={() => {
                         this.setState({episodesActive: false, podcastsActive: true})
                     }}>
@@ -200,7 +201,7 @@ class TopCharts extends Component{
         return (
             <View style={styles.container}>
 
-                <View style = {{paddingBottom: 15, flexDirection: 'row', backgroundColor: '#fff'}}>
+                <View style = {{paddingBottom: height/44.47, flexDirection: 'row', backgroundColor: '#fff'}}>
                     {this.renderTitleEps()}
                     {this.renderTitlePods()}
                 </View>
@@ -210,7 +211,7 @@ class TopCharts extends Component{
                     {this.renderDataEps(this.state.episodesActive)}
                     {this.renderDataPods(this.state.podcastsActive)}
 
-                    <View style={{paddingBottom: 60}}/>
+                    <View style={{paddingBottom: height/11.12}}/>
 
                 </ScrollView>
 
@@ -226,14 +227,14 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
-        marginTop: 80,
+        marginTop: height/8.34,
     },
 
     title: {
         color: '#3e4164',
         textAlign: 'center',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 18,
+        fontSize: width/20.83,
         backgroundColor: 'transparent',
     },
 
@@ -241,7 +242,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         textAlign: 'center',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 18,
+        fontSize: width/20.83,
         backgroundColor: 'transparent',
     },
 

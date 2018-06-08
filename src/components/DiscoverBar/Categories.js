@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity, Image, Text} from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity, Image, Text, Dimensions} from 'react-native';
 
+var {height, width} = Dimensions.get('window');
+
+
+// a component that lists all of the categories, on Browse
 
 class Categories extends Component{
     constructor(props) {
@@ -45,16 +49,16 @@ class Categories extends Component{
             <ScrollView style={styles.container}>
 
                 <View style={{flexDirection: 'row', flex:1}}>
-                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10}} onPress={() => this.pressCategory('News')}>
+                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingVertical: height/66.7}} onPress={() => this.pressCategory('News')}>
                     <Image
-                        style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                        style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                         source={require('tess/src/images/currEvents-cat.png')}
                     />
                     <Text style={styles.text}>News</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: 10}} onPress={() => this.pressCategory('Fitness')}>
+                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: height/66.7}} onPress={() => this.pressCategory('Fitness')}>
                     <Image
-                        style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                        style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                         source={require('tess/src/images/fitness-cat.png')}
                     />
                     <Text style={styles.text}>Fitness</Text>
@@ -63,16 +67,16 @@ class Categories extends Component{
 
 
                 <View style={{flexDirection: 'row', flex:1}}>
-                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingVertical: 10}} onPress={() => this.pressCategory('Society & Culture')}>
+                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingVertical: height/66.7}} onPress={() => this.pressCategory('Society & Culture')}>
                     <Image
-                        style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                        style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                         source={require('tess/src/images/politics-cat.png')}
                     />
                     <Text style={styles.text}>Society & Culture</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: 10}} onPress={() => this.pressCategory('Religion & Spirituality')}>
+                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: height/66.7}} onPress={() => this.pressCategory('Religion & Spirituality')}>
                     <Image
-                        style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                        style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                         source={require('tess/src/images/religionSpirit-cat.png')}
                     />
                     <Text style={styles.text}>Religion & Spirituality</Text>
@@ -81,16 +85,16 @@ class Categories extends Component{
 
 
                 <View style={{flexDirection: 'row', flex:1}}>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10}} onPress={() => this.pressCategory('Comedy')}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Comedy')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/comedy-cat.png')}
                         />
                         <Text style={styles.text}>Comedy</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: 10}} onPress={() => this.pressCategory('Lifestyle')}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Lifestyle')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/lifestyle-cat.png')}
                         />
                         <Text style={styles.text}>Lifestyle</Text>
@@ -100,16 +104,16 @@ class Categories extends Component{
 
 
                 <View style={{flexDirection: 'row', flex:1}}>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10}} onPress={() => this.pressCategory('Science & Nature')}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Science & Nature')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/scienceNature-cat.png')}
                         />
                         <Text style={styles.text}>Science & Nature</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: 10}} onPress={() => this.pressCategory('Travel')}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Travel')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/travel-cat.png')}
                         />
                         <Text style={styles.text}>Travel</Text>
@@ -118,16 +122,16 @@ class Categories extends Component{
 
 
                 <View style={{flexDirection: 'row', flex:1}}>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10}} onPress={() => this.pressCategory('Learn Something')}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Learn Something')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/learnSomething-cat.png')}
                         />
                         <Text style={styles.text}>Learn Something</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: 10}} onPress={() => this.pressCategory('Storytelling')}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Storytelling')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/storytelling-cat.png')}
                         />
                         <Text style={styles.text}>Storytelling</Text>
@@ -136,16 +140,16 @@ class Categories extends Component{
 
 
                 <View style={{flexDirection: 'row', flex:1}}>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10,}} onPress={() => this.pressCategory('Sports')}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Sports')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/sports-cat.png')}
                         />
                         <Text style={styles.text}>Sports</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: 10}} onPress={() => this.pressCategory('Entertainment')}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Entertainment')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/entertainment-cat.png')}
                         />
                         <Text style={styles.text}>Entertainment</Text>
@@ -153,16 +157,16 @@ class Categories extends Component{
                 </View>
 
                 <View style={{flexDirection: 'row', flex:1}}>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10}} onPress={() => this.pressCategory('Music')}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Music')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/music-cat.png')}
                         />
                         <Text style={styles.text}>Music</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: 10}} onPress={() => this.pressCategory('Tech')}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Tech')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/tech-cat.png')}
                         />
                         <Text style={styles.text}>Tech</Text>
@@ -170,17 +174,17 @@ class Categories extends Component{
                 </View>
 
 
-                <View style={{flexDirection: 'row', flex: 1, paddingBottom: 125}}>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10}} onPress={() => this.pressCategory('Business')}>
+                <View style={{flexDirection: 'row', flex: 1, paddingBottom: height/5.336}}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Business')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/iconMoney.png')}
                         />
                         <Text style={styles.text}>Business</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: 10,}} onPress={() => this.pressCategory('Gaming')}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: height/66.7}} onPress={() => this.pressCategory('Gaming')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/gaming-cat.png')}
                         />
                         <Text style={styles.text}>Gaming</Text>
@@ -196,14 +200,14 @@ class Categories extends Component{
 
 const styles = StyleSheet.create({
     container:{
-        paddingTop: 60,
+        paddingTop: height/11.12,
         flex: 1,
         backgroundColor: 'transparent',
 
     },
 
     text: {
-        marginTop: 10, fontFamily: 'Montserrat-SemiBold', alignSelf:'center', color: '#3e4164',
+        marginTop: height/66.7, fontFamily: 'Montserrat-SemiBold', alignSelf:'center', color: '#3e4164',
     }
 
 

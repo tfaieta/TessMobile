@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, ListView,} from 'react-native';
+import { Text, View, TouchableOpacity, ListView, Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from 'firebase';
 import ListItemUsers from "./ListItemUsers";
+
+var {height, width} = Dimensions.get('window');
 
 
 
@@ -54,7 +56,7 @@ class ListItemPlaylist extends Component {
 
         return (
 
-            <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: 10, marginVertical: 5, paddingBottom: 20}}>
+            <View style={{backgroundColor: '#fff', borderRadius: 10, marginHorizontal: width/37.5, marginVertical: height/133.4, paddingBottom: height/33.35}}>
                 <View style={{flexDirection:'row'}}>
                     <View style={{alignSelf:'flex-start'}}>
                         <Text style={styles.title}>{title}     <Text style={styles.smallTitle}>{this.state.length} episodes</Text></Text>
@@ -68,14 +70,14 @@ class ListItemPlaylist extends Component {
                                 title: title,
                                 passProps: {title, navigator}
                             })
-                        }}  style={{alignSelf:'flex-end', flexDirection:'row', marginTop: 3}}>
+                        }}  style={{alignSelf:'flex-end', flexDirection:'row', marginTop: height/222.33}}>
                             <Icon style={{
-                                fontSize: 22,
+                                fontSize: width/17,
                                 backgroundColor: 'transparent',
-                                marginTop: 10,
+                                marginTop: height/66.7,
                                 color: '#506dcf',
-                                marginLeft: 10,
-                                marginRight: 15,
+                                marginLeft: width/37.5,
+                                marginRight: width/25,
                             }} name="plus">
                             </Icon>
                         </TouchableOpacity>
@@ -105,9 +107,9 @@ const styles = {
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 18,
-        marginTop: 20,
-        paddingLeft: 20,
+        fontSize: width/20.83,
+        marginTop: height/33.35,
+        paddingLeft: width/18.75,
         backgroundColor: 'transparent',
     },
     smallTitle: {
@@ -115,9 +117,9 @@ const styles = {
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 14,
-        marginTop: 20,
-        paddingLeft: 20,
+        fontSize: width/26.79,
+        marginTop: height/33.35,
+        paddingLeft: width/18.75,
         backgroundColor: 'transparent',
     },
 };

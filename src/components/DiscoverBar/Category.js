@@ -574,7 +574,7 @@ class Category extends Component{
         if(this.state.loading){
             return (
                 <View style={styles.container}>
-                    <ActivityIndicator style={{paddingVertical: 90, alignSelf:'center'}} color='#3e4164' size ="large" />
+                    <ActivityIndicator style={{paddingVertical: height/7.41, alignSelf:'center'}} color='#3e4164' size ="large" />
                 </View>
             );
         }
@@ -583,13 +583,13 @@ class Category extends Component{
                 <View
                     style={styles.container}>
 
-                    <ScrollView style={{paddingTop: 70}}>
+                    <ScrollView style={{paddingTop: height/9.53}}>
                         <ListView
                             enableEmptySections
                             dataSource={this.state.dataSource}
                             renderRow={this.renderRow}
                         />
-                        <View style = {{paddingBottom: 90}} />
+                        <View style = {{paddingBottom: height/7.41}} />
                     </ScrollView>
 
                     <PlayerBottom navigator={this.props.navigator}/>

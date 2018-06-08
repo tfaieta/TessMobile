@@ -108,7 +108,7 @@ class Discover extends Component{
                         onAnimateNextPage={(p) => console.log(p)}
                     >
                         <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
-                            <TouchableWithoutFeedback style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: 15}} onPress={() => {
+                            <TouchableWithoutFeedback style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
                                 const {navigator} = this.props;
                                 let title = 'Gimlet Media';
                                 navigator.push({
@@ -117,16 +117,16 @@ class Discover extends Component{
                                     passProps: {title, navigator},
                                 })
                             }}>
-                                <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginLeft: 15, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                                <View style = {{ backgroundColor: 'transparent', width: width/1.15, height: width/1.97, marginLeft: width/25, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
                                     <Image
-                                        style={{width: 330, height: 190, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
+                                        style={{width: width/1.15, height: width/1.97, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
                                         source={require('tess/src/images/podArtGimlet.png')}
                                     />
                                 </View>
                             </TouchableWithoutFeedback>
                         </View>
                         <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
-                            <TouchableWithoutFeedback style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: 15}} onPress={() => {
+                            <TouchableWithoutFeedback style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
                                 const {navigator} = this.props;
                                 let title = 'NPR';
                                 navigator.push({
@@ -135,9 +135,9 @@ class Discover extends Component{
                                     passProps: {title, navigator},
                                 })
                             }}>
-                                <View style = {{ backgroundColor: 'transparent', width: 325, height: 190, marginLeft: 15, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                                <View style = {{ backgroundColor: 'transparent', width: width/1.15, height: width/1.97, marginLeft: width/25, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
                                     <Image
-                                        style={{width: 330, height: 190, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
+                                        style={{width: width/1.15, height: width/1.97, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
                                         source={require('tess/src/images/podArtNPR.png')}
                                     />
                                 </View>
@@ -160,7 +160,7 @@ class Discover extends Component{
 
 
                     <Text style = {styles.titleHeader}>Noteworthy Small Creators</Text>
-                    <View style={{backgroundColor: 'transparent', marginBottom: 20,}}>
+                    <View style={{backgroundColor: 'transparent', marginBottom: height/33.35,}}>
                         <ListView
                             horizontal={true}
                             enableEmptySections
@@ -170,7 +170,7 @@ class Discover extends Component{
                     </View>
 
 
-                    <View style={{paddingBottom: 60}} />
+                    <View style={{paddingBottom: height/11.12}} />
 
                 </ScrollView>
 
@@ -188,28 +188,28 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
-        paddingTop: 60,
+        paddingTop: height/11.12,
     },
 
     title: {
-        flex:1,
+        flex: 1,
         color: '#3e4164',
         textAlign: 'left',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 20,
+        fontSize: width/18.75,
         backgroundColor: 'transparent',
     },
 
     titleHeader: {
-        flex:1,
+        flex: 1,
         color: '#3e4164',
         textAlign: 'left',
         fontFamily: 'Montserrat-Bold',
-        fontSize: 20,
-        marginTop: 15,
-        marginBottom: 10,
-        marginLeft: 15,
+        fontSize: width/18.75,
+        marginTop: height/44.47,
+        marginBottom: height/66.7,
+        marginLeft: width/25,
         backgroundColor: 'transparent',
     },
 
