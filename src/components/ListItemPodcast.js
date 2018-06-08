@@ -19,6 +19,7 @@ class ListItemPodcast extends Component{
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
+            username: '',
             podImage: '',
             dataSource: dataSource.cloneWithRows([]),
             url: '',
@@ -31,6 +32,15 @@ class ListItemPodcast extends Component{
         firebase.database().ref(`users/${this.props.podcast}/profileImage`).once("value", function (image) {
             if(image.val()){
                 podImage = image.val().profileImage;
+            }
+            else{
+                const storageRef = firebase.storage().ref(`/users/${this.props.podcast}/image-profile-uploaded`);
+                storageRef.getDownloadURL()
+                    .then(function(url) {
+                        podImage = url;
+                    }).catch(function(error) {
+                    //
+                });
             }
         });
 
@@ -46,9 +56,16 @@ class ListItemPodcast extends Component{
             })
         });
 
+        let username = '';
+        firebase.database().ref(`users/${this.props.podcast}/username`).once("value", function (snapshot) {
+            if(snapshot.val()){
+                username = snapshot.val().username;
+            }
+        });
 
-        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(eps.reverse()), podImage: podImage, })}, 1000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(eps.reverse()), podImage: podImage, })}, 4000);
+
+        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(eps.reverse()), podImage: podImage, username: username })}, 1000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(eps.reverse()), podImage: podImage, username: username })}, 4000);
     }
 
 
@@ -109,7 +126,7 @@ class ListItemPodcast extends Component{
             <View style= {styles.container}>
                 <View style={{flex:1, flexDirection: 'row', backgroundColor: '#fff', marginHorizontal: 12, borderTopLeftRadius: 15, borderTopRightRadius: 15}}>
                     <View style={{flex:6}}>
-                        <Text style = {styles.titleWeek}>{this.props.podcast}</Text>
+                        <Text style = {styles.titleWeek}>{this.state.username}</Text>
                     </View>
 
                     <View style={{flex:1, alignSelf: 'flex-start'}}>

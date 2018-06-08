@@ -214,7 +214,7 @@ class TopCharts extends Component{
 
                 </ScrollView>
 
-                <PlayerBottom/>
+                <PlayerBottom navigator={this.props.navigator}/>
 
             </View>
 

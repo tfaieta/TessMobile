@@ -31,6 +31,9 @@ class Highlights extends Component{
             topBarShadowOffset: 3,
             topBarShadowRadius: 5,
             statusBarColor: '#fff',
+            drawUnderNavBar: true,
+            navBarTranslucent: true,
+            navBarNoBorder: true
         });
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
@@ -107,6 +110,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
+        marginTop: 65,
     },
 
     title: {
@@ -116,7 +120,6 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 18,
-        marginTop: 80,
         paddingVertical: 10,
         marginBottom: 1,
     },

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, LayoutAnimation, TouchableOpacity, Image, AsyncStorage, Dimensions } from 'react-native';
+import { Text, View, LayoutAnimation, Image, AsyncStorage, Dimensions, TouchableHighlight } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import Variables from "./Variables";
@@ -397,7 +397,7 @@ class ListItemUsers extends Component {
 
         return (
 
-            <TouchableOpacity onPress={this.onRowPress.bind(this)} onLongPress={() => {
+            <TouchableHighlight underlayColor = '#f5f4f9' onPress={this.onRowPress.bind(this)} onLongPress={() => {
                 const {currentUser} = firebase.auth();
                 const {podcast} = this.props;
                 const rowData = podcast;
@@ -423,7 +423,7 @@ class ListItemUsers extends Component {
                 <Text style={styles.title}>{this.state.title}</Text>
                 <Text style={styles.artistTitle}>{this.state.username}</Text>
                 </View>
-            </TouchableOpacity>
+            </TouchableHighlight>
 
         );
 

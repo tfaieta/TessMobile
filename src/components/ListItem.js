@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, LayoutAnimation, TouchableOpacity, Alert, Image, Dimensions, AsyncStorage } from 'react-native';
+import { Text, View, LayoutAnimation, TouchableOpacity, Alert, Image, Dimensions, AsyncStorage, TouchableHighlight } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import Variables from "./Variables";
@@ -145,7 +145,7 @@ class ListItem extends Component {
 
             return (
 
-                <TouchableOpacity onPress={() =>  {
+                <TouchableHighlight underlayColor = '#f5f4f9' onPress={() =>  {
 
                     const {podcastArtist} = this.props.podcast;
                     const {podcastTitle} = this.props.podcast;
@@ -462,7 +462,7 @@ class ListItem extends Component {
 
 
                     </View>
-                </TouchableOpacity>
+                </TouchableHighlight>
 
             );
 
