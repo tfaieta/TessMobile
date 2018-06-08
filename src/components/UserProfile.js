@@ -3320,7 +3320,7 @@ static navigatorStyle = {
         }
         else{
             return(
-                <View style={{marginVertical: 15}} />
+                <View style={{marginVertical: height/95.29}} />
             )
         }
     }

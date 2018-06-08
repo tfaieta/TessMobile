@@ -146,6 +146,13 @@ class ListItemUsers extends Component {
         Variables.state.highlight = false;
 
 
+        Analytics.logEvent('play', {
+            'episodeID': id,
+            'epispdeTitle': podcastTitle,
+            'episodeArtist': podcastArtist,
+            'user_id': user
+        });
+
 
         firebase.database().ref(`users/${currentUser.uid}/tracking/${podcastArtist}/episodes/${id}`).remove();
 

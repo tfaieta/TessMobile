@@ -199,7 +199,7 @@ class Player extends Component{
 
         var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
         ref.once("value", function(snapshot) {
-            if(snapshot.val().playTime){
+            if(snapshot.val()){
                 ref.update({playTime: snapshot.val().playTime + .15})
             }
             else{
