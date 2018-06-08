@@ -14,7 +14,7 @@ import Login from './components/Login';
 import CreateAccount from './components/CreateAccount';
 import Home from './components/Home';
 import Account from './components/Account';
-import Discover from './components/Discover';
+import Discover from './components/Browse';
 import Library from './components/Library';
 import Record from './components/Record';
 import Settings from './components/Settings';

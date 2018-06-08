@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { View, StyleSheet, ListView, Text, TouchableOpacity, Image} from 'react-native';
+import { View, StyleSheet, ListView,} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import { connect } from 'react-redux';
 import { podcastFetchFollowed } from "../actions/PodcastActions"
 import Variables from "./Variables";
-import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 
 import { Navigation } from 'react-native-navigation';
@@ -54,6 +53,9 @@ class MyFollowersPage extends Component{
             topBarShadowOffset: 3,
             topBarShadowRadius: 5,
             statusBarColor: '#fff',
+            drawUnderNavBar: true,
+            navBarTranslucent: true,
+            navBarNoBorder: true
         });
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
@@ -124,6 +126,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
+        marginTop: 65,
     },
 
 });

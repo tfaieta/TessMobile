@@ -1,119 +1,45 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
-import { View, StyleSheet, ScrollView, TouchableOpacity, Image, Text} from 'react-native';
-import { connect } from 'react-redux';
+import { View, StyleSheet, ScrollView, TouchableOpacity, Image, Text, Dimensions} from 'react-native';
 
+var {height, width} = Dimensions.get('window');
+
+
+// a component that lists all of the categories, on Browse
 
 class Categories extends Component{
     constructor(props) {
         super(props);
+
+        this.props.navigator.setStyle({
+            statusBarHidden: false,
+            statusBarTextColorScheme: 'light',
+            navBarHidden: false,
+            navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
+            navBarTextFontSize: 22, // change the font size of the title
+            navBarTextFontFamily: 'Montserrat-Bold', // Changes the title font
+            drawUnderTabBar: false,
+            navBarHideOnScroll: false,
+            navBarBackgroundColor: '#fff',
+            topBarElevationShadowEnabled: false,
+            topBarShadowColor: 'transparent',
+            topBarShadowOpacity: 0.1,
+            topBarShadowOffset: 3,
+            topBarShadowRadius: 5,
+            statusBarColor: '#fff',
+            drawUnderNavBar: true,
+            navBarTranslucent: true,
+            navBarNoBorder: true
+
+        });
+
     }
 
-    pressFitness =()=>{
-        this.props.navigator.push({
-            screen: 'Fitness',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressCurrEvents = () => {
-        this.props.navigator.push({
-            screen: 'News',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressGaming =()=>{
-        this.props.navigator.push({
-            screen: 'Gaming',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressSports =()=>{
-        this.props.navigator.push({
-            screen: 'Sports',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressEntertainment =()=>{
-        this.props.navigator.push({
-            screen: 'Entertainment',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressSci =()=>{
-        this.props.navigator.push({
-            screen: 'ScienceNature',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressTravel =()=>{
-        this.props.navigator.push({
-            screen: 'Travel',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressLearn =()=>{
-        this.props.navigator.push({
-            screen: 'LearnSomething',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressStory =()=>{
-        this.props.navigator.push({
-            screen: 'Storytelling',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressComedy =()=>{
-        this.props.navigator.push({
-            screen: 'Comedy',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressLife =()=>{
-        this.props.navigator.push({
-            screen: 'Lifestyle',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressSociety =()=>{
-        this.props.navigator.push({
-            screen: 'SocietyCulture',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-    pressTech =()=>{
-        this.props.navigator.push({
-            screen: 'Tech',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
 
-    pressMusic =()=>{
+    pressCategory = (category) => {
         this.props.navigator.push({
-            screen: 'Music',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-
-    pressReligionSpirit =()=>{
-        this.props.navigator.push({
-            screen: 'ReligionSpirituality',
-            animated: true,
-            animationType: 'fade',
+            screen: 'Category',
+            title: category,
+            passProps: {category},
         });
     };
 
@@ -122,150 +48,151 @@ class Categories extends Component{
         return (
             <ScrollView style={styles.container}>
 
-
-
                 <View style={{flexDirection: 'row', flex:1}}>
-                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10}} onPress={this.pressCurrEvents}>
+                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingVertical: height/66.7}} onPress={() => this.pressCategory('News')}>
                     <Image
-                        style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                        style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                         source={require('tess/src/images/currEvents-cat.png')}
                     />
-                    <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>News</Text>
+                    <Text style={styles.text}>News</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: 10}} onPress={this.pressFitness}>
+                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: height/66.7}} onPress={() => this.pressCategory('Fitness')}>
                     <Image
-                        style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                        style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                         source={require('tess/src/images/fitness-cat.png')}
                     />
-                    <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Fitness</Text>
+                    <Text style={styles.text}>Fitness</Text>
                 </TouchableOpacity>
                 </View>
 
 
                 <View style={{flexDirection: 'row', flex:1}}>
-                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingVertical: 10}} onPress={this.pressSociety}>
+                <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', paddingVertical: height/66.7}} onPress={() => this.pressCategory('Society & Culture')}>
                     <Image
-                        style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                        style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                         source={require('tess/src/images/politics-cat.png')}
                     />
-                    <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Society & Culture</Text>
+                    <Text style={styles.text}>Society & Culture</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: 10}} onPress={this.pressReligionSpirit}>
+                <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: height/66.7}} onPress={() => this.pressCategory('Religion & Spirituality')}>
                     <Image
-                        style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                        style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                         source={require('tess/src/images/religionSpirit-cat.png')}
                     />
-                    <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Religion & Spirituality</Text>
+                    <Text style={styles.text}>Religion & Spirituality</Text>
                 </TouchableOpacity>
                 </View>
 
 
                 <View style={{flexDirection: 'row', flex:1}}>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10}} onPress={this.pressComedy}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Comedy')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/comedy-cat.png')}
                         />
-                        <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Comedy</Text>
+                        <Text style={styles.text}>Comedy</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: 10}} onPress={this.pressLife}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Lifestyle')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/lifestyle-cat.png')}
                         />
-                        <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Lifestyle</Text>
+                        <Text style={styles.text}>Lifestyle</Text>
                     </TouchableOpacity>
                 </View>
 
 
 
                 <View style={{flexDirection: 'row', flex:1}}>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10}} onPress={this.pressSci}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Science & Nature')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/scienceNature-cat.png')}
                         />
-                        <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Science & Nature</Text>
+                        <Text style={styles.text}>Science & Nature</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: 10}} onPress={this.pressTravel}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Travel')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/travel-cat.png')}
                         />
-                        <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Travel</Text>
+                        <Text style={styles.text}>Travel</Text>
                     </TouchableOpacity>
                 </View>
 
 
                 <View style={{flexDirection: 'row', flex:1}}>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10}} onPress={this.pressLearn}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Learn Something')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/learnSomething-cat.png')}
                         />
-                        <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Learn Something</Text>
+                        <Text style={styles.text}>Learn Something</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: 10}} onPress={this.pressStory}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Storytelling')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/storytelling-cat.png')}
                         />
-                        <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Storytelling</Text>
+                        <Text style={styles.text}>Storytelling</Text>
                     </TouchableOpacity>
                 </View>
 
 
                 <View style={{flexDirection: 'row', flex:1}}>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10,}} onPress={this.pressSports}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Sports')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/sports-cat.png')}
                         />
-                        <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Sports</Text>
+                        <Text style={styles.text}>Sports</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: 10}} onPress={this.pressEntertainment}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Entertainment')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/entertainment-cat.png')}
                         />
-                        <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Entertainment</Text>
+                        <Text style={styles.text}>Entertainment</Text>
                     </TouchableOpacity>
                 </View>
 
                 <View style={{flexDirection: 'row', flex:1}}>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: 10}} onPress={this.pressMusic}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Music')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/music-cat.png')}
                         />
-                        <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Music</Text>
+                        <Text style={styles.text}>Music</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: 10}} onPress={this.pressTech}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Tech')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/tech-cat.png')}
                         />
-                        <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Tech</Text>
+                        <Text style={styles.text}>Tech</Text>
                     </TouchableOpacity>
                 </View>
 
 
-                <View style={{flexDirection: 'row', flex:1}}>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: 10, paddingBottom: 125}} onPress={this.pressGaming}>
+                <View style={{flexDirection: 'row', flex: 1, paddingBottom: height/5.336}}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-start',paddingVertical: height/66.7}} onPress={() => this.pressCategory('Business')}>
                         <Image
-                            style={{ width: 130, height:130, alignSelf: 'center', opacity: 1}}
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
+                            source={require('tess/src/images/iconMoney.png')}
+                        />
+                        <Text style={styles.text}>Business</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end', paddingVertical: height/66.7}} onPress={() => this.pressCategory('Gaming')}>
+                        <Image
+                            style={{ width: width/2.88, height: width/2.88, alignSelf: 'center', opacity: 1}}
                             source={require('tess/src/images/gaming-cat.png')}
                         />
-                        <Text style={{marginTop: 5, fontFamily: 'HiraginoSans-W6', alignSelf:'center'}}>Gaming</Text>
+                        <Text style={styles.text}>Gaming</Text>
                     </TouchableOpacity>
                 </View>
-
 
 
             </ScrollView>
-
-
-
 
         );
     }
@@ -273,20 +200,18 @@ class Categories extends Component{
 
 const styles = StyleSheet.create({
     container:{
-        paddingTop: 10,
+        paddingTop: height/11.12,
         flex: 1,
         backgroundColor: 'transparent',
 
     },
 
+    text: {
+        marginTop: height/66.7, fontFamily: 'Montserrat-SemiBold', alignSelf:'center', color: '#3e4164',
+    }
+
 
 });
 
-const mapStateToProps = state => {
-    const podcast = _.map(state.podcast, (val, uid) => {
-        return { ...val, uid };
-    });
-    return {podcast};
-};
 
-export default connect(mapStateToProps) (Categories);
+export default Categories;

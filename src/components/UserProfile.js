@@ -36,6 +36,9 @@ static navigatorStyle = {
         statusBarTextColorScheme: 'light',
         tabBarHidden: false,
         statusBarColor: '#fff',
+        drawUnderNavBar: true,
+        navBarTranslucent: true,
+        navBarNoBorder: true
     };
 
 
@@ -3301,6 +3304,27 @@ static navigatorStyle = {
         }
     }
 
+    renderContent(){
+        if(Variables.state.userPodcasts.length > 0){
+            return(
+                <View style={{backgroundColor: '#fff', marginVertical: 15, marginHorizontal: 7, borderRadius: 10}}>
+                    <Text style={styles.myContentTitle}>{Variables.state.userPodcasts.length} episodes</Text>
+                    <ListView
+                        enableEmptySections
+                        horizontal={true}
+                        dataSource={this.state.dataSource}
+                        renderRow={this.renderRow}
+                    />
+                </View>
+            )
+        }
+        else{
+            return(
+                <View style={{marginVertical: 15}} />
+            )
+        }
+    }
+
 
     render() {
 
@@ -3413,18 +3437,7 @@ static navigatorStyle = {
 
                         </View>
 
-
-                        <View style={{backgroundColor: '#fff', marginVertical: 15, marginHorizontal: 7, borderRadius: 10}}>
-                            <Text style={styles.myContentTitle}>{Variables.state.userPodcasts.length} episodes</Text>
-                            <ListView
-                                enableEmptySections
-                                horizontal={true}
-                                dataSource={this.state.dataSource}
-                                renderRow={this.renderRow}
-                            />
-                        </View>
-
-
+                        {this.renderContent()}
 
                         {this.renderAchievements()}
 
@@ -3459,6 +3472,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
+        marginTop: 65,
     },
     title2: {
         color: '#3e4164',

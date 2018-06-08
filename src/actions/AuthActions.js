@@ -88,7 +88,7 @@ export const loginUser = ({email, password}) => {
                                         navigatorButtons: {screenBackgroundColor: '#fff'}
                                     },
                                     {
-                                        screen: 'Discover',
+                                        screen: 'Browse',
                                         icon: discoverIcon,
                                         selectedIcon: discoverIconSelected,
                                         iconInsets: {
@@ -198,7 +198,7 @@ export const createUser = ({email, password, username}) => {
                                             navigatorButtons: {screenBackgroundColor: '#fff'}
                                         },
                                         {
-                                            screen: 'Discover',
+                                            screen: 'Browse',
                                             icon: discoverIcon,
                                             selectedIcon: discoverIconSelected,
                                             iconInsets: {

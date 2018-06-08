@@ -1153,128 +1153,18 @@ class PlayerBottom extends Component {
 
     onCategoryPress = () => {
         const {navigator} = this.props;
+        let category = Variables.state.podcastCategory;
 
-        if(Variables.state.podcastCategory == 'Fitness'){
-            const category = Variables.state.podcastCategory;
-
-            Navigation.showModal({
-                screen: 'PopupCategory',
-                passProps: {navigator, category},
+        setTimeout(() => {
+            this.props.navigator.push({
+                screen: 'Category',
+                title: category,
+                animated: true,
+                animationType: 'fade',
+                passProps: {category, navigator},
             });
-        }
-        else if(Variables.state.podcastCategory == 'News'){
-            const category = Variables.state.podcastCategory;
-
-            Navigation.showModal({
-                screen: 'PopupCategory',
-                passProps: {navigator, category},
-            });
-        }
-        else if(Variables.state.podcastCategory == 'Gaming'){
-            const category = Variables.state.podcastCategory;
-
-            Navigation.showModal({
-                screen: 'PopupCategory',
-                passProps: {navigator, category},
-            });
-        }
-        else if(Variables.state.podcastCategory == 'Society & Culture'){
-            const category = Variables.state.podcastCategory;
-
-            Navigation.showModal({
-                screen: 'PopupCategory',
-                passProps: {navigator, category},
-            });
-        }
-        else if(Variables.state.podcastCategory == 'Sports'){
-            const category = Variables.state.podcastCategory;
-
-            Navigation.showModal({
-                screen: 'PopupCategory',
-                passProps: {navigator, category},
-            });
-        }
-        else if(Variables.state.podcastCategory == 'Entertainment'){
-            const category = Variables.state.podcastCategory;
-
-            Navigation.showModal({
-                screen: 'PopupCategory',
-                passProps: {navigator, category},
-            });
-        }
-        else if(Variables.state.podcastCategory == 'Comedy'){
-            const category = Variables.state.podcastCategory;
-
-            Navigation.showModal({
-                screen: 'PopupCategory',
-                passProps: {navigator, category},
-            });
-        }
-        else if(Variables.state.podcastCategory == 'Learn Something'){
-            const category = Variables.state.podcastCategory;
-
-            Navigation.showModal({
-                screen: 'PopupCategory',
-                passProps: {navigator, category},
-            });
-        }
-        else if(Variables.state.podcastCategory == 'Lifestyle'){
-            const category = Variables.state.podcastCategory;
-
-            Navigation.showModal({
-                screen: 'PopupCategory',
-                passProps: {navigator, category},
-            });
-        }
-        else if(Variables.state.podcastCategory == 'Science & Nature'){
-            const category = Variables.state.podcastCategory;
-
-            Navigation.showModal({
-                screen: 'PopupCategory',
-                passProps: {navigator, category},
-            });
-        }
-        else if(Variables.state.podcastCategory == 'Storytelling'){
-            const category = Variables.state.podcastCategory;
-
-            Navigation.showModal({
-                screen: 'PopupCategory',
-                passProps: {navigator, category},
-            });
-        }
-        else if(Variables.state.podcastCategory == 'Tech'){
-            const category = Variables.state.podcastCategory;
-
-            Navigation.showModal({
-                screen: 'PopupCategory',
-                passProps: {navigator, category},
-            });
-        }
-        else if(Variables.state.podcastCategory == 'Travel'){
-            const category = Variables.state.podcastCategory;
-
-            Navigation.showModal({
-                screen: 'PopupCategory',
-                passProps: {navigator, category},
-            });
-        }
-        else if(Variables.state.podcastCategory == 'Music'){
-            const category = Variables.state.podcastCategory;
-
-            Navigation.showModal({
-                screen: 'PopupCategory',
-                passProps: {navigator, category},
-            });
-        }
-        else if(Variables.state.podcastCategory == 'Religion & Spirituality'){
-            const category = Variables.state.podcastCategory;
-
-            Navigation.showModal({
-                screen: 'PopupCategory',
-                passProps: {navigator, category},
-            });
-        }
-        else console.warn("Category not yet supported");
+        }, 450);
+        this.Close();
     };
 
 

@@ -81,7 +81,7 @@ export default class InitialScreen extends Component{
                         navigatorButtons: {screenBackgroundColor: '#fff'}
                     },
                     {
-                        screen: 'Discover',
+                        screen: 'Browse',
                         icon: discoverIcon,
                         selectedIcon: discoverIconSelected,
                         iconInsets: {

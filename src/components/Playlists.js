@@ -62,6 +62,9 @@ class Playlists extends Component{
             topBarShadowOffset: 3,
             topBarShadowRadius: 5,
             statusBarColor: '#fff',
+            drawUnderNavBar: true,
+            navBarTranslucent: true,
+            navBarNoBorder: true
         });
 
         this.timeout1 = setTimeout(() => {this.setState({playlists: dataSource.cloneWithRows(Variables.state.playlists)})},1000);
@@ -101,7 +104,7 @@ class Playlists extends Component{
                 style={styles.container}>
 
 
-                <ScrollView style={{paddingTop: 70}}>
+                <ScrollView>
 
 
                     <View style={styles.inputContainer}>
@@ -164,6 +167,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
+        marginTop: 65
     },
 
     title: {

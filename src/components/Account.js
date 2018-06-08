@@ -232,6 +232,10 @@ class Account extends Component {
             topBarShadowOffset: 3,
             topBarShadowRadius: 5,
             statusBarColor: 'transparent',
+            drawUnderNavBar: true,
+            navBarTranslucent: true,
+            navBarNoBorder: true
+
         });
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
@@ -250,7 +254,8 @@ class Account extends Component {
             myShares: 0,
             dataSourceRecent: dataSource.cloneWithRows(Variables.state.recentlyPlayed)
         };
-        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username, profileImage: Variables.state.profileImage, playTime: Variables.state.myPlayTime, myComments: Variables.state.myCommentsAmount, myTracking: Variables.state.myTrackingAmount, myLikes: Variables.state.myLikesAmount, myHighlights: Variables.state.myHighlightsAmount, myShares: Variables.state.mySharesAmount, dataSourceRecent: dataSource.cloneWithRows(Variables.state.recentlyPlayed)})},1000)
+        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username, profileImage: Variables.state.profileImage, playTime: Variables.state.myPlayTime, myComments: Variables.state.myCommentsAmount, myTracking: Variables.state.myTrackingAmount, myLikes: Variables.state.myLikesAmount, myHighlights: Variables.state.myHighlightsAmount, myShares: Variables.state.mySharesAmount, dataSourceRecent: dataSource.cloneWithRows(Variables.state.recentlyPlayed)})},1000);
+        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username, profileImage: Variables.state.profileImage, playTime: Variables.state.myPlayTime, myComments: Variables.state.myCommentsAmount, myTracking: Variables.state.myTrackingAmount, myLikes: Variables.state.myLikesAmount, myHighlights: Variables.state.myHighlightsAmount, myShares: Variables.state.mySharesAmount, dataSourceRecent: dataSource.cloneWithRows(Variables.state.recentlyPlayed)})},3000)
     }
 
 
@@ -2858,6 +2863,27 @@ class Account extends Component {
         }
     }
 
+    renderContent(){
+        if(Variables.state.myPodcasts.length > 0){
+            return(
+                <View style={{backgroundColor: '#fff', marginVertical: 15, marginHorizontal: 7, borderRadius: 10}}>
+                    <Text style={styles.myContentTitle}>{Variables.state.myPodcasts.length} episodes</Text>
+                    <ListView
+                        enableEmptySections
+                        horizontal={true}
+                        dataSource={this.state.dataSource}
+                        renderRow={this.renderRow}
+                    />
+                </View>
+            )
+        }
+        else{
+            return(
+                <View style={{marginVertical: 15}} />
+            )
+        }
+    }
+
 
     render() {
         return (
@@ -2888,15 +2914,7 @@ class Account extends Component {
                     </View>
 
 
-                    <View style={{backgroundColor: '#fff', marginVertical: 15, marginHorizontal: 7, borderRadius: 10}}>
-                        <Text style={styles.myContentTitle}>{Variables.state.myPodcasts.length} episodes</Text>
-                    <ListView
-                        enableEmptySections
-                        horizontal={true}
-                        dataSource={this.state.dataSource}
-                        renderRow={this.renderRow}
-                    />
-                    </View>
+                    {this.renderContent()}
 
 
 
@@ -2932,6 +2950,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
+        marginTop: 65,
     },
     title2: {
         color: '#3e4164',

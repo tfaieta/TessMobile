@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import { Text, View, LayoutAnimation, TouchableOpacity, Image } from 'react-native';
+import { Text, View, LayoutAnimation, TouchableHighlight, Image, Dimensions, AsyncStorage } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import Variables from "./Variables";
-import { Navigation } from 'react-native-navigation';
 var Analytics = require('react-native-firebase-analytics');
 
+var {height, width} = Dimensions.get('window');
 
-// A single podcast on the queue list
 
-class ListItemQueue extends Component {
+
+
+// A single episode on a list, used for top charts
+
+class ListItemChart extends Component {
 
     componentWillMount(){
         const {podcastArtist} = this.props.podcast;
@@ -38,6 +41,8 @@ class ListItemQueue extends Component {
             this.timeout2 = setTimeout(() => {this.setState({profileImage: profileImage})},3400);
 
         }
+
+
     }
 
 
@@ -47,12 +52,39 @@ class ListItemQueue extends Component {
     }
 
 
-
     constructor(props) {
         super(props);
         this.state = {
-            profileImage: ''
-        }
+            profileImage: '',
+            username: '',
+            title: '',
+        };
+
+        const {podcastArtist} = this.props.podcast;
+        const {podcastTitle} = this.props.podcast;
+
+        let profileName = 'loading';
+        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").once("value", function (snap) {
+            if (snap.val()) {
+                profileName = snap.val().username;
+            }
+            else {
+                profileName = podcastArtist;
+            }
+        });
+
+        setTimeout(() => {
+            this.setState({username: profileName});
+            this.setState({title: podcastTitle});
+        }, 300);
+
+        setTimeout(() => {
+            this.setState({username: profileName});
+            this.setState({title: podcastTitle});
+        }, 1000);
+
+
+
     }
 
     state = {
@@ -70,11 +102,11 @@ class ListItemQueue extends Component {
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginLeft: 10, alignSelf: 'center', height: 50, width: 50, borderRadius: 4, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)', }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', height: width/4.17, width: width/4.17, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)'}}>
                     <Icon style={{
                         textAlign: 'center',
-                        fontSize: 35,
-                        marginTop: 8,
+                        fontSize: width/6.25,
+                        marginTop: height/66.7,
                         color: 'white',
                     }} name="md-person">
                     </Icon>
@@ -83,9 +115,9 @@ class ListItemQueue extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginLeft: 10, height: 50, width: 50}}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', height: width/4.17, width: width/4.17, }}>
                     <Image
-                        style={{width: 50, height: 50, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
+                        style={{height: width/4.17, width: width/4.17, position: 'absolute', alignSelf: 'center', opacity: 1,}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -94,49 +126,51 @@ class ListItemQueue extends Component {
     }
 
 
+    renderTitle(title){
+        if(title.length > (width/6.25)){
+            return title.slice(0,(width/6.25))+"..."
+        }else{
+            return title;
+        }
 
-
+    }
 
 
     render() {
 
-        const {podcastArtist} = this.props.podcast;
-
-        let profileName = 'loading';
-        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
-            if (snap.val()) {
-                profileName = snap.val().username;
-            }
-            else {
-                profileName = podcastArtist;
-            }
-        });
-
-        const {podcastTitle} = this.props.podcast;
-        const {podcastDescription} = this.props.podcast;
-        const {podcastCategory} = this.props.podcast;
-        const {id} = this.props.podcast;
-        const {rss} = this.props.podcast;
-        const {podcastURL} = this.props.podcast;
-        const {currentUser} = firebase.auth();
-        const user = currentUser.uid;
-        const {podcast} = this.props;
-        const rowData = podcast;
-
-
-
-
-
         return (
 
-            <TouchableOpacity onPress={() =>  {
+            <TouchableHighlight onPress={() =>  {
+
+                const {podcastArtist} = this.props.podcast;
+                const {podcastTitle} = this.props.podcast;
+                const {podcastDescription} = this.props.podcast;
+                const {podcastCategory} = this.props.podcast;
+                const {id} = this.props.podcast;
+                const {rss} = this.props.podcast;
+                const {podcastURL} = this.props.podcast;
+                const {currentUser} = firebase.auth();
+                const user = currentUser.uid;
+                const {podcast} = this.props;
                 Variables.state.highlight = false;
 
-         
+
+                Analytics.logEvent('play', {
+                    'episodeID': id,
+                    'epispdeTitle': podcastTitle,
+                    'episodeArtist': podcastArtist,
+                    'user_id': user
+                });
 
                 firebase.database().ref(`users/${currentUser.uid}/tracking/${podcastArtist}/episodes/${id}`).remove();
 
+
                 if(rss){
+
+                    AsyncStorage.setItem("currentPodcast", id);
+                    AsyncStorage.setItem("currentTime", "0");
+                    Variables.state.seekTo = 0;
+                    Variables.state.currentTime = 0;
 
 
                     firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
@@ -214,21 +248,16 @@ class ListItemQueue extends Component {
                                 Variables.state.favorited = true;
                             }
                         })
-                    });
-
-                    firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
-                        snap.forEach(function (data) {
-                            if(data.val().id == id){
-                                firebase.database().ref(`users/${currentUser.uid}/queue/${data.key}`).remove()
-                            }
-                        });
-                    });
+                    })
 
 
 
                 }
                 else{
                     if(id){
+                        AsyncStorage.setItem("currentPodcast", id);
+                        AsyncStorage.setItem("currentTime", "0");
+
                         firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL().catch(() => {console.warn("file not found")})
                             .then(function(url) {
 
@@ -312,15 +341,8 @@ class ListItemQueue extends Component {
                                             Variables.state.favorited = true;
                                         }
                                     })
-                                });
+                                })
 
-                                firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
-                                    snap.forEach(function (data) {
-                                        if(data.val().id == id){
-                                            firebase.database().ref(`users/${currentUser.uid}/queue/${data.key}`).remove()
-                                        }
-                                    });
-                                });
 
                             });
                     }
@@ -373,14 +395,8 @@ class ListItemQueue extends Component {
                 }
 
 
-                Navigation.dismissModal({
-                    animationType: 'slide-down'
-                });
 
-
-
-
-            }}  onLongPress={() => {
+            }} onLongPress={() => {
                 const {currentUser} = firebase.auth();
                 const {podcast} = this.props;
                 const rowData = podcast;
@@ -398,41 +414,28 @@ class ListItemQueue extends Component {
                         height: 200
                     },
                 });
-            }} >
+            }} style={{backgroundColor: '#f5f4f9',}} underlayColor='#f5f4f9'>
+                <View>
                 <View style={styles.container}>
 
-                    {this._renderProfileImage()}
-
                     <View style={styles.leftContainer}>
-                        <Text style={styles.title}>{podcastTitle}</Text>
-                        <Text style={styles.artistTitle}>{profileName}</Text>
+                        <Text style={styles.titleNum}>{this.props.index}</Text>
                     </View>
 
+                    <View style={styles.middleContainer}>
+                        <Text style={styles.title}>{this.renderTitle(this.state.title)}</Text>
+                        <Text style={styles.artistTitle}>{this.state.username}</Text>
+                    </View>
 
-                    <TouchableOpacity onPress={() => {
-
-                        firebase.database().ref(`users/${currentUser.uid}/queue/`).once("value", function (snap) {
-                            snap.forEach(function (data) {
-                                if(data.val().id == id){
-                                    firebase.database().ref(`users/${currentUser.uid}/queue/${data.key}`).remove()
-                                }
-                            });
-                        });
-
-                    }} style={styles.rightContainer}>
-                        <Icon style={{
-                            textAlign: 'left',
-                            marginLeft: 0,
-                            marginRight: 15,
-                            fontSize: 30,
-                            color: '#ff6984',
-                        }} name="ios-close">
-                        </Icon>
-                    </TouchableOpacity>
-
+                    <View style={styles.rightContainer}>
+                        {this._renderProfileImage()}
+                    </View>
 
                 </View>
-            </TouchableOpacity>
+                <View style={{backgroundColor: '#00000030', paddingBottom: 1}}/>
+                </View>
+
+            </TouchableHighlight>
 
         );
 
@@ -447,67 +450,67 @@ class ListItemQueue extends Component {
 
 const styles = {
     title: {
-        color: '#3e4164',
-        marginTop: 0,
-        flex:1,
-        textAlign: 'left',
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'Montserrat-SemiBold',
-        fontSize: 15,
-        backgroundColor: 'transparent',
-        marginHorizontal: 20,
-
-    },
-    artistTitle: {
-        color: '#828393',
-        marginTop: 0,
-        flex:1,
+        color: '#000',
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: 15,
+        fontSize: width/25,
+        backgroundColor: 'transparent',
+        marginHorizontal: width/18.75,
+        marginTop: height/133.4,
+
+    },
+    titleNum: {
+        color: '#828393',
+        marginTop: height/133.4,
+        flex: 1,
+        textAlign: 'center',
+        opacity: 1,
+        fontSize: width/18.75,
+        backgroundColor: 'transparent',
+        marginLeft: width/25,
+
+    },
+    artistTitle: {
+        color: '#828393',
+        marginTop: 2,
+        textAlign: 'left',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-Regular',
+        fontSize: 14,
         backgroundColor: 'transparent',
         marginLeft: 20,
+        marginHorizontal: 20,
     },
     container: {
-        paddingHorizontal: 0,
-        paddingVertical: 10,
-        marginVertical: 0,
-        marginHorizontal: 0,
-        backgroundColor: '#FFF',
+        backgroundColor: '#f5f4f9',
         opacity: 1,
-        borderColor: '#FFF',
-        borderWidth: 0.5,
-        borderRadius: 0,
-        borderStyle: 'solid',
         flexDirection: 'row',
     },
     centerContainer: {
         flexDirection: 'row'
     },
     leftContainer: {
-        flex: 7,
+        flex: 1,
         justifyContent: 'center',
         alignItems:'flex-start',
     },
     rightContainer: {
-        flex: 1,
+        flex: 1.8,
         justifyContent: 'center',
         alignItems: 'flex-end',
 
     },
     middleContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 3,
-        marginHorizontal: -100,
+        flex: 6,
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
     },
 };
 
 
 
 
-export default ListItemQueue;
+export default ListItemChart;

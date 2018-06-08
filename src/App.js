@@ -9,7 +9,7 @@ import StartUp from './components/StartUp';
 import { Navigation } from 'react-native-navigation';
 import InitialScreen from "./components/InitialScreen";
 import Home from "./components/Home";
-import Discover from "./components/Discover";
+import Browse from "./components/Browse";
 import RecordFirstPage from "./components/RecordFirstPage";
 import Library from "./components/Library";
 import Account from "./components/Account";
@@ -71,6 +71,9 @@ import PlayerBottom from "./components/PlayerBottom";
 import CatchUp from "./components/CatchUp";
 import PlaylistList from "./components/PlaylistList";
 import PlaylistView from "./components/PlaylistView";
+import Category from "./components/DiscoverBar/Category";
+import Discover from "./components/Discover";
+import Media from "./components/Media";
 
 
 
@@ -88,8 +91,11 @@ Navigation.registerComponent('Home', () => Home, store, Provider);
 Navigation.registerComponent('ViewAll', () => ViewAll, store, Provider);
 Navigation.registerComponent('AddWidget', () => AddWidget, store, Provider);
 
+Navigation.registerComponent('Browse', () => Browse, store, Provider);
 Navigation.registerComponent('Discover', () => Discover, store, Provider);
+Navigation.registerComponent('Media', () => Media, store, Provider);
 Navigation.registerComponent('Categories', () => Categories, store, Provider);
+Navigation.registerComponent('Category', () => Category, store, Provider);
 Navigation.registerComponent('Following', () => Following, store, Provider);
 Navigation.registerComponent('NewPodcasts', () => NewPodcasts, store, Provider);
 Navigation.registerComponent('TopCharts', () => TopCharts, store, Provider);
