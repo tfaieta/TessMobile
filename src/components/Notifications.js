@@ -115,7 +115,9 @@ class Notifications extends Component{
                         break;
                 }
                 setTimeout(() => {
-                    this.showLocalNotification(notif);
+                    if(notif){
+                        this.showLocalNotification(notif);
+                    }
                 }, 1000)
             }
 
@@ -151,16 +153,19 @@ class Notifications extends Component{
 
 
     showLocalNotification(notif) {
-        FCM.presentLocalNotification({
-            title: notif.notification.title,
-            body: notif.notification.body,
-            priority: "high",
-            click_action: notif.click_action,
-            show_in_foreground: true,
-            vibrate: true,
-            local: true,
-            wake_screen: true,
-        });
+        if(notif.notification){
+            console.warn(JSON.stringify(notif));
+            FCM.presentLocalNotification({
+                title: notif.notification.title,
+                body: notif.notification.body,
+                priority: "high",
+                click_action: notif.click_action,
+                show_in_foreground: true,
+                vibrate: true,
+                local: true,
+                wake_screen: true,
+            });
+        }
 
     }
 

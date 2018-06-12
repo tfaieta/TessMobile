@@ -70,24 +70,3 @@ exports.sendNewMessageNotificationNewEp = functions.database.ref(`/podcasts`)
 
         })
     });
-
-
-
-exports.sendNotification = functions.database.ref("/notifications/{uid}/{nid}").onWrite(() => {
-    // Path segment values are read from event.params
-    const {uid, nid} = event.params;
-    const notification = event.data.val();
-
-    const payload = {
-        data: { nid },
-        notification: {
-            body: notification
-        }
-    };
-
-    console.log(`Send notification to ${uid}: ${body}`);
-    return admin.messaging()
-        .sendToTopic(`/topics/${uid}`, payload)
-        .then((result: any) => console.log(result))
-        .catch((error: any) => console.error(error));
-});
