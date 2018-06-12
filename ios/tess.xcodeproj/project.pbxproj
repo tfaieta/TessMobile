@@ -44,6 +44,7 @@
 		EBD71E8384754E3B973F97D0 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A76163A2DFE84DE6BFA35747 /* Octicons.ttf */; };
 		ED1582C8205A099500036844 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED1582A2205A092600036844 /* Montserrat-Regular.ttf */; };
 		ED1582C9205A099A00036844 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED1582C7205A093500036844 /* Montserrat-SemiBold.ttf */; };
+		ED37695620CF056B007CCBEC /* libRNFIRMessaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED37695120CF0562007CCBEC /* libRNFIRMessaging.a */; };
 		ED5A772C20B1EF6A00E81699 /* GTMSessionFetcher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED5A772B20B1EF6A00E81699 /* GTMSessionFetcher.framework */; };
 		ED5A772D20B1EF6A00E81699 /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED5A76A920B1EDB200E81699 /* libimageCropPicker.a */; };
 		ED5A772E20B1EF6A00E81699 /* libMusicControl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED5A76B620B1EDCC00E81699 /* libMusicControl.a */; };
@@ -146,6 +147,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 3D3CD9181DE5FBD800167DC4;
 			remoteInfo = "jschelpers-tvOS";
+		};
+		ED37695020CF0562007CCBEC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED37692A20CF0562007CCBEC /* RNFIRMessaging.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNFIRMessaging;
 		};
 		ED5A769420B1ED4C00E81699 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -422,6 +430,7 @@
 		ED1582A2205A092600036844 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		ED1582C7205A093500036844 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
 		ED299E9220B21D0B00572BDF /* tess.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = tess.entitlements; path = tess/tess.entitlements; sourceTree = "<group>"; };
+		ED37692A20CF0562007CCBEC /* RNFIRMessaging.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFIRMessaging.xcodeproj; path = "../node_modules/react-native-fcm/ios/RNFIRMessaging.xcodeproj"; sourceTree = "<group>"; };
 		ED5A768820B1ED4C00E81699 /* RNAudio.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNAudio.xcodeproj; path = "../node_modules/react-native-audio/ios/RNAudio.xcodeproj"; sourceTree = "<group>"; };
 		ED5A769620B1ED6A00E81699 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/react-native-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
 		ED5A76A220B1EDB200E81699 /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = imageCropPicker.xcodeproj; path = "../node_modules/react-native-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; };
@@ -469,6 +478,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED37695620CF056B007CCBEC /* libRNFIRMessaging.a in Frameworks */,
 				ED99474920B1F5AF0095DDE1 /* libBVLinearGradient.a in Frameworks */,
 				ED5A774720B1F33F00E81699 /* libRNFIRAnalytics.a in Frameworks */,
 				ED5A774020B1F1F800E81699 /* libRCTAnimation.a in Frameworks */,
@@ -613,6 +623,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				ED37692A20CF0562007CCBEC /* RNFIRMessaging.xcodeproj */,
 				ED5A774120B1F33600E81699 /* RNFIRAnalytics.xcodeproj */,
 				ED5A772220B1EF1800E81699 /* RCTSettings.xcodeproj */,
 				ED5A771920B1EF0200E81699 /* RCTWebSocket.xcodeproj */,
@@ -662,6 +673,14 @@
 				00E356EE1AD99517003FC87E /* tessTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* tess-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* tess-tvOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ED37692B20CF0562007CCBEC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ED37695120CF0562007CCBEC /* libRNFIRMessaging.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1076,6 +1095,10 @@
 					ProjectRef = ED5A774120B1F33600E81699 /* RNFIRAnalytics.xcodeproj */;
 				},
 				{
+					ProductGroup = ED37692B20CF0562007CCBEC /* Products */;
+					ProjectRef = ED37692A20CF0562007CCBEC /* RNFIRMessaging.xcodeproj */;
+				},
+				{
 					ProductGroup = ED5A76C020B1EDEF00E81699 /* Products */;
 					ProjectRef = ED5A76BF20B1EDEF00E81699 /* RNSearchBar.xcodeproj */;
 				},
@@ -1157,6 +1180,13 @@
 			fileType = archive.ar;
 			path = libjschelpers.a;
 			remoteRef = 3DAD3EAE1DF850E9000B6D8A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		ED37695120CF0562007CCBEC /* libRNFIRMessaging.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNFIRMessaging.a;
+			remoteRef = ED37695020CF0562007CCBEC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		ED5A769520B1ED4C00E81699 /* libRNAudio.a */ = {
@@ -1673,6 +1703,7 @@
 					"$(SRCROOT)/../node_modules/react-native-audio/ios",
 					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
 					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fcm/ios",
 				);
 				INFOPLIST_FILE = tess/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1685,6 +1716,7 @@
 				PRODUCT_NAME = tess;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
+				"USER_HEADER_SEARCH_PATHS[arch=*]" = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1714,6 +1746,7 @@
 					"$(SRCROOT)/../node_modules/react-native-audio/ios",
 					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
 					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fcm/ios",
 				);
 				INFOPLIST_FILE = tess/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

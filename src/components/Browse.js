@@ -60,8 +60,10 @@ class Browse extends Component{
             if(snapshot.val()){
                 podID = snapshot.val();
                 firebase.database().ref(`users/${snapshot.val()}/username`).once("value", function (name) {
-                    if(name.val().username){
-                        podUsername = name.val().username;
+                    if(name.val()){
+                        if(name.val().username){
+                            podUsername = name.val().username;
+                        }
                     }
                 });
                 firebase.database().ref(`users/${snapshot.val()}/podcasts`).limitToLast(10).once("value", function (snap) {

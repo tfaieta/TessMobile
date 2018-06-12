@@ -13,58 +13,8 @@ target 'tess' do
   pod 'Fabric', '~> 1.7.6'
   pod 'Crashlytics', '~> 3.10.1'
   pod 'Firebase/Performance'
-  react_native_path = "../node_modules/react-native"
-  pod "Yoga", :path => "#{react_native_path}/ReactCommon/yoga"
-  pod "React", :path => react_native_path, :subspecs => [
-  'Core',
-  'RCTActionSheet',
-  'RCTAnimation',
-  'RCTGeolocation',
-  'RCTImage',
-  'RCTLinkingIOS',
-  'RCTNetwork',
-  'RCTSettings',
-  'RCTText',
-  'RCTVibration',
-  'RCTWebSocket',
-  'RCTLinking',
-  ]
-  pod "react-native-firebase", :path => "../node_modules/react-native-firebase", :subspecs => [
-  'RNFirebase',
-  ]
-  pod "react-native-firebase-analytics", :path => "../node_modules/react-native-firebase-analytics", :subspecs => [
-   'RNFIRAnalytics',
-  ]
-  pod "react-native-video", :path => "../node_modules/react-native-video", :subspecs => [
-  'RCTVideo',
-  ]
-  pod "react-native-music-control", :path => "../node_modules/react-native-music-control", :subspecs => [
-   'MusicControl',
-  ]
-  pod "react-native-fetch-blob", :path => "../node_modules/react-native-fetch-blob", :subspecs => [
-  'RNFetchBlob',
-  ]
-  pod "react-native-linear-gradient", :path => "../node_modules/react-native-linear-gradient", :subspecs => [
-  'BVLinearGradient',
-  ]
-  pod "react-native-vector-icons", :path => "../node_modules/react-native-vector-icons", :subspecs => [
-  'RNVectorIcons',
-  ]
-  pod "react-native-audio", :path => "../node_modules/react-native-audio", :subspecs => [
-  'RNAudio',
-  ]
-  pod "react-native-sound", :path => "../node_modules/react-native-sound", :subspecs => [
-   'RNSound'
-  ]
-  pod "react-native-navigation", :path => "../node_modules/react-native-navigation", :subspecs => [
-  'ReactNativeNavigation',
-  ]
-  pod "react-native-image-crop-picker", :path => "../node_modules/react-native-image-crop-picker", :subspecs => [
-  'imageCropPicker',
-  ]
-  pod "react-native-share", :path => "../node_modules/react-native-share", :subspecs => [
-  'RNShare',
-  ]
+  pod 'Firebase/Messaging'
+
   
 
 
