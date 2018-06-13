@@ -180,10 +180,6 @@ class Browse extends Component{
                     <Carousel
                         delay={5000}
                         style={this.state.size}
-                        autoplay
-                        bullets
-                        chosenBulletStyle={{backgroundColor: '#3e4164',}}
-                        bulletStyle={styles.carouselStyle}
                         onAnimateNextPage={(p) => console.log(p)}
                     >
                         {/* First Item in Carousel */}
@@ -199,7 +195,7 @@ class Browse extends Component{
                                 })
                             }}>
                             <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: width/75}}>
-                                <View style = {{ backgroundColor: 'transparent', width: width/1.15, height: height/3.51, marginVertical: height/66.7, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                                <View style={styles.featuredArt}>
                                     <Image
                                         style={{width: width/1.15, height: height/3.51, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
                                         source={require('tess/src/images/podArtBestIdeas.png')}
@@ -224,7 +220,7 @@ class Browse extends Component{
                                 })
                             }}>
                             <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: width/75}}>
-                                <View style = {{ backgroundColor: 'transparent', width: width/1.15, height: height/3.51, marginVertical: height/66.7, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                                <View style={styles.featuredArt}>
                                     <Image
                                         style={{width: width/1.15, height: height/3.51, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
                                         source={require('tess/src/images/podArtIDK.png')}
@@ -249,7 +245,7 @@ class Browse extends Component{
                                 })
                             }}>
                             <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: width/75}}>
-                                <View style = {{ backgroundColor: 'transparent', width: width/1.15, height: height/3.51, marginVertical: height/66.7, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                                <View style={styles.featuredArt}>
                                     <Image
                                         style={{width: width/1.15, height: height/3.51, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
                                         source={require('tess/src/images/podArtGLS.png')}
@@ -262,8 +258,10 @@ class Browse extends Component{
                         </View>
                     </Carousel>
 
+                    {/* Begin Listing Categories  */}
 
-                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: height/37, marginVertical: 1}} onPress={this.pressDiscover}>
+                    {/* Discover */}
+                    <TouchableOpacity style={styles.bar} onPress={this.pressDiscover}>
                         <Text style = {styles.title}>   Discover</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
@@ -276,7 +274,8 @@ class Browse extends Component{
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: height/37, marginVertical: 1}} onPress={this.pressCharts}>
+                    {/* Charts */}
+                    <TouchableOpacity style={styles.bar} onPress={this.pressCharts}>
                         <Text style = {styles.title}>   Charts</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
@@ -289,7 +288,8 @@ class Browse extends Component{
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: height/37, marginVertical: 1}} onPress={this.pressCategories}>
+                    {/* Categories */}
+                    <TouchableOpacity style={styles.bar} onPress={this.pressCategories}>
                         <Text style = {styles.title}>   Categories</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
@@ -303,9 +303,10 @@ class Browse extends Component{
                     </TouchableOpacity>
 
 
+                    {/* Podcast of the Week */}
                     <Text style = {styles.titleHeader}>Podcast of the Week</Text>
 
-                    <View style={{flex:1, flexDirection: 'row', backgroundColor: '#fff', marginTop: 0, marginHorizontal: width/31.25, borderTopLeftRadius: 15, borderTopRightRadius: 15}}>
+                    <View style={{flex:1, flexDirection: 'row', backgroundColor: '#fff', marginTop: 5, marginHorizontal: width/31.25, borderTopLeftRadius: 15, borderTopRightRadius: 15}}>
                         <View style={{flex:6}}>
                             <Text style = {styles.titleWeek}>{this.state.podcastOfTheWeekTitle}</Text>
                         </View>
@@ -327,12 +328,9 @@ class Browse extends Component{
 
                 </ScrollView>
 
+                {/* Player */}
                 <PlayerBottom navigator={this.props.navigator}/>
-
-
             </View>
-
-
         );
     }
 }
@@ -341,6 +339,19 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
+    },
+
+    featuredArt: {
+        backgroundColor: 'transparent',
+        width: width/1.15,
+        height: height/3.51,
+        marginVertical: height/66.7,
+        alignSelf: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.4,
+        shadowRadius: 2,
+        borderRadius: 8
     },
 
     title: {
@@ -405,10 +416,13 @@ const styles = StyleSheet.create({
         fontSize: width/18.75,
         backgroundColor: 'transparent',
     },
-    carouselStyle: {
-        backgroundColor:   '#f5f4f9',
-        borderWidth: 1.2,
-        borderColor: '#3e4164',
+
+    bar: {
+        backgroundColor: '#fff',
+        flex:1,
+        flexDirection:'row',
+        paddingVertical: height/30,
+        marginVertical: 0
     }
 
 });
