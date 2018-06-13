@@ -51,22 +51,21 @@ class TopCharts extends Component{
             statusBarHidden: false,
             statusBarTextColorScheme: 'light',
             navBarHidden: false,
-            navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
-            navBarTextFontSize: 22, // change the font size of the title
+            navBarTextColor: '#3e4164', // Change the text color of the title (remembered across pushes)
+            navBarTextFontSize: width/15.625, // Change the font size of the title
             navBarTextFontFamily: 'Montserrat-Bold', // Changes the title font
             drawUnderTabBar: false,
             navBarHideOnScroll: false,
             navBarBackgroundColor: '#fff',
-            topBarElevationShadowEnabled: false,
-            topBarShadowColor: 'transparent',
-            topBarShadowOpacity: 0.1,
-            topBarShadowOffset: 3,
-            topBarShadowRadius: 5,
+            topBarElevationShadowEnabled: true,
+            topBarShadowColor: '#fff',
+            topBarShadowOpacity: 0,
+            topBarShadowOffset: 0,
+            topBarShadowRadius:0,
             statusBarColor: '#fff',
             drawUnderNavBar: true,
             navBarTranslucent: true,
-            navBarNoBorder: true
-
+            navBarNoBorder: true,
         });
 
 
@@ -207,16 +206,12 @@ class TopCharts extends Component{
                 </View>
 
                 <ScrollView>
-
                     {this.renderDataEps(this.state.episodesActive)}
                     {this.renderDataPods(this.state.podcastsActive)}
-
                     <View style={{paddingBottom: height/11.12}}/>
-
                 </ScrollView>
 
                 <PlayerBottom navigator={this.props.navigator}/>
-
             </View>
 
         );

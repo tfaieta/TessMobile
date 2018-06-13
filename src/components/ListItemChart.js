@@ -14,6 +14,7 @@ var {height, width} = Dimensions.get('window');
 
 class ListItemChart extends Component {
 
+
     componentWillMount(){
         const {podcastArtist} = this.props.podcast;
         const {rss} = this.props.podcast;
@@ -25,8 +26,8 @@ class ListItemChart extends Component {
                     profileImage = snapshot.val().profileImage
                 }
             });
-            this.timeout = setTimeout(() => {this.setState({profileImage: profileImage})},1200);
-            this.timeout2 = setTimeout(() => {this.setState({profileImage: profileImage})},3400);
+            this.timeout = setTimeout(() => {this.setState({profileImage: profileImage})}, 1200);
+            this.timeout2 = setTimeout(() => {this.setState({profileImage: profileImage})}, 3400);
 
         }
         else{
@@ -39,14 +40,10 @@ class ListItemChart extends Component {
             });
             this.timeout = setTimeout(() => {this.setState({profileImage: profileImage})},1200);
             this.timeout2 = setTimeout(() => {this.setState({profileImage: profileImage})},3400);
-
         }
-
-
     }
 
-
-    componentWillUnmount(){
+    componentWillUnmount() {
         clearTimeout(this.timeout);
         clearTimeout(this.timeout2);
     }
