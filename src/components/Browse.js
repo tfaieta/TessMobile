@@ -9,8 +9,6 @@ import Carousel from 'react-native-looped-carousel';
 
 var {height, width} = Dimensions.get('window');
 
-
-
 // 2nd tab, Browse page
 
 class Browse extends Component{
@@ -172,7 +170,6 @@ class Browse extends Component{
     };
 
 
-
     render() {
         return (
             <View style={styles.container}>
@@ -186,9 +183,10 @@ class Browse extends Component{
                         autoplay
                         bullets
                         chosenBulletStyle={{backgroundColor: '#3e4164',}}
-                        bulletStyle={{backgroundColor:   '#f5f4f9', borderWidth: 1.2, borderColor: '#3e4164',}}
+                        bulletStyle={styles.carouselStyle}
                         onAnimateNextPage={(p) => console.log(p)}
                     >
+                        {/* First Item in Carousel */}
                         <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
                             <TouchableWithoutFeedback onPress={() => {
                                 const {navigator} = this.props;
@@ -212,6 +210,8 @@ class Browse extends Component{
                             </View>
                             </TouchableWithoutFeedback>
                         </View>
+
+                        {/* Second Item in Carousel */}
                         <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
                             <TouchableWithoutFeedback onPress={() => {
                                 const {navigator} = this.props;
@@ -235,14 +235,16 @@ class Browse extends Component{
                             </View>
                             </TouchableWithoutFeedback>
                         </View>
+
+                        {/* Third Item in Carousel */}
                         <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
                             <TouchableWithoutFeedback onPress={() => {
                                 const {navigator} = this.props;
                                 const rss = true;
-                                Variables.state.browsingArtist = 'IDK Podcast';
+                                Variables.state.browsingArtist = 'Green Light Sports Podcast';
                                 navigator.push({
                                     screen: 'UserProfile',
-                                    title: "IDK Podcast",
+                                    title: "Green Light Sports Podcast",
                                     passProps: {navigator, rss},
                                 })
                             }}>
@@ -250,7 +252,7 @@ class Browse extends Component{
                                 <View style = {{ backgroundColor: 'transparent', width: width/1.15, height: height/3.51, marginVertical: height/66.7, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
                                     <Image
                                         style={{width: width/1.15, height: height/3.51, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
-                                        source={require('tess/src/images/podArtIDK.png')}
+                                        source={require('tess/src/images/podArtGLS.png')}
                                     />
                                 </View>
                                 <Text style={styles.text1}>Green Light Sports</Text>
@@ -403,6 +405,11 @@ const styles = StyleSheet.create({
         fontSize: width/18.75,
         backgroundColor: 'transparent',
     },
+    carouselStyle: {
+        backgroundColor:   '#f5f4f9',
+        borderWidth: 1.2,
+        borderColor: '#3e4164',
+    }
 
 });
 

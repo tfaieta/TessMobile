@@ -750,12 +750,6 @@ class Home extends Component{
 
 
                     });
-
-
-
-
-
-
             });
 
         });
