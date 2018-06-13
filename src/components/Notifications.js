@@ -171,6 +171,16 @@ class Notifications extends Component{
             if(notif.notification.title && notif.notification.body && notif.notification.target){
                 firebase.database().ref(`users/${currentUser.uid}/notifications`).push({title: notif.notification.title, body: notif.notification.body, target: notif.notification.target});
             }
+            else if(notif.notification.title && notif.notification.body && notif.target){
+                firebase.database().ref(`users/${currentUser.uid}/notifications`).push({title: notif.notification.title, body: notif.notification.body, target: notif.target});
+            }
+            else if(notif.notification.title && notif.notification.body){
+                firebase.database().ref(`users/${currentUser.uid}/notifications`).push({title: notif.notification.title, body: notif.notification.body, target: ''});
+            }
+            else if(notif.notification.body){
+                firebase.database().ref(`users/${currentUser.uid}/notifications`).push({title: '', body: notif.notification.body, target: ''});
+            }
+
             FCM.presentLocalNotification({
                 title: notif.notification.title,
                 body: notif.notification.body,
@@ -187,7 +197,6 @@ class Notifications extends Component{
 
 
     componentWillUnmount(){
-        clearTimeout(this.timeout1);
         clearTimeout(this.timeout2);
     }
 
@@ -232,7 +241,6 @@ class Notifications extends Component{
             })
         });
 
-        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(notifications),})},1500);
         this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(notifications.reverse()), loading: false})},3000);
 
 
@@ -258,7 +266,6 @@ class Notifications extends Component{
             })
         });
 
-        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(notifications),})},1500);
         this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(notifications.reverse()), refreshing: false, loading: false})},3000);
 
 
