@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ScrollView, StatusBar, Platform, AsyncStorage, AppState} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, ScrollView, StatusBar, Platform, AsyncStorage, AppState, ListView, ActivityIndicator, Dimensions, RefreshControl} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FCM, {FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType, NotificationActionType, NotificationActionOption, NotificationCategoryOption} from 'react-native-fcm';
 import firebase from 'firebase';
 
+var {height, width} = Dimensions.get('window');
 
 AsyncStorage.getItem('lastNotification').then(data=>{
     if(data){
@@ -33,7 +34,7 @@ class Notifications extends Component{
 
         FCM.getInitialNotification().then(notif => {
             if(notif){
-                console.warn(notif)
+                console.log(notif)
             }
         });
 
@@ -121,18 +122,29 @@ class Notifications extends Component{
                 }, 1000)
             }
 
-            if (notif.opened_from_tray) {
-                if (notif.notification.target === "Browse") {
-                    setTimeout(() => {
+            if(notif.local_notification){
+                console.log("Notification recived local", "local notification");
+                console.log(JSON.stringify(notif));
+                if(notif.opened_from_tray){
+                    if(notif.title == "New Podcast of the Week!"){
                         this.props.navigator.switchToTab({
                             tabIndex: 1
                         });
-                        console.warn("Navigate")
-                    }, 500)
+                    }
                 }
-                setTimeout(() => {
-                    alert(`User tapped notification\n${JSON.stringify(notif)}`)
-                }, 500)
+                return;
+            }
+            if(notif.opened_from_tray){
+                console.log("Notification recived local", "local notification");
+                console.log(JSON.stringify(notif));
+                if(notif.opened_from_tray){
+                    if(notif.title == "New Podcast of the Week!"){
+                        this.props.navigator.switchToTab({
+                            tabIndex: 1
+                        });
+                    }
+                }
+                return;
             }
 
         });
@@ -154,7 +166,11 @@ class Notifications extends Component{
 
     showLocalNotification(notif) {
         if(notif.notification){
-            console.warn(JSON.stringify(notif));
+            console.log(JSON.stringify(notif));
+            const {currentUser} = firebase.auth();
+            if(notif.notification.title && notif.notification.body && notif.notification.target){
+                firebase.database().ref(`users/${currentUser.uid}/notifications`).push({title: notif.notification.title, body: notif.notification.body, target: notif.notification.target});
+            }
             FCM.presentLocalNotification({
                 title: notif.notification.title,
                 body: notif.notification.body,
@@ -169,6 +185,11 @@ class Notifications extends Component{
 
     }
 
+
+    componentWillUnmount(){
+        clearTimeout(this.timeout1);
+        clearTimeout(this.timeout2);
+    }
 
 
     constructor(props) {
@@ -193,151 +214,144 @@ class Notifications extends Component{
             statusBarColor: '#fff',
         });
 
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.state = {
+            loading: true,
+            dataSource: dataSource.cloneWithRows([]),
+            refreshing: false,
+        };
+
+        const {currentUser} = firebase.auth();
+        let notifications = [];
+
+        firebase.database().ref(`users/${currentUser.uid}/notifications`).limitToLast(20).once("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+                if(data.val()){
+                    notifications.push(data.val());
+                }
+            })
+        });
+
+        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(notifications),})},1500);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(notifications.reverse()), loading: false})},3000);
+
+
     }
 
-    render() {
-        return (
-            <View
-                style={styles.container}>
 
-                <StatusBar
-                    barStyle="dark-content"
-                />
+    _onRefresh() {
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.setState({
+            refreshing: true,
+            loading: false,
+            dataSource: dataSource.cloneWithRows([]),
+        });
 
-                <ScrollView>
+        const {currentUser} = firebase.auth();
+        let notifications = [];
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff', paddingVertical: 10, marginVertical: 1}}>
-                        <Icon style={{
-                            fontSize: 24,
-                            backgroundColor: 'transparent',
-                            color: '#79797970',
-                            marginHorizontal: 10,
-                        }} name="user-circle">
-                        </Icon>
-                        <Text style = {styles.title}>Joe liked your podcast.</Text>
-                        <View style={{alignSelf:'flex-end'}}>
-                            <Icon style={{
-                                fontSize: 22,
-                                backgroundColor: 'transparent',
-                                color: '#79797970',
-                                marginHorizontal: 10,
-                            }} name="chevron-right">
-                            </Icon>
-                        </View>
-                    </TouchableOpacity>
+        firebase.database().ref(`users/${currentUser.uid}/notifications`).limitToLast(20).once("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+                if(data.val()){
+                    notifications.push(data.val());
+                }
+            })
+        });
 
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff', paddingVertical: 10, marginVertical: 1}}>
-                        <Icon style={{
-                            fontSize: 24,
-                            backgroundColor: 'transparent',
-                            color: '#79797970',
-                            marginHorizontal: 10,
-                        }} name="user-circle">
-                        </Icon>
-                        <Text style = {styles.title}>Jane liked your podcast.</Text>
-                        <View style={{alignSelf:'flex-end'}}>
-                            <Icon style={{
-                                fontSize: 22,
-                                backgroundColor: 'transparent',
-                                color: '#79797970',
-                                marginHorizontal: 10,
-                            }} name="chevron-right">
-                            </Icon>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff',  paddingVertical: 10, marginVertical: 1}}>
-                        <Icon style={{
-                            fontSize: 24,
-                            backgroundColor: 'transparent',
-                            color: '#79797970',
-                            marginHorizontal: 10,
-                        }} name="user-circle">
-                        </Icon>
-                        <Text style = {styles.title}>Tony liked your podcast.</Text>
-                        <View style={{alignSelf:'flex-end'}}>
-                            <Icon style={{
-                                fontSize: 22,
-                                backgroundColor: 'transparent',
-                                color: '#79797970',
-                                marginHorizontal: 10,
-                            }} name="chevron-right">
-                            </Icon>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff',  paddingVertical: 10, marginVertical: 1}}>
-                        <Icon style={{
-                            fontSize: 24,
-                            backgroundColor: 'transparent',
-                            color: '#79797970',
-                            marginHorizontal: 10,
-                        }} name="comment">
-                        </Icon>
-                        <Text style = {styles.title}>Tony commented on your podcast.</Text>
-                        <View style={{alignSelf:'flex-end'}}>
-                            <Icon style={{
-                                fontSize: 22,
-                                backgroundColor: 'transparent',
-                                color: '#79797970',
-                                marginHorizontal: 10,
-                            }} name="chevron-right">
-                            </Icon>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff',  paddingVertical: 10, marginVertical: 1}}>
-                        <Icon style={{
-                            fontSize: 24,
-                            backgroundColor: 'transparent',
-                            color: '#79797970',
-                            marginHorizontal: 10,
-                        }} name="user-circle">
-                        </Icon>
-                        <Text style = {styles.title}>New Episode from Jane.</Text>
-                        <View style={{alignSelf:'flex-end'}}>
-                            <Icon style={{
-                                fontSize: 22,
-                                backgroundColor: 'transparent',
-                                color: '#79797970',
-                                marginHorizontal: 10,
-                            }} name="chevron-right">
-                            </Icon>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff', paddingVertical: 10, marginVertical: 1}}>
-                        <Icon style={{
-                            fontSize: 24,
-                            backgroundColor: 'transparent',
-                            color: '#79797970',
-                            marginHorizontal: 10,
-                        }} name="user-circle">
-                        </Icon>
-                        <Text style = {styles.title}>New Episode from Joe.</Text>
-                        <View style={{alignSelf:'flex-end'}}>
-                            <Icon style={{
-                                fontSize: 22,
-                                backgroundColor: 'transparent',
-                                color: '#79797970',
-                                marginHorizontal: 10,
-                            }} name="chevron-right">
-                            </Icon>
-                        </View>
-                    </TouchableOpacity>
-
-                </ScrollView>
+        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(notifications),})},1500);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(notifications.reverse()), refreshing: false, loading: false})},3000);
 
 
-
-                <PlayerBottom navigator={this.props.navigator}/>
-
-            </View>
+    }
 
 
+    renderRow = (podcast) => {
+        return(
 
-
+            <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff',  paddingVertical: 10, marginVertical: 1}} onPress={() => {
+                if(podcast.target){
+                    if(podcast.target == 'Browse'){
+                        this.props.navigator.switchToTab({
+                            tabIndex: 1
+                        });
+                    }
+                }
+            }}>
+                <View style={{alignSelf:'center'}}>
+                    <Icon style={{
+                        fontSize: 26,
+                        backgroundColor: 'transparent',
+                        color: '#79797970',
+                        marginHorizontal: 15,
+                    }} name="bell-o">
+                    </Icon>
+                </View>
+                <View>
+                    <View>
+                        <Text style = {styles.title}>{podcast.body}</Text>
+                    </View>
+                    <View>
+                        <Text style = {styles.titleBody}>{podcast.title}</Text>
+                    </View>
+                </View>
+            </TouchableOpacity>
         );
+    };
+
+    renderList = () => {
+        if(this.state.dataSource.getRowCount() > 0){
+            return(
+                <ListView
+                    enableEmptySections
+                    dataSource={this.state.dataSource}
+                    renderRow={this.renderRow}
+                />
+            )
+        }
+        else{
+            return(
+                <View style={styles.container}>
+                    <Text style = {styles.titleTop}>No Notifications Yet...</Text>
+                </View>
+            )
+        }
+
+    };
+
+    render() {
+        if(this.state.loading){
+            return(
+                <View style={styles.container}>
+                    <ActivityIndicator style={{paddingVertical: height/33.35, alignSelf:'center'}} color='#3e4164' size ="large" />
+                </View>
+            )
+        }
+        else{
+            return (
+                <View
+                    style={styles.container}>
+
+                    <StatusBar
+                        barStyle="dark-content"
+                    />
+
+                    <ScrollView  refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                        />
+                    }>
+
+                        {this.renderList()}
+
+                    </ScrollView>
+
+                    <PlayerBottom navigator={this.props.navigator}/>
+
+                </View>
+
+            );
+        }
     }
 }
 
@@ -352,8 +366,19 @@ const styles = StyleSheet.create({
         color: '#3e4164',
         textAlign: 'left',
         fontStyle: 'normal',
+        marginHorizontal: 10,
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 20,
+        fontSize: 22,
+        backgroundColor: 'transparent',
+    },
+    titleBody: {
+        flex:1,
+        color:  '#797979',
+        textAlign: 'left',
+        fontStyle: 'normal',
+        marginHorizontal: 10,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 18,
         backgroundColor: 'transparent',
     },
 
@@ -361,7 +386,7 @@ const styles = StyleSheet.create({
         color: '#3e4164',
         flex:1,
         textAlign: 'center',
-        marginVertical: 10,
+        marginVertical: 30,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 22,
