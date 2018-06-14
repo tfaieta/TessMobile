@@ -74,6 +74,7 @@ import PlaylistView from "./components/PlaylistView";
 import Category from "./components/DiscoverBar/Category";
 import Discover from "./components/Discover";
 import Media from "./components/Media";
+import Hub from "./components/Hub";
 
 
 
@@ -102,7 +103,7 @@ Navigation.registerComponent('TopCharts', () => TopCharts, store, Provider);
 Navigation.registerComponent('Search', () => Search, store, Provider);
 Navigation.registerComponent('SearchPage', () => SearchPage, store, Provider);
 
-Navigation.registerComponent('Notifications', () => Notifications, store, Provider);
+Navigation.registerComponent('Hub', () => Hub, store, Provider);
 
 Navigation.registerComponent('Fitness', () => Fitness, store, Provider);
 Navigation.registerComponent('News', () => CurrentEvents, store, Provider);

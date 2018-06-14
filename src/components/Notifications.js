@@ -48,7 +48,16 @@ class Notifications extends Component{
             console.error(e);
         }
 
-        FCM.subscribeToTopic(`notifications`);
+        FCM.subscribeToTopic(`POTW`);
+        firebase.database().ref(`users/${currentUser.uid}/following`).once('value', function (snapshot) {
+            snapshot.forEach(function (data) {
+                if(data.val()){
+                    console.log("Subscribed to: " + data.key);
+                    FCM.subscribeToTopic(`/topics/${data.key}`);
+
+                }
+            })
+        });
 
         FCM.getFCMToken().then(token => {
             console.log("My TOKEN: ", token);
@@ -203,25 +212,6 @@ class Notifications extends Component{
 
     constructor(props) {
         super(props);
-        
-        this.props.navigator.setStyle({
-            statusBarHidden: false,
-            statusBarTextColorScheme: 'light',
-            navBarHidden: false,
-            drawUnderTabBar: false,
-            navBarCustomView: 'CustomNavbar',
-            navBarCustomViewInitialProps: {
-                navigator: this.props.navigator
-            },
-            navBarHideOnScroll: false,
-            navBarBackgroundColor: '#fff',
-            topBarElevationShadowEnabled: true,
-            topBarShadowColor: '#000',
-            topBarShadowOpacity: 0.1,
-            topBarShadowOffset: 3,
-            topBarShadowRadius: 5,
-            statusBarColor: '#fff',
-        });
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
@@ -286,14 +276,14 @@ class Notifications extends Component{
             }}>
                 <View style={{alignSelf:'center'}}>
                     <Icon style={{
-                        fontSize: 26,
+                        fontSize: 20,
                         backgroundColor: 'transparent',
                         color: '#79797970',
                         marginHorizontal: 15,
                     }} name="bell-o">
                     </Icon>
                 </View>
-                <View>
+                <View style={{flex: 1, marginRight: 20}}>
                     <View>
                         <Text style = {styles.title}>{podcast.body}</Text>
                     </View>
@@ -351,6 +341,7 @@ class Notifications extends Component{
 
                         {this.renderList()}
 
+                        <View style = {{paddingBottom: 60}} />
                     </ScrollView>
 
                     <PlayerBottom navigator={this.props.navigator}/>
@@ -373,9 +364,8 @@ const styles = StyleSheet.create({
         color: '#3e4164',
         textAlign: 'left',
         fontStyle: 'normal',
-        marginHorizontal: 10,
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 22,
+        fontSize: 18,
         backgroundColor: 'transparent',
     },
     titleBody: {
@@ -383,9 +373,8 @@ const styles = StyleSheet.create({
         color:  '#797979',
         textAlign: 'left',
         fontStyle: 'normal',
-        marginHorizontal: 10,
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 18,
+        fontSize: 14,
         backgroundColor: 'transparent',
     },
 
@@ -396,7 +385,7 @@ const styles = StyleSheet.create({
         marginVertical: 30,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 22,
+        fontSize: 20,
         backgroundColor: 'transparent',
     },
 

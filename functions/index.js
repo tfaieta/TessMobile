@@ -9,7 +9,7 @@ admin.initializeApp(functions.config().firebase);
 
 
 
-exports.sendNewMessageNotificationPOTW = functions.database.ref(`/podcastOfTheWeek`)
+exports.notificationPOTW = functions.database.ref(`/podcastOfTheWeek`)
     .onUpdate(event => {
 
         const getValuePromise = admin.database().ref(`podcastOfTheWeek`).once('value');
@@ -26,35 +26,35 @@ exports.sendNewMessageNotificationPOTW = functions.database.ref(`/podcastOfTheWe
                 }
             };
 
+            const topic = 'POTW';
             return admin.messaging()
-                .sendToTopic('notifications', payload);
+                .sendToTopic(topic, payload);
 
         })
     });
 
 
 
-exports.sendNewMessageNotificationNewEp = functions.database.ref(`/podcasts`)
-    .onCreate(event => {
+exports.notificationNewEp = functions.database.ref(`/podcasts/{podcastKey}`)
+    .onWrite((event) => {
 
-        const getValuePromise = admin.database().ref(`podcast/${event.key}`).once('value');
+        const episode = event.data.val();
 
-        return getValuePromise.then(snapshot => {
-            console.log(snapshot.val());
-            const podcastTitle = snapshot.val().podcastTitle;
-            const podcastDescription = snapshot.val().podcastDescription;
-            const podcastCategory = snapshot.val().podcastCategory;
+            const podcastTitle = episode.podcastTitle;
+            const podcastDescription = episode.podcastDescription;
+            const podcastCategory = episode.podcastCategory;
             const id = event.key;
-            const podcastArtist = snapshot.val().podcastArtist;
-            const podcastURL = snapshot.val().podcastURL;
-            const RSSID = snapshot.val().RSSID;
-            const rss = snapshot.val().rss;
+            const podcastArtist = episode.podcastArtist;
+            const podcastURL = episode.podcastURL;
+            const RSSID = episode.RSSID;
+            const rss = episode.rss;
 
             const payload = {
                 notification: {
                     title: "New Episode from " + podcastArtist,
                     body: podcastTitle,
-                    target: id
+                    target: "Podcast",
+                    id: id
                 },
                 podcast: {
                     podcastTitle: podcastTitle,
@@ -68,16 +68,17 @@ exports.sendNewMessageNotificationNewEp = functions.database.ref(`/podcasts`)
                 }
             };
 
-            return admin.messaging()
-                .sendToTopic('notifications', payload);
+            const topic = `/topics/${podcastArtist}`;
 
-        })
+            return admin.messaging()
+                .sendToTopic(topic, payload);
+
     });
 
 
 
 
-exports.sendNewMessageNotificationFollow = functions.database.ref(`/users/{id}/followers`)
+exports.notificationFollow = functions.database.ref(`/users/{id}/followers`)
     .onCreate(event => {
 
         const getValuePromise = admin.database.ref(`users/${event.key}/token`).once('value');
@@ -90,7 +91,8 @@ exports.sendNewMessageNotificationFollow = functions.database.ref(`/users/{id}/f
                 notification: {
                     title: "New Follow!",
                     body: podcastArtist + " is now following you",
-                    target: podcastArtist
+                    target: "Profile",
+                    id: podcastArtist,
                 },
             };
 
@@ -105,7 +107,6 @@ exports.sendNewMessageNotificationFollow = functions.database.ref(`/users/{id}/f
 
 exports.feedFetcher = functions.database.ref(`/feedFetcher`)
     .onUpdate(event => {
-
 
 
         // loop for every rss feed in database
