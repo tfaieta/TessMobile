@@ -793,6 +793,7 @@ static navigatorStyle = {
             const {currentUser} = firebase.auth();
             firebase.database().ref(`users/${currentUser.uid}/following`).child(Variables.state.browsingArtist).push(Variables.state.browsingArtist);
             firebase.database().ref(`users/${Variables.state.browsingArtist}/followers/`).child(currentUser.uid).push(currentUser.uid);
+            firebase.database().ref(`users/${currentUser.uid}/activity`).push({action: 'follow', id: Variables.state.browsingArtist, user: currentUser.uid, time: firebase.database.ServerValue.TIMESTAMP});
             this.setState({ following: true});
             Variables.state.following = true;
         }
@@ -833,6 +834,7 @@ static navigatorStyle = {
             });
 
 
+            firebase.database().ref(`users/${currentUser.uid}/activity`).push({action: 'track', id: Variables.state.browsingArtist, user: currentUser.uid, time: firebase.database.ServerValue.TIMESTAMP});
             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
             ref.once("value", function(snapshot) {
                 if(snapshot.val().tracking){

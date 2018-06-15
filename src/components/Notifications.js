@@ -379,14 +379,14 @@ const styles = StyleSheet.create({
     },
 
     titleTop: {
-        color: '#3e4164',
-        flex:1,
+        backgroundColor: 'transparent',
+        color: '#506dcf',
         textAlign: 'center',
-        marginVertical: 30,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 20,
-        backgroundColor: 'transparent',
+        fontSize: 18,
+        paddingVertical: 10,
+        marginBottom: 1,
     },
 
 

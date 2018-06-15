@@ -1132,6 +1132,7 @@ class PlayerBottom extends Component {
             else if (!Variables.state.liked){
 
                 firebase.database().ref(`podcasts/${Variables.state.podcastID}/likes`).child(user).update({user});
+                firebase.database().ref(`users/${currentUser.uid}/activity`).push({action: 'like', id: Variables.state.podcastID, user: currentUser.uid, time: firebase.database.ServerValue.TIMESTAMP});
 
 
                 this.setState({ liked: true, likes: Variables.state.likers.length});

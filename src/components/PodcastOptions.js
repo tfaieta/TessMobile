@@ -32,6 +32,8 @@ class PodcastOptions extends Component {
         this.state = {
             favorite: false,
             visible: false,
+            podTitle: '',
+            profileName: ''
         };
 
         const rowData = this.props.rowData;
@@ -45,6 +47,33 @@ class PodcastOptions extends Component {
                 this.setState({favorite: false})
             }
         }
+
+
+        const podcastArtist = rowData.podcastArtist;
+
+        let podTitle = rowData.podcastTitle;
+        if(rowData.podcastTitle.toString().length > width/10 ){
+            podTitle = (rowData.podcastTitle.slice(0,width/10)+"...")
+        }
+        else{
+            podTitle = rowData.podcastTitle;
+        }
+
+        let profileName = '';
+        firebase.database().ref(`/users/${rowData.podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
+            if (snap.val()) {
+                profileName = snap.val().username;
+            }
+            else {
+                profileName = rowData.podcastArtist;
+            }
+        });
+
+        this.timeout = setTimeout(() => {
+            this.setState({podTitle: podTitle, profileName: profileName})
+
+        },500)
+
 
     }
 
@@ -72,36 +101,17 @@ class PodcastOptions extends Component {
         const key = rowData.key;
         const rss = rowData.rss;
 
-        let podTitle = rowData.podcastTitle;
-        if(rowData.podcastTitle.toString().length > width/10 ){
-            podTitle = (rowData.podcastTitle.slice(0,width/10)+"...")
-        }
-        else{
-            podTitle = rowData.podcastTitle;
-        }
-
-        let profileName = 'loading';
-        firebase.database().ref(`/users/${rowData.podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
-            if (snap.val()) {
-                profileName = snap.val().username;
-            }
-            else {
-                profileName = rowData.podcastArtist;
-            }
-        });
-
-
 
         let shareOptions = {
             title: podcastTitle,
-            message: podcastTitle + " - " + profileName,
+            message: podcastTitle + " - " + this.state.profileName,
             url: `tess://listen/${id}`,
-            subject: podcastTitle + " - " + profileName  //  for email
+            subject: podcastTitle + " - " + this.state.profileName  //  for email
         };
 
         let shareOptionsHighlight = {
             title: podcastTitle,
-            message: podcastTitle + ": " + podcastDescription + " - highlight from " + profileName,
+            message: podcastTitle + ": " + podcastDescription + " - highlight from " + this.state.profileName,
             url: `tess://highlight/${currentUser.uid}~${key}`,
             subject: podcastTitle //  for email
         };
@@ -119,8 +129,8 @@ class PodcastOptions extends Component {
                 return(
                     <View style={styles.container} >
                         <View>
-                            <Text style={styles.textTitle}>{podTitle}</Text>
-                            <Text style={styles.textArtist}>{profileName}</Text>
+                            <Text style={styles.textTitle}>{this.state.podTitle}</Text>
+                            <Text style={styles.textArtist}>{this.state.profileName}</Text>
                         </View>
 
                         <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
@@ -367,8 +377,8 @@ class PodcastOptions extends Component {
                 return(
                     <View style={styles.container}>
                         <View>
-                            <Text style={styles.textTitle}>{podTitle}</Text>
-                            <Text style={styles.textArtist}>by {profileName}</Text>
+                            <Text style={styles.textTitle}>{this.state.podTitle}</Text>
+                            <Text style={styles.textArtist}>by {this.state.profileName}</Text>
                         </View>
 
                         <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
@@ -713,8 +723,8 @@ class PodcastOptions extends Component {
                         return(
                             <View style={styles.container}>
                                 <View>
-                                    <Text style={styles.textTitle}>{podTitle}</Text>
-                                    <Text style={styles.textArtist}>{profileName}</Text>
+                                    <Text style={styles.textTitle}>{this.state.podTitle}</Text>
+                                    <Text style={styles.textArtist}>{this.state.profileName}</Text>
                                 </View>
 
                                 <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
@@ -1029,8 +1039,8 @@ class PodcastOptions extends Component {
                         return(
                             <View style={styles.container}>
                                 <View>
-                                    <Text style={styles.textTitle}>{podTitle}</Text>
-                                    <Text style={styles.textArtist}>{profileName}</Text>
+                                    <Text style={styles.textTitle}>{this.state.podTitle}</Text>
+                                    <Text style={styles.textArtist}>{this.state.profileName}</Text>
                                 </View>
 
                                 <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
@@ -1345,8 +1355,8 @@ class PodcastOptions extends Component {
                         return(
                             <View style={styles.container}>
                                 <View>
-                                    <Text style={styles.textTitle}>{podTitle}</Text>
-                                    <Text style={styles.textArtist}>{profileName}</Text>
+                                    <Text style={styles.textTitle}>{this.state.podTitle}</Text>
+                                    <Text style={styles.textArtist}>{this.state.profileName}</Text>
                                 </View>
 
                                 <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
@@ -1408,8 +1418,8 @@ class PodcastOptions extends Component {
                         return(
                             <View style={styles.container}>
                                 <View>
-                                    <Text style={styles.textTitle}>{podTitle}</Text>
-                                    <Text style={styles.textArtist}>{profileName}</Text>
+                                    <Text style={styles.textTitle}>{this.state.podTitle}</Text>
+                                    <Text style={styles.textArtist}>{this.state.profileName}</Text>
                                 </View>
 
                                 <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>

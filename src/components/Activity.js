@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ListView, Alert, ScrollView, Text} from 'react-native';
+import { View, StyleSheet, ListView, ScrollView, Text, ActivityIndicator, Dimensions, RefreshControl} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import firebase from 'firebase';
-import Variables from "./Variables";
-import ListItem from "./ListItem";
+import ListItemActivity from "./ListItemActivity";
 
+var {height, width} = Dimensions.get('window');
 
 
 class Activity extends Component{
+
+
+
+    componentWillUnmount(){
+        clearTimeout(this.timeout1);
+        clearTimeout(this.timeout2);
+    }
 
 
     constructor(props){
@@ -17,48 +24,143 @@ class Activity extends Component{
         this.state = {
             dataSource: dataSource.cloneWithRows([]),
             loading: true,
-            favorite: true,
-            length: 0
+            refreshing: false,
         };
+
+
+        // fetch activity of followed users
+        const {currentUser} = firebase.auth();
+        let activity = [];
+        firebase.database().ref(`users/${currentUser.uid}/following`).once("value", function (snapshot) {
+            snapshot.forEach(function (snap) {
+                firebase.database().ref(`users/${snap.key}/activity`).limitToLast(10).once('value', function (data) {
+                    if(data.val()){
+                        data.forEach(function (dataAgain) {
+                            activity.push(dataAgain.val());
+                            for(let i = activity.length-1; i > 0 && Object.keys(activity[i].time) > Object.keys(activity[i-1].time); i--){
+                                let temp = activity[i-1];
+                                activity[i-1] = activity[i];
+                                activity[i] = temp;
+                            }
+                        })
+                    }
+                })
+            })
+        });
+
+
+        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(activity), })},1000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(activity.reverse()), loading: false })},4000);
 
     }
 
 
 
+    _onRefresh() {
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.setState({
+            refreshing: true,
+            loading: false,
+            dataSource: dataSource.cloneWithRows([]),
+        });
+
+        // fetch activity of followed users
+        const {currentUser} = firebase.auth();
+        let activity = [];
+        firebase.database().ref(`users/${currentUser.uid}/following`).once("value", function (snapshot) {
+            snapshot.forEach(function (snap) {
+                firebase.database().ref(`users/${snap.key}/activity`).limitToLast(10).once('value', function (data) {
+                    if(data.val()){
+                        data.forEach(function (dataAgain) {
+                            activity.push(dataAgain.val());
+                            for(let i = activity.length-1; i > 0 && Object.keys(activity[i].time) > Object.keys(activity[i-1].time); i--){
+                                let temp = activity[i-1];
+                                activity[i-1] = activity[i];
+                                activity[i] = temp;
+                            }
+                        })
+                    }
+                })
+            })
+        });
+
+
+        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(activity), })},1000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(activity.reverse()), loading: false, refreshing: false })},4000);
+
+
+    }
+
+
     renderRow = (rowData) => {
-        return <ListItem podcast={rowData} navigator={this.props.navigator} />;
+        return <ListItemActivity action={rowData.action} user={rowData.user} id={rowData.id} time={rowData.time} navigator={this.props.navigator} />;
     };
 
 
+    renderList = () => {
+        if(this.state.dataSource.getRowCount() > 0){
+            return(
+                <ListView
+                    enableEmptySections
+                    dataSource={this.state.dataSource}
+                    renderRow={this.renderRow}
+                />
+            )
+        }
+        else{
+            return(
+                <View style={styles.container}>
+                    <Text style = {styles.title}>No Activity Yet...</Text>
+                </View>
+            )
+        }
+
+    };
+
 
     render() {
-        return (
-            <View
-                style={styles.containerMain}>
+        if(this.state.loading){
+            return(
+                <View style={styles.container}>
+                    <ActivityIndicator style={{paddingVertical: height/33.35, alignSelf:'center'}} color='#3e4164' size ="large" />
+                </View>
+            )
+        }
+        else{
+            return (
+                <View
+                    style={styles.container}>
+
+                    <ScrollView  refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                        />
+                    }
+                    >
+
+                        {this.renderList()}
+
+                        <View style = {{paddingBottom: 60}} />
 
 
-                <ScrollView>
+                    </ScrollView>
 
-                    <Text style={styles.title}>Activity</Text>
-
-                </ScrollView>
+                    <PlayerBottom navigator={this.props.navigator}/>
 
 
-                <PlayerBottom navigator={this.props.navigator}/>
+                </View>
 
 
-            </View>
-
-
-        );
+            );
+        }
     }
 }
 
 const styles = StyleSheet.create({
-    containerMain:{
+    container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
-        marginTop: 65
     },
 
     title: {
