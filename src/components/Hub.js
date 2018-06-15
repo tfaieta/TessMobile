@@ -4,6 +4,8 @@ import { TabView, TabBar } from 'react-native-tab-view';
 import Notifications from "./Notifications";
 import Activity from "./Activity";
 
+var {height, width} = Dimensions.get('window');
+
 
 class Hub extends Component{
 
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Bold',
-        fontSize: 14,
+        fontSize: width/26.79,
         backgroundColor: 'transparent',
     },
 

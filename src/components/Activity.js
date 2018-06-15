@@ -139,7 +139,7 @@ class Activity extends Component{
 
                         {this.renderList()}
 
-                        <View style = {{paddingBottom: 60}} />
+                        <View style = {{paddingBottom: height/11.12}} />
 
 
                     </ScrollView>
@@ -167,9 +167,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 18,
-        paddingVertical: 10,
-        marginBottom: 1,
+        fontSize: width/20.83,
+        paddingVertical: height/66.7,
+        marginBottom: height/667,
     },
 
 });

@@ -320,14 +320,14 @@ class Notifications extends Component{
             }}>
                 <View style={{alignSelf:'center'}}>
                     <Icon style={{
-                        fontSize: 20,
+                        fontSize: width/18.75,
                         backgroundColor: 'transparent',
                         color: '#79797970',
-                        marginHorizontal: 15,
+                        marginHorizontal: width/25,
                     }} name="bell-o">
                     </Icon>
                 </View>
-                <View style={{flex: 1, marginRight: 20}}>
+                <View style={{flex: 1, marginRight: width/18.75}}>
                     <View>
                         <Text style = {styles.title}>{podcast.body}</Text>
                     </View>
@@ -386,7 +386,7 @@ class Notifications extends Component{
 
                         {this.renderList()}
 
-                        <View style = {{paddingBottom: 60}} />
+                        <View style = {{paddingBottom: height/11.12}} />
                     </ScrollView>
 
                     <PlayerBottom navigator={this.props.navigator}/>
@@ -405,12 +405,12 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        flex:1,
+        flex: 1,
         color: '#3e4164',
         textAlign: 'left',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 18,
+        fontSize: width/20.83,
         backgroundColor: 'transparent',
     },
     titleTime: {
@@ -419,19 +419,19 @@ const styles = StyleSheet.create({
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        marginLeft: 20,
-        marginRight: 10,
-        fontSize: 14,
-        marginVertical: 5,
+        marginLeft: width/18.75,
+        marginRight: width/37.5,
+        fontSize: width/26.79,
+        marginVertical: height/133.4,
         backgroundColor: 'transparent'
     },
     titleBody: {
-        flex:1,
+        flex: 1,
         color:  '#797979',
         textAlign: 'left',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 14,
+        fontSize: width/26.79,
         backgroundColor: 'transparent',
     },
 
@@ -441,9 +441,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 18,
-        paddingVertical: 10,
-        marginBottom: 1,
+        fontSize: width/20.83,
+        paddingVertical: height/66.7,
+        marginBottom: height/667,
     },
 
 

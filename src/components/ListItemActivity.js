@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, Image, AsyncStorage,} from 'react-native';
+import { Text, View, Image, AsyncStorage, Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import Variables from "./Variables";
-import { Navigation } from 'react-native-navigation';
 var Analytics = require('react-native-firebase-analytics');
+
+var {height, width} = Dimensions.get('window');
 
 
 // A single list item on Activity.js
@@ -102,9 +103,9 @@ class ListItemFollowed extends Component {
                 <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginBottom:10, marginLeft: 10, alignSelf: 'center', height: 40, width: 40, borderRadius:20, borderWidth:5, borderColor:'rgba(320,320,320,0.8)',  }}>
                     <Icon style={{
                         textAlign: 'center',
-                        fontSize: 25,
+                        fontSize: width/15,
                         color: 'white',
-                        marginTop: 2
+                        marginTop: height/333.5
                     }} name="md-person">
                     </Icon>
                 </View>
@@ -419,7 +420,7 @@ class ListItemFollowed extends Component {
         return (
 
             <View>
-                <View style={{paddingVertical: 5}}>
+                <View style={{paddingVertical: height/133.4}}>
 
                 {this.renderTime()}
 
@@ -444,8 +445,8 @@ class ListItemFollowed extends Component {
 const styles = {
     container: {
         paddingHorizontal: 0,
-        paddingVertical: 10,
-        marginVertical: 1,
+        paddingVertical: height/66.7,
+        marginVertical: height/667,
         marginHorizontal: 0,
         backgroundColor: '#FFF',
         opacity: 1,
@@ -461,9 +462,9 @@ const styles = {
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        marginLeft: 20,
-        marginRight: 10,
-        fontSize: 14,
+        marginLeft: width/18.75,
+        marginRight: width/37.5,
+        fontSize: width/26.79,
         backgroundColor: 'transparent'
     },
     titleBold: {
@@ -472,9 +473,9 @@ const styles = {
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Bold',
-        marginLeft: 20,
-        marginRight: 10,
-        fontSize: 16,
+        marginLeft: width/18.75,
+        marginRight: width/37.5,
+        fontSize: width/23.44,
         backgroundColor: 'transparent'
     },
     middleContainer: {
