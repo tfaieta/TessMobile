@@ -73,8 +73,8 @@ class ListItemFollowed extends Component {
             })
         }
         else if(action == 'follow' || action == 'track'){
-            firebase.database().ref(`users/${id}`).once("value", function (snapshot) {
-                if(snapshot.val().username){
+            firebase.database().ref(`users/${id}/username`).once("value", function (snapshot) {
+                if(snapshot.val()){
                     title = snapshot.val().username;
                 }
             })
