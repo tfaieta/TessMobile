@@ -178,16 +178,16 @@ class Notifications extends Component{
             console.log(JSON.stringify(notif));
             const {currentUser} = firebase.auth();
             if(notif.notification.title && notif.notification.body && notif.notification.target){
-                firebase.database().ref(`users/${currentUser.uid}/notifications`).push({title: notif.notification.title, body: notif.notification.body, target: notif.notification.target});
+                firebase.database().ref(`users/${currentUser.uid}/notifications`).push({title: notif.notification.title, body: notif.notification.body, target: notif.notification.target, time: firebase.database.ServerValue.TIMESTAMP});
             }
             else if(notif.notification.title && notif.notification.body && notif.target){
-                firebase.database().ref(`users/${currentUser.uid}/notifications`).push({title: notif.notification.title, body: notif.notification.body, target: notif.target});
+                firebase.database().ref(`users/${currentUser.uid}/notifications`).push({title: notif.notification.title, body: notif.notification.body, target: notif.target, time: firebase.database.ServerValue.TIMESTAMP});
             }
             else if(notif.notification.title && notif.notification.body){
-                firebase.database().ref(`users/${currentUser.uid}/notifications`).push({title: notif.notification.title, body: notif.notification.body, target: ''});
+                firebase.database().ref(`users/${currentUser.uid}/notifications`).push({title: notif.notification.title, body: notif.notification.body, target: '', time: firebase.database.ServerValue.TIMESTAMP});
             }
             else if(notif.notification.body){
-                firebase.database().ref(`users/${currentUser.uid}/notifications`).push({title: '', body: notif.notification.body, target: ''});
+                firebase.database().ref(`users/${currentUser.uid}/notifications`).push({title: '', body: notif.notification.body, target: '', time: firebase.database.ServerValue.TIMESTAMP});
             }
 
             FCM.presentLocalNotification({
@@ -262,9 +262,53 @@ class Notifications extends Component{
     }
 
 
+    renderTime = (time) => {
+        if(time){
+            if(((time/1000)/86400).toFixed(0) >= 2 ){
+                return(
+                    <Text style={styles.titleTime}>{((time/1000)/86400).toFixed(0)} days ago</Text>
+                )
+            }
+            if(((time/1000)/86400).toFixed(0) > 1 ){
+                return(
+                    <Text style={styles.titleTime}>{((time/1000)/86400).toFixed(0)} day ago</Text>
+                )
+            }
+            else if(((time/1000)/3600).toFixed(0) >= 2 ){
+                return(
+                    <Text style={styles.titleTime}>{((time/1000)/3600).toFixed(0)} hours ago</Text>
+                )
+            }
+            else if(((time/1000)/3600).toFixed(0) > 1 ){
+                return(
+                    <Text style={styles.titleTime}>{((time/1000)/3600).toFixed(0)} hour ago</Text>
+                )
+            }
+            else if(((time/1000)/60).toFixed(0) >= 2 ){
+                return(
+                    <Text style={styles.titleTime}>{((time/1000)/60).toFixed(0)} minutes ago</Text>
+                )
+            }
+            else if(((time/1000)/60).toFixed(0) > 1 ){
+                return(
+                    <Text style={styles.titleTime}>{((time/1000)/60).toFixed(0)} minute ago</Text>
+                )
+            }
+            else{
+                return(
+                    <Text style={styles.titleTime}>{((time/1000)).toFixed(0)} seconds ago</Text>
+                )
+            }
+
+        }
+    };
+
+
     renderRow = (podcast) => {
         return(
 
+            <View >
+                {this.renderTime(new Date().getTime() - podcast.time)}
             <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff',  paddingVertical: 10, marginVertical: 1}} onPress={() => {
                 if(podcast.target){
                     if(podcast.target == 'Browse'){
@@ -292,6 +336,7 @@ class Notifications extends Component{
                     </View>
                 </View>
             </TouchableOpacity>
+            </View>
         );
     };
 
@@ -367,6 +412,18 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 18,
         backgroundColor: 'transparent',
+    },
+    titleTime: {
+        color: '#797979',
+        textAlign: 'left',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        marginLeft: 20,
+        marginRight: 10,
+        fontSize: 14,
+        marginVertical: 5,
+        backgroundColor: 'transparent'
     },
     titleBody: {
         flex:1,

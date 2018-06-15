@@ -371,7 +371,7 @@ class ListItemFollowed extends Component {
 
     renderTime = () => {
         if(this.state.time != ''){
-            if(((this.state.time/1000)/86400).toFixed(0) > 2 ){
+            if(((this.state.time/1000)/86400).toFixed(0) >= 2 ){
                 return(
                     <Text style={styles.title}>{((this.state.time/1000)/86400).toFixed(0)} days ago</Text>
                 )
@@ -381,7 +381,7 @@ class ListItemFollowed extends Component {
                     <Text style={styles.title}>{((this.state.time/1000)/86400).toFixed(0)} day ago</Text>
                 )
             }
-            else if(((this.state.time/1000)/3600).toFixed(0) > 2 ){
+            else if(((this.state.time/1000)/3600).toFixed(0) >= 2 ){
                 return(
                     <Text style={styles.title}>{((this.state.time/1000)/3600).toFixed(0)} hours ago</Text>
                 )
@@ -391,7 +391,7 @@ class ListItemFollowed extends Component {
                     <Text style={styles.title}>{((this.state.time/1000)/3600).toFixed(0)} hour ago</Text>
                 )
             }
-            else if(((this.state.time/1000)/60).toFixed(0) > 2 ){
+            else if(((this.state.time/1000)/60).toFixed(0) >= 2 ){
                 return(
                     <Text style={styles.title}>{((this.state.time/1000)/60).toFixed(0)} minutes ago</Text>
                 )

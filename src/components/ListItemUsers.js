@@ -406,7 +406,7 @@ class ListItemUsers extends Component {
 
     renderSecondaryTitle = () => {
         if(this.state.duration != ''){
-            if(this.state.duration.includes(':')){
+            if(this.state.duration.toString().includes(':')){
                 return(
                     <Icon style={{
                         fontSize: 14,
