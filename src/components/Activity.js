@@ -49,10 +49,10 @@ class Activity extends Component{
         });
 
 
-        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(activity), })},1000);
         this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(activity.reverse()), loading: false })},4000);
 
     }
+
 
 
 
@@ -84,8 +84,6 @@ class Activity extends Component{
             })
         });
 
-
-        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(activity), })},1000);
         this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(activity.reverse()), loading: false, refreshing: false })},4000);
 
 

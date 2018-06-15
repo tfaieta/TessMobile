@@ -48,7 +48,8 @@ class ListItemFollowed extends Component {
             profileName: '',
             profileImage: '',
             rss: false,
-            title: ''
+            title: '',
+            time: '',
         };
 
 
@@ -80,9 +81,12 @@ class ListItemFollowed extends Component {
             })
         }
 
+        const {time} = this.props;
+        let timeNow = new Date().getTime();
+
 
         setTimeout(() =>{
-            this.setState({profileName: profileName, title: title})
+            this.setState({profileName: profileName, title: title, time: timeNow-time})
         },1200);
 
 
@@ -147,6 +151,49 @@ class ListItemFollowed extends Component {
 
     };
 
+    renderTime = () => {
+        if(this.state.time != ''){
+            if(((this.state.time/1000)/86400).toFixed(0) > 2 ){
+                return(
+                    <Text style={styles.title}>{((this.state.time/1000)/86400).toFixed(0)} days ago</Text>
+                )
+            }
+            if(((this.state.time/1000)/86400).toFixed(0) > 1 ){
+                return(
+                    <Text style={styles.title}>{((this.state.time/1000)/86400).toFixed(0)} day ago</Text>
+                )
+            }
+            else if(((this.state.time/1000)/3600).toFixed(0) > 2 ){
+                return(
+                    <Text style={styles.title}>{((this.state.time/1000)/3600).toFixed(0)} hours ago</Text>
+                )
+            }
+            else if(((this.state.time/1000)/3600).toFixed(0) > 1 ){
+                return(
+                    <Text style={styles.title}>{((this.state.time/1000)/3600).toFixed(0)} hour ago</Text>
+                )
+            }
+            else if(((this.state.time/1000)/60).toFixed(0) > 2 ){
+                return(
+                    <Text style={styles.title}>{((this.state.time/1000)/60).toFixed(0)} minutes ago</Text>
+                )
+            }
+            else if(((this.state.time/1000)/60).toFixed(0) > 1 ){
+                return(
+                    <Text style={styles.title}>{((this.state.time/1000)/60).toFixed(0)} minute ago</Text>
+                )
+            }
+            else{
+                return(
+                    <Text style={styles.title}>{((this.state.time/1000)).toFixed(0)} seconds ago</Text>
+                )
+            }
+
+
+
+        }
+    };
+
 
 
     render() {
@@ -165,8 +212,10 @@ class ListItemFollowed extends Component {
                     passProps: {navigator, rss},
                 });
             }}>
+                <View style={{paddingVertical: 5}}>
+                {this.renderTime()}
+                </View>
                 <View style={styles.container}>
-
 
                     {this._renderProfileImage()}
 
@@ -177,6 +226,7 @@ class ListItemFollowed extends Component {
 
 
                 </View>
+
             </TouchableOpacity>
         )
 
