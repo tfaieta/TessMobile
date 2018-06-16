@@ -245,8 +245,13 @@ static navigatorStyle = {
                                 firebase.database().ref(`users/${currentUser.uid}/activity`).push({action: 'comment', id: Variables.state.podcastID, user: currentUser.uid, time: firebase.database.ServerValue.TIMESTAMP});
                                 var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                 ref.once("value", function(snapshot) {
-                                    if(snapshot.val().comments){
-                                        ref.update({comments: snapshot.val().comments + 1})
+                                    if(snapshot.val()){
+                                        if(snapshot.val().comments){
+                                            ref.update({comments: snapshot.val().comments + 1})
+                                        }
+                                        else{
+                                            ref.update({comments: 1})
+                                        }
                                     }
                                     else{
                                         ref.update({comments: 1})

@@ -223,7 +223,7 @@ class Notifications extends Component{
         const {currentUser} = firebase.auth();
         let notifications = [];
 
-        firebase.database().ref(`users/${currentUser.uid}/notifications`).limitToLast(20).once("value", function (snapshot) {
+        firebase.database().ref(`users/${currentUser.uid}/notifications`).limitToLast(30).once("value", function (snapshot) {
             snapshot.forEach(function (data) {
                 if(data.val()){
                     notifications.push(data.val());
@@ -305,39 +305,72 @@ class Notifications extends Component{
 
 
     renderRow = (podcast) => {
-        return(
+        if(podcast.title){
+            return(
+                <View >
+                    {this.renderTime(new Date().getTime() - podcast.time)}
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff',  paddingVertical: height/60, marginVertical: 1}} onPress={() => {
+                        if(podcast.target){
+                            if(podcast.target == 'Browse'){
+                                this.props.navigator.switchToTab({
+                                    tabIndex: 1
+                                });
+                            }
+                        }
+                    }}>
+                        <View style={{alignSelf:'center'}}>
+                            <Icon style={{
+                                fontSize: width/18.75,
+                                backgroundColor: 'transparent',
+                                color: '#79797970',
+                                marginHorizontal: width/25,
+                            }} name="bell-o">
+                            </Icon>
+                        </View>
+                        <View style={{flex: 1, justifyContent: 'center', marginRight: width/18.75}}>
+                            <View>
+                                <Text style = {styles.title}>{podcast.body}</Text>
+                            </View>
+                            <View>
+                                <Text style = {styles.titleBody}>{podcast.title}</Text>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            );
+        }
+        else{
+            return(
+                <View >
+                    {this.renderTime(new Date().getTime() - podcast.time)}
+                    <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff',  paddingVertical: height/60, marginVertical: 1}} onPress={() => {
+                        if(podcast.target){
+                            if(podcast.target == 'Browse'){
+                                this.props.navigator.switchToTab({
+                                    tabIndex: 1
+                                });
+                            }
+                        }
+                    }}>
+                        <View style={{alignSelf:'center'}}>
+                            <Icon style={{
+                                fontSize: width/18.75,
+                                backgroundColor: 'transparent',
+                                color: '#79797970',
+                                marginHorizontal: width/25,
+                            }} name="bell-o">
+                            </Icon>
+                        </View>
+                        <View style={{flex: 1, justifyContent: 'center', marginRight: width/18.75}}>
+                            <View>
+                                <Text style = {styles.title}>{podcast.body}</Text>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            );
+        }
 
-            <View >
-                {this.renderTime(new Date().getTime() - podcast.time)}
-            <TouchableOpacity style={{flex:1, flexDirection:'row', backgroundColor: '#fff',  paddingVertical: 10, marginVertical: 1}} onPress={() => {
-                if(podcast.target){
-                    if(podcast.target == 'Browse'){
-                        this.props.navigator.switchToTab({
-                            tabIndex: 1
-                        });
-                    }
-                }
-            }}>
-                <View style={{alignSelf:'center'}}>
-                    <Icon style={{
-                        fontSize: width/18.75,
-                        backgroundColor: 'transparent',
-                        color: '#79797970',
-                        marginHorizontal: width/25,
-                    }} name="bell-o">
-                    </Icon>
-                </View>
-                <View style={{flex: 1, marginRight: width/18.75}}>
-                    <View>
-                        <Text style = {styles.title}>{podcast.body}</Text>
-                    </View>
-                    <View>
-                        <Text style = {styles.titleBody}>{podcast.title}</Text>
-                    </View>
-                </View>
-            </TouchableOpacity>
-            </View>
-        );
     };
 
     renderList = () => {
@@ -433,6 +466,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/26.79,
         backgroundColor: 'transparent',
+        justifyContent: 'center'
     },
 
     titleTop: {

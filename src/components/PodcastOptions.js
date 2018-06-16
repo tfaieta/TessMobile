@@ -198,11 +198,13 @@ class PodcastOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -222,11 +224,13 @@ class PodcastOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -246,11 +250,13 @@ class PodcastOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -270,11 +276,13 @@ class PodcastOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -294,11 +302,13 @@ class PodcastOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -319,11 +329,13 @@ class PodcastOptions extends Component {
                                     setTimeout(() => {
                                         var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                         ref.once("value", function(snapshot) {
-                                            if(snapshot.val().shares){
-                                                ref.update({shares: snapshot.val().shares + 1})
-                                            }
-                                            else{
-                                                ref.update({shares: 1})
+                                            if(snapshot.val()){
+                                                if(snapshot.val().shares){
+                                                    ref.update({shares: snapshot.val().shares + 1})
+                                                }
+                                                else{
+                                                    ref.update({shares: 1})
+                                                }
                                             }
                                         });
                                         const {currentUser} = firebase.auth();
@@ -348,11 +360,13 @@ class PodcastOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -544,11 +558,13 @@ class PodcastOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -568,11 +584,13 @@ class PodcastOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -592,11 +610,13 @@ class PodcastOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -616,11 +636,13 @@ class PodcastOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -640,11 +662,13 @@ class PodcastOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -665,11 +689,13 @@ class PodcastOptions extends Component {
                                     setTimeout(() => {
                                         var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                         ref.once("value", function(snapshot) {
-                                            if(snapshot.val().shares){
-                                                ref.update({shares: snapshot.val().shares + 1})
-                                            }
-                                            else{
-                                                ref.update({shares: 1})
+                                            if(snapshot.val()){
+                                                if(snapshot.val().shares){
+                                                    ref.update({shares: snapshot.val().shares + 1})
+                                                }
+                                                else{
+                                                    ref.update({shares: 1})
+                                                }
                                             }
                                         });
                                         const {currentUser} = firebase.auth();
@@ -694,11 +720,13 @@ class PodcastOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -861,11 +889,13 @@ class PodcastOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -885,11 +915,13 @@ class PodcastOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -909,11 +941,13 @@ class PodcastOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -933,11 +967,13 @@ class PodcastOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -957,11 +993,13 @@ class PodcastOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -982,11 +1020,13 @@ class PodcastOptions extends Component {
                                             setTimeout(() => {
                                                 var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                 ref.once("value", function(snapshot) {
-                                                    if(snapshot.val().shares){
-                                                        ref.update({shares: snapshot.val().shares + 1})
-                                                    }
-                                                    else{
-                                                        ref.update({shares: 1})
+                                                    if(snapshot.val()){
+                                                        if(snapshot.val().shares){
+                                                            ref.update({shares: snapshot.val().shares + 1})
+                                                        }
+                                                        else{
+                                                            ref.update({shares: 1})
+                                                        }
                                                     }
                                                 });
                                                 const {currentUser} = firebase.auth();
@@ -1011,11 +1051,13 @@ class PodcastOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -1175,11 +1217,13 @@ class PodcastOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -1199,11 +1243,13 @@ class PodcastOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -1223,11 +1269,13 @@ class PodcastOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -1247,11 +1295,13 @@ class PodcastOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -1271,11 +1321,13 @@ class PodcastOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -1296,11 +1348,13 @@ class PodcastOptions extends Component {
                                             setTimeout(() => {
                                                 var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                 ref.once("value", function(snapshot) {
-                                                    if(snapshot.val().shares){
-                                                        ref.update({shares: snapshot.val().shares + 1})
-                                                    }
-                                                    else{
-                                                        ref.update({shares: 1})
+                                                    if(snapshot.val()){
+                                                        if(snapshot.val().shares){
+                                                            ref.update({shares: snapshot.val().shares + 1})
+                                                        }
+                                                        else{
+                                                            ref.update({shares: 1})
+                                                        }
                                                     }
                                                 });
                                                 const {currentUser} = firebase.auth();
@@ -1325,11 +1379,13 @@ class PodcastOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();

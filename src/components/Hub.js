@@ -31,11 +31,7 @@ class Hub extends Component{
             },
             navBarHideOnScroll: false,
             navBarBackgroundColor: '#fff',
-            topBarElevationShadowEnabled: true,
-            topBarShadowColor: '#fff',
-            topBarShadowOpacity: 0.1,
-            topBarShadowOffset: 3,
-            topBarShadowRadius: 5,
+            topBarElevationShadowEnabled: false,
             statusBarColor: '#fff',
         });
 

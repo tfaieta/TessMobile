@@ -1121,8 +1121,13 @@ class PlayerBottom extends Component {
 
                 var refLike = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                 refLike.once("value", function(snapshot) {
-                    if(snapshot.val().likes){
-                        refLike.update({likes: snapshot.val().likes - 1})
+                    if(snapshot.val()){
+                        if(snapshot.val().likes){
+                            refLike.update({likes: snapshot.val().likes - 1})
+                        }
+                        else{
+                            refLike.update({likes: 0})
+                        }
                     }
                     else{
                         refLike.update({likes: 0})
@@ -1139,8 +1144,13 @@ class PlayerBottom extends Component {
 
                 var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                 ref.once("value", function(snapshot) {
-                    if(snapshot.val().likes){
-                        ref.update({likes: snapshot.val().likes + 1})
+                    if(snapshot.val()){
+                        if(snapshot.val().likes){
+                            ref.update({likes: snapshot.val().likes + 1})
+                        }
+                        else{
+                            ref.update({likes: 1})
+                        }
                     }
                     else{
                         ref.update({likes: 1})
