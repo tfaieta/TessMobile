@@ -797,8 +797,13 @@ class UserProfileModal extends Component {
             firebase.database().ref(`users/${currentUser.uid}/tracking/${Variables.state.browsingArtist}`).remove();
             var refTrack = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
             refTrack.once("value", function(snapshot) {
-                if(snapshot.val().tracking){
-                    refTrack.update({tracking: snapshot.val().tracking - 1})
+                if(snapshot.val()){
+                    if(snapshot.val().tracking){
+                        refTrack.update({tracking: snapshot.val().tracking - 1})
+                    }
+                    else{
+                        refTrack.update({tracking: 0})
+                    }
                 }
                 else{
                     refTrack.update({tracking: 0})
@@ -827,11 +832,16 @@ class UserProfileModal extends Component {
 
             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
             ref.once("value", function(snapshot) {
-                if(snapshot.val().tracking){
-                    ref.update({tracking: snapshot.val().tracking + 1})
+                if(snapshot.val()){
+                    if(snapshot.val().tracking){
+                        ref.update({tracking: snapshot.val().tracking + 1})
+                    }
+                    else{
+                        ref.update({tracking: 1})
+                    }
                 }
                 else{
-                    ref.update({tracking: 1})
+                    ref.update({tracking: 0})
                 }
             });
             this.setState({tracking: true});

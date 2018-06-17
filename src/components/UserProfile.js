@@ -793,6 +793,7 @@ static navigatorStyle = {
             const {currentUser} = firebase.auth();
             firebase.database().ref(`users/${currentUser.uid}/following`).child(Variables.state.browsingArtist).push(Variables.state.browsingArtist);
             firebase.database().ref(`users/${Variables.state.browsingArtist}/followers/`).child(currentUser.uid).push(currentUser.uid);
+            firebase.database().ref(`users/${currentUser.uid}/activity`).push({action: 'follow', id: Variables.state.browsingArtist, user: currentUser.uid, time: firebase.database.ServerValue.TIMESTAMP});
             this.setState({ following: true});
             Variables.state.following = true;
         }
@@ -805,8 +806,13 @@ static navigatorStyle = {
             firebase.database().ref(`users/${currentUser.uid}/tracking/${Variables.state.browsingArtist}`).remove();
             var refTrack = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
             refTrack.once("value", function(snapshot) {
-                if(snapshot.val().tracking){
-                    refTrack.update({tracking: snapshot.val().tracking - 1})
+                if(snapshot.val()){
+                    if(snapshot.val().tracking){
+                        refTrack.update({tracking: snapshot.val().tracking - 1})
+                    }
+                    else{
+                        refTrack.update({tracking: 0})
+                    }
                 }
                 else{
                     refTrack.update({tracking: 0})
@@ -833,14 +839,21 @@ static navigatorStyle = {
             });
 
 
+            firebase.database().ref(`users/${currentUser.uid}/activity`).push({action: 'track', id: Variables.state.browsingArtist, user: currentUser.uid, time: firebase.database.ServerValue.TIMESTAMP});
             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
             ref.once("value", function(snapshot) {
-                if(snapshot.val().tracking){
-                    ref.update({tracking: snapshot.val().tracking + 1})
+                if(snapshot.val()){
+                    if(snapshot.val().tracking){
+                        ref.update({tracking: snapshot.val().tracking + 1})
+                    }
+                    else{
+                        ref.update({tracking: 1})
+                    }
                 }
                 else{
                     ref.update({tracking: 1})
                 }
+
             });
             this.setState({tracking: true});
             Variables.state.tracking = true;

@@ -35,6 +35,8 @@ class PlayerOptions extends Component {
         this.state = {
             favorite: false,
             visible: false,
+            podcastTitle: '',
+            profileName: ''
         };
 
         const id  = Variables.state.podcastID;
@@ -47,6 +49,35 @@ class PlayerOptions extends Component {
                 this.setState({favorite: false})
             }
         }
+
+        const podcastArtist = Variables.state.podcastArtist;
+
+        let podcastTitle = Variables.state.podcastTitle;
+        if(Variables.state.podcastTitle.toString().length > width/10 ){
+            podcastTitle = (Variables.state.podcastTitle.slice(0,width/10)+"...")
+        }
+        else{
+            podcastTitle = Variables.state.podcastTitle;
+        }
+
+
+
+        let profileName = 'loading';
+        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
+            if (snap.val()) {
+                profileName = snap.val().username;
+            }
+            else {
+                profileName = podcastArtist;
+            }
+        });
+
+
+        this.timeout = setTimeout(() => {
+            this.setState({podcastTitle: podcastTitle, profileName: profileName})
+
+        },500)
+
 
     }
 
@@ -70,26 +101,6 @@ class PlayerOptions extends Component {
         const id  = Variables.state.podcastID;
         const podcastArtist = Variables.state.podcastArtist;
         const rss = Variables.state.rss;
-
-        let podcastTitle = Variables.state.podcastTitle;
-        if(Variables.state.podcastTitle.toString().length > width/10 ){
-            podcastTitle = (Variables.state.podcastTitle.slice(0,width/10)+"...")
-        }
-        else{
-            podcastTitle = Variables.state.podcastTitle;
-        }
-
-
-
-        let profileName = 'loading';
-        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
-            if (snap.val()) {
-                profileName = snap.val().username;
-            }
-            else {
-                profileName = podcastArtist;
-            }
-        });
 
 
         let shareOptions = {
@@ -409,11 +420,13 @@ class PlayerOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -433,11 +446,13 @@ class PlayerOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -457,11 +472,13 @@ class PlayerOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -481,11 +498,13 @@ class PlayerOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -505,11 +524,13 @@ class PlayerOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -530,11 +551,13 @@ class PlayerOptions extends Component {
                                     setTimeout(() => {
                                         var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                         ref.once("value", function(snapshot) {
-                                            if(snapshot.val().shares){
-                                                ref.update({shares: snapshot.val().shares + 1})
-                                            }
-                                            else{
-                                                ref.update({shares: 1})
+                                            if(snapshot.val()){
+                                                if(snapshot.val().shares){
+                                                    ref.update({shares: snapshot.val().shares + 1})
+                                                }
+                                                else{
+                                                    ref.update({shares: 1})
+                                                }
                                             }
                                         });
                                         const {currentUser} = firebase.auth();
@@ -559,11 +582,13 @@ class PlayerOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -697,11 +722,13 @@ class PlayerOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -721,11 +748,13 @@ class PlayerOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -745,11 +774,13 @@ class PlayerOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -769,11 +800,13 @@ class PlayerOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -793,11 +826,13 @@ class PlayerOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -818,11 +853,13 @@ class PlayerOptions extends Component {
                                     setTimeout(() => {
                                         var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                         ref.once("value", function(snapshot) {
-                                            if(snapshot.val().shares){
-                                                ref.update({shares: snapshot.val().shares + 1})
-                                            }
-                                            else{
-                                                ref.update({shares: 1})
+                                            if(snapshot.val()){
+                                                if(snapshot.val().shares){
+                                                    ref.update({shares: snapshot.val().shares + 1})
+                                                }
+                                                else{
+                                                    ref.update({shares: 1})
+                                                }
                                             }
                                         });
                                         const {currentUser} = firebase.auth();
@@ -847,11 +884,13 @@ class PlayerOptions extends Component {
                                         setTimeout(() => {
                                             var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                             ref.once("value", function(snapshot) {
-                                                if(snapshot.val().shares){
-                                                    ref.update({shares: snapshot.val().shares + 1})
-                                                }
-                                                else{
-                                                    ref.update({shares: 1})
+                                                if(snapshot.val()){
+                                                    if(snapshot.val().shares){
+                                                        ref.update({shares: snapshot.val().shares + 1})
+                                                    }
+                                                    else{
+                                                        ref.update({shares: 1})
+                                                    }
                                                 }
                                             });
                                             const {currentUser} = firebase.auth();
@@ -993,11 +1032,13 @@ class PlayerOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -1017,11 +1058,13 @@ class PlayerOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -1041,11 +1084,13 @@ class PlayerOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -1065,11 +1110,13 @@ class PlayerOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -1089,11 +1136,13 @@ class PlayerOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -1114,11 +1163,13 @@ class PlayerOptions extends Component {
                                             setTimeout(() => {
                                                 var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                 ref.once("value", function(snapshot) {
-                                                    if(snapshot.val().shares){
-                                                        ref.update({shares: snapshot.val().shares + 1})
-                                                    }
-                                                    else{
-                                                        ref.update({shares: 1})
+                                                    if(snapshot.val()){
+                                                        if(snapshot.val().shares){
+                                                            ref.update({shares: snapshot.val().shares + 1})
+                                                        }
+                                                        else{
+                                                            ref.update({shares: 1})
+                                                        }
                                                     }
                                                 });
                                                 const {currentUser} = firebase.auth();
@@ -1143,11 +1194,13 @@ class PlayerOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -1171,8 +1224,8 @@ class PlayerOptions extends Component {
                         return(
                             <View style={styles.container}>
                                 <View>
-                                    <Text style={styles.textTitle}>{podcastTitle}</Text>
-                                    <Text style={styles.textArtist}>{profileName}</Text>
+                                    <Text style={styles.textTitle}>{this.state.podcastTitle}</Text>
+                                    <Text style={styles.textArtist}>{this.state.profileName}</Text>
                                 </View>
 
                                 <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
@@ -1291,11 +1344,13 @@ class PlayerOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -1315,11 +1370,13 @@ class PlayerOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -1339,11 +1396,13 @@ class PlayerOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -1363,11 +1422,13 @@ class PlayerOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -1387,11 +1448,13 @@ class PlayerOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -1412,11 +1475,13 @@ class PlayerOptions extends Component {
                                             setTimeout(() => {
                                                 var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                 ref.once("value", function(snapshot) {
-                                                    if(snapshot.val().shares){
-                                                        ref.update({shares: snapshot.val().shares + 1})
-                                                    }
-                                                    else{
-                                                        ref.update({shares: 1})
+                                                    if(snapshot.val()){
+                                                        if(snapshot.val().shares){
+                                                            ref.update({shares: snapshot.val().shares + 1})
+                                                        }
+                                                        else{
+                                                            ref.update({shares: 1})
+                                                        }
                                                     }
                                                 });
                                                 const {currentUser} = firebase.auth();
@@ -1441,11 +1506,13 @@ class PlayerOptions extends Component {
                                                 setTimeout(() => {
                                                     var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                                                     ref.once("value", function(snapshot) {
-                                                        if(snapshot.val().shares){
-                                                            ref.update({shares: snapshot.val().shares + 1})
-                                                        }
-                                                        else{
-                                                            ref.update({shares: 1})
+                                                        if(snapshot.val()){
+                                                            if(snapshot.val().shares){
+                                                                ref.update({shares: snapshot.val().shares + 1})
+                                                            }
+                                                            else{
+                                                                ref.update({shares: 1})
+                                                            }
                                                         }
                                                     });
                                                     const {currentUser} = firebase.auth();
@@ -1471,8 +1538,8 @@ class PlayerOptions extends Component {
                         return(
                             <View style={styles.container}>
                                 <View>
-                                    <Text style={styles.textTitle}>{podcastTitle}</Text>
-                                    <Text style={styles.textArtist}>{profileName}</Text>
+                                    <Text style={styles.textTitle}>{this.state.podcastTitle}</Text>
+                                    <Text style={styles.textArtist}>{this.state.profileName}</Text>
                                 </View>
 
                                 <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
@@ -1516,8 +1583,8 @@ class PlayerOptions extends Component {
                         return(
                             <View style={styles.container}>
                                 <View>
-                                    <Text style={styles.textTitle}>{podcastTitle}</Text>
-                                    <Text style={styles.textArtist}>{profileName}</Text>
+                                    <Text style={styles.textTitle}>{this.state.podcastTitle}</Text>
+                                    <Text style={styles.textArtist}>{this.state.profileName}</Text>
                                 </View>
 
                                 <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>

@@ -114,8 +114,13 @@ class Highlight extends Component{
 
                         var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
                         ref.once("value", function(snapshot) {
-                            if(snapshot.val().highlights){
-                                ref.update({highlights: snapshot.val().highlights + 1})
+                            if(snapshot.val()){
+                                if(snapshot.val().highlights){
+                                    ref.update({highlights: snapshot.val().highlights + 1})
+                                }
+                                else{
+                                    ref.update({highlights: 1})
+                                }
                             }
                             else{
                                 ref.update({highlights: 1})
