@@ -8,7 +8,7 @@ import {
     ListView,
     TextInput,
     KeyboardAvoidingView,
-    Dimensions,
+    Dimensions, ActivityIndicator,
 } from 'react-native';
 import Variables from "./Variables";
 import firebase from 'firebase';
@@ -49,6 +49,7 @@ static navigatorStyle = {
 
     componentWillUnmount(){
         clearInterval(this.interval);
+        clearTimeout(this.timeout);
     }
 
 
@@ -57,9 +58,13 @@ static navigatorStyle = {
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state ={
             comment: '',
+            commentsLoading: true,
             dataSource: dataSource.cloneWithRows(Variables.state.comments),
         };
 
+        this.timeout = setTimeout(() => {
+            this.setState({commentsLoading: false})
+        }, 1500);
         this.interval = setInterval(() => {
             firebase.database().ref(`podcasts/${Variables.state.podcastID}/comments`).on("value", function (snap) {
                 Variables.state.comments = [];
@@ -142,32 +147,42 @@ static navigatorStyle = {
     }
 
     renderComments(){
-        if(Variables.state.comments.length > 0){
+        if(this.state.commentsLoading){
             return(
-                <View style={{height: height/2.4}}>
-
-                    <ListView
-                        ref={ ( ref ) => this.scrollView = ref }
-                        enableEmptySections
-                        dataSource={this.state.dataSource}
-                        renderRow={this.renderRow}
-                        onContentSizeChange={ () => {
-                            if(Variables.state.comments.length > 4){
-                                this.scrollView.scrollToEnd( { animated: true } )
-                            }
-                        }}
-                    />
-                    <View style={{height: 1.5, marginHorizontal: 20, backgroundColor: '#2A2A3060',}} />
-
+                <View style={styles.container}>
+                    <ActivityIndicator style={{paddingVertical: height/15, alignSelf:'center'}} color='#3e4164' size ="large" />
                 </View>
-
             )
         }
         else{
-            return(
-                <Text style={styles.textEmpty}>Be the first to comment!</Text>
+            if(Variables.state.comments.length > 0){
+                return(
+                    <View style={{height: height/2.4}}>
+
+                        <ListView
+                            ref={ ( ref ) => this.scrollView = ref }
+                            enableEmptySections
+                            dataSource={this.state.dataSource}
+                            renderRow={this.renderRow}
+                            onContentSizeChange={ () => {
+                                if(Variables.state.comments.length > 4){
+                                    this.scrollView.scrollToEnd( { animated: true } )
+                                }
+                            }}
+                        />
+                        <View style={{height: 1.5, marginHorizontal: 20, backgroundColor: '#2A2A3060',}} />
+
+                    </View>
+
                 )
+            }
+            else{
+                return(
+                    <Text style={styles.textEmpty}>Be the first to comment!</Text>
+                )
+            }
         }
+
 
     }
 

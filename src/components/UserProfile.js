@@ -8,7 +8,8 @@ import {
     ListView,
     TouchableOpacity,
     Alert, Image,
-    RefreshControl, Dimensions
+    RefreshControl, Dimensions,
+    ActivityIndicator
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
@@ -300,7 +301,7 @@ static navigatorStyle = {
                 userShares: Variables.state.userSharesAmount,
                 dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
             })
-        },500);
+        },1000);
         this.timeout2 = setTimeout(() =>{
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
                 username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
@@ -314,7 +315,7 @@ static navigatorStyle = {
                 userShares: Variables.state.userSharesAmount,
                 dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
             })
-        },3500);
+        },3000);
 
 
         const {currentUser} = firebase.auth();
@@ -557,12 +558,8 @@ static navigatorStyle = {
 
         this.fetchData();
 
-        this.setState({
-            refreshing: false,
-        });
-
         this.timeout = setTimeout(() =>{
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false, refreshing: false,
                 username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
                 following: Variables.state.following,
                 playTime: Variables.state.userPlayTime,
@@ -573,9 +570,9 @@ static navigatorStyle = {
                 userShares: Variables.state.userSharesAmount,
                 dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
             })
-        },500);
+        },1000);
         this.timeout2 = setTimeout(() =>{
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false, refresing: false,
                 username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
                 following: Variables.state.following,
                 playTime: Variables.state.userPlayTime,
@@ -586,7 +583,7 @@ static navigatorStyle = {
                 userShares: Variables.state.userSharesAmount,
                 dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
             })
-        },3500)
+        },3000)
 
 
     }
@@ -3341,140 +3338,144 @@ static navigatorStyle = {
 
     render() {
 
-        var fixedTitle = '';
-        if(this.state.username.toString().length > width/16.3 ){
-            fixedTitle = (this.state.username.slice(0,width/16.3)+"...")
+        if(this.state.loading){
+            return(
+                <View style={styles.container}>
+                    <ActivityIndicator style={{paddingVertical: height/33.35, alignSelf:'center'}} color='#3e4164' size ="large" />
+                </View>
+            )
         }
         else{
-            fixedTitle = this.state.username;
-        }
-        const {rss} = this.props;
+            var fixedTitle = '';
+            if(this.state.username.toString().length > width/16.3 ){
+                fixedTitle = (this.state.username.slice(0,width/16.3)+"...")
+            }
+            else{
+                fixedTitle = this.state.username;
+            }
+            const {rss} = this.props;
 
-        if(rss){
+            if(rss){
 
-            return (
-                <View
-                    style={styles.container}>
+                return (
+                    <View
+                        style={styles.container}>
 
-                    <ScrollView
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={this.state.refreshing}
-                                onRefresh={this._onRefresh.bind(this)}
-                            />
-                        }
-                    >
+                        <ScrollView
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={this.state.refreshing}
+                                    onRefresh={this._onRefresh.bind(this)}
+                                />
+                            }
+                        >
 
-                        <View style={{backgroundColor: '#fff'}}>
+                            <View style={{backgroundColor: '#fff'}}>
 
-                            {this._renderProfileImage()}
+                                {this._renderProfileImage()}
 
-                            {this._renderProfileName()}
+                                {this._renderProfileName()}
 
-                            {this._renderBio()}
+                                {this._renderBio()}
 
-                            <View style={{flexDirection: 'row', marginTop: 10}}>
-                                {this._renderFollowButton()}
-                                {this._renderTrackButton()}
+                                <View style={{flexDirection: 'row', marginTop: 10}}>
+                                    {this._renderFollowButton()}
+                                    {this._renderTrackButton()}
+                                </View>
+
+
+                                <TouchableOpacity style={{flex: 1, alignSelf: 'center', padding: 10,}} onPress={this.onFollowersPress}>
+                                    <Text style={styles.stats}>Followers</Text>
+                                    <Text style={styles.stats}>{Variables.state.userFollowers.length}</Text>
+                                </TouchableOpacity>
+
+
                             </View>
 
 
-                            <TouchableOpacity style={{flex: 1, alignSelf: 'center', padding: 10,}} onPress={this.onFollowersPress}>
-                                <Text style={styles.stats}>Followers</Text>
-                                <Text style={styles.stats}>{Variables.state.userFollowers.length}</Text>
-                            </TouchableOpacity>
-
-
-                        </View>
-
-
-                        <View style={{backgroundColor: '#fff', marginVertical: 15, marginHorizontal: 7, borderRadius: 10}}>
-                            <Text style={styles.myContentTitle}>{Variables.state.userPodcasts.length} episodes</Text>
-                            <ListView
-                                enableEmptySections
-                                horizontal={true}
-                                dataSource={this.state.dataSource}
-                                renderRow={this.renderRow}
-                            />
-                        </View>
-
-
-
-                        <View style={{paddingBottom:120}}>
-
-                        </View>
-
-
-                    </ScrollView>
-
-
-                    <PlayerBottom/>
-
-                </View>
-
-
-
-            );
-
-        }
-        else{
-
-            return (
-                <View
-                    style={styles.container}>
-
-                    <ScrollView
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={this.state.refreshing}
-                                onRefresh={this._onRefresh.bind(this)}
-                            />
-                        }
-                    >
-
-                        <View style={{backgroundColor: '#fff'}}>
-
-                            {this._renderProfileImage()}
-
-                            {this._renderProfileName()}
-
-                            {this._renderBio()}
-
-                            <View style={{flexDirection: 'row', marginTop: 10}}>
-                                {this._renderFollowButton()}
-                                {this._renderTrackButton()}
+                            <View style={{backgroundColor: '#fff', marginVertical: 15, marginHorizontal: 7, borderRadius: 10}}>
+                                <Text style={styles.myContentTitle}>{Variables.state.userPodcasts.length} episodes</Text>
+                                <ListView
+                                    enableEmptySections
+                                    horizontal={true}
+                                    dataSource={this.state.dataSource}
+                                    renderRow={this.renderRow}
+                                />
                             </View>
 
 
-                            {this._renderProfileNumbers(Variables.state.userTracking.length, Variables.state.userFollowers.length, Variables.state.userFollowing.length)}
+                            <View style={{paddingBottom:120}}>
 
-                        </View>
-
-                        {this.renderContent()}
-
-                        {this.renderAchievements()}
-
-                        {this.renderRecent(Variables.state.userRecentlyPlayed)}
+                            </View>
 
 
+                        </ScrollView>
 
 
-                        <View style={{paddingBottom:120}}>
+                        <PlayerBottom/>
 
-                        </View>
-
-
-                    </ScrollView>
+                    </View>
 
 
-                    <PlayerBottom/>
+                );
 
-                </View>
+            }
+            else{
+
+                return (
+                    <View
+                        style={styles.container}>
+
+                        <ScrollView
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={this.state.refreshing}
+                                    onRefresh={this._onRefresh.bind(this)}
+                                />
+                            }
+                        >
+
+                            <View style={{backgroundColor: '#fff'}}>
+
+                                {this._renderProfileImage()}
+
+                                {this._renderProfileName()}
+
+                                {this._renderBio()}
+
+                                <View style={{flexDirection: 'row', marginTop: 10}}>
+                                    {this._renderFollowButton()}
+                                    {this._renderTrackButton()}
+                                </View>
 
 
+                                {this._renderProfileNumbers(Variables.state.userTracking.length, Variables.state.userFollowers.length, Variables.state.userFollowing.length)}
 
-            );
+                            </View>
 
+                            {this.renderContent()}
+
+                            {this.renderAchievements()}
+
+                            {this.renderRecent(Variables.state.userRecentlyPlayed)}
+
+
+                            <View style={{paddingBottom:120}}>
+
+                            </View>
+
+
+                        </ScrollView>
+
+
+                        <PlayerBottom/>
+
+                    </View>
+
+
+                );
+
+            }
         }
 
     }
