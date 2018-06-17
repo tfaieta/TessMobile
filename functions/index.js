@@ -22,7 +22,7 @@ exports.notificationPOTW = functions.database.ref(`/podcastOfTheWeek`)
                 notification: {
                     title: "New Podcast of the Week!",
                     body: podOfTheWeek,
-                    target: "Browse"
+                    target: podOfTheWeek
                 }
             };
 
@@ -53,7 +53,7 @@ exports.notificationNewEp = functions.database.ref(`/podcasts/{podcastKey}`)
                 notification: {
                     title: "New Episode from " + podcastArtist,
                     body: podcastTitle,
-                    target: "Podcast",
+                    target: podcastArtist,
                     id: id
                 },
                 podcast: {
@@ -91,7 +91,7 @@ exports.notificationFollow = functions.database.ref(`/users/{id}/followers`)
                 notification: {
                     title: "New Follow!",
                     body: podcastArtist + " is now following you",
-                    target: "Profile",
+                    target: podcastArtist,
                     id: podcastArtist,
                 },
             };

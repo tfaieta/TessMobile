@@ -856,7 +856,7 @@ class PodcastOptions extends Component {
                                     setTimeout(() => {
                                         navigator.push({
                                             screen: 'UserProfile',
-                                            title: profileName,
+                                            title: this.state.profileName,
                                             passProps: {rowData, navigator, rss},
                                         })
                                     }, 450)
@@ -1185,10 +1185,10 @@ class PodcastOptions extends Component {
                                     setTimeout(() => {
                                         navigator.push({
                                             screen: 'UserProfile',
-                                            title: profileName,
+                                            title: this.state.profileName,
                                             passProps: {rowData, navigator, rss},
                                         })
-                                    }, 450)
+                                    }, 450);
                                      navigator.dismissLightBox();
                                 }}>
                                     <View style={{alignContent: 'center'}}>
@@ -1439,7 +1439,7 @@ class PodcastOptions extends Component {
                                     setTimeout(() => {
                                         navigator.push({
                                             screen: 'UserProfile',
-                                            title: profileName,
+                                            title: this.state.profileName,
                                             passProps: {rowData, navigator, rss},
                                         })
                                     }, 450)
@@ -1502,7 +1502,7 @@ class PodcastOptions extends Component {
                                     setTimeout(() => {
                                         navigator.push({
                                             screen: 'UserProfile',
-                                            title: profileName,
+                                            title: this.state.profileName,
                                             passProps: {rowData, navigator, rss},
                                         })
                                     }, 450)

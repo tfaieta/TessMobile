@@ -4,6 +4,8 @@ import PlayerBottom from './PlayerBottom';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FCM, {FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType, NotificationActionType, NotificationActionOption, NotificationCategoryOption} from 'react-native-fcm';
 import firebase from 'firebase';
+import Variables from "./Variables";
+
 
 var {height, width} = Dimensions.get('window');
 
@@ -48,7 +50,13 @@ class Notifications extends Component{
             console.error(e);
         }
 
+        //topic for custom messages
+        FCM.subscribeToTopic(`custom`);
+
+        //topic for podcast of the week
         FCM.subscribeToTopic(`POTW`);
+
+        //topics for following
         firebase.database().ref(`users/${currentUser.uid}/following`).once('value', function (snapshot) {
             snapshot.forEach(function (data) {
                 if(data.val()){
@@ -135,10 +143,41 @@ class Notifications extends Component{
                 console.log("Notification recived local", "local notification");
                 console.log(JSON.stringify(notif));
                 if(notif.opened_from_tray){
-                    if(notif.title == "New Podcast of the Week!"){
-                        this.props.navigator.switchToTab({
-                            tabIndex: 1
-                        });
+                    if(notif.notification){
+                        if(notif.notification.target){
+                            if(notif.notification.target == 'Browse'){
+                                this.props.navigator.switchToTab({
+                                    tabIndex: 1
+                                });
+                            }
+                            else if(notif.notification.target != ''){
+                                const {navigator} = this.props;
+                                Variables.state.browsingArtist = notif.notification.target;
+                                const rss = true;
+                                this.props.navigator.push({
+                                    screen: "UserProfile",
+                                    title: "Podcast",
+                                    passProps: {navigator, rss},
+                                });
+                            }
+                        }
+                        else if (notif.target){
+                            if(notif.target == 'Browse'){
+                                this.props.navigator.switchToTab({
+                                    tabIndex: 1
+                                });
+                            }
+                            else if(notif.target != ''){
+                                const {navigator} = this.props;
+                                Variables.state.browsingArtist = notif.target;
+                                const rss = true;
+                                this.props.navigator.push({
+                                    screen: "UserProfile",
+                                    title: "Podcast",
+                                    passProps: {navigator, rss},
+                                });
+                            }
+                        }
                     }
                 }
                 return;
@@ -147,10 +186,41 @@ class Notifications extends Component{
                 console.log("Notification recived local", "local notification");
                 console.log(JSON.stringify(notif));
                 if(notif.opened_from_tray){
-                    if(notif.title == "New Podcast of the Week!"){
-                        this.props.navigator.switchToTab({
-                            tabIndex: 1
-                        });
+                    if(notif.notification){
+                        if(notif.notification.target){
+                            if(notif.notification.target == 'Browse'){
+                                this.props.navigator.switchToTab({
+                                    tabIndex: 1
+                                });
+                            }
+                            else if(notif.notification.target != ''){
+                                const {navigator} = this.props;
+                                Variables.state.browsingArtist = notif.notification.target;
+                                const rss = true;
+                                this.props.navigator.push({
+                                    screen: "UserProfile",
+                                    title: "Podcast",
+                                    passProps: {navigator, rss},
+                                });
+                            }
+                        }
+                        else if (notif.target){
+                            if(notif.target == 'Browse'){
+                                this.props.navigator.switchToTab({
+                                    tabIndex: 1
+                                });
+                            }
+                            else if(notif.target != ''){
+                                const {navigator} = this.props;
+                                Variables.state.browsingArtist = notif.target;
+                                const rss = true;
+                                this.props.navigator.push({
+                                    screen: "UserProfile",
+                                    title: "Podcast",
+                                    passProps: {navigator, rss},
+                                });
+                            }
+                        }
                     }
                 }
                 return;
@@ -316,6 +386,16 @@ class Notifications extends Component{
                                     tabIndex: 1
                                 });
                             }
+                            else if(podcast.target != ''){
+                                const {navigator} = this.props;
+                                Variables.state.browsingArtist = podcast.target;
+                                const {rss} = this.state;
+                                this.props.navigator.push({
+                                    screen: "UserProfile",
+                                    title: "Podcast",
+                                    passProps: {navigator, rss},
+                                });
+                            }
                         }
                     }}>
                         <View style={{alignSelf:'center'}}>
@@ -348,6 +428,16 @@ class Notifications extends Component{
                             if(podcast.target == 'Browse'){
                                 this.props.navigator.switchToTab({
                                     tabIndex: 1
+                                });
+                            }
+                            else if(podcast.target != ''){
+                                const {navigator} = this.props;
+                                Variables.state.browsingArtist = podcast.target;
+                                const {rss} = this.state;
+                                this.props.navigator.push({
+                                    screen: "UserProfile",
+                                    title: "Podcast",
+                                    passProps: {navigator, rss},
                                 });
                             }
                         }
