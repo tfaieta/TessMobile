@@ -256,6 +256,31 @@ class Browse extends Component{
                             </View>
                             </TouchableWithoutFeedback>
                         </View>
+
+                        {/* Fourth Item in Carousel */}
+                        <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
+                            <TouchableWithoutFeedback onPress={() => {
+                                const {navigator} = this.props;
+                                const rss = true;
+                                Variables.state.browsingArtist = 'Best of Gainesville Weekly Minipod';
+                                navigator.push({
+                                    screen: 'UserProfile',
+                                    title: "Best of Gainesville Weekly Minipod",
+                                    passProps: {navigator, rss},
+                                })
+                            }}>
+                                <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: width/75}}>
+                                    <View style={styles.featuredArt}>
+                                        <Image
+                                            style={{width: width/1.15, height: height/3.51, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
+                                            source={require('tess/src/images/BOGW.png')}
+                                        />
+                                    </View>
+                                    <Text style={styles.text1}>Best of Gainesville Weekly Minipod</Text>
+                                    <Text style={styles.text2}>by Tess Media</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View>
                     </Carousel>
 
                     {/* Begin Listing Categories  */}

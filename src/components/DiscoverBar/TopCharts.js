@@ -8,7 +8,6 @@ import ListItemChartPodcast from "../ListItemChartPodcast";
 
 var {height, width} = Dimensions.get('window');
 
-
 // Charts page on discover (browse) page
 
 class TopCharts extends Component{
@@ -21,7 +20,6 @@ class TopCharts extends Component{
         ref.limitToLast(400).once("value", function (snapshot) {
 
             snapshot.forEach(function (data) {
-
                 if(data.child("plays").numChildren() > 0){
                     Variables.state.topCharts.push(data.val());
                     for(let i = Variables.state.topCharts.length-1; i > 0 && Object.keys(Variables.state.topCharts[i].plays).length > Object.keys(Variables.state.topCharts[i-1].plays).length; i--){
@@ -30,11 +28,8 @@ class TopCharts extends Component{
                         Variables.state.topCharts[i] = temp;
                     }
                 }
-
             })
-
         });
-
     }
 
 
@@ -164,14 +159,12 @@ class TopCharts extends Component{
                     scrollRenderAheadDistance={400}
                 />
             )
-
         }
-        else{
+        else {
             return(
                 <View/>
             )
         }
-
     };
 
     renderDataPods = (active) => {
@@ -193,8 +186,6 @@ class TopCharts extends Component{
         }
 
     };
-
-
     render() {
         return (
             <View style={styles.container}>
