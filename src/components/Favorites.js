@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ListView, Alert, ScrollView, Text} from 'react-native';
+import { View, StyleSheet, ListView, Alert, ScrollView, Text, Dimensions} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import firebase from 'firebase';
 import Variables from "./Variables";
 import ListItem from "./ListItem";
 
+var {height, width} = Dimensions.get('window');
 
 
 class Favorites extends Component{
@@ -14,15 +15,17 @@ class Favorites extends Component{
         const { currentUser } = firebase.auth();
         const refFav = firebase.database().ref(`users/${currentUser.uid}/favorites`);
 
-        refFav.orderByChild('favorites').on("value", function (snapshot) {
+        refFav.orderByChild('favorites').once("value", function (snapshot) {
             snapshot.forEach(function (data) {
-                if(data.val().id){
-                    firebase.database().ref(`podcasts/${data.val().id}`).on("value", function (snap) {
-                        Variables.state.favPodcasts.push(snap.val())
-                    })
-                }
-                else{
-                    Variables.state.favPodcasts.push(data.val());
+                if(data.val()){
+                    if(data.val().id){
+                        firebase.database().ref(`podcasts/${data.val().id}`).once("value", function (snap) {
+                            Variables.state.favPodcasts.push(snap.val())
+                        })
+                    }
+                    else{
+                        Variables.state.favPodcasts.push(data.val());
+                    }
                 }
             })
         });
@@ -31,7 +34,6 @@ class Favorites extends Component{
 
     componentWillUnmount(){
         clearTimeout(this.timeout);
-        clearTimeout(this.timeout2);
     }
 
     constructor(props){
@@ -65,8 +67,7 @@ class Favorites extends Component{
             favorite: true,
             length: 0
         };
-        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts), length: Variables.state.favPodcasts.length})},1000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts), length: Variables.state.favPodcasts.length})},3000);
+        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts.reverse()), length: Variables.state.favPodcasts.length})},2000);
     }
 
 
@@ -119,17 +120,14 @@ class Favorites extends Component{
                     />
 
 
-                    <View style={{paddingBottom:120}}>
+                    <View style={{paddingBottom: height/5.56}}>
 
                     </View>
 
                 </ScrollView>
 
 
-
-
                 <PlayerBottom navigator={this.props.navigator}/>
-
 
             </View>
 
@@ -144,7 +142,7 @@ const styles = StyleSheet.create({
     containerMain:{
         flex: 1,
         backgroundColor: '#f5f4f9',
-        marginTop: 65
+        marginTop: height/10.26,
     },
 
     title: {
@@ -153,9 +151,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 18,
-        paddingVertical: 10,
-        marginBottom: 1,
+        fontSize: width/20.83,
+        paddingVertical: height/66.7,
+        marginBottom: height/667,
     },
 
 });

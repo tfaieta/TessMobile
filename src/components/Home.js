@@ -369,7 +369,6 @@ class Home extends Component{
                             Variables.state.highlightStart = startTime;
                             Variables.state.highlightEnd = endTime;
                             Variables.state.seekTo = startTime;
-                            Variables.state.currentTime = startTime;
 
                                 AsyncStorage.setItem("currentPodcast", '');
                                 AsyncStorage.setItem("currentTime", "0");
@@ -422,7 +421,6 @@ class Home extends Component{
                             Variables.state.highlightStart = startTime;
                             Variables.state.highlightEnd = endTime;
                             Variables.state.seekTo = startTime;
-                            Variables.state.currentTime = startTime;
 
                                     AsyncStorage.setItem("currentPodcast", '');
                                     AsyncStorage.setItem("currentTime", "0");

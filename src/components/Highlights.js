@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ScrollView, ListView} from 'react-native';
+import { Text, View, StyleSheet, ScrollView, ListView, Dimensions} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import firebase from 'firebase';
 import ListItemHighlight from "./ListItemHighlight";
 
-
+var {height, width} = Dimensions.get('window');
 
 
 // displays collection of highlights (in library)
@@ -39,7 +39,7 @@ class Highlights extends Component{
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         let data = [];
         this.state = {
-            myHighlights:   dataSource.cloneWithRows(data),
+            myHighlights: dataSource.cloneWithRows(data),
             length: 0,
 
         };
@@ -55,7 +55,7 @@ class Highlights extends Component{
         });
 
         setTimeout(() => {
-            this.setState({myHighlights: dataSource.cloneWithRows(data), length: data.length})
+            this.setState({myHighlights: dataSource.cloneWithRows(data.reverse()), length: data.length})
         }, 1200)
 
     };
@@ -75,7 +75,6 @@ class Highlights extends Component{
             <View
                 style={styles.container}>
 
-
                 <ScrollView>
 
                     <Text style={styles.title}>{this.state.length} highlights</Text>
@@ -86,14 +85,11 @@ class Highlights extends Component{
                         renderRow={this.renderRow}
                     />
 
-
-                    <View style={{paddingBottom:120}}>
+                    <View style={{paddingBottom: height/5.56}}>
 
                     </View>
 
                 </ScrollView>
-
-
 
                 <PlayerBottom navigator={this.props.navigator}/>
 
@@ -110,7 +106,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
-        marginTop: 65,
+        marginTop: height/10.26,
     },
 
     title: {
@@ -119,9 +115,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 18,
-        paddingVertical: 10,
-        marginBottom: 1,
+        fontSize: width/20.83,
+        paddingVertical: height/66.7,
+        marginBottom: height/667,
     },
 
 });

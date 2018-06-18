@@ -201,7 +201,7 @@ class Player extends Component{
         ref.once("value", function(snapshot) {
             if(snapshot.val()){
                 if(snapshot.val().playTime){
-                    ref.update({playTime: snapshot.val().playTime + .15})
+                    ref.update({playTime: snapshot.val().playTime + .25})
                 }
                 else{
                     ref.update({playTime: 0})
@@ -220,8 +220,6 @@ class Player extends Component{
         this.setState({
             podcastURL: Variables.state.podcastURL,
             speed: Variables.state.podcastSpeed,
-            volume: 1,
-            muted: false,
             paused: Variables.state.paused,
             repeat: Variables.state.repeat,
             currentTime: data.currentTime,
@@ -278,6 +276,8 @@ class Player extends Component{
                    firebase.database().ref(`podcasts/${key.val().id}`).on("value", function (mainSnap) {
 
                        const {id} = mainSnap.val();
+                       AsyncStorage.setItem("currentPodcast", id);
+                       AsyncStorage.setItem("currentTime", "0");
 
                        if(mainSnap.val().rss){
 

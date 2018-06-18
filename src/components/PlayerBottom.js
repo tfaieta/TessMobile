@@ -340,8 +340,8 @@ class PlayerBottom extends Component {
         else{
 
             var fixedTitle = '';
-            if(Variables.state.podcastTitle.toString().length > height/18 ){
-                fixedTitle = (Variables.state.podcastTitle.slice(0,height/18)+"...")
+            if(Variables.state.podcastTitle.toString().length > height/22 ){
+                fixedTitle = (Variables.state.podcastTitle.slice(0,height/22)+"...")
             }
             else{
                 fixedTitle = Variables.state.podcastTitle;
@@ -358,7 +358,7 @@ class PlayerBottom extends Component {
 
 
             return (
-                <View style={{marginTop:4}}>
+                <View style={{marginTop: height/166.75}}>
                     <Text style={styles.playingText}>{fixedTitle}</Text>
                     <Text style={styles.playingText2}>{fixedUsername}</Text>
                 </View>
