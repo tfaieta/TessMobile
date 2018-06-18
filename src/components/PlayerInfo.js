@@ -18,10 +18,9 @@ import { Navigation } from 'react-native-navigation';
 import ListItemComment from "./ListItemComment";
 var Analytics = require('react-native-firebase-analytics');
 
-
-
-
 var {height, width} = Dimensions.get('window');
+
+
 
 
 class PlayerInfo extends Component {
@@ -372,43 +371,32 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#656575',
         borderRadius: 10,
-        marginHorizontal: 30,
+        marginHorizontal: width/12.5,
     },
 
     header: {
-        marginTop:25,
-        marginLeft: -35,
-        color: '#2A2A30',
+        marginTop: height/26.68,
+        marginLeft: -(width/15),
+        color: '#3e4164',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
+        fontFamily: 'Montserrat-Bold',
+        fontSize: width/23.44,
         backgroundColor: 'transparent',
 
     },
 
-    title:{
-        color: '#2A2A30',
-        textAlign: 'center',
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
-        backgroundColor: 'transparent',
-        marginTop: 30,
-        marginBottom: 10
-    },
 
     title2:{
-        color: '#2A2A30',
+        color: '#3e4164',
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
+        fontFamily: 'Montserrat-Bold',
+        fontSize: width/23.44,
         backgroundColor: 'transparent',
-        marginTop: 20,
-        marginBottom: 10
+        marginTop: height/33.35,
+        marginBottom: height/66.7
     },
 
     textDescription:{
@@ -417,11 +405,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/23.44,
         backgroundColor: 'transparent',
-        marginBottom: 20,
-        marginHorizontal: 20,
+        marginBottom: height/33.35,
+        marginHorizontal: width/18.75,
     },
 
     textEmpty:{
@@ -430,12 +418,12 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
+        fontFamily:  'Montserrat-SemiBold',
+        fontSize: width/23.44,
         backgroundColor: 'transparent',
-        marginBottom: 20,
-        marginHorizontal: 20,
-        marginTop: 10
+        marginBottom: height/33.35,
+        marginHorizontal: width/18.75,
+        marginTop: height/66.7,
     },
 
     textLike:{
@@ -444,11 +432,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 14,
+        fontFamily:  'Montserrat-Bold',
+        fontSize: width/26.79,
         backgroundColor: 'transparent',
-        marginTop: 10,
-        marginHorizontal: 20,
+        marginTop: height/66.7,
+        marginHorizontal: width/18.75,
     },
     textComment:{
         color: '#656575',
@@ -456,40 +444,40 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 14,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/26.79,
         backgroundColor: 'transparent',
-        marginVertical: 5,
-        marginHorizontal: 5,
+        marginVertical: height/133.4,
+        marginHorizontal: width/75,
     },
     textCommentName:{
-        color: '#2A2A30',
+        color: '#3e4164',
         flexDirection: 'column',
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 14,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/26.79,
         backgroundColor: 'transparent',
-        marginVertical: 5,
-        marginHorizontal: 5,
+        marginVertical: height/133.4,
+        marginHorizontal: width/75,
     },
     descriptionBox:{
         backgroundColor: '#fff',
-        marginHorizontal: 10,
-        paddingVertical: 30,
-        height: 175,
+        marginHorizontal: width/37.5,
+        paddingVertical: height/22.23,
+        height: height/3.81,
     },
 
     input: {
-        height: 40,
+        height: height/16.68,
         backgroundColor: 'transparent',
         fontStyle: 'normal',
         textAlign: 'center',
-        fontFamily: 'HiraginoSans-W6',
-        color: '#2A2A30',
-        paddingHorizontal: 10,
-        fontSize: 16,
+        fontFamily: 'Montserrat-SemiBold',
+        color: '#3e4164',
+        paddingHorizontal: width/37.5,
+        fontSize: width/23.44,
     },
 
 });
