@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Text, View, LayoutAnimation, TouchableOpacity, Image, Dimensions, AsyncStorage } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
-var Analytics = require('react-native-firebase-analytics');
 import Variables from "./Variables";
 
 var {height, width} = Dimensions.get('window');
@@ -20,6 +19,7 @@ class ListItemHighlight extends Component {
         const {endTime} = this.props.highlight;
         const {startTime} = this.props.highlight;
         this.state = {
+            loading: true,
             profileImage: '',
             username: '',
             endTime: endTime,
@@ -58,7 +58,7 @@ class ListItemHighlight extends Component {
             }, 300);
 
             setTimeout(() => {
-                this.setState({username: profileName, episode: episode, podcastTitle: episode.podcastTitle});
+                this.setState({username: profileName, episode: episode, podcastTitle: episode.podcastTitle, loading: false});
             }, 1000);
 
 
@@ -104,11 +104,11 @@ class ListItemHighlight extends Component {
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginLeft: 10, alignSelf: 'center', height: 50, width: 50, borderRadius: 4, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)'}}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginLeft: width/37.5, alignSelf: 'center', height: width/7.5, width: width/7.5, borderRadius: 4, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)'}}>
                     <Icon style={{
                         textAlign: 'center',
-                        fontSize: 35,
-                        marginTop: 8,
+                        fontSize: width/10.71,
+                        marginTop: width/46.88,
                         color: 'white',
                     }} name="md-person">
                     </Icon>
@@ -117,9 +117,9 @@ class ListItemHighlight extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginLeft: 10, height: 50, width: 50}}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginLeft: width/37.5, height: width/7.5, width: width/7.5}}>
                     <Image
-                        style={{width: 50, height: 50, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
+                        style={{width: width/7.5, height: width/7.5, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -205,175 +205,203 @@ class ListItemHighlight extends Component {
 
     };
 
-    render() {
-        const {podcastArtist} = this.state.episode;
-        const {podcastTitle} = this.state.episode;
-        const {title} = this.props.highlight;
-        const {podcastCategory} = this.state.episode;
-        const {id} = this.state.episode;
-        const {description} = this.props.highlight;
-        const {key} = this.props.highlight;
+    renderItem = () => {
+        if(this.state.loading){
+            return (
+
+                <View>
+                    <View style={styles.container}>
+
+                        <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginLeft: width/37.5, alignSelf: 'center', height: width/7.5, width: width/7.5, borderRadius: 4, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)'}}>
+                            <Icon style={{
+                                textAlign: 'center',
+                                fontSize: width/10.71,
+                                marginTop: width/46.88,
+                                color: 'white',
+                            }} name="md-person">
+                            </Icon>
+                        </View>
+
+                        <View style={styles.leftContainer}>
+                            <View style={{backgroundColor: '#82839340', paddingVertical: height/95.3, marginVertical: height/333.5, marginHorizontal: width/37.5, paddingHorizontal: width/3, borderRadius: width/18.75}}/>
+                            <View style={{backgroundColor: '#82839340', paddingVertical: height/95.3, marginVertical: height/333.5, marginHorizontal: width/37.5, paddingHorizontal: width/3, borderRadius: width/18.75}}/>
+                        </View>
+
+                    </View>
+                </View>
+            );
+        }
+        else{
+            const {podcastArtist} = this.state.episode;
+            const {podcastTitle} = this.state.episode;
+            const {title} = this.props.highlight;
+            const {podcastCategory} = this.state.episode;
+            const {id} = this.state.episode;
+            const {description} = this.props.highlight;
+            const {key} = this.props.highlight;
 
 
-        return (
+            return (
 
-            <TouchableOpacity onPress={() => {
-                Variables.state.highlightStart = this.state.startTime;
-                Variables.state.highlightEnd = this.state.endTime;
-                Variables.state.seekTo = this.state.startTime;
-                Variables.state.currentTime = this.state.startTime;
-
-
-                if(this.state.episode != []){
-                    if(this.state.episode.rss){
-                        AsyncStorage.setItem("currentPodcast", '');
-                        AsyncStorage.setItem("currentTime", "0");
-
-                        Variables.pause();
-                        Variables.setPodcastFile(this.state.episode.podcastURL);
-                        Variables.state.isPlaying = false;
-                        Variables.state.highlight = true;
-                        Variables.state.rss = true;
-                        Variables.state.podcastURL = this.state.episode.podcastURL;
-                        Variables.state.podcastArtist = podcastArtist;
-                        Variables.state.podcastTitle = title;
-                        Variables.state.podcastID = id;
-                        Variables.state.podcastCategory = podcastCategory;
-                        Variables.state.podcastDescription = description;
-                        Variables.state.favorited = false;
-                        Variables.play();
-                        Variables.state.isPlaying = true;
+                <TouchableOpacity onPress={() => {
+                    Variables.state.highlightStart = this.state.startTime;
+                    Variables.state.highlightEnd = this.state.endTime;
+                    Variables.state.seekTo = this.state.startTime;
+                    Variables.state.currentTime = this.state.startTime;
 
 
-                        Variables.state.userProfileImage = '';
-                        firebase.database().ref(`users/${podcastArtist}/profileImage`).once("value", function (snapshot) {
-                            if(snapshot.val()){
-                                Variables.state.userProfileImage = snapshot.val().profileImage
-                            }
-                        });
+                    if(this.state.episode != []){
+                        if(this.state.episode.rss){
+                            AsyncStorage.setItem("currentPodcast", '');
+                            AsyncStorage.setItem("currentTime", "0");
 
-                        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
-                            if(snap.val()){
-                                Variables.state.currentUsername = snap.val().username;
-                            }
-                            else {
-                                Variables.state.currentUsername = podcastArtist;
-                            }
-                        });
+                            Variables.pause();
+                            Variables.setPodcastFile(this.state.episode.podcastURL);
+                            Variables.state.isPlaying = false;
+                            Variables.state.highlight = true;
+                            Variables.state.rss = true;
+                            Variables.state.podcastURL = this.state.episode.podcastURL;
+                            Variables.state.podcastArtist = podcastArtist;
+                            Variables.state.podcastTitle = title;
+                            Variables.state.podcastID = id;
+                            Variables.state.podcastCategory = podcastCategory;
+                            Variables.state.podcastDescription = description;
+                            Variables.state.favorited = false;
+                            Variables.play();
+                            Variables.state.isPlaying = true;
 
 
-                    }
-                    else if(id){
-                        AsyncStorage.setItem("currentPodcast", '');
-                        AsyncStorage.setItem("currentTime", "0");
+                            Variables.state.userProfileImage = '';
+                            firebase.database().ref(`users/${podcastArtist}/profileImage`).once("value", function (snapshot) {
+                                if(snapshot.val()){
+                                    Variables.state.userProfileImage = snapshot.val().profileImage
+                                }
+                            });
 
-                        firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL().catch(() => {console.warn("file not found")})
-                            .then(function(url) {
-
-                                Variables.pause();
-                                Variables.setPodcastFile(url);
-                                Variables.state.highlight = true;
-                                Variables.state.rss = false;
-                                Variables.state.podcastURL = url;
-                                Variables.state.podcastArtist = podcastArtist;
-                                Variables.state.podcastTitle = title;
-                                Variables.state.podcastID = id;
-                                Variables.state.podcastCategory = podcastCategory;
-                                Variables.state.podcastDescription = description;
-                                Variables.state.favorited = false;
-                                Variables.play();
-                                Variables.state.isPlaying = true;
-
+                            firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
+                                if(snap.val()){
+                                    Variables.state.currentUsername = snap.val().username;
+                                }
+                                else {
+                                    Variables.state.currentUsername = podcastArtist;
+                                }
                             });
 
 
-                        Variables.state.userProfileImage = '';
-                        const storageRef = firebase.storage().ref(`/users/${podcastArtist}/image-profile-uploaded`);
-                        if(storageRef.child('image-profile-uploaded')){
-                            storageRef.getDownloadURL()
+                        }
+                        else if(id){
+                            AsyncStorage.setItem("currentPodcast", '');
+                            AsyncStorage.setItem("currentTime", "0");
+
+                            firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL().catch(() => {console.warn("file not found")})
                                 .then(function(url) {
-                                    if(url){
-                                        Variables.state.userProfileImage = url;
-                                    }
-                                }).catch(function(error) {
-                                //
+
+                                    Variables.pause();
+                                    Variables.setPodcastFile(url);
+                                    Variables.state.highlight = true;
+                                    Variables.state.rss = false;
+                                    Variables.state.podcastURL = url;
+                                    Variables.state.podcastArtist = podcastArtist;
+                                    Variables.state.podcastTitle = title;
+                                    Variables.state.podcastID = id;
+                                    Variables.state.podcastCategory = podcastCategory;
+                                    Variables.state.podcastDescription = description;
+                                    Variables.state.favorited = false;
+                                    Variables.play();
+                                    Variables.state.isPlaying = true;
+
+                                });
+
+
+                            Variables.state.userProfileImage = '';
+                            const storageRef = firebase.storage().ref(`/users/${podcastArtist}/image-profile-uploaded`);
+                            if(storageRef.child('image-profile-uploaded')){
+                                storageRef.getDownloadURL()
+                                    .then(function(url) {
+                                        if(url){
+                                            Variables.state.userProfileImage = url;
+                                        }
+                                    }).catch(function(error) {
+                                    //
+                                });
+                            }
+
+                            firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
+                                if(snap.val()){
+                                    Variables.state.currentUsername = (snap.val().username + ' • ' + podcastTitle).slice(0,35) + '...';
+                                }
+                                else {
+                                    Variables.state.currentUsername = podcastArtist;
+                                }
                             });
+
                         }
 
-                        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
-                            if(snap.val()){
-                                Variables.state.currentUsername = (snap.val().username + ' • ' + podcastTitle).slice(0,35) + '...';
-                            }
-                            else {
-                                Variables.state.currentUsername = podcastArtist;
-                            }
-                        });
-
-
-
                     }
 
+                }}
+                                  onLongPress={() => {
+                                      let rowData = [];
+                                      rowData.highlight = true;
+                                      rowData.podcastTitle = title;
+                                      rowData.podcastArtist = podcastArtist;
+                                      rowData.podcastCategory = podcastCategory;
+                                      rowData.id = id;
+                                      rowData.podcastDescription = description;
+                                      rowData.key = key;
 
-                }
+                                      const {navigator} = this.props;
+
+                                      this.props.navigator.showLightBox({
+                                          screen: "PodcastOptions",
+                                          passProps: {rowData, navigator},
+                                          style: {
+                                              backgroundBlur: "dark",
+                                              backgroundColor: '#3e416430',
+                                              tapBackgroundToDismiss: true,
+                                              width: 100,
+                                              height: 200
+                                          },
+                                      });
+                                  }}>
+                    <View style={styles.container}>
+
+                        {this._renderProfileImage()}
+
+                        <View style={styles.leftContainer}>
+                            <Text style={styles.title}>{title}</Text>
+                            <Text style={styles.artistTitle}>{this.renderInfo()}</Text>
+                        </View>
 
 
+                        <View style={styles.rightContainer}>
+                            <Icon style={{
+                                textAlign: 'left',
+                                marginLeft: 0,
+                                marginRight: height/44.47,
+                                fontSize: height/40,
+                                color: '#3e4164',
+                            }} name="md-time">
+                                {this._renderCurrentTime(this.state.totalTime)}
+                            </Icon>
+                        </View>
 
 
-
-            }}
-            onLongPress={() => {
-                let rowData = [];
-                rowData.highlight = true;
-                rowData.podcastTitle = title;
-                rowData.podcastArtist = podcastArtist;
-                rowData.podcastCategory = podcastCategory;
-                rowData.id = id;
-                rowData.podcastDescription = description;
-                rowData.key = key;
-
-                const {navigator} = this.props;
-
-                this.props.navigator.showLightBox({
-                    screen: "PodcastOptions",
-                    passProps: {rowData, navigator},
-                    style: {
-                        backgroundBlur: "dark",
-                        backgroundColor: '#3e416430',
-                        tapBackgroundToDismiss: true,
-                        width: 100,
-                        height: 200
-                    },
-                });
-            }}>
-                <View style={styles.container}>
-
-                    {this._renderProfileImage()}
-
-                    <View style={styles.leftContainer}>
-                        <Text style={styles.title}>{title}</Text>
-                        <Text style={styles.artistTitle}>{this.renderInfo()}</Text>
                     </View>
+                </TouchableOpacity>
 
+            );
+        }
 
-                    <View style={styles.rightContainer}>
-                        <Icon style={{
-                            textAlign: 'left',
-                            marginLeft: 0,
-                            marginRight: height/44.47,
-                            fontSize: height/40,
-                            color: '#3e4164',
-                        }} name="md-time">
-                            {this._renderCurrentTime(this.state.totalTime)}
-                        </Icon>
-                    </View>
+    };
 
+    render() {
 
-                </View>
-            </TouchableOpacity>
-
-        );
-
-
+        return(
+            <View>
+                {this.renderItem()}
+            </View>
+        )
 
     }
 

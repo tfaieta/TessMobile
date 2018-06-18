@@ -798,7 +798,7 @@ class Home extends Component{
         });
 
         this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), refreshing: false})},1000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), refreshing: false})},4500);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), refreshing: false})},3500);
 
     }
 

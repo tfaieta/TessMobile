@@ -20,6 +20,7 @@ class ListItemCard extends Component {
     constructor(state) {
         super(state);
         this.state ={
+            loading: true,
             profileName: '',
             profileImage: '',
             username: '',
@@ -75,6 +76,7 @@ class ListItemCard extends Component {
                 this.setState({description: (podcastDescription.slice(0,(width/2.03))+"...")});
             }
 
+            this.setState({loading: false})
         }, 900);
 
 
@@ -116,8 +118,6 @@ class ListItemCard extends Component {
                 this.setState({listens: listens})
             }, 750)
         }
-
-
 
     }
 
@@ -453,88 +453,147 @@ class ListItemCard extends Component {
 
     }
 
-
-    render() {
-
-        return (
-            <TouchableHighlight underlayColor = '#f5f4f9' onPress = {this.onPressPlay} onLongPress={() => {
-                const {podcast} = this.props;
-                const rowData = podcast;
-
-                const {navigator} = this.props;
-
-                this.props.navigator.showLightBox({
-                    screen: "PodcastOptions",
-                    passProps: {rowData, navigator},
-                    style: {
-                        backgroundBlur: "dark",
-                        backgroundColor: '#3e416430',
-                        tapBackgroundToDismiss: true,
-                    },
-                });
-
-            }}  style = {{backgroundColor: '#fff', borderBottomColor: '#00000030', borderBottomWidth: 1,}}>
-            <View style = {{backgroundColor: '#fff', paddingHorizontal: width/33.5,}}>
-                <View style={{ backgroundColor: '#fff', paddingHorizontal: width/33.5, width: width-20, paddingBottom: height/44, }}>
-                    <View>
-                        <View style={{backgroundColor: '#fff', flexDirection: 'row', marginVertical: height/200}}>
-                            <View style={{flex: 8, alignSelf: 'flex-start'}}>
-                                <Text style={styles.titleCard}>{this.state.title}</Text>
-                            </View>
-                            <View style={{flex: 1, alignSelf: 'flex-end'}}>
-                                <TouchableOpacity onPress={() => {
-                                    const {podcast} = this.props;
-                                    const rowData = podcast;
-
-                                    const {navigator} = this.props;
-
-                                    this.props.navigator.showLightBox({
-                                        screen: "PodcastOptions",
-                                        passProps: {rowData, navigator},
-                                        style: {
-                                            backgroundBlur: "dark",
-                                            backgroundColor: '#3e416430',
-                                            tapBackgroundToDismiss: true,
-                                        },
-                                    });
-
-                                }} style={{flex: 1, backgroundColor: '#fff',}}>
-                                    <Icon style={{
-                                        textAlign: 'right',
-                                        marginTop: height/133.4,
-                                        fontSize: height/26,
-                                        color: '#506dcf',
-                                    }} name="ellipsis-h">
-                                    </Icon>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style = {{backgroundColor: '#fff',}}>
-                            <View style={{padding: 10, flexDirection: 'row'}}>
-
-                                <View style = {{alignSelf: 'center'}}>
-                                    {this._renderProfileImage()}
+    renderCard = () => {
+        if(this.state.loading){
+            return (
+                <View style = {{backgroundColor: '#fff', borderBottomColor: '#00000030', borderBottomWidth: 1,}}>
+                    <View style = {{backgroundColor: '#fff', paddingHorizontal: width/33.5,}}>
+                        <View style={{ backgroundColor: '#fff', paddingHorizontal: width/33.5, width: width-20, paddingBottom: height/44, }}>
+                            <View>
+                                <View style={{backgroundColor: '#fff', flexDirection: 'row', marginVertical: height/200}}>
+                                    <View style={{flex: 8, alignSelf: 'flex-start'}}>
+                                        <View style={{backgroundColor: '#82839340', paddingVertical: height/95.3, marginTop: height/66.7, paddingHorizontal: width/5.36, borderRadius: width/18.75}}/>
+                                    </View>
                                 </View>
+                                <View style = {{backgroundColor: '#fff',}}>
+                                    <View style={{padding: 10, flexDirection: 'row'}}>
 
-                                <View style = {{alignSelf: 'center', flex: 1,}}>
-                                    <Text style={styles.artistTitle}>{this.state.description}</Text>
+                                        <View style = {{alignSelf: 'center'}}>
+                                            <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: (height/5.5), width: (height/5.5), borderRadius: 4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)' }}>
+                                                <Icon style={{
+                                                    textAlign: 'center',
+                                                    fontSize: height/8.34,
+                                                    color: 'white',
+                                                    marginTop: height/46,
+                                                }} name="user-circle">
+                                                </Icon>
+                                            </View>
+                                        </View>
+
+                                        <View style = {{alignSelf: 'center', flex: 1,}}>
+                                            <View style={{backgroundColor: '#82839340', paddingVertical: height/95.3, marginVertical: height/333.5, marginHorizontal: width/37.5, paddingHorizontal: width/9.38, borderRadius: width/18.75}}/>
+                                            <View style={{backgroundColor: '#82839340', paddingVertical: height/95.3, marginVertical: height/333.5, marginHorizontal: width/37.5, paddingHorizontal: width/9.38, borderRadius: width/18.75}}/>
+                                            <View style={{backgroundColor: '#82839340', paddingVertical: height/95.3, marginVertical: height/333.5, marginHorizontal: width/37.5, paddingHorizontal: width/9.38, borderRadius: width/18.75}}/>
+                                        </View>
+                                    </View>
                                 </View>
-                            </View>
-                        </View>
-                        <View style={{backgroundColor: '#fff', flexDirection: 'row', paddingBottom: height/200}}>
-                            <View style={{flex:1, alignSelf: 'flex-start'}}>
-                                <Text style={styles.bottomTitle}>{this.state.profileName}</Text>
-                            </View>
-                            <View style={{flex:1, alignSelf: 'flex-end'}}>
-                                {this.renderListens()}
+                                <View style={{backgroundColor: '#fff', flexDirection: 'row', paddingBottom: height/200}}>
+                                    <View style={{flex:1, alignSelf: 'flex-start'}}>
+                                        <View style={{backgroundColor: '#82839340', paddingVertical: height/133.4, marginHorizontal: width/37.5, paddingHorizontal: width/5.36, borderRadius: width/18.75}}/>
+                                    </View>
+                                    <View style={{flex:1, alignSelf: 'flex-end'}}>
+                                        <View style={{backgroundColor: '#82839340', paddingVertical: height/133.4, marginHorizontal: width/37.5, paddingHorizontal: width/5.36, borderRadius: width/18.75}}/>
+                                    </View>
+                                </View>
                             </View>
                         </View>
                     </View>
                 </View>
-            </View>
-            </TouchableHighlight>
 
-        );
+            );
+        }
+        else{
+            return (
+                <TouchableHighlight underlayColor = '#f5f4f9' onPress = {this.onPressPlay} onLongPress={() => {
+                    const {podcast} = this.props;
+                    const rowData = podcast;
+
+                    const {navigator} = this.props;
+
+                    this.props.navigator.showLightBox({
+                        screen: "PodcastOptions",
+                        passProps: {rowData, navigator},
+                        style: {
+                            backgroundBlur: "dark",
+                            backgroundColor: '#3e416430',
+                            tapBackgroundToDismiss: true,
+                        },
+                    });
+
+                }}  style = {{backgroundColor: '#fff', borderBottomColor: '#00000030', borderBottomWidth: 1,}}>
+                    <View style = {{backgroundColor: '#fff', paddingHorizontal: width/33.5,}}>
+                        <View style={{ backgroundColor: '#fff', paddingHorizontal: width/33.5, width: width-20, paddingBottom: height/44, }}>
+                            <View>
+                                <View style={{backgroundColor: '#fff', flexDirection: 'row', marginVertical: height/200}}>
+                                    <View style={{flex: 8, alignSelf: 'flex-start'}}>
+                                        <Text style={styles.titleCard}>{this.state.title}</Text>
+                                    </View>
+                                    <View style={{flex: 1, alignSelf: 'flex-end'}}>
+                                        <TouchableOpacity onPress={() => {
+                                            const {podcast} = this.props;
+                                            const rowData = podcast;
+
+                                            const {navigator} = this.props;
+
+                                            this.props.navigator.showLightBox({
+                                                screen: "PodcastOptions",
+                                                passProps: {rowData, navigator},
+                                                style: {
+                                                    backgroundBlur: "dark",
+                                                    backgroundColor: '#3e416430',
+                                                    tapBackgroundToDismiss: true,
+                                                },
+                                            });
+
+                                        }} style={{flex: 1, backgroundColor: '#fff',}}>
+                                            <Icon style={{
+                                                textAlign: 'right',
+                                                marginTop: height/133.4,
+                                                fontSize: height/26,
+                                                color: '#506dcf',
+                                            }} name="ellipsis-h">
+                                            </Icon>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                                <View style = {{backgroundColor: '#fff',}}>
+                                    <View style={{padding: 10, flexDirection: 'row'}}>
+
+                                        <View style = {{alignSelf: 'center'}}>
+                                            {this._renderProfileImage()}
+                                        </View>
+
+                                        <View style = {{alignSelf: 'center', flex: 1,}}>
+                                            <Text style={styles.artistTitle}>{this.state.description}</Text>
+                                        </View>
+                                    </View>
+                                </View>
+                                <View style={{backgroundColor: '#fff', flexDirection: 'row', paddingBottom: height/200}}>
+                                    <View style={{flex:1, alignSelf: 'flex-start'}}>
+                                        <Text style={styles.bottomTitle}>{this.state.profileName}</Text>
+                                    </View>
+                                    <View style={{flex:1, alignSelf: 'flex-end'}}>
+                                        {this.renderListens()}
+                                    </View>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                </TouchableHighlight>
+
+            );
+        }
+
+    };
+
+
+    render() {
+
+        return(
+            <View>
+                {this.renderCard()}
+            </View>
+        )
 
 
     }
