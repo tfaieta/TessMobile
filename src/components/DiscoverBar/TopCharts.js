@@ -48,24 +48,23 @@ class TopCharts extends Component{
         super(props);
 
         this.props.navigator.setStyle({
+
             statusBarHidden: false,
             statusBarTextColorScheme: 'light',
             navBarHidden: false,
-            navBarTextColor: '#3e4164', // Change the text color of the title (remembered across pushes)
-            navBarTextFontSize: width/15.625, // Change the font size of the title
-            navBarTextFontFamily: 'Montserrat-Bold', // Changes the title font
             drawUnderTabBar: false,
+            navBarCustomView: 'DiscoverNavBar',
+            navBarCustomViewInitialProps: {
+                navigator: this.props.navigator,
+                text: "Charts"
+            },
             navBarHideOnScroll: false,
             navBarBackgroundColor: '#fff',
             topBarElevationShadowEnabled: true,
-            topBarShadowColor: '#fff',
             topBarShadowOpacity: 0,
             topBarShadowOffset: 0,
-            topBarShadowRadius:0,
+            topBarShadowRadius: 0,
             statusBarColor: '#fff',
-            drawUnderNavBar: true,
-            navBarTranslucent: true,
-            navBarNoBorder: true,
         });
 
 
@@ -222,7 +221,8 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
-        marginTop: height/8.34,
+        marginTop: height/9.67,
+        height: height/1.154,
     },
 
     title: {
