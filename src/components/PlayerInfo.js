@@ -60,11 +60,9 @@ static navigatorStyle = {
             comment: '',
             commentsLoading: true,
             dataSource: dataSource.cloneWithRows(Variables.state.comments),
+            description: ''
         };
 
-        this.timeout = setTimeout(() => {
-            this.setState({commentsLoading: false})
-        }, 1500);
         this.interval = setInterval(() => {
             firebase.database().ref(`podcasts/${Variables.state.podcastID}/comments`).on("value", function (snap) {
                 Variables.state.comments = [];
@@ -77,7 +75,43 @@ static navigatorStyle = {
             setTimeout(() => {
                 this.setState({dataSource: dataSource.cloneWithRows(Variables.state.comments)})},500);
 
-        }, 1000)
+        }, 1000);
+
+
+        // clean up description
+        let desc = Variables.state.podcastDescription;
+        for(let i = (desc.length/2); i > 0; i--){
+            desc = desc.replace("<p>", " ");
+            desc = desc.replace("</p>", " ");
+            desc = desc.replace("<a", " ");
+            desc = desc.replace("&amp", " ");
+            desc = desc.replace("href=", " ");
+            desc = desc.replace("<em>", " ");
+            desc = desc.replace("</em>", " ");
+            desc = desc.replace("</a>", " ");
+            desc = desc.replace("<h2", " ");
+            desc = desc.replace("id=", " ");
+            desc = desc.replace("</h2>", " ");
+            desc = desc.replace("</p>", " ");
+            desc = desc.replace("<br>", " ");
+            desc = desc.replace("<div>", " ");
+            desc = desc.replace("</div>", " ");
+            desc = desc.replace("<ul>", " ");
+            desc = desc.replace("<li>", " ");
+            desc = desc.replace("</li>", " ");
+            desc = desc.replace("<strong>", " ");
+            desc = desc.replace("</strong>", " ");
+            desc = desc.replace("<sup>", " ");
+            desc = desc.replace("</sup>", " ");
+            desc = desc.replace("<br><br>", " ");
+            desc = desc.replace("<br>", " ");
+            desc = desc.replace("&nbsp", " ");
+            desc = desc.replace(`target="_blank">`, " ");
+        }
+
+        this.timeout = setTimeout(() => {
+            this.setState({commentsLoading: false, description: desc})
+        }, 3000);
 
     }
 
@@ -187,6 +221,21 @@ static navigatorStyle = {
     }
 
 
+    renderDescription = () => {
+        if(this.state.commentsLoading != ''){
+            return(
+                <View style={styles.container}>
+                    <ActivityIndicator style={{paddingVertical: height/15, alignSelf:'center'}} color='#3e4164' size ="large" />
+                </View>
+            )
+        }
+        else{
+            return(
+                <Text style={styles.textDescription}>{this.state.description}</Text>
+            )
+        }
+    };
+
 
     render(){
 
@@ -219,7 +268,7 @@ static navigatorStyle = {
 
                 <View style={{height: 1.5, marginHorizontal: 20, backgroundColor: '#2A2A3060',}} />
                 <ScrollView style={styles.descriptionBox}>
-                    <Text style={styles.textDescription}>{Variables.state.podcastDescription}</Text>
+                    {this.renderDescription()}
                 </ScrollView>
 
                 {this.renderPodcastInfo()}

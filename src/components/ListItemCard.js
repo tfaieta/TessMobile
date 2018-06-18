@@ -51,11 +51,35 @@ class ListItemCard extends Component {
             },500);
         }
 
-        if(this.state.description == ''){
-            setTimeout(() =>{
-                this.setState({description: podcastDescription.slice(0,(width/1.97))})
-            },500);
-        }
+        // clean up description
+        let desc = podcastDescription;
+        desc = desc.replace("<p>", " ");
+        desc = desc.replace("</p>", " ");
+        desc = desc.replace("<a", " ");
+        desc = desc.replace("&amp", " ");
+        desc = desc.replace("href=", " ");
+        desc = desc.replace("<em>", " ");
+        desc = desc.replace("</em>", " ");
+        desc = desc.replace("</a>", " ");
+        desc = desc.replace("<h2", " ");
+        desc = desc.replace("id=", " ");
+        desc = desc.replace("</h2>", " ");
+        desc = desc.replace("</p>", " ");
+        desc = desc.replace("<br>", " ");
+        desc = desc.replace("<div>", " ");
+        desc = desc.replace("</div>", " ");
+        desc = desc.replace("<ul>", " ");
+        desc = desc.replace("<li>", " ");
+        desc = desc.replace("</li>", " ");
+        desc = desc.replace("<strong>", " ");
+        desc = desc.replace("</strong>", " ");
+        desc = desc.replace("<sup>", " ");
+        desc = desc.replace("</sup>", " ");
+        desc = desc.replace("<br><br>", " ");
+        desc = desc.replace("<br>", " ");
+        desc = desc.replace("&nbsp", " ");
+        desc = desc.replace(`target="_blank">`, " ");
+
 
         setTimeout(() => {
             if(podcastTitle.toString().length > (width/4.69) ){
@@ -72,13 +96,15 @@ class ListItemCard extends Component {
                 this.setState({username: this.state.profileName});
             }
 
-            if(this.state.description.length > (width/2.03)){
-                this.setState({description: (podcastDescription.slice(0,(width/2.03))+"...")});
+            if(desc.length > (width/2.03)){
+                this.setState({description: (desc.slice(0,(width/2.03))+"...")});
+            }
+            else{
+                this.setState({description: desc});
             }
 
             this.setState({loading: false})
         }, 900);
-
 
 
 

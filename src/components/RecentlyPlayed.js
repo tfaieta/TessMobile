@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ScrollView, ListView} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Text, View, StyleSheet, ScrollView, ListView} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import Variables from "./Variables";
 import firebase from 'firebase';
@@ -18,17 +17,16 @@ class RecentlyPlayed extends Component{
     componentWillMount(){
         const {currentUser} = firebase.auth();
 
-        firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).on("value", function (snapshot) {
-            Variables.state.recentlyPlayed = [];
+        Variables.state.recentlyPlayed = [];
+        firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).limitToLast(25).once("value", function (snapshot) {
             snapshot.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.val().id}`).on("value", function (data) {
+                firebase.database().ref(`podcasts/${snap.val().id}`).once("value", function (data) {
                     if(data.val()){
                         Variables.state.recentlyPlayed.push(data.val())
                     }
 
                 })
             });
-            Variables.state.recentlyPlayed.reverse();
         });
 
     }
@@ -36,7 +34,6 @@ class RecentlyPlayed extends Component{
 
     componentWillUnmount(){
         clearTimeout(this.timeout);
-        clearTimeout(this.timeout2);
     }
 
 
@@ -66,13 +63,10 @@ class RecentlyPlayed extends Component{
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithRows(Variables.state.recentlyPlayed),
+            dataSource: dataSource.cloneWithRows([]),
         };
         this.timeout = setTimeout(() => {
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.recentlyPlayed)})
-        },1000);
-        this.timeout2 = setTimeout(() => {
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.recentlyPlayed)})
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.recentlyPlayed.reverse())})
         },2500);
     };
 
