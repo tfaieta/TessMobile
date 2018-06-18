@@ -7,9 +7,6 @@ var Analytics = require('react-native-firebase-analytics');
 
 var {height, width} = Dimensions.get('window');
 
-
-
-
 // A single episode on a list, used for top charts
 
 class ListItemChart extends Component {
@@ -305,7 +302,6 @@ class ListItemChart extends Component {
                                     firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed/`).push({id});
                                 });
 
-
                                 Variables.pause();
                                 Variables.setPodcastFile(url);
                                 Variables.state.isPlaying = false;
@@ -346,7 +342,6 @@ class ListItemChart extends Component {
                     else{
                         firebase.storage().ref(`/users/${podcastArtist}/${podcastTitle}`).getDownloadURL().catch(() => {console.warn("file not found")})
                             .then(function(url) {
-
 
                                 firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
                                     if(snap.val()){
@@ -433,13 +428,7 @@ class ListItemChart extends Component {
                 </View>
 
             </TouchableHighlight>
-
         );
-
-
-
-
-
     }
 
 
@@ -447,11 +436,11 @@ class ListItemChart extends Component {
 
 const styles = {
     title: {
-        color: '#000',
+        color: '#3e4164',
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: width/25,
         backgroundColor: 'transparent',
         marginHorizontal: width/18.75,
@@ -459,7 +448,7 @@ const styles = {
 
     },
     titleNum: {
-        color: '#828393',
+        color: '#8C8C8C',
         marginTop: height/133.4,
         flex: 1,
         textAlign: 'center',
@@ -470,7 +459,7 @@ const styles = {
 
     },
     artistTitle: {
-        color: '#828393',
+        color: '#8C8C8C',
         marginTop: 2,
         textAlign: 'left',
         opacity: 1,
@@ -482,7 +471,7 @@ const styles = {
         marginHorizontal: 20,
     },
     container: {
-        backgroundColor: '#f5f4f9',
+        backgroundColor: '#F9F8FC',
         opacity: 1,
         flexDirection: 'row',
     },
@@ -506,8 +495,5 @@ const styles = {
         alignItems: 'flex-start',
     },
 };
-
-
-
 
 export default ListItemChart;
