@@ -109,7 +109,7 @@ class PlayerBottom extends Component {
                 isPlaying: !Variables.state.paused,
                 speed: Variables.state.podcastSpeed,
             });
-        }, 100);
+        }, 200);
 
     }
 

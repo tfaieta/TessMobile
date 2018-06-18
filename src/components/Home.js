@@ -351,27 +351,30 @@ class Home extends Component{
             setTimeout(() => {
                 firebase.database().ref(`users/${userID}/highlights/${highlightID}`).once("value", function (snap) {
 
-                    firebase.database().ref(`podcasts/${snap.val().podcastID}`).once("value", function (snapshot) {
+                    if(snap.val()){
+                        firebase.database().ref(`podcasts/${snap.val().podcastID}`).once("value", function (snapshot) {
 
-                        if(snapshot.val().rss){
+                            if(snapshot.val().rss){
 
-                            const {podcastArtist} = snapshot.val();
-                            const {podcastTitle} = snapshot.val();
-                            const {podcastURL} = snapshot.val();
-                            const {title} = snap.val();
-                            const {podcastCategory} = snapshot.val();
-                            const {id} = snapshot.val();
-                            const {description} = snap.val();
-                            const {key} = snap.val();
-                            const {startTime} = snap.val();
-                            const {endTime} = snap.val();
+                                const {podcastArtist} = snapshot.val();
+                                const {podcastTitle} = snapshot.val();
+                                const {podcastURL} = snapshot.val();
+                                const {title} = snap.val();
+                                const {podcastCategory} = snapshot.val();
+                                const {id} = snapshot.val();
+                                const {description} = snap.val();
+                                const {key} = snap.val();
+                                const {startTime} = snap.val();
+                                const {endTime} = snap.val();
 
-                            Variables.state.highlightStart = startTime;
-                            Variables.state.highlightEnd = endTime;
-                            Variables.state.seekTo = startTime;
 
-                                AsyncStorage.setItem("currentPodcast", '');
-                                AsyncStorage.setItem("currentTime", "0");
+                                Variables.state.highlightStart = startTime;
+                                Variables.state.highlightEnd = endTime;
+                                Variables.state.seekTo = startTime;
+                                Variables.state.currentTime = startTime;
+
+                                AsyncStorage.setItem("currentPodcast", id);
+                                AsyncStorage.setItem("currentTime", startTime.toString());
 
                                 Variables.pause();
                                 Variables.setPodcastFile(podcastURL);
@@ -405,77 +408,80 @@ class Home extends Component{
                                     }
                                 });
 
-                        }
-                        else if(snapshot.val()){
+                            }
+                            else if(snapshot.val()){
 
-                            const {podcastArtist} = snapshot.val();
-                            const {podcastTitle} = snapshot.val();
-                            const {title} = snap.val();
-                            const {podcastCategory} = snapshot.val();
-                            const {id} = snapshot.val();
-                            const {description} = snap.val();
-                            const {key} = snap.val();
-                            const {startTime} = snap.val();
-                            const {endTime} = snap.val();
+                                const {podcastArtist} = snapshot.val();
+                                const {podcastTitle} = snapshot.val();
+                                const {title} = snap.val();
+                                const {podcastCategory} = snapshot.val();
+                                const {id} = snapshot.val();
+                                const {description} = snap.val();
+                                const {key} = snap.val();
+                                const {startTime} = snap.val();
+                                const {endTime} = snap.val();
 
-                            Variables.state.highlightStart = startTime;
-                            Variables.state.highlightEnd = endTime;
-                            Variables.state.seekTo = startTime;
+                                Variables.state.highlightStart = startTime;
+                                Variables.state.highlightEnd = endTime;
+                                Variables.state.seekTo = startTime;
+                                Variables.state.currentTime = startTime;
 
-                                    AsyncStorage.setItem("currentPodcast", '');
-                                    AsyncStorage.setItem("currentTime", "0");
+                                AsyncStorage.setItem("currentPodcast", id);
+                                AsyncStorage.setItem("currentTime", startTime.toString());
 
-                                    firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL().catch(() => {
-                                        console.warn("file not found")
-                                    })
-                                        .then(function (url) {
+                                firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL().catch(() => {
+                                    console.warn("file not found")
+                                })
+                                    .then(function (url) {
 
-                                            Variables.pause();
-                                            Variables.setPodcastFile(url);
-                                            Variables.state.highlight = true;
-                                            Variables.state.rss = false;
-                                            Variables.state.podcastURL = url;
-                                            Variables.state.podcastArtist = podcastArtist;
-                                            Variables.state.podcastTitle = title;
-                                            Variables.state.podcastID = id;
-                                            Variables.state.podcastCategory = podcastCategory;
-                                            Variables.state.podcastDescription = description;
-                                            Variables.state.favorited = false;
-                                            Variables.play();
-                                            Variables.state.isPlaying = true;
+                                        Variables.pause();
+                                        Variables.setPodcastFile(url);
+                                        Variables.state.highlight = true;
+                                        Variables.state.rss = false;
+                                        Variables.state.podcastURL = url;
+                                        Variables.state.podcastArtist = podcastArtist;
+                                        Variables.state.podcastTitle = title;
+                                        Variables.state.podcastID = id;
+                                        Variables.state.podcastCategory = podcastCategory;
+                                        Variables.state.podcastDescription = description;
+                                        Variables.state.favorited = false;
+                                        Variables.play();
+                                        Variables.state.isPlaying = true;
 
-                                        });
-
-
-                                    Variables.state.userProfileImage = '';
-                                    const storageRef = firebase.storage().ref(`/users/${podcastArtist}/image-profile-uploaded`);
-                                    if (storageRef.child('image-profile-uploaded')) {
-                                        storageRef.getDownloadURL()
-                                            .then(function (url) {
-                                                if (url) {
-                                                    Variables.state.userProfileImage = url;
-                                                }
-                                            }).catch(function (error) {
-                                            //
-                                        });
-                                    }
-
-                                    firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
-                                        if (snap.val()) {
-                                            Variables.state.currentUsername = (snap.val().username + ' • ' + podcastTitle).slice(0, 35) + '...';
-                                        }
-                                        else {
-                                            Variables.state.currentUsername = podcastArtist;
-                                        }
                                     });
 
-                        }
 
-                    });
+                                Variables.state.userProfileImage = '';
+                                const storageRef = firebase.storage().ref(`/users/${podcastArtist}/image-profile-uploaded`);
+                                if (storageRef.child('image-profile-uploaded')) {
+                                    storageRef.getDownloadURL()
+                                        .then(function (url) {
+                                            if (url) {
+                                                Variables.state.userProfileImage = url;
+                                            }
+                                        }).catch(function (error) {
+                                        //
+                                    });
+                                }
+
+                                firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
+                                    if (snap.val()) {
+                                        Variables.state.currentUsername = (snap.val().username + ' • ' + podcastTitle).slice(0, 35) + '...';
+                                    }
+                                    else {
+                                        Variables.state.currentUsername = podcastArtist;
+                                    }
+                                });
+
+                            }
+
+                        });
+                    }
+
 
                 })
 
-            }, 1500);
+            }, 3000);
 
         }
     };
