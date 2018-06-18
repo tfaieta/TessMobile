@@ -1,13 +1,11 @@
 /*
-    This is the Discover Nav Bar, this component is used on screens with one title navigation.
+    This is the Discover Nav Bar, this component is used on screens with one title navigation with a white
+    background.
 
     It is used in:
     TopCharts.js,
-    
-
+    Categories.js.
  */
-
-
 
 
 import React, {Component} from 'react';
@@ -51,7 +49,7 @@ const styles = StyleSheet.create({
         color: '#3e4164',
         backgroundColor: 'transparent',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-SemiBold',
+        fontFamily: 'Montserrat-Bold',
         textAlign: 'center'
     }
 });

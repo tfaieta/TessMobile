@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView, ListView, ActivityIndicator, Dimensions} from 'react-native';
 import PlayerBottom from '../PlayerBottom';
 import ListItemPodcast from "../ListItemPodcast";
-import firebase from 'firebase';
 
-var {height, width} = Dimensions.get('window');
-
+var {height} = Dimensions.get('window');
 
 // a single category page, renders all podcasts associated with that category
 
