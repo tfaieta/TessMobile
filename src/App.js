@@ -59,6 +59,7 @@ import SetPlayerSpeed from "./components/SetPlayerSpeed";
 import MyQueue from "./components/MyQueue";
 import PlayerOptions from "./components/PlayerOptions";
 import CustomNavbar from "./components/CustomNavbar";
+import DiscoverNavBar from "./components/DiscoverBar/DiscoverNavBar";
 import Notifications from "./components/Notifications";
 import Playlists from "./components/Playlists";
 import AddWidget from "./components/AddWidget";
@@ -87,6 +88,7 @@ Navigation.registerComponent('Login', () => Login, store, Provider);
 Navigation.registerComponent('CreateAccount', () => CreateAccount, store, Provider);
 
 Navigation.registerComponent('CustomNavbar', () => CustomNavbar, store, Provider);
+Navigation.registerComponent('DiscoverNavBar', () => DiscoverNavBar, store, Provider);
 
 Navigation.registerComponent('Home', () => Home, store, Provider);
 Navigation.registerComponent('ViewAll', () => ViewAll, store, Provider);

@@ -8,7 +8,6 @@ import ListItemChartPodcast from "../ListItemChartPodcast";
 
 var {height, width} = Dimensions.get('window');
 
-
 // Charts page on discover (browse) page
 
 class TopCharts extends Component{
@@ -21,7 +20,6 @@ class TopCharts extends Component{
         ref.limitToLast(400).once("value", function (snapshot) {
 
             snapshot.forEach(function (data) {
-
                 if(data.child("plays").numChildren() > 0){
                     Variables.state.topCharts.push(data.val());
                     for(let i = Variables.state.topCharts.length-1; i > 0 && Object.keys(Variables.state.topCharts[i].plays).length > Object.keys(Variables.state.topCharts[i-1].plays).length; i--){
@@ -30,11 +28,8 @@ class TopCharts extends Component{
                         Variables.state.topCharts[i] = temp;
                     }
                 }
-
             })
-
         });
-
     }
 
 
@@ -48,25 +43,23 @@ class TopCharts extends Component{
         super(props);
 
         this.props.navigator.setStyle({
+
             statusBarHidden: false,
             statusBarTextColorScheme: 'light',
             navBarHidden: false,
-            navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
-            navBarTextFontSize: 22, // change the font size of the title
-            navBarTextFontFamily: 'Montserrat-Bold', // Changes the title font
             drawUnderTabBar: false,
+            navBarCustomView: 'DiscoverNavBar',
+            navBarCustomViewInitialProps: {
+                navigator: this.props.navigator,
+                text: "Charts"
+            },
             navBarHideOnScroll: false,
             navBarBackgroundColor: '#fff',
-            topBarElevationShadowEnabled: false,
-            topBarShadowColor: 'transparent',
-            topBarShadowOpacity: 0.1,
-            topBarShadowOffset: 3,
-            topBarShadowRadius: 5,
+            topBarElevationShadowEnabled: true,
+            topBarShadowOpacity: 0,
+            topBarShadowOffset: 0,
+            topBarShadowRadius: 0,
             statusBarColor: '#fff',
-            drawUnderNavBar: true,
-            navBarTranslucent: true,
-            navBarNoBorder: true
-
         });
 
 
@@ -166,14 +159,12 @@ class TopCharts extends Component{
                     scrollRenderAheadDistance={400}
                 />
             )
-
         }
-        else{
+        else {
             return(
                 <View/>
             )
         }
-
     };
 
     renderDataPods = (active) => {
@@ -195,8 +186,6 @@ class TopCharts extends Component{
         }
 
     };
-
-
     render() {
         return (
             <View style={styles.container}>
@@ -207,16 +196,12 @@ class TopCharts extends Component{
                 </View>
 
                 <ScrollView>
-
                     {this.renderDataEps(this.state.episodesActive)}
                     {this.renderDataPods(this.state.podcastsActive)}
-
                     <View style={{paddingBottom: height/11.12}}/>
-
                 </ScrollView>
 
                 <PlayerBottom navigator={this.props.navigator}/>
-
             </View>
 
         );
@@ -227,7 +212,8 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
-        marginTop: height/8.34,
+        marginTop: height/9.67,
+        height: height/1.154,
     },
 
     title: {

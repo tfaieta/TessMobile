@@ -1,16 +1,16 @@
+/*
+ One podcast component that has a title, a number to the left, and a podcast logo
+ on the right side of it. Made to render a list of podcasts and it's used in TopCharts.js
+ */
+
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image, Dimensions, TouchableHighlight} from 'react-native';
+import { Text, View, Image, Dimensions, TouchableHighlight} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import Variables from "./Variables";
 var Analytics = require('react-native-firebase-analytics');
 
 var {height, width} = Dimensions.get('window');
-
-
-
-
-// A single podcast on a list, used for top charts
 
 class ListItemChartPodcast extends Component {
 
@@ -102,11 +102,6 @@ class ListItemChartPodcast extends Component {
         }
     }
 
-
-
-
-
-
     render() {
 
         const podcastArtist = this.props.podcast;
@@ -150,19 +145,19 @@ class ListItemChartPodcast extends Component {
 
 const styles = {
     title: {
-        color: '#000',
+        color: '#3e4164',
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
-        fontSize: width/25,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/20.75,
         backgroundColor: 'transparent',
         marginHorizontal: width/18.75,
         marginTop: height/133.4,
 
     },
     titleNum: {
-        color: '#828393',
+        color: '#8C8C8C',
         marginTop: height/133.4,
         flex: 1,
         textAlign: 'center',

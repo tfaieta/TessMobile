@@ -8,8 +8,6 @@ import firebase from 'firebase';
 
 var {height, width} = Dimensions.get('window');
 
-
-
 // a single podcast on a list, shows podcast with episodes
 
 class ListItemPodcast extends Component{
@@ -27,7 +25,6 @@ class ListItemPodcast extends Component{
             size: {width: width, height: height/2.15}
         };
 
-
         let podImage = '';
         firebase.database().ref(`users/${this.props.podcast}/profileImage`).once("value", function (image) {
             if(image.val()){
@@ -43,7 +40,6 @@ class ListItemPodcast extends Component{
                 });
             }
         });
-
 
         let eps = [];
         firebase.database().ref(`users/${this.props.podcast}/podcasts`).limitToLast(10).once("value", function (snap) {

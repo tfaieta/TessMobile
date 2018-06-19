@@ -9,8 +9,6 @@ import Carousel from 'react-native-looped-carousel';
 
 var {height, width} = Dimensions.get('window');
 
-
-
 // 2nd tab, Browse page
 
 class Browse extends Component{
@@ -174,7 +172,6 @@ class Browse extends Component{
     };
 
 
-
     render() {
         return (
             <View style={styles.container}>
@@ -185,12 +182,9 @@ class Browse extends Component{
                     <Carousel
                         delay={5000}
                         style={this.state.size}
-                        autoplay
-                        bullets
-                        chosenBulletStyle={{backgroundColor: '#3e4164',}}
-                        bulletStyle={{backgroundColor:   '#f5f4f9', borderWidth: 1.2, borderColor: '#3e4164',}}
                         onAnimateNextPage={(p) => console.log(p)}
                     >
+                        {/* First Item in Carousel */}
                         <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
                             <TouchableWithoutFeedback onPress={() => {
                                 const {navigator} = this.props;
@@ -203,7 +197,7 @@ class Browse extends Component{
                                 })
                             }}>
                             <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: width/75}}>
-                                <View style = {{ backgroundColor: 'transparent', width: width/1.15, height: height/3.51, marginVertical: height/66.7, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                                <View style={styles.featuredArt}>
                                     <Image
                                         style={{width: width/1.15, height: height/3.51, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
                                         source={require('tess/src/images/podArtBestIdeas.png')}
@@ -214,6 +208,8 @@ class Browse extends Component{
                             </View>
                             </TouchableWithoutFeedback>
                         </View>
+
+                        {/* Second Item in Carousel */}
                         <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
                             <TouchableWithoutFeedback onPress={() => {
                                 const {navigator} = this.props;
@@ -226,7 +222,7 @@ class Browse extends Component{
                                 })
                             }}>
                             <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: width/75}}>
-                                <View style = {{ backgroundColor: 'transparent', width: width/1.15, height: height/3.51, marginVertical: height/66.7, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                                <View style={styles.featuredArt}>
                                     <Image
                                         style={{width: width/1.15, height: height/3.51, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
                                         source={require('tess/src/images/podArtIDK.png')}
@@ -237,22 +233,24 @@ class Browse extends Component{
                             </View>
                             </TouchableWithoutFeedback>
                         </View>
+
+                        {/* Third Item in Carousel */}
                         <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
                             <TouchableWithoutFeedback onPress={() => {
                                 const {navigator} = this.props;
                                 const rss = true;
-                                Variables.state.browsingArtist = 'IDK Podcast';
+                                Variables.state.browsingArtist = 'Green Light Sports Podcast';
                                 navigator.push({
                                     screen: 'UserProfile',
-                                    title: "IDK Podcast",
+                                    title: "Green Light Sports Podcast",
                                     passProps: {navigator, rss},
                                 })
                             }}>
                             <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: width/75}}>
-                                <View style = {{ backgroundColor: 'transparent', width: width/1.15, height: height/3.51, marginVertical: height/66.7, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                                <View style={styles.featuredArt}>
                                     <Image
                                         style={{width: width/1.15, height: height/3.51, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
-                                        source={require('tess/src/images/podArtIDK.png')}
+                                        source={require('tess/src/images/podArtGLS.png')}
                                     />
                                 </View>
                                 <Text style={styles.text1}>Green Light Sports</Text>
@@ -260,10 +258,37 @@ class Browse extends Component{
                             </View>
                             </TouchableWithoutFeedback>
                         </View>
+
+                        {/* Fourth Item in Carousel */}
+                        <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
+                            <TouchableWithoutFeedback onPress={() => {
+                                const {navigator} = this.props;
+                                const rss = true;
+                                Variables.state.browsingArtist = 'Best of Gainesville Weekly Minipod';
+                                navigator.push({
+                                    screen: 'UserProfile',
+                                    title: "Best of Gainesville Weekly Minipod",
+                                    passProps: {navigator, rss},
+                                })
+                            }}>
+                                <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: width/75}}>
+                                    <View style={styles.featuredArt}>
+                                        <Image
+                                            style={{width: width/1.15, height: height/3.51, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
+                                            source={require('tess/src/images/BOGW.png')}
+                                        />
+                                    </View>
+                                    <Text style={styles.text1}>Best of Gainesville Weekly Minipod</Text>
+                                    <Text style={styles.text2}>by Tess Media</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View>
                     </Carousel>
 
+                    {/* Begin Listing Options  */}
 
-                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: height/37, marginVertical: 1}} onPress={this.pressDiscover}>
+                    {/* Discover */}
+                    <TouchableOpacity style={styles.bar} onPress={this.pressDiscover}>
                         <Text style = {styles.title}>   Discover</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
@@ -276,7 +301,8 @@ class Browse extends Component{
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: height/37, marginVertical: 1}} onPress={this.pressCharts}>
+                    {/* Charts */}
+                    <TouchableOpacity style={styles.bar} onPress={this.pressCharts}>
                         <Text style = {styles.title}>   Charts</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
@@ -289,7 +315,8 @@ class Browse extends Component{
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: height/37, marginVertical: 1}} onPress={this.pressCategories}>
+                    {/* Categories */}
+                    <TouchableOpacity style={styles.bar} onPress={this.pressCategories}>
                         <Text style = {styles.title}>   Categories</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
@@ -303,9 +330,10 @@ class Browse extends Component{
                     </TouchableOpacity>
 
 
+                    {/* Podcast of the Week */}
                     <Text style = {styles.titleHeader}>Podcast of the Week</Text>
 
-                    <View style={{flex:1, flexDirection: 'row', backgroundColor: '#fff', marginTop: 0, marginHorizontal: width/31.25, borderTopLeftRadius: 15, borderTopRightRadius: 15}}>
+                    <View style={{flex:1, flexDirection: 'row', backgroundColor: '#fff', marginTop: 5, marginHorizontal: width/31.25, borderTopLeftRadius: 15, borderTopRightRadius: 15}}>
                         <View style={{flex:6}}>
                             <Text style = {styles.titleWeek}>{this.state.podcastOfTheWeekTitle}</Text>
                         </View>
@@ -327,12 +355,9 @@ class Browse extends Component{
 
                 </ScrollView>
 
+                {/* Player */}
                 <PlayerBottom navigator={this.props.navigator}/>
-
-
             </View>
-
-
         );
     }
 }
@@ -341,6 +366,19 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
+    },
+
+    featuredArt: {
+        backgroundColor: 'transparent',
+        width: width/1.15,
+        height: height/3.51,
+        marginVertical: height/66.7,
+        alignSelf: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.4,
+        shadowRadius: 2,
+        borderRadius: 8
     },
 
     title: {
@@ -405,6 +443,14 @@ const styles = StyleSheet.create({
         fontSize: width/18.75,
         backgroundColor: 'transparent',
     },
+
+    bar: {
+        backgroundColor: '#fff',
+        flex:1,
+        flexDirection:'row',
+        paddingVertical: height/30,
+        marginVertical: 0
+    }
 
 });
 
