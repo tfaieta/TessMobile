@@ -410,6 +410,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         marginBottom: height/33.35,
         marginHorizontal: width/18.75,
+        paddingBottom: height/33.35,
     },
 
     textEmpty:{
@@ -465,7 +466,7 @@ const styles = StyleSheet.create({
     descriptionBox:{
         backgroundColor: '#fff',
         marginHorizontal: width/37.5,
-        paddingVertical: height/22.23,
+        paddingVertical: height/60,
         height: height/3.81,
     },
 

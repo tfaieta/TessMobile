@@ -535,7 +535,7 @@ class Home extends Component{
 
 
         // loop for every rss feed in database
-        firebase.database().ref('feeds').on("value", function (snapshot) {
+        firebase.database().ref('feeds').once("value", function (snapshot) {
             snapshot.forEach(function (snap) {
                 console.warn(snap.val());
 
@@ -574,9 +574,10 @@ class Home extends Component{
                             const pI = image[0].getElementsByTagName('url');
                             profileImage = pI[0].textContent;
 
-                            console.warn(profileImage);
+                            console.warn("Profile Image: " + profileImage);
 
                         }
+
 
                         // profile username
                         let username = channel[0].textContent;
@@ -589,21 +590,20 @@ class Home extends Component{
                         usernameData = usernameData.replace("http://", "");
 
 
-                        // category
-                        let category = '';
-                        if(doc.getElementsByTagName('itunes:category').length > 0){
-                            category = doc.getElementsByTagName('itunes:category')[0].getAttribute('text');
-                        }
-                        const podcastCategory = category;
-                        console.warn(podcastCategory);
-
-
 
                         // create account for user if it doesn't exist
                         // reserve username & create user if needed
                         firebase.database().ref(`users`).child(usernameData).once("value", function (snapshot) {
                             if(snapshot.val()){
-                                console.warn("Account Exists: " + usernameData)
+                                if(snapshot.val().username && snapshot.val().bio && snapshot.val().profileImage){
+                                    console.warn("Account Exists: " + usernameData)
+                                }
+                                else{
+                                    firebase.database().ref(`users`).child(usernameData).child("/username").update({username});
+                                    firebase.database().ref(`users`).child(usernameData).child("/bio").update({bio});
+                                    firebase.database().ref(`users`).child(usernameData).child("/profileImage").update({profileImage});
+                                    firebase.database().ref(`usernames`).child(usernameData.toLowerCase()).update({username: usernameData.toLowerCase()});
+                                }
                             }
                             else{
                                 firebase.database().ref(`users`).child(usernameData).child("/username").update({username});
@@ -612,6 +612,16 @@ class Home extends Component{
                                 firebase.database().ref(`usernames`).child(usernameData.toLowerCase()).update({username: usernameData.toLowerCase()});
                             }
                         });
+
+
+
+                        // category
+                        let category = '';
+                        if(doc.getElementsByTagName('itunes:category').length > 0){
+                            category = doc.getElementsByTagName('itunes:category')[0].getAttribute('text');
+                        }
+                        const podcastCategory = category;
+                        console.warn("Category: " + podcastCategory);
 
 
 
@@ -631,39 +641,13 @@ class Home extends Component{
 
                             //title
                             const title = items[i].getElementsByTagName('title');
-                            console.warn(title[0].textContent);
+                            console.warn("Title: " + title[0].textContent);
                             let podcastTitle = title[0].textContent;
 
                             //description
                             const description = items[i].getElementsByTagName('description');
-                            console.warn(description[0].textContent);
+                            console.warn("Description: " + description[0].textContent);
                             let podcastDescription = description[0].textContent;
-                            podcastDescription = podcastDescription.replace("<p>", " ");
-                            podcastDescription = podcastDescription.replace("</p>", " ");
-                            podcastDescription = podcastDescription.replace("<a", " ");
-                            podcastDescription = podcastDescription.replace("&amp", " ");
-                            podcastDescription = podcastDescription.replace("href=", " ");
-                            podcastDescription = podcastDescription.replace("<em>", " ");
-                            podcastDescription = podcastDescription.replace("</em>", " ");
-                            podcastDescription = podcastDescription.replace("</a>", " ");
-                            podcastDescription = podcastDescription.replace("<h2", " ");
-                            podcastDescription = podcastDescription.replace("id=", " ");
-                            podcastDescription = podcastDescription.replace("</h2>", " ");
-                            podcastDescription = podcastDescription.replace("</p>", " ");
-                            podcastDescription = podcastDescription.replace("<br>", " ");
-                            podcastDescription = podcastDescription.replace("<div>", " ");
-                            podcastDescription = podcastDescription.replace("</div>", " ");
-                            podcastDescription = podcastDescription.replace("<ul>", " ");
-                            podcastDescription = podcastDescription.replace("<li>", " ");
-                            podcastDescription = podcastDescription.replace("</li>", " ");
-                            podcastDescription = podcastDescription.replace("<strong>", " ");
-                            podcastDescription = podcastDescription.replace("</strong>", " ");
-                            podcastDescription = podcastDescription.replace("<sup>", " ");
-                            podcastDescription = podcastDescription.replace("</sup>", " ");
-                            podcastDescription = podcastDescription.replace("<br><br>", " ");
-                            podcastDescription = podcastDescription.replace("<br>", " ");
-
-
 
                             //length
                             let length = '';
@@ -674,14 +658,10 @@ class Home extends Component{
                                 length = length.replace("</itunes:duration>", "");
                             }
                             const podcastLength = length;
-                            console.warn(podcastLength);
-
-
+                            console.warn("Length: " + podcastLength);
 
                             //rss = true, need to tell firebase it's an rss podcast
                             const rss = true;
-
-
 
                             //likes = 0
                             const likes = 0;
@@ -701,14 +681,14 @@ class Home extends Component{
                             // get url -> upload
                             if(items[i].getElementsByTagName('enclosure').length > 0){
                                 var link = items[i].getElementsByTagName('enclosure')[0].getAttribute('url');
-                                console.warn(link);
+                                console.warn("URL: " + link);
                                 const podcastURL = link;
 
 
                                 // upload to database if doesn't exist (follow podcastCreate)
                                 firebase.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
                                     if(snapshot.val()){
-                                        console.warn("EXISTS")
+                                        console.warn("EPISODE EXISTS")
                                     }
                                     else{
                                         let item = firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength, time: firebase.database.ServerValue.TIMESTAMP});
@@ -726,14 +706,14 @@ class Home extends Component{
                             // another way of getting url -> upload
                             else if(items[i].getElementsByTagName('link').length > 0){
                                 var link = items[i].getElementsByTagName('link');
-                                console.warn(link[0].textContent);
+                                console.warn("URL: " + link[0].textContent);
                                 const podcastURL = link[0].textContent;
 
 
                                 // upload to database if doesn't exist (follow podcastCreate)
                                 firebase.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
                                     if(snapshot.val()){
-                                        console.warn("EXISTS")
+                                        console.warn("EPISODE EXISTS")
                                     }
                                     else{
                                         let item = firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength, time: firebase.database.ServerValue.TIMESTAMP});
@@ -759,6 +739,7 @@ class Home extends Component{
             });
 
         });
+
 
 
     }
