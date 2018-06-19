@@ -34,7 +34,7 @@ export const podcastCreate = ({ podcastTitle, podcastDescription, podcastCategor
         let id = '';
 
             firebase.database().ref(`/podcasts`)
-            .push({podcastTitle, podcastDescription, podcastCategory, podcastArtist, podcastLength, likes})
+            .push({podcastTitle, podcastDescription, podcastCategory, podcastArtist, podcastLength, likes, time: firebase.database.ServerValue.TIMESTAMP})
             .then((snap) => {
 
                 dispatch({type: PODCAST_CREATE});

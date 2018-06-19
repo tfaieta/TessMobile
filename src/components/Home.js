@@ -703,7 +703,7 @@ class Home extends Component{
                                         console.warn("EXISTS")
                                     }
                                     else{
-                                        let item = firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength})
+                                        let item = firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength, time: firebase.database.ServerValue.TIMESTAMP});
                                         const ref = item.ref;
                                         const id = item.key;
                                         ref.update({id});
@@ -728,7 +728,7 @@ class Home extends Component{
                                         console.warn("EXISTS")
                                     }
                                     else{
-                                        let item = firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength});
+                                        let item = firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength, time: firebase.database.ServerValue.TIMESTAMP});
                                         const ref = item.ref;
                                         const id = item.key;
                                         ref.update({id});

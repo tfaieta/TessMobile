@@ -95,7 +95,7 @@ export default class InitialScreen extends Component{
                         navigatorButtons: {screenBackgroundColor: '#fff'}
                     },
                     {
-                        screen: 'Notifications',
+                        screen: 'Hub',
                         icon: notificationsIcon,
                         selectedIcon: notificationsIconSelected,
                         iconInsets: {

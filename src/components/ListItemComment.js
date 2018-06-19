@@ -112,7 +112,7 @@ class ListItemComment extends Component {
                         const {navigator} = this.props;
                         Variables.state.browsingArtist = user;
                         Navigation.showModal({
-                            screen: 'UserProfileModal',
+                            screen: 'UserProfile',
                             animated: true,
                             animationType: 'fade',
                             passProps: {navigator},
@@ -170,7 +170,7 @@ class ListItemComment extends Component {
                         const {navigator} = this.props;
                         Variables.state.browsingArtist = user;
                         Navigation.showModal({
-                            screen: 'UserProfileModal',
+                            screen: 'UserProfile',
                             animated: true,
                             animationType: 'fade',
                             passProps: {navigator},
