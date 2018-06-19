@@ -492,9 +492,9 @@ class RecordInfo extends Component{
                             backgroundColor: 'transparent',
                         }} name="md-folder">
                         </Icon>
-                        <Text style={{ color: '#fff', marginTop: 10, fontSize: 16, marginLeft: 10, fontFamily: 'Hiragino Sans', }}>Categories</Text>
+                        <Text style={{ color: '#fff', marginTop: 10, fontSize: 16, marginLeft: 10, fontFamily: 'Montserrat-Regular', }}>Categories</Text>
                         <Text
-                            style={{ color: '#BBBCCD', marginTop: 10, fontSize: 16, marginLeft: 30, fontFamily: 'Hiragino Sans', }}
+                            style={{ color: '#BBBCCD', marginTop: 10, fontSize: 16, marginLeft: 30, fontFamily: 'Montserrat-Regular', }}
                             onPress={() => {
                                 this.refs.picker1.show();
                             }}
@@ -526,7 +526,7 @@ class RecordInfo extends Component{
                         color: 'black',
                         textAlign: 'center',
                         fontWeight: 'bold',
-                        fontFamily: 'Hiragino Sans',
+                        fontFamily: 'Montserrat-Regular',
                     }}
                     onSubmit={itemValue => {
                         this.props.podcastUpdate({prop: 'podcastCategory', value: itemValue});
@@ -576,7 +576,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'Montserrat-Regular',
         fontSize: 25,
         backgroundColor: 'transparent'
     },
@@ -588,7 +588,7 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'Montserrat-Regular',
 
     },
 
@@ -597,7 +597,7 @@ const styles = StyleSheet.create({
         fontSize: 25,
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'Montserrat-Regular',
         marginLeft: 10,
         marginTop: 10
 
@@ -658,7 +658,7 @@ const styles = StyleSheet.create({
     progressText: {
         marginTop: 0,
         fontSize: 15,
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'Montserrat-Regular',
         color: "#FFF",
     },
 
@@ -668,7 +668,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 18,
         backgroundColor: 'transparent',
     },
@@ -678,7 +678,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         marginLeft: 15,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 12,
         backgroundColor: 'transparent',
     },
@@ -695,7 +695,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: 'transparent',
         marginHorizontal: 10,
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
     },
 
 });

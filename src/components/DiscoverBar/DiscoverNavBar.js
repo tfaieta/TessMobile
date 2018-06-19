@@ -37,9 +37,7 @@ export default class DiscoverNavBar extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
-        height: height/14.49,
         flex: 1,
-        marginTop: height/93.09
      },
     button: {
         alignSelf: 'center',

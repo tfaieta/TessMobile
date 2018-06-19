@@ -140,17 +140,6 @@ class RecordFirstPage extends Component{
 
                 {this._renderPrevPodcast()}
 
-                <TouchableOpacity style = {{marginTop: height/16.675}} onPress={this.info} >
-                    <Icon style={{
-                        textAlign: 'center',
-                        fontSize: 45,
-                        color: '#5757FF'
-                    }} name="md-help-circle">
-                    </Icon>
-                    <Text style= {styles.text}>Help</Text>
-                </TouchableOpacity>
-
-
 
                 <PlayerBottom navigator={this.props.navigator}/>
 
