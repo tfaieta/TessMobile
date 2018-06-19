@@ -523,97 +523,67 @@ class Record extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        paddingTop: 10,
+        paddingTop: height/66.7,
         backgroundColor: 'transparent',
     },
     container2:{
         flex: 1,
         alignItems: 'center',
         backgroundColor: 'transparent',
-        marginTop: -100,
+        marginTop: -(height/6.67),
     },
-
     title: {
         color: 'rgba(1,170,170,1)',
-        marginTop: 70,
-        flex:1,
-        textAlign: 'center',
-        opacity: 2,
-        fontStyle: 'normal',
-        fontFamily:  'Montserrat-Bold',
-        fontSize: 25,
-        backgroundColor: 'transparent'
-    },
-    title2: {
-        color: '#804cc8',
-        marginTop:60,
-        flex:1,
-        textAlign: 'center',
-        opacity: 2,
-        fontStyle: 'normal',
-        fontFamily: 'Montserrat-Bold',
-        fontSize: 25,
-        backgroundColor: 'transparent'
-    },
-    title3: {
-        color: '#804cc8',
-        marginTop:-80,
-        flex:1,
+        marginTop: height/9.53,
+        flex: 1,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily:  'Montserrat-Bold',
-        fontSize: 20,
+        fontSize: width/15,
         backgroundColor: 'transparent'
-    },
-    title4: {
-        color: '#FFF',
-        textAlign: 'center',
-        fontStyle: 'normal',
-        fontFamily: 'Montserrat-Bold',
-        fontSize: 22,
     },
     controls: {
         justifyContent: 'center',
         alignItems: 'center',
     },
     progressText: {
-        paddingTop: 50,
-        fontSize: 30,
-        fontFamily: 'Futura',
+        paddingTop: height/13.34,
+        fontSize: width/12.5,
+        fontFamily: 'Montserrat-Bold',
         color: "#FFF",
     },
     button: {
-        padding: 20,
+        padding: width/18.75,
     },
     disabledButtonText: {
-        color: '#ee617c'
+        color: '#d15564'
     },
     buttonText: {
-        marginTop:60,
-        fontSize: 30,
-        padding: 8,
-        paddingHorizontal: 50,
+        marginTop: height/11.12,
+        fontSize: width/12.5,
+        padding: width/46.88,
+        paddingHorizontal: width/7.5,
         color: "#FFF",
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Bold',
     },
     activeButtonText: {
-        fontSize: 25,
-        color: '#ee617c',
+        fontSize: width/15,
+        color: '#d15564',
 
-        backgroundColor: '#8a66c8'
+        backgroundColor: '#9a5e9a'
     },
     iconText: {
-        marginTop: 50,
-        width: 147,
-        height: 151
+        marginTop: height/13.34,
+        width: width/2.55,
+        height: height/4.42
     },
     activeIconText: {
-        marginTop: 50,
-        width: 147,
-        height: 151,
-        tintColor: '#ee617c'
+        marginTop: height/13.34,
+        width: width/2.55,
+        height: height/4.42,
+        tintColor: '#d15564'
     },
     leftContainer: {
         justifyContent: 'center',
@@ -621,17 +591,17 @@ const styles = StyleSheet.create({
     },
     centerContainer: {
         flexDirection: 'row',
-        marginTop: 35,
-        paddingBottom: 20
+        marginTop: height/19.06,
+        paddingBottom: height/33.35
     },
 
     header: {
-        marginTop:25,
+        marginTop: width/15,
         color: '#fff',
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Bold',
-        fontSize: 18,
+        fontSize: width/20.83,
         backgroundColor: 'transparent',
     },
 
@@ -640,7 +610,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily:  'Montserrat-Bold',
-        fontSize: 16,
+        fontSize: width/23.44,
         backgroundColor: 'transparent',
     },
 
@@ -649,14 +619,14 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily:  'Montserrat-Bold',
-        fontSize: 16,
+        fontSize: width/23.44,
         backgroundColor: 'transparent',
     },
 
     slideView: {
         backgroundColor: 'white',
-        width: 20,
-        height: 20,
+        width: width/18.75,
+        height: height/33.35,
     }
 
 });

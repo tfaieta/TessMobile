@@ -107,7 +107,7 @@ class RecordFirstPage extends Component{
             return(
                 <TouchableOpacity style = {{marginTop: height/16.675}} onPress={this.prevPodcast}>
                     <Icon style={{
-                        textAlign:'center',fontSize: 45,color:'#5757FF'
+                        textAlign:'center',fontSize:  width/8.33, color:'#5757FF'
                     }} name="md-undo">
                     </Icon>
                     <Text style= {styles.text} >Last recorded podcast</Text>
@@ -132,7 +132,7 @@ class RecordFirstPage extends Component{
 
                 <TouchableOpacity style = {{marginTop: height / 7}} onPress={this.recordNewPodcast}>
                     <Icon style={{
-                        textAlign:'center',fontSize: 45,color:'#5757FF'
+                        textAlign:'center',fontSize: width/8.33, color:'#5757FF'
                     }} name="md-add">
                     </Icon>
                     <Text style= {styles.text} >Record a New Podcast</Text>
@@ -158,8 +158,8 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        marginTop: 25,
-        marginLeft: -12,
+        marginTop: height/26.68,
+        marginLeft: -(width/31.25),
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
@@ -174,8 +174,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: 18,
-        paddingVertical: 15,
+        fontSize: width/20.83,
+        paddingVertical: height/44.47,
     },
 
 
