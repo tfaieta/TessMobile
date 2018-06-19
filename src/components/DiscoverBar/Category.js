@@ -54,7 +54,8 @@ class Category extends Component{
             pods.push('The Daily');
             pods.push('The Ezra Klein Show');
             pods.push('The Tom Woods Show');
-
+            pods.push('Pod Save America');
+            pods.push('Pod Save the People');
         }
         else if(category == 'Fitness' || category == 'Health'){
 
@@ -71,7 +72,9 @@ class Category extends Component{
             pods.push('Stuff You Should Know');
             pods.push('The Best Ideas Podcast');
             pods.push('The Lively Show');
-
+            pods.push('Pod Save America');
+            pods.push('Pod Save the People');
+            pods.push('American Innovations');
         }
         else if(category == 'Religion & Spirituality' || category == 'Arts'){
 
@@ -127,6 +130,9 @@ class Category extends Component{
         else if(category == 'Storytelling'){
 
             pods.push('Serial');
+            pods.push('Dirty John');
+            pods.push('Crimetown');
+
 
         }
         else if(category == 'Sports' || category == 'Sports & Recreation'){
@@ -148,6 +154,9 @@ class Category extends Component{
 
             pods.push('Reply All');
             pods.push('Y Combinator');
+            pods.push('StartUp Podcast');
+            pods.push('The Pitch');
+
 
         }
         else if(category == 'Gaming' || category == 'Games & Hobbies'){
@@ -164,6 +173,8 @@ class Category extends Component{
             pods.push('StartUp Podcast');
             pods.push('The GaryVee Audio Experience');
             pods.push('The Indie Hackers Podcast');
+            pods.push('Y Combinator');
+            pods.push('The Pitch');
 
         }
 

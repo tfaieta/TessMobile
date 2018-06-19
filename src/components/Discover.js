@@ -167,6 +167,8 @@ class Discover extends Component{
                             </TouchableWithoutFeedback>
                         </View>
 
+
+
                         {/* Midroll */}
                         <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
                             <TouchableWithoutFeedback style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
@@ -187,6 +189,8 @@ class Discover extends Component{
                             </TouchableWithoutFeedback>
                         </View>
 
+
+
                         {/* Wondery */}
                         <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
                             <TouchableWithoutFeedback style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
@@ -206,6 +210,8 @@ class Discover extends Component{
                                 </View>
                             </TouchableWithoutFeedback>
                         </View>
+
+
 
                         {/* Tess Media */}
                         <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>

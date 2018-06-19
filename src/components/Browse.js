@@ -283,7 +283,7 @@ class Browse extends Component{
                         </View>
                     </Carousel>
 
-                    {/* Begin Listing Categories  */}
+                    {/* Begin Listing Options  */}
 
                     {/* Discover */}
                     <TouchableOpacity style={styles.bar} onPress={this.pressDiscover}>

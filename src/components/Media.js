@@ -36,6 +36,9 @@ class Media extends Component{
         if(this.props.title == 'Gimlet Media'){
             data.push('Reply All');
             data.push('StartUp Podcast');
+            data.push('Chompers');
+            data.push('The Pitch');
+            data.push('Crimetown');
         }
         else if(this.props.title == 'NPR'){
             data.push('How I Built This with Guy Raz');
@@ -44,19 +47,19 @@ class Media extends Component{
         }
         else if(this.props.title == 'Crooked'){
             data.push('Pod Save America');
-            data.push('Pod Save The People');
+            data.push('Pod Save the People');
         }
         else if(this.props.title == 'Midroll'){
-            data.push('WTFwithMacAaron');
-            data.push('BillSimmons');
+            data.push('WTF with Marc Maron Podcast');
+            data.push('The Bill Simmons Podcast');
         }
         else if(this.props.title == 'Wondery'){
             data.push('American Innovations');
-            data.push('Dirty John')
+            data.push('Dirty John');
         }
         else if(this.props.title == 'Tess Media'){
             data.push('The Best Ideas Podcast');
-            data.push('IDK Podcast')
+            data.push('IDK Podcast');
         }
 
 
