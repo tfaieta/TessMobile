@@ -201,7 +201,7 @@ class Player extends Component{
         ref.once("value", function(snapshot) {
             if(snapshot.val()){
                 if(snapshot.val().playTime){
-                    ref.update({playTime: snapshot.val().playTime + .15})
+                    ref.update({playTime: snapshot.val().playTime + .25})
                 }
                 else{
                     ref.update({playTime: 0})
@@ -220,8 +220,6 @@ class Player extends Component{
         this.setState({
             podcastURL: Variables.state.podcastURL,
             speed: Variables.state.podcastSpeed,
-            volume: 1,
-            muted: false,
             paused: Variables.state.paused,
             repeat: Variables.state.repeat,
             currentTime: data.currentTime,
@@ -278,6 +276,8 @@ class Player extends Component{
                    firebase.database().ref(`podcasts/${key.val().id}`).on("value", function (mainSnap) {
 
                        const {id} = mainSnap.val();
+                       AsyncStorage.setItem("currentPodcast", id);
+                       AsyncStorage.setItem("currentTime", "0");
 
                        if(mainSnap.val().rss){
 
@@ -500,7 +500,7 @@ class Player extends Component{
                        playInBackground={true}                // Audio continues to play when app entering background.
                        playWhenInactive={true}                // [iOS] Video continues to play when control or notification center are shown.
                        ignoreSilentSwitch={"ignore"}           // [iOS] ignore | obey - When 'ignore', audio will still play with the iOS hard silent switch set to silent. When 'obey', audio will toggle with the switch. When not specified, will inherit audio settings as usual.
-                       progressUpdateInterval={100.0}          // [iOS] Interval to fire onProgress (default to ~250ms)
+                       progressUpdateInterval={250.0}          // [iOS] Interval to fire onProgress (default to ~250ms)
                        onLoadStart={this.onLoadStart}            // Callback when video starts to load
                        onLoad={this.onLoad}               // Callback when video loads
                        onProgress={this.onProgress}               // Callback every ~250ms with currentTime

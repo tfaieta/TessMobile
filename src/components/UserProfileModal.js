@@ -8,7 +8,8 @@ import {
     ListView,
     TouchableOpacity,
     Alert, Image,
-    RefreshControl, Dimensions
+    RefreshControl, Dimensions,
+    ActivityIndicator
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
@@ -288,7 +289,7 @@ class UserProfileModal extends Component {
                 userShares: Variables.state.userSharesAmount,
                 dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
             })
-        },500);
+        },1000);
         this.timeout2 = setTimeout(() =>{
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
                 username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
@@ -302,7 +303,7 @@ class UserProfileModal extends Component {
                 userShares: Variables.state.userSharesAmount,
                 dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
             })
-        },3500);
+        },3000);
 
         const {currentUser} = firebase.auth();
         let tracking = false;
@@ -542,12 +543,8 @@ class UserProfileModal extends Component {
 
         this.fetchData();
 
-        this.setState({
-            refreshing: false,
-        });
-
         this.timeout = setTimeout(() =>{
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false, refreshing: false,
                 username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
                 following: Variables.state.following,
                 playTime: Variables.state.userPlayTime,
@@ -558,9 +555,9 @@ class UserProfileModal extends Component {
                 userShares: Variables.state.userSharesAmount,
                 dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
             })
-        },500);
+        },1000);
         this.timeout2 = setTimeout(() =>{
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false, refreshing: false,
                 username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
                 following: Variables.state.following,
                 playTime: Variables.state.userPlayTime,
@@ -571,7 +568,7 @@ class UserProfileModal extends Component {
                 userShares: Variables.state.userSharesAmount,
                 dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
             })
-        },3500)
+        },3000)
 
 
     }
@@ -3306,182 +3303,179 @@ class UserProfileModal extends Component {
 
     render() {
 
-        var fixedTitle = '';
-        if(this.state.username.toString().length > width/16.3 ){
-            fixedTitle = (this.state.username.slice(0,width/16.3)+"...")
+        if(this.state.loading){
+            return(
+                <View style={styles.container}>
+                    <ActivityIndicator style={{paddingVertical: height/33.35, alignSelf:'center'}} color='#3e4164' size ="large" />
+                </View>
+            )
         }
         else{
-            fixedTitle = this.state.username;
-        }
+            var fixedTitle = '';
+            if(this.state.username.toString().length > width/16.3 ){
+                fixedTitle = (this.state.username.slice(0,width/16.3)+"...")
+            }
+            else{
+                fixedTitle = this.state.username;
+            }
 
-        if(Variables.state.rss){
+            if(Variables.state.rss){
 
-            return (
-                <View
-                    style={styles.container}>
+                return (
+                    <View
+                        style={styles.container}>
 
-                    <View style={{flexDirection: 'row', backgroundColor: '#fff', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 3}, shadowOpacity: 0.1, shadowRadius: 5}}>
-                        <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
-                            <TouchableOpacity onPress={this._pressBack}>
-                                <Icon style={{
-                                    textAlign:'left',marginLeft: 10, fontSize: 28, color:'#007aff',
-                                }} name="ios-arrow-back">
-                                </Icon>
-                            </TouchableOpacity>
+                        <View style={{flexDirection: 'row', backgroundColor: '#fff', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 3}, shadowOpacity: 0.1, shadowRadius: 5}}>
+                            <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
+                                <TouchableOpacity onPress={this._pressBack}>
+                                    <Icon style={{
+                                        textAlign:'left',marginLeft: 10, fontSize: 28, color:'#007aff',
+                                    }} name="ios-arrow-back">
+                                    </Icon>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
+                                <Text style={styles.header}>{fixedTitle}</Text>
+                            </View>
+
+                            <View>
+                            </View>
                         </View>
-                        <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                            <Text style={styles.header}>{fixedTitle}</Text>
-                        </View>
 
-                        <View>
-                        </View>
+                        <ScrollView
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={this.state.refreshing}
+                                    onRefresh={this._onRefresh.bind(this)}
+                                />
+                            }
+                        >
+
+                            <View style={{backgroundColor: '#fff'}}>
+
+                                {this._renderProfileImage()}
+
+                                {this._renderProfileName()}
+
+                                {this._renderBio()}
+
+                                <View style={{flexDirection: 'row', marginTop: 10}}>
+                                    {this._renderFollowButton()}
+                                    {this._renderTrackButton()}
+                                </View>
+
+
+                                <TouchableOpacity style={{flex: 1, alignSelf: 'center', padding: 10,}} onPress={this.onFollowersPress}>
+                                    <Text style={styles.stats}>Followers</Text>
+                                    <Text style={styles.stats}>{Variables.state.userFollowers.length}</Text>
+                                </TouchableOpacity>
+
+
+                            </View>
+
+                            <View style={{backgroundColor: '#fff', marginVertical: 15, marginHorizontal: 7, borderRadius: 10}}>
+                                <Text style={styles.myContentTitle}>{Variables.state.userPodcasts.length} episodes</Text>
+                                <ListView
+                                    enableEmptySections
+                                    horizontal={true}
+                                    dataSource={this.state.dataSource}
+                                    renderRow={this.renderRow}
+                                />
+                            </View>
+
+                            <View style={{paddingBottom:120}}>
+
+                            </View>
+
+                        </ScrollView>
+
+
+                        <PlayerBottom/>
+
                     </View>
 
-                    <ScrollView
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={this.state.refreshing}
-                                onRefresh={this._onRefresh.bind(this)}
-                            />
-                        }
-                    >
+                );
 
-                        <View style={{backgroundColor: '#fff'}}>
+            }
+            else{
 
-                            {this._renderProfileImage()}
+                return (
+                    <View
+                        style={styles.container}>
 
-                            {this._renderProfileName()}
+                        <View style={{flexDirection: 'row', backgroundColor: '#fff', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 3}, shadowOpacity: 0.1, shadowRadius: 5}}>
+                            <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
+                                <TouchableOpacity onPress={this._pressBack}>
+                                    <Icon style={{
+                                        textAlign:'left',marginLeft: 10, fontSize: 28, color:'#007aff',
+                                    }} name="ios-arrow-back">
+                                    </Icon>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
+                                <Text style={styles.header}>{fixedTitle}</Text>
+                            </View>
 
-                            {this._renderBio()}
+                            <View>
+                            </View>
+                        </View>
 
-                            <View style={{flexDirection: 'row', marginTop: 10}}>
-                                {this._renderFollowButton()}
-                                {this._renderTrackButton()}
+                        <ScrollView
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={this.state.refreshing}
+                                    onRefresh={this._onRefresh.bind(this)}
+                                />
+                            }
+                        >
+
+                            <View style={{backgroundColor: '#fff'}}>
+
+                                {this._renderProfileImage()}
+
+                                {this._renderProfileName()}
+
+                                {this._renderBio()}
+
+                                <View style={{flexDirection: 'row', marginTop: 10}}>
+                                    {this._renderFollowButton()}
+                                    {this._renderTrackButton()}
+                                </View>
+
+
+                                {this._renderProfileNumbers(Variables.state.userTracking.length, Variables.state.userFollowers.length, Variables.state.userFollowing.length)}
+
+                            </View>
+
+                            <View style={{backgroundColor: '#fff', marginVertical: 15, marginHorizontal: 7, borderRadius: 10}}>
+                                <Text style={styles.myContentTitle}>{Variables.state.userPodcasts.length} episodes</Text>
+                                <ListView
+                                    enableEmptySections
+                                    horizontal={true}
+                                    dataSource={this.state.dataSource}
+                                    renderRow={this.renderRow}
+                                />
+                            </View>
+
+                            {this.renderAchievements()}
+
+                            {this.renderRecent(Variables.state.userRecentlyPlayed)}
+
+                            <View style={{paddingBottom:120}}>
+
                             </View>
 
 
-                            <TouchableOpacity style={{flex: 1, alignSelf: 'center', padding: 10,}} onPress={this.onFollowersPress}>
-                                <Text style={styles.stats}>Followers</Text>
-                                <Text style={styles.stats}>{Variables.state.userFollowers.length}</Text>
-                            </TouchableOpacity>
+                        </ScrollView>
 
 
-                        </View>
+                        <PlayerBottom/>
 
-
-                        <View style={{backgroundColor: '#fff', marginVertical: 15, marginHorizontal: 7, borderRadius: 10}}>
-                            <Text style={styles.myContentTitle}>{Variables.state.userPodcasts.length} episodes</Text>
-                            <ListView
-                                enableEmptySections
-                                horizontal={true}
-                                dataSource={this.state.dataSource}
-                                renderRow={this.renderRow}
-                            />
-                        </View>
-
-
-
-                        <View style={{paddingBottom:120}}>
-
-                        </View>
-
-
-                    </ScrollView>
-
-
-                    <PlayerBottom/>
-
-                </View>
-
-
-
-            );
-
-        }
-        else{
-
-            return (
-                <View
-                    style={styles.container}>
-
-                    <View style={{flexDirection: 'row', backgroundColor: '#fff', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 3}, shadowOpacity: 0.1, shadowRadius: 5}}>
-                        <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
-                            <TouchableOpacity onPress={this._pressBack}>
-                                <Icon style={{
-                                    textAlign:'left',marginLeft: 10, fontSize: 28, color:'#007aff',
-                                }} name="ios-arrow-back">
-                                </Icon>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                            <Text style={styles.header}>{fixedTitle}</Text>
-                        </View>
-
-                        <View>
-                        </View>
                     </View>
 
-                    <ScrollView
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={this.state.refreshing}
-                                onRefresh={this._onRefresh.bind(this)}
-                            />
-                        }
-                    >
+                );
 
-                        <View style={{backgroundColor: '#fff'}}>
-
-                            {this._renderProfileImage()}
-
-                            {this._renderProfileName()}
-
-                            {this._renderBio()}
-
-                            <View style={{flexDirection: 'row', marginTop: 10}}>
-                                {this._renderFollowButton()}
-                                {this._renderTrackButton()}
-                            </View>
-
-
-                            {this._renderProfileNumbers(Variables.state.userTracking.length, Variables.state.userFollowers.length, Variables.state.userFollowing.length)}
-
-                        </View>
-
-
-                        <View style={{backgroundColor: '#fff', marginVertical: 15, marginHorizontal: 7, borderRadius: 10}}>
-                            <Text style={styles.myContentTitle}>{Variables.state.userPodcasts.length} episodes</Text>
-                            <ListView
-                                enableEmptySections
-                                horizontal={true}
-                                dataSource={this.state.dataSource}
-                                renderRow={this.renderRow}
-                            />
-                        </View>
-
-
-                        {this.renderAchievements()}
-
-                        {this.renderRecent(Variables.state.userRecentlyPlayed)}
-
-
-
-                        <View style={{paddingBottom:120}}>
-
-                        </View>
-
-
-                    </ScrollView>
-
-
-                    <PlayerBottom/>
-
-                </View>
-
-
-
-            );
-
+            }
         }
 
     }

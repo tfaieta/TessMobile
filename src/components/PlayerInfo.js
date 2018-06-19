@@ -8,7 +8,7 @@ import {
     ListView,
     TextInput,
     KeyboardAvoidingView,
-    Dimensions,
+    Dimensions, ActivityIndicator,
 } from 'react-native';
 import Variables from "./Variables";
 import firebase from 'firebase';
@@ -18,10 +18,9 @@ import { Navigation } from 'react-native-navigation';
 import ListItemComment from "./ListItemComment";
 var Analytics = require('react-native-firebase-analytics');
 
-
-
-
 var {height, width} = Dimensions.get('window');
+
+
 
 
 class PlayerInfo extends Component {
@@ -49,6 +48,7 @@ static navigatorStyle = {
 
     componentWillUnmount(){
         clearInterval(this.interval);
+        clearTimeout(this.timeout);
     }
 
 
@@ -57,7 +57,9 @@ static navigatorStyle = {
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state ={
             comment: '',
+            commentsLoading: true,
             dataSource: dataSource.cloneWithRows(Variables.state.comments),
+            description: ''
         };
 
         this.interval = setInterval(() => {
@@ -72,7 +74,43 @@ static navigatorStyle = {
             setTimeout(() => {
                 this.setState({dataSource: dataSource.cloneWithRows(Variables.state.comments)})},500);
 
-        }, 1000)
+        }, 1000);
+
+
+        // clean up description
+        let desc = Variables.state.podcastDescription;
+        for(let i = (desc.length/2); i > 0; i--){
+            desc = desc.replace("<p>", " ");
+            desc = desc.replace("</p>", " ");
+            desc = desc.replace("<a", " ");
+            desc = desc.replace("&amp", " ");
+            desc = desc.replace("href=", " ");
+            desc = desc.replace("<em>", " ");
+            desc = desc.replace("</em>", " ");
+            desc = desc.replace("</a>", " ");
+            desc = desc.replace("<h2", " ");
+            desc = desc.replace("id=", " ");
+            desc = desc.replace("</h2>", " ");
+            desc = desc.replace("</p>", " ");
+            desc = desc.replace("<br>", " ");
+            desc = desc.replace("<div>", " ");
+            desc = desc.replace("</div>", " ");
+            desc = desc.replace("<ul>", " ");
+            desc = desc.replace("<li>", " ");
+            desc = desc.replace("</li>", " ");
+            desc = desc.replace("<strong>", " ");
+            desc = desc.replace("</strong>", " ");
+            desc = desc.replace("<sup>", " ");
+            desc = desc.replace("</sup>", " ");
+            desc = desc.replace("<br><br>", " ");
+            desc = desc.replace("<br>", " ");
+            desc = desc.replace("&nbsp", " ");
+            desc = desc.replace(`target="_blank">`, " ");
+        }
+
+        this.timeout = setTimeout(() => {
+            this.setState({commentsLoading: false, description: desc})
+        }, 3000);
 
     }
 
@@ -142,35 +180,60 @@ static navigatorStyle = {
     }
 
     renderComments(){
-        if(Variables.state.comments.length > 0){
+        if(this.state.commentsLoading){
             return(
-                <View style={{height: height/2.4}}>
-
-                    <ListView
-                        ref={ ( ref ) => this.scrollView = ref }
-                        enableEmptySections
-                        dataSource={this.state.dataSource}
-                        renderRow={this.renderRow}
-                        onContentSizeChange={ () => {
-                            if(Variables.state.comments.length > 4){
-                                this.scrollView.scrollToEnd( { animated: true } )
-                            }
-                        }}
-                    />
-                    <View style={{height: 1.5, marginHorizontal: 20, backgroundColor: '#2A2A3060',}} />
-
+                <View style={styles.container}>
+                    <ActivityIndicator style={{paddingVertical: height/15, alignSelf:'center'}} color='#3e4164' size ="large" />
                 </View>
+            )
+        }
+        else{
+            if(Variables.state.comments.length > 0){
+                return(
+                    <View style={{height: height/2.4}}>
 
+                        <ListView
+                            ref={ ( ref ) => this.scrollView = ref }
+                            enableEmptySections
+                            dataSource={this.state.dataSource}
+                            renderRow={this.renderRow}
+                            onContentSizeChange={ () => {
+                                if(Variables.state.comments.length > 4){
+                                    this.scrollView.scrollToEnd( { animated: true } )
+                                }
+                            }}
+                        />
+                        <View style={{height: 1.5, marginHorizontal: 20, backgroundColor: '#2A2A3060',}} />
+
+                    </View>
+
+                )
+            }
+            else{
+                return(
+                    <Text style={styles.textEmpty}>Be the first to comment!</Text>
+                )
+            }
+        }
+
+
+    }
+
+
+    renderDescription = () => {
+        if(this.state.commentsLoading != ''){
+            return(
+                <View style={styles.container}>
+                    <ActivityIndicator style={{paddingVertical: height/15, alignSelf:'center'}} color='#3e4164' size ="large" />
+                </View>
             )
         }
         else{
             return(
-                <Text style={styles.textEmpty}>Be the first to comment!</Text>
-                )
+                <Text style={styles.textDescription}>{this.state.description}</Text>
+            )
         }
-
-    }
-
+    };
 
 
     render(){
@@ -204,7 +267,7 @@ static navigatorStyle = {
 
                 <View style={{height: 1.5, marginHorizontal: 20, backgroundColor: '#2A2A3060',}} />
                 <ScrollView style={styles.descriptionBox}>
-                    <Text style={styles.textDescription}>{Variables.state.podcastDescription}</Text>
+                    {this.renderDescription()}
                 </ScrollView>
 
                 {this.renderPodcastInfo()}
@@ -308,43 +371,32 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#656575',
         borderRadius: 10,
-        marginHorizontal: 30,
+        marginHorizontal: width/12.5,
     },
 
     header: {
-        marginTop:25,
-        marginLeft: -35,
-        color: '#2A2A30',
+        marginTop: height/26.68,
+        marginLeft: -(width/15),
+        color: '#3e4164',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
+        fontFamily: 'Montserrat-Bold',
+        fontSize: width/23.44,
         backgroundColor: 'transparent',
 
     },
 
-    title:{
-        color: '#2A2A30',
-        textAlign: 'center',
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
-        backgroundColor: 'transparent',
-        marginTop: 30,
-        marginBottom: 10
-    },
 
     title2:{
-        color: '#2A2A30',
+        color: '#3e4164',
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
+        fontFamily: 'Montserrat-Bold',
+        fontSize: width/23.44,
         backgroundColor: 'transparent',
-        marginTop: 20,
-        marginBottom: 10
+        marginTop: height/33.35,
+        marginBottom: height/66.7
     },
 
     textDescription:{
@@ -353,11 +405,12 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/23.44,
         backgroundColor: 'transparent',
-        marginBottom: 20,
-        marginHorizontal: 20,
+        marginBottom: height/33.35,
+        marginHorizontal: width/18.75,
+        paddingBottom: height/33.35,
     },
 
     textEmpty:{
@@ -366,12 +419,12 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
+        fontFamily:  'Montserrat-SemiBold',
+        fontSize: width/23.44,
         backgroundColor: 'transparent',
-        marginBottom: 20,
-        marginHorizontal: 20,
-        marginTop: 10
+        marginBottom: height/33.35,
+        marginHorizontal: width/18.75,
+        marginTop: height/66.7,
     },
 
     textLike:{
@@ -380,11 +433,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 14,
+        fontFamily:  'Montserrat-Bold',
+        fontSize: width/26.79,
         backgroundColor: 'transparent',
-        marginTop: 10,
-        marginHorizontal: 20,
+        marginTop: height/66.7,
+        marginHorizontal: width/18.75,
     },
     textComment:{
         color: '#656575',
@@ -392,40 +445,40 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 14,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/26.79,
         backgroundColor: 'transparent',
-        marginVertical: 5,
-        marginHorizontal: 5,
+        marginVertical: height/133.4,
+        marginHorizontal: width/75,
     },
     textCommentName:{
-        color: '#2A2A30',
+        color: '#3e4164',
         flexDirection: 'column',
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 14,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/26.79,
         backgroundColor: 'transparent',
-        marginVertical: 5,
-        marginHorizontal: 5,
+        marginVertical: height/133.4,
+        marginHorizontal: width/75,
     },
     descriptionBox:{
         backgroundColor: '#fff',
-        marginHorizontal: 10,
-        paddingVertical: 30,
-        height: 175,
+        marginHorizontal: width/37.5,
+        paddingVertical: height/60,
+        height: height/3.81,
     },
 
     input: {
-        height: 40,
+        height: height/16.68,
         backgroundColor: 'transparent',
         fontStyle: 'normal',
         textAlign: 'center',
-        fontFamily: 'HiraginoSans-W6',
-        color: '#2A2A30',
-        paddingHorizontal: 10,
-        fontSize: 16,
+        fontFamily: 'Montserrat-SemiBold',
+        color: '#3e4164',
+        paddingHorizontal: width/37.5,
+        fontSize: width/23.44,
     },
 
 });

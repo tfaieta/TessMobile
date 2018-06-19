@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
-import { View, StyleSheet, ListView, Text, ScrollView} from 'react-native';
+import { View, StyleSheet, ListView, Text, ScrollView, Dimensions} from 'react-native';
 import PlayerBottom from './PlayerBottom';
-import { connect } from 'react-redux';
-import { podcastFetchFollowed } from "../actions/PodcastActions"
 import Variables from "./Variables";
 import firebase from 'firebase';
 
 import { Navigation } from 'react-native-navigation';
 import ListItemFollowed from "./ListItemFollowed";
+
+var {height, width} = Dimensions.get('window');
 
 
 
@@ -20,18 +19,38 @@ class FollowedContent extends Component{
         const { currentUser } = firebase.auth();
         const refFol = firebase.database().ref(`users/${currentUser.uid}/following`);
 
+        let sortedData = [];
         refFol.orderByChild('following').once("value", function (snapshot) {
             snapshot.forEach(function (data) {
-                Variables.state.usersFollowed.push(data.key);
+                if(data.key){
+                    firebase.database().ref(`users/${data.key}/username`).once('value', function (snap) {
+                        if(snap.val()){
+                            if(snap.val().username){
+                                sortedData.push({username: snap.val().username, id: data.key});
+                                for(let i = sortedData.length-1; i > 0 && sortedData[i].username.toLowerCase() > sortedData[i-1].username.toLowerCase(); i--){
+                                    let temp = sortedData[i-1];
+                                    sortedData[i-1] = sortedData[i];
+                                    sortedData[i] = temp;
+                                }
+                            }
+                        }
+                    })
+                }
             })
         });
+
+
+        setTimeout(() => {
+            sortedData.forEach(function (data) {
+                Variables.state.usersFollowed.push(data.id)
+            })
+        }, 1500)
 
     }
 
 
     componentWillUnmount(){
         clearTimeout(this.timeout);
-        clearTimeout(this.timeout2);
     }
 
 
@@ -67,8 +86,7 @@ class FollowedContent extends Component{
             loading: true,
         };
 
-        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed), length: Variables.state.usersFollowed.length})},1000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed), length: Variables.state.usersFollowed.length})},3000);
+        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed.reverse()), length: Variables.state.usersFollowed.length})},2000);
     }
 
     state={
@@ -114,7 +132,7 @@ class FollowedContent extends Component{
                     />
 
 
-                    <View style={{paddingBottom:120}} />
+                    <View style={{paddingBottom: height/5.56}} />
 
                 </ScrollView>
 
@@ -122,8 +140,6 @@ class FollowedContent extends Component{
                 <PlayerBottom navigator={this.props.navigator}/>
 
             </View>
-
-
 
 
         );
@@ -134,7 +150,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
-        marginTop: 65,
+        marginTop: height/10.26,
     },
 
     title: {
@@ -143,19 +159,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 18,
-        paddingVertical: 10,
-        marginBottom: 1,
+        fontSize: width/20.83,
+        paddingVertical: height/66.7,
+        marginBottom: height/667,
     },
 
 });
 
-
-const mapStateToProps = state => {
-    const podcast = _.map(state.podcast, (val, uid) => {
-        return { ...val, uid };
-    });
-    return {podcast};
-};
-
-export default connect(mapStateToProps, { podcastFetchFollowed })(FollowedContent);
+export default FollowedContent;

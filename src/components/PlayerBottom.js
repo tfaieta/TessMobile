@@ -109,7 +109,7 @@ class PlayerBottom extends Component {
                 isPlaying: !Variables.state.paused,
                 speed: Variables.state.podcastSpeed,
             });
-        }, 100);
+        }, 200);
 
     }
 
@@ -340,8 +340,8 @@ class PlayerBottom extends Component {
         else{
 
             var fixedTitle = '';
-            if(Variables.state.podcastTitle.toString().length > height/18 ){
-                fixedTitle = (Variables.state.podcastTitle.slice(0,height/18)+"...")
+            if(Variables.state.podcastTitle.toString().length > height/22 ){
+                fixedTitle = (Variables.state.podcastTitle.slice(0,height/22)+"...")
             }
             else{
                 fixedTitle = Variables.state.podcastTitle;
@@ -358,7 +358,7 @@ class PlayerBottom extends Component {
 
 
             return (
-                <View style={{marginTop:4}}>
+                <View style={{marginTop: height/166.75}}>
                     <Text style={styles.playingText}>{fixedTitle}</Text>
                     <Text style={styles.playingText2}>{fixedUsername}</Text>
                 </View>
@@ -1635,7 +1635,7 @@ const styles = StyleSheet.create({
         paddingLeft: width/37.5
     },
     listView: {
-        paddingTop: 20,
+        paddingTop: height/33.35,
         backgroundColor: '#F5FCFF',
     },
     sliderContainer: {
@@ -1647,12 +1647,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     emptyProgress: {
-        width: 280,
-        height: 8,
+        width: width/1.34,
+        height: height/83.38,
         backgroundColor: '#575757',
     },
     leftContainer: {
-        paddingLeft: 10,
+        paddingLeft: width/37.5,
         justifyContent: 'center',
         alignItems:'flex-start',
     },
@@ -1664,7 +1664,7 @@ const styles = StyleSheet.create({
         alignItems:'flex-end',
     },
     centerContainer: {
-        marginTop:5,
+        marginTop: height/133.4,
         flexDirection: 'row',
     },
 
@@ -1672,10 +1672,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     centerContainerButtons: {
-        flex:1,
+        flex: 1,
         flexDirection: 'row',
-        paddingTop: 10,
-        paddingBottom: 10,
+        paddingTop: height/66.7,
+        paddingBottom: height/66.7,
     },
     rightContainer: {
         flex: 1,
@@ -1701,8 +1701,8 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         backgroundColor: 'transparent',
-        marginTop: 5,
-        marginHorizontal: 5,
+        marginTop: height/133.4,
+        marginHorizontal: width/75,
         borderColor: 'transparent',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
@@ -1717,32 +1717,32 @@ const styles = StyleSheet.create({
 
 
     homeContainer:{
-        marginTop: -15,
+        marginTop: -(height/44.47),
     },
 
     title: {
         color: '#3e4164',
-        marginTop: 70,
+        marginTop: height/9.53,
         flex:1,
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: 25,
+        fontSize: width/15,
         backgroundColor: 'transparent',
-        paddingBottom:10
+        paddingBottom: height/66.7
     },
     title2: {
         color: 'rgba(1,170,170,1)',
-        flex:1,
+        flex: 1,
         textAlign: 'center',
-        fontSize: 20,
+        fontSize: width/18.75,
     },
 
     podcastText:{
         color: '#3e4164',
         fontSize: height/44.47,
-        marginTop: 5,
-        marginHorizontal: 10,
+        marginTop: height/133.4,
+        marginHorizontal: width/37.5,
         flexDirection: 'row',
         backgroundColor: 'transparent',
         alignSelf: 'center',
@@ -1752,8 +1752,8 @@ const styles = StyleSheet.create({
     podcastTextDescription:{
         color: '#3e4164',
         fontSize: height/36,
-        marginTop: 5,
-        marginHorizontal: 10,
+        marginTop: height/133.4,
+        marginHorizontal: width/37.5,
         flexDirection: 'row',
         backgroundColor: 'transparent',
         textAlign: 'left',
@@ -1762,8 +1762,8 @@ const styles = StyleSheet.create({
     podcastTextDescriptionTitle:{
         color: '#3e4164',
         fontSize: height/45,
-        marginTop: 5,
-        marginHorizontal: 10,
+        marginTop: height/133.4,
+        marginHorizontal: width/37.5,
         flexDirection: 'row',
         backgroundColor: 'transparent',
         textAlign: 'left',
@@ -1772,8 +1772,8 @@ const styles = StyleSheet.create({
 
     seeMore:{
         color: '#506dcf',
-        fontSize: 14,
-        marginBottom:5,
+        fontSize: width/26.79,
+        marginBottom: height/133.4,
         flexDirection: 'row',
         backgroundColor: 'transparent',
         alignSelf: 'center',
@@ -1782,18 +1782,18 @@ const styles = StyleSheet.create({
     },
     podcastTextNum:{
         color: '#BBBCCD',
-        fontSize: 16,
-        marginTop: 5,
+        fontSize: width/23.44,
+        marginTop: height/133.4,
         flexDirection: 'row',
         backgroundColor: 'transparent',
-        marginHorizontal: 15,
+        marginHorizontal: width/25,
         fontFamily: 'Montserrat-Regular',
     },
 
     podcastHighlightNum:{
         color: '#3e4164',
-        fontSize: 14,
-        marginBottom: 20,
+        fontSize: width/26.79,
+        marginBottom: height/33.35,
         flexDirection: 'row',
         backgroundColor: 'transparent',
         alignSelf: 'center',
@@ -1808,14 +1808,14 @@ const styles = StyleSheet.create({
     },
     podcastTextLikes:{
         color: '#BBBCCD',
-        fontSize: 16,
+        fontSize: width/23.44,
         backgroundColor: 'transparent',
         textAlign: 'center',
         fontFamily: 'Montserrat-Regular',
     },
     podcastTextLikesActive:{
         color: '#BBBCCD',
-        fontSize: 16,
+        fontSize: width/23.44,
         backgroundColor: 'transparent',
         textAlign: 'center',
         fontFamily: 'Montserrat-Regular',
@@ -1823,46 +1823,46 @@ const styles = StyleSheet.create({
     podcastTextArtist:{
         color:'#3e4164',
         fontSize: height/44.47,
-        marginHorizontal: 10,
+        marginHorizontal: width/37.5,
         flexDirection: 'row',
         backgroundColor: 'transparent',
         alignSelf: 'center',
         fontFamily: 'Montserrat-Regular',
-        marginTop: 6,
+        marginTop: height/111.17,
     },
     podcastTextSpeed:{
         color: '#828393',
         fontSize: height/33.35,
         marginHorizontal: 30,
-        marginTop: 5,
+        marginTop: height/133.4,
         backgroundColor: 'transparent',
         textAlign: 'center'
     },
 
     podcastTextCat:{
         color:'#828393',
-        fontSize: 14,
+        fontSize: width/26.79,
         flexDirection: 'row',
         backgroundColor: 'transparent',
         alignSelf: 'center',
         fontFamily: 'Montserrat-Regular',
-        marginTop: 6,
+        marginTop: height/111.17,
     },
 
     input: {
-        height: 40,
-        width: 300,
-        marginBottom: 10,
+        height: height/16.68,
+        width: width/1.25,
+        marginBottom: height/66.7,
         color:'#FFF',
-        paddingHorizontal: 10,
-        fontSize: 22,
+        paddingHorizontal: width/37.5,
+        fontSize: width/17.05,
         alignSelf: 'center',
         textAlign: 'center'
     },
 
     highlightText: {
         color:'#fff',
-        fontSize: 16,
+        fontSize: width/23.44,
         flexDirection: 'row',
         backgroundColor: 'transparent',
         alignSelf: 'center',

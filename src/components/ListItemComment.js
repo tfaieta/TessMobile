@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image, Alert} from 'react-native';
+import { Text, View, TouchableOpacity, Image, Alert, Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import Variables from "./Variables";
 import { Navigation } from 'react-native-navigation';
+
+var {height, width} = Dimensions.get('window');
 
 
 
@@ -70,11 +72,11 @@ class ListItemComment extends Component {
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginTop:5, marginRight: 5,  height: 30, width: 30, borderRadius: 10, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)', shadowOffset:{  width: 0,  height: 2}, shadowOpacity: 0.5, shadowRadius: 2}}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginTop: height/133.4, marginRight: width/75,  height: width/12.5, width: width/12.5, borderRadius: 10, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)', shadowOffset:{  width: 0,  height: 2}, shadowOpacity: 0.5, shadowRadius: 2}}>
                     <Icon style={{
                         textAlign: 'center',
-                        fontSize: 18,
-                        marginTop: 6,
+                        fontSize: width/20.83,
+                        marginTop: height/111.17,
                         color: 'white',
                     }} name="md-person">
                     </Icon>
@@ -83,9 +85,9 @@ class ListItemComment extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', marginTop:5, marginRight: 5, height: 30, width: 30}}>
+                <View style={{backgroundColor:'transparent', marginTop: height/133.4, marginRight: width/75, height: width/12.5, width: width/12.5}}>
                     <Image
-                        style={{width: 30, height: 30, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
+                        style={{width: width/12.5, height: width/12.5, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -204,10 +206,10 @@ const styles = {
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 14,
+        fontFamily: 'Montserrat-Regular',
+        fontSize: width/26.79,
         backgroundColor: 'transparent',
-        marginTop: 10
+        marginTop: height/66.7
     },
     textCommentName:{
         color: '#3e4164',
@@ -215,11 +217,11 @@ const styles = {
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 14,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/26.79,
         backgroundColor: 'transparent',
-        marginHorizontal: 5,
-        marginTop: 10
+        marginHorizontal: width/75,
+        marginTop: height/66.7
     },
 };
 

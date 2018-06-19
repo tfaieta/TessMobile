@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import { Navigation } from 'react-native-navigation';
+import {Dimensions} from 'react-native';
 import {
     EMAIL_CHANGED,
     PASSWORD_CHANGED,
@@ -12,29 +13,29 @@ import {
 import Icon from 'react-native-vector-icons/Foundation';
 var FontAwesome = require('react-native-vector-icons/FontAwesome');
 
+var {height, width} = Dimensions.get('window');
+
 
 
 var homeIcon;
-Icon.getImageSource('home', 26, '#b1b3c8').then((source) => { homeIcon = source});
+Icon.getImageSource('home', width/14.42, '#b1b3c8').then((source) => { homeIcon = source});
 var homeIconSelected = require('tess/src/images/iconHome.png');
-Icon.getImageSource('home', 30, '#506dcf').then((source) => { homeIconSelected = source});
-
-
+Icon.getImageSource('home', width/12.5, '#506dcf').then((source) => { homeIconSelected = source});
 
 var discoverIcon;
-Icon.getImageSource('compass', 30, '#b1b3c8').then((source) => { discoverIcon = source});
+Icon.getImageSource('compass', width/12.5, '#b1b3c8').then((source) => { discoverIcon = source});
 var discoverIconSelected;
-Icon.getImageSource('compass', 34, '#506dcf').then((source) => { discoverIconSelected = source});
+Icon.getImageSource('compass', width/11.03, '#506dcf').then((source) => { discoverIconSelected = source});
 
 var libraryIcon;
-FontAwesome.getImageSource('bars', 22, '#b1b3c8').then((source) => { libraryIcon = source});
+FontAwesome.getImageSource('bars', width/17.05, '#b1b3c8').then((source) => { libraryIcon = source});
 var libraryIconSelected;
-FontAwesome.getImageSource('bars', 26, '#506dcf').then((source) => { libraryIconSelected = source});
+FontAwesome.getImageSource('bars', width/14.42, '#506dcf').then((source) => { libraryIconSelected = source});
 
 var notificationsIcon;
-FontAwesome.getImageSource('bell', 22, '#b1b3c8').then((source) => { notificationsIcon = source});
+FontAwesome.getImageSource('bell', width/17.05, '#b1b3c8').then((source) => { notificationsIcon = source});
 var notificationsIconSelected;
-FontAwesome.getImageSource('bell', 26, '#506dcf').then((source) => { notificationsIconSelected = source});
+FontAwesome.getImageSource('bell', width/14.42, '#506dcf').then((source) => { notificationsIconSelected = source});
 
 
 
@@ -78,9 +79,9 @@ export const loginUser = ({email, password}) => {
                                         icon: homeIcon,
                                         selectedIcon: homeIconSelected,
                                         iconInsets: {
-                                            top: 5,
+                                            top: height/133.4,
                                             left: 0,
-                                            bottom: -5,
+                                            bottom: -(height/133.4),
                                             right: 0
                                         },
                                         navBarHidden: true,
@@ -92,9 +93,9 @@ export const loginUser = ({email, password}) => {
                                         icon: discoverIcon,
                                         selectedIcon: discoverIconSelected,
                                         iconInsets: {
-                                            top: 5,
+                                            top: height/133.4,
                                             left: 0,
-                                            bottom: -5,
+                                            bottom: -(height/133.4),
                                             right: 0
                                         },
                                         navBarHidden: true,
@@ -106,9 +107,9 @@ export const loginUser = ({email, password}) => {
                                         icon: notificationsIcon,
                                         selectedIcon: notificationsIconSelected,
                                         iconInsets: {
-                                            top: 5,
+                                            top: height/133.4,
                                             left: 0,
-                                            bottom: -5,
+                                            bottom: -(height/133.4),
                                             right: 0
                                         },
                                         navBarHidden: true,
@@ -120,9 +121,9 @@ export const loginUser = ({email, password}) => {
                                         icon: libraryIcon,
                                         selectedIcon: libraryIconSelected,
                                         iconInsets: {
-                                            top: 5,
+                                            top: height/133.4,
                                             left: 0,
-                                            bottom: -5,
+                                            bottom: -(height/133.4),
                                             right: 0
                                         },
                                         navBarHidden: true,
@@ -188,9 +189,9 @@ export const createUser = ({email, password, username}) => {
                                             icon: homeIcon,
                                             selectedIcon: homeIconSelected,
                                             iconInsets: {
-                                                top: 5,
+                                                top: height/133.4,
                                                 left: 0,
-                                                bottom: -5,
+                                                bottom: -(height/133.4),
                                                 right: 0
                                             },
                                             navBarHidden: true,
@@ -202,9 +203,9 @@ export const createUser = ({email, password, username}) => {
                                             icon: discoverIcon,
                                             selectedIcon: discoverIconSelected,
                                             iconInsets: {
-                                                top: 5,
+                                                top: height/133.4,
                                                 left: 0,
-                                                bottom: -5,
+                                                bottom: -(height/133.4),
                                                 right: 0
                                             },
                                             navBarHidden: true,
@@ -216,9 +217,9 @@ export const createUser = ({email, password, username}) => {
                                             icon: notificationsIcon,
                                             selectedIcon: notificationsIconSelected,
                                             iconInsets: {
-                                                top: 5,
+                                                top: height/133.4,
                                                 left: 0,
-                                                bottom: -5,
+                                                bottom: -(height/133.4),
                                                 right: 0
                                             },
                                             navBarHidden: true,
@@ -230,9 +231,9 @@ export const createUser = ({email, password, username}) => {
                                             icon: libraryIcon,
                                             selectedIcon: libraryIconSelected,
                                             iconInsets: {
-                                                top: 5,
+                                                top: height/133.4,
                                                 left: 0,
-                                                bottom: -5,
+                                                bottom: -(height/133.4),
                                                 right: 0
                                             },
                                             navBarHidden: true,
@@ -261,20 +262,12 @@ export const createUser = ({email, password, username}) => {
                                     animationType: 'slide-down'
                                 });
 
-
                 })
-
-
-
 
 
             })
 
             .catch(() => loginUserFail(dispatch));
-
-
-
-
 
     };
 

@@ -47,6 +47,7 @@ class ListItemFollowed extends Component {
     constructor(state) {
         super(state);
         this.state ={
+            loading: true,
             profileName: '',
             profileImage: '',
             rss: false,
@@ -88,7 +89,7 @@ class ListItemFollowed extends Component {
 
 
         setTimeout(() =>{
-            this.setState({profileName: profileName, title: title, time: timeNow-time})
+            this.setState({profileName: profileName, title: title, time: timeNow-time, loading: false})
         },1200);
 
 
@@ -100,7 +101,7 @@ class ListItemFollowed extends Component {
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginLeft: 10, justifyContent: 'center', alignSelf: 'center', height: 40, width: 40, borderRadius: 20, borderWidth:5, borderColor:'rgba(320,320,320,0.8)',  }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginLeft: width/37.5, justifyContent: 'center', alignSelf: 'center', height: width/9.38, width: width/9.38, borderRadius: width/18.75, borderWidth: 5, borderColor:'rgba(320,320,320,0.8)',  }}>
                     <Icon style={{
                         textAlign: 'center',
                         fontSize: width/15,
@@ -113,9 +114,9 @@ class ListItemFollowed extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', justifyContent: 'center', alignSelf: 'center', marginLeft: 10, height: 40, width: 40, }}>
+                <View style={{backgroundColor:'transparent', justifyContent: 'center', alignSelf: 'center', marginLeft: width/37.5, height: width/9.38, width: width/9.38, }}>
                     <Image
-                        style={{width: 40, height: 40, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 20, borderWidth: 0.1, borderColor: 'transparent'}}
+                        style={{width: width/9.38, height: width/9.38, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: width/18.75, borderWidth: 0.1, borderColor: 'transparent'}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -414,27 +415,66 @@ class ListItemFollowed extends Component {
     };
 
 
+    renderItem = () => {
+        if(this.state.loading){
+            return (
+
+                <View>
+                    <View style={{paddingVertical: height/133.4}}>
+
+                    </View>
+                    <View style={styles.container}>
+
+                        <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginLeft: width/37.5, justifyContent: 'center', alignSelf: 'center', height: width/9.38, width: width/9.38, borderRadius: width/37.5, borderWidth: 5, borderColor:'rgba(320,320,320,0.8)',  }}>
+                            <Icon style={{
+                                textAlign: 'center',
+                                fontSize: width/15,
+                                color: 'white',
+                                marginTop: height/333.5
+                            }} name="md-person">
+                            </Icon>
+                        </View>
+
+                        <View style={{justifyContent: 'center', alignSelf: 'flex-start'}}>
+                            <View style={{backgroundColor: '#82839340', paddingVertical: height/95.3, marginVertical: height/333.5, marginHorizontal: width/20, paddingHorizontal: width/3, borderRadius: width/18.75}}/>
+                            <View style={{backgroundColor: '#82839340', paddingVertical: height/95.3, marginVertical: height/333.5, marginHorizontal: width/20, paddingHorizontal: width/3, borderRadius: width/18.75}}/>
+                        </View>
+
+                    </View>
+
+                </View>
+            )
+        }
+        else{
+            return (
+
+                <View>
+                    <View style={{paddingVertical: height/133.4}}>
+
+                        {this.renderTime()}
+
+                    </View>
+                    <View style={styles.container}>
+
+                        {this._renderProfileImage()}
+
+                        <View style={styles.middleContainer}>
+                            {this.renderMessage()}
+                        </View>
+
+                    </View>
+
+                </View>
+            )
+        }
+    };
 
     render() {
 
         return (
 
             <View>
-                <View style={{paddingVertical: height/133.4}}>
-
-                {this.renderTime()}
-
-                </View>
-                <View style={styles.container}>
-
-                    {this._renderProfileImage()}
-
-                    <View style={styles.middleContainer}>
-                        {this.renderMessage()}
-                    </View>
-
-                </View>
-
+                {this.renderItem()}
             </View>
         )
 

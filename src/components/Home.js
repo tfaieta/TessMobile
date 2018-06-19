@@ -351,28 +351,30 @@ class Home extends Component{
             setTimeout(() => {
                 firebase.database().ref(`users/${userID}/highlights/${highlightID}`).once("value", function (snap) {
 
-                    firebase.database().ref(`podcasts/${snap.val().podcastID}`).once("value", function (snapshot) {
+                    if(snap.val()){
+                        firebase.database().ref(`podcasts/${snap.val().podcastID}`).once("value", function (snapshot) {
 
-                        if(snapshot.val().rss){
+                            if(snapshot.val().rss){
 
-                            const {podcastArtist} = snapshot.val();
-                            const {podcastTitle} = snapshot.val();
-                            const {podcastURL} = snapshot.val();
-                            const {title} = snap.val();
-                            const {podcastCategory} = snapshot.val();
-                            const {id} = snapshot.val();
-                            const {description} = snap.val();
-                            const {key} = snap.val();
-                            const {startTime} = snap.val();
-                            const {endTime} = snap.val();
+                                const {podcastArtist} = snapshot.val();
+                                const {podcastTitle} = snapshot.val();
+                                const {podcastURL} = snapshot.val();
+                                const {title} = snap.val();
+                                const {podcastCategory} = snapshot.val();
+                                const {id} = snapshot.val();
+                                const {description} = snap.val();
+                                const {key} = snap.val();
+                                const {startTime} = snap.val();
+                                const {endTime} = snap.val();
 
-                            Variables.state.highlightStart = startTime;
-                            Variables.state.highlightEnd = endTime;
-                            Variables.state.seekTo = startTime;
-                            Variables.state.currentTime = startTime;
 
-                                AsyncStorage.setItem("currentPodcast", '');
-                                AsyncStorage.setItem("currentTime", "0");
+                                Variables.state.highlightStart = startTime;
+                                Variables.state.highlightEnd = endTime;
+                                Variables.state.seekTo = startTime;
+                                Variables.state.currentTime = startTime;
+
+                                AsyncStorage.setItem("currentPodcast", id);
+                                AsyncStorage.setItem("currentTime", startTime.toString());
 
                                 Variables.pause();
                                 Variables.setPodcastFile(podcastURL);
@@ -406,78 +408,80 @@ class Home extends Component{
                                     }
                                 });
 
-                        }
-                        else if(snapshot.val()){
+                            }
+                            else if(snapshot.val()){
 
-                            const {podcastArtist} = snapshot.val();
-                            const {podcastTitle} = snapshot.val();
-                            const {title} = snap.val();
-                            const {podcastCategory} = snapshot.val();
-                            const {id} = snapshot.val();
-                            const {description} = snap.val();
-                            const {key} = snap.val();
-                            const {startTime} = snap.val();
-                            const {endTime} = snap.val();
+                                const {podcastArtist} = snapshot.val();
+                                const {podcastTitle} = snapshot.val();
+                                const {title} = snap.val();
+                                const {podcastCategory} = snapshot.val();
+                                const {id} = snapshot.val();
+                                const {description} = snap.val();
+                                const {key} = snap.val();
+                                const {startTime} = snap.val();
+                                const {endTime} = snap.val();
 
-                            Variables.state.highlightStart = startTime;
-                            Variables.state.highlightEnd = endTime;
-                            Variables.state.seekTo = startTime;
-                            Variables.state.currentTime = startTime;
+                                Variables.state.highlightStart = startTime;
+                                Variables.state.highlightEnd = endTime;
+                                Variables.state.seekTo = startTime;
+                                Variables.state.currentTime = startTime;
 
-                                    AsyncStorage.setItem("currentPodcast", '');
-                                    AsyncStorage.setItem("currentTime", "0");
+                                AsyncStorage.setItem("currentPodcast", id);
+                                AsyncStorage.setItem("currentTime", startTime.toString());
 
-                                    firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL().catch(() => {
-                                        console.warn("file not found")
-                                    })
-                                        .then(function (url) {
+                                firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL().catch(() => {
+                                    console.warn("file not found")
+                                })
+                                    .then(function (url) {
 
-                                            Variables.pause();
-                                            Variables.setPodcastFile(url);
-                                            Variables.state.highlight = true;
-                                            Variables.state.rss = false;
-                                            Variables.state.podcastURL = url;
-                                            Variables.state.podcastArtist = podcastArtist;
-                                            Variables.state.podcastTitle = title;
-                                            Variables.state.podcastID = id;
-                                            Variables.state.podcastCategory = podcastCategory;
-                                            Variables.state.podcastDescription = description;
-                                            Variables.state.favorited = false;
-                                            Variables.play();
-                                            Variables.state.isPlaying = true;
+                                        Variables.pause();
+                                        Variables.setPodcastFile(url);
+                                        Variables.state.highlight = true;
+                                        Variables.state.rss = false;
+                                        Variables.state.podcastURL = url;
+                                        Variables.state.podcastArtist = podcastArtist;
+                                        Variables.state.podcastTitle = title;
+                                        Variables.state.podcastID = id;
+                                        Variables.state.podcastCategory = podcastCategory;
+                                        Variables.state.podcastDescription = description;
+                                        Variables.state.favorited = false;
+                                        Variables.play();
+                                        Variables.state.isPlaying = true;
 
-                                        });
-
-
-                                    Variables.state.userProfileImage = '';
-                                    const storageRef = firebase.storage().ref(`/users/${podcastArtist}/image-profile-uploaded`);
-                                    if (storageRef.child('image-profile-uploaded')) {
-                                        storageRef.getDownloadURL()
-                                            .then(function (url) {
-                                                if (url) {
-                                                    Variables.state.userProfileImage = url;
-                                                }
-                                            }).catch(function (error) {
-                                            //
-                                        });
-                                    }
-
-                                    firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
-                                        if (snap.val()) {
-                                            Variables.state.currentUsername = (snap.val().username + ' • ' + podcastTitle).slice(0, 35) + '...';
-                                        }
-                                        else {
-                                            Variables.state.currentUsername = podcastArtist;
-                                        }
                                     });
 
-                        }
 
-                    });
+                                Variables.state.userProfileImage = '';
+                                const storageRef = firebase.storage().ref(`/users/${podcastArtist}/image-profile-uploaded`);
+                                if (storageRef.child('image-profile-uploaded')) {
+                                    storageRef.getDownloadURL()
+                                        .then(function (url) {
+                                            if (url) {
+                                                Variables.state.userProfileImage = url;
+                                            }
+                                        }).catch(function (error) {
+                                        //
+                                    });
+                                }
+
+                                firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
+                                    if (snap.val()) {
+                                        Variables.state.currentUsername = (snap.val().username + ' • ' + podcastTitle).slice(0, 35) + '...';
+                                    }
+                                    else {
+                                        Variables.state.currentUsername = podcastArtist;
+                                    }
+                                });
+
+                            }
+
+                        });
+                    }
+
 
                 })
 
-            }, 1500);
+            }, 3000);
 
         }
     };
@@ -529,7 +533,7 @@ class Home extends Component{
     
     rssFetch(){
         // loop for every rss feed in database
-        firebase.database().ref('feeds').on("value", function (snapshot) {
+        firebase.database().ref('feeds').once("value", function (snapshot) {
             snapshot.forEach(function (snap) {
                 console.warn(snap.val());
 
@@ -567,8 +571,12 @@ class Home extends Component{
                             const pI = image[0].getElementsByTagName('url');
                             profileImage = pI[0].textContent;
 
-                            console.warn(profileImage);
+
+                            console.warn("Profile Image: " + profileImage);
+
+
                         }
+
 
                         // profile username
                         let username = channel[0].textContent;
@@ -581,21 +589,20 @@ class Home extends Component{
                         usernameData = usernameData.replace("http://", "");
 
 
-                        // category
-                        let category = '';
-                        if(doc.getElementsByTagName('itunes:category').length > 0){
-                            category = doc.getElementsByTagName('itunes:category')[0].getAttribute('text');
-                        }
-                        const podcastCategory = category;
-                        console.warn(podcastCategory);
-
-
 
                         // create account for user if it doesn't exist
                         // reserve username & create user if needed
                         firebase.database().ref(`users`).child(usernameData).once("value", function (snapshot) {
                             if(snapshot.val()){
-                                console.warn("Account Exists: " + usernameData)
+                                if(snapshot.val().username && snapshot.val().bio && snapshot.val().profileImage){
+                                    console.warn("Account Exists: " + usernameData)
+                                }
+                                else{
+                                    firebase.database().ref(`users`).child(usernameData).child("/username").update({username});
+                                    firebase.database().ref(`users`).child(usernameData).child("/bio").update({bio});
+                                    firebase.database().ref(`users`).child(usernameData).child("/profileImage").update({profileImage});
+                                    firebase.database().ref(`usernames`).child(usernameData.toLowerCase()).update({username: usernameData.toLowerCase()});
+                                }
                             }
                             else{
                                 firebase.database().ref(`users`).child(usernameData).child("/username").update({username});
@@ -604,6 +611,16 @@ class Home extends Component{
                                 firebase.database().ref(`usernames`).child(usernameData.toLowerCase()).update({username: usernameData.toLowerCase()});
                             }
                         });
+
+
+
+                        // category
+                        let category = '';
+                        if(doc.getElementsByTagName('itunes:category').length > 0){
+                            category = doc.getElementsByTagName('itunes:category')[0].getAttribute('text');
+                        }
+                        const podcastCategory = category;
+                        console.warn("Category: " + podcastCategory);
 
 
 
@@ -623,39 +640,13 @@ class Home extends Component{
 
                             //title
                             const title = items[i].getElementsByTagName('title');
-                            console.warn(title[0].textContent);
+                            console.warn("Title: " + title[0].textContent);
                             let podcastTitle = title[0].textContent;
 
                             //description
                             const description = items[i].getElementsByTagName('description');
-                            console.warn(description[0].textContent);
+                            console.warn("Description: " + description[0].textContent);
                             let podcastDescription = description[0].textContent;
-                            podcastDescription = podcastDescription.replace("<p>", " ");
-                            podcastDescription = podcastDescription.replace("</p>", " ");
-                            podcastDescription = podcastDescription.replace("<a", " ");
-                            podcastDescription = podcastDescription.replace("&amp", " ");
-                            podcastDescription = podcastDescription.replace("href=", " ");
-                            podcastDescription = podcastDescription.replace("<em>", " ");
-                            podcastDescription = podcastDescription.replace("</em>", " ");
-                            podcastDescription = podcastDescription.replace("</a>", " ");
-                            podcastDescription = podcastDescription.replace("<h2", " ");
-                            podcastDescription = podcastDescription.replace("id=", " ");
-                            podcastDescription = podcastDescription.replace("</h2>", " ");
-                            podcastDescription = podcastDescription.replace("</p>", " ");
-                            podcastDescription = podcastDescription.replace("<br>", " ");
-                            podcastDescription = podcastDescription.replace("<div>", " ");
-                            podcastDescription = podcastDescription.replace("</div>", " ");
-                            podcastDescription = podcastDescription.replace("<ul>", " ");
-                            podcastDescription = podcastDescription.replace("<li>", " ");
-                            podcastDescription = podcastDescription.replace("</li>", " ");
-                            podcastDescription = podcastDescription.replace("<strong>", " ");
-                            podcastDescription = podcastDescription.replace("</strong>", " ");
-                            podcastDescription = podcastDescription.replace("<sup>", " ");
-                            podcastDescription = podcastDescription.replace("</sup>", " ");
-                            podcastDescription = podcastDescription.replace("<br><br>", " ");
-                            podcastDescription = podcastDescription.replace("<br>", " ");
-
-
 
                             //length
                             let length = '';
@@ -666,14 +657,10 @@ class Home extends Component{
                                 length = length.replace("</itunes:duration>", "");
                             }
                             const podcastLength = length;
-                            console.warn(podcastLength);
-
-
+                            console.warn("Length: " + podcastLength);
 
                             //rss = true, need to tell firebase it's an rss podcast
                             const rss = true;
-
-
 
                             //likes = 0
                             const likes = 0;
@@ -693,14 +680,14 @@ class Home extends Component{
                             // get url -> upload
                             if(items[i].getElementsByTagName('enclosure').length > 0){
                                 var link = items[i].getElementsByTagName('enclosure')[0].getAttribute('url');
-                                console.warn(link);
+                                console.warn("URL: " + link);
                                 const podcastURL = link;
 
 
                                 // upload to database if doesn't exist (follow podcastCreate)
                                 firebase.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
                                     if(snapshot.val()){
-                                        console.warn("EXISTS")
+                                        console.warn("EPISODE EXISTS")
                                     }
                                     else{
                                         let item = firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength, time: firebase.database.ServerValue.TIMESTAMP});
@@ -718,14 +705,14 @@ class Home extends Component{
                             // another way of getting url -> upload
                             else if(items[i].getElementsByTagName('link').length > 0){
                                 var link = items[i].getElementsByTagName('link');
-                                console.warn(link[0].textContent);
+                                console.warn("URL: " + link[0].textContent);
                                 const podcastURL = link[0].textContent;
 
 
                                 // upload to database if doesn't exist (follow podcastCreate)
                                 firebase.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
                                     if(snapshot.val()){
-                                        console.warn("EXISTS")
+                                        console.warn("EPISODE EXISTS")
                                     }
                                     else{
                                         let item = firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength, time: firebase.database.ServerValue.TIMESTAMP});
@@ -746,6 +733,11 @@ class Home extends Component{
                     });
             });
         });
+
+
+
+
+
     }
 
 
@@ -787,7 +779,7 @@ class Home extends Component{
         });
 
         this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), refreshing: false})},1000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), refreshing: false})},4500);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), refreshing: false})},3500);
 
     }
 

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image} from 'react-native';
+import { Text, View, TouchableOpacity, Image, Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import Variables from "./Variables";
-import { Navigation } from 'react-native-navigation';
+
+var {height, width} = Dimensions.get('window');
 
 
 // A single user item on a following or followed list
@@ -46,6 +47,7 @@ class ListItemFollowed extends Component {
     constructor(state) {
         super(state);
         this.state ={
+            loading: true,
             profileName: '',
             profileImage: '',
             rss: false,
@@ -63,7 +65,7 @@ class ListItemFollowed extends Component {
         });
 
         setTimeout(() =>{
-            this.setState({profileName: profileName})
+            this.setState({profileName: profileName, loading: false})
         },1400);
 
 
@@ -75,12 +77,12 @@ class ListItemFollowed extends Component {
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginBottom:10, marginLeft: 10, alignSelf: 'center', height: 50, width: 50, borderRadius:4, borderWidth:5, borderColor:'rgba(320,320,320,0.8)',  }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginBottom: width/37.5, marginLeft: width/37.5, alignSelf: 'center', height: width/7.5, width: width/7.5, borderRadius: 4, borderWidth: 5, borderColor:'rgba(320,320,320,0.8)',  }}>
                     <Icon style={{
                         textAlign: 'center',
-                        fontSize: 35,
+                        fontSize: width/10.71,
                         color: 'white',
-                        marginTop: 2
+                        marginTop: width/187.5
                     }} name="md-person">
                     </Icon>
                 </View>
@@ -88,9 +90,9 @@ class ListItemFollowed extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom:10, marginLeft: 10, height: 50, width: 50, }}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom: width/37.5, marginLeft: width/37.5, height: width/7.5, width: width/7.5, }}>
                     <Image
-                        style={{width: 50, height: 50, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
+                        style={{width: width/7.5, height: width/7.5, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -100,38 +102,73 @@ class ListItemFollowed extends Component {
 
 
 
+    renderItem = () => {
+        if(this.state.loading){
+
+            return (
+
+                <View>
+                    <View style={styles.container}>
+
+                        <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginBottom: width/37.5, marginLeft: width/37.5, alignSelf: 'center', height: width/7.5, width: width/7.5, borderRadius: 4, borderWidth: 5, borderColor:'rgba(320,320,320,0.8)',  }}>
+                            <Icon style={{
+                                textAlign: 'center',
+                                fontSize: width/10.71,
+                                color: 'white',
+                                marginTop: width/187.5
+                            }} name="md-person">
+                            </Icon>
+                        </View>
+
+                        <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center'}}>
+                            <View style={{backgroundColor: '#82839340', paddingVertical: height/95.3, marginVertical: height/300, marginHorizontal: width/30, paddingHorizontal: width/4, borderRadius: width/18.75}}/>
+                        </View>
+
+                    </View>
+                </View>
+            )
+        }
+        else{
+            const podcastArtist = this.props.podcast;
+
+            return (
+
+                <TouchableOpacity underlayColor='#5757FF' onPress={ () =>{
+                    const {navigator} = this.props;
+                    Variables.state.browsingArtist = podcastArtist;
+                    const {rss} = this.state;
+                    this.props.navigator.push({
+                        screen: "UserProfile",
+                        title: this.state.profileName,
+                        passProps: {navigator, rss},
+                    });
+                }}>
+                    <View style={styles.container}>
+
+
+                        {this._renderProfileImage()}
+
+
+                        <View style={styles.middleContainer}>
+                            <Text style={styles.title}>{this.state.profileName}</Text>
+                        </View>
+
+
+                    </View>
+                </TouchableOpacity>
+            )
+        }
+
+    };
 
 
 
     render() {
 
-        const podcastArtist = this.props.podcast;
-
-        return (
-
-            <TouchableOpacity underlayColor='#5757FF' onPress={ () =>{
-            const {navigator} = this.props;
-                Variables.state.browsingArtist = podcastArtist;
-                const {rss} = this.state;
-                this.props.navigator.push({
-                    screen: "UserProfile",
-                    title: this.state.profileName,
-                    passProps: {navigator, rss},
-                });
-            }}>
-                <View style={styles.container}>
-
-
-                    {this._renderProfileImage()}
-
-
-                    <View style={styles.middleContainer}>
-                        <Text style={styles.title}>{this.state.profileName}</Text>
-                    </View>
-
-
-                </View>
-            </TouchableOpacity>
+        return(
+            <View>
+                {this.renderItem()}
+            </View>
         )
 
     }
@@ -159,9 +196,9 @@ const styles = {
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        marginTop: 15,
-        marginLeft: 20,
-        fontSize: 14,
+        marginTop: height/44.47,
+        marginLeft: width/18.75,
+        fontSize: width/26.79,
         backgroundColor: 'transparent'
     },
     middleContainer: {

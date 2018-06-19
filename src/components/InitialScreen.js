@@ -1,45 +1,36 @@
 import React, {Component} from 'react';
-import {View, Image, StatusBar, ActivityIndicator, Dimensions} from 'react-native';
+import {View, StatusBar, Dimensions} from 'react-native';
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/Foundation';
 var FontAwesome = require('react-native-vector-icons/FontAwesome');
-import LinearGradient from "react-native-linear-gradient/index.android";
 
 import { Navigation } from 'react-native-navigation';
 
-
-
+var {height, width} = Dimensions.get('window');
 
 
 
 // first official screen of tess, from here it goes to home page if logged in or start up if not
 
-
-
 var homeIcon;
-Icon.getImageSource('home', 26, '#b1b3c8').then((source) => { homeIcon = source});
+Icon.getImageSource('home', width/14.42, '#b1b3c8').then((source) => { homeIcon = source});
 var homeIconSelected = require('tess/src/images/iconHome.png');
-Icon.getImageSource('home', 30, '#506dcf').then((source) => { homeIconSelected = source});
-
-
+Icon.getImageSource('home', width/12.5, '#506dcf').then((source) => { homeIconSelected = source});
 
 var discoverIcon;
-Icon.getImageSource('compass', 30, '#b1b3c8').then((source) => { discoverIcon = source});
+Icon.getImageSource('compass', width/12.5, '#b1b3c8').then((source) => { discoverIcon = source});
 var discoverIconSelected;
-Icon.getImageSource('compass', 34, '#506dcf').then((source) => { discoverIconSelected = source});
+Icon.getImageSource('compass', width/11.03, '#506dcf').then((source) => { discoverIconSelected = source});
 
 var libraryIcon;
-FontAwesome.getImageSource('bars', 22, '#b1b3c8').then((source) => { libraryIcon = source});
+FontAwesome.getImageSource('bars', width/17.05, '#b1b3c8').then((source) => { libraryIcon = source});
 var libraryIconSelected;
-FontAwesome.getImageSource('bars', 26, '#506dcf').then((source) => { libraryIconSelected = source});
+FontAwesome.getImageSource('bars', width/14.42, '#506dcf').then((source) => { libraryIconSelected = source});
 
 var notificationsIcon;
-FontAwesome.getImageSource('bell', 22, '#b1b3c8').then((source) => { notificationsIcon = source});
+FontAwesome.getImageSource('bell', width/17.05, '#b1b3c8').then((source) => { notificationsIcon = source});
 var notificationsIconSelected;
-FontAwesome.getImageSource('bell', 26, '#506dcf').then((source) => { notificationsIconSelected = source});
-
-
-var {height, width} = Dimensions.get('window');
+FontAwesome.getImageSource('bell', width/14.42, '#506dcf').then((source) => { notificationsIconSelected = source});
 
 
 export default class InitialScreen extends Component{
@@ -50,9 +41,7 @@ export default class InitialScreen extends Component{
     };
 
     componentWillMount(){
-        this.timeout = setTimeout(() => {
-            firebase.auth().onAuthStateChanged(this.func);
-        }, 1000);
+        firebase.auth().onAuthStateChanged(this.func);
 
     }
 
@@ -71,9 +60,9 @@ export default class InitialScreen extends Component{
                         icon: homeIcon,
                         selectedIcon: homeIconSelected,
                         iconInsets: {
-                            top: 5,
+                            top: height/133.4,
                             left: 0,
-                            bottom: -5,
+                            bottom: -(height/133.4),
                             right: 0
                         },
                         navBarHidden: true,
@@ -85,9 +74,9 @@ export default class InitialScreen extends Component{
                         icon: discoverIcon,
                         selectedIcon: discoverIconSelected,
                         iconInsets: {
-                            top: 5,
+                            top: height/133.4,
                             left: 0,
-                            bottom: -5,
+                            bottom: -(height/133.4),
                             right: 0
                         },
                         navBarHidden: true,
@@ -99,9 +88,9 @@ export default class InitialScreen extends Component{
                         icon: notificationsIcon,
                         selectedIcon: notificationsIconSelected,
                         iconInsets: {
-                            top: 5,
+                            top: height/133.4,
                             left: 0,
-                            bottom: -5,
+                            bottom: -(height/133.4),
                             right: 0
                         },
                         navBarHidden: true,
@@ -113,9 +102,9 @@ export default class InitialScreen extends Component{
                         icon: libraryIcon,
                         selectedIcon: libraryIconSelected,
                         iconInsets: {
-                            top: 5,
+                            top: height/133.4,
                             left: 0,
-                            bottom: -5,
+                            bottom: -(height/133.4),
                             right: 0
                         },
                         navBarHidden: true,
@@ -141,7 +130,7 @@ export default class InitialScreen extends Component{
                     tabBarSelectedButtonColor: '#506dcf',
                 },
                 passProps: {},
-                animationType: 'slide-down'
+                animationType: 'fade'
             });
         }
         else{
@@ -159,7 +148,7 @@ export default class InitialScreen extends Component{
                     bottomTabBadgeBackgroundColor: 'white',
                     hideBackButtonTitle: true/false
                 },
-                animationType: 'slide-down'
+                animationType: 'fade'
             });
         }
         
@@ -168,22 +157,10 @@ export default class InitialScreen extends Component{
 
     render() {
         return (
-            <LinearGradient
-
-                colors={['#d15564', '#9a5e9a', '#506dcf' ]}
-                start={{x: 0.0, y: 0.0}} end={{x: 0, y: 1}}
-                style={{flex:1}}>
+            <View
+                style={{flex: 1, backgroundColor: '#fff'}}>
                 <StatusBar hidden={true} />
-
-                <Image
-                    style={{width: 150, height: 168, borderColor: '#b9bad1', alignSelf: 'center', opacity: 1, marginTop: height / 6,}}
-                    source={require('tess/src/images/White_Logo.png')}
-                />
-
-                <ActivityIndicator style={{marginTop: 60}} size="large" color='#fff'/>
-
-
-            </LinearGradient>
+            </View>
         );
     }
 }
