@@ -528,8 +528,6 @@ class Home extends Component{
 
     
     rssFetch(){
-
-
         // loop for every rss feed in database
         firebase.database().ref('feeds').on("value", function (snapshot) {
             snapshot.forEach(function (snap) {
@@ -562,7 +560,6 @@ class Home extends Component{
                             bio = bio.replace("&nbsp", " ");
                         }
 
-
                         // profile image
                         let profileImage = '';
                         if(doc.getElementsByTagName("image").length >0){
@@ -571,7 +568,6 @@ class Home extends Component{
                             profileImage = pI[0].textContent;
 
                             console.warn(profileImage);
-
                         }
 
                         // profile username
@@ -747,16 +743,9 @@ class Home extends Component{
                                 console.warn("Error: no download url")
                             }
                         }
-
-
                     });
-
-
             });
-
         });
-
-
     }
 
 
@@ -813,7 +802,6 @@ class Home extends Component{
                         <Text style={styles.titleFetch}>Fetch Feeds</Text>
                     </TouchableOpacity>
                 </View>
-
             )
         }
     }

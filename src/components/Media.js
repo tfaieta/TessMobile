@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView, ListView, Dimensions} from 'react-native';
+import { View, StyleSheet, ScrollView, ListView} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import ListItemPodcast from "./ListItemPodcast";
-
-var {height, width} = Dimensions.get('window');
-
-
 
 // Media page, from Discover (favorites, such as Gimlet or NPR)
 
@@ -40,12 +36,32 @@ class Media extends Component{
         if(this.props.title == 'Gimlet Media'){
             data.push('Reply All');
             data.push('StartUp Podcast');
+            data.push('Chompers');
+            data.push('The Pitch');
+            data.push('Crimetown');
         }
         else if(this.props.title == 'NPR'){
             data.push('How I Built This with Guy Raz');
             data.push('Planet Money');
             data.push('TED Radio Hour');
         }
+        else if(this.props.title == 'Crooked'){
+            data.push('Pod Save America');
+            data.push('Pod Save the People');
+        }
+        else if(this.props.title == 'Midroll'){
+            data.push('WTF with Marc Maron Podcast');
+            data.push('The Bill Simmons Podcast');
+        }
+        else if(this.props.title == 'Wondery'){
+            data.push('American Innovations');
+            data.push('Dirty John');
+        }
+        else if(this.props.title == 'Tess Media'){
+            data.push('The Best Ideas Podcast');
+            data.push('IDK Podcast');
+        }
+
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
@@ -57,8 +73,6 @@ class Media extends Component{
         this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(data), })},500);
 
     }
-
-
 
     componentWillUnmount(){
         clearTimeout(this.timeout1);
@@ -102,7 +116,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f4f9',
         paddingTop: 65,
     },
-
     title: {
         flex:1,
         color: '#3e4164',
@@ -112,7 +125,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         backgroundColor: 'transparent',
     },
-
     titleHeader: {
         flex:1,
         color: '#3e4164',
@@ -124,16 +136,12 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         backgroundColor: 'transparent',
     },
-
     wrapper: {
     },
-
     slide: {
         backgroundColor: 'blue'
 
     },
-
-
 });
 
 
