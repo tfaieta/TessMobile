@@ -1620,7 +1620,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: height/54,
+        fontSize: width/31.25,
         textAlign: 'left',
         paddingLeft: width/37.5
     },
@@ -1630,7 +1630,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: height/60,
+        fontSize: width/34,
         textAlign: 'left',
         paddingLeft: width/37.5
     },
@@ -1740,7 +1740,7 @@ const styles = StyleSheet.create({
 
     podcastText:{
         color: '#3e4164',
-        fontSize: height/44.47,
+        fontSize: width/25,
         marginTop: height/133.4,
         marginHorizontal: width/37.5,
         flexDirection: 'row',
@@ -1751,7 +1751,7 @@ const styles = StyleSheet.create({
     },
     podcastTextDescription:{
         color: '#3e4164',
-        fontSize: height/36,
+        fontSize: width/20.83,
         marginTop: height/133.4,
         marginHorizontal: width/37.5,
         flexDirection: 'row',
@@ -1761,7 +1761,7 @@ const styles = StyleSheet.create({
     },
     podcastTextDescriptionTitle:{
         color: '#3e4164',
-        fontSize: height/45,
+        fontSize: width/25,
         marginTop: height/133.4,
         marginHorizontal: width/37.5,
         flexDirection: 'row',
@@ -1822,7 +1822,7 @@ const styles = StyleSheet.create({
     },
     podcastTextArtist:{
         color:'#3e4164',
-        fontSize: height/44.47,
+        fontSize: width/25,
         marginHorizontal: width/37.5,
         flexDirection: 'row',
         backgroundColor: 'transparent',
@@ -1832,7 +1832,7 @@ const styles = StyleSheet.create({
     },
     podcastTextSpeed:{
         color: '#828393',
-        fontSize: height/33.35,
+        fontSize: width/18.75,
         marginHorizontal: 30,
         marginTop: height/133.4,
         backgroundColor: 'transparent',

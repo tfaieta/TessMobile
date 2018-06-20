@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, ScrollView, TextInput, ListView} from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ScrollView, TextInput, ListView, Platform, Dimensions} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Variables from "./Variables";
 import firebase from 'firebase';
 import ListItemPlaylist from "./ListItemPlaylist";
 
+var {height, width} = Dimensions.get('window');
+
+let topMargin = 0;
+if(Platform.OS === 'ios'){
+    topMargin = height/10.26
+}
 
 
 
@@ -47,24 +53,21 @@ class Playlists extends Component{
         };
 
         this.props.navigator.setStyle({
-            statusBarHidden: false,
-            statusBarTextColorScheme: 'light',
-            navBarHidden: false,
-            navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
-            navBarTextFontSize: 18, // change the font size of the title
-            navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
-            drawUnderTabBar: false,
-            navBarHideOnScroll: false,
-            navBarBackgroundColor: '#fff',
-            topBarElevationShadowEnabled: true,
-            topBarShadowColor: '#000',
-            topBarShadowOpacity: 0.1,
-            topBarShadowOffset: 3,
-            topBarShadowRadius: 5,
-            statusBarColor: '#fff',
-            drawUnderNavBar: true,
-            navBarTranslucent: true,
-            navBarNoBorder: true
+                   statusBarHidden: false,
+                   statusBarTextColorScheme: 'light',
+                   navBarHidden: false,
+                   navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
+                   navBarTextFontSize: 18, // change the font size of the title
+                   navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
+                   drawUnderTabBar: false,
+                   navBarHideOnScroll: false,
+                   navBarBackgroundColor: '#fff',
+                   topBarElevationShadowEnabled: false,
+                   statusBarColor: '#fff',
+                   drawUnderNavBar: Platform.OS === 'ios',
+                   navBarTranslucent: Platform.OS === 'ios',
+                   navBarNoBorder: true,
+
         });
 
         this.timeout1 = setTimeout(() => {this.setState({playlists: dataSource.cloneWithRows(Variables.state.playlists)})},1000);
@@ -167,58 +170,27 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
-        marginTop: 65
-    },
-
-    title: {
-        color: '#3e4164',
-        textAlign: 'center',
-        fontStyle: 'normal',
-        fontFamily: 'Montserrat-SemiBold',
-        fontSize: 16,
-        marginTop: 20,
-        paddingLeft: 20,
-        backgroundColor: 'transparent',
-    },
-
-    contentTitle: {
-        color: 'rgba(1,170,170,1)',
-        fontSize: 25,
-        paddingBottom: 20,
-        marginLeft: 20,
-
-    },
-
-    header: {
-        marginTop:25,
-        marginLeft: -35,
-        color: '#506dcf',
-        textAlign: 'center',
-        fontStyle: 'normal',
-        fontFamily: 'Montserrat-SemiBold',
-        fontSize: 16,
-        backgroundColor: 'transparent',
-
+        marginTop: topMargin
     },
 
     input: {
-        height: 40,
-        width: 250,
+        height: height/16.68,
+        width: width/1.5,
         backgroundColor: 'transparent',
-        marginTop: 10,
-        marginBottom: 5,
+        marginTop: height/66.7,
+        marginBottom: height/133.4,
         color: '#506dcf',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 18,
-        paddingHorizontal: 10,
-        marginLeft: 10
+        fontSize: width/154.23,
+        paddingHorizontal: width/37.5,
+        marginLeft: width/37.5
     },
     inputContainer: {
         backgroundColor:"#fff",
-        marginVertical: 5,
-        paddingBottom: 10,
-        paddingHorizontal: 10,
+        marginVertical: width/75,
+        paddingBottom: height/66.7,
+        paddingHorizontal: width/37.5,
     },
 
 });

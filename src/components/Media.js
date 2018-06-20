@@ -1,11 +1,29 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView, ListView} from 'react-native';
+import { View, StyleSheet, ScrollView, ListView, Dimensions, Platform} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import ListItemPodcast from "./ListItemPodcast";
+
+var {height, width} = Dimensions.get('window');
+
+let topMargin = 0;
+if(Platform.OS === 'ios'){
+    topMargin = height/10.26
+}
+
+
 
 // Media page, from Discover (favorites, such as Gimlet or NPR)
 
 class Media extends Component{
+
+static navigatorStyle = {
+        statusBarHidden: false,
+        statusBarTextColorScheme: 'light',
+        statusBarColor: '#fff',
+        navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
+        navBarTextFontSize: 22, // change the font size of the title
+        navBarTextFontFamily: 'Montserrat-Bold', // Changes the title font
+    };
 
     constructor(props) {
         super(props);
@@ -26,9 +44,9 @@ class Media extends Component{
             topBarShadowOffset: 3,
             topBarShadowRadius: 5,
             statusBarColor: '#fff',
-            drawUnderNavBar: true,
-            navBarTranslucent: true,
-            navBarNoBorder: true
+            drawUnderNavBar: Platform.OS === 'ios',
+            navBarTranslucent: Platform.OS === 'ios',
+            navBarNoBorder: true,
 
         });
 
@@ -97,7 +115,7 @@ class Media extends Component{
                         renderRow={this.renderRow}
                     />
 
-                    <View style={{paddingBottom: 60}} />
+                    <View style={{paddingBottom: height/11.12}} />
 
                 </ScrollView>
 
@@ -114,26 +132,26 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
-        paddingTop: 65,
+        paddingTop: topMargin,
     },
     title: {
-        flex:1,
+        flex: 1,
         color: '#3e4164',
         textAlign: 'left',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 20,
+        fontSize: width/18.75,
         backgroundColor: 'transparent',
     },
     titleHeader: {
-        flex:1,
+        flex: 1,
         color: '#3e4164',
         textAlign: 'left',
         fontFamily: 'Montserrat-Bold',
-        fontSize: 20,
-        marginTop: 15,
-        marginBottom: 10,
-        marginLeft: 15,
+        fontSize: width/18.75,
+        marginTop: height/44.47,
+        marginBottom: height/66.7,
+        marginLeft: width/25,
         backgroundColor: 'transparent',
     },
     wrapper: {

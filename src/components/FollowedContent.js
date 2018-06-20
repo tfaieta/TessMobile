@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ListView, Text, ScrollView, Dimensions} from 'react-native';
+import { View, StyleSheet, ListView, Text, ScrollView, Dimensions, Platform} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import Variables from "./Variables";
 import firebase from 'firebase';
@@ -9,6 +9,10 @@ import ListItemFollowed from "./ListItemFollowed";
 
 var {height, width} = Dimensions.get('window');
 
+let topMargin = 0;
+if(Platform.OS === 'ios'){
+    topMargin = height/10.26
+}
 
 
 class FollowedContent extends Component{
@@ -65,17 +69,13 @@ class FollowedContent extends Component{
             navBarTextFontSize: 18, // change the font size of the title
             navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
             drawUnderTabBar: false,
-            navBarHideOnScroll: true,
+            navBarHideOnScroll: false,
             navBarBackgroundColor: '#fff',
-            topBarElevationShadowEnabled: true,
-            topBarShadowColor: '#000',
-            topBarShadowOpacity: 0.1,
-            topBarShadowOffset: 3,
-            topBarShadowRadius: 5,
+            topBarElevationShadowEnabled: false,
             statusBarColor: '#fff',
-            drawUnderNavBar: true,
-            navBarTranslucent: true,
-            navBarNoBorder: true
+            drawUnderNavBar: Platform.OS === 'ios',
+            navBarTranslucent: Platform.OS === 'ios',
+            navBarNoBorder: true,
 
         });
 
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
-        marginTop: height/10.26,
+        marginTop: topMargin,
     },
 
     title: {

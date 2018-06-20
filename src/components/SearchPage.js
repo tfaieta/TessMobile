@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 15,
         backgroundColor: 'transparent',
         marginHorizontal: 20,
@@ -205,6 +205,7 @@ const styles = StyleSheet.create({
     backColor:{
         backgroundColor:  '#fff',
         flexDirection: 'row',
+        marginTop: 20
     },
 
     containerSearch:{
@@ -274,7 +275,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'Montserrat-Regular',
         fontSize: 20,
         backgroundColor: 'transparent'
     },
@@ -285,7 +286,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 15,
         backgroundColor: 'transparent',
         marginHorizontal: 20,
@@ -298,7 +299,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'Montserrat-Regular',
         fontSize: 15,
         backgroundColor: 'transparent',
         marginLeft: 20,
@@ -310,7 +311,7 @@ const styles = StyleSheet.create({
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'Montserrat-Regular',
         fontSize: 18,
         backgroundColor: 'transparent',
 

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView, ListView, ActivityIndicator, Dimensions} from 'react-native';
+import { View, StyleSheet, ScrollView, ListView, ActivityIndicator, Dimensions, Platform} from 'react-native';
 import PlayerBottom from '../PlayerBottom';
 import ListItemPodcast from "../ListItemPodcast";
 
 var {height} = Dimensions.get('window');
+
+
 
 // a single category page, renders all podcasts associated with that category
 
@@ -28,9 +30,9 @@ class Category extends Component{
             topBarShadowOffset: 3,
             topBarShadowRadius: 5,
             statusBarColor: '#fff',
-            drawUnderNavBar: true,
-            navBarTranslucent: true,
-            navBarNoBorder: true
+            drawUnderNavBar: Platform.OS === 'ios',
+            navBarTranslucent: Platform.OS === 'ios',
+            navBarNoBorder: true,
 
         });
 

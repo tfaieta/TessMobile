@@ -96,8 +96,8 @@ class ListItemCard extends Component {
                 this.setState({username: this.state.profileName});
             }
 
-            if(desc.length > (width/2.03)){
-                this.setState({description: (desc.slice(0,(width/2.03))+"...")});
+            if(desc.length > (width/1.50)){
+                this.setState({description: (desc.slice(0,(width/1.50))+"...")});
             }
             else{
                 this.setState({description: desc});
@@ -152,12 +152,12 @@ class ListItemCard extends Component {
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: (height/5.5), width: (height/5.5), borderRadius: 4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)' }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: (height/5), width: (height/5), borderRadius: 4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)' }}>
                     <Icon style={{
                         textAlign: 'center',
                         fontSize: height/8.34,
                         color: 'white',
-                        marginTop: height/46,
+                        marginTop: height/38,
                     }} name="user-circle">
                     </Icon>
                 </View>
@@ -165,9 +165,9 @@ class ListItemCard extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', height: (height/5.5), width: (height/5.5)}}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', height: (height/5), width: (height/5)}}>
                     <Image
-                        style={{width: (height/5.5), height: (height/5.5), alignSelf: 'center', opacity: 1, borderRadius: 4}}
+                        style={{width: (height/5), height: (height/5), alignSelf: 'center', opacity: 1, borderRadius: 4}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -485,28 +485,28 @@ class ListItemCard extends Component {
                 <View style = {{backgroundColor: '#fff', borderBottomColor: '#00000030', borderBottomWidth: 1,}}>
                     <View style = {{backgroundColor: '#fff', paddingHorizontal: width/33.5,}}>
                         <View style={{ backgroundColor: '#fff', paddingHorizontal: width/33.5, width: width-20, paddingBottom: height/44, }}>
-                            <View>
+                            <View style={{paddingVertical: width/66.7}}>
                                 <View style={{backgroundColor: '#fff', flexDirection: 'row', marginVertical: height/200}}>
                                     <View style={{flex: 8, alignSelf: 'flex-start'}}>
                                         <View style={{backgroundColor: '#82839340', paddingVertical: height/95.3, marginTop: height/66.7, paddingHorizontal: width/5.36, borderRadius: width/18.75}}/>
                                     </View>
                                 </View>
                                 <View style = {{backgroundColor: '#fff',}}>
-                                    <View style={{padding: 10, flexDirection: 'row'}}>
+                                    <View style={{paddingVertical: height/50, flexDirection: 'row'}}>
 
                                         <View style = {{alignSelf: 'center'}}>
-                                            <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: (height/5.5), width: (height/5.5), borderRadius: 4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)' }}>
+                                            <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: (height/5), width: (height/5), borderRadius: 4, borderWidth: 8, borderColor:'rgba(320,320,320,0.8)' }}>
                                                 <Icon style={{
                                                     textAlign: 'center',
                                                     fontSize: height/8.34,
                                                     color: 'white',
-                                                    marginTop: height/46,
+                                                    marginTop: height/38,
                                                 }} name="user-circle">
                                                 </Icon>
                                             </View>
                                         </View>
 
-                                        <View style = {{alignSelf: 'center', flex: 1,}}>
+                                        <View style = {{alignSelf: 'center', flex: 1, paddingVertical: width/60}}>
                                             <View style={{backgroundColor: '#82839340', paddingVertical: height/95.3, marginVertical: height/333.5, marginHorizontal: width/37.5, paddingHorizontal: width/9.38, borderRadius: width/18.75}}/>
                                             <View style={{backgroundColor: '#82839340', paddingVertical: height/95.3, marginVertical: height/333.5, marginHorizontal: width/37.5, paddingHorizontal: width/9.38, borderRadius: width/18.75}}/>
                                             <View style={{backgroundColor: '#82839340', paddingVertical: height/95.3, marginVertical: height/333.5, marginHorizontal: width/37.5, paddingHorizontal: width/9.38, borderRadius: width/18.75}}/>
@@ -549,7 +549,7 @@ class ListItemCard extends Component {
                 }}  style = {{backgroundColor: '#fff', borderBottomColor: '#00000030', borderBottomWidth: 1,}}>
                     <View style = {{backgroundColor: '#fff', paddingHorizontal: width/33.5,}}>
                         <View style={{ backgroundColor: '#fff', paddingHorizontal: width/33.5, width: width-20, paddingBottom: height/44, }}>
-                            <View>
+                            <View style={{paddingVertical: width/66.7}}>
                                 <View style={{backgroundColor: '#fff', flexDirection: 'row', marginVertical: height/200}}>
                                     <View style={{flex: 8, alignSelf: 'flex-start'}}>
                                         <Text style={styles.titleCard}>{this.state.title}</Text>
@@ -582,8 +582,8 @@ class ListItemCard extends Component {
                                         </TouchableOpacity>
                                     </View>
                                 </View>
-                                <View style = {{backgroundColor: '#fff',}}>
-                                    <View style={{padding: 10, flexDirection: 'row'}}>
+                                <View style = {{backgroundColor: '#fff', paddingVertical: width/60}}>
+                                    <View style={{paddingVertical: height/66.7, flexDirection: 'row'}}>
 
                                         <View style = {{alignSelf: 'center'}}>
                                             {this._renderProfileImage()}
@@ -640,7 +640,7 @@ const styles = {
     artistTitle: {
         color: '#828393',
         textAlign: 'left',
-        paddingLeft: width/25,
+        paddingLeft: width/20,
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',

@@ -23,9 +23,12 @@ class Home extends Component{
     componentDidMount(){
 
         if (Platform.OS === 'android') {
-            Linking.getInitialURL().then(url => {
-                this.navigate(url);
-            });
+            Linking.getInitialURL().then((url) => {
+                 if (url) {
+                    this.navigate(url);
+                 }
+            }).catch(err => console.warn('An error occurred', err));
+            Linking.addEventListener('url', this.handleOpenURL);
         } else {
             Linking.addEventListener('url', this.handleOpenURL);
             Linking.getInitialURL().then((url) => {

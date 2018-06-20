@@ -262,7 +262,7 @@ class Browse extends Component{
                             <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: width/75}}>
                                 <View style={styles.featuredArt}>
                                     <Image
-                                        style={{width: width/1.15, height: height/3.51, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
+                                        style={{width: width/1.10, height: height/3.70, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
                                         source={require('tess/src/images/podArtBestIdeas.png')}
                                     />
                                 </View>
@@ -287,7 +287,7 @@ class Browse extends Component{
                             <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: width/75}}>
                                 <View style={styles.featuredArt}>
                                     <Image
-                                        style={{width: width/1.15, height: height/3.51, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
+                                        style={{width: width/1.10, height: height/3.70, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
                                         source={require('tess/src/images/podArtIDK.png')}
                                     />
                                 </View>
@@ -312,7 +312,7 @@ class Browse extends Component{
                             <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: width/75}}>
                                 <View style={styles.featuredArt}>
                                     <Image
-                                        style={{width: width/1.15, height: height/3.51, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
+                                        style={{width: width/1.10, height: height/3.70, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
                                         source={require('tess/src/images/podArtGLS.png')}
                                     />
                                 </View>
@@ -337,7 +337,7 @@ class Browse extends Component{
                                 <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: width/75}}>
                                     <View style={styles.featuredArt}>
                                         <Image
-                                            style={{width: width/1.15, height: height/3.51, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
+                                            style={{width: width/1.10, height: height/3.70, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
                                             source={require('tess/src/images/BOGW.png')}
                                         />
                                     </View>
@@ -407,7 +407,7 @@ class Browse extends Component{
 
                     </View>
 
-                    <View style={{backgroundColor: '#fff', marginHorizontal: width/31.25, marginBottom: height/33.35, borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}>
+                    <View style={{backgroundColor: '#fff', marginHorizontal: width/31.25, marginBottom: height/10, borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}>
                         <ListView
                             horizontal={true}
                             enableEmptySections

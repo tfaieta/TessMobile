@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text,ScrollView, Image, ListView, Dimensions, TouchableWithoutFeedback} from 'react-native';
+import { View, StyleSheet, Text,ScrollView, Image, ListView, Dimensions, TouchableWithoutFeedback, Platform} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import firebase from 'firebase';
 import ListItemUsers from "./ListItemUsers";
 import Carousel from 'react-native-looped-carousel';
 
 var {height, width} = Dimensions.get('window');
+
+let topMargin = 0;
+if(Platform.OS === 'ios'){
+    topMargin = height/10.26
+}
+
+
 
 // Discover page, from Browse
 
@@ -19,7 +26,7 @@ class Discover extends Component{
             statusBarTextColorScheme: 'light',
             navBarHidden: false,
             navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
-            navBarTextFontSize: 22, // change the font size of the title
+            navBarTextFontSize: height/30.79, // change the font size of the title
             navBarTextFontFamily: 'Montserrat-Bold', // Changes the title font
             drawUnderTabBar: false,
             navBarHideOnScroll: false,
@@ -30,9 +37,9 @@ class Discover extends Component{
             topBarShadowOffset: 3,
             topBarShadowRadius: 5,
             statusBarColor: '#fff',
-            drawUnderNavBar: true,
-            navBarTranslucent: true,
-            navBarNoBorder: true
+            drawUnderNavBar: Platform.OS === 'ios',
+            navBarTranslucent: Platform.OS === 'ios',
+            navBarNoBorder: true,
 
         });
 
@@ -273,7 +280,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
-        paddingTop: height/11.12,
+        paddingTop: topMargin,
     },
 
     title: {

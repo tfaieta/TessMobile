@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ScrollView, ListView, Dimensions} from 'react-native';
+import { Text, View, StyleSheet, ScrollView, ListView, Dimensions, Platform} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import firebase from 'firebase';
 import ListItemHighlight from "./ListItemHighlight";
 
 var {height, width} = Dimensions.get('window');
+
+let topMargin = 0;
+if(Platform.OS === 'ios'){
+    topMargin = height/10.26
+}
+
 
 
 // displays collection of highlights (in library)
@@ -15,26 +21,23 @@ class Highlights extends Component{
     constructor(props){
         super(props);
 
-        this.props.navigator.setStyle({
-            statusBarHidden: false,
-            statusBarTextColorScheme: 'light',
-            navBarHidden: false,
-            navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
-            navBarTextFontSize: 18, // change the font size of the title
-            navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
-            drawUnderTabBar: false,
-            navBarHideOnScroll: true,
-            navBarBackgroundColor: '#fff',
-            topBarElevationShadowEnabled: true,
-            topBarShadowColor: '#000',
-            topBarShadowOpacity: 0.1,
-            topBarShadowOffset: 3,
-            topBarShadowRadius: 5,
-            statusBarColor: '#fff',
-            drawUnderNavBar: true,
-            navBarTranslucent: true,
-            navBarNoBorder: true
-        });
+         this.props.navigator.setStyle({
+                     statusBarHidden: false,
+                     statusBarTextColorScheme: 'light',
+                     navBarHidden: false,
+                     navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
+                     navBarTextFontSize: 18, // change the font size of the title
+                     navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
+                     drawUnderTabBar: false,
+                     navBarHideOnScroll: false,
+                     navBarBackgroundColor: '#fff',
+                     topBarElevationShadowEnabled: false,
+                     statusBarColor: '#fff',
+                     drawUnderNavBar: Platform.OS === 'ios',
+                     navBarTranslucent: Platform.OS === 'ios',
+                     navBarNoBorder: true,
+
+          });
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         let data = [];
@@ -106,7 +109,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
-        marginTop: height/10.26,
+        marginTop: topMargin,
     },
 
     title: {
