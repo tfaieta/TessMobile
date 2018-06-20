@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Image, ListView, Dimensions, TouchableWithoutFeedback} from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Image, ListView, Dimensions, TouchableWithoutFeedback, RefreshControl} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import Variables from "./Variables";
 import firebase from 'firebase';
@@ -8,6 +8,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Carousel from 'react-native-looped-carousel';
 
 var {height, width} = Dimensions.get('window');
+
+
 
 // 2nd tab, Browse page
 
@@ -103,6 +105,61 @@ class Browse extends Component{
     }
 
 
+    _onRefresh = () => {
+        this.setState({
+            refreshing: true,
+        });
+
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+
+        let podOfTheWeek = [];
+        let podID = '';
+        let podUsername = '';
+        let podImage = '';
+        let podRSS = false;
+        firebase.database().ref(`podcastOfTheWeek/`).once("value", function (snapshot) {
+            if(snapshot.val()){
+                podID = snapshot.val();
+                firebase.database().ref(`users/${snapshot.val()}/username`).once("value", function (name) {
+                    if(name.val()){
+                        if(name.val().username){
+                            podUsername = name.val().username;
+                        }
+                    }
+                });
+                firebase.database().ref(`users/${snapshot.val()}/podcasts`).limitToLast(10).once("value", function (snap) {
+                    snap.forEach(function (data) {
+                        firebase.database().ref(`podcasts/${data.val().id}`).once("value", function (podcast) {
+                            if(podcast.val()){
+                                podOfTheWeek.push(podcast.val());
+                            }
+                        })
+                    })
+                });
+                firebase.database().ref(`users/${snapshot.val()}/profileImage`).once("value", function (image) {
+                    if(image.val()){
+                        podImage = image.val().profileImage;
+                        podRSS = true;
+                    }
+                    else{
+                        const storageRef = firebase.storage().ref(`/users/${snapshot.val()}/image-profile-uploaded`);
+                        storageRef.getDownloadURL()
+                            .then(function(url) {
+                                podImage = url;
+                            }).catch(function(error) {
+                            //
+                        });
+                    }
+                })
+            }
+        });
+
+        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(podOfTheWeek), podcastOfTheWeekTitle: podUsername, podImage: podImage, podcastOfTheWeekID: podID, podcastOftheWeekRSS: podRSS, refreshing: false})},3000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(podOfTheWeek), podcastOfTheWeekTitle: podUsername, podImage: podImage, podcastOfTheWeekID: podID, podcastOftheWeekRSS: podRSS})},6000);
+
+    };
+
+
     pressDiscover = () =>{
         this.props.navigator.push({
             screen: 'Discover',
@@ -176,7 +233,13 @@ class Browse extends Component{
         return (
             <View style={styles.container}>
 
-                <ScrollView>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                        />}
+                >
 
                     <Text style = {styles.titleHeader}>Featured</Text>
                     <Carousel

@@ -525,8 +525,8 @@ class Home extends Component{
             dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent),
             refreshing: false,
         };
-        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent),})},1000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), loading: false})},2500);
+        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent),})},2000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), loading: false})},3500);
 
     }
 
@@ -746,7 +746,6 @@ class Home extends Component{
         this.setState({
             refreshing: true,
             loading: false,
-            dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent),
         });
 
         const {currentUser} = firebase.auth();
@@ -778,7 +777,7 @@ class Home extends Component{
             })
         });
 
-        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), refreshing: false})},1000);
+        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), refreshing: false})},2000);
         this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), refreshing: false})},3500);
 
     }
@@ -816,7 +815,7 @@ class Home extends Component{
                 </View>
             )
         }
-        else if(Variables.state.homeFollowedContent.length > 0){
+        else if(this.state.refreshing || Variables.state.homeFollowedContent.length > 0){
                 return (
                     <View
                         style={styles.container}>
