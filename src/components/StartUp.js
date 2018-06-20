@@ -1,20 +1,10 @@
-/**
- * Created by nickruspantini on 6/6/17.
- */
 import React, {Component} from 'react';
-import {StyleSheet, View, Image, Text, TouchableOpacity, Dimensions, StatusBar} from 'react-native';
+import {StyleSheet, View, Image, Text, Dimensions, StatusBar} from 'react-native';
 import AppIntro from 'react-native-app-intro';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from "react-native-linear-gradient/index.android";
 
-
-
-
-
-
 // start up page for tess -> takes users to login or create account
-
-
 
 var {height, width} = Dimensions.get('window');
 
@@ -34,9 +24,6 @@ export  default class Login extends Component{
         });
 
     };
-
-
-
 
     render() {
         return (
@@ -160,13 +147,7 @@ export  default class Login extends Component{
                     </LinearGradient>
 
                 </View>
-
-
-
-
             </AppIntro>
-
-
             </View>
         );
     }

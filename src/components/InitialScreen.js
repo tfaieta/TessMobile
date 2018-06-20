@@ -1,14 +1,12 @@
 import React, {Component} from 'react';
-import {View, StatusBar, Dimensions} from 'react-native';
+import {View, StatusBar, Dimensions, Image, StyleSheet} from 'react-native';
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/Foundation';
+import * as Animatable from 'react-native-animatable';
+import app_logo from '../images/app_logo.png';
 var FontAwesome = require('react-native-vector-icons/FontAwesome');
-
 import { Navigation } from 'react-native-navigation';
-
 var {height, width} = Dimensions.get('window');
-
-
 
 // first official screen of tess, from here it goes to home page if logged in or start up if not
 
@@ -41,8 +39,9 @@ export default class InitialScreen extends Component{
     };
 
     componentWillMount(){
-        firebase.auth().onAuthStateChanged(this.func);
-
+        this.timeout = setTimeout(() => {
+            firebase.auth().onAuthStateChanged(this.func);
+        },3000)
     }
 
     componentWillUnmount(){
@@ -151,16 +150,39 @@ export default class InitialScreen extends Component{
                 animationType: 'fade'
             });
         }
-        
     }
 
-
     render() {
+        // Splash Screen Action + Animations
+        const duration = 2000;
+
         return (
             <View
-                style={{flex: 1, backgroundColor: '#fff'}}>
+                style={styles.container}>
+                <Image
+                style={styles.image}>
+                    <Animatable.Image
+                        animation="zoomOut"
+                        duration={duration}
+                        source={app_logo}
+                    />
+                </Image>
                 <StatusBar hidden={true} />
             </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        height: height,
+        width: width,
+        backgroundColor: '#fff'
+    },
+    image:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+    },
+
+});
