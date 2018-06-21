@@ -39,9 +39,16 @@ export default class InitialScreen extends Component{
     };
 
     componentWillMount(){
-        this.timeout = setTimeout(() => {
-            firebase.auth().onAuthStateChanged(this.func);
-        }, 1000)
+        if (Platform.OS == 'android') {
+            this.timeout = setTimeout(() => {
+                firebase.auth().onAuthStateChanged(this.func);
+            }, 2000)
+        }
+        else {
+            this.timeout = setTimeout(() => {
+                firebase.auth().onAuthStateChanged(this.func);
+            }, 1800)
+        }
     }
 
     componentWillUnmount(){
@@ -156,19 +163,26 @@ export default class InitialScreen extends Component{
         // Splash Screen Action + Animations
         const animateEffect = {
             0: {
+                opacity: 0.9,
+                scale: 1,
+            },
+            0.4: {
+                opacity: 0.7,
+                scale: 1,
+            },
+            0.8: {
                 opacity: 1,
                 scale: 1,
             },
-            0.5: {
-                opacity: 0.5,
-                scale: 0.7,
-            },
             1: {
-                opacity: 0,
-                scale: 20,
+                opacity: 0.7,
+                scale: 1,
             },
         };
-        const duration = 1500;
+
+        const duration = 2500;
+        const durationiOS = 3000;
+
 
         if (Platform.OS == 'android') {
             return (
@@ -185,10 +199,10 @@ export default class InitialScreen extends Component{
         else {
             return (
                 <View style={styles.container}>
-                    <Animatable.View animation={animateEffect} duration={duration} style={styles.view}>
+                    <Animatable.View animation={animateEffect} duration={durationiOS} style={styles.view}>
                         <Image
                             style={styles.image}>
-                            <Animatable.Image source={app_logo} duration={duration} animation={animateEffect}/>
+                            <Animatable.Image source={app_logo} duration={durationiOS} animation={animateEffect}/>
                         </Image>
                         <StatusBar hidden={true} />
                     </Animatable.View>
