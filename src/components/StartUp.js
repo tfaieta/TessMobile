@@ -9,7 +9,7 @@ import LinearGradient from "react-native-linear-gradient/index.android";
 var {height, width} = Dimensions.get('window');
 
 
-export  default class Login extends Component{
+export default class Login extends Component{
 
     static navigatorStyle = {
         statusBarHidden: false,
@@ -25,9 +25,15 @@ export  default class Login extends Component{
 
     };
 
+    onSlideChangeHandle = (index, total) => {
+        // Animation
+
+    };
+
     render() {
+
         return (
-            <View style ={{backgroundColor: '#506dcf'}}>
+            <View style ={{backgroundColor: 'white'}}>
                 <StatusBar hidden={true} />
 
 
@@ -35,17 +41,22 @@ export  default class Login extends Component{
                 onSkipBtnClick={this._handleButtonPressLogin}
                 onDoneBtnClick={this._handleButtonPressLogin}
                 doneBtnLabel={"Start"}
+                dotColor={'#3e4164'}
+                activeDotColor={'#E5F3F3'}
+                rightTextColor={'#3e4164'}
+                leftTextColor={'#3e4164'}
+                onSlideChange={this.onSlideChangeHandle}
             >
 
                 <View style={styles.slide1}>
                     <LinearGradient
-                        colors={['#d15564', '#9a5e9a', '#506dcf' ]}
-                        start={{x: 0.0, y: 0.0}} end={{x: 0, y: 1}}
+                        colors={['#E5F3F3', '#F7FBFC', 'white' ]}
+                        start={{x: 2.0, y: 2.0}} end={{x: 0, y: 1}}
                         style={{height: height, width: width}}>
 
                         <Image
-                            style={{width: height/4.45, height: height/3.97, borderColor: '#b9bad1', alignSelf: 'center', opacity: 1, marginTop: height / 6,}}
-                            source={require('tess/src/images/White_Logo.png')}
+                            style={{width: height/4.2, height: height/3.5, borderColor: '#b9bad1', alignSelf: 'center', opacity: 1, marginTop: height / 6,}}
+                            source={require('tess/src/images/tessLogoVertical.png')}
                         />
 
                     <View style={styles.textContainer}>
@@ -181,7 +192,7 @@ const styles = StyleSheet.create({
     },
 
     textforSlide1: {
-        color: '#fff',
+        color: '#3e4164',
         fontSize: height/20,
         textAlign: 'left',
         fontFamily: 'Montserrat-SemiBold',
@@ -192,7 +203,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     smallText1: {
-        color: '#fff',
+        color: '#3e4164',
         fontSize: height/40,
         textAlign: 'left',
         fontFamily: 'Montserrat-Regular',

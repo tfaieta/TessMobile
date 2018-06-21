@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StatusBar, Dimensions, Image, StyleSheet} from 'react-native';
+import {View, StatusBar, Dimensions, Image, StyleSheet, Platform} from 'react-native';
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/Foundation';
 import * as Animatable from 'react-native-animatable';
@@ -41,7 +41,7 @@ export default class InitialScreen extends Component{
     componentWillMount(){
         this.timeout = setTimeout(() => {
             firebase.auth().onAuthStateChanged(this.func);
-        },3000)
+        }, 1000)
     }
 
     componentWillUnmount(){
@@ -154,35 +154,63 @@ export default class InitialScreen extends Component{
 
     render() {
         // Splash Screen Action + Animations
-        const duration = 2000;
+        const animateEffect = {
+            0: {
+                opacity: 1,
+                scale: 1,
+            },
+            0.5: {
+                opacity: 0.5,
+                scale: 0.7,
+            },
+            1: {
+                opacity: 0,
+                scale: 20,
+            },
+        };
+        const duration = 1500;
 
-        return (
-            <View
-                style={styles.container}>
-                <Image
-                style={styles.image}>
-                    <Animatable.Image
-                        animation="zoomOut"
-                        duration={duration}
-                        source={app_logo}
-                    />
-                </Image>
-                <StatusBar hidden={true} />
-            </View>
-        );
+        if (Platform.OS == 'android') {
+            return (
+                <View style={styles.container}>
+                    <View animation={animateEffect} duration={duration} style={styles.view}>
+                        <Image
+                            style={styles.image} source={app_logo}>
+                        </Image>
+                        <StatusBar hidden={true} />
+                    </View>
+                </View>
+            );
+        }
+        else {
+            return (
+                <View style={styles.container}>
+                    <Animatable.View animation={animateEffect} duration={duration} style={styles.view}>
+                        <Image
+                            style={styles.image}>
+                            <Animatable.Image source={app_logo} duration={duration} animation={animateEffect}/>
+                        </Image>
+                        <StatusBar hidden={true} />
+                    </Animatable.View>
+                </View>
+            );
+        }
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        height: height,
-        width: width,
+        flex:1,
         backgroundColor: '#fff'
+    },
+    view: {
+      justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
     },
     image:{
         justifyContent: 'center',
         alignItems: 'center',
-        flex: 1,
     },
 
 });
