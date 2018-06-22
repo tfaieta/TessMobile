@@ -6,6 +6,7 @@ var DomParser = require('react-native-html-parser').DOMParser;
 
 
 admin.initializeApp(functions.config().firebase);
+firebase.initializeApp(functions.config().firebase);
 
 
 
@@ -38,7 +39,7 @@ exports.notificationPOTW = functions.database.ref(`/podcastOfTheWeek`)
 exports.notificationNewEp = functions.database.ref(`/podcasts/{podcastKey}`)
     .onWrite((event) => {
 
-        const episode = event.data.val();
+        const episode = event.after.val();
 
             const podcastTitle = episode.podcastTitle;
             const podcastDescription = episode.podcastDescription;
@@ -54,18 +55,15 @@ exports.notificationNewEp = functions.database.ref(`/podcasts/{podcastKey}`)
                     title: "New Episode from " + podcastArtist,
                     body: podcastTitle,
                     target: podcastArtist,
-                    id: id
-                },
-                podcast: {
+                    id: id,
                     podcastTitle: podcastTitle,
                     podcastArtist: podcastArtist,
                     podcastCategory: podcastCategory,
                     podcastDescription: podcastDescription,
                     podcastURL: podcastURL,
-                    id: id,
                     RSSID: RSSID,
                     rss: rss
-                }
+                },
             };
 
             const topic = `/topics/${podcastArtist}`;
@@ -81,9 +79,8 @@ exports.notificationNewEp = functions.database.ref(`/podcasts/{podcastKey}`)
 exports.notificationFollow = functions.database.ref(`/users/{id}/followers`)
     .onCreate(event => {
 
-        const getValuePromise = admin.database.ref(`users/${event.key}/token`).once('value');
+        return admin.database.ref(`users/${event.key}/token`).once('value', function (snapshot) {
 
-        return getValuePromise.then(snapshot => {
             const token = snapshot.val();
             const podcastArtist = event.val();
 
@@ -99,7 +96,8 @@ exports.notificationFollow = functions.database.ref(`/users/{id}/followers`)
             return admin.messaging()
                 .sendToDevice(token, payload)
 
-        })
+
+        });
     });
 
 
@@ -108,15 +106,27 @@ exports.notificationFollow = functions.database.ref(`/users/{id}/followers`)
 exports.feedFetcher = functions.database.ref(`/feedFetcher`)
     .onUpdate(event => {
 
+        console.log(event);
+
+
+        console.log("Initializing");
+
 
         // loop for every rss feed in database
-        const getValuePromise = admin.database().ref('feeds').on("value", function (snapshot) {
+        let podcasts = [];
+
+        return new Promise((resolve, reject) => {
+        admin.database().ref('feeds').once("value", function (snapshot) {
+            console.log("Starting");
+
+
             snapshot.forEach(function (snap) {
                 console.log(snap.val());
 
                 void fetch(snap.val())
                     .then((response) => response.text())
                     .then((responseData) => {
+                    console.log("reading feed... " + snap.val());
 
                         var doc = new DomParser().parseFromString(responseData,'text/html');
                         var items = doc.getElementsByTagName('item');
@@ -140,18 +150,18 @@ exports.feedFetcher = functions.database.ref(`/feedFetcher`)
                             bio = bio.replace("<em>", " ");
                             bio = bio.replace("&nbsp", " ");
                         }
+                        console.log("bio: " + bio);
 
 
                         // profile image
                         let profileImage = '';
-                        if(doc.getElementsByTagName("image").length >0){
+                        if(doc.getElementsByTagName("image").length > 0){
                             const image = doc.getElementsByTagName("image");
                             const pI = image[0].getElementsByTagName('url');
                             profileImage = pI[0].textContent;
-
-                            console.log(profileImage);
-
                         }
+                        console.log("profile image: " + profileImage);
+
 
                         // profile username
                         let username = channel[0].textContent;
@@ -170,26 +180,30 @@ exports.feedFetcher = functions.database.ref(`/feedFetcher`)
                             category = doc.getElementsByTagName('itunes:category')[0].getAttribute('text');
                         }
                         const podcastCategory = category;
-                        console.log(podcastCategory);
+                        console.log("category: " + podcastCategory);
 
 
 
                         // create account for user if it doesn't exist
                         // reserve username & create user if needed
+                        console.log("checking if account exists");
                         admin.database().ref(`users`).child(usernameData).once("value", function (snapshot) {
                             if(snapshot.val()){
                                 console.log("Account Exists: " + usernameData)
                             }
                             else{
-                                admin.database().ref(`users`).child(usernameData).child("/username").update({username});
-                                admin.database().ref(`users`).child(usernameData).child("/bio").update({bio});
-                                admin.database().ref(`users`).child(usernameData).child("/profileImage").update({profileImage});
-                                admin.database().ref(`usernames`).child(usernameData.toLowerCase()).update({username: usernameData.toLowerCase()});
+                                firebase.database().ref(`users`).child(usernameData).child("/username").update({username});
+                                firebase.database().ref(`users`).child(usernameData).child("/bio").update({bio});
+                                firebase.database().ref(`users`).child(usernameData).child("/profileImage").update({profileImage});
+                                firebase.database().ref(`usernames`).child(usernameData.toLowerCase()).update({username: usernameData.toLowerCase()});
+                                console.log("Account Added: " + usernameData)
                             }
                         });
 
 
 
+
+                        let episodes = [];
                         // get info for each episode
                         // items.length gets max size of rss feed, 0 is most recent
                         let size = 0;
@@ -199,19 +213,20 @@ exports.feedFetcher = functions.database.ref(`/feedFetcher`)
                         else{
                             size = items.length-1
                         }
-                        for (var i=size; i >= 0; i--) {
+                        console.log("checking " + size +  " episodes from " + snap.val()+ "...");
+                        for (var i=0; i >= 0; i--) {
 
                             //artist
                             let podcastArtist = usernameData;
 
                             //title
                             const title = items[i].getElementsByTagName('title');
-                            console.log(title[0].textContent);
                             let podcastTitle = title[0].textContent;
+                            console.log("episode title: " + podcastTitle);
 
                             //description
                             const description = items[i].getElementsByTagName('description');
-                            console.log(description[0].textContent);
+                            console.log("episode description" + description[0].textContent);
                             let podcastDescription = description[0].textContent;
                             podcastDescription = podcastDescription.replace("<p>", " ");
                             podcastDescription = podcastDescription.replace("</p>", " ");
@@ -239,7 +254,6 @@ exports.feedFetcher = functions.database.ref(`/feedFetcher`)
                             podcastDescription = podcastDescription.replace("<br>", " ");
 
 
-
                             //length
                             let length = '';
                             if(items[i].getElementsByTagName('itunes:duration').length > 0){
@@ -249,13 +263,11 @@ exports.feedFetcher = functions.database.ref(`/feedFetcher`)
                                 length = length.replace("</itunes:duration>", "");
                             }
                             const podcastLength = length;
-                            console.log(podcastLength);
-
+                            console.log("episode length: " + podcastLength);
 
 
                             //rss = true, need to tell firebase it's an rss podcast
                             const rss = true;
-
 
 
                             //likes = 0
@@ -272,75 +284,79 @@ exports.feedFetcher = functions.database.ref(`/feedFetcher`)
                             jointTitle = jointTitle.replace("]", "_");
                             jointTitle = jointTitle.replace(".", "_");
                             const RSSID = jointTitle;
+                            console.log("RSSID: " + RSSID);
 
+
+                            console.log("starting episode upload");
                             // get url -> upload
                             if(items[i].getElementsByTagName('enclosure').length > 0){
                                 var link = items[i].getElementsByTagName('enclosure')[0].getAttribute('url');
-                                console.log(link);
+                                console.log("link: " + link);
                                 const podcastURL = link;
 
 
                                 // upload to database if doesn't exist (follow podcastCreate)
-                                admin.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
+                                return admin.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
                                     if(snapshot.val()){
-                                        console.log("EXISTS")
+                                        console.log("episode EXISTS: " + RSSID)
                                     }
                                     else{
-                                        let item = admin.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength})
+                                        let item = firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength, time: firebase.database.ServerValue.TIMESTAMP});
                                         const ref = item.ref;
                                         const id = item.key;
                                         ref.update({id});
-                                        admin.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
+                                        firebase.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
+                                        console.log("episode ADDED: " + RSSID);
 
                                     }
 
                                 });
+
 
 
                             }
                             // another way of getting url -> upload
                             else if(items[i].getElementsByTagName('link').length > 0){
                                 var link2 = items[i].getElementsByTagName('link');
-                                console.log(link2[0].textContent);
+                                console.log("link: " + link2[0].textContent);
                                 const podcastURL = link2[0].textContent;
 
 
                                 // upload to database if doesn't exist (follow podcastCreate)
-                                admin.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
+                                return admin.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
                                     if(snapshot.val()){
-                                        console.log("EXISTS")
+                                        console.log("episode EXISTS: " + RSSID)
                                     }
                                     else{
-                                        let item = admin.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength});
+                                        let item = firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength, time: firebase.database.ServerValue.TIMESTAMP});
                                         const ref = item.ref;
                                         const id = item.key;
                                         ref.update({id});
-                                        admin.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
+                                        firebase.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
+                                        console.log("episode ADDED: " + RSSID);
 
                                     }
 
                                 });
 
+
+
                             }
                             else{
-                                console.log("Error: no download url")
+                                console.log("Error: no download url, Can't upload episode");
+                                episodes.push('');
                             }
                         }
-
-                        throw (promise);
+                        return(episodes);
 
                     });
 
 
             });
 
-
-            throw (promise);
+         });
 
         });
-
-        return getValuePromise;
-
 
 
     });
