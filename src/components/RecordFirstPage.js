@@ -67,19 +67,6 @@ class RecordFirstPage extends Component{
 
 
 
-    info = () =>{
-        Navigation.showLightBox({
-            screen: 'InfoDiagram',
-            style: {
-                tapBackgroundToDismiss: true,
-                backgroundColor: "#53249080",
-                backgroundBlur: "light",
-            }
-
-        })
-
-    };
-
     recordNewPodcast =() => {
 
         this.props.navigator.push({

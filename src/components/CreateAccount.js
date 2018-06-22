@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, TextInput, ScrollView, Dimensions} from 'react-native';
-import { Spinner } from './common';
+import { Text, View, TouchableOpacity, TextInput, ScrollView, Dimensions, ActivityIndicator} from 'react-native';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser, createUser, usernameChanged } from '../actions';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -79,7 +78,7 @@ class CreateAccount extends Component {
         if (this.props.loading) {
             return(
             <View style={{paddingTop: 33.35}} >
-                <Spinner size="large" />
+                <ActivityIndicator color='#fff' size ="large" />
             </View>
             )
         }

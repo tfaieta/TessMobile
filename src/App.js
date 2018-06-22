@@ -53,7 +53,6 @@ import PlayerInfo from "./components/PlayerInfo";
 import PopupCategory from "./components/Categories/PopupCategory";
 import UserProfileModal from "./components/UserProfileModal";
 import RecentlyPlayed from "./components/RecentlyPlayed";
-import InfoDiagram from "./components/InfoDiagram";
 import ReligionSpirituality from "./components/Categories/ReligionSpirituality";
 import SetPlayerSpeed from "./components/SetPlayerSpeed";
 import MyQueue from "./components/MyQueue";
@@ -128,7 +127,6 @@ Navigation.registerComponent('RecordFirst', () => RecordFirstPage, store, Provid
 Navigation.registerComponent('Record', () => Record, store, Provider);
 Navigation.registerComponent('RecordInfo', () => RecordInfo, store, Provider);
 Navigation.registerComponent('RecordSuccess', () => RecordSuccess, store, Provider);
-Navigation.registerComponent('InfoDiagram', () => InfoDiagram, store, Provider);
 
 Navigation.registerComponent('Library', () => Library, store, Provider);
 Navigation.registerComponent('Queue', () => Queue, store, Provider);

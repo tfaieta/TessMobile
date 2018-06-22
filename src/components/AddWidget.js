@@ -16,7 +16,7 @@ var {height, width} = Dimensions.get('window');
 
 
 class AddWidget extends Component{
-
+/*
     componentDidMount(){
 
         this.props.podcastFetchNew();
@@ -713,6 +713,7 @@ class AddWidget extends Component{
 
         );
     }
+    */
 }
 
 const styles = StyleSheet.create({

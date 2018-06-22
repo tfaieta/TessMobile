@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, StatusBar, Image, TextInput, ScrollView, Dimensions} from 'react-native';
-import { Spinner } from './common';
+import { Text, View, TouchableOpacity, StatusBar, Image, TextInput, ScrollView, Dimensions, ActivityIndicator} from 'react-native';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -54,7 +53,7 @@ class Login extends Component {
         if (this.props.loading) {
             return (
                 <View style={{paddingTop: height/22.23}} >
-                    <Spinner size="large" />
+                    <ActivityIndicator color='#fff' size ="large" />
                 </View>
             )
         }
