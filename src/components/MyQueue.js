@@ -35,7 +35,8 @@ static navigatorStyle = {
 
 
     componentWillUnmount(){
-        clearInterval(this.interval);
+        clearTimeout(this.timeout);
+        this.setState({refreshing: false, loading: false})
     }
 
 
@@ -46,7 +47,7 @@ static navigatorStyle = {
             dataSource: dataSource.cloneWithRows(Variables.state.myQueue),
         };
 
-        this.interval = setInterval(() => {
+        this.timeout = setTimeout(() => {
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myQueue)})
         },1000);
 

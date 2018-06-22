@@ -45,8 +45,8 @@ class Library extends Component{
         });
 
 
-        Variables.state.catchUp = [];
         firebase.database().ref(`users/${currentUser.uid}/tracking`).on("value", function (snapshot) {
+            Variables.state.catchUp = [];
             snapshot.forEach(function (snap) {
                 firebase.database().ref(`users/${currentUser.uid}/tracking/${snap.val().podcastArtist}/episodes`).on("value", function (snapAgain) {
                     snapAgain.forEach(function (episode) {
@@ -63,7 +63,7 @@ class Library extends Component{
 
 
     componentWillUnmount(){
-        clearInterval(this.interval);
+        clearTimeout(this.timeout);
     }
 
 
@@ -96,7 +96,7 @@ class Library extends Component{
             refreshing: false,
         };
 
-        this.interval = setInterval(() => {
+        this.timeout = setTimeout(() => {
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myQueue), dataCatchUp: dataSource.cloneWithRows(Variables.state.catchUp)})
         },1500);
 
@@ -121,8 +121,8 @@ class Library extends Component{
         });
 
 
-        Variables.state.catchUp = [];
         firebase.database().ref(`users/${currentUser.uid}/tracking`).once("value", function (snapshot) {
+            Variables.state.catchUp = [];
             snapshot.forEach(function (snap) {
                 firebase.database().ref(`users/${currentUser.uid}/tracking/${snap.val().podcastArtist}/episodes`).once("value", function (snapAgain) {
                     snapAgain.forEach(function (episode) {
@@ -137,7 +137,7 @@ class Library extends Component{
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.timeout = setTimeout(() => {
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myQueue), dataCatchUp: dataSource.cloneWithRows(Variables.state.catchUp), refreshing: false})
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myQueue), dataCatchUp: dataSource.cloneWithRows(Variables.state.catchUp)})
         },1500);
 
     };

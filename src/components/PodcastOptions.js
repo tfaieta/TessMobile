@@ -78,6 +78,11 @@ class PodcastOptions extends Component {
     }
 
 
+    componentWillUnmount(){
+        clearTimeout(this.timeout);
+    }
+
+
     onCancel() {
         console.log("CANCEL");
         this.setState({visible:false});
@@ -1505,7 +1510,7 @@ class PodcastOptions extends Component {
                                             title: this.state.profileName,
                                             passProps: {rowData, navigator, rss},
                                         })
-                                    }, 450)
+                                    }, 450);
                                      navigator.dismissLightBox();
                                 }}>
 

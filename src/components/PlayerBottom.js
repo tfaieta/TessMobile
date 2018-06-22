@@ -21,15 +21,10 @@ var {height, width} = Dimensions.get('window');
 class PlayerBottom extends Component {
     constructor() {
         super();
-
-        this.intervalImage = setInterval(() => {
-            this.setState({profileImage: Variables.state.userProfileImage});
-        },500);
     }
 
 
     componentWillUnmount(){
-        clearInterval(this.intervalImage);
         clearInterval(this.interval);
     }
 
@@ -104,12 +99,9 @@ class PlayerBottom extends Component {
 
         this.interval = setInterval(() => {
             this.setState({
-                currentTime: Variables.state.currentTime,
-                buffering: Variables.state.buffering,
-                isPlaying: !Variables.state.paused,
-                speed: Variables.state.podcastSpeed,
+
             });
-        }, 200);
+        }, 500);
 
     }
 
@@ -250,10 +242,10 @@ class PlayerBottom extends Component {
 
     }
 
-    _renderPodcastImage(){
+    _renderPodcastImage(profileImage){
         if(Variables.state.podcastTitle != ''){
 
-            if (this.state.profileImage == ''){
+            if (profileImage == ''){
                 return(
                     <TouchableOpacity onPress={this.ExpandPlayer}>
                         <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: width/8.3, width: width/8.3, borderRadius:4, borderWidth:1, borderColor:'rgba(320,320,320,1)'}}>
@@ -273,7 +265,7 @@ class PlayerBottom extends Component {
                     <View style={{backgroundColor:'transparent', alignSelf: 'center', height: width/8.3, width: width/8.3  }}>
                         <Image
                             style={{width: width/8.3, height: width/8.3, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
-                            source={{uri: Variables.state.userProfileImage}}
+                            source={{uri: profileImage}}
                         />
                     </View>
                 )
@@ -282,10 +274,10 @@ class PlayerBottom extends Component {
         }
     }
 
-    _renderPlayButton(isPlaying) {
+    _renderPlayButton(isPlaying, buffering) {
         if(Variables.state.podcastTitle != ''){
 
-            if(this.state.buffering){
+            if(buffering){
                 return(
                     <ActivityIndicator style={{alignSelf:'center'}} color="#00000090" size ="small" />
                 )
@@ -404,11 +396,11 @@ class PlayerBottom extends Component {
 
 
 
-    _renderPlayButton2(isPlaying) {
+    _renderPlayButton2(isPlaying, buffering) {
 
         if (isPlaying) {
 
-            if(this.state.buffering){
+            if(buffering){
                 return(
                     <ActivityIndicator style={{paddingVertical: 10, alignSelf:'center'}} color='#2A2A30' size ="large" />
                 )
@@ -458,10 +450,10 @@ class PlayerBottom extends Component {
 
 
 
-    _renderPodcastImageBig(){
+    _renderPodcastImageBig(profileImage){
         if(Variables.state.podcastTitle != ''){
 
-            if (this.state.profileImage == ''){
+            if (profileImage == ''){
                 return(
                     <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom: 10, height: 140, width: 140, borderRadius:4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)',  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
                         <Icon style={{
@@ -479,7 +471,7 @@ class PlayerBottom extends Component {
                     <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom: 10, height: height/4.75, width: height/4.75,  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
                         <Image
                             style={{width: height/4.75, height:height/4.75,  alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
-                            source={{uri: this.state.profileImage}}
+                            source={{uri: profileImage}}
                         />
                     </View>
                 )
@@ -1304,9 +1296,7 @@ class PlayerBottom extends Component {
                         </View>
 
 
-                        {this._renderPodcastImageBig()}
-
-
+                        {this._renderPodcastImageBig(Variables.state.userProfileImage)}
 
 
                         <View style={{marginTop: 10, flex:1}}>
@@ -1336,7 +1326,7 @@ class PlayerBottom extends Component {
 
                             <View style={styles.middleContainer}>
                                 <TouchableOpacity>
-                                    {this._renderPlayButton2(this.state.isPlaying)}
+                                    {this._renderPlayButton2(!Variables.state.paused, Variables.state.buffering)}
                                 </TouchableOpacity>
                             </View>
 
@@ -1369,7 +1359,7 @@ class PlayerBottom extends Component {
                         <View style={{flexDirection: 'row', flex: 1, marginTop: 0}}>
 
                             <View style={{alignItems:'flex-start', flex:1}}>
-                                {this._renderPodcastSpeed(this.state.speed)}
+                                {this._renderPodcastSpeed(Variables.state.podcastSpeed)}
                             </View>
 
                             <View style={{alignItems: 'center', flex:1}}>
@@ -1416,7 +1406,7 @@ class PlayerBottom extends Component {
                         </View>
 
 
-                        {this._renderPodcastImageBig()}
+                        {this._renderPodcastImageBig(Variables.state.userProfileImage)}
 
 
                         <TouchableOpacity style={{marginTop:20}} onPress={() => {
@@ -1463,7 +1453,7 @@ class PlayerBottom extends Component {
 
                             <View style={styles.middleContainer}>
                                 <TouchableOpacity>
-                                    {this._renderPlayButton2(this.state.isPlaying)}
+                                    {this._renderPlayButton2(!Variables.state.paused, Variables.state.buffering)}
                                 </TouchableOpacity>
                             </View>
 
@@ -1496,7 +1486,7 @@ class PlayerBottom extends Component {
                         <View style={{flexDirection: 'row', flex: 1, marginTop: 0}}>
 
                             <View style={{alignItems:'flex-start', flex:1}}>
-                                {this._renderPodcastSpeed(this.state.speed)}
+                                {this._renderPodcastSpeed(Variables.state.podcastSpeed)}
                             </View>
 
                             <View style={{alignItems: 'center', flex:1}}>
@@ -1547,7 +1537,7 @@ class PlayerBottom extends Component {
                     <TouchableOpacity style={styles.centerContainer} onPress={this.ExpandPlayer}>
 
                         <View style={styles.leftContainer}>
-                            {this._renderPodcastImage()}
+                            {this._renderPodcastImage(Variables.state.userProfileImage)}
                         </View>
 
                         <View onPress={this.ExpandPlayer}>
@@ -1556,7 +1546,7 @@ class PlayerBottom extends Component {
 
                         <View style={styles.rightContainer}>
                             <TouchableOpacity style={{marginRight: 10}}>
-                                {this._renderPlayButton(this.state.isPlaying)}
+                                {this._renderPlayButton(!Variables.state.paused, Variables.state.buffering)}
                             </TouchableOpacity>
                         </View>
 

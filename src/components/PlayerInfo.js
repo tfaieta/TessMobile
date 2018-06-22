@@ -32,18 +32,6 @@ static navigatorStyle = {
         statusBarColor: '#fff',
     };
 
-    componentWillMount(){
-
-        firebase.database().ref(`podcasts/${Variables.state.podcastID}/comments`).on("value", function (snap) {
-            Variables.state.comments = [];
-            snap.forEach(function (data) {
-                if (data.val()) {
-                    Variables.state.comments.push(data.val());
-                }
-            });
-        });
-
-    }
 
 
     componentWillUnmount(){
@@ -61,6 +49,15 @@ static navigatorStyle = {
             dataSource: dataSource.cloneWithRows(Variables.state.comments),
             description: ''
         };
+
+        firebase.database().ref(`podcasts/${Variables.state.podcastID}/comments`).on("value", function (snap) {
+            Variables.state.comments = [];
+            snap.forEach(function (data) {
+                if (data.val()) {
+                    Variables.state.comments.push(data.val());
+                }
+            });
+        });
 
         this.interval = setInterval(() => {
             firebase.database().ref(`podcasts/${Variables.state.podcastID}/comments`).on("value", function (snap) {

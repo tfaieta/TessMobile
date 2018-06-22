@@ -43,6 +43,8 @@ class ListItemChart extends Component {
     componentWillUnmount() {
         clearTimeout(this.timeout);
         clearTimeout(this.timeout2);
+        clearTimeout(this.timeout3);
+        clearTimeout(this.timeout4);
     }
 
 
@@ -67,12 +69,12 @@ class ListItemChart extends Component {
             }
         });
 
-        setTimeout(() => {
+        this.timeout3 = setTimeout(() => {
             this.setState({username: profileName});
             this.setState({title: podcastTitle});
         }, 300);
 
-        setTimeout(() => {
+        this.timeout4 = setTimeout(() => {
             this.setState({username: profileName});
             this.setState({title: podcastTitle});
         }, 1000);

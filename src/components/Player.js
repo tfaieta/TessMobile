@@ -170,7 +170,7 @@ class Player extends Component{
                 podcastURL: Variables.state.podcastURL,
                 paused: Variables.state.paused,
             })
-        }, 200)
+        }, 250)
     }
 
 
