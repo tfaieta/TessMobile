@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ScrollView, ListView, Dimensions, Platform} from 'react-native';
+import { Text, View, StyleSheet, ScrollView, ListView, Dimensions, Platform, RefreshControl} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import firebase from 'firebase';
 import ListItemHighlight from "./ListItemHighlight";
@@ -18,35 +18,38 @@ if(Platform.OS === 'ios'){
 
 class Highlights extends Component{
 
+    componentWillUnmount(){
+        clearTimeout(this.timeout)
+    }
+
     constructor(props){
         super(props);
 
          this.props.navigator.setStyle({
-                     statusBarHidden: false,
-                     statusBarTextColorScheme: 'light',
-                     navBarHidden: false,
-                     navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
-                     navBarTextFontSize: 18, // change the font size of the title
-                     navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
-                     drawUnderTabBar: false,
-                     navBarHideOnScroll: false,
-                     navBarBackgroundColor: '#fff',
-                     topBarElevationShadowEnabled: false,
-                     statusBarColor: '#fff',
-                     drawUnderNavBar: Platform.OS === 'ios',
-                     navBarTranslucent: Platform.OS === 'ios',
-                     navBarNoBorder: true,
+             statusBarHidden: false,
+             statusBarTextColorScheme: 'light',
+             navBarHidden: false,
+             navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
+             navBarTextFontSize: 18, // change the font size of the title
+             navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
+             drawUnderTabBar: false,
+             navBarHideOnScroll: false,
+             navBarBackgroundColor: '#fff',
+             topBarElevationShadowEnabled: false,
+             statusBarColor: '#fff',
+             drawUnderNavBar: Platform.OS === 'ios',
+             navBarTranslucent: Platform.OS === 'ios',
+             navBarNoBorder: true,
 
-          });
+         });
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         let data = [];
         this.state = {
             myHighlights: dataSource.cloneWithRows(data),
             length: 0,
-
+            refreshing: false
         };
-
 
         const {currentUser} = firebase.auth();
         firebase.database().ref(`users/${currentUser.uid}/highlights`).once("value", function (snapshot) {
@@ -57,13 +60,32 @@ class Highlights extends Component{
             });
         });
 
-        setTimeout(() => {
+        this.timeout = setTimeout(() => {
             this.setState({myHighlights: dataSource.cloneWithRows(data.reverse()), length: data.length})
-        }, 1200)
+        }, 1500)
 
     };
 
 
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+
+        let data = [];
+        const {currentUser} = firebase.auth();
+        firebase.database().ref(`users/${currentUser.uid}/highlights`).once("value", function (snapshot) {
+            snapshot.forEach(function (snap) {
+                if(snap.val()){
+                    data.push(snap.val());
+                }
+            });
+        });
+
+
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.timeout = setTimeout(() => {
+            this.setState({myHighlights: dataSource.cloneWithRows(data.reverse()), length: data.length, refreshing: false})
+        }, 3000)
+    };
 
 
 
@@ -78,7 +100,13 @@ class Highlights extends Component{
             <View
                 style={styles.container}>
 
-                <ScrollView>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                        />}
+                >
 
                     <Text style={styles.title}>{this.state.length} highlights</Text>
 

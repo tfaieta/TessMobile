@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ListView, Alert, ScrollView, Text, Dimensions, Platform} from 'react-native';
+import { View, StyleSheet, ListView, Alert, ScrollView, Text, Dimensions, Platform, RefreshControl} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import firebase from 'firebase';
 import Variables from "./Variables";
@@ -66,12 +66,39 @@ class Favorites extends Component{
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts),
             loading: true,
+            refreshing: false,
             favorite: true,
             length: 0
         };
         this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts.reverse()), length: Variables.state.favPodcasts.length})},2000);
     }
 
+
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+
+        Variables.state.favPodcasts = [];
+        const { currentUser } = firebase.auth();
+        const refFav = firebase.database().ref(`users/${currentUser.uid}/favorites`);
+
+        refFav.orderByChild('favorites').once("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+                if(data.val()){
+                    if(data.val().id){
+                        firebase.database().ref(`podcasts/${data.val().id}`).once("value", function (snap) {
+                            Variables.state.favPodcasts.push(snap.val())
+                        })
+                    }
+                    else{
+                        Variables.state.favPodcasts.push(data.val());
+                    }
+                }
+            })
+        });
+
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts.reverse()), length: Variables.state.favPodcasts.length, refreshing: false})}, 3000);
+    };
 
 
     _pressBack = () => {
@@ -111,7 +138,13 @@ class Favorites extends Component{
                 style={styles.containerMain}>
 
 
-                <ScrollView>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                        />}
+                >
 
                     <Text style={styles.title}>{this.state.length} Episodes</Text>
 

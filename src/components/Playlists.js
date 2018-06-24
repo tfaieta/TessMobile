@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, ScrollView, TextInput, ListView, Platform, Dimensions} from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ScrollView, TextInput, ListView, Platform, Dimensions, RefreshControl} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Variables from "./Variables";
@@ -50,6 +50,7 @@ class Playlists extends Component{
         this.state={
             newPlaylist: '',
             playlists: dataSource.cloneWithRows(Variables.state.playlists),
+            refreshing: false
         };
 
         this.props.navigator.setStyle({
@@ -74,6 +75,28 @@ class Playlists extends Component{
         this.timeout2 = setTimeout(() => {this.setState({playlists: dataSource.cloneWithRows(Variables.state.playlists)})},2500);
 
     };
+
+
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+
+        Variables.state.playlists = [];
+        const {currentUser} = firebase.auth();
+        firebase.database().ref(`users/${currentUser.uid}/playlist`).on("value", function (snapshot) {
+
+            snapshot.forEach(function (data) {
+                if(data.val()){
+                    Variables.state.playlists.push(data.val());
+                }
+
+            })
+
+        });
+
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.timeout2 = setTimeout(() => {this.setState({playlists: dataSource.cloneWithRows(Variables.state.playlists), refreshing: false})},3000);
+    };
+
 
     _pressBack = () => {
         this.props.navigator.pop({
@@ -107,7 +130,13 @@ class Playlists extends Component{
                 style={styles.container}>
 
 
-                <ScrollView>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                        />}
+                >
 
 
                     <View style={styles.inputContainer}>
@@ -129,8 +158,8 @@ class Playlists extends Component{
                             <TouchableOpacity style={{alignItems: 'flex-end', flex: 1}} onPress={this.createNewPlaylist}>
                                 <Icon style={{
                                     textAlign: 'center',
-                                    marginTop: 18,
-                                    fontSize: 22,
+                                    marginTop: height/37.06,
+                                    fontSize: width/17.05,
                                     color: '#506dcf',
                                 }} name="plus-circle">
                                 </Icon>
@@ -147,7 +176,7 @@ class Playlists extends Component{
                         renderRow={(data) => this.renderPlaylist(data)}
                     />
 
-                    <View style={{paddingBottom: 150}}/>
+                    <View style={{paddingBottom: height/4.45}}/>
 
 
                 </ScrollView>
@@ -182,7 +211,7 @@ const styles = StyleSheet.create({
         color: '#506dcf',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: width/154.23,
+        fontSize: width/23.44,
         paddingHorizontal: width/37.5,
         marginLeft: width/37.5
     },

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ScrollView, ListView, Platform, Dimensions} from 'react-native';
+import { Text, View, StyleSheet, ScrollView, ListView, Platform, Dimensions, RefreshControl} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import Variables from "./Variables";
 import firebase from 'firebase';
@@ -66,11 +66,38 @@ class RecentlyPlayed extends Component{
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithRows([]),
+            refreshing: false
         };
         this.timeout = setTimeout(() => {
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.recentlyPlayed.reverse())})
-        },2500);
+        },2000);
     };
+
+
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+
+        const {currentUser} = firebase.auth();
+
+        Variables.state.recentlyPlayed = [];
+        firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).limitToLast(25).once("value", function (snapshot) {
+            snapshot.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.val().id}`).once("value", function (data) {
+                    if(data.val()){
+                        Variables.state.recentlyPlayed.push(data.val())
+                    }
+
+                })
+            });
+        });
+
+
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.timeout = setTimeout(() => {
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.recentlyPlayed.reverse()), refreshing: false})
+        },3000);
+    };
+
 
     _pressBack = () => {
         this.props.navigator.pop({
@@ -91,7 +118,13 @@ class RecentlyPlayed extends Component{
                 style={styles.container}>
 
 
-                <ScrollView>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                        />}
+                >
 
                     <ListView
                         enableEmptySections
