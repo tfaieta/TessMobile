@@ -59,7 +59,7 @@ class ListItemChart extends Component {
         const {podcastArtist} = this.props.podcast;
         const {podcastTitle} = this.props.podcast;
 
-        let profileName = 'loading';
+        let profileName = '';
         firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").once("value", function (snap) {
             if (snap.val()) {
                 profileName = snap.val().username;

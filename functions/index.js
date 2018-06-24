@@ -40,15 +40,17 @@ exports.notificationNewEp = functions.database.ref(`/podcasts/{podcastKey}`)
     .onWrite((event) => {
 
         const episode = event.after.val();
+        console.log(episode);
 
             const podcastTitle = episode.podcastTitle;
             const podcastDescription = episode.podcastDescription;
             const podcastCategory = episode.podcastCategory;
-            const id = event.key;
+            const id = episode.id;
             const podcastArtist = episode.podcastArtist;
             const podcastURL = episode.podcastURL;
             const RSSID = episode.RSSID;
-            const rss = episode.rss;
+
+            console.log(podcastTitle, podcastDescription, id);
 
             const payload = {
                 notification: {
@@ -62,7 +64,6 @@ exports.notificationNewEp = functions.database.ref(`/podcasts/{podcastKey}`)
                     podcastDescription: podcastDescription,
                     podcastURL: podcastURL,
                     RSSID: RSSID,
-                    rss: rss
                 },
             };
 
@@ -83,6 +84,8 @@ exports.notificationFollow = functions.database.ref(`/users/{id}/followers`)
 
             const token = snapshot.val();
             const podcastArtist = event.val();
+
+            console.log(token, podcastArtist);
 
             const payload = {
                 notification: {
@@ -113,17 +116,16 @@ exports.feedFetcher = functions.database.ref(`/feedFetcher`)
 
 
         // loop for every rss feed in database
-        let podcasts = [];
-
         return new Promise((resolve, reject) => {
         admin.database().ref('feeds').once("value", function (snapshot) {
             console.log("Starting");
 
 
+            var podcasts = [];
             snapshot.forEach(function (snap) {
                 console.log(snap.val());
 
-                void fetch(snap.val())
+                var podcast = fetch(snap.val())
                     .then((response) => response.text())
                     .then((responseData) => {
                     console.log("reading feed... " + snap.val());
@@ -192,10 +194,10 @@ exports.feedFetcher = functions.database.ref(`/feedFetcher`)
                                 console.log("Account Exists: " + usernameData)
                             }
                             else{
-                                firebase.database().ref(`users`).child(usernameData).child("/username").update({username});
-                                firebase.database().ref(`users`).child(usernameData).child("/bio").update({bio});
-                                firebase.database().ref(`users`).child(usernameData).child("/profileImage").update({profileImage});
-                                firebase.database().ref(`usernames`).child(usernameData.toLowerCase()).update({username: usernameData.toLowerCase()});
+                                admin.database().ref(`users`).child(usernameData).child("/username").update({username});
+                                admin.database().ref(`users`).child(usernameData).child("/bio").update({bio});
+                                admin.database().ref(`users`).child(usernameData).child("/profileImage").update({profileImage});
+                                admin.database().ref(`usernames`).child(usernameData.toLowerCase()).update({username: usernameData.toLowerCase()});
                                 console.log("Account Added: " + usernameData)
                             }
                         });
@@ -203,7 +205,7 @@ exports.feedFetcher = functions.database.ref(`/feedFetcher`)
 
 
 
-                        let episodes = [];
+                        var episodes = [];
                         // get info for each episode
                         // items.length gets max size of rss feed, 0 is most recent
                         let size = 0;
@@ -214,7 +216,7 @@ exports.feedFetcher = functions.database.ref(`/feedFetcher`)
                             size = items.length-1
                         }
                         console.log("checking " + size +  " episodes from " + snap.val()+ "...");
-                        for (var i=0; i >= 0; i--) {
+                        for (var i = size; i >= 0; i--) {
 
                             //artist
                             let podcastArtist = usernameData;
@@ -296,23 +298,23 @@ exports.feedFetcher = functions.database.ref(`/feedFetcher`)
 
 
                                 // upload to database if doesn't exist (follow podcastCreate)
-                                return admin.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
+                                var episode1 = admin.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
                                     if(snapshot.val()){
                                         console.log("episode EXISTS: " + RSSID)
                                     }
                                     else{
-                                        let item = firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength, time: firebase.database.ServerValue.TIMESTAMP});
+                                        let item = admin.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength, time: firebase.database.ServerValue.TIMESTAMP});
                                         const ref = item.ref;
                                         const id = item.key;
                                         ref.update({id});
-                                        firebase.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
+                                        admin.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
                                         console.log("episode ADDED: " + RSSID);
 
                                     }
 
-                                });
+                                }).then(console.log('Episode finished'));
 
-
+                                episodes.push(episode1);
 
                             }
                             // another way of getting url -> upload
@@ -323,23 +325,23 @@ exports.feedFetcher = functions.database.ref(`/feedFetcher`)
 
 
                                 // upload to database if doesn't exist (follow podcastCreate)
-                                return admin.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
+                                var episode2 = admin.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
                                     if(snapshot.val()){
                                         console.log("episode EXISTS: " + RSSID)
                                     }
                                     else{
-                                        let item = firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength, time: firebase.database.ServerValue.TIMESTAMP});
+                                        let item = admin.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength, time: firebase.database.ServerValue.TIMESTAMP});
                                         const ref = item.ref;
                                         const id = item.key;
                                         ref.update({id});
-                                        firebase.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
+                                        admin.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
                                         console.log("episode ADDED: " + RSSID);
 
                                     }
 
-                                });
+                                }).then(console.log('Episode finished'));
 
-
+                                episodes.push(episode2)
 
                             }
                             else{
@@ -347,16 +349,21 @@ exports.feedFetcher = functions.database.ref(`/feedFetcher`)
                                 episodes.push('');
                             }
                         }
-                        return(episodes);
+                        return Promise.all(episodes);
 
-                    });
+                    }).then(console.log('Podcast finished'));
 
+                podcasts.push(podcast);
 
-            });
+            }), () => console.log("Finishing");
 
-         });
+            return Promise.all(podcasts);
+
+         }), () => then(console.log("DONE"));
+
 
         });
+
 
 
     });

@@ -521,7 +521,7 @@ class ListItemUsers extends Component {
                 <View>
                     <View style={{padding: 10}}>
 
-                        <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom: height/66.7, height: height/5.2, width: height/5.2, borderRadius: 4, borderWidth: 8, borderColor:'rgba(320,320,320,0.8)' }}>
+                        <View style={{backgroundColor:'rgba(130,131,147,0.2)', alignSelf: 'center', marginBottom: height/66.7, height: height/5.2, width: height/5.2, borderRadius: 4, borderWidth: 8, borderColor:'rgba(320,320,320,0.8)' }}>
                             <Icon style={{
                                 textAlign: 'center',
                                 fontSize: height/8.34,
@@ -531,8 +531,8 @@ class ListItemUsers extends Component {
                             </Icon>
                         </View>
 
-                        <View style={{backgroundColor: '#82839340', paddingVertical: height/133.4, marginVertical: height/333.5, marginHorizontal: width/37.5, paddingHorizontal: width/9.38, borderRadius: width/18.75}}/>
-                        <View style={{backgroundColor: '#82839340', paddingVertical: height/133.4, marginVertical: height/333.5, marginHorizontal: width/37.5, paddingHorizontal: width/9.38, borderRadius: width/18.75}}/>
+                        <View style={{backgroundColor: '#82839320', paddingVertical: height/133.4, marginVertical: height/333.5, marginHorizontal: width/37.5, paddingHorizontal: width/9.38, borderRadius: width/18.75}}/>
+                        <View style={{backgroundColor: '#82839320', paddingVertical: height/133.4, marginVertical: height/333.5, marginHorizontal: width/37.5, paddingHorizontal: width/9.38, borderRadius: width/18.75}}/>
 
                     </View>
                 </View>

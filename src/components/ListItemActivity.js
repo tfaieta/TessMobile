@@ -425,7 +425,7 @@ class ListItemFollowed extends Component {
                     </View>
                     <View style={styles.container}>
 
-                        <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginLeft: width/37.5, justifyContent: 'center', alignSelf: 'center', height: width/9.38, width: width/9.38, borderRadius: width/37.5, borderWidth: 5, borderColor:'rgba(320,320,320,0.8)',  }}>
+                        <View style={{backgroundColor:'rgba(130,131,147,0.2)', marginLeft: width/37.5, justifyContent: 'center', alignSelf: 'center', height: width/9.38, width: width/9.38, borderRadius: width/37.5, borderWidth: 5, borderColor:'rgba(320,320,320,0.8)',  }}>
                             <Icon style={{
                                 textAlign: 'center',
                                 fontSize: width/15,
@@ -436,8 +436,8 @@ class ListItemFollowed extends Component {
                         </View>
 
                         <View style={{justifyContent: 'center', alignSelf: 'flex-start'}}>
-                            <View style={{backgroundColor: '#82839340', paddingVertical: height/95.3, marginVertical: height/333.5, marginHorizontal: width/20, paddingHorizontal: width/3, borderRadius: width/18.75}}/>
-                            <View style={{backgroundColor: '#82839340', paddingVertical: height/95.3, marginVertical: height/333.5, marginHorizontal: width/20, paddingHorizontal: width/3, borderRadius: width/18.75}}/>
+                            <View style={{backgroundColor: '#82839320', paddingVertical: height/95.3, marginVertical: height/333.5, marginHorizontal: width/20, paddingHorizontal: width/3, borderRadius: width/18.75}}/>
+                            <View style={{backgroundColor: '#82839320', paddingVertical: height/95.3, marginVertical: height/333.5, marginHorizontal: width/20, paddingHorizontal: width/3, borderRadius: width/18.75}}/>
                         </View>
 
                     </View>
