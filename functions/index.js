@@ -67,7 +67,7 @@ exports.notificationNewEp = functions.database.ref(`/podcasts/{podcastKey}`)
                 },
             };
 
-            const topic = `/topics/${podcastArtist}`;
+            const topic = "/topics/" + podcastArtist;
 
             return admin.messaging()
                 .sendToTopic(topic, payload);
