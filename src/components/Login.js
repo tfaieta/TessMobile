@@ -4,15 +4,13 @@ import { Spinner } from './common';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
 import Icon from 'react-native-vector-icons/Ionicons';
-import LinearGradient from "react-native-linear-gradient/index.android";
+import AnimatedLinearGradient from 'react-native-animated-linear-gradient'
 
 var {height, width} = Dimensions.get('window');
 
-
-
-
-// login page
-
+/*
+    User Login Page
+ */
 
 class Login extends Component {
 
@@ -29,9 +27,6 @@ class Login extends Component {
         this.props.passwordChanged(text);
     }
 
-
-
-
     onButtonPress() {
         const { email, password } = this.props;
 
@@ -44,7 +39,7 @@ class Login extends Component {
         this.props.navigator.push({
             screen: 'CreateAccount',
             animated: true,
-            animationType: 'fade',
+            animationType: 'fade'
         });
     };
 
@@ -69,33 +64,37 @@ class Login extends Component {
     }
 
     render() {
-        return (
-            <LinearGradient
+        let bgGradient = {
+            bg: ['#d15564', '#9a5e9a', '#506dcf']
+        };
+        let duration = 3000;
 
-                colors={['#d15564', '#9a5e9a', '#506dcf' ]}
+        return (
+            <AnimatedLinearGradient
                 style={styles.container}
+                customColor={bgGradient.bg}
+                speed={duration}
             >
                 <ScrollView   scrollEnabled={false}>
-
 
                 <StatusBar hidden={false} barStyle="light-content" />
 
 
                 <Image
-                    style={{ width: height/4.87, height: height/4.33, marginBottom: height/16.68, alignSelf: 'center'}}
+                    style={styles.logo}
                     source={require('tess/src/images/White_Logo.png')}
                 />
 
 
                 <View style={styles.inputContainer}>
                     <View style={{flexDirection:'row'}}>
-                        <View style={{alignItems:'flex-start', flex: 1,}}>
+                        <View style={{alignItems:'flex-start', flex: 1}}>
                             <Icon style={{
                                 textAlign: 'center',
                                 marginTop: height/37,
                                 marginLeft: width/33.5,
                                 fontSize: width/15.23,
-                                color: 'rgba(300,300,300,0.7)'
+                                color: 'rgba(300,300,300,0.7)',
                             }} name="md-mail">
                             </Icon>
                         </View>
@@ -119,8 +118,6 @@ class Login extends Component {
                         </View>
                     </View>
                 </View>
-
-
 
                 <View style={styles.inputContainer}>
                     <View style={{flexDirection:'row'}}>
@@ -173,7 +170,7 @@ class Login extends Component {
 
                 </ScrollView>
 
-            </LinearGradient>
+            </AnimatedLinearGradient>
         );
     }
 }
@@ -192,9 +189,7 @@ const styles = {
 
     container: {
         flex: 1,
-        backgroundColor: '#856cff',
-        padding: height/33.35,
-        paddingTop: height/11.12
+        alignItems: 'center',
     },
 
     inputEmail: {
@@ -229,6 +224,8 @@ const styles = {
         paddingVertical: height/44.46,
         paddingHorizontal: width/22.33,
         marginBottom: height/133.4,
+        width: width/1.1,
+        alignSelf: 'center',
         borderWidth: 2,
         borderStyle: 'solid',
         borderRadius: 10,
@@ -269,6 +266,8 @@ const styles = {
     inputContainer: {
         backgroundColor:"rgba(300,300,300,0.2)",
         marginVertical: height/133.4,
+        width: width/1.1,
+        alignSelf: 'center',
         paddingBottom: height/66.7,
         paddingHorizontal: width/33.5,
         borderWidth: 0.1,
@@ -282,6 +281,14 @@ const styles = {
         fontFamily: 'Montserrat-Regular',
         fontSize: width/22.33,
         backgroundColor: 'transparent'
+    },
+    logo: {
+        width: height/4.87,
+        height: height/4.33,
+        flex: 1,
+        alignSelf: 'center',
+        marginBottom: height/16.68,
+        marginTop: height/12
     }
 
 

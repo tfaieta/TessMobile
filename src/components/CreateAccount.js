@@ -4,7 +4,7 @@ import { Spinner } from './common';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser, createUser, usernameChanged } from '../actions';
 import Icon from 'react-native-vector-icons/Ionicons';
-import LinearGradient from "react-native-linear-gradient/index.android";
+import AnimatedLinearGradient from 'react-native-animated-linear-gradient'
 import DropdownAlert from 'react-native-dropdownalert';
 import firebase from 'firebase';
 
@@ -95,11 +95,16 @@ class CreateAccount extends Component {
     }
 
     render() {
-        return (
-            <LinearGradient
+        let bgGradient = {
+            bg: ['#d15564', '#9a5e9a', '#506dcf']
+        };
+        let duration = 2500;
 
-                colors={['#d15564', '#9a5e9a', '#506dcf' ]}
-                style={styles.container}>
+        return (
+            <AnimatedLinearGradient
+                style={styles.container}
+                customColor={bgGradient.bg}
+                speed={duration}>
 
                 <ScrollView   scrollEnabled={false}>
 
@@ -242,7 +247,7 @@ class CreateAccount extends Component {
 
                 <DropdownAlert titleStyle={{color:'#fff'}} messageStyle={{color: '#fff'}} containerStyle={{backgroundColor: '#ee5865'}} ref={ref => this.dropdown = ref} showCancel={true} />
 
-            </LinearGradient>
+            </AnimatedLinearGradient>
         );
     }
 }
@@ -282,6 +287,8 @@ const styles = {
         paddingVertical: height/44.46,
         paddingHorizontal: width/22.23,
         borderWidth: 2,
+        width: width/1.1,
+        alignSelf: 'center',
         borderStyle: 'solid',
         borderRadius: 10,
         borderColor: '#FFF',
@@ -316,6 +323,8 @@ const styles = {
         marginVertical: height/133.4,
         paddingBottom: height/66.7,
         paddingHorizontal: width/33.5,
+        width: width/1.1,
+        alignSelf: 'center',
         borderWidth: 0.1,
         borderRadius: 10
     },
@@ -330,9 +339,6 @@ const styles = {
         backgroundColor: 'transparent',
 
     },
-
-
-
 };
 
 const mapStateToProps = ({ auth }) => {

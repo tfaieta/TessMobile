@@ -65,7 +65,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Tess will need to use your camera so that you can take a profile image.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Tess uses your microphone to create a podcast.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

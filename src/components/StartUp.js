@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Image, Text, Dimensions, StatusBar} from 'react-native';
+import {StyleSheet, View, Image, Text, Dimensions, StatusBar, Animated} from 'react-native';
 import AppIntro from 'react-native-app-intro';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from "react-native-linear-gradient/index.android";
@@ -10,6 +10,16 @@ var {height, width} = Dimensions.get('window');
 
 
 export default class Login extends Component{
+
+    componentWillMount() {
+        this.animatedValue = new Animated.Value();
+    }
+    componentDidMount() {
+        Animated.timing(this.animatedValue, {
+            toValue: 150,
+            duration: 1500
+        }).start();
+    }
 
     static navigatorStyle = {
         statusBarHidden: false,
@@ -25,17 +35,16 @@ export default class Login extends Component{
 
     };
 
-    onSlideChangeHandle = (index, total) => {
-        // Animation
-
-    };
-
     render() {
+
+        const interpolateColor = this.animatedValue.interpolate({
+            inputRange: [0, 150],
+            outputRange: ['#d15564', '#3e4264']
+        });
 
         return (
             <View style ={{backgroundColor: 'white'}}>
                 <StatusBar hidden={true} />
-
 
             <AppIntro
                 onSkipBtnClick={this._handleButtonPressLogin}
@@ -45,7 +54,6 @@ export default class Login extends Component{
                 activeDotColor={'#E5F3F3'}
                 rightTextColor={'#3e4164'}
                 leftTextColor={'#3e4164'}
-                onSlideChange={this.onSlideChangeHandle}
             >
 
                 <View style={styles.slide1}>
@@ -53,12 +61,10 @@ export default class Login extends Component{
                         colors={['#E5F3F3', '#F7FBFC', 'white' ]}
                         start={{x: 2.0, y: 2.0}} end={{x: 0, y: 1}}
                         style={{height: height, width: width}}>
-
                         <Image
                             style={{width: height/4.2, height: height/3.5, borderColor: '#b9bad1', alignSelf: 'center', opacity: 1, marginTop: height / 6,}}
                             source={require('tess/src/images/tessLogoVertical.png')}
                         />
-
                     <View style={styles.textContainer}>
                         <View style={{marginLeft: width/37.5}}>
                         <Text style={styles.textforSlide1}>A new way to share, create, and listen to podcasts</Text>
@@ -67,15 +73,10 @@ export default class Login extends Component{
                         <Text level = {20} style={styles.smallText1}>Swipe to take a look!</Text>
                         </View>
                     </View>
-
-
                     </LinearGradient>
                 </View>
 
-
-
                 <View style={styles.slide2}>
-
                     <LinearGradient
                         colors={['#d15564', '#9a5e9a', '#506dcf' ]}
                         start={{x: 0.0, y: 0.0}} end={{x: 0, y: 1}}
@@ -92,14 +93,11 @@ export default class Login extends Component{
                     </LinearGradient>
                 </View>
 
-
                 <View style={styles.slide3}>
-
                     <LinearGradient
                         colors={['#d15564', '#9a5e9a', '#506dcf' ]}
                         start={{x: 0.0, y: 0.0}} end={{x: 0, y: 1}}
                         style={{height: height, width: width}}>
-
                         <View style = {{flexDirection: 'row', alignSelf: 'center'}} level={10}>
                             <Icon style={{textAlign:'center', marginHorizontal: width/75,  marginTop: height/4, fontSize: height/10, color:'#fff', backgroundColor: 'transparent' }} name="facebook">
                             </Icon>
@@ -113,19 +111,15 @@ export default class Login extends Component{
                         <View level={10}>
                             <Text style={styles.smallText}>Conveniently share snippets of episodes using the <Text style={styles.smallTextBold}>highlight</Text> tool</Text>
                         </View>
-
                     </LinearGradient>
 
                 </View>
 
-
                 <View style={styles.slide3}>
-
                     <LinearGradient
                         colors={['#d15564', '#9a5e9a', '#506dcf' ]}
                         start={{x: 0.0, y: 0.0}} end={{x: 0, y: 1}}
                         style={{height: height, width: width}}>
-
                     <View level={10}>
                         <Icon style={{textAlign:'center',  marginTop: height/4, fontSize: height/8.33, color:'#fff', backgroundColor: 'transparent' }} name="chart-line">
                         </Icon>
@@ -133,20 +127,14 @@ export default class Login extends Component{
                     <View level={10}>
                         <Text style={styles.smallText}>Packed with <Text style={styles.smallTextBold}>analytics</Text> so that you can track your listening journey</Text>
                     </View>
-
                     </LinearGradient>
-
                 </View>
 
-
                 <View style={styles.slide4}>
-
                     <LinearGradient
                         colors={['#d15564', '#9a5e9a', '#506dcf' ]}
                         start={{x: 0.0, y: 0.0}} end={{x: 0, y: 1}}
                         style={{height: height, width: width}}>
-
-
                     <View level = {9}>
                         <Icon style={{textAlign:'center', marginTop: height/4, fontSize: height/8.33, color:'#fff', backgroundColor: 'transparent' }} name="microphone">
                         </Icon>
@@ -154,16 +142,14 @@ export default class Login extends Component{
                     <View level = {-9}>
                         <Text style={styles.smallText}><Text style={styles.smallTextBold}>Record and create</Text> a podcast with the touch of a button anywhere, anytime</Text>
                     </View>
-
                     </LinearGradient>
-
                 </View>
+
             </AppIntro>
             </View>
         );
     }
 }
-
 
 const styles = StyleSheet.create({
     textContainer: {

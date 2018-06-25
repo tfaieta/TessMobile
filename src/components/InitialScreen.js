@@ -142,7 +142,7 @@ export default class InitialScreen extends Component{
         else{
             Navigation.startSingleScreenApp({
                 screen: {
-                    screen: 'Startup',
+                    screen: 'Login',
                     navBarHidden: true,
                     navigatorStyle: {screenBackgroundColor: '#fff'},
                     navigatorButtons: {screenBackgroundColor: '#fff'}
