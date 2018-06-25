@@ -80,17 +80,19 @@ class Home extends Component{
         const route = url.replace(/.*?:\/\//g, '');
         const id = route.match(/\/([^\/]+)\/?$/)[1];
         const routeName = route.split('/')[0];
+        const data = id.split('?')[1];
 
         console.warn("route: " + route);
         console.warn("id: " + id);
         console.warn("route name: " + routeName);
+        console.warn("data: " + data);
 
-        if (routeName === 'listen') {
+        if (id.toString().startsWith('listen')) {
             setTimeout(() => {
 
 
                 Variables.state.highlight = false;
-                firebase.database().ref(`podcasts/${id}`).once("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${data}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         const {podcastArtist} = snapshot.val();
                         const {podcastTitle} = snapshot.val();
@@ -347,9 +349,9 @@ class Home extends Component{
 
             }, 1500);
         }
-        else if (routeName === 'highlight'){
-            const userID = id.split('~')[0];
-            const highlightID = id.split('~')[1];
+        else if (id.toString().startsWith('highlight')){
+            const userID = data.split('~')[0];
+            const highlightID = data.split('~')[1];
 
             setTimeout(() => {
                 firebase.database().ref(`users/${userID}/highlights/${highlightID}`).once("value", function (snap) {

@@ -10,6 +10,9 @@ PODS:
   - Firebase/Core (4.13.0):
     - FirebaseAnalytics (= 4.2.0)
     - FirebaseCore (= 4.0.20)
+  - Firebase/DynamicLinks (4.13.0):
+    - Firebase/Core
+    - FirebaseDynamicLinks (= 2.3.2)
   - Firebase/Messaging (4.13.0):
     - Firebase/Core
     - FirebaseMessaging (= 2.2.0)
@@ -27,6 +30,8 @@ PODS:
     - GTMSessionFetcher/Core (~> 1.1)
   - FirebaseCore (4.0.20):
     - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+  - FirebaseDynamicLinks (2.3.2):
+    - FirebaseAnalytics (~> 4.0)
   - FirebaseInstanceID (2.0.10):
     - FirebaseCore (~> 4.0)
   - FirebaseMessaging (2.2.0):
@@ -73,6 +78,7 @@ DEPENDENCIES:
   - Firebase
   - Firebase/Auth
   - Firebase/Core
+  - Firebase/DynamicLinks
   - Firebase/Messaging
   - Firebase/Performance
 
@@ -84,6 +90,7 @@ SPEC REPOS:
     - FirebaseAnalytics
     - FirebaseAuth
     - FirebaseCore
+    - FirebaseDynamicLinks
     - FirebaseInstanceID
     - FirebaseMessaging
     - FirebasePerformance
@@ -100,6 +107,7 @@ SPEC CHECKSUMS:
   FirebaseAnalytics: 7ef69e76a5142f643aeb47c780e1cdce4e23632e
   FirebaseAuth: bf22cacf22c60ab454bf2636f556d8892b10b53f
   FirebaseCore: 90cb1c53d69b556f112a1bf72b5fcfaad7650790
+  FirebaseDynamicLinks: 38b68641d24e78d0277a9205d988ce22875d5a25
   FirebaseInstanceID: 8d20d890d65c917f9f7d9950b6e10a760ad34321
   FirebaseMessaging: 75cdb862e86c30e0913a2ff307e48d49357c5b73
   FirebasePerformance: 85bdc3f3d630deb629e85695fcab23364d68f5db
@@ -109,6 +117,6 @@ SPEC CHECKSUMS:
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
 
-PODFILE CHECKSUM: 959d8926747efbb86c455d5ce96c1fe8814680c9
+PODFILE CHECKSUM: 73173d27b7dcf057b652f92aa3a41f3a95ac646b
 
 COCOAPODS: 1.5.0

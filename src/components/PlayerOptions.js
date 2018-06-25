@@ -106,7 +106,7 @@ class PlayerOptions extends Component {
         let shareOptions = {
             title: Variables.state.podcastTitle,
             message: '',
-            url: Variables.state.podcastTitle + ' - ' + Variables.state.currentUsername + "\n\nListen on Tess!\n" + `tess://listen/${Variables.state.podcastID}`,
+            url: Variables.state.podcastTitle + ' - ' + Variables.state.currentUsername + "\n\nListen on Tess!\n" + `https://tessopen.page.link/listen?${Variables.state.podcastID}`,
             subject: Variables.state.podcastTitle + ' - ' + Variables.state.currentUsername //  for email
         };
 

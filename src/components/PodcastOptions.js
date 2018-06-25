@@ -110,14 +110,14 @@ class PodcastOptions extends Component {
         let shareOptions = {
             title: podcastTitle,
             message: '',
-            url: podcastTitle + " - " + this.state.profileName + "\n\nListen on Tess!\n" + `tess://listen/${id}`,
+            url: podcastTitle + " - " + this.state.profileName + "\n\nListen on Tess!\n" + `https://tessopen.page.link/listen?${id}`,
             subject: podcastTitle + " - " + this.state.profileName  //  for email
         };
 
         let shareOptionsHighlight = {
             title: podcastTitle,
             message: '',
-            url: podcastTitle + ": " + podcastDescription + " - highlight from " + this.state.profileName + "\n\nListen on Tess!\n" + `tess://highlight/${currentUser.uid}~${key}`,
+            url: podcastTitle + ": " + podcastDescription + " - highlight from " + this.state.profileName + "\n\nListen on Tess!\n" + `https://tessopen.page.link/highlight?${currentUser.uid}~${key}`,
             subject: podcastTitle //  for email
         };
 
