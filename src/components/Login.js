@@ -16,7 +16,7 @@ class Login extends Component {
 
     static navigatorStyle = {
         statusBarHidden: false,
-        navBarHidden: true
+        navBarHidden: true,
     };
 
     onEmailChange(text){
@@ -39,7 +39,8 @@ class Login extends Component {
         this.props.navigator.push({
             screen: 'CreateAccount',
             animated: true,
-            animationType: 'fade'
+            animationType: 'fade',
+            title: 'Create Account',
         });
     };
 
@@ -57,7 +58,7 @@ class Login extends Component {
         return (
             <TouchableOpacity onPress={this.onButtonPress.bind(this)} style={styles.buttonContainer}>
                 <Text style={styles.textStyle}>
-                    Sign in
+                    Login
                 </Text>
             </TouchableOpacity>
         );
@@ -150,7 +151,7 @@ class Login extends Component {
                             />
                         </View>
                         <TouchableOpacity style={{alignItems: 'flex-end', flex: 3, marginTop: height/333.5}}>
-                            <Text style={styles.inputText}>Forgot</Text>
+                            <Text style={styles.forgotText}>Forgot</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -166,8 +167,9 @@ class Login extends Component {
                 </View>
 
 
-                <Text onPress={this._handleButtonPressCreate} style={styles.textBottomStyle}>Don't have an account? Sign Up</Text>
-
+                <TouchableOpacity  onPress={this._handleButtonPressCreate}>
+                    <Text style={styles.textBottomStyle}>Sign Up</Text>
+                </TouchableOpacity>
                 </ScrollView>
 
             </AnimatedLinearGradient>
@@ -178,7 +180,7 @@ class Login extends Component {
 const styles = {
     errorTextStyle: {
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-Bold',
         fontSize: width/18.61,
         alignSelf: 'center',
         color: 'rgba(300,10,10,1)',
@@ -200,7 +202,7 @@ const styles = {
         marginBottom: height/133.4,
         color: 'rgba(300,300,300,0.9)',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-Bold',
         fontSize: width/24,
         paddingHorizontal: width/33.5,
         marginLeft: width/33.5
@@ -214,16 +216,16 @@ const styles = {
         marginBottom: height/133.4,
         color: 'rgba(300,300,300,0.9)',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-Bold',
         fontSize: width/24,
         paddingHorizontal: width/33.5,
         marginLeft: width/33.5
     },
 
     buttonContainer: {
+        flex: 1,
         paddingVertical: height/44.46,
         paddingHorizontal: width/22.33,
-        marginBottom: height/133.4,
         width: width/1.1,
         alignSelf: 'center',
         borderWidth: 2,
@@ -246,19 +248,29 @@ const styles = {
 
     textStyle: {
         textAlign: 'center',
-        color: '#5555FF',
+        justifyContent: 'center',
+        color: '#3e4164',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-Bold',
         fontSize: width/18.61,
-        marginTop: height/133.4,
     },
 
     inputText: {
         textAlign: 'center',
         color: "rgba(300,300,300,0.7)",
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-Bold',
         fontSize: width/24,
+        marginTop: height/33.35,
+        marginRight: width/33.5,
+    },
+
+    forgotText: {
+        textAlign: 'center',
+        color: "rgba(300,300,300,0.7)",
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-Regular',
+        fontSize: width/30,
         marginTop: height/33.35,
         marginRight: width/33.5,
     },
@@ -278,8 +290,17 @@ const styles = {
         textAlign: 'center',
         color: 'rgba(300,300,300,0.8)',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-Bold',
         fontSize: width/22.33,
+        backgroundColor: 'transparent'
+    },
+    textBottomStyleLight: {
+        marginTop: height/33.35,
+        textAlign: 'center',
+        color: 'rgba(300,300,300,0.8)',
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-Bold',
+        fontSize: width/28,
         backgroundColor: 'transparent'
     },
     logo: {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, TextInput, ScrollView, Dimensions} from 'react-native';
+import { Text, View, TouchableOpacity, TextInput, ScrollView, Dimensions, Platform} from 'react-native';
 import { Spinner } from './common';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser, createUser, usernameChanged } from '../actions';
@@ -10,14 +10,24 @@ import firebase from 'firebase';
 
 var {height, width} = Dimensions.get('window');
 
+let topMargin = 0;
+if(Platform.OS === 'ios'){
+    topMargin = height/10.26
+}
+
+
 export let profileName='';
 
 class CreateAccount extends Component {
 
-    static navigatorStyle = {
-        statusBarHidden: false,
-        navBarHidden: true
+
+
+
+static navigatorStyle = {
+         statusBarHidden: false,
+         navBarHidden: true
     };
+
 
 
     state = {
@@ -78,7 +88,7 @@ class CreateAccount extends Component {
     renderButton() {
         if (this.props.loading) {
             return(
-            <View style={{paddingTop: 33.35}} >
+            <View style={{paddingTop: height/20}}>
                 <Spinner size="large" />
             </View>
             )
@@ -108,8 +118,9 @@ class CreateAccount extends Component {
 
                 <ScrollView   scrollEnabled={false}>
 
-                <View style={{flexDirection: 'row',  paddingVertical: height/133.4, marginTop: height/66.7, marginBottom: height/22.23}}>
-                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: height/26.68}}>
+
+                 <View style={{flexDirection: 'row',  paddingVertical: height/133.4, marginBottom: height/22.23}}>
+                    <View style={{flex: 1, alignItems: 'flex-start', justifyContent: 'center', marginTop: height/26.68}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
                                 textAlign:'left', marginLeft: width/33.5, backgroundColor: 'transparent', fontSize: width/11.16, color:'#fff'
@@ -117,12 +128,10 @@ class CreateAccount extends Component {
                             </Icon>
                         </TouchableOpacity>
                     </View>
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
+                    <View style={{flex: 8, justifyContent: 'center', alignItems: 'center'}}>
                         <Text style={styles.header}>Create Account</Text>
                     </View>
 
-                    <View>
-                    </View>
 
                 </View>
 
@@ -231,7 +240,6 @@ class CreateAccount extends Component {
 
 
 
-
                 <Text style={styles.errorTextStyle}>
                     {this.props.error}
                 </Text>
@@ -255,7 +263,7 @@ class CreateAccount extends Component {
 const styles = {
     errorTextStyle: {
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-Bold',
         fontSize: width/21,
         alignSelf: 'center',
         color: 'rgba(300,10,10,1)',
@@ -270,6 +278,11 @@ const styles = {
         paddingHorizontal: width/16.75
     },
 
+    viewContainer: {
+        flex: 1,
+        marginTop: 60
+    },
+
     input: {
         height: height/16.67,
         width: width/1.37,
@@ -278,12 +291,13 @@ const styles = {
         marginBottom: height/133.4,
         color: 'rgba(300,300,300,0.9)',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-Bold',
         fontSize: width/24,
         paddingHorizontal: width/33.5,
     },
 
     buttonContainer: {
+        flex: 1,
         paddingVertical: height/44.46,
         paddingHorizontal: width/22.23,
         borderWidth: 2,
@@ -311,11 +325,11 @@ const styles = {
 
     textStyle: {
         textAlign: 'center',
-        color: '#5555FF',
+        justifyContent: 'center',
+        color: '#3e4164',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
-        fontSize: width/16.61,
-        marginTop: height/133.4,
+        fontFamily: 'Montserrat-Bold',
+        fontSize: width/18.61,
     },
 
     inputContainer: {
@@ -334,7 +348,7 @@ const styles = {
         color: '#fff',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-Bold',
         fontSize: width/18.61,
         backgroundColor: 'transparent',
 
