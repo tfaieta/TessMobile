@@ -62,14 +62,25 @@ static navigatorStyle = {
             data.push('How I Built This with Guy Raz');
             data.push('Planet Money');
             data.push('TED Radio Hour');
+            data.push('Invisibilia');
+            data.push('Fresh Air');
         }
         else if(this.props.title == 'Crooked'){
             data.push('Pod Save America');
             data.push('Pod Save the People');
+            data.push('Lovett or Leave It');
         }
         else if(this.props.title == 'Midroll'){
             data.push('WTF with Marc Maron Podcast');
+            data.push('Freakonomics Radio');
             data.push('The Bill Simmons Podcast');
+            data.push('Guys We F****d');
+            data.push('My Favorite Murder with Karen Kilgariff and Georgia Hardstark');
+            data.push('Missing Richard Simmons');
+            data.push('How Did This Get Made?');
+            data.push('StarTalk Radio');
+            data.push('Comedy Bang Bang: The Podcast');
+            data.push('Oprah’s SuperSoul Conversations');
         }
         else if(this.props.title == 'Wondery'){
             data.push('American Innovations');
@@ -78,6 +89,8 @@ static navigatorStyle = {
         else if(this.props.title == 'Tess Media'){
             data.push('The Best Ideas Podcast');
             data.push('IDK Podcast');
+            data.push('Green Light Sports Podcast');
+            data.push('Best of Gainesville Weekly Minipod');
         }
 
 

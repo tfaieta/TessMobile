@@ -67,10 +67,18 @@ exports.notificationNewEp = functions.database.ref(`/podcasts/{podcastKey}`)
                 },
             };
 
-            const topic = "/topics/" + podcastArtist;
+            const options = {
+                priority: "high",
+                timeToLive: 60 * 60 * 24
+            };
+
+            let podArtist = podcastArtist.toString();
+
+            const topic = ("/topics/" + podArtist);
+            console.log(topic);
 
             return admin.messaging()
-                .sendToTopic(topic, payload);
+                .sendToTopic(topic, payload, options);
 
     });
 

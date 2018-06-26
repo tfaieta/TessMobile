@@ -25,7 +25,7 @@ class TopCharts extends Component{
         Variables.state.topCharts = [];
         const ref = firebase.database().ref(`podcasts/`);
 
-        ref.limitToLast(400).once("value", function (snapshot) {
+        ref.limitToLast(500).once("value", function (snapshot) {
 
             snapshot.forEach(function (data) {
                 if(data.child("plays").numChildren() > 0){
@@ -92,10 +92,10 @@ class TopCharts extends Component{
 
             })
 
-        },2000);
+        },3000);
 
 
-        this.timeout1 = setTimeout(() => {this.setState({dataSourceEps: dataSource.cloneWithRows(Variables.state.topCharts), })},1000);
+        this.timeout1 = setTimeout(() => {this.setState({dataSourceEps: dataSource.cloneWithRows(Variables.state.topCharts), })},2000);
         this.timeout2 = setTimeout(() => {this.setState({dataSourceEps: dataSource.cloneWithRows(Variables.state.topCharts), dataSourcePods: dataSource.cloneWithRows(topPods), })},4000);
     }
 
