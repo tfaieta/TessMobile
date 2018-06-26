@@ -174,7 +174,15 @@ export const createUser = ({email, password, username}) => {
 
 
                 loginUserSuccess(dispatch, user);
-                firebase.auth().signInWithEmailAndPassword(email, password)
+                firebase.auth().signInWithEmailAndPassword(email, password);
+
+                firebase.auth().currentUser.sendEmailVerification().then(function() {
+                    // Email sent.
+                    console.warn("Success")
+                }).catch(function(error) {
+                    // An error happened.
+                    console.warn("Error")
+                })
 
                 .then(() => {
 
@@ -262,9 +270,7 @@ export const createUser = ({email, password, username}) => {
                                     animationType: 'slide-down'
                                 });
 
-                })
-
-
+                });
             })
 
             .catch(() => loginUserFail(dispatch));

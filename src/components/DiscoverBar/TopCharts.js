@@ -80,7 +80,6 @@ class TopCharts extends Component{
             podcastsActive: false,
         };
 
-
         let topPods = [];
         setTimeout(() => {
 

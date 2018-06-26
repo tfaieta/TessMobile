@@ -77,8 +77,6 @@ import Media from "./components/Media";
 import Hub from "./components/Hub";
 
 
-
-
 const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
 
 Navigation.registerComponent('Initial', () => InitialScreen, store, Provider);
