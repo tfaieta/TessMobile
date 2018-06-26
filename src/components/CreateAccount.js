@@ -34,7 +34,8 @@ static navigatorStyle = {
     topBarShadowColor: 'transparent',
     drawUnderNavBar: true,
     navBarTranslucent: true,
-    navBarNoBorder: true
+    navBarNoBorder: true,
+    navBarTitleTextCentered: true,
 };
 
 
