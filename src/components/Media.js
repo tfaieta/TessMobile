@@ -1,11 +1,29 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView, ListView} from 'react-native';
+import { View, StyleSheet, ScrollView, ListView, Dimensions, Platform} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import ListItemPodcast from "./ListItemPodcast";
+
+var {height, width} = Dimensions.get('window');
+
+let topMargin = 0;
+if(Platform.OS === 'ios'){
+    topMargin = height/10.26
+}
+
+
 
 // Media page, from Discover (favorites, such as Gimlet or NPR)
 
 class Media extends Component{
+
+static navigatorStyle = {
+        statusBarHidden: false,
+        statusBarTextColorScheme: 'light',
+        statusBarColor: '#fff',
+        navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
+        navBarTextFontSize: 22, // change the font size of the title
+        navBarTextFontFamily: 'Montserrat-Bold', // Changes the title font
+    };
 
     constructor(props) {
         super(props);
@@ -26,9 +44,9 @@ class Media extends Component{
             topBarShadowOffset: 3,
             topBarShadowRadius: 5,
             statusBarColor: '#fff',
-            drawUnderNavBar: true,
-            navBarTranslucent: true,
-            navBarNoBorder: true
+            drawUnderNavBar: Platform.OS === 'ios',
+            navBarTranslucent: Platform.OS === 'ios',
+            navBarNoBorder: true,
 
         });
 
@@ -44,14 +62,25 @@ class Media extends Component{
             data.push('How I Built This with Guy Raz');
             data.push('Planet Money');
             data.push('TED Radio Hour');
+            data.push('Invisibilia');
+            data.push('Fresh Air');
         }
         else if(this.props.title == 'Crooked'){
             data.push('Pod Save America');
             data.push('Pod Save the People');
+            data.push('Lovett or Leave It');
         }
         else if(this.props.title == 'Midroll'){
             data.push('WTF with Marc Maron Podcast');
+            data.push('Freakonomics Radio');
             data.push('The Bill Simmons Podcast');
+            data.push('Guys We F****d');
+            data.push('My Favorite Murder with Karen Kilgariff and Georgia Hardstark');
+            data.push('Missing Richard Simmons');
+            data.push('How Did This Get Made?');
+            data.push('StarTalk Radio');
+            data.push('Comedy Bang Bang: The Podcast');
+            data.push('Oprah’s SuperSoul Conversations');
         }
         else if(this.props.title == 'Wondery'){
             data.push('American Innovations');
@@ -60,6 +89,8 @@ class Media extends Component{
         else if(this.props.title == 'Tess Media'){
             data.push('The Best Ideas Podcast');
             data.push('IDK Podcast');
+            data.push('Green Light Sports Podcast');
+            data.push('Best of Gainesville Weekly Minipod');
         }
 
 
@@ -97,7 +128,7 @@ class Media extends Component{
                         renderRow={this.renderRow}
                     />
 
-                    <View style={{paddingBottom: 60}} />
+                    <View style={{paddingBottom: height/11.12}} />
 
                 </ScrollView>
 
@@ -114,26 +145,26 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
-        paddingTop: 65,
+        paddingTop: topMargin,
     },
     title: {
-        flex:1,
+        flex: 1,
         color: '#3e4164',
         textAlign: 'left',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 20,
+        fontSize: width/18.75,
         backgroundColor: 'transparent',
     },
     titleHeader: {
-        flex:1,
+        flex: 1,
         color: '#3e4164',
         textAlign: 'left',
         fontFamily: 'Montserrat-Bold',
-        fontSize: 20,
-        marginTop: 15,
-        marginBottom: 10,
-        marginLeft: 15,
+        fontSize: width/18.75,
+        marginTop: height/44.47,
+        marginBottom: height/66.7,
+        marginLeft: width/25,
         backgroundColor: 'transparent',
     },
     wrapper: {

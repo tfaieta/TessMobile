@@ -102,7 +102,7 @@ class ListItemQueue extends Component {
 
         const {podcastArtist} = this.props.podcast;
 
-        let profileName = 'loading';
+        let profileName = '';
         firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
             if (snap.val()) {
                 profileName = snap.val().username;

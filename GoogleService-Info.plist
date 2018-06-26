@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>1071246914359-pboa5dljh1hd56ruvontp3079bhag9o9.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1071246914359-pboa5dljh1hd56ruvontp3079bhag9o9</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDKJUCDafyYPwTSf3DsSltkZO_g0qk1wfM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1071246914359</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>org.reactjs.native.example.tess</string>
+	<key>PROJECT_ID</key>
+	<string>tess-36c94</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tess-36c94.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true></true>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1071246914359:ios:0804d8b1cb0be138</string>
+	<key>DATABASE_URL</key>
+	<string>https://tess-36c94.firebaseio.com</string>
+</dict>
+</plist>

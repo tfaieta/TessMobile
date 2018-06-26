@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ListView, Alert, ScrollView, Text, Dimensions} from 'react-native';
+import { View, StyleSheet, ListView, Alert, ScrollView, Text, Dimensions, Platform, RefreshControl} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import firebase from 'firebase';
 import Variables from "./Variables";
 import ListItem from "./ListItem";
 
 var {height, width} = Dimensions.get('window');
+
+let topMargin = 0;
+if(Platform.OS === 'ios'){
+    topMargin = height/10.26
+}
 
 
 class Favorites extends Component{
@@ -39,37 +44,61 @@ class Favorites extends Component{
     constructor(props){
         super(props);
 
-        this.props.navigator.setStyle({
-            statusBarHidden: false,
-            statusBarTextColorScheme: 'light',
-            navBarHidden: false,
-            navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
-            navBarTextFontSize: 18, // change the font size of the title
-            navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
-            drawUnderTabBar: false,
-            navBarHideOnScroll: true,
-            navBarBackgroundColor: '#fff',
-            topBarElevationShadowEnabled: true,
-            topBarShadowColor: '#000',
-            topBarShadowOpacity: 0.1,
-            topBarShadowOffset: 3,
-            topBarShadowRadius: 5,
-            statusBarColor: '#fff',
-            drawUnderNavBar: true,
-            navBarTranslucent: true,
-            navBarNoBorder: true
-        });
+         this.props.navigator.setStyle({
+               statusBarHidden: false,
+               statusBarTextColorScheme: 'light',
+               navBarHidden: false,
+               navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
+               navBarTextFontSize: 18, // change the font size of the title
+               navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
+               drawUnderTabBar: false,
+               navBarHideOnScroll: false,
+               navBarBackgroundColor: '#fff',
+               topBarElevationShadowEnabled: false,
+               statusBarColor: '#fff',
+               drawUnderNavBar: Platform.OS === 'ios',
+               navBarTranslucent: Platform.OS === 'ios',
+               navBarNoBorder: true,
+
+         });
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts),
             loading: true,
+            refreshing: false,
             favorite: true,
             length: 0
         };
         this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts.reverse()), length: Variables.state.favPodcasts.length})},2000);
     }
 
+
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+
+        Variables.state.favPodcasts = [];
+        const { currentUser } = firebase.auth();
+        const refFav = firebase.database().ref(`users/${currentUser.uid}/favorites`);
+
+        refFav.orderByChild('favorites').once("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+                if(data.val()){
+                    if(data.val().id){
+                        firebase.database().ref(`podcasts/${data.val().id}`).once("value", function (snap) {
+                            Variables.state.favPodcasts.push(snap.val())
+                        })
+                    }
+                    else{
+                        Variables.state.favPodcasts.push(data.val());
+                    }
+                }
+            })
+        });
+
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts.reverse()), length: Variables.state.favPodcasts.length, refreshing: false})}, 3000);
+    };
 
 
     _pressBack = () => {
@@ -109,7 +138,13 @@ class Favorites extends Component{
                 style={styles.containerMain}>
 
 
-                <ScrollView>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                        />}
+                >
 
                     <Text style={styles.title}>{this.state.length} Episodes</Text>
 
@@ -142,7 +177,7 @@ const styles = StyleSheet.create({
     containerMain:{
         flex: 1,
         backgroundColor: '#f5f4f9',
-        marginTop: height/10.26,
+        marginTop: topMargin,
     },
 
     title: {

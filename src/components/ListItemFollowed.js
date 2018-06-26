@@ -110,7 +110,7 @@ class ListItemFollowed extends Component {
                 <View>
                     <View style={styles.container}>
 
-                        <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginBottom: width/37.5, marginLeft: width/37.5, alignSelf: 'center', height: width/7.5, width: width/7.5, borderRadius: 4, borderWidth: 5, borderColor:'rgba(320,320,320,0.8)',  }}>
+                        <View style={{backgroundColor:'rgba(130,131,147,0.2)', marginBottom: width/37.5, marginLeft: width/37.5, alignSelf: 'center', height: width/7.5, width: width/7.5, borderRadius: 4, borderWidth: 5, borderColor:'rgba(320,320,320,0.8)',  }}>
                             <Icon style={{
                                 textAlign: 'center',
                                 fontSize: width/10.71,
@@ -121,7 +121,7 @@ class ListItemFollowed extends Component {
                         </View>
 
                         <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center'}}>
-                            <View style={{backgroundColor: '#82839340', paddingVertical: height/95.3, marginVertical: height/300, marginHorizontal: width/30, paddingHorizontal: width/4, borderRadius: width/18.75}}/>
+                            <View style={{backgroundColor: '#82839320', paddingVertical: height/95.3, marginVertical: height/300, marginHorizontal: width/30, paddingHorizontal: width/4, borderRadius: width/18.75}}/>
                         </View>
 
                     </View>

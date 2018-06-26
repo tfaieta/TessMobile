@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity, Image, Text, Dimensions} from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity, Image, Text, Dimensions, Platform} from 'react-native';
 
 var {height, width} = Dimensions.get('window');
+
+let topMargin = 0;
+if(Platform.OS === 'ios'){
+    topMargin = height/10.26
+}
+
 
 
 // a component that lists all of the categories, on Browse
@@ -14,19 +20,22 @@ class Categories extends Component{
             statusBarHidden: false,
             statusBarTextColorScheme: 'light',
             navBarHidden: false,
+            navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
+            navBarTextFontSize: height/30.79, // change the font size of the title
+            navBarTextFontFamily: 'Montserrat-Bold', // Changes the title font
             drawUnderTabBar: false,
-            navBarCustomView: 'DiscoverNavBar',
-            navBarCustomViewInitialProps: {
-                navigator: this.props.navigator,
-                text: "Categories"
-            },
             navBarHideOnScroll: false,
             navBarBackgroundColor: '#fff',
-            topBarElevationShadowEnabled: true,
-            topBarShadowOpacity: 0,
-            topBarShadowOffset: 0,
-            topBarShadowRadius: 0,
+            topBarElevationShadowEnabled: false,
+            topBarShadowColor: 'transparent',
+            topBarShadowOpacity: 0.1,
+            topBarShadowOffset: 3,
+            topBarShadowRadius: 5,
             statusBarColor: '#fff',
+            drawUnderNavBar: Platform.OS === 'ios',
+            navBarTranslucent: Platform.OS === 'ios',
+            navBarNoBorder: true,
+
         });
 
     }
@@ -197,7 +206,7 @@ class Categories extends Component{
 
 const styles = StyleSheet.create({
     container:{
-        paddingTop: height/11.12,
+        paddingTop: topMargin,
         flex: 1,
         backgroundColor: 'transparent',
 

@@ -78,6 +78,11 @@ class PodcastOptions extends Component {
     }
 
 
+    componentWillUnmount(){
+        clearTimeout(this.timeout);
+    }
+
+
     onCancel() {
         console.log("CANCEL");
         this.setState({visible:false});
@@ -104,15 +109,15 @@ class PodcastOptions extends Component {
 
         let shareOptions = {
             title: podcastTitle,
-            message: podcastTitle + " - " + this.state.profileName,
-            url: `tess://listen/${id}`,
+            message: '',
+            url: podcastTitle + " - " + this.state.profileName + "\n\nListen on Tess!\n" + `https://tessopen.page.link/listen?${id}`,
             subject: podcastTitle + " - " + this.state.profileName  //  for email
         };
 
         let shareOptionsHighlight = {
             title: podcastTitle,
-            message: podcastTitle + ": " + podcastDescription + " - highlight from " + this.state.profileName,
-            url: `tess://highlight/${currentUser.uid}~${key}`,
+            message: '',
+            url: podcastTitle + ": " + podcastDescription + " - highlight from " + this.state.profileName + "\n\nListen on Tess!\n" + `https://tessopen.page.link/highlight?${currentUser.uid}~${key}`,
             subject: podcastTitle //  for email
         };
 
@@ -1505,7 +1510,7 @@ class PodcastOptions extends Component {
                                             title: this.state.profileName,
                                             passProps: {rowData, navigator, rss},
                                         })
-                                    }, 450)
+                                    }, 450);
                                      navigator.dismissLightBox();
                                 }}>
 

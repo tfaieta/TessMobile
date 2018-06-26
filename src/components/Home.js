@@ -23,9 +23,12 @@ class Home extends Component{
     componentDidMount(){
 
         if (Platform.OS === 'android') {
-            Linking.getInitialURL().then(url => {
-                this.navigate(url);
-            });
+            Linking.getInitialURL().then((url) => {
+                 if (url) {
+                    this.navigate(url);
+                 }
+            }).catch(err => console.warn('An error occurred', err));
+            Linking.addEventListener('url', this.handleOpenURL);
         } else {
             Linking.addEventListener('url', this.handleOpenURL);
             Linking.getInitialURL().then((url) => {
@@ -77,17 +80,19 @@ class Home extends Component{
         const route = url.replace(/.*?:\/\//g, '');
         const id = route.match(/\/([^\/]+)\/?$/)[1];
         const routeName = route.split('/')[0];
+        const data = id.split('?')[1];
 
         console.warn("route: " + route);
         console.warn("id: " + id);
         console.warn("route name: " + routeName);
+        console.warn("data: " + data);
 
-        if (routeName === 'listen') {
+        if (id.toString().startsWith('listen')) {
             setTimeout(() => {
 
 
                 Variables.state.highlight = false;
-                firebase.database().ref(`podcasts/${id}`).once("value", function (snapshot) {
+                firebase.database().ref(`podcasts/${data}`).once("value", function (snapshot) {
                     if(snapshot.val()){
                         const {podcastArtist} = snapshot.val();
                         const {podcastTitle} = snapshot.val();
@@ -344,9 +349,9 @@ class Home extends Component{
 
             }, 1500);
         }
-        else if (routeName === 'highlight'){
-            const userID = id.split('~')[0];
-            const highlightID = id.split('~')[1];
+        else if (id.toString().startsWith('highlight')){
+            const userID = data.split('~')[0];
+            const highlightID = data.split('~')[1];
 
             setTimeout(() => {
                 firebase.database().ref(`users/${userID}/highlights/${highlightID}`).once("value", function (snap) {
@@ -525,84 +530,83 @@ class Home extends Component{
             dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent),
             refreshing: false,
         };
-        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent),})},1000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), loading: false})},2500);
+        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent),})},2000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), loading: false})},3500);
 
     }
 
     
     rssFetch(){
+        firebase.database().ref(`feedFetcher`).once("value", function (snapshot) {
+            let data = snapshot.val() + ".";
+            firebase.database().ref(`feedFetcher`).set(data);
+        });
+
+        /*
         // loop for every rss feed in database
-        firebase.database().ref('feeds').once("value", function (snapshot) {
-            snapshot.forEach(function (snap) {
-                console.warn(snap.val());
+    firebase.database().ref('feeds').once("value", function (snapshot) {
+        snapshot.forEach(function (snap) {
+            console.warn(snap.val());
 
-                fetch(snap.val())
-                    .then((response) => response.text())
-                    .then((responseData) => {
+            fetch(snap.val())
+                .then((response) => response.text())
+                .then((responseData) => {
 
-                        var doc = new DomParser().parseFromString(responseData,'text/html');
-                        var items = doc.getElementsByTagName('item');
-                        var channel = doc.getElementsByTagName("title");
-
-
-                        // profile bio
-                        var userBio = "";
-                        let bio = "";
-                        if(doc.getElementsByTagName("description").length > 0){
-                            userBio = doc.getElementsByTagName("description");
-                            bio = userBio[0].textContent;
-                            bio = bio.replace("<p>", " ");
-                            bio = bio.replace("</p>", " ");
-                            bio = bio.replace("<a", " ");
-                            bio = bio.replace("</a>", " ");
-                            bio = bio.replace("href=", " ");
-                            bio = bio.replace("rel=", " ");
-                            bio = bio.replace("target=", " ");
-                            bio = bio.replace("<em/>", " ");
-                            bio = bio.replace("<em>", " ");
-                            bio = bio.replace("&nbsp", " ");
-                        }
-
-                        // profile image
-                        let profileImage = '';
-                        if(doc.getElementsByTagName("image").length >0){
-                            const image = doc.getElementsByTagName("image");
-                            const pI = image[0].getElementsByTagName('url');
-                            profileImage = pI[0].textContent;
+                    var doc = new DomParser().parseFromString(responseData,'text/html');
+                    var items = doc.getElementsByTagName('item');
+                    var channel = doc.getElementsByTagName("title");
 
 
-                            console.warn("Profile Image: " + profileImage);
+                    // profile bio
+                    var userBio = "";
+                    let bio = "";
+                    if(doc.getElementsByTagName("description").length > 0){
+                        userBio = doc.getElementsByTagName("description");
+                        bio = userBio[0].textContent;
+                        bio = bio.replace("<p>", " ");
+                        bio = bio.replace("</p>", " ");
+                        bio = bio.replace("<a", " ");
+                        bio = bio.replace("</a>", " ");
+                        bio = bio.replace("href=", " ");
+                        bio = bio.replace("rel=", " ");
+                        bio = bio.replace("target=", " ");
+                        bio = bio.replace("<em/>", " ");
+                        bio = bio.replace("<em>", " ");
+                        bio = bio.replace("&nbsp", " ");
+                    }
+
+                    // profile image
+                    let profileImage = '';
+                    if(doc.getElementsByTagName("image").length >0){
+                        const image = doc.getElementsByTagName("image");
+                        const pI = image[0].getElementsByTagName('url');
+                        profileImage = pI[0].textContent;
 
 
-                        }
+                        console.warn("Profile Image: " + profileImage);
 
 
-                        // profile username
-                        let username = channel[0].textContent;
-                        let usernameData = channel[0].textContent;
-                        usernameData = usernameData.replace("#", " ");
-                        usernameData = usernameData.replace("$", " ");
-                        usernameData = usernameData.replace("[", " ");
-                        usernameData = usernameData.replace("]", " ");
-                        usernameData = usernameData.replace(".", "");
-                        usernameData = usernameData.replace("http://", "");
+                    }
+
+
+                    // profile username
+                    let username = channel[0].textContent;
+                    let usernameData = channel[0].textContent;
+                    usernameData = usernameData.replace("#", " ");
+                    usernameData = usernameData.replace("$", " ");
+                    usernameData = usernameData.replace("[", " ");
+                    usernameData = usernameData.replace("]", " ");
+                    usernameData = usernameData.replace(".", "");
+                    usernameData = usernameData.replace("http://", "");
 
 
 
-                        // create account for user if it doesn't exist
-                        // reserve username & create user if needed
-                        firebase.database().ref(`users`).child(usernameData).once("value", function (snapshot) {
-                            if(snapshot.val()){
-                                if(snapshot.val().username && snapshot.val().bio && snapshot.val().profileImage){
-                                    console.warn("Account Exists: " + usernameData)
-                                }
-                                else{
-                                    firebase.database().ref(`users`).child(usernameData).child("/username").update({username});
-                                    firebase.database().ref(`users`).child(usernameData).child("/bio").update({bio});
-                                    firebase.database().ref(`users`).child(usernameData).child("/profileImage").update({profileImage});
-                                    firebase.database().ref(`usernames`).child(usernameData.toLowerCase()).update({username: usernameData.toLowerCase()});
-                                }
+                    // create account for user if it doesn't exist
+                    // reserve username & create user if needed
+                    firebase.database().ref(`users`).child(usernameData).once("value", function (snapshot) {
+                        if(snapshot.val()){
+                            if(snapshot.val().username && snapshot.val().bio && snapshot.val().profileImage){
+                                console.warn("Account Exists: " + usernameData)
                             }
                             else{
                                 firebase.database().ref(`users`).child(usernameData).child("/username").update({username});
@@ -610,134 +614,137 @@ class Home extends Component{
                                 firebase.database().ref(`users`).child(usernameData).child("/profileImage").update({profileImage});
                                 firebase.database().ref(`usernames`).child(usernameData.toLowerCase()).update({username: usernameData.toLowerCase()});
                             }
-                        });
-
-
-
-                        // category
-                        let category = '';
-                        if(doc.getElementsByTagName('itunes:category').length > 0){
-                            category = doc.getElementsByTagName('itunes:category')[0].getAttribute('text');
-                        }
-                        const podcastCategory = category;
-                        console.warn("Category: " + podcastCategory);
-
-
-
-                        // get info for each episode
-                        // items.length gets max size of rss feed, 0 is most recent
-                        let size = 0;
-                        if(items.length >= 4){
-                            size = 4;
                         }
                         else{
-                            size = items.length-1
-                        }
-                        for (var i=size; i >= 0; i--) {
-
-                            //artist
-                            let podcastArtist = usernameData;
-
-                            //title
-                            const title = items[i].getElementsByTagName('title');
-                            console.warn("Title: " + title[0].textContent);
-                            let podcastTitle = title[0].textContent;
-
-                            //description
-                            const description = items[i].getElementsByTagName('description');
-                            console.warn("Description: " + description[0].textContent);
-                            let podcastDescription = description[0].textContent;
-
-                            //length
-                            let length = '';
-                            if(items[i].getElementsByTagName('itunes:duration').length > 0){
-                                length = "itunes duration:" + items[i].getElementsByTagName('itunes:duration');
-                                length = length.replace("itunes duration:", "");
-                                length = length.replace("<itunes:duration>", "");
-                                length = length.replace("</itunes:duration>", "");
-                            }
-                            const podcastLength = length;
-                            console.warn("Length: " + podcastLength);
-
-                            //rss = true, need to tell firebase it's an rss podcast
-                            const rss = true;
-
-                            //likes = 0
-                            const likes = 0;
-
-                            //joint title (for database)
-                            let jointTitle = podcastArtist + podcastTitle;
-                            if(jointTitle.length > 60 ){
-                                jointTitle = (jointTitle.slice(0,60))
-                            }
-                            jointTitle = jointTitle.replace("#", "_");
-                            jointTitle = jointTitle.replace("$", "_");
-                            jointTitle = jointTitle.replace("[", "_");
-                            jointTitle = jointTitle.replace("]", "_");
-                            jointTitle = jointTitle.replace(".", "_");
-                            const RSSID = jointTitle;
-
-                            // get url -> upload
-                            if(items[i].getElementsByTagName('enclosure').length > 0){
-                                var link = items[i].getElementsByTagName('enclosure')[0].getAttribute('url');
-                                console.warn("URL: " + link);
-                                const podcastURL = link;
-
-
-                                // upload to database if doesn't exist (follow podcastCreate)
-                                firebase.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
-                                    if(snapshot.val()){
-                                        console.warn("EPISODE EXISTS")
-                                    }
-                                    else{
-                                        let item = firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength, time: firebase.database.ServerValue.TIMESTAMP});
-                                        const ref = item.ref;
-                                        const id = item.key;
-                                        ref.update({id});
-                                        firebase.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
-
-                                    }
-
-                                });
-
-
-                            }
-                            // another way of getting url -> upload
-                            else if(items[i].getElementsByTagName('link').length > 0){
-                                var link = items[i].getElementsByTagName('link');
-                                console.warn("URL: " + link[0].textContent);
-                                const podcastURL = link[0].textContent;
-
-
-                                // upload to database if doesn't exist (follow podcastCreate)
-                                firebase.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
-                                    if(snapshot.val()){
-                                        console.warn("EPISODE EXISTS")
-                                    }
-                                    else{
-                                        let item = firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength, time: firebase.database.ServerValue.TIMESTAMP});
-                                        const ref = item.ref;
-                                        const id = item.key;
-                                        ref.update({id});
-                                        firebase.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
-
-                                    }
-
-                                });
-
-                            }
-                            else{
-                                console.warn("Error: no download url")
-                            }
+                            firebase.database().ref(`users`).child(usernameData).child("/username").update({username});
+                            firebase.database().ref(`users`).child(usernameData).child("/bio").update({bio});
+                            firebase.database().ref(`users`).child(usernameData).child("/profileImage").update({profileImage});
+                            firebase.database().ref(`usernames`).child(usernameData.toLowerCase()).update({username: usernameData.toLowerCase()});
                         }
                     });
-            });
+
+
+
+                    // category
+                    let category = '';
+                    if(doc.getElementsByTagName('itunes:category').length > 0){
+                        category = doc.getElementsByTagName('itunes:category')[0].getAttribute('text');
+                    }
+                    const podcastCategory = category;
+                    console.warn("Category: " + podcastCategory);
+
+
+
+                    // get info for each episode
+                    // items.length gets max size of rss feed, 0 is most recent
+                    let size = 0;
+                    if(items.length >= 4){
+                        size = 4;
+                    }
+                    else{
+                        size = items.length-1
+                    }
+                    for (var i=size; i >= 0; i--) {
+
+                        //artist
+                        let podcastArtist = usernameData;
+
+                        //title
+                        const title = items[i].getElementsByTagName('title');
+                        console.warn("Title: " + title[0].textContent);
+                        let podcastTitle = title[0].textContent;
+
+                        //description
+                        const description = items[i].getElementsByTagName('description');
+                        console.warn("Description: " + description[0].textContent);
+                        let podcastDescription = description[0].textContent;
+
+                        //length
+                        let length = '';
+                        if(items[i].getElementsByTagName('itunes:duration').length > 0){
+                            length = "itunes duration:" + items[i].getElementsByTagName('itunes:duration');
+                            length = length.replace("itunes duration:", "");
+                            length = length.replace("<itunes:duration>", "");
+                            length = length.replace("</itunes:duration>", "");
+                        }
+                        const podcastLength = length;
+                        console.warn("Length: " + podcastLength);
+
+                        //rss = true, need to tell firebase it's an rss podcast
+                        const rss = true;
+
+                        //likes = 0
+                        const likes = 0;
+
+                        //joint title (for database)
+                        let jointTitle = podcastArtist + podcastTitle;
+                        if(jointTitle.length > 60 ){
+                            jointTitle = (jointTitle.slice(0,60))
+                        }
+                        jointTitle = jointTitle.replace("#", "_");
+                        jointTitle = jointTitle.replace("$", "_");
+                        jointTitle = jointTitle.replace("[", "_");
+                        jointTitle = jointTitle.replace("]", "_");
+                        jointTitle = jointTitle.replace(".", "_");
+                        const RSSID = jointTitle;
+
+                        // get url -> upload
+                        if(items[i].getElementsByTagName('enclosure').length > 0){
+                            var link = items[i].getElementsByTagName('enclosure')[0].getAttribute('url');
+                            console.warn("URL: " + link);
+                            const podcastURL = link;
+
+
+                            // upload to database if doesn't exist (follow podcastCreate)
+                            firebase.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
+                                if(snapshot.val()){
+                                    console.warn("EPISODE EXISTS")
+                                }
+                                else{
+                                    let item = firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength, time: firebase.database.ServerValue.TIMESTAMP});
+                                    const ref = item.ref;
+                                    const id = item.key;
+                                    ref.update({id});
+                                    firebase.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
+
+                                }
+
+                            });
+
+
+                        }
+                        // another way of getting url -> upload
+                        else if(items[i].getElementsByTagName('link').length > 0){
+                            var link = items[i].getElementsByTagName('link');
+                            console.warn("URL: " + link[0].textContent);
+                            const podcastURL = link[0].textContent;
+
+
+                            // upload to database if doesn't exist (follow podcastCreate)
+                            firebase.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
+                                if(snapshot.val()){
+                                    console.warn("EPISODE EXISTS")
+                                }
+                                else{
+                                    let item = firebase.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength, time: firebase.database.ServerValue.TIMESTAMP});
+                                    const ref = item.ref;
+                                    const id = item.key;
+                                    ref.update({id});
+                                    firebase.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
+
+                                }
+
+                            });
+
+                        }
+                        else{
+                            console.warn("Error: no download url")
+                        }
+                    }
+                });
         });
-
-
-
-
-
+    });
+         */
     }
 
 
@@ -746,7 +753,6 @@ class Home extends Component{
         this.setState({
             refreshing: true,
             loading: false,
-            dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent),
         });
 
         const {currentUser} = firebase.auth();
@@ -778,7 +784,7 @@ class Home extends Component{
             })
         });
 
-        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), refreshing: false})},1000);
+        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), refreshing: false})},2000);
         this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), refreshing: false})},3500);
 
     }
@@ -816,7 +822,7 @@ class Home extends Component{
                 </View>
             )
         }
-        else if(Variables.state.homeFollowedContent.length > 0){
+        else if(this.state.refreshing || Variables.state.homeFollowedContent.length > 0){
                 return (
                     <View
                         style={styles.container}>

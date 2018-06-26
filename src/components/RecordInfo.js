@@ -566,26 +566,26 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: 'transparent',
-        paddingTop: 10,
+        paddingTop: height/66.7,
     },
 
     title: {
         color: '#804cc8',
-        marginTop: 70,
+        marginTop: height/9.53,
         flex:1,
         textAlign: 'center',
-        opacity: 2,
+        opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: 25,
+        fontSize: width/15,
         backgroundColor: 'transparent'
     },
 
     contentTitle: {
         color: '#FFF',
-        fontSize: 18,
-        marginTop:10,
-        paddingBottom: 10,
+        fontSize: width/20.83,
+        marginTop: height/66.7,
+        paddingBottom: width/37.5,
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
@@ -594,56 +594,56 @@ const styles = StyleSheet.create({
 
     contentTime: {
         color: '#FFF',
-        fontSize: 25,
+        fontSize: width/15,
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        marginLeft: 10,
-        marginTop: 10
+        marginLeft: width/37.5,
+        marginTop: height/66.7
 
     },
 
     input: {
-        height: 40,
+        height: height/16.68,
         backgroundColor: 'transparent',
-        marginBottom: 10,
+        marginBottom: height/66.7,
         color: '#FFF',
-        paddingHorizontal: 10,
+        paddingHorizontal: width/37.5,
     },
 
     input2: {
-        height: 120,
+        height: height/5.56,
         backgroundColor: 'transparent',
         marginBottom: 0,
         color:'#FFF',
-        paddingHorizontal: 10,
-        fontSize: 18,
+        paddingHorizontal: width/37.5,
+        fontSize: width/20.83,
     },
 
     buttonPreview: {
         backgroundColor: '#e8952f',
         alignItems: 'center',
-        paddingBottom: 15,
+        paddingBottom: height/44.47,
     },
 
     buttonUpload: {
         backgroundColor: '#5757FF',
         alignItems: 'center',
-        paddingTop: 5,
-        marginHorizontal: 15,
+        paddingTop: height/133.4,
+        marginHorizontal: width/25,
         borderWidth:0.1,
         borderRadius: 10,
-        marginBottom:5
+        marginBottom: height/133.4
     },
 
     buttonCancel: {
         backgroundColor: '#ee617c',
         alignItems: 'center',
-        paddingTop: 5,
+        paddingTop: height/133.4,
         marginHorizontal: 15,
         borderWidth:0.1,
         borderRadius: 10,
-        marginBottom: 5
+        marginBottom: height/133.4
     },
 
     buttonContainer: {
@@ -651,50 +651,49 @@ const styles = StyleSheet.create({
     },
 
     timeContainer: {
-        flex:1,
+        flex: 1,
         alignItems: 'center',
     },
 
     progressText: {
         marginTop: 0,
-        fontSize: 15,
+        fontSize: width/25,
         fontFamily: 'Montserrat-Regular',
         color: "#FFF",
     },
 
     header: {
-        marginTop:25,
-        marginLeft: -35,
+        marginTop: width/15,
+        marginLeft: -(width/10.71),
         color: '#fff',
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 18,
+        fontSize: width/20.83,
         backgroundColor: 'transparent',
     },
-
     boxHeader:{
         color: '#fff',
         textAlign: 'left',
-        marginLeft: 15,
+        marginLeft: width/25,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 12,
+        fontSize: width/31.25,
         backgroundColor: 'transparent',
     },
     sliderContainer: {
         width: width/1.8,
-        height: 50,
-        marginTop:4,
+        height: height/13.34,
+        marginTop: height/166.75,
         alignSelf: 'center'
     },
     podcastTextNum:{
         color: '#fff',
-        fontSize: 12,
-        marginTop: 5,
+        fontSize: width/31.25,
+        marginTop: height/133.4,
         flexDirection: 'row',
         backgroundColor: 'transparent',
-        marginHorizontal: 10,
+        marginHorizontal: width/37.5,
         fontFamily: 'Montserrat-SemiBold',
     },
 

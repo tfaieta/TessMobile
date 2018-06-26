@@ -11,7 +11,7 @@ import {
     Alert,
     Image,
     Dimensions, ActivityIndicator,
-    RefreshControl
+    RefreshControl, Platform
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
@@ -27,6 +27,10 @@ import ListItemUsers from "./ListItemUsers";
 
 var {height, width} = Dimensions.get('window');
 
+let topMargin = 0;
+if(Platform.OS === 'ios'){
+    topMargin = height/10.26
+}
 
 
 
@@ -223,18 +227,14 @@ class Account extends Component {
             navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
             navBarTextFontSize: 18, // change the font size of the title
             navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
-            navBarBackgroundColor: '#fff',
             drawUnderTabBar: false,
-            navBarHideOnScroll: true,
-            topBarElevationShadowEnabled: true,
-            topBarShadowColor: '#000',
-            topBarShadowOpacity: 0.1,
-            topBarShadowOffset: 3,
-            topBarShadowRadius: 5,
-            statusBarColor: 'transparent',
-            drawUnderNavBar: true,
-            navBarTranslucent: true,
-            navBarNoBorder: true
+            navBarHideOnScroll: false,
+            navBarBackgroundColor: '#fff',
+            topBarElevationShadowEnabled: false,
+            statusBarColor: '#fff',
+            drawUnderNavBar: Platform.OS === 'ios',
+            navBarTranslucent: Platform.OS === 'ios',
+            navBarNoBorder: true,
 
         });
 
@@ -462,12 +462,12 @@ class Account extends Component {
     _renderProfileImage(){
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10,  height: height/6, width: height/6, borderRadius:35, borderWidth:5, borderColor:'rgba(320,320,320,0.8)', }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginTop: height/33.35, marginRight: width/18.75, marginLeft: width/18.75, paddingTop: height/66.7,  height: height/6, width: height/6, borderRadius:35, borderWidth:5, borderColor:'rgba(320,320,320,0.8)', }}>
                     <Icon style={{
                         textAlign: 'center',
-                        fontSize: 60,
+                        fontSize: width/6.25,
                         color: 'white',
-                        marginTop: 10
+                        marginTop: height/66.7
                     }} name="md-person">
                     </Icon>
                 </View>
@@ -475,7 +475,7 @@ class Account extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop: 20, marginRight:20,marginLeft: 20, paddingTop: 10, borderRadius: 35, height: height/6, width: height/6, }}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginTop: height/33.35, marginRight: width/18.75, marginLeft: width/18.75, paddingTop: height/66.7, borderRadius: 35, height: height/6, width: height/6, }}>
                     <Image
                         style={{width: height/6, height: height/6, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 35,}}
                         source={{uri: this.state.profileImage}}
@@ -3143,113 +3143,102 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
-        marginTop: 65,
+        marginTop: topMargin,
     },
     title2: {
         color: '#3e4164',
-        marginVertical: 10,
-        marginTop: 10,
-        flex:1,
+        marginVertical: height/66.7,
+        marginTop: height/66.7,
+        flex: 1,
         textAlign: 'center',
-        opacity: 2,
+        opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/22,
         backgroundColor: 'transparent'
     },
 
-    title3: {
-        color: '#2A2A30',
-        marginTop: 80,
-        marginBottom: 5,
-        flex:1,
-        textAlign: 'center',
-        fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
-        fontSize: 22,
-        backgroundColor: 'transparent'
-    },
     titleBio: {
         color: '#3e4164',
-        marginBottom: 10,
-        flex:1,
+        marginBottom: height/66.7,
+        flex: 1,
         textAlign: 'center',
-        opacity: 2,
+        opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
         fontSize: width/25,
-        marginHorizontal: 20,
+        marginHorizontal: width/18.75,
         backgroundColor: 'transparent',
     },
     titleSmall: {
         color: '#3e4164',
-        paddingVertical: 10,
+        paddingVertical: height/66.7,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/26,
         backgroundColor: 'transparent',
-        marginHorizontal: 5,
+        marginHorizontal: width/75,
     },
 
     title: {
         color: '#506dcf',
-        marginTop: 5,
-        flex:1,
+        marginTop: height/133.4,
+        flex: 1,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/25,
         backgroundColor: 'transparent',
-        marginHorizontal: 20,
+        marginHorizontal: width/18.75,
 
     },
 
     myContentTitle: {
         color: '#3e4164',
-        paddingVertical: 10,
+        paddingVertical: height/66.7,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/22,
         backgroundColor: 'transparent',
-        marginHorizontal: 5,
+        marginHorizontal: width/75,
 
     },
     myContentTitle1: {
         color: '#3e4164',
-        paddingTop: 10,
+        paddingTop: height/66.7,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/22,
         backgroundColor: 'transparent',
-        marginHorizontal: 5,
+        marginHorizontal: width/75,
 
     },
     myContentTitle10: {
         color: '#9a5e9a',
-        paddingTop: 10,
+        paddingTop: height/66.7,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/22,
         backgroundColor: 'transparent',
-        marginHorizontal: 5,
+        marginHorizontal: width/75,
 
     },
 
     smallTitle: {
         color: '#2A2A30',
-        marginVertical: 5,
-        flex:1,
+        marginVertical: height/133.4,
+        flex: 1,
         textAlign: 'center',
-        opacity: 2,
+        opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/38,
@@ -3257,10 +3246,10 @@ const styles = StyleSheet.create({
     },
     smallTitleLight: {
         color: '#2A2A3030',
-        marginVertical: 5,
-        flex:1,
+        marginVertical: height/133.4,
+        flex: 1,
         textAlign: 'center',
-        opacity: 2,
+        opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/38,
@@ -3268,8 +3257,8 @@ const styles = StyleSheet.create({
     },
     smallTitleNum: {
         color: '#506dcf',
-        marginBottom: 5,
-        flex:1,
+        marginBottom: height/133.4,
+        flex: 1,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
@@ -3279,7 +3268,7 @@ const styles = StyleSheet.create({
     },
     stats: {
         color: '#3e4164',
-        flex:1,
+        flex: 1,
         padding: 8,
         textAlign: 'center',
         opacity: 1,
@@ -3291,18 +3280,18 @@ const styles = StyleSheet.create({
     artistTitle: {
         color: '#828393',
         marginTop: 0,
-        flex:1,
+        flex: 1,
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
         fontSize: width/25,
         backgroundColor: 'transparent',
-        marginLeft: 20,
+        marginLeft: width/18.75,
     },
     containerList: {
         paddingHorizontal: 0,
-        paddingVertical: 10,
+        paddingVertical: height/66.7,
         marginVertical: 0,
         marginHorizontal: 0,
         backgroundColor: '#FFF',
@@ -3318,13 +3307,13 @@ const styles = StyleSheet.create({
     },
     leftContainer: {
         flex: 7,
-        paddingLeft: 2,
+        paddingLeft: width/187.5,
         justifyContent: 'center',
         alignItems:'flex-start',
     },
     rightContainer: {
         flex: 1,
-        paddingRight: 2,
+        paddingRight: width/187.5,
         justifyContent: 'center',
         alignItems: 'flex-end',
 
@@ -3333,8 +3322,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        marginTop: 3,
-        marginHorizontal: -100,
+        marginTop: height/222.33,
+        marginHorizontal: -(width/3.75),
     },
 
 });

@@ -12,7 +12,7 @@ var {height, width} = Dimensions.get('window');
 
 var homeIcon;
 Icon.getImageSource('home', width/14.42, '#b1b3c8').then((source) => { homeIcon = source});
-var homeIconSelected = require('tess/src/images/iconHome.png');
+var homeIconSelected;
 Icon.getImageSource('home', width/12.5, '#506dcf').then((source) => { homeIconSelected = source});
 
 var discoverIcon;

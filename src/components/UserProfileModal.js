@@ -9,7 +9,7 @@ import {
     TouchableOpacity,
     Alert, Image,
     RefreshControl, Dimensions,
-    ActivityIndicator
+    ActivityIndicator, Platform
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
@@ -23,6 +23,11 @@ import { Navigation } from 'react-native-navigation';
 import ListItemUsers from "./ListItemUsers";
 
 var {height, width} = Dimensions.get('window');
+
+let topMargin = 0;
+if(Platform.OS === 'ios'){
+    topMargin = height/10.26
+}
 
 
 
@@ -246,19 +251,19 @@ class UserProfileModal extends Component {
         this.props.navigator.setStyle({
             statusBarHidden: false,
             statusBarTextColorScheme: 'light',
-            navBarHidden: true,
+            navBarHidden: false,
             navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
             navBarTextFontSize: 18, // change the font size of the title
             navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
-            navBarBackgroundColor: '#fff',
             drawUnderTabBar: false,
             navBarHideOnScroll: false,
-            topBarElevationShadowEnabled: true,
-            topBarShadowColor: '#000',
-            topBarShadowOpacity: 0.1,
-            topBarShadowOffset: 3,
-            topBarShadowRadius: 5,
+            navBarBackgroundColor: '#fff',
+            topBarElevationShadowEnabled: false,
             statusBarColor: '#fff',
+            drawUnderNavBar: Platform.OS === 'ios',
+            navBarTranslucent: Platform.OS === 'ios',
+            navBarNoBorder: true,
+
         });
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});

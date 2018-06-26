@@ -21,15 +21,10 @@ var {height, width} = Dimensions.get('window');
 class PlayerBottom extends Component {
     constructor() {
         super();
-
-        this.intervalImage = setInterval(() => {
-            this.setState({profileImage: Variables.state.userProfileImage});
-        },500);
     }
 
 
     componentWillUnmount(){
-        clearInterval(this.intervalImage);
         clearInterval(this.interval);
     }
 
@@ -104,12 +99,9 @@ class PlayerBottom extends Component {
 
         this.interval = setInterval(() => {
             this.setState({
-                currentTime: Variables.state.currentTime,
-                buffering: Variables.state.buffering,
-                isPlaying: !Variables.state.paused,
-                speed: Variables.state.podcastSpeed,
+
             });
-        }, 200);
+        }, 500);
 
     }
 
@@ -250,10 +242,10 @@ class PlayerBottom extends Component {
 
     }
 
-    _renderPodcastImage(){
+    _renderPodcastImage(profileImage){
         if(Variables.state.podcastTitle != ''){
 
-            if (this.state.profileImage == ''){
+            if (profileImage == ''){
                 return(
                     <TouchableOpacity onPress={this.ExpandPlayer}>
                         <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: width/8.3, width: width/8.3, borderRadius:4, borderWidth:1, borderColor:'rgba(320,320,320,1)'}}>
@@ -273,7 +265,7 @@ class PlayerBottom extends Component {
                     <View style={{backgroundColor:'transparent', alignSelf: 'center', height: width/8.3, width: width/8.3  }}>
                         <Image
                             style={{width: width/8.3, height: width/8.3, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
-                            source={{uri: Variables.state.userProfileImage}}
+                            source={{uri: profileImage}}
                         />
                     </View>
                 )
@@ -282,10 +274,10 @@ class PlayerBottom extends Component {
         }
     }
 
-    _renderPlayButton(isPlaying) {
+    _renderPlayButton(isPlaying, buffering) {
         if(Variables.state.podcastTitle != ''){
 
-            if(this.state.buffering){
+            if(buffering){
                 return(
                     <ActivityIndicator style={{alignSelf:'center'}} color="#00000090" size ="small" />
                 )
@@ -404,11 +396,11 @@ class PlayerBottom extends Component {
 
 
 
-    _renderPlayButton2(isPlaying) {
+    _renderPlayButton2(isPlaying, buffering) {
 
         if (isPlaying) {
 
-            if(this.state.buffering){
+            if(buffering){
                 return(
                     <ActivityIndicator style={{paddingVertical: 10, alignSelf:'center'}} color='#2A2A30' size ="large" />
                 )
@@ -458,10 +450,10 @@ class PlayerBottom extends Component {
 
 
 
-    _renderPodcastImageBig(){
+    _renderPodcastImageBig(profileImage){
         if(Variables.state.podcastTitle != ''){
 
-            if (this.state.profileImage == ''){
+            if (profileImage == ''){
                 return(
                     <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom: 10, height: 140, width: 140, borderRadius:4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)',  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
                         <Icon style={{
@@ -479,7 +471,7 @@ class PlayerBottom extends Component {
                     <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom: 10, height: height/4.75, width: height/4.75,  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
                         <Image
                             style={{width: height/4.75, height:height/4.75,  alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
-                            source={{uri: this.state.profileImage}}
+                            source={{uri: profileImage}}
                         />
                     </View>
                 )
@@ -1244,31 +1236,31 @@ class PlayerBottom extends Component {
 
                         <View style = {{flexDirection: 'row'}}>
 
-                            <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex:1, marginVertical: 10, marginHorizontal: 20}}>
-                                <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="ios-arrow-down">
+                            <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex:1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
+                                <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="ios-arrow-down">
                                 </Icon>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={this.goToMyQueue} style={{alignItems:'flex-end', flex:1, marginVertical: 10, marginHorizontal: 20}}>
-                                <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="md-list-box">
+                            <TouchableOpacity onPress={this.goToMyQueue} style={{alignItems:'flex-end', flex:1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
+                                <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="md-list-box">
                                 </Icon>
                             </TouchableOpacity>
 
                         </View>
 
 
-                        <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom: 10, height: 140, width: 140, borderRadius:4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)',  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
+                        <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom: height/66.7, height: width/2.68, width: width/2.68, borderRadius:4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)',  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
                             <Icon style={{
                                 textAlign: 'center',
                                 fontSize: height/7.41,
                                 color: 'white',
-                                marginTop: 20,
+                                marginTop: height/33.35,
                             }} name="ios-sad">
                             </Icon>
                         </View>
 
 
-                        <View style={{marginTop: 10, flex:1}}>
+                        <View style={{marginTop: height/66.7, flex:1}}>
                             <Text style={styles.podcastText}>Queue is Empty</Text>
                         </View>
 
@@ -1291,25 +1283,23 @@ class PlayerBottom extends Component {
 
                         <View style = {{flexDirection: 'row'}}>
 
-                            <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex:1, marginVertical: 10, marginHorizontal: 20}}>
-                                <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="ios-arrow-down">
+                            <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex:1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
+                                <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="ios-arrow-down">
                                 </Icon>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={this.goToMyQueue} style={{alignItems:'flex-end', flex:1, marginVertical: 10, marginHorizontal: 20}}>
-                                <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="md-list-box">
+                            <TouchableOpacity onPress={this.goToMyQueue} style={{alignItems:'flex-end', flex:1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
+                                <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="md-list-box">
                                 </Icon>
                             </TouchableOpacity>
 
                         </View>
 
 
-                        {this._renderPodcastImageBig()}
+                        {this._renderPodcastImageBig(Variables.state.userProfileImage)}
 
 
-
-
-                        <View style={{marginTop: 10, flex:1}}>
+                        <View style={{marginTop: height/66.7, flex:1}}>
                             {this._renderPodcastTitle(Variables.state.isPlaying)}
                             <TouchableOpacity style={{alignSelf: 'center'}}>
                                 {this._renderPodcastArtist(Variables.state.isPlaying)}
@@ -1318,7 +1308,7 @@ class PlayerBottom extends Component {
                         </View>
 
 
-                        <ScrollView style={{flex: 1, borderTopColor: '#c6c5c960', height: 80, marginTop: 10, paddingVertical: 15, borderTopWidth: 2, borderBottomColor: '#c6c5c980', borderBottomWidth: 2}}>
+                        <ScrollView style={{flex: 1, borderTopColor: '#c6c5c920', height: height/8.34, marginTop: height/66.7, paddingVertical: height/44.47, borderTopWidth: height/333.5, borderBottomColor: '#c6c5c920', borderBottomWidth: height/333.5}}>
                             <Text style = {styles.podcastTextDescriptionTitle}>Highlight Description:</Text>
                             <Text style = {styles.podcastTextDescription}>{Variables.state.podcastDescription}</Text>
                         </ScrollView>
@@ -1329,20 +1319,20 @@ class PlayerBottom extends Component {
 
                             <View style={styles.leftContainerP}>
                                 <TouchableOpacity onPress={this.scrubBackward}>
-                                    <Icon style={{flex:1, marginTop: 15, textAlign:'center', fontSize: height/25, color:'#2A2A30' }} name="ios-rewind">
+                                    <Icon style={{flex:1, marginTop: height/44.47, textAlign:'center', fontSize: height/25, color:'#2A2A30' }} name="ios-rewind">
                                     </Icon>
                                 </TouchableOpacity>
                             </View>
 
                             <View style={styles.middleContainer}>
                                 <TouchableOpacity>
-                                    {this._renderPlayButton2(this.state.isPlaying)}
+                                    {this._renderPlayButton2(!Variables.state.paused, Variables.state.buffering)}
                                 </TouchableOpacity>
                             </View>
 
                             <View style={styles.rightContainerP}>
                                 <TouchableOpacity onPress={this.scrubForward}>
-                                    <Icon style={{flex:1, marginTop: 15, textAlign:'center', fontSize: height/25,color:'#2A2A30' }} name="ios-fastforward">
+                                    <Icon style={{flex:1, marginTop: height/44.47, textAlign:'center', fontSize: height/25,color:'#2A2A30' }} name="ios-fastforward">
                                     </Icon>
                                 </TouchableOpacity>
                             </View>
@@ -1369,13 +1359,13 @@ class PlayerBottom extends Component {
                         <View style={{flexDirection: 'row', flex: 1, marginTop: 0}}>
 
                             <View style={{alignItems:'flex-start', flex:1}}>
-                                {this._renderPodcastSpeed(this.state.speed)}
+                                {this._renderPodcastSpeed(Variables.state.podcastSpeed)}
                             </View>
 
                             <View style={{alignItems: 'center', flex:1}}>
 
                                 <TouchableOpacity onPress={this.openPlayerOptions} style={{alignItems:'center', flex: 1}}>
-                                    <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="ios-more">
+                                    <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="ios-more">
                                     </Icon>
                                 </TouchableOpacity>
 
@@ -1403,23 +1393,23 @@ class PlayerBottom extends Component {
 
                         <View style = {{flexDirection: 'row'}}>
 
-                            <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex:1, marginVertical: 10, marginHorizontal: 20}}>
-                                <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="ios-arrow-down">
+                            <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex:1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
+                                <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="ios-arrow-down">
                                 </Icon>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={this.goToMyQueue} style={{alignItems:'flex-end', flex:1, marginVertical: 10, marginHorizontal: 20}}>
-                                <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="md-list-box">
+                            <TouchableOpacity onPress={this.goToMyQueue} style={{alignItems:'flex-end', flex:1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
+                                <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="md-list-box">
                                 </Icon>
                             </TouchableOpacity>
 
                         </View>
 
 
-                        {this._renderPodcastImageBig()}
+                        {this._renderPodcastImageBig(Variables.state.userProfileImage)}
 
 
-                        <TouchableOpacity style={{marginTop:20}} onPress={() => {
+                        <TouchableOpacity style={{marginTop: height/33.35}} onPress={() => {
                             const navigator = this.props.navigator;
 
                             Navigation.showModal({
@@ -1428,7 +1418,7 @@ class PlayerBottom extends Component {
                             });
 
                         }}>
-                            <Icon style={{textAlign:'center', fontSize: 30, color:'#506dcf', }} name="md-add">
+                            <Icon style={{textAlign:'center', fontSize: width/12.5, color:'#506dcf', }} name="md-add">
                             </Icon>
                             <Text style={styles.seeMore}>View More</Text>
 
@@ -1436,7 +1426,7 @@ class PlayerBottom extends Component {
 
 
 
-                        <View style={{marginTop: 10, flex:1}}>
+                        <View style={{marginTop: height/66.7, flex:1}}>
                             {this._renderPodcastTitle(Variables.state.isPlaying)}
                             <TouchableOpacity style={{alignSelf: 'center'}}>
                                 {this._renderPodcastArtist(Variables.state.isPlaying)}
@@ -1445,11 +1435,7 @@ class PlayerBottom extends Component {
                         </View>
 
 
-
-
                         {this.renderHighlight()}
-
-
 
 
                         <View style={styles.centerContainerButtons}>
@@ -1463,7 +1449,7 @@ class PlayerBottom extends Component {
 
                             <View style={styles.middleContainer}>
                                 <TouchableOpacity>
-                                    {this._renderPlayButton2(this.state.isPlaying)}
+                                    {this._renderPlayButton2(!Variables.state.paused, Variables.state.buffering)}
                                 </TouchableOpacity>
                             </View>
 
@@ -1496,13 +1482,13 @@ class PlayerBottom extends Component {
                         <View style={{flexDirection: 'row', flex: 1, marginTop: 0}}>
 
                             <View style={{alignItems:'flex-start', flex:1}}>
-                                {this._renderPodcastSpeed(this.state.speed)}
+                                {this._renderPodcastSpeed(Variables.state.podcastSpeed)}
                             </View>
 
                             <View style={{alignItems: 'center', flex:1}}>
 
                                 <TouchableOpacity onPress={this.openPlayerOptions} style={{alignItems:'center', flex: 1}}>
-                                    <Icon style={{textAlign:'center', fontSize: 35,color:'#BBBCCD' }} name="ios-more">
+                                    <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="ios-more">
                                     </Icon>
                                 </TouchableOpacity>
 
@@ -1514,8 +1500,6 @@ class PlayerBottom extends Component {
 
 
                         </View>
-
-
 
 
                     </View>
@@ -1547,7 +1531,7 @@ class PlayerBottom extends Component {
                     <TouchableOpacity style={styles.centerContainer} onPress={this.ExpandPlayer}>
 
                         <View style={styles.leftContainer}>
-                            {this._renderPodcastImage()}
+                            {this._renderPodcastImage(Variables.state.userProfileImage)}
                         </View>
 
                         <View onPress={this.ExpandPlayer}>
@@ -1555,8 +1539,8 @@ class PlayerBottom extends Component {
                         </View>
 
                         <View style={styles.rightContainer}>
-                            <TouchableOpacity style={{marginRight: 10}}>
-                                {this._renderPlayButton(this.state.isPlaying)}
+                            <TouchableOpacity style={{marginRight: width/37.5}}>
+                                {this._renderPlayButton(!Variables.state.paused, Variables.state.buffering)}
                             </TouchableOpacity>
                         </View>
 
@@ -1620,7 +1604,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: height/54,
+        fontSize: width/31.25,
         textAlign: 'left',
         paddingLeft: width/37.5
     },
@@ -1630,7 +1614,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: height/60,
+        fontSize: width/34,
         textAlign: 'left',
         paddingLeft: width/37.5
     },
@@ -1740,7 +1724,7 @@ const styles = StyleSheet.create({
 
     podcastText:{
         color: '#3e4164',
-        fontSize: height/44.47,
+        fontSize: width/25,
         marginTop: height/133.4,
         marginHorizontal: width/37.5,
         flexDirection: 'row',
@@ -1751,7 +1735,7 @@ const styles = StyleSheet.create({
     },
     podcastTextDescription:{
         color: '#3e4164',
-        fontSize: height/36,
+        fontSize: width/20.83,
         marginTop: height/133.4,
         marginHorizontal: width/37.5,
         flexDirection: 'row',
@@ -1761,7 +1745,7 @@ const styles = StyleSheet.create({
     },
     podcastTextDescriptionTitle:{
         color: '#3e4164',
-        fontSize: height/45,
+        fontSize: width/25,
         marginTop: height/133.4,
         marginHorizontal: width/37.5,
         flexDirection: 'row',
@@ -1822,7 +1806,7 @@ const styles = StyleSheet.create({
     },
     podcastTextArtist:{
         color:'#3e4164',
-        fontSize: height/44.47,
+        fontSize: width/25,
         marginHorizontal: width/37.5,
         flexDirection: 'row',
         backgroundColor: 'transparent',
@@ -1832,7 +1816,7 @@ const styles = StyleSheet.create({
     },
     podcastTextSpeed:{
         color: '#828393',
-        fontSize: height/33.35,
+        fontSize: width/18.75,
         marginHorizontal: 30,
         marginTop: height/133.4,
         backgroundColor: 'transparent',

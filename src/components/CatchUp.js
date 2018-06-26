@@ -3,7 +3,6 @@ import { Text, View, StyleSheet, TouchableOpacity, ScrollView, ListView} from 'r
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "./Variables";
 import firebase from 'firebase';
-import ListItemQueue from "./ListItemQueue";
 import ListItemCatchUp from "./ListItemCatchUp";
 
 
@@ -32,7 +31,7 @@ class CatchUp extends Component{
 
 
     componentWillUnmount(){
-        clearInterval(this.interval);
+        clearTimeout(this.timeout);
     }
 
 
@@ -43,9 +42,9 @@ class CatchUp extends Component{
             dataSource: dataSource.cloneWithRows(Variables.state.catchUpLength),
         };
 
-        this.interval = setInterval(() => {
+        this.timeout = setTimeout(() => {
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.catchUpLength)})
-        },1000);
+        },2000);
 
     };
 

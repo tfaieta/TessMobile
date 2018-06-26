@@ -37,11 +37,16 @@ class ListItemPlaylist extends Component {
             });
         });
 
-        setTimeout(() => {
+        this.timeout = setTimeout(() => {
             this.setState({playlist: dataSource.cloneWithRows(myPlaylist), length: myPlaylist.length})
         }, 1200)
 
 
+    }
+
+
+    componentWillUnmount(){
+        clearTimeout(this.timeout);
     }
 
 

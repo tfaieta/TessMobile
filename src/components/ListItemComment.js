@@ -45,7 +45,7 @@ class ListItemComment extends Component {
         const {user} = this.props.rowData;
         const {comment} = this.props.rowData;
 
-        let profileName = 'loading';
+        let profileName = '';
         firebase.database().ref(`/users/${user}/username`).orderByChild("username").on("value", function (snap) {
             if (snap.val()) {
                 profileName = snap.val().username;

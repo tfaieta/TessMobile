@@ -6,6 +6,7 @@ var DomParser = require('react-native-html-parser').DOMParser;
 
 
 admin.initializeApp(functions.config().firebase);
+firebase.initializeApp(functions.config().firebase);
 
 
 
@@ -38,40 +39,46 @@ exports.notificationPOTW = functions.database.ref(`/podcastOfTheWeek`)
 exports.notificationNewEp = functions.database.ref(`/podcasts/{podcastKey}`)
     .onWrite((event) => {
 
-        const episode = event.data.val();
+        const episode = event.after.val();
+        console.log(episode);
 
             const podcastTitle = episode.podcastTitle;
             const podcastDescription = episode.podcastDescription;
             const podcastCategory = episode.podcastCategory;
-            const id = event.key;
+            const id = event.after.key;
             const podcastArtist = episode.podcastArtist;
             const podcastURL = episode.podcastURL;
             const RSSID = episode.RSSID;
-            const rss = episode.rss;
+
+            console.log(podcastTitle, podcastDescription, id);
 
             const payload = {
                 notification: {
                     title: "New Episode from " + podcastArtist,
                     body: podcastTitle,
                     target: podcastArtist,
-                    id: id
-                },
-                podcast: {
+                    id: id,
                     podcastTitle: podcastTitle,
                     podcastArtist: podcastArtist,
                     podcastCategory: podcastCategory,
                     podcastDescription: podcastDescription,
                     podcastURL: podcastURL,
-                    id: id,
                     RSSID: RSSID,
-                    rss: rss
-                }
+                },
             };
 
-            const topic = `/topics/${podcastArtist}`;
+            const options = {
+                priority: "high",
+                timeToLive: 60 * 60 * 24
+            };
+
+            let podArtist = podcastArtist.toString();
+
+            const topic = ("/topics/" + podArtist);
+            console.log(topic);
 
             return admin.messaging()
-                .sendToTopic(topic, payload);
+                .sendToTopic(topic, payload, options);
 
     });
 
@@ -81,11 +88,12 @@ exports.notificationNewEp = functions.database.ref(`/podcasts/{podcastKey}`)
 exports.notificationFollow = functions.database.ref(`/users/{id}/followers`)
     .onCreate(event => {
 
-        const getValuePromise = admin.database.ref(`users/${event.key}/token`).once('value');
+        return admin.database.ref(`users/${event.key}/token`).once('value', function (snapshot) {
 
-        return getValuePromise.then(snapshot => {
             const token = snapshot.val();
             const podcastArtist = event.val();
+
+            console.log(token, podcastArtist);
 
             const payload = {
                 notification: {
@@ -99,7 +107,8 @@ exports.notificationFollow = functions.database.ref(`/users/{id}/followers`)
             return admin.messaging()
                 .sendToDevice(token, payload)
 
-        })
+
+        });
     });
 
 
@@ -108,15 +117,26 @@ exports.notificationFollow = functions.database.ref(`/users/{id}/followers`)
 exports.feedFetcher = functions.database.ref(`/feedFetcher`)
     .onUpdate(event => {
 
+        console.log(event);
+
+
+        console.log("Initializing");
+
 
         // loop for every rss feed in database
-        const getValuePromise = admin.database().ref('feeds').on("value", function (snapshot) {
+        return new Promise((resolve, reject) => {
+        admin.database().ref('feeds').once("value", function (snapshot) {
+            console.log("Starting");
+
+
+            var podcasts = [];
             snapshot.forEach(function (snap) {
                 console.log(snap.val());
 
-                void fetch(snap.val())
+                var podcast = fetch(snap.val())
                     .then((response) => response.text())
                     .then((responseData) => {
+                    console.log("reading feed... " + snap.val());
 
                         var doc = new DomParser().parseFromString(responseData,'text/html');
                         var items = doc.getElementsByTagName('item');
@@ -140,18 +160,18 @@ exports.feedFetcher = functions.database.ref(`/feedFetcher`)
                             bio = bio.replace("<em>", " ");
                             bio = bio.replace("&nbsp", " ");
                         }
+                        console.log("bio: " + bio);
 
 
                         // profile image
                         let profileImage = '';
-                        if(doc.getElementsByTagName("image").length >0){
+                        if(doc.getElementsByTagName("image").length > 0){
                             const image = doc.getElementsByTagName("image");
                             const pI = image[0].getElementsByTagName('url');
                             profileImage = pI[0].textContent;
-
-                            console.log(profileImage);
-
                         }
+                        console.log("profile image: " + profileImage);
+
 
                         // profile username
                         let username = channel[0].textContent;
@@ -170,12 +190,13 @@ exports.feedFetcher = functions.database.ref(`/feedFetcher`)
                             category = doc.getElementsByTagName('itunes:category')[0].getAttribute('text');
                         }
                         const podcastCategory = category;
-                        console.log(podcastCategory);
+                        console.log("category: " + podcastCategory);
 
 
 
                         // create account for user if it doesn't exist
                         // reserve username & create user if needed
+                        console.log("checking if account exists");
                         admin.database().ref(`users`).child(usernameData).once("value", function (snapshot) {
                             if(snapshot.val()){
                                 console.log("Account Exists: " + usernameData)
@@ -185,11 +206,14 @@ exports.feedFetcher = functions.database.ref(`/feedFetcher`)
                                 admin.database().ref(`users`).child(usernameData).child("/bio").update({bio});
                                 admin.database().ref(`users`).child(usernameData).child("/profileImage").update({profileImage});
                                 admin.database().ref(`usernames`).child(usernameData.toLowerCase()).update({username: usernameData.toLowerCase()});
+                                console.log("Account Added: " + usernameData)
                             }
                         });
 
 
 
+
+                        var episodes = [];
                         // get info for each episode
                         // items.length gets max size of rss feed, 0 is most recent
                         let size = 0;
@@ -199,19 +223,20 @@ exports.feedFetcher = functions.database.ref(`/feedFetcher`)
                         else{
                             size = items.length-1
                         }
-                        for (var i=size; i >= 0; i--) {
+                        console.log("checking " + size +  " episodes from " + snap.val()+ "...");
+                        for (var i = size; i >= 0; i--) {
 
                             //artist
                             let podcastArtist = usernameData;
 
                             //title
                             const title = items[i].getElementsByTagName('title');
-                            console.log(title[0].textContent);
                             let podcastTitle = title[0].textContent;
+                            console.log("episode title: " + podcastTitle);
 
                             //description
                             const description = items[i].getElementsByTagName('description');
-                            console.log(description[0].textContent);
+                            console.log("episode description" + description[0].textContent);
                             let podcastDescription = description[0].textContent;
                             podcastDescription = podcastDescription.replace("<p>", " ");
                             podcastDescription = podcastDescription.replace("</p>", " ");
@@ -239,7 +264,6 @@ exports.feedFetcher = functions.database.ref(`/feedFetcher`)
                             podcastDescription = podcastDescription.replace("<br>", " ");
 
 
-
                             //length
                             let length = '';
                             if(items[i].getElementsByTagName('itunes:duration').length > 0){
@@ -249,13 +273,11 @@ exports.feedFetcher = functions.database.ref(`/feedFetcher`)
                                 length = length.replace("</itunes:duration>", "");
                             }
                             const podcastLength = length;
-                            console.log(podcastLength);
-
+                            console.log("episode length: " + podcastLength);
 
 
                             //rss = true, need to tell firebase it's an rss podcast
                             const rss = true;
-
 
 
                             //likes = 0
@@ -272,74 +294,83 @@ exports.feedFetcher = functions.database.ref(`/feedFetcher`)
                             jointTitle = jointTitle.replace("]", "_");
                             jointTitle = jointTitle.replace(".", "_");
                             const RSSID = jointTitle;
+                            console.log("RSSID: " + RSSID);
 
+
+                            console.log("starting episode upload");
                             // get url -> upload
                             if(items[i].getElementsByTagName('enclosure').length > 0){
                                 var link = items[i].getElementsByTagName('enclosure')[0].getAttribute('url');
-                                console.log(link);
+                                console.log("link: " + link);
                                 const podcastURL = link;
 
 
                                 // upload to database if doesn't exist (follow podcastCreate)
-                                admin.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
+                                var episode1 = admin.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
                                     if(snapshot.val()){
-                                        console.log("EXISTS")
+                                        console.log("episode EXISTS: " + RSSID)
                                     }
                                     else{
-                                        let item = admin.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength})
+                                        let item = admin.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength, time: firebase.database.ServerValue.TIMESTAMP});
                                         const ref = item.ref;
                                         const id = item.key;
                                         ref.update({id});
                                         admin.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
+                                        console.log("episode ADDED: " + RSSID);
 
                                     }
 
-                                });
+                                }).then(console.log('Episode finished'));
 
+                                episodes.push(episode1);
 
                             }
                             // another way of getting url -> upload
                             else if(items[i].getElementsByTagName('link').length > 0){
                                 var link2 = items[i].getElementsByTagName('link');
-                                console.log(link2[0].textContent);
+                                console.log("link: " + link2[0].textContent);
                                 const podcastURL = link2[0].textContent;
 
 
                                 // upload to database if doesn't exist (follow podcastCreate)
-                                admin.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
+                                var episode2 = admin.database().ref(`podcasts`).orderByChild("RSSID").equalTo(jointTitle.toString()).once("value", function (snapshot) {
                                     if(snapshot.val()){
-                                        console.log("EXISTS")
+                                        console.log("episode EXISTS: " + RSSID)
                                     }
                                     else{
-                                        let item = admin.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength});
+                                        let item = admin.database().ref(`podcasts`).push({podcastTitle, podcastDescription, podcastURL, podcastArtist, rss, podcastCategory, likes, RSSID, podcastLength, time: firebase.database.ServerValue.TIMESTAMP});
                                         const ref = item.ref;
                                         const id = item.key;
                                         ref.update({id});
                                         admin.database().ref(`/users/${podcastArtist}`).child('podcasts').child(id).update({id});
+                                        console.log("episode ADDED: " + RSSID);
 
                                     }
 
-                                });
+                                }).then(console.log('Episode finished'));
+
+                                episodes.push(episode2)
 
                             }
                             else{
-                                console.log("Error: no download url")
+                                console.log("Error: no download url, Can't upload episode");
+                                episodes.push('');
                             }
                         }
+                        return Promise.all(episodes);
 
-                        throw (promise);
+                    }).then(console.log('Podcast finished'));
 
-                    });
+                podcasts.push(podcast);
 
+            }), () => console.log("Finishing");
 
-            });
+            return Promise.all(podcasts);
 
+         }), () => then(console.log("DONE"));
 
-            throw (promise);
 
         });
-
-        return getValuePromise;
 
 
 

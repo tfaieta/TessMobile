@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView, ListView, ActivityIndicator, Dimensions} from 'react-native';
+import { View, StyleSheet, ScrollView, ListView, ActivityIndicator, Dimensions, Platform} from 'react-native';
 import PlayerBottom from '../PlayerBottom';
 import ListItemPodcast from "../ListItemPodcast";
 
 var {height} = Dimensions.get('window');
+
+
 
 // a single category page, renders all podcasts associated with that category
 
@@ -28,9 +30,9 @@ class Category extends Component{
             topBarShadowOffset: 3,
             topBarShadowRadius: 5,
             statusBarColor: '#fff',
-            drawUnderNavBar: true,
-            navBarTranslucent: true,
-            navBarNoBorder: true
+            drawUnderNavBar: Platform.OS === 'ios',
+            navBarTranslucent: Platform.OS === 'ios',
+            navBarNoBorder: true,
 
         });
 
@@ -48,106 +50,132 @@ class Category extends Component{
 
         if(category == 'News' || category == 'News & Politics' || category == 'Government & Organization'){
 
-            pods.push('Chapo Trap House');
-            pods.push('Global News Podcast');
-            pods.push('Innovation Hub');
             pods.push('The Daily');
             pods.push('The Ezra Klein Show');
             pods.push('The Tom Woods Show');
             pods.push('Pod Save America');
             pods.push('Pod Save the People');
+            pods.push('Lovett or Leave It');
+            pods.push('Chapo Trap House');
+            pods.push('Global News Podcast');
+            pods.push('Innovation Hub');
+            pods.push('In the Dark');
+            pods.push("The Stranger, Seattle's Only Newspaper: Dan Savage");
         }
-        else if(category == 'Fitness' || category == 'Health'){
+        else if(category == 'Fitness' || category == 'Health' || category == 'Fitness & Nutrition'){
 
             pods.push('Trail Runner Nation');
+            pods.push('Ben Greenfield Fitness: Diet, Fat Loss and Performance');
+            pods.push('The Rich Roll Podcast');
 
         }
         else if(category == 'Society & Culture' || category == 'Philosophy'){
 
+            pods.push('Oprah’s SuperSoul Conversations');
+            pods.push('Atlanta Monster');
             pods.push('Hello Internet');
             pods.push('Nancy');
+            pods.push('Revisionist History');
+            pods.push('Missing Richard Simmons');
             pods.push('On Being with Krista Tippett');
-            pods.push('Oprah’s SuperSoul Conversations');
             pods.push('Still Processing');
             pods.push('Stuff You Should Know');
+            pods.push('Freakonomics Radio');
             pods.push('The Best Ideas Podcast');
             pods.push('The Lively Show');
-            pods.push('Pod Save America');
-            pods.push('Pod Save the People');
             pods.push('American Innovations');
+            pods.push('Love + Radio');
         }
-        else if(category == 'Religion & Spirituality' || category == 'Arts'){
+        else if(category == 'Religion & Spirituality'){
 
             pods.push('New World Kirtan');
-            pods.push('The Unbeatable Mind Podcast with Mark Divine');
+            pods.push('Waking Up with Sam Harris');
 
         }
         else if(category == 'Comedy'){
 
-            pods.push('2 Dope Queens');
+            pods.push('The Joe Rogan Experience');
+            pods.push('VIEWS with David Dobrik and Jason Nash');
+            pods.push('Guys We F****d');
+            pods.push('WTF with Marc Maron Podcast');
             pods.push('Ear Biscuits');
             pods.push('H3 Podcast');
+            pods.push('2 Dope Queens');
             pods.push('ID10T with Chris Hardwick');
+            pods.push('Comedy Bang Bang: The Podcast');
+            pods.push('The Adam Carolla Show');
+            pods.push('How Did This Get Made?');
             pods.push('IDK Podcast');
             pods.push('Psychobabble with Tyler Oakley & Korey Kuhl');
-            pods.push('The Adam Carolla Show');
             pods.push('The Great Debates');
+            pods.push('My Favorite Murder with Karen Kilgariff and Georgia Hardstark');
             pods.push('The Official Podcast');
-            pods.push('VIEWS with David Dobrik and Jason Nash');
-            pods.push('WTF with Marc Maron Podcast');
+            pods.push('Welcome to Night Vale');
+            pods.push('Last Podcast On The Left');
+            pods.push('My Dad Wrote A Porno');
 
         }
-        else if(category == 'Lifestyle' || category == 'Arts' || category == 'Design'){
+        else if(category == 'Lifestyle' || category == 'Design' || category == 'Self-Help'){
 
             pods.push('Design Matters with Debbie Millman');
+            pods.push('The Unbeatable Mind Podcast with Mark Divine');
 
         }
         else if(category == 'Science & Nature' || category == 'Science & Medicine' || category == 'Social Sciences'){
 
             pods.push('Radiolab');
             pods.push('StarTalk Radio');
+            pods.push("Invisibilia");
+            pods.push('Sword and Scale');
             pods.push('Why We Do What We Do');
+            pods.push('Waking Up with Sam Harris');
 
         }
-        else if(category == 'Travel'){
+        else if(category == 'Travel' || category == 'Places & Travel'){
 
+            pods.push('Zero to Travel');
 
         }
         else if(category == 'Learn Something' || category == 'Education'){
 
+            pods.push('TED Radio Hour');
+            pods.push('The Blog of Author Tim Ferriss');
             pods.push('Entrepreneurs On Fire | Ignite your Entrepreneurial journey');
             pods.push('Forward Tilt by Praxis');
             pods.push('Omitted');
             pods.push('Quick Talk Podcast - Growing Your Cleaning Or Home Service Business');
             pods.push('RadiusBombcom - Quick Talk Podcast');
-            pods.push('TED Radio Hour');
             pods.push('TED Talks');
             pods.push('The Art of Charm | High Performance Techniques| Cognitive Development | Relationship Advice | Mastery of Human Dynamics');
-            pods.push('The Art of Charm | Social Science | Cognitive Psychology | Confidence | Relationship Advice | Behavioral Economics');
-            pods.push('The Blog of Author Tim Ferriss');
 
         }
-        else if(category == 'Storytelling'){
+        else if(category == 'Storytelling' || category == 'History'){
 
             pods.push('Serial');
+            pods.push("Dan Carlin's Hardcore History");
+            pods.push('S-Town');
             pods.push('Dirty John');
             pods.push('Crimetown');
-
+            pods.push('Criminal');
 
         }
         else if(category == 'Sports' || category == 'Sports & Recreation'){
 
             pods.push('The Bill Simmons Podcast');
             pods.push('The Herd with Colin Cowherd');
+            pods.push('Green Light Sports Podcast');
 
         }
-        else if(category == 'Entertainment' || category == 'TV & Film'){
+        else if(category == 'Entertainment' || category == 'TV & Film' || category == 'Arts'){
 
+            pods.push('Fresh Air');
+            pods.push('You Must Remember This');
 
         }
         else if(category == 'Music'){
 
             pods.push('No Jumper');
+            pods.push('Song Exploder');
 
         }
         else if(category == 'Tech' || category == 'Technology'){
@@ -163,15 +191,16 @@ class Category extends Component{
 
 
         }
-        else if(category == 'Business' || category == 'Careers'){
+        else if(category == 'Business' || category == 'Careers' || category == 'Management & Marketing'){
 
+            pods.push('The GaryVee Audio Experience');
             pods.push('Girlboss Radio with Sophia Amoruso');
             pods.push('HBR IdeaCast');
             pods.push('How I Built This with Guy Raz');
             pods.push('Masters of Scale with Reid Hoffman');
             pods.push('Planet Money');
             pods.push('StartUp Podcast');
-            pods.push('The GaryVee Audio Experience');
+            pods.push('The Smart Passive Income Online Business and Blogging Podcast');
             pods.push('The Indie Hackers Podcast');
             pods.push('Y Combinator');
             pods.push('The Pitch');

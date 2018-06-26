@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, ScrollView, TextInput, ListView} from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ScrollView, TextInput, ListView, Platform, Dimensions, RefreshControl} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Variables from "./Variables";
 import firebase from 'firebase';
 import ListItemPlaylist from "./ListItemPlaylist";
 
+var {height, width} = Dimensions.get('window');
+
+let topMargin = 0;
+if(Platform.OS === 'ios'){
+    topMargin = height/10.26
+}
 
 
 
@@ -44,33 +50,53 @@ class Playlists extends Component{
         this.state={
             newPlaylist: '',
             playlists: dataSource.cloneWithRows(Variables.state.playlists),
+            refreshing: false
         };
 
         this.props.navigator.setStyle({
-            statusBarHidden: false,
-            statusBarTextColorScheme: 'light',
-            navBarHidden: false,
-            navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
-            navBarTextFontSize: 18, // change the font size of the title
-            navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
-            drawUnderTabBar: false,
-            navBarHideOnScroll: false,
-            navBarBackgroundColor: '#fff',
-            topBarElevationShadowEnabled: true,
-            topBarShadowColor: '#000',
-            topBarShadowOpacity: 0.1,
-            topBarShadowOffset: 3,
-            topBarShadowRadius: 5,
-            statusBarColor: '#fff',
-            drawUnderNavBar: true,
-            navBarTranslucent: true,
-            navBarNoBorder: true
+                   statusBarHidden: false,
+                   statusBarTextColorScheme: 'light',
+                   navBarHidden: false,
+                   navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
+                   navBarTextFontSize: 18, // change the font size of the title
+                   navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
+                   drawUnderTabBar: false,
+                   navBarHideOnScroll: false,
+                   navBarBackgroundColor: '#fff',
+                   topBarElevationShadowEnabled: false,
+                   statusBarColor: '#fff',
+                   drawUnderNavBar: Platform.OS === 'ios',
+                   navBarTranslucent: Platform.OS === 'ios',
+                   navBarNoBorder: true,
+
         });
 
         this.timeout1 = setTimeout(() => {this.setState({playlists: dataSource.cloneWithRows(Variables.state.playlists)})},1000);
         this.timeout2 = setTimeout(() => {this.setState({playlists: dataSource.cloneWithRows(Variables.state.playlists)})},2500);
 
     };
+
+
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+
+        Variables.state.playlists = [];
+        const {currentUser} = firebase.auth();
+        firebase.database().ref(`users/${currentUser.uid}/playlist`).on("value", function (snapshot) {
+
+            snapshot.forEach(function (data) {
+                if(data.val()){
+                    Variables.state.playlists.push(data.val());
+                }
+
+            })
+
+        });
+
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.timeout2 = setTimeout(() => {this.setState({playlists: dataSource.cloneWithRows(Variables.state.playlists), refreshing: false})},3000);
+    };
+
 
     _pressBack = () => {
         this.props.navigator.pop({
@@ -104,7 +130,13 @@ class Playlists extends Component{
                 style={styles.container}>
 
 
-                <ScrollView>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                        />}
+                >
 
 
                     <View style={styles.inputContainer}>
@@ -126,8 +158,8 @@ class Playlists extends Component{
                             <TouchableOpacity style={{alignItems: 'flex-end', flex: 1}} onPress={this.createNewPlaylist}>
                                 <Icon style={{
                                     textAlign: 'center',
-                                    marginTop: 18,
-                                    fontSize: 22,
+                                    marginTop: height/37.06,
+                                    fontSize: width/17.05,
                                     color: '#506dcf',
                                 }} name="plus-circle">
                                 </Icon>
@@ -144,7 +176,7 @@ class Playlists extends Component{
                         renderRow={(data) => this.renderPlaylist(data)}
                     />
 
-                    <View style={{paddingBottom: 150}}/>
+                    <View style={{paddingBottom: height/4.45}}/>
 
 
                 </ScrollView>
@@ -167,58 +199,27 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
-        marginTop: 65
-    },
-
-    title: {
-        color: '#3e4164',
-        textAlign: 'center',
-        fontStyle: 'normal',
-        fontFamily: 'Montserrat-SemiBold',
-        fontSize: 16,
-        marginTop: 20,
-        paddingLeft: 20,
-        backgroundColor: 'transparent',
-    },
-
-    contentTitle: {
-        color: 'rgba(1,170,170,1)',
-        fontSize: 25,
-        paddingBottom: 20,
-        marginLeft: 20,
-
-    },
-
-    header: {
-        marginTop:25,
-        marginLeft: -35,
-        color: '#506dcf',
-        textAlign: 'center',
-        fontStyle: 'normal',
-        fontFamily: 'Montserrat-SemiBold',
-        fontSize: 16,
-        backgroundColor: 'transparent',
-
+        marginTop: topMargin
     },
 
     input: {
-        height: 40,
-        width: 250,
+        height: height/16.68,
+        width: width/1.5,
         backgroundColor: 'transparent',
-        marginTop: 10,
-        marginBottom: 5,
+        marginTop: height/66.7,
+        marginBottom: height/133.4,
         color: '#506dcf',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 18,
-        paddingHorizontal: 10,
-        marginLeft: 10
+        fontSize: width/23.44,
+        paddingHorizontal: width/37.5,
+        marginLeft: width/37.5
     },
     inputContainer: {
         backgroundColor:"#fff",
-        marginVertical: 5,
-        paddingBottom: 10,
-        paddingHorizontal: 10,
+        marginVertical: width/75,
+        paddingBottom: height/66.7,
+        paddingHorizontal: width/37.5,
     },
 
 });

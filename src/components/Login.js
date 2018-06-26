@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, StatusBar, Image, TextInput, ScrollView, Dimensions, AlertIOS, Platform} from 'react-native';
+import { Text, View, TouchableOpacity, StatusBar, Image, TextInput, ScrollView, Dimensions, AlertIOS, Platform, ActivityIndicator} from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';
-import { Spinner } from './common';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
 import firebase from 'firebase';
@@ -101,7 +100,7 @@ class Login extends Component {
         if (this.props.loading) {
             return (
                 <View style={{paddingTop: height/22.23}} >
-                    <Spinner size="large" />
+                    <ActivityIndicator color='#fff' size ="large" />
                 </View>
             )
         }

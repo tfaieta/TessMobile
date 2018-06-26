@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, ListView, View, Text, TouchableOpacity, Dimensions} from 'react-native';
+import { StyleSheet, ScrollView, ListView, View, Text, TouchableOpacity, Dimensions, Platform} from 'react-native';
 import PlayerBottom from '../PlayerBottom';
 import Variables from "../Variables";
 import firebase from 'firebase';
@@ -7,6 +7,14 @@ import ListItemChart from "../ListItemChart";
 import ListItemChartPodcast from "../ListItemChartPodcast";
 
 var {height, width} = Dimensions.get('window');
+
+let topMargin = 0;
+if(Platform.OS === 'ios'){
+    topMargin = height/8
+}
+
+
+
 
 // Charts page on discover (browse) page
 
@@ -17,7 +25,7 @@ class TopCharts extends Component{
         Variables.state.topCharts = [];
         const ref = firebase.database().ref(`podcasts/`);
 
-        ref.limitToLast(400).once("value", function (snapshot) {
+        ref.limitToLast(500).once("value", function (snapshot) {
 
             snapshot.forEach(function (data) {
                 if(data.child("plays").numChildren() > 0){
@@ -43,16 +51,12 @@ class TopCharts extends Component{
         super(props);
 
         this.props.navigator.setStyle({
-
             statusBarHidden: false,
             statusBarTextColorScheme: 'light',
             navBarHidden: false,
-            drawUnderTabBar: false,
-            navBarCustomView: 'DiscoverNavBar',
-            navBarCustomViewInitialProps: {
-                navigator: this.props.navigator,
-                text: "Charts"
-            },
+            navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
+            navBarTextFontSize: height/30.79, // change the font size of the title
+            navBarTextFontFamily: 'Montserrat-Bold', // Changes the title font
             navBarHideOnScroll: false,
             navBarBackgroundColor: '#fff',
             topBarElevationShadowEnabled: true,
@@ -60,6 +64,10 @@ class TopCharts extends Component{
             topBarShadowOffset: 0,
             topBarShadowRadius: 0,
             statusBarColor: '#fff',
+            drawUnderNavBar: Platform.OS === 'ios',
+            navBarTranslucent: Platform.OS === 'ios',
+            navBarNoBorder: true,
+
         });
 
 
@@ -83,10 +91,10 @@ class TopCharts extends Component{
 
             })
 
-        },2000);
+        },3000);
 
 
-        this.timeout1 = setTimeout(() => {this.setState({dataSourceEps: dataSource.cloneWithRows(Variables.state.topCharts), })},1000);
+        this.timeout1 = setTimeout(() => {this.setState({dataSourceEps: dataSource.cloneWithRows(Variables.state.topCharts), })},2000);
         this.timeout2 = setTimeout(() => {this.setState({dataSourceEps: dataSource.cloneWithRows(Variables.state.topCharts), dataSourcePods: dataSource.cloneWithRows(topPods), })},4000);
     }
 
@@ -211,7 +219,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
-        marginTop: height/9.67,
+        marginTop: topMargin,
         height: height/1.154,
     },
 
