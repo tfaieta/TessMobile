@@ -20,25 +20,23 @@ export let profileName='';
 
 class CreateAccount extends Component {
 
-static navigatorStyle = {
-    statusBarHidden: false,
-    navBarButtonColor: '#fff',
-    navBarHidden: false,
-    navBarTransparent: true,
-    navBarTextColor: '#fff', // change the text color of the title (remembered across pushes)
-    navBarTextFontSize: 22, // change the font size of the title
-    navBarTextFontFamily: 'Montserrat-Bold', // Changes the title font
-    drawUnderTabBar: false,
-    navBarHideOnScroll: false,
-    topBarElevationShadowEnabled: false,
-    topBarShadowColor: 'transparent',
-    drawUnderNavBar: true,
-    navBarTranslucent: true,
-    navBarNoBorder: true,
-    navBarTitleTextCentered: true,
-};
-
-
+    static navigatorStyle = {
+        statusBarHidden: false,
+        navBarButtonColor: '#fff',
+        navBarHidden: false,
+        navBarTransparent: true,
+        navBarTextColor: '#fff', // change the text color of the title (remembered across pushes)
+        navBarTextFontSize: 22, // change the font size of the title
+        navBarTextFontFamily: 'Montserrat-Bold', // Changes the title font
+        drawUnderTabBar: false,
+        navBarHideOnScroll: false,
+        topBarElevationShadowEnabled: false,
+        topBarShadowColor: 'transparent',
+        drawUnderNavBar: true,
+        navBarTranslucent: true,
+        navBarNoBorder: true,
+        navBarTitleTextCentered: true,
+    };
 
     state = {
         confirmPassword: '',
@@ -58,32 +56,24 @@ static navigatorStyle = {
         this.props.passwordChanged(text);
     }
 
-
-
     onButtonPress() {
 
         const { email, password, username } = this.props;
 
-
-        if(username != ''){
-
+        if(username != '') {
             firebase.database().ref(`usernames/`).child(username.toLowerCase()).once("value", function (snapshot) {
-                if(snapshot.val()){
+                if (snapshot.val()) {
                     console.warn(snapshot.val().username + " is taken");
                     this.dropdown.alertWithType("custom", "", "Username is taken.");
                     this.setState({modalVisible: false})
                 }
-                else{
-
-                    this.props.createUser({ email, password, username });
-
+                else {
+                    this.props.createUser({email, password, username});
                 }
-            }.bind(this)).catch(() => { console.warn("error")} );
-
+            }.bind(this)).catch(() => {
+                console.warn("error")
+            });
         }
-
-
-
     }
 
 
@@ -104,7 +94,6 @@ static navigatorStyle = {
             )
         }
         return(
-
             <TouchableOpacity onPress={this.onButtonPress.bind(this)} style={styles.buttonContainer}>
                 <Text style={styles.textStyle}>
                 Sign Up
@@ -217,7 +206,6 @@ static navigatorStyle = {
                                     placeholder={'Password'}
                                     placeholderTextColor='rgba(300,300,300,0.7)'
                                     underlineColorAndroid = 'transparent'
-
                                     autoCapitalize={'none'}
                                     autoCorrect={false}
                                     secureTextEntry

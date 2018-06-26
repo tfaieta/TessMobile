@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, StatusBar, Image, TextInput, ScrollView, Dimensions} from 'react-native';
+import { Text, View, TouchableOpacity, StatusBar, Image, TextInput, ScrollView, Dimensions, AlertIOS, Platform} from 'react-native';
+import AwesomeAlert from 'react-native-awesome-alerts';
 import { Spinner } from './common';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
+import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AnimatedLinearGradient from 'react-native-animated-linear-gradient'
 
@@ -19,6 +21,15 @@ class Login extends Component {
         navBarHidden: true,
     };
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            showAlert: false,
+            text: '',
+            message: '',
+        };
+    };
+
     onEmailChange(text){
         this.props.emailChanged(text);
     }
@@ -29,11 +40,53 @@ class Login extends Component {
 
     onButtonPress() {
         const { email, password } = this.props;
-
         this.props.loginUser({ email, password });
-
-
     }
+
+    hideAlert = () => {
+        this.setState({
+            showAlert: false
+        });
+    };
+
+    forgotPassword = () => {
+        firebase.auth().sendPasswordResetEmail(this.props.email.trim())
+            .then(function() {
+                // Password reset email sent.
+                if (Platform.OS === 'ios') {
+                    // Use AlertIOS - This will work on IOS
+                    AlertIOS.alert(
+                        'Success',
+                        'Check Your Email',
+                        { cancelable: false }
+
+                    );
+                } else {
+                    // Use AwesomeAlert - This will work on Android
+                    this.setState({
+                        showAlert: true,
+                        text: "Success",
+                        message: "Check your inbox"
+                    })
+                }
+            }.bind(this))
+            .catch(function(error) {
+                // Error occurred. Inspect error.code.
+                if (Platform.OS === 'ios') {
+                    AlertIOS.alert(
+                        'Error',
+                        'Enter Valid Email',
+                        { cancelable: false }
+                );
+                } else {
+                    this.setState({
+                        showAlert: true,
+                        text: "Error",
+                        message: "Please Enter a Valid Email"
+                    })
+                }
+            }.bind(this));
+    };
 
     _handleButtonPressCreate = () => {
         this.props.navigator.push({
@@ -43,8 +96,6 @@ class Login extends Component {
             title: 'Create Account',
         });
     };
-
-
 
     renderButton() {
         if (this.props.loading) {
@@ -76,6 +127,7 @@ class Login extends Component {
                 customColor={bgGradient.bg}
                 speed={duration}
             >
+
                 <ScrollView   scrollEnabled={false}>
 
                 <StatusBar hidden={false} barStyle="light-content" />
@@ -150,13 +202,12 @@ class Login extends Component {
 
                             />
                         </View>
-                        <TouchableOpacity style={{alignItems: 'flex-end', flex: 3, marginTop: height/333.5}}>
-                            <Text style={styles.forgotText}>Forgot</Text>
+                        <TouchableOpacity style={{alignItems: 'flex-end', flex: 3, marginTop: height/333.5}} onPress={this.forgotPassword}>
+                            <Text style={styles.forgotText}>Forgot?</Text>
                         </TouchableOpacity>
+
                     </View>
                 </View>
-
-
 
                 <Text style={styles.errorTextStyle}>
                     {this.props.error}
@@ -166,11 +217,23 @@ class Login extends Component {
                     {this.renderButton()}
                 </View>
 
-
                 <TouchableOpacity  onPress={this._handleButtonPressCreate}>
                     <Text style={styles.textBottomStyle}>Sign Up</Text>
                 </TouchableOpacity>
                 </ScrollView>
+
+                <AwesomeAlert
+                    show={this.state.showAlert}
+                    title={this.state.text}
+                    message={this.state.message}
+                    closeOnTouchOutside={true}
+                    showConfirmButton={true}
+                    confirmText="Okay"
+                    confirmButtonColor="#3e4164"
+                    onConfirmPressed={() => {
+                        this.hideAlert();
+                    }}
+                />
 
             </AnimatedLinearGradient>
         );
