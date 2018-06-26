@@ -20,13 +20,22 @@ export let profileName='';
 
 class CreateAccount extends Component {
 
-
-
-
 static navigatorStyle = {
-         statusBarHidden: false,
-         navBarHidden: true
-    };
+    statusBarHidden: false,
+    navBarButtonColor: '#fff',
+    navBarHidden: false,
+    navBarTransparent: true,
+    navBarTextColor: '#fff', // change the text color of the title (remembered across pushes)
+    navBarTextFontSize: 22, // change the font size of the title
+    navBarTextFontFamily: 'Montserrat-Bold', // Changes the title font
+    drawUnderTabBar: false,
+    navBarHideOnScroll: false,
+    topBarElevationShadowEnabled: false,
+    topBarShadowColor: 'transparent',
+    drawUnderNavBar: true,
+    navBarTranslucent: true,
+    navBarNoBorder: true
+};
 
 
 
@@ -118,137 +127,122 @@ static navigatorStyle = {
 
                 <ScrollView   scrollEnabled={false}>
 
+                <View style={styles.spacing}>
 
-                 <View style={{flexDirection: 'row',  paddingVertical: height/133.4, marginBottom: height/22.23}}>
-                    <View style={{flex: 1, alignItems: 'flex-start', justifyContent: 'center', marginTop: height/26.68}}>
-                        <TouchableOpacity onPress={this._pressBack}>
-                            <Icon style={{
-                                textAlign:'left', marginLeft: width/33.5, backgroundColor: 'transparent', fontSize: width/11.16, color:'#fff'
-                            }} name="ios-arrow-back">
-                            </Icon>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{flex: 8, justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={styles.header}>Create Account</Text>
-                    </View>
-
-
-                </View>
-
-
-                <View style={styles.inputContainer}>
-                    <View style={{flexDirection:'row'}}>
-                        <View style={{alignItems:'flex-start', flex: 1}}>
-                            <Icon style={{
-                                textAlign: 'center',
-                                marginTop: height/37,
-                                marginLeft: width/33.5,
-                                fontSize: width/15.23,
-                                color: 'rgba(300,300,300,0.7)'
-                            }} name="md-contact">
-                            </Icon>
-                        </View>
-                        <View style={{alignItems: 'flex-end', flex: 8}}>
-                        <TextInput
-                            style={styles.input}
-                            placeholder={'Username'}
-                            placeholderTextColor='rgba(300,300,300,0.7)'
-                            underlineColorAndroid = 'transparent'
-                            maxLength={20}
-                            autoCapitalize={'none'}
-                            autoCorrect={false}
-                            returnKeyType='next'
-                            value={this.props.username}
-                            onChangeText={this.onUsernameChange.bind(this)}
-                            onSubmitEditing={(event) => {
-                                this.refs.FirstInput.focus();
-                            }}
-                        />
-                        </View>
-                    </View>
-                </View>
-
-
-                <View style={styles.inputContainer}>
-                    <View style={{flexDirection:'row'}}>
-                        <View style={{alignItems:'flex-start', flex: 1}}>
-                            <Icon style={{
-                                textAlign: 'center',
-                                marginTop: height/37,
-                                marginLeft: width/33.5,
-                                fontSize: width/15.23,
-                                color: 'rgba(300,300,300,0.7)'
-                            }} name="md-mail">
-                            </Icon>
-                        </View>
-                        <View style={{alignItems: 'flex-end', flex: 8}}>
+                    <View style={styles.inputContainer}>
+                        <View style={{flexDirection:'row'}}>
+                            <View style={{alignItems:'flex-start', flex: 1}}>
+                                <Icon style={{
+                                    textAlign: 'center',
+                                    marginTop: height/37,
+                                    marginLeft: width/33.5,
+                                    fontSize: width/15.23,
+                                    color: 'rgba(300,300,300,0.7)'
+                                }} name="md-contact">
+                                </Icon>
+                            </View>
+                            <View style={{alignItems: 'flex-end', flex: 8}}>
                             <TextInput
-                                ref='FirstInput'
                                 style={styles.input}
-                                placeholder={'Email'}
+                                placeholder={'Username'}
                                 placeholderTextColor='rgba(300,300,300,0.7)'
                                 underlineColorAndroid = 'transparent'
-
+                                maxLength={20}
                                 autoCapitalize={'none'}
                                 autoCorrect={false}
                                 returnKeyType='next'
-                                keyboardType="email-address"
-                                value={this.props.email}
-                                onChangeText={this.onEmailChange.bind(this)}
+                                value={this.props.username}
+                                onChangeText={this.onUsernameChange.bind(this)}
                                 onSubmitEditing={(event) => {
-                                    this.refs.SecondInput.focus();
+                                    this.refs.FirstInput.focus();
                                 }}
                             />
+                            </View>
                         </View>
                     </View>
-                </View>
 
 
-                <View style={styles.inputContainer}>
-                    <View style={{flexDirection:'row'}}>
-                        <View style={{alignItems:'flex-start', flex: 1}}>
-                            <Icon style={{
-                                textAlign: 'center',
-                                marginTop: height/37,
-                                marginLeft: width/33.5,
-                                fontSize: width/15.23,
-                                color: 'rgba(300,300,300,0.7)'
-                            }} name="md-key">
-                            </Icon>
-                        </View>
-                        <View style={{alignItems: 'flex-end', flex: 8}}>
-                            <TextInput
-                                ref='SecondInput'
-                                style={styles.input}
-                                placeholder={'Password'}
-                                placeholderTextColor='rgba(300,300,300,0.7)'
-                                underlineColorAndroid = 'transparent'
+                    <View style={styles.inputContainer}>
+                        <View style={{flexDirection:'row'}}>
+                            <View style={{alignItems:'flex-start', flex: 1}}>
+                                <Icon style={{
+                                    textAlign: 'center',
+                                    marginTop: height/37,
+                                    marginLeft: width/33.5,
+                                    fontSize: width/15.23,
+                                    color: 'rgba(300,300,300,0.7)'
+                                }} name="md-mail">
+                                </Icon>
+                            </View>
+                            <View style={{alignItems: 'flex-end', flex: 8}}>
+                                <TextInput
+                                    ref='FirstInput'
+                                    style={styles.input}
+                                    placeholder={'Email'}
+                                    placeholderTextColor='rgba(300,300,300,0.7)'
+                                    underlineColorAndroid = 'transparent'
 
-                                autoCapitalize={'none'}
-                                autoCorrect={false}
-                                secureTextEntry
-                                returnKeyType="next"
-                                value={this.props.password}
-                                onChangeText={this.onPasswordChange.bind(this)}
-                                onSubmitEditing={(event) => {
-                                    this.onButtonPress()
-                                }}
-                            />
+                                    autoCapitalize={'none'}
+                                    autoCorrect={false}
+                                    returnKeyType='next'
+                                    keyboardType="email-address"
+                                    value={this.props.email}
+                                    onChangeText={this.onEmailChange.bind(this)}
+                                    onSubmitEditing={(event) => {
+                                        this.refs.SecondInput.focus();
+                                    }}
+                                />
+                            </View>
                         </View>
                     </View>
-                </View>
+
+
+                    <View style={styles.inputContainer}>
+                        <View style={{flexDirection:'row'}}>
+                            <View style={{alignItems:'flex-start', flex: 1}}>
+                                <Icon style={{
+                                    textAlign: 'center',
+                                    marginTop: height/37,
+                                    marginLeft: width/33.5,
+                                    fontSize: width/15.23,
+                                    color: 'rgba(300,300,300,0.7)'
+                                }} name="md-key">
+                                </Icon>
+                            </View>
+                            <View style={{alignItems: 'flex-end', flex: 8}}>
+                                <TextInput
+                                    ref='SecondInput'
+                                    style={styles.input}
+                                    placeholder={'Password'}
+                                    placeholderTextColor='rgba(300,300,300,0.7)'
+                                    underlineColorAndroid = 'transparent'
+
+                                    autoCapitalize={'none'}
+                                    autoCorrect={false}
+                                    secureTextEntry
+                                    returnKeyType="next"
+                                    value={this.props.password}
+                                    onChangeText={this.onPasswordChange.bind(this)}
+                                    onSubmitEditing={(event) => {
+                                        this.onButtonPress()
+                                    }}
+                                />
+                            </View>
+                        </View>
+                    </View>
 
 
 
-                <Text style={styles.errorTextStyle}>
-                    {this.props.error}
-                </Text>
-                <Text style={styles.errorTextStyle}>
-                    {this.state.confirmPasswordError}
-                </Text>
+                    <Text style={styles.errorTextStyle}>
+                        {this.props.error}
+                    </Text>
+                    <Text style={styles.errorTextStyle}>
+                        {this.state.confirmPasswordError}
+                    </Text>
 
-                <View >
-                    {this.renderButton()}
+                    <View >
+                        {this.renderButton()}
+                    </View>
                 </View>
 
                 </ScrollView>
@@ -353,6 +347,9 @@ const styles = {
         backgroundColor: 'transparent',
 
     },
+    spacing: {
+        marginTop: height/8.3375
+    }
 };
 
 const mapStateToProps = ({ auth }) => {
