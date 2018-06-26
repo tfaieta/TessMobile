@@ -1,14 +1,12 @@
 import React, {Component} from 'react';
-import {View, StatusBar, Dimensions} from 'react-native';
+import {View, StatusBar, Dimensions, Image, StyleSheet, Platform} from 'react-native';
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/Foundation';
+import * as Animatable from 'react-native-animatable';
+import app_logo from '../images/app_logo.png';
 var FontAwesome = require('react-native-vector-icons/FontAwesome');
-
 import { Navigation } from 'react-native-navigation';
-
 var {height, width} = Dimensions.get('window');
-
-
 
 // first official screen of tess, from here it goes to home page if logged in or start up if not
 
@@ -41,8 +39,16 @@ export default class InitialScreen extends Component{
     };
 
     componentWillMount(){
-        firebase.auth().onAuthStateChanged(this.func);
-
+        if (Platform.OS == 'android') {
+            this.timeout = setTimeout(() => {
+                firebase.auth().onAuthStateChanged(this.func);
+            }, 2000)
+        }
+        else {
+            this.timeout = setTimeout(() => {
+                firebase.auth().onAuthStateChanged(this.func);
+            }, 1800)
+        }
     }
 
     componentWillUnmount(){
@@ -136,7 +142,7 @@ export default class InitialScreen extends Component{
         else{
             Navigation.startSingleScreenApp({
                 screen: {
-                    screen: 'Startup',
+                    screen: 'Login',
                     navBarHidden: true,
                     navigatorStyle: {screenBackgroundColor: '#fff'},
                     navigatorButtons: {screenBackgroundColor: '#fff'}
@@ -151,16 +157,74 @@ export default class InitialScreen extends Component{
                 animationType: 'fade'
             });
         }
-        
     }
-
 
     render() {
-        return (
-            <View
-                style={{flex: 1, backgroundColor: '#fff'}}>
-                <StatusBar hidden={true} />
-            </View>
-        );
+        // Splash Screen Action + Animations
+        const animateEffect = {
+            0: {
+                opacity: 0.9,
+                scale: 1,
+            },
+            0.4: {
+                opacity: 0.7,
+                scale: 1,
+            },
+            0.8: {
+                opacity: 1,
+                scale: 1,
+            },
+            1: {
+                opacity: 0.7,
+                scale: 1,
+            },
+        };
+
+        const duration = 2500;
+        const durationiOS = 3000;
+
+
+        if (Platform.OS == 'android') {
+            return (
+                <View style={styles.container}>
+                    <View animation={animateEffect} duration={duration} style={styles.view}>
+                        <Image
+                            style={styles.image} source={app_logo}>
+                        </Image>
+                        <StatusBar hidden={true} />
+                    </View>
+                </View>
+            );
+        }
+        else {
+            return (
+                <View style={styles.container}>
+                    <Animatable.View animation={animateEffect} duration={durationiOS} style={styles.view}>
+                        <Image
+                            style={styles.image}>
+                            <Animatable.Image source={app_logo} duration={durationiOS} animation={animateEffect}/>
+                        </Image>
+                        <StatusBar hidden={true} />
+                    </Animatable.View>
+                </View>
+            );
+        }
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex:1,
+        backgroundColor: '#fff'
+    },
+    view: {
+      justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+    },
+    image:{
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+});

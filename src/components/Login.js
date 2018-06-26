@@ -1,24 +1,33 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, StatusBar, Image, TextInput, ScrollView, Dimensions} from 'react-native';
+import { Text, View, TouchableOpacity, StatusBar, Image, TextInput, ScrollView, Dimensions, AlertIOS, Platform} from 'react-native';
+import AwesomeAlert from 'react-native-awesome-alerts';
 import { Spinner } from './common';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
+import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
-import LinearGradient from "react-native-linear-gradient/index.android";
+import AnimatedLinearGradient from 'react-native-animated-linear-gradient'
 
 var {height, width} = Dimensions.get('window');
 
-
-
-
-// login page
-
+/*
+    User Login Page
+ */
 
 class Login extends Component {
 
     static navigatorStyle = {
         statusBarHidden: false,
-        navBarHidden: true
+        navBarHidden: true,
+    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            showAlert: false,
+            text: '',
+            message: '',
+        };
     };
 
     onEmailChange(text){
@@ -29,26 +38,64 @@ class Login extends Component {
         this.props.passwordChanged(text);
     }
 
-
-
-
     onButtonPress() {
         const { email, password } = this.props;
-
         this.props.loginUser({ email, password });
-
-
     }
+
+    hideAlert = () => {
+        this.setState({
+            showAlert: false
+        });
+    };
+
+    forgotPassword = () => {
+        firebase.auth().sendPasswordResetEmail(this.props.email.trim())
+            .then(function() {
+                // Password reset email sent.
+                if (Platform.OS === 'ios') {
+                    // Use AlertIOS - This will work on IOS
+                    AlertIOS.alert(
+                        'Success',
+                        'Check Your Email',
+                        { cancelable: false }
+
+                    );
+                } else {
+                    // Use AwesomeAlert - This will work on Android
+                    this.setState({
+                        showAlert: true,
+                        text: "Success",
+                        message: "Check your inbox"
+                    })
+                }
+            }.bind(this))
+            .catch(function(error) {
+                // Error occurred. Inspect error.code.
+                if (Platform.OS === 'ios') {
+                    AlertIOS.alert(
+                        'Error',
+                        'Enter Valid Email',
+                        { cancelable: false }
+                );
+                } else {
+                    this.setState({
+                        showAlert: true,
+                        text: "Error",
+                        message: "Please Enter a Valid Email"
+                    })
+                }
+            }.bind(this));
+    };
 
     _handleButtonPressCreate = () => {
         this.props.navigator.push({
             screen: 'CreateAccount',
             animated: true,
             animationType: 'fade',
+            title: 'Create Account',
         });
     };
-
-
 
     renderButton() {
         if (this.props.loading) {
@@ -62,40 +109,45 @@ class Login extends Component {
         return (
             <TouchableOpacity onPress={this.onButtonPress.bind(this)} style={styles.buttonContainer}>
                 <Text style={styles.textStyle}>
-                    Sign in
+                    Login
                 </Text>
             </TouchableOpacity>
         );
     }
 
     render() {
+        let bgGradient = {
+            bg: ['#d15564', '#9a5e9a', '#506dcf']
+        };
+        let duration = 3000;
+
         return (
-            <LinearGradient
-
-                colors={['#d15564', '#9a5e9a', '#506dcf' ]}
+            <AnimatedLinearGradient
                 style={styles.container}
+                customColor={bgGradient.bg}
+                speed={duration}
             >
-                <ScrollView   scrollEnabled={false}>
 
+                <ScrollView   scrollEnabled={false}>
 
                 <StatusBar hidden={false} barStyle="light-content" />
 
 
                 <Image
-                    style={{ width: height/4.87, height: height/4.33, marginBottom: height/16.68, alignSelf: 'center'}}
+                    style={styles.logo}
                     source={require('tess/src/images/White_Logo.png')}
                 />
 
 
                 <View style={styles.inputContainer}>
                     <View style={{flexDirection:'row'}}>
-                        <View style={{alignItems:'flex-start', flex: 1,}}>
+                        <View style={{alignItems:'flex-start', flex: 1}}>
                             <Icon style={{
                                 textAlign: 'center',
                                 marginTop: height/37,
                                 marginLeft: width/33.5,
                                 fontSize: width/15.23,
-                                color: 'rgba(300,300,300,0.7)'
+                                color: 'rgba(300,300,300,0.7)',
                             }} name="md-mail">
                             </Icon>
                         </View>
@@ -119,8 +171,6 @@ class Login extends Component {
                         </View>
                     </View>
                 </View>
-
-
 
                 <View style={styles.inputContainer}>
                     <View style={{flexDirection:'row'}}>
@@ -152,13 +202,12 @@ class Login extends Component {
 
                             />
                         </View>
-                        <TouchableOpacity style={{alignItems: 'flex-end', flex: 3, marginTop: height/333.5}}>
-                            <Text style={styles.inputText}>Forgot</Text>
+                        <TouchableOpacity style={{alignItems: 'flex-end', flex: 3, marginTop: height/333.5}} onPress={this.forgotPassword}>
+                            <Text style={styles.forgotText}>Forgot?</Text>
                         </TouchableOpacity>
+
                     </View>
                 </View>
-
-
 
                 <Text style={styles.errorTextStyle}>
                     {this.props.error}
@@ -168,12 +217,25 @@ class Login extends Component {
                     {this.renderButton()}
                 </View>
 
-
-                <Text onPress={this._handleButtonPressCreate} style={styles.textBottomStyle}>Don't have an account? Sign Up</Text>
-
+                <TouchableOpacity  onPress={this._handleButtonPressCreate}>
+                    <Text style={styles.textBottomStyle}>Sign Up</Text>
+                </TouchableOpacity>
                 </ScrollView>
 
-            </LinearGradient>
+                <AwesomeAlert
+                    show={this.state.showAlert}
+                    title={this.state.text}
+                    message={this.state.message}
+                    closeOnTouchOutside={true}
+                    showConfirmButton={true}
+                    confirmText="Okay"
+                    confirmButtonColor="#3e4164"
+                    onConfirmPressed={() => {
+                        this.hideAlert();
+                    }}
+                />
+
+            </AnimatedLinearGradient>
         );
     }
 }
@@ -181,7 +243,7 @@ class Login extends Component {
 const styles = {
     errorTextStyle: {
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-Bold',
         fontSize: width/18.61,
         alignSelf: 'center',
         color: 'rgba(300,10,10,1)',
@@ -192,9 +254,7 @@ const styles = {
 
     container: {
         flex: 1,
-        backgroundColor: '#856cff',
-        padding: height/33.35,
-        paddingTop: height/11.12
+        alignItems: 'center',
     },
 
     inputEmail: {
@@ -205,7 +265,7 @@ const styles = {
         marginBottom: height/133.4,
         color: 'rgba(300,300,300,0.9)',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-Bold',
         fontSize: width/24,
         paddingHorizontal: width/33.5,
         marginLeft: width/33.5
@@ -219,16 +279,18 @@ const styles = {
         marginBottom: height/133.4,
         color: 'rgba(300,300,300,0.9)',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-Bold',
         fontSize: width/24,
         paddingHorizontal: width/33.5,
         marginLeft: width/33.5
     },
 
     buttonContainer: {
+        flex: 1,
         paddingVertical: height/44.46,
         paddingHorizontal: width/22.33,
-        marginBottom: height/133.4,
+        width: width/1.1,
+        alignSelf: 'center',
         borderWidth: 2,
         borderStyle: 'solid',
         borderRadius: 10,
@@ -249,19 +311,29 @@ const styles = {
 
     textStyle: {
         textAlign: 'center',
-        color: '#5555FF',
+        justifyContent: 'center',
+        color: '#3e4164',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-Bold',
         fontSize: width/18.61,
-        marginTop: height/133.4,
     },
 
     inputText: {
         textAlign: 'center',
         color: "rgba(300,300,300,0.7)",
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-Bold',
         fontSize: width/24,
+        marginTop: height/33.35,
+        marginRight: width/33.5,
+    },
+
+    forgotText: {
+        textAlign: 'center',
+        color: "rgba(300,300,300,0.7)",
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-Regular',
+        fontSize: width/30,
         marginTop: height/33.35,
         marginRight: width/33.5,
     },
@@ -269,6 +341,8 @@ const styles = {
     inputContainer: {
         backgroundColor:"rgba(300,300,300,0.2)",
         marginVertical: height/133.4,
+        width: width/1.1,
+        alignSelf: 'center',
         paddingBottom: height/66.7,
         paddingHorizontal: width/33.5,
         borderWidth: 0.1,
@@ -279,9 +353,26 @@ const styles = {
         textAlign: 'center',
         color: 'rgba(300,300,300,0.8)',
         fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Montserrat-Bold',
         fontSize: width/22.33,
         backgroundColor: 'transparent'
+    },
+    textBottomStyleLight: {
+        marginTop: height/33.35,
+        textAlign: 'center',
+        color: 'rgba(300,300,300,0.8)',
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-Bold',
+        fontSize: width/28,
+        backgroundColor: 'transparent'
+    },
+    logo: {
+        width: height/4.87,
+        height: height/4.33,
+        flex: 1,
+        alignSelf: 'center',
+        marginBottom: height/16.68,
+        marginTop: height/12
     }
 
 

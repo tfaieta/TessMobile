@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* tessTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* tessTests.m */; };
 		05F941D6751E0DD977EE79DC /* BuddyBuildSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7B2F6827EA064AF4853E9E /* BuddyBuildSDK.framework */; };
@@ -75,6 +74,7 @@
 		EDBAF62E1EFB059800783B86 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDBAF62A1EFB059800783B86 /* Bolts.framework */; };
 		EDD89204209A3AE1006E0ADF /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDD89203209A3AE1006E0ADF /* Social.framework */; };
 		F350963F63FC4DA8B45AD7E9 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FED8E7F1CB6F4077B3EE2FB7 /* MaterialCommunityIcons.ttf */; };
+		3DA30C9E12EB467394425575 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03D90A6DEB7744F4884B2559 /* Montserrat-Bold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -462,6 +462,7 @@
 		F7127A664E4A6F4FF3FF08DB /* Pods-tess-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tess-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-tess-tvOSTests/Pods-tess-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		FD0A5EAD43FF43D4AC16ED80 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		FED8E7F1CB6F4077B3EE2FB7 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		03D90A6DEB7744F4884B2559 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; name = "Montserrat-Bold.ttf"; path = "../assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -588,6 +589,7 @@
 				08AD122220B34264B8B1E741 /* Zocial.ttf */,
 				8E5EACCC43F44B219FC9ED9F /* Montserrat-Regular.ttf */,
 				A5BC1429D1C34ED7A8AE0469 /* Montserrat-SemiBold.ttf */,
+				03D90A6DEB7744F4884B2559 /* Montserrat-Bold.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1430,6 +1432,7 @@
 				BA533A666B784445A01BBAFB /* Zocial.ttf in Resources */,
 				CD1912E7F99643629E3441B7 /* Montserrat-Regular.ttf in Resources */,
 				88FAE9D8EA8E4E8A9513F071 /* Montserrat-SemiBold.ttf in Resources */,
+				3DA30C9E12EB467394425575 /* Montserrat-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
