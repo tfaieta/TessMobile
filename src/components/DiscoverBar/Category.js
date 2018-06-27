@@ -184,8 +184,9 @@ class Category extends Component{
             pods.push('Y Combinator');
             pods.push('StartUp Podcast');
             pods.push('The Pitch');
-
-
+            pods.push('Recode Decode, hosted by Kara Swisher');
+            pods.push('Recode Media with Peter Kafka');
+            pods.push('Recode Replay');
         }
         else if(category == 'Gaming' || category == 'Games & Hobbies'){
 
