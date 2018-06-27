@@ -40,13 +40,9 @@ static navigatorStyle = {
                         }
                     });
                 }
-
             })
         });
-
-
     }
-
 
     componentWillUnmount(){
         clearTimeout(this.timeout);
@@ -106,21 +102,13 @@ static navigatorStyle = {
         }
 
     };
-
-
-
+    
     renderRow = (rowData) => {
         return <ListItem podcast={rowData} navigator={this.props.navigator} />;
     };
 
-
-
-
-
-
-
     Back= () => {
-        this.props.navigator.pop({
+        this.props.navigator.popToRoot({
             animated: true,
             animationType: 'fade',
         });

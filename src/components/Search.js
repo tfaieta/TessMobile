@@ -8,7 +8,6 @@ import firebase from 'firebase';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
 import ListItem from "./ListItem";
 
-
 class Search extends Component{
 
     static navigatorStyle = {
@@ -40,9 +39,6 @@ class Search extends Component{
         };
     }
 
-
-
-
     Back= () => {
         this.props.navigator.pop({
             animated: true,
@@ -53,10 +49,7 @@ class Search extends Component{
     render() {
         return (
             <View style={styles.container}>
-
-
                 <View style={styles.backColor}>
-
                     <TouchableOpacity style={styles.backButtonContainer} onPress={this.Back}>
                         <View>
                             <Icon style={{textAlign:'left', marginRight:0,marginLeft: 0,paddingTop: 0, fontSize: 30,color:'#007aff', }} name="ios-arrow-back">
