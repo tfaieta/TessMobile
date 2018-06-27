@@ -30,6 +30,7 @@ class Notifications extends Component{
 
 
     async componentDidMount(){
+
         const {currentUser} = firebase.auth();
 
         this.registerAppListener(this.props.navigation);
@@ -57,10 +58,10 @@ class Notifications extends Component{
         FCM.subscribeToTopic(`POTW`);
 
         //topics for following
-        firebase.database().ref(`users/${currentUser.uid}/following`).once('value', function (snapshot) {
+        firebase.database().ref(`users/${currentUser.uid}/tracking`).once('value', function (snapshot) {
             snapshot.forEach(function (data) {
                 if(data.val()){
-                    let topic = data.key.trim();
+                    let topic = data.key.replace(/\s/g, "_");
                     console.log("Subscribed to: " + topic);
                     FCM.subscribeToTopic(`/topics/${topic}`);
                 }

@@ -819,9 +819,27 @@ class PlayerBottom extends Component {
                 );
             }
         }
-        else{
+        else if(Number(num2) < 100){
             var minutes = num2.slice(0,2);
             Number(minutes.slice(0,2));
+            if(Number(num) < 10){
+                var seconds = num.slice(0,1);
+                Number(seconds.slice(0,1));
+                return (
+                    <Text style={styles.podcastTextNum}>{minutes}:0{seconds}</Text>
+                )
+            }
+            else{
+                var seconds = num.slice(0,2);
+                Number(seconds.slice(0,2));
+                return (
+                    <Text style={styles.podcastTextNum}>{minutes}:{seconds}</Text>
+                );
+            }
+        }
+        else{
+            var minutes = num2.slice(0,3);
+            Number(minutes.slice(0,3));
             if(Number(num) < 10){
                 var seconds = num.slice(0,1);
                 Number(seconds.slice(0,1));
@@ -870,8 +888,8 @@ class PlayerBottom extends Component {
                 return (
                     <Text style={{
                         color: '#3e4164',
-                        fontSize: 16,
-                        marginBottom: 20,
+                        fontSize: width/23.44,
+                        marginBottom: height/33.35,
                         flexDirection: 'row',
                         backgroundColor: 'transparent',
                         marginLeft:  (((this.state.highlightTime[1] + this.state.highlightTime[0] / 2) * (width / Math.abs(Variables.state.duration))) / 2 - (width/20)) - ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
@@ -886,8 +904,44 @@ class PlayerBottom extends Component {
                 return (
                     <Text style={{
                         color: '#3e4164',
-                        fontSize: 16,
-                        marginBottom: 20,
+                        fontSize: width/23.44,
+                        marginBottom: height/33.35,
+                        flexDirection: 'row',
+                        backgroundColor: 'transparent',
+                        marginLeft:  (((this.state.highlightTime[1] + this.state.highlightTime[0] / 2) * (width / Math.abs(Variables.state.duration))) / 2 - (width/20)) - ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
+                        fontFamily: 'Montserrat-Regular',
+                    }}
+                    >{minutes}:{seconds}</Text>
+                );
+            }
+        }
+        else if(Number(num2) < 100){
+            var minutes = num2.slice(0,2);
+            Number(minutes.slice(0,2));
+            if(Number(num) < 10){
+                var seconds = num.slice(0,1);
+                Number(seconds.slice(0,1));
+                return (
+                    <Text style={{
+                        color: '#3e4164',
+                        fontSize: width/23.44,
+                        marginBottom: height/33.35,
+                        flexDirection: 'row',
+                        backgroundColor: 'transparent',
+                        marginLeft:  (((this.state.highlightTime[1] + this.state.highlightTime[0] / 2) * (width / Math.abs(Variables.state.duration))) / 2 - (width/20)) - ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
+                        fontFamily: 'Montserrat-Regular',
+                    }}
+                    >{minutes}:0{seconds}</Text>
+                )
+            }
+            else{
+                var seconds = num.slice(0,2);
+                Number(seconds.slice(0,2));
+                return (
+                    <Text style={{
+                        color: '#3e4164',
+                        fontSize: width/23.44,
+                        marginBottom: height/33.35,
                         flexDirection: 'row',
                         backgroundColor: 'transparent',
                         marginLeft:  (((this.state.highlightTime[1] + this.state.highlightTime[0] / 2) * (width / Math.abs(Variables.state.duration))) / 2 - (width/20)) - ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
@@ -898,16 +952,16 @@ class PlayerBottom extends Component {
             }
         }
         else{
-            var minutes = num2.slice(0,2);
-            Number(minutes.slice(0,2));
+            var minutes = num2.slice(0,3);
+            Number(minutes.slice(0,3));
             if(Number(num) < 10){
                 var seconds = num.slice(0,1);
                 Number(seconds.slice(0,1));
                 return (
                     <Text style={{
                         color: '#3e4164',
-                        fontSize: 16,
-                        marginBottom: 20,
+                        fontSize: width/23.44,
+                        marginBottom: height/33.35,
                         flexDirection: 'row',
                         backgroundColor: 'transparent',
                         marginLeft:  (((this.state.highlightTime[1] + this.state.highlightTime[0] / 2) * (width / Math.abs(Variables.state.duration))) / 2 - (width/20)) - ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
@@ -922,8 +976,8 @@ class PlayerBottom extends Component {
                 return (
                     <Text style={{
                         color: '#3e4164',
-                        fontSize: 16,
-                        marginBottom: 20,
+                        fontSize: width/23.44,
+                        marginBottom: height/33.35,
                         flexDirection: 'row',
                         backgroundColor: 'transparent',
                         marginLeft:  (((this.state.highlightTime[1] + this.state.highlightTime[0] / 2) * (width / Math.abs(Variables.state.duration))) / 2 - (width/20)) - ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
@@ -965,8 +1019,8 @@ class PlayerBottom extends Component {
                 return (
                     <Text style={{
                         color: '#3e4164',
-                        fontSize: 16,
-                        marginBottom: 20,
+                        fontSize: width/23.44,
+                        marginBottom: height/33.35,
                         flexDirection: 'row',
                         backgroundColor: 'transparent',
                         marginLeft: ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
@@ -981,8 +1035,44 @@ class PlayerBottom extends Component {
                 return (
                     <Text style={{
                         color: '#3e4164',
-                        fontSize: 16,
-                        marginBottom: 20,
+                        fontSize: width/23.44,
+                        marginBottom: height/33.35,
+                        flexDirection: 'row',
+                        backgroundColor: 'transparent',
+                        marginLeft:  ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
+                        fontFamily: 'Montserrat-Regular',
+                    }}
+                    >{minutes}:{seconds}</Text>
+                );
+            }
+        }
+        else if(Number(num2) < 100){
+            var minutes = num2.slice(0,2);
+            Number(minutes.slice(0,2));
+            if(Number(num) < 10){
+                var seconds = num.slice(0,1);
+                Number(seconds.slice(0,1));
+                return (
+                    <Text style={{
+                        color: '#3e4164',
+                        fontSize: width/23.44,
+                        marginBottom: height/33.35,
+                        flexDirection: 'row',
+                        backgroundColor: 'transparent',
+                        marginLeft: ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
+                        fontFamily: 'Montserrat-Regular',
+                    }}
+                    >{minutes}:0{seconds}</Text>
+                )
+            }
+            else{
+                var seconds = num.slice(0,2);
+                Number(seconds.slice(0,2));
+                return (
+                    <Text style={{
+                        color: '#3e4164',
+                        fontSize: width/23.44,
+                        marginBottom: height/33.35,
                         flexDirection: 'row',
                         backgroundColor: 'transparent',
                         marginLeft:  ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
@@ -993,16 +1083,16 @@ class PlayerBottom extends Component {
             }
         }
         else{
-            var minutes = num2.slice(0,2);
-            Number(minutes.slice(0,2));
+            var minutes = num2.slice(0,3);
+            Number(minutes.slice(0,3));
             if(Number(num) < 10){
                 var seconds = num.slice(0,1);
                 Number(seconds.slice(0,1));
                 return (
                     <Text style={{
                         color: '#3e4164',
-                        fontSize: 16,
-                        marginBottom: 20,
+                        fontSize: width/23.44,
+                        marginBottom: height/33.35,
                         flexDirection: 'row',
                         backgroundColor: 'transparent',
                         marginLeft: ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
@@ -1017,8 +1107,8 @@ class PlayerBottom extends Component {
                 return (
                     <Text style={{
                         color: '#3e4164',
-                        fontSize: 16,
-                        marginBottom: 20,
+                        fontSize: width/23.44,
+                        marginBottom: height/33.35,
                         flexDirection: 'row',
                         backgroundColor: 'transparent',
                         marginLeft:  ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),

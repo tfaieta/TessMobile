@@ -72,7 +72,7 @@ exports.notificationNewEp = functions.database.ref(`/podcasts/{podcastKey}`)
                 timeToLive: 60 * 60 * 24
             };
 
-            let podArtist = podcastArtist.toString().trim();
+            let podArtist = podcastArtist.toString().replace(/\s/g, "_");
 
             const topic = ("/topics/" + podArtist);
             console.log(topic);
