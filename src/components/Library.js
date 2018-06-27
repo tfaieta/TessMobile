@@ -137,7 +137,7 @@ class Library extends Component{
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.timeout = setTimeout(() => {
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myQueue), dataCatchUp: dataSource.cloneWithRows(Variables.state.catchUp)})
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myQueue), dataCatchUp: dataSource.cloneWithRows(Variables.state.catchUp), refreshing: false})
         },1500);
 
     };

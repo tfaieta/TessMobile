@@ -60,9 +60,9 @@ class Notifications extends Component{
         firebase.database().ref(`users/${currentUser.uid}/following`).once('value', function (snapshot) {
             snapshot.forEach(function (data) {
                 if(data.val()){
-                    console.log("Subscribed to: " + data.key);
-                    FCM.subscribeToTopic(`/topics/${data.key}`);
-
+                    let topic = data.key.trim();
+                    console.log("Subscribed to: " + topic);
+                    FCM.subscribeToTopic(`/topics/${topic}`);
                 }
             })
         });

@@ -43,7 +43,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>21</string>
+	<string>22</string>
 	<key>FacebookAppID</key>
 	<string>820280631481558</string>
 	<key>FacebookDisplayName</key>
@@ -77,7 +77,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Tess will need to use your camera to take pictures.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Tess will need to use your microphone to record.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
