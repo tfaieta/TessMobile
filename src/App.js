@@ -75,6 +75,7 @@ import Category from "./components/DiscoverBar/Category";
 import Discover from "./components/Discover";
 import Media from "./components/Media";
 import Hub from "./components/Hub";
+import Podcasts from "./components/Podcasts";
 
 
 const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
@@ -131,6 +132,7 @@ Navigation.registerComponent('Queue', () => Queue, store, Provider);
 Navigation.registerComponent('Favorites', () => Favorites, store, Provider);
 Navigation.registerComponent('MyContent', () => MyContent, store, Provider);
 Navigation.registerComponent('Followed', () => FollowedContent, store, Provider);
+Navigation.registerComponent('Podcasts', () => Podcasts, store, Provider);
 Navigation.registerComponent('RecentlyPlayed', () => RecentlyPlayed, store, Provider);
 Navigation.registerComponent('Playlists', () => Playlists, store, Provider);
 Navigation.registerComponent('PlaylistView', () => PlaylistView, store, Provider);

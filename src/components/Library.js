@@ -168,9 +168,9 @@ class Library extends Component{
         });
     };
 
-    GoToFollowedContent = () => {
+    GoToPodcasts = () => {
         this.props.navigator.push({
-            screen: 'Followed',
+            screen: 'Podcasts',
             title: 'Podcasts'
         });
     };
@@ -261,7 +261,7 @@ class Library extends Component{
                     </TouchableOpacity>
 
 
-                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 15, marginVertical: 1}} onPress={this.GoToFollowedContent} >
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 15, marginVertical: 1}} onPress={this.GoToPodcasts} >
                         <Text style = {styles.title}>   Podcasts</Text>
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{

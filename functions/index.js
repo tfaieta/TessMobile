@@ -86,13 +86,22 @@ exports.notificationNewEp = functions.database.ref(`/podcasts/{podcastKey}`)
 
 
 exports.notificationFollow = functions.database.ref(`/users/{id}/followers`)
-    .onCreate(event => {
+    .onWrite(event => {
 
-        return admin.database.ref(`users/${event.key}/token`).once('value', function (snapshot) {
+        let user = event.after.ref;
+        console.log(user.toString().substr(40,28));
+        user = user.toString().substr(40, 28);
+        console.log("Followed User: " + user);
+
+        const getValuePromise = admin.database.ref(`users/${user}/token`).once('value');
+
+        return getValuePromise.then(snapshot => {
 
             const token = snapshot.val();
-            const podcastArtist = event.val();
 
+            const podcastArtist = event.after.val();
+
+            console.log("User Following: " + podcastArtist);
             console.log(token, podcastArtist);
 
             const payload = {
@@ -108,7 +117,10 @@ exports.notificationFollow = functions.database.ref(`/users/{id}/followers`)
                 .sendToDevice(token, payload)
 
 
+
         });
+
+
     });
 
 

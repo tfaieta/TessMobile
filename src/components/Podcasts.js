@@ -15,7 +15,7 @@ if(Platform.OS === 'ios'){
 }
 
 
-class FollowedContent extends Component{
+class Podcasts extends Component{
 
     componentWillMount(){
         Variables.state.usersFollowed = [];
@@ -27,18 +27,22 @@ class FollowedContent extends Component{
         refFol.orderByChild('following').once("value", function (snapshot) {
             snapshot.forEach(function (data) {
                 if(data.key){
-                    firebase.database().ref(`users/${data.key}/username`).once('value', function (snap) {
-                        if(snap.val()){
-                            if(snap.val().username){
-                                sortedData.push({username: snap.val().username, id: data.key});
-                                for(let i = sortedData.length-1; i > 0 && sortedData[i].username.toLowerCase() > sortedData[i-1].username.toLowerCase(); i--){
-                                    let temp = sortedData[i-1];
-                                    sortedData[i-1] = sortedData[i];
-                                    sortedData[i] = temp;
+                    firebase.database().ref(`users/${data.key}/podcasts`).once("value", function (pods) {
+                        if(pods.val()){
+                            firebase.database().ref(`users/${data.key}/username`).once('value', function (snap) {
+                                if(snap.val()){
+                                    if(snap.val().username){
+                                        sortedData.push({username: snap.val().username, id: data.key});
+                                        for(let i = sortedData.length-1; i > 0 && sortedData[i].username.toLowerCase() > sortedData[i-1].username.toLowerCase(); i--){
+                                            let temp = sortedData[i-1];
+                                            sortedData[i-1] = sortedData[i];
+                                            sortedData[i] = temp;
+                                        }
+                                    }
                                 }
-                            }
+                            })
                         }
-                    })
+                    });
                 }
             })
         });
@@ -107,18 +111,22 @@ class FollowedContent extends Component{
         refFol.orderByChild('following').once("value", function (snapshot) {
             snapshot.forEach(function (data) {
                 if(data.key){
-                    firebase.database().ref(`users/${data.key}/username`).once('value', function (snap) {
-                        if(snap.val()){
-                            if(snap.val().username){
-                                sortedData.push({username: snap.val().username, id: data.key});
-                                for(let i = sortedData.length-1; i > 0 && sortedData[i].username.toLowerCase() > sortedData[i-1].username.toLowerCase(); i--){
-                                    let temp = sortedData[i-1];
-                                    sortedData[i-1] = sortedData[i];
-                                    sortedData[i] = temp;
+                    firebase.database().ref(`users/${data.key}/podcasts`).once("value", function (pods) {
+                        if(pods.val()){
+                            firebase.database().ref(`users/${data.key}/username`).once('value', function (snap) {
+                                if(snap.val()){
+                                    if(snap.val().username){
+                                        sortedData.push({username: snap.val().username, id: data.key});
+                                        for(let i = sortedData.length-1; i > 0 && sortedData[i].username.toLowerCase() > sortedData[i-1].username.toLowerCase(); i--){
+                                            let temp = sortedData[i-1];
+                                            sortedData[i-1] = sortedData[i];
+                                            sortedData[i] = temp;
+                                        }
+                                    }
                                 }
-                            }
+                            })
                         }
-                    })
+                    });
                 }
             })
         });
@@ -168,6 +176,8 @@ class FollowedContent extends Component{
                         />}
                 >
 
+                    <Text style={styles.title}>{this.state.length} podcasts</Text>
+
                     <ListView
                         enableEmptySections
                         dataSource={this.state.dataSource}
@@ -209,4 +219,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default FollowedContent;
+export default Podcasts;

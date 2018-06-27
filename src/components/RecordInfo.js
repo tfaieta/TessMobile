@@ -69,7 +69,10 @@ class RecordInfo extends Component{
         Variables.state.podcastArtist = firebase.auth().currentUser.uid;
         Variables.state.repeat = true;
         Variables.state.seekTo = 0;
-        Variables.state.paused=true;
+        Variables.state.paused = true;
+        Variables.state.userProfileImage = '';
+        Variables.state.podcastCategory = '';
+        Variables.state.podcastDescription = '';
 
         const {currentUser} = firebase.auth();
         let userID = currentUser.uid;
@@ -95,6 +98,7 @@ class RecordInfo extends Component{
 
 
     componentWillUnmount(){
+        Variables.state.repeat = false;
         clearInterval(this.interval);
     }
 
@@ -119,10 +123,9 @@ class RecordInfo extends Component{
                     this.props.podcastUpdate({prop: 'podcastTitle', value: ''});
                     this.props.podcastUpdate({prop: 'podcastCategory', value: ''});
 
-                    this.props.navigator.resetTo({
-                        screen: 'RecordFirst',
-                        animated: true,
-                        animationType: 'fade',
+                    this.props.navigator.popToRoot({
+                        animated: true, // does the popToRoot have transition animation or does it happen immediately (optional)
+                        animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
                     });
 
 
@@ -152,6 +155,7 @@ class RecordInfo extends Component{
 
     Upload = () => {
 
+        Variables.state.repeat = false;
         Variables.state.paused = true;
         this.setState({
             isPlaying: false
@@ -230,7 +234,7 @@ class RecordInfo extends Component{
                 );
             }
         }
-        else{
+        else if(Number(num2) < 100){
             var minutes = num2.slice(0,2);
             Number(minutes.slice(0,2));
             if(Number(num) < 10){
@@ -248,6 +252,25 @@ class RecordInfo extends Component{
                 );
             }
         }
+        else{
+            var minutes = num2.slice(0,3);
+            Number(minutes.slice(0,3));
+            if(Number(num) < 10){
+                var seconds = num.slice(0,1);
+                Number(seconds.slice(0,1));
+                return (
+                    <Text style={styles.podcastTextNum}>{minutes}:0{seconds}</Text>
+                )
+            }
+            else{
+                var seconds = num.slice(0,2);
+                Number(seconds.slice(0,2));
+                return (
+                    <Text style={styles.podcastTextNum}>{minutes}:{seconds}</Text>
+                );
+            }
+        }
+
 
     }
 
@@ -323,7 +346,7 @@ class RecordInfo extends Component{
             <Slider
                 minimumTrackTintColor='#5757FF'
                 maximumTrackTintColor='#fff'
-                thumbStyle={{width: 20, height: 20, borderRadius: 10, backgroundColor: '#5757FF', borderColor: '#FFF', borderWidth: 2}}
+                thumbStyle={{width: width/18.75, height: width/18.75, borderRadius: width/37.5, backgroundColor: '#5757FF', borderColor: '#FFF', borderWidth: 2}}
                 animateTransitions = {true}
                 style={styles.sliderContainer}
                 step={0}
@@ -342,8 +365,8 @@ class RecordInfo extends Component{
                 <TouchableOpacity onPress={this.pause}>
                 <Icon style={{
                     textAlign: 'right',
-                    fontSize: 35,
-                    marginHorizontal: 10,
+                    fontSize: width/10.71,
+                    marginHorizontal: width/37.5,
                     color: '#fff',
                     backgroundColor: 'transparent',
                 }} name="ios-pause">
@@ -356,8 +379,8 @@ class RecordInfo extends Component{
                 <TouchableOpacity onPress={this.play}>
                 <Icon style={{
                     textAlign: 'right',
-                    fontSize: 35,
-                    marginHorizontal: 10,
+                    fontSize: width/10.71,
+                    marginHorizontal: width/37.5,
                     color: '#fff',
                     backgroundColor: 'transparent',
                 }} name="ios-play">
@@ -374,10 +397,10 @@ class RecordInfo extends Component{
 
             return(
                     <View style={{flex:1, flexDirection:'row'}}>
-                        <View style={{width: (width / 100) * (uploadProgress), alignContent:'flex-start', backgroundColor: '#5757FF', marginVertical: 12}} >
-                            <ActivityIndicator style={{paddingVertical: 10, alignSelf:'center'}} color="#fff" size ="small" />
+                        <View style={{width: (width / 100) * (uploadProgress), alignContent:'flex-start', backgroundColor: '#5757FF', marginVertical: height/55.58}} >
+                            <ActivityIndicator style={{paddingVertical: height/66.7, alignSelf:'center'}} color="#fff" size ="small" />
                         </View>
-                        <View style={{width: (width - (width / 100) * (uploadProgress) ), marginVertical: 12, flex:1, alignContent:'flex-end', backgroundColor: '#929acb70'}}/>
+                        <View style={{width: (width - (width / 100) * (uploadProgress) ), marginVertical: height/55.58, flex:1, alignContent:'flex-end', backgroundColor: '#929acb70'}}/>
                     </View>
             )
         }
@@ -405,11 +428,11 @@ class RecordInfo extends Component{
                 <ScrollView   scrollEnabled={false}>
 
 
-                <View style={{flexDirection: 'row', paddingVertical:5,  }}>
-                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
+                <View style={{flexDirection: 'row', paddingVertical: height/133.4}}>
+                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: height/33.35}}>
                         <TouchableOpacity onPress={this.Cancel}>
                             <Icon style={{
-                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#fff'
+                                textAlign:'left', marginLeft: width/37.5, fontSize: width/12.5, color:'#fff'
                             }} name="md-arrow-round-back">
                             </Icon>
                         </TouchableOpacity>
@@ -425,14 +448,14 @@ class RecordInfo extends Component{
 
 
 
-                    <View style={{flexDirection: 'row', paddingBottom: 30, marginTop: 10  }}>
-                        <View style={{marginTop: 10, alignItems: 'flex-start'}}>
+                    <View style={{flexDirection: 'row', paddingBottom: height/22.23, marginTop: height/66.7}}>
+                        <View style={{marginTop: height/66.7, alignItems: 'flex-start'}}>
                                 {this._renderPlayButton(this.state.isPlaying)}
                         </View>
                         <View style={{justifyContent: 'center', alignItems: 'flex-end',}}>
                             <Text  style={styles.contentTime}>{this._renderCurrentTime(Variables.state.currentTime)}</Text>
                         </View>
-                        <View style={{justifyContent: 'center', alignItems: 'center', marginHorizontal: 15}}>
+                        <View style={{justifyContent: 'center', alignItems: 'center', marginHorizontal: width/25}}>
                             {this._renderSlider(Variables.state.currentTime)}
                         </View>
                         <View style={{justifyContent: 'center', alignItems: 'flex-end',}}>
@@ -492,9 +515,9 @@ class RecordInfo extends Component{
                             backgroundColor: 'transparent',
                         }} name="md-folder">
                         </Icon>
-                        <Text style={{ color: '#fff', marginTop: 10, fontSize: 16, marginLeft: 10, fontFamily: 'Montserrat-Regular', }}>Categories</Text>
+                        <Text style={{ color: '#fff', marginTop: height/66.7, fontSize: width/23.44, marginLeft: width/37.5, fontFamily: 'Montserrat-Regular', }}>Categories</Text>
                         <Text
-                            style={{ color: '#BBBCCD', marginTop: 10, fontSize: 16, marginLeft: 30, fontFamily: 'Montserrat-Regular', }}
+                            style={{ color: '#BBBCCD', marginTop: height/66.7, fontSize: width/23.44, marginLeft: width/12.5, fontFamily: 'Montserrat-Regular', }}
                             onPress={() => {
                                 this.refs.picker1.show();
                             }}
@@ -502,11 +525,11 @@ class RecordInfo extends Component{
                             {this.state.podcastCategory}
                         </Text>
                         <Icon style={{
-                            flex:1,
+                            flex: 1,
                             textAlign: 'right',
-                            fontSize: 18,
-                            marginRight: 10,
-                            marginTop:10,
+                            fontSize: width/20.83,
+                            marginRight: width/37.5,
+                            marginTop: width/37.5,
                             color: '#fff',
                             backgroundColor: 'transparent',
                         }} name="ios-arrow-forward"
@@ -522,7 +545,7 @@ class RecordInfo extends Component{
                     options={options}
                     labels={labels}
                     itemStyle={{
-                        fontSize: 22,
+                        fontSize: width/17.05,
                         color: 'black',
                         textAlign: 'center',
                         fontWeight: 'bold',
@@ -534,7 +557,7 @@ class RecordInfo extends Component{
                     }}
                     />
 
-                    <View style={{height:1, marginVertical: 15, backgroundColor: '#fff', marginHorizontal:15, borderRadius:10, borderWidth:0.1}}/>
+                    <View style={{height: height/667, marginVertical: height/44.47, backgroundColor: '#fff', marginHorizontal: width/25, borderRadius: 10, borderWidth: 0.1}}/>
 
 
 
@@ -570,7 +593,7 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        color: '#804cc8',
+        color: '#9a5e9a',
         marginTop: height/9.53,
         flex:1,
         textAlign: 'center',
@@ -627,7 +650,7 @@ const styles = StyleSheet.create({
     },
 
     buttonUpload: {
-        backgroundColor: '#5757FF',
+        backgroundColor: '#506dcf',
         alignItems: 'center',
         paddingTop: height/133.4,
         marginHorizontal: width/25,
@@ -637,7 +660,7 @@ const styles = StyleSheet.create({
     },
 
     buttonCancel: {
-        backgroundColor: '#ee617c',
+        backgroundColor: '#d15564',
         alignItems: 'center',
         paddingTop: height/133.4,
         marginHorizontal: 15,

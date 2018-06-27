@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, StatusBar, Animated, Easing, Image, Platform, Alert, Dimensions, PermissionsAndroid} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity,  Animated, Easing, Image, Platform, Alert, Dimensions, PermissionsAndroid} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Sound from 'react-native-sound';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
 import LinearGradient from "react-native-linear-gradient/index.android";
 import Variables from "./Variables";
-
 
 
 
@@ -430,10 +429,9 @@ class Record extends Component{
                         this.prepareRecordingPath(this.state.audioPath);
 
 
-                        this.props.navigator.resetTo({
-                            screen: 'RecordFirst',
-                            animated: true,
-                            animationType: 'fade',
+                        this.props.navigator.popToRoot({
+                            animated: true, // does the popToRoot have transition animation or does it happen immediately (optional)
+                            animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
                         });
 
                     }
@@ -449,17 +447,14 @@ class Record extends Component{
             this.setState({stoppedRecording: true, recording: false});
 
 
-            this.props.navigator.resetTo({
-                screen: 'RecordFirst',
-                animated: true,
-                animationType: 'fade',
+            this.props.navigator.popToRoot({
+                animated: true, // does the popToRoot have transition animation or does it happen immediately (optional)
+                animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
             });
 
 
 
-
         }
-
 
 
 
