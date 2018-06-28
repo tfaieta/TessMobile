@@ -1,43 +1,29 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ListView, Dimensions, TouchableOpacity, Alert, ScrollView} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
+import { FormLabel, FormInput, FormValidationMessage, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { SearchBar } from 'react-native-elements';
-import PlayerBottom from './PlayerBottom';
-import Variables from "./Variables";
 import firebase from 'firebase';
-import InvertibleScrollView from 'react-native-invertible-scroll-view';
-import ListItem from "./ListItem";
+import PlayerBottom from './PlayerBottom';
 
 var {height, width} = Dimensions.get('window');
 
-class Search extends Component{
-
+class Recommend extends Component{
 
     static navigatorStyle = {
         statusBarHidden: false,
         navBarHidden: true,
         statusBarTextColorScheme: 'dark',
         statusBarColor: '#fff',
+
     };
 
-    componentDidMount(){
-        this.refs.input.focus();
+    state = {
+      input: '',
     };
 
-    searchActivate = () => {
-        Variables.state.searchWord = this.state.search;
-        this.props.navigator.push({
-            screen: 'SearchPage',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            search: Variables.state.searchWord
-        };
+    pushRecommend = (input) => {
+        const user = firebase.auth().currentUser.uid;
+        firebase.database().ref(`recommendedPods/${this.state.input}`).update({user});
     };
 
     Back= () => {
@@ -50,7 +36,9 @@ class Search extends Component{
     render() {
         return (
             <View style={styles.container}>
+
                 <View style={styles.backColor}>
+
                     <TouchableOpacity style={styles.backButtonContainer} onPress={this.Back}>
                         <View>
                             <Icon style={{
@@ -62,25 +50,13 @@ class Search extends Component{
                             }} name="ios-arrow-back"/>
                         </View>
                     </TouchableOpacity>
-                    <SearchBar
-                        lightTheme
-                        round
-                        inputStyle={{backgroundColor: '#fff', color: '#2A2A30', marginHorizontal: width/40, paddingBottom: height/45.58,
-                            fontFamily: 'Montserrat-SemiBold', fontStyle: 'normal' }}
-                        textInputRef='input'
-                        ref='input'
-                        containerStyle= {styles.containerSearch}
-                        placeholder={this.state.search}
-                        placeholderTextColor = '#2A2A30'
-                        noIcon={true}
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        value={this.state.search}
-                        onChangeText={search => this.setState({ search })}
-                        returnKeyType='search'
-                        onSubmitEditing={this.searchActivate}
-                    />
                 </View>
+                <FormLabel>Recommended Podcast</FormLabel>
+                <FormInput onChangeText={input => this.setState({input: input})}
+                           returnKeyType="go"
+                           onSubmitEditing={() => this.pushRecommend()}
+                           />
+                <Button title='Submit' style={{paddingTop: height/60}} onPress={this.pushRecommend}/>
                 <PlayerBottom navigator={this.props.navigator}/>
             </View>
         );
@@ -92,9 +68,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'transparent',
     },
-
     title: {
-        color: '#2A2A30',
+        color: '#3e4164',
         marginTop: 0,
         flex:1,
         textAlign: 'left',
@@ -180,7 +155,7 @@ const styles = StyleSheet.create({
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: height/33.35,
+        fontSize: height/44.35,
         backgroundColor: 'transparent'
     },
     titleOther: {
@@ -258,8 +233,22 @@ const styles = StyleSheet.create({
         marginTop: height/222.33,
         marginHorizontal: -100,
     },
+    textRequest: {
+        color: '#3e4164',
+        textAlign: 'center',
+        flex:1,
+        paddingBottom: height/45.58,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: height/45.35,
+    },
+    bar: {
+        flex: 1,
+        height: height/14,
+        width: width,
+        backgroundColor: '#fff',
+    },
 
 
 });
 
-export default Search;
+export default Recommend;

@@ -97,23 +97,28 @@ static navigatorStyle = {
         else{
             return(
                 <View>
-                    <ActivityIndicator style={{paddingVertical: 20, alignSelf:'center'}} color='#3e4164' size ="large" />
+                    <ActivityIndicator style={{paddingVertical: 20, alignSelf:'center'}} color='#3e4164' size ="large"/>
                 </View>
             )
         }
-
     };
 
     // Here we have to make a function on press to bring up and alert with a text box then on that press
     // write it to the database
     podcastRequest = () => {
-      if (this.state.searchFinished) {
-          return(
-              <TouchableOpacity style={styles.bar}>
-              <Text style={styles.textRequest}>Can't find a podcast? Recommend it!</Text>
+          return (
+              <TouchableOpacity style={styles.bar} onPress={this.goToPage}>
+                  <Text style={styles.textRequest}>Can't find a podcast? Recommend it!</Text>
               </TouchableOpacity>
           )
-      }
+    };
+
+    goToPage = () => {
+        this.props.navigator.push({
+            screen: 'Recommend',
+            animated: true,
+            animationType: 'fade',
+        });
     };
 
     renderRow = (rowData) => {
@@ -130,7 +135,6 @@ static navigatorStyle = {
     render() {
         return (
             <View style={styles.container}>
-
 
                 <View style={styles.backColor}>
 
