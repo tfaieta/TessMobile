@@ -31,8 +31,7 @@ if(Platform.OS === 'ios'){
 
 
 
-// NOT IN USE, see UserProfile.js
-// contains a profile that you can view (any profile that is not yours)
+// Used to open profile from comments, for main user profile see UserProfile.js
 
 class UserProfileModal extends Component {
 
@@ -201,7 +200,9 @@ class UserProfileModal extends Component {
         });
 
 
-        if(Variables.state.rss){
+        const {rss} = this.props;
+
+        if(rss){
             firebase.database().ref(`users/${Variables.state.browsingArtist}/profileImage`).once("value", function (snapshot) {
                 if(snapshot.val()){
                     Variables.state.onUserProfileImage = snapshot.val().profileImage
@@ -3279,7 +3280,7 @@ class UserProfileModal extends Component {
     renderRecent(data){
         if(data.length > 0){
             return(
-                <View style={{backgroundColor: '#fff', marginHorizontal: 8, marginVertical: 15, borderRadius: 10}}>
+                <View style={{backgroundColor: '#fff', marginHorizontal: height/46.88, marginVertical: height/44.47, borderRadius: 10}}>
                     <Text style={styles.myContentTitle}>Recently Listened</Text>
                     <View style={{flexDirection: 'row', marginTop: 10}}>
                         <ListView
@@ -3294,7 +3295,7 @@ class UserProfileModal extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor: '#fff', marginHorizontal: 8, marginVertical: 15, borderRadius: 10}}>
+                <View style={{backgroundColor: '#fff', marginHorizontal: height/46.88, marginVertical: height/44.47, borderRadius: 10}}>
                     <Text style={styles.myContentTitle}>Recently Listened</Text>
                     <View>
                         <Text style={styles.titleSmall}>No recent listening activity</Text>
@@ -3324,17 +3325,19 @@ class UserProfileModal extends Component {
                 fixedTitle = this.state.username;
             }
 
-            if(Variables.state.rss){
+            const {rss} = this.props;
+
+            if(rss){
 
                 return (
                     <View
                         style={styles.container}>
 
-                        <View style={{flexDirection: 'row', backgroundColor: '#fff', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 3}, shadowOpacity: 0.1, shadowRadius: 5}}>
-                            <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
+                        <View style={{flexDirection: 'row', backgroundColor: '#fff', paddingVertical: height/133.4, paddingBottom: height/44.47, shadowOffset:{  width: 0,  height: 3}, shadowOpacity: 0.1, shadowRadius: 5}}>
+                            <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: height/33.35}}>
                                 <TouchableOpacity onPress={this._pressBack}>
                                     <Icon style={{
-                                        textAlign:'left',marginLeft: 10, fontSize: 28, color:'#007aff',
+                                        textAlign:'left', marginLeft: width/37.5, fontSize: width/13.39, color:'#007aff',
                                     }} name="ios-arrow-back">
                                     </Icon>
                                 </TouchableOpacity>
@@ -3364,7 +3367,7 @@ class UserProfileModal extends Component {
 
                                 {this._renderBio()}
 
-                                <View style={{flexDirection: 'row', marginTop: 10}}>
+                                <View style={{flexDirection: 'row', marginTop: height/66.7}}>
                                     {this._renderFollowButton()}
                                     {this._renderTrackButton()}
                                 </View>
@@ -3378,7 +3381,7 @@ class UserProfileModal extends Component {
 
                             </View>
 
-                            <View style={{backgroundColor: '#fff', marginVertical: 15, marginHorizontal: 7, borderRadius: 10}}>
+                            <View style={{backgroundColor: '#fff', marginVertical: height/44.47, marginHorizontal: width/53.57, borderRadius: 10}}>
                                 <Text style={styles.myContentTitle}>{Variables.state.userPodcasts.length} episodes</Text>
                                 <ListView
                                     enableEmptySections
@@ -3388,7 +3391,7 @@ class UserProfileModal extends Component {
                                 />
                             </View>
 
-                            <View style={{paddingBottom:120}}>
+                            <View style={{paddingBottom: height/5.56}}>
 
                             </View>
 
@@ -3408,16 +3411,16 @@ class UserProfileModal extends Component {
                     <View
                         style={styles.container}>
 
-                        <View style={{flexDirection: 'row', backgroundColor: '#fff', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 3}, shadowOpacity: 0.1, shadowRadius: 5}}>
-                            <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
+                        <View style={{flexDirection: 'row', backgroundColor: '#fff', paddingVertical: height/133.4, paddingBottom: height/44.47, shadowOffset:{  width: 0,  height: 3}, shadowOpacity: 0.1, shadowRadius: 5}}>
+                            <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: height/33.35}}>
                                 <TouchableOpacity onPress={this._pressBack}>
                                     <Icon style={{
-                                        textAlign:'left',marginLeft: 10, fontSize: 28, color:'#007aff',
+                                        textAlign:'left', marginLeft: width/37.5, fontSize: width/13.39, color:'#007aff',
                                     }} name="ios-arrow-back">
                                     </Icon>
                                 </TouchableOpacity>
                             </View>
-                            <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
+                            <View style={{flex: 1,justifyContent: 'center', alignItems: 'center'}}>
                                 <Text style={styles.header}>{fixedTitle}</Text>
                             </View>
 
@@ -3442,7 +3445,7 @@ class UserProfileModal extends Component {
 
                                 {this._renderBio()}
 
-                                <View style={{flexDirection: 'row', marginTop: 10}}>
+                                <View style={{flexDirection: 'row', marginTop: height/66.7}}>
                                     {this._renderFollowButton()}
                                     {this._renderTrackButton()}
                                 </View>
@@ -3452,7 +3455,7 @@ class UserProfileModal extends Component {
 
                             </View>
 
-                            <View style={{backgroundColor: '#fff', marginVertical: 15, marginHorizontal: 7, borderRadius: 10}}>
+                            <View style={{backgroundColor: '#fff', marginVertical: height/44.47, marginHorizontal: width/53.57, borderRadius: 10}}>
                                 <Text style={styles.myContentTitle}>{Variables.state.userPodcasts.length} episodes</Text>
                                 <ListView
                                     enableEmptySections
@@ -3466,7 +3469,7 @@ class UserProfileModal extends Component {
 
                             {this.renderRecent(Variables.state.userRecentlyPlayed)}
 
-                            <View style={{paddingBottom:120}}>
+                            <View style={{paddingBottom: height/5.56}}>
 
                             </View>
 
@@ -3488,23 +3491,6 @@ class UserProfileModal extends Component {
 }
 
 const styles = StyleSheet.create({
-    container:{
-        flex: 1,
-        backgroundColor: '#f5f4f9',
-    },
-    title2: {
-        color: '#3e4164',
-        marginVertical: 10,
-        marginTop: 10,
-        flex:1,
-        textAlign: 'center',
-        opacity: 2,
-        fontStyle: 'normal',
-        fontFamily: 'Montserrat-SemiBold',
-        fontSize: width/22,
-        backgroundColor: 'transparent'
-    },
-
     title3: {
         color: '#2A2A30',
         marginTop: 80,
@@ -3515,18 +3501,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-Regular',
         fontSize: 22,
         backgroundColor: 'transparent'
-    },
-    titleBio: {
-        color: '#3e4164',
-        marginBottom: 10,
-        flex:1,
-        textAlign: 'center',
-        opacity: 2,
-        fontStyle: 'normal',
-        fontFamily: 'Montserrat-Regular',
-        fontSize: width/25,
-        marginHorizontal: 20,
-        backgroundColor: 'transparent',
     },
     header: {
         marginTop: 25,
@@ -3539,61 +3513,88 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
 
+    container:{
+        flex: 1,
+        backgroundColor: '#f5f4f9',
+    },
+    title2: {
+        color: '#3e4164',
+        marginVertical: height/66.7,
+        marginTop: height/66.7,
+        flex: 1,
+        textAlign: 'center',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/22,
+        backgroundColor: 'transparent'
+    },
+    titleBio: {
+        color: '#3e4164',
+        marginBottom: height/66.7,
+        flex: 1,
+        textAlign: 'center',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-Regular',
+        fontSize: width/25,
+        marginHorizontal: width/18.75,
+        backgroundColor: 'transparent',
+    },
     title: {
         color: '#506dcf',
-        marginTop: 5,
-        flex:1,
+        marginTop: height/133.4,
+        flex: 1,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/25,
         backgroundColor: 'transparent',
-        marginHorizontal: 20,
+        marginHorizontal: width/18.75,
 
     },
     titleSmall: {
         color: '#3e4164',
-        paddingVertical: 10,
+        paddingVertical: height/66.7,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/26,
         backgroundColor: 'transparent',
-        marginHorizontal: 5,
+        marginHorizontal: width/75,
     },
     myContentTitle: {
         color: '#3e4164',
-        paddingVertical: 10,
+        paddingVertical: height/66.7,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/22,
         backgroundColor: 'transparent',
-        marginHorizontal: 5,
-
+        marginHorizontal: width/75,
     },
     myContentTitle1: {
         color: '#3e4164',
-        paddingTop: 10,
+        paddingTop: height/66.7,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/22,
         backgroundColor: 'transparent',
-        marginHorizontal: 5,
+        marginHorizontal: width/75,
 
     },
 
     smallTitle: {
         color: '#2A2A30',
-        marginVertical: 5,
-        flex:1,
+        marginVertical: height/133.4,
+        flex: 1,
         textAlign: 'center',
-        opacity: 2,
+        opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/38,
@@ -3601,10 +3602,10 @@ const styles = StyleSheet.create({
     },
     smallTitleLight: {
         color: '#2A2A3030',
-        marginVertical: 5,
-        flex:1,
+        marginVertical: height/133.4,
+        flex: 1,
         textAlign: 'center',
-        opacity: 2,
+        opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/38,
@@ -3612,8 +3613,8 @@ const styles = StyleSheet.create({
     },
     smallTitleNum: {
         color: '#506dcf',
-        marginBottom: 5,
-        flex:1,
+        marginBottom: height/133.4,
+        flex: 1,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
@@ -3623,7 +3624,7 @@ const styles = StyleSheet.create({
     },
     stats: {
         color: '#3e4164',
-        flex:1,
+        flex: 1,
         padding: 8,
         textAlign: 'center',
         opacity: 1,
@@ -3635,18 +3636,18 @@ const styles = StyleSheet.create({
     artistTitle: {
         color: '#828393',
         marginTop: 0,
-        flex:1,
+        flex: 1,
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
         fontSize: width/25,
         backgroundColor: 'transparent',
-        marginLeft: 20,
+        marginLeft: width/18.75,
     },
     containerList: {
         paddingHorizontal: 0,
-        paddingVertical: 10,
+        paddingVertical: height/66.7,
         marginVertical: 0,
         marginHorizontal: 0,
         backgroundColor: '#FFF',
@@ -3662,13 +3663,13 @@ const styles = StyleSheet.create({
     },
     leftContainer: {
         flex: 7,
-        paddingLeft: 2,
+        paddingLeft: width/187.5,
         justifyContent: 'center',
         alignItems:'flex-start',
     },
     rightContainer: {
         flex: 1,
-        paddingRight: 2,
+        paddingRight: width/187.5,
         justifyContent: 'center',
         alignItems: 'flex-end',
 
@@ -3677,15 +3678,15 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        marginTop: 3,
-        marginHorizontal: -100,
+        marginTop: height/222.33,
+        marginHorizontal: -(width/3.75),
     },
     titleFollow: {
         color: '#3e4164',
-        marginVertical: 5,
-        flex:1,
+        marginVertical: height/133.4,
+        flex: 1,
         textAlign: 'center',
-        opacity: 2,
+        opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/23.44,
@@ -3693,10 +3694,10 @@ const styles = StyleSheet.create({
     },
     titleFollowSelected: {
         color: '#506dcf',
-        marginVertical: 5,
-        flex:1,
+        marginVertical: height/133.4,
+        flex: 1,
         textAlign: 'center',
-        opacity: 2,
+        opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/23.44,

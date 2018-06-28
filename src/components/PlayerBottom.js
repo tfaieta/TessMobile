@@ -10,6 +10,7 @@ import MultiSlider from '@ptomasroos/react-native-multi-slider';
 var Analytics = require('react-native-firebase-analytics');
 
 import { Navigation } from 'react-native-navigation';
+import PlayerInfo from "./PlayerInfo";
 
 var {height, width} = Dimensions.get('window');
 
@@ -26,6 +27,7 @@ class PlayerBottom extends Component {
 
     componentWillUnmount(){
         clearInterval(this.interval);
+        this.setModalVisible(false);
     }
 
 
@@ -680,8 +682,7 @@ class PlayerBottom extends Component {
             if (liked) {
                 return (
                     <TouchableOpacity onPress = {this.pressLike}>
-                        <Icon style={{textAlign: 'center', fontSize: 28, color: '#506dcf', marginRight: 25}} name="md-happy">
-                            <Text style={styles.podcastTextLikes}>   {likers.length}</Text>
+                        <Icon style={{textAlign: 'center', fontSize: width/12, color: '#506dcf', marginRight: width/12.5}} name="md-happy">
                         </Icon>
 
                     </TouchableOpacity>
@@ -690,8 +691,7 @@ class PlayerBottom extends Component {
             else{
                 return(
                     <TouchableOpacity onPress = {this.pressLike}>
-                        <Icon style={{textAlign: 'center', fontSize: 28, color: '#BBBCCD', marginRight: 25}} name="md-happy">
-                            <Text style={styles.podcastTextLikes}>   {likers.length}</Text>
+                        <Icon style={{textAlign: 'center', fontSize: width/12, color: '#BBBCCD', marginRight: width/12.5}} name="md-happy">
                         </Icon>
                     </TouchableOpacity>
                 )
@@ -1128,7 +1128,7 @@ class PlayerBottom extends Component {
 
         if(this.state.highlight){
             return(
-                <TouchableOpacity style = {{marginTop: height/14, marginBottom: height/22, marginHorizontal: 90, borderRadius: 7, backgroundColor: '#3e4164', padding: 5}} onPress={() => {
+                <TouchableOpacity style = {{marginTop: height/28, marginBottom: height/28, marginHorizontal: width/4.17, borderRadius: 7, backgroundColor: '#3e4164', padding: 5}} onPress={() => {
                     this.setState({highlight: false});
                     const highlightTime = this.state.highlightTime;
                     const podcastID = Variables.state.podcastID;
@@ -1149,7 +1149,7 @@ class PlayerBottom extends Component {
         }
         else{
             return(
-                <TouchableOpacity style = {{marginTop: height/14, marginBottom: height/22, marginHorizontal: 90, borderRadius: 7, backgroundColor: '#506dcf', padding: 5}} onPress={() => {
+                <TouchableOpacity style = {{marginTop: height/28, marginBottom: height/28, marginHorizontal: width/4.17, borderRadius: 7, backgroundColor: '#506dcf', padding: 5}} onPress={() => {
                     this.setState({highlight: true, highlightTime: [Variables.state.currentTime, Variables.state.currentTime + 15]});
 
                     const {currentUser} = firebase.auth();
@@ -1364,7 +1364,7 @@ class PlayerBottom extends Component {
         else if(highlight){
             return(
                 <View style = {styles.containerOutsideModal}>
-                    <View
+                    <ScrollView
                         style={styles.containerModal}>
 
                         <StatusBar
@@ -1389,27 +1389,20 @@ class PlayerBottom extends Component {
                         {this._renderPodcastImageBig(Variables.state.userProfileImage)}
 
 
-                        <View style={{marginTop: height/66.7, flex:1}}>
+                        <View style={{marginVertical: height/28, flex:1}}>
                             {this._renderPodcastTitle(Variables.state.isPlaying)}
-                            <TouchableOpacity style={{alignSelf: 'center'}}>
+                            <View style={{alignSelf: 'center'}}>
                                 {this._renderPodcastArtist(Variables.state.isPlaying)}
-                            </TouchableOpacity>
+                            </View>
                             {this._renderCategory()}
                         </View>
-
-
-                        <ScrollView style={{flex: 1, borderTopColor: '#c6c5c920', height: height/8.34, marginTop: height/66.7, paddingVertical: height/44.47, borderTopWidth: height/333.5, borderBottomColor: '#c6c5c920', borderBottomWidth: height/333.5}}>
-                            <Text style = {styles.podcastTextDescriptionTitle}>Highlight Description:</Text>
-                            <Text style = {styles.podcastTextDescription}>{Variables.state.podcastDescription}</Text>
-                        </ScrollView>
-
 
 
                         <View style={styles.centerContainerButtons}>
 
                             <View style={styles.leftContainerP}>
                                 <TouchableOpacity onPress={this.scrubBackward}>
-                                    <Icon style={{flex:1, marginTop: height/44.47, textAlign:'center', fontSize: height/25, color:'#2A2A30' }} name="ios-rewind">
+                                    <Icon style={{flex:1, textAlign:'center', fontSize: height/25, color:'#2A2A30' }} name="ios-rewind">
                                     </Icon>
                                 </TouchableOpacity>
                             </View>
@@ -1422,7 +1415,7 @@ class PlayerBottom extends Component {
 
                             <View style={styles.rightContainerP}>
                                 <TouchableOpacity onPress={this.scrubForward}>
-                                    <Icon style={{flex:1, marginTop: height/44.47, textAlign:'center', fontSize: height/25,color:'#2A2A30' }} name="ios-fastforward">
+                                    <Icon style={{flex:1, textAlign:'center', fontSize: height/25,color:'#2A2A30' }} name="ios-fastforward">
                                     </Icon>
                                 </TouchableOpacity>
                             </View>
@@ -1465,16 +1458,19 @@ class PlayerBottom extends Component {
                         </View>
 
 
+                        <Text style={styles.highlightTitle}>Highlight Info</Text>
+                        <Text style={styles.textDescription}>{Variables.state.podcastDescription}</Text>
 
 
-                    </View>
+
+                    </ScrollView>
                 </View>
             )
         }
         else{
             return(
                 <View style = {styles.containerOutsideModal}>
-                    <View
+                    <ScrollView
                         style={styles.containerModal}>
 
                         <StatusBar
@@ -1499,28 +1495,11 @@ class PlayerBottom extends Component {
                         {this._renderPodcastImageBig(Variables.state.userProfileImage)}
 
 
-                        <TouchableOpacity style={{marginTop: height/33.35}} onPress={() => {
-                            const navigator = this.props.navigator;
-
-                            Navigation.showModal({
-                                screen: "PlayerInfo",
-                                passProps: {navigator},
-                            });
-
-                        }}>
-                            <Icon style={{textAlign:'center', fontSize: width/12.5, color:'#506dcf', }} name="md-add">
-                            </Icon>
-                            <Text style={styles.seeMore}>View More</Text>
-
-                        </TouchableOpacity>
-
-
-
-                        <View style={{marginTop: height/66.7, flex:1}}>
+                        <View style={{marginTop: height/35, flex:1}}>
                             {this._renderPodcastTitle(Variables.state.isPlaying)}
-                            <TouchableOpacity style={{alignSelf: 'center'}}>
+                            <View style={{alignSelf: 'center'}}>
                                 {this._renderPodcastArtist(Variables.state.isPlaying)}
-                            </TouchableOpacity>
+                            </View>
                             {this._renderCategory()}
                         </View>
 
@@ -1591,8 +1570,10 @@ class PlayerBottom extends Component {
 
                         </View>
 
+                        <PlayerInfo navigator={this.props.navigator}/>
 
-                    </View>
+
+                    </ScrollView>
                 </View>
             )
         }
@@ -1642,13 +1623,6 @@ class PlayerBottom extends Component {
 
 
 
-
-
-                <GestureRecognizer
-                    onSwipeDown={(state) => this.onSwipeDown(state)}
-                    config={config}
-                >
-
                     <Modal
                         animationType="slide"
                         transparent={false}
@@ -1661,7 +1635,6 @@ class PlayerBottom extends Component {
 
                     </Modal>
 
-                </GestureRecognizer>
 
 
 
@@ -1775,18 +1748,12 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         backgroundColor: 'transparent',
-        marginTop: height/133.4,
-        marginHorizontal: width/75,
         borderColor: 'transparent',
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        borderWidth: 2
     },
 
     containerOutsideModal:{
         flex: 1,
         backgroundColor: 'transparent',
-
     },
 
 
@@ -1823,25 +1790,30 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Montserrat-SemiBold',
     },
-    podcastTextDescription:{
-        color: '#3e4164',
-        fontSize: width/20.83,
-        marginTop: height/133.4,
-        marginHorizontal: width/37.5,
-        flexDirection: 'row',
-        backgroundColor: 'transparent',
+    textDescription:{
+        color: '#656575',
+        flexDirection: 'column',
         textAlign: 'left',
-        fontFamily: 'Montserrat-Regular',
-    },
-    podcastTextDescriptionTitle:{
-        color: '#3e4164',
-        fontSize: width/25,
-        marginTop: height/133.4,
-        marginHorizontal: width/37.5,
-        flexDirection: 'row',
-        backgroundColor: 'transparent',
-        textAlign: 'left',
+        opacity: 1,
+        fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/27,
+        backgroundColor: 'transparent',
+        marginBottom: height/60,
+        marginHorizontal: width/18.75,
+        paddingBottom: height/33.35,
+    },
+    highlightTitle:{
+        color: '#3e4164',
+        textAlign: 'left',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-Bold',
+        fontSize: width/20,
+        backgroundColor: 'transparent',
+        marginLeft: height/33.35,
+        marginTop: height/28,
+        marginBottom: height/66.7
     },
 
     seeMore:{
@@ -1907,7 +1879,7 @@ const styles = StyleSheet.create({
     podcastTextSpeed:{
         color: '#828393',
         fontSize: width/18.75,
-        marginHorizontal: 30,
+        marginHorizontal: width/12.5,
         marginTop: height/133.4,
         backgroundColor: 'transparent',
         textAlign: 'center'

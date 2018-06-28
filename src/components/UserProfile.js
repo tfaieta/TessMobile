@@ -291,7 +291,7 @@ static navigatorStyle = {
             dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
         };
         this.timeout = setTimeout(() =>{
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),
                 username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
                 following: Variables.state.following,
                 tracking: tracking,
@@ -317,7 +317,7 @@ static navigatorStyle = {
                 userShares: Variables.state.userSharesAmount,
                 dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
             })
-        },3000);
+        },2500);
 
 
         const {currentUser} = firebase.auth();
