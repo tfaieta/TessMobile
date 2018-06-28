@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ListView, TouchableOpacity, ActivityIndicator, ScrollView} from 'react-native';
+import { Text, View, StyleSheet, ListView, TouchableOpacity, ActivityIndicator, ScrollView, Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { SearchBar } from 'react-native-elements';
 import PlayerBottom from './PlayerBottom';
@@ -8,6 +8,7 @@ import firebase from 'firebase';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
 import ListItem from "./ListItem";
 
+var {height, width} = Dimensions.get('window');
 
 class SearchPage extends Component{
 
@@ -67,8 +68,8 @@ static navigatorStyle = {
             search: Variables.state.searchWord,
             searchFinished: false,
         };
-        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches)})},1000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches), searchFinished: true})},3500);
+        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches)})}, 1000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches), searchFinished: true})}, 3500);
     }
 
     _renderResults =(mySearches) => {
@@ -87,8 +88,8 @@ static navigatorStyle = {
             }
             else{
                 return(
-                    <View >
-                        <Text style={styles.title2}>No results found...</Text>
+                    <View>
+                        <Text style={styles.title2}>No Results Found</Text>
                     </View>
                 )
             }
@@ -102,7 +103,19 @@ static navigatorStyle = {
         }
 
     };
-    
+
+    // Here we have to make a function on press to bring up and alert with a text box then on that press
+    // write it to the database
+    podcastRequest = () => {
+      if (this.state.searchFinished) {
+          return(
+              <TouchableOpacity style={styles.bar}>
+              <Text style={styles.textRequest}>Can't find a podcast? Recommend it!</Text>
+              </TouchableOpacity>
+          )
+      }
+    };
+
     renderRow = (rowData) => {
         return <ListItem podcast={rowData} navigator={this.props.navigator} />;
     };
@@ -123,20 +136,25 @@ static navigatorStyle = {
 
                     <TouchableOpacity style={styles.backButtonContainer} onPress={this.Back}>
                         <View>
-                            <Icon style={{textAlign:'left', marginRight:0,marginLeft: 0,paddingTop: 0, fontSize: 30,color: '#007aff', }} name="ios-arrow-back">
-                            </Icon>
+                            <Icon style={{
+                                fontSize: width/22.83,
+                                backgroundColor: 'transparent',
+                                color: '#506dcf',
+                                marginHorizontal: width/41.1,
+                                marginBottom: height/85,
+                            }} name="ios-arrow-back"/>
                         </View>
                     </TouchableOpacity>
 
                     <SearchBar
                         lightTheme
                         round
-                        inputStyle={{backgroundColor: '#fff', color: '#2A2A30', marginLeft: 20}}
+                        noIcon={true}
+                        inputStyle={{backgroundColor: '#fff', color: '#2A2A30', marginHorizontal: width/40, paddingBottom: height/45.58,
+                            fontFamily: 'Montserrat-SemiBold', fontStyle: 'normal' }}
                         containerStyle= {styles.containerSearch}
                         placeholder={this.state.search}
                         placeholderTextColor = '#2A2A30'
-                        icon = {{ color: '#5757FF', name: 'search', paddingRight: 20 }}
-                        clearIcon = {{ color: '#BBBCCD', name: 'close' }}
                         autoCorrect={false}
                         autoCapitalize="none"
                         value={this.state.search}
@@ -149,18 +167,12 @@ static navigatorStyle = {
 
                 <ScrollView>
                     {this._renderResults(Variables.state.mySearches.length)}
-
-                    <View style={{paddingBottom:120}}>
-
+                    <View style={{paddingBottom: height/133.4}}>
                     </View>
-                    
+                    {this.podcastRequest()}
                 </ScrollView>
 
-
-
                 <PlayerBottom navigator={this.props.navigator}/>
-
-
 
             </View>
 
@@ -176,7 +188,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'transparent',
     },
-
     title: {
         color: '#2A2A30',
         marginTop: 0,
@@ -185,21 +196,21 @@ const styles = StyleSheet.create({
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 15,
+        fontSize: height/44.47,
         backgroundColor: 'transparent',
-        marginHorizontal: 20,
+        marginHorizontal: height/33.35,
 
     },
     backColor:{
         backgroundColor:  '#fff',
         flexDirection: 'row',
-        marginTop: 20
+        marginTop: height/33.35,
     },
 
     containerSearch:{
-        marginLeft: 10,
-        marginTop: 20,
-        width: 343.5,
+        marginLeft: height/66.7,
+        marginTop: height/33.35,
+        width: height/1.942,
         backgroundColor: '#fff',
         borderColor:'#fff',
         borderWidth: 1,
@@ -209,8 +220,8 @@ const styles = StyleSheet.create({
         borderBottomColor: '#fff',
     },
     backButtonContainer:{
-        paddingTop: 28,
-        paddingLeft: 10,
+        paddingTop: height/23.821,
+        paddingLeft: height/66.7,
     },
 
     containerList: {
@@ -221,7 +232,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         opacity: 1,
         borderColor: '#FFF',
-        borderWidth: 0.5,
+        borderWidth: height/1334,
         borderRadius: 0,
         borderStyle: 'solid',
         flexDirection: 'row',
@@ -235,22 +246,22 @@ const styles = StyleSheet.create({
 
     contentTitle: {
         color: 'rgba(1,170,170,1)',
-        fontSize: 25,
-        paddingBottom: 20,
-        marginLeft: 20,
+        fontSize: height/26.68,
+        paddingBottom: height/33.35,
+        marginLeft: height/33.35,
 
     },
 
     container2: {
         flex: 1,
         paddingHorizontal: 0,
-        paddingVertical: 10,
+        paddingVertical: height/66.7,
         marginVertical: 0,
         marginHorizontal: 0,
         backgroundColor: '#FFF',
         opacity: 1,
         borderColor: '#FFF',
-        borderWidth: 0.5,
+        borderWidth: height/1334,
         borderRadius: 0,
         borderStyle: 'solid',
         flexDirection: 'row',
@@ -259,12 +270,12 @@ const styles = StyleSheet.create({
     title2: {
         color: '#2A2A30',
         flex:1,
-        marginTop:20,
+        marginTop: height/33.35,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: 20,
+        fontSize: height/44.35,
         backgroundColor: 'transparent'
     },
     titleOther: {
@@ -275,9 +286,9 @@ const styles = StyleSheet.create({
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 15,
+        fontSize: height/44.47,
         backgroundColor: 'transparent',
-        marginHorizontal: 20,
+        marginHorizontal: height/33.35,
 
     },
     artistTitle: {
@@ -288,32 +299,32 @@ const styles = StyleSheet.create({
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: 15,
+        fontSize: height/44.47,
         backgroundColor: 'transparent',
-        marginLeft: 20,
+        marginLeft: height/33.35,
     },
 
     header: {
-        marginTop:25,
+        marginTop: height/26.68,
         marginLeft: -35,
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: 18,
+        fontSize: height/37.06,
         backgroundColor: 'transparent',
 
     },
 
     containerOther: {
         paddingHorizontal: 0,
-        paddingVertical: 10,
+        paddingVertical: height/66.7,
         marginVertical: 0,
         marginHorizontal: 0,
         backgroundColor: '#FFF',
         opacity: 1,
         borderColor: '#FFF',
-        borderWidth: 0.5,
+        borderWidth: height/1334,
         borderRadius: 0,
         borderStyle: 'solid',
         flexDirection: 'row',
@@ -330,7 +341,7 @@ const styles = StyleSheet.create({
     },
     rightContainer: {
         flex: 1,
-        paddingRight: 2,
+        paddingRight: height/333.5,
         justifyContent: 'center',
         alignItems: 'flex-end',
 
@@ -339,8 +350,23 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 3,
+        marginTop: height/222.33,
         marginHorizontal: -100,
+    },
+    textRequest: {
+        color: '#3e4164',
+        marginTop: 0,
+        flex:1,
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: height/45.35,
+    },
+    bar: {
+        flex: 1,
+        height: height/14,
+        width: width,
+        backgroundColor: '#fff',
     },
 
 
