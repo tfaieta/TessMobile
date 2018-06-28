@@ -373,17 +373,51 @@ class ListItemHighlight extends Component {
                             <Text style={styles.artistTitle}>{this.renderInfo()}</Text>
                         </View>
 
-
-                        <View style={styles.rightContainer}>
+                        <View style={styles.middleContainer}>
                             <Icon style={{
                                 textAlign: 'left',
                                 marginLeft: 0,
-                                marginRight: height/44.47,
                                 fontSize: height/40,
                                 color: '#3e4164',
                             }} name="md-time">
                                 {this._renderCurrentTime(this.state.totalTime)}
                             </Icon>
+                        </View>
+
+
+                        <View style={styles.rightContainer}>
+                            <TouchableOpacity onPress={() => {
+                                let rowData = [];
+                                rowData.highlight = true;
+                                rowData.podcastTitle = title;
+                                rowData.podcastArtist = podcastArtist;
+                                rowData.podcastCategory = podcastCategory;
+                                rowData.id = id;
+                                rowData.podcastDescription = description;
+                                rowData.key = key;
+
+                                const {navigator} = this.props;
+
+                                this.props.navigator.showLightBox({
+                                    screen: "PodcastOptions",
+                                    passProps: {rowData, navigator},
+                                    style: {
+                                        backgroundBlur: "dark",
+                                        backgroundColor: '#3e416430',
+                                        tapBackgroundToDismiss: true,
+                                        width: 100,
+                                        height: 200
+                                    },
+                                });
+                            }} style={styles.rightContainer}>
+                                <Icon style={{
+                                    textAlign: 'left',
+                                    marginRight: height/44.47,
+                                    fontSize: height/22.23,
+                                    color: '#506dcf',
+                                }} name="ios-more">
+                                </Icon>
+                            </TouchableOpacity>
                         </View>
 
 
@@ -469,17 +503,15 @@ const styles = {
         alignItems:'flex-start',
     },
     rightContainer: {
-        flex: 3,
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'flex-end',
 
     },
     middleContainer: {
-        flex: 1,
+        flex: 2.5,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: height/222.33,
-        marginHorizontal: -(width/3.75),
     },
 };
 
