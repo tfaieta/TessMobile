@@ -34,6 +34,7 @@ static navigatorStyle = {
     componentWillUnmount(){
         clearInterval(this.interval);
         clearTimeout(this.timeout);
+        clearTimeout(this.timeout2);
     }
 
 
@@ -65,7 +66,7 @@ static navigatorStyle = {
                     }
                 });
             });
-            setTimeout(() => {
+            this.timeout2 = setTimeout(() => {
                 this.setState({dataSource: dataSource.cloneWithRows(Variables.state.comments)})},500);
 
         }, 1000);

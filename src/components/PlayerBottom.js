@@ -1471,6 +1471,11 @@ class PlayerBottom extends Component {
             return(
                 <View style = {styles.containerOutsideModal}>
                     <ScrollView
+                        onScroll={(event) => {
+                            if(event.nativeEvent.contentOffset.y < -10){
+                                this.Close();
+                            }
+                        }}
                         style={styles.containerModal}>
 
                         <StatusBar
