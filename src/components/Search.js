@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ListView, TouchableOpacity, Alert, ScrollView} from 'react-native';
+import { Text, View, StyleSheet, ListView, Dimensions, TouchableOpacity, Alert, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { SearchBar } from 'react-native-elements';
 import PlayerBottom from './PlayerBottom';
@@ -8,8 +8,10 @@ import firebase from 'firebase';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
 import ListItem from "./ListItem";
 
+var {height, width} = Dimensions.get('window');
 
 class Search extends Component{
+
 
     static navigatorStyle = {
         statusBarHidden: false,
@@ -20,9 +22,7 @@ class Search extends Component{
 
     componentDidMount(){
         this.refs.input.focus();
-    }
-
-
+    };
 
     searchActivate = () => {
         Variables.state.searchWord = this.state.search;
@@ -38,13 +38,10 @@ class Search extends Component{
         this.state = {
             search: Variables.state.searchWord
         };
-    }
-
-
-
+    };
 
     Back= () => {
-        this.props.navigator.pop({
+        this.props.navigator.popToRoot({
             animated: true,
             animationType: 'fade',
         });
@@ -53,28 +50,30 @@ class Search extends Component{
     render() {
         return (
             <View style={styles.container}>
-
-
                 <View style={styles.backColor}>
-
                     <TouchableOpacity style={styles.backButtonContainer} onPress={this.Back}>
                         <View>
-                            <Icon style={{textAlign:'left', marginRight:0,marginLeft: 0,paddingTop: 0, fontSize: 30,color:'#007aff', }} name="ios-arrow-back">
-                            </Icon>
+                            <Icon style={{
+                                fontSize: width/22.83,
+                                backgroundColor: 'transparent',
+                                color: '#506dcf',
+                                marginHorizontal: width/41.1,
+                                marginBottom: height/85,
+                            }} name="ios-arrow-back"/>
                         </View>
                     </TouchableOpacity>
-
                     <SearchBar
                         lightTheme
                         round
-                        inputStyle={{backgroundColor: '#fff', color: '#2A2A30', marginLeft: 20}}
+                        inputStyle={{backgroundColor: '#fff', color: '#2A2A30', marginHorizontal: width/50,
+                            fontFamily: 'Montserrat-SemiBold', fontStyle: 'normal', paddingBottom: height/80.31, }}
+
                         textInputRef='input'
                         ref='input'
                         containerStyle= {styles.containerSearch}
                         placeholder={this.state.search}
                         placeholderTextColor = '#2A2A30'
-                        icon = {{ color: '#5757FF', name: 'search', paddingRight: 20 }}
-                        clearIcon = {{ color: '#BBBCCD', name: 'close' }}
+                        noIcon={true}
                         autoCorrect={false}
                         autoCapitalize="none"
                         value={this.state.search}
@@ -82,19 +81,9 @@ class Search extends Component{
                         returnKeyType='search'
                         onSubmitEditing={this.searchActivate}
                     />
-
                 </View>
-
-
                 <PlayerBottom navigator={this.props.navigator}/>
-
-
-
             </View>
-
-
-
-
         );
     }
 }
@@ -113,21 +102,21 @@ const styles = StyleSheet.create({
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 15,
+        fontSize: height/44.47,
         backgroundColor: 'transparent',
-        marginHorizontal: 20,
+        marginHorizontal: height/33.35,
 
     },
     backColor:{
         backgroundColor:  '#fff',
         flexDirection: 'row',
-        marginTop: 20,
+        marginTop: height/33.35,
     },
 
     containerSearch:{
-        marginLeft: 10,
-        marginTop: 20,
-        width: 343.5,
+        marginLeft: height/66.7,
+        marginTop: height/33.35,
+        width: height/1.942,
         backgroundColor: '#fff',
         borderColor:'#fff',
         borderWidth: 1,
@@ -137,8 +126,8 @@ const styles = StyleSheet.create({
         borderBottomColor: '#fff',
     },
     backButtonContainer:{
-        paddingTop: 28,
-        paddingLeft: 10,
+        paddingTop: height/23.821,
+        paddingLeft: height/66.7,
     },
 
     containerList: {
@@ -149,7 +138,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         opacity: 1,
         borderColor: '#FFF',
-        borderWidth: 0.5,
+        borderWidth: height/1334,
         borderRadius: 0,
         borderStyle: 'solid',
         flexDirection: 'row',
@@ -163,22 +152,22 @@ const styles = StyleSheet.create({
 
     contentTitle: {
         color: 'rgba(1,170,170,1)',
-        fontSize: 25,
-        paddingBottom: 20,
-        marginLeft: 20,
+        fontSize: height/26.68,
+        paddingBottom: height/33.35,
+        marginLeft: height/33.35,
 
     },
 
     container2: {
         flex: 1,
         paddingHorizontal: 0,
-        paddingVertical: 10,
+        paddingVertical: height/66.7,
         marginVertical: 0,
         marginHorizontal: 0,
         backgroundColor: '#FFF',
         opacity: 1,
         borderColor: '#FFF',
-        borderWidth: 0.5,
+        borderWidth: height/1334,
         borderRadius: 0,
         borderStyle: 'solid',
         flexDirection: 'row',
@@ -187,12 +176,12 @@ const styles = StyleSheet.create({
     title2: {
         color: '#2A2A30',
         flex:1,
-        marginTop:20,
+        marginTop: height/33.35,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: 20,
+        fontSize: height/33.35,
         backgroundColor: 'transparent'
     },
     titleOther: {
@@ -203,9 +192,9 @@ const styles = StyleSheet.create({
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 15,
+        fontSize: height/44.47,
         backgroundColor: 'transparent',
-        marginHorizontal: 20,
+        marginHorizontal: height/33.35,
 
     },
     artistTitle: {
@@ -216,32 +205,32 @@ const styles = StyleSheet.create({
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: 15,
+        fontSize: height/44.47,
         backgroundColor: 'transparent',
-        marginLeft: 20,
+        marginLeft: height/33.35,
     },
 
     header: {
-        marginTop:25,
+        marginTop: height/26.68,
         marginLeft: -35,
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: 18,
+        fontSize: height/37.06,
         backgroundColor: 'transparent',
 
     },
 
     containerOther: {
         paddingHorizontal: 0,
-        paddingVertical: 10,
+        paddingVertical: height/66.7,
         marginVertical: 0,
         marginHorizontal: 0,
         backgroundColor: '#FFF',
         opacity: 1,
         borderColor: '#FFF',
-        borderWidth: 0.5,
+        borderWidth: height/1334,
         borderRadius: 0,
         borderStyle: 'solid',
         flexDirection: 'row',
@@ -258,7 +247,7 @@ const styles = StyleSheet.create({
     },
     rightContainer: {
         flex: 1,
-        paddingRight: 2,
+        paddingRight: height/333.5,
         justifyContent: 'center',
         alignItems: 'flex-end',
 
@@ -267,7 +256,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 3,
+        marginTop: height/222.33,
         marginHorizontal: -100,
     },
 

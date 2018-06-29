@@ -100,8 +100,6 @@ class ListItemFollowed extends Component {
         }
     }
 
-
-
     renderItem = () => {
         if(this.state.loading){
 
@@ -145,10 +143,7 @@ class ListItemFollowed extends Component {
                 }}>
                     <View style={styles.container}>
 
-
                         {this._renderProfileImage()}
-
-
                         <View style={styles.middleContainer}>
                             <Text style={styles.title}>{this.state.profileName}</Text>
                         </View>

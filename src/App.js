@@ -8,6 +8,7 @@ import StartUp from './components/StartUp';
 
 import { Navigation } from 'react-native-navigation';
 import InitialScreen from "./components/InitialScreen";
+import Recommend from "./components/Recommend";
 import Home from "./components/Home";
 import Browse from "./components/Browse";
 import RecordFirstPage from "./components/RecordFirstPage";
@@ -83,6 +84,7 @@ Navigation.registerComponent('Initial', () => InitialScreen, store, Provider);
 Navigation.registerComponent('Startup', () => StartUp, store, Provider);
 Navigation.registerComponent('Login', () => Login, store, Provider);
 Navigation.registerComponent('CreateAccount', () => CreateAccount, store, Provider);
+Navigation.registerComponent('Recommend', () => Recommend, store, Provider);
 
 Navigation.registerComponent('CustomNavbar', () => CustomNavbar, store, Provider);
 Navigation.registerComponent('DiscoverNavBar', () => DiscoverNavBar, store, Provider);
