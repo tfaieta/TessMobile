@@ -30,6 +30,10 @@ var {height, width} = Dimensions.get('window');
 
 class PlayerOptions extends Component {
 
+    componentWillUnmount(){
+        clearTimeout(this.timeout);
+    }
+
     constructor(props){
         super(props);
         this.state = {
@@ -123,8 +127,8 @@ class PlayerOptions extends Component {
                 return(
                     <View style={styles.container}>
                         <View>
-                            <Text style={styles.textTitle}>{Variables.state.podcastTitle}</Text>
-                            <Text style={styles.textArtist}>{Variables.state.currentUsername}</Text>
+                            <Text style={styles.textTitle}>{this.state.podcastTitle}</Text>
+                            <Text style={styles.textArtist}>{this.state.profileName}</Text>
                         </View>
 
                         <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
@@ -613,8 +617,8 @@ class PlayerOptions extends Component {
                 return(
                     <View style={styles.container}>
                         <View>
-                            <Text style={styles.textTitle}>{podcastTitle}</Text>
-                            <Text style={styles.textArtist}>by {profileName}</Text>
+                            <Text style={styles.textTitle}>{this.state.podcastTitle}</Text>
+                            <Text style={styles.textArtist}>{this.state.profileName}</Text>
                         </View>
 
                         <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
@@ -914,8 +918,8 @@ class PlayerOptions extends Component {
                         return(
                             <View style={styles.container}>
                                 <View>
-                                    <Text style={styles.textTitle}>{podcastTitle}</Text>
-                                    <Text style={styles.textArtist}>{profileName}</Text>
+                                    <Text style={styles.textTitle}>{this.state.podcastTitle}</Text>
+                                    <Text style={styles.textArtist}>{this.state.profileName}</Text>
                                 </View>
 
                                 <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>

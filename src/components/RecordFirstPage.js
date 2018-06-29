@@ -8,15 +8,23 @@ import RNFetchBlob from 'react-native-fetch-blob';
 
 
 
-
-
 // Initial Record Page
 
 let podFile = AudioUtils.DocumentDirectoryPath + '/test.aac';
 
 var {height, width} = Dimensions.get('window');
 
+
+
+
 class RecordFirstPage extends Component{
+
+    static navigatorStyle = {
+        statusBarHidden: false,
+        statusBarTextColorScheme: 'light',
+        navBarHidden: false,
+    };
+
 
     constructor(props) {
         super(props);
@@ -94,7 +102,7 @@ class RecordFirstPage extends Component{
             return(
                 <TouchableOpacity style = {{marginTop: height/16.675}} onPress={this.prevPodcast}>
                     <Icon style={{
-                        textAlign:'center',fontSize:  width/8.33, color:'#5757FF'
+                        textAlign:'center',fontSize:  width/8.33, color:'#506dcf'
                     }} name="md-undo">
                     </Icon>
                     <Text style= {styles.text} >Last recorded podcast</Text>
@@ -119,7 +127,7 @@ class RecordFirstPage extends Component{
 
                 <TouchableOpacity style = {{marginTop: height / 7}} onPress={this.recordNewPodcast}>
                     <Icon style={{
-                        textAlign:'center',fontSize: width/8.33, color:'#5757FF'
+                        textAlign:'center',fontSize: width/8.33, color:'#506dcf'
                     }} name="md-add">
                     </Icon>
                     <Text style= {styles.text} >Record a New Podcast</Text>

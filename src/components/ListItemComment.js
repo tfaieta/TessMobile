@@ -30,6 +30,8 @@ class ListItemComment extends Component {
 
     componentWillUnmount(){
         clearTimeout(this.timeout);
+        clearTimeout(this.timeout2);
+        clearTimeout(this.timeout3);
     }
 
 
@@ -55,12 +57,12 @@ class ListItemComment extends Component {
             }
         });
 
-        setTimeout(() => {
+        this.timeout2 = setTimeout(() => {
             this.setState({username: profileName});
             this.setState({comment: comment});
         }, 250);
 
-        setTimeout(() => {
+        this.timeout3 = setTimeout(() => {
             this.setState({username: profileName})
         }, 500);
 
@@ -98,8 +100,6 @@ class ListItemComment extends Component {
 
 
 
-
-
     render() {
 
         const {user} = this.props.rowData;
@@ -114,18 +114,18 @@ class ListItemComment extends Component {
                         const {navigator} = this.props;
                         Variables.state.browsingArtist = user;
                         Navigation.showModal({
-                            screen: 'UserProfile',
+                            screen: 'UserProfileModal',
                             animated: true,
                             animationType: 'fade',
                             passProps: {navigator},
                         });
 
-                    }} style={{flexDirection: 'row', alignSelf: 'flex-start', marginHorizontal: 10, marginVertical: 10}}>
+                    }} style={{flexDirection: 'row', alignSelf: 'flex-start', marginHorizontal: width/37.5, marginVertical: height/66.7}}>
 
                         {this._renderProfileImage()}
 
                         <Text style={styles.textCommentName}>{this.state.username}:</Text>
-                        <View style = {{marginHorizontal: 10, flex:1}}>
+                        <View style = {{marginHorizontal: width/37.5, flex:1}}>
                         <Text style={styles.textComment}>{this.state.comment}</Text>
                         </View>
 
@@ -150,10 +150,10 @@ class ListItemComment extends Component {
 
                         }} style={{
                             textAlign: 'right',
-                            fontSize: 20,
-                            marginRight: 5,
-                            marginLeft: 5,
-                            marginTop: 7,
+                            fontSize: width/18.75,
+                            marginRight: width/75,
+                            marginLeft: width/75,
+                            marginTop: height/95.29,
                             color: '#656575'
                         }} name="md-close-circle">
                         </Icon>
@@ -178,12 +178,12 @@ class ListItemComment extends Component {
                             passProps: {navigator},
                         });
 
-                    }} style={{flexDirection: 'row', alignSelf: 'flex-start', marginHorizontal: 10, marginVertical: 10}}>
+                    }} style={{flexDirection: 'row', alignSelf: 'flex-start', marginHorizontal: width/37.5, marginVertical: height/66.7}}>
 
                         {this._renderProfileImage()}
 
                         <Text style={styles.textCommentName}>{this.state.username}:</Text>
-                        <View style = {{marginHorizontal: 10, flex:1}}>
+                        <View style = {{marginHorizontal: width/37.5, flex:1}}>
                         <Text style={styles.textComment}>{this.state.comment}</Text>
                         </View>
 

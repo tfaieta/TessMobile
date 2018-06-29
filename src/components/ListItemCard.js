@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image, AsyncStorage, Dimensions, TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
+import { Text, View, TouchableOpacity, Image, AsyncStorage, Dimensions, TouchableHighlight } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from 'firebase';
 import Variables from "./Variables";
@@ -27,6 +27,7 @@ class ListItemCard extends Component {
             title: '',
             description: '',
             listens: 0,
+            time: '',
         };
 
         const {podcastTitle} = this.props.podcast;
@@ -81,6 +82,16 @@ class ListItemCard extends Component {
         desc = desc.replace(`target="_blank">`, " ");
 
 
+        // get time elapsed
+        let timeElapsed = '';
+        let timeNow = new Date().getTime();
+        firebase.database().ref(`podcasts/${id}/time`).once("value", function (snapshot) {
+            if(snapshot.val()){
+                timeElapsed = snapshot.val();
+            }
+        });
+
+
         setTimeout(() => {
             if(podcastTitle.toString().length > (width/4.69) ){
                 this.setState({title: (podcastTitle.toString().slice(0,(width/4.69))+"...")});
@@ -101,6 +112,10 @@ class ListItemCard extends Component {
             }
             else{
                 this.setState({description: desc});
+            }
+
+            if(timeElapsed != ''){
+                this.setState({time: timeNow-timeElapsed});
             }
 
             this.setState({loading: false})
@@ -436,7 +451,6 @@ class ListItemCard extends Component {
     };
 
 
-
     onPressQueue = () => {
 
         const {currentUser} = firebase.auth();
@@ -456,6 +470,55 @@ class ListItemCard extends Component {
             firebase.database().ref(`users/${currentUser.uid}/queue/`).push({id});
         });
 
+    };
+
+
+    renderTime = () => {
+        if(this.state.time != ''){
+            if(((this.state.time/1000)/86400).toFixed(0) >= 2 ){
+                return(
+                    <Text style={styles.bottomTitle}>{((this.state.time/1000)/86400).toFixed(0)} days ago</Text>
+                )
+            }
+            if(((this.state.time/1000)/86400).toFixed(0) > 1 ){
+                return(
+                    <Text style={styles.bottomTitle}>{((this.state.time/1000)/86400).toFixed(0)} day ago</Text>
+                )
+            }
+            else if(((this.state.time/1000)/3600).toFixed(0) >= 2 ){
+                return(
+                    <Text style={styles.bottomTitle}>{((this.state.time/1000)/3600).toFixed(0)} hours ago</Text>
+                )
+            }
+            else if(((this.state.time/1000)/3600).toFixed(0) > 1 ){
+                return(
+                    <Text style={styles.bottomTitle}>{((this.state.time/1000)/3600).toFixed(0)} hour ago</Text>
+                )
+            }
+            else if(((this.state.time/1000)/60).toFixed(0) >= 2 ){
+                return(
+                    <Text style={styles.bottomTitle}>{((this.state.time/1000)/60).toFixed(0)} minutes ago</Text>
+                )
+            }
+            else if(((this.state.time/1000)/60).toFixed(0) > 1 ){
+                return(
+                    <Text style={styles.bottomTitle}>{((this.state.time/1000)/60).toFixed(0)} minute ago</Text>
+                )
+            }
+            else{
+                return(
+                    <Text style={styles.bottomTitle}>{((this.state.time/1000)).toFixed(0)} seconds ago</Text>
+                )
+            }
+
+        }
+        else{
+            return(
+                <View>
+                    {this.renderListens()}
+                </View>
+            )
+        }
     };
 
     renderListens(){
@@ -601,7 +664,7 @@ class ListItemCard extends Component {
                                         <Text style={styles.bottomTitle}>{this.state.profileName}</Text>
                                     </View>
                                     <View style={{flex:1, alignSelf: 'flex-end'}}>
-                                        {this.renderListens()}
+                                        {this.renderTime()}
                                     </View>
                                 </View>
                             </View>

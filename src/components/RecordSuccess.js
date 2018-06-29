@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity,} from 'react-native';
-import { volume } from './Home';
+import { Text, View, StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
 import Variables from './Variables';
 import LinearGradient from "react-native-linear-gradient/index.android";
 import PlayerBottom from "./PlayerBottom";
+
+var {height, width} = Dimensions.get('window');
+
 
 
 
@@ -25,14 +27,9 @@ class RecordSuccess extends Component{
 
     RecordAgain = () => {
 
-        this.props.navigator.resetTo({
-            screen: 'Record',
-            title: undefined,
-            passProps: {},
-            animated: true,
-            animationType: 'fade',
-            navigatorStyle: {},
-            navigatorButtons: {}
+        this.props.navigator.popToRoot({
+            animated: true, // does the popToRoot have transition animation or does it happen immediately (optional)
+            animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
         });
 
     };
@@ -48,10 +45,9 @@ class RecordSuccess extends Component{
 
     finished = () => {
 
-        this.props.navigator.resetTo({
-            screen: 'RecordFirst',
-            animated: true,
-            animationType: 'fade',
+        this.props.navigator.popToRoot({
+            animated: true, // does the popToRoot have transition animation or does it happen immediately (optional)
+            animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
         });
 
 
@@ -72,15 +68,11 @@ class RecordSuccess extends Component{
                 <View style={styles.buttonContainer}>
 
 
-                            <Text  style={styles.title}> Upload Successful</Text>
+                    <Text  style={styles.title}> Upload Successful</Text>
 
 
                     <TouchableOpacity style={styles.buttonPreview}  onPress={this.preview}>
                             <Text  style={styles.contentTitle}>Play "{this.state.title}"</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.buttonMore} onPress={this.RecordAgain}>
-                        <Text  style={styles.contentTitle}>Record More</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.buttonMore} onPress={this.finished}>
@@ -107,61 +99,46 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: 'transparent',
-        paddingTop: 10,
+        paddingTop: height/66.7,
     },
 
     title: {
         color: '#fff',
-        fontSize: 25,
-        paddingBottom: 20,
+        fontSize: width/15,
+        paddingBottom: height/33.35,
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'Montserrat-SemiBold',
     },
 
     contentTitle: {
         color: '#fff',
-        fontSize: 20,
-        paddingBottom: 20,
+        fontSize: width/18.75,
+        paddingBottom: height/33.35,
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'Montserrat-Bold',
 
     },
 
-    input: {
-        height: 40,
-        backgroundColor: 'rgba(170,170,170,0.4)',
-        marginBottom: 10,
-        color: '#FFF',
-        paddingHorizontal: 10,
-    },
-
-    input2: {
-        height: 120,
-        backgroundColor: 'rgba(170,170,170,0.4)',
-        marginBottom: 10,
-        color:'#FFF',
-        paddingHorizontal: 10,
-    },
 
     buttonPreview: {
         backgroundColor: 'transparent',
         alignItems: 'center',
-        marginHorizontal: 15,
-        marginTop:10,
+        marginHorizontal: width/25,
+        marginTop: height/66.7,
     },
 
     buttonMore: {
         backgroundColor: 'transparent',
         alignItems: 'center',
-        paddingTop: 10,
-        marginHorizontal: 15,
-        marginTop:10,
+        paddingTop: height/66.7,
+        marginHorizontal: width/25,
+        marginTop: height/66.7,
     },
 
     buttonContainer: {
-        marginTop: 80,
+        marginTop: height/8.34,
     }
 
 });

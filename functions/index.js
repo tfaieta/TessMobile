@@ -37,15 +37,15 @@ exports.notificationPOTW = functions.database.ref(`/podcastOfTheWeek`)
 
 
 exports.notificationNewEp = functions.database.ref(`/podcasts/{podcastKey}`)
-    .onWrite((event) => {
+    .onCreate((event) => {
 
-        const episode = event.after.val();
+        const episode = event.val();
         console.log(episode);
 
             const podcastTitle = episode.podcastTitle;
             const podcastDescription = episode.podcastDescription;
             const podcastCategory = episode.podcastCategory;
-            const id = event.after.key;
+            const id = event.key;
             const podcastArtist = episode.podcastArtist;
             const podcastURL = episode.podcastURL;
             const RSSID = episode.RSSID;
@@ -72,7 +72,7 @@ exports.notificationNewEp = functions.database.ref(`/podcasts/{podcastKey}`)
                 timeToLive: 60 * 60 * 24
             };
 
-            let podArtist = podcastArtist.toString();
+            let podArtist = podcastArtist.toString().replace(/\s/g, "_");
 
             const topic = ("/topics/" + podArtist);
             console.log(topic);
@@ -86,13 +86,22 @@ exports.notificationNewEp = functions.database.ref(`/podcasts/{podcastKey}`)
 
 
 exports.notificationFollow = functions.database.ref(`/users/{id}/followers`)
-    .onCreate(event => {
+    .onWrite(event => {
 
-        return admin.database.ref(`users/${event.key}/token`).once('value', function (snapshot) {
+        let user = event.after.ref;
+        console.log(user.toString().substr(40,28));
+        user = user.toString().substr(40, 28);
+        console.log("Followed User: " + user);
+
+        const getValuePromise = admin.database.ref(`users/${user}/token`).once('value');
+
+        return getValuePromise.then(snapshot => {
 
             const token = snapshot.val();
-            const podcastArtist = event.val();
 
+            const podcastArtist = event.after.val();
+
+            console.log("User Following: " + podcastArtist);
             console.log(token, podcastArtist);
 
             const payload = {
@@ -108,7 +117,10 @@ exports.notificationFollow = functions.database.ref(`/users/{id}/followers`)
                 .sendToDevice(token, payload)
 
 
+
         });
+
+
     });
 
 
@@ -238,30 +250,6 @@ exports.feedFetcher = functions.database.ref(`/feedFetcher`)
                             const description = items[i].getElementsByTagName('description');
                             console.log("episode description" + description[0].textContent);
                             let podcastDescription = description[0].textContent;
-                            podcastDescription = podcastDescription.replace("<p>", " ");
-                            podcastDescription = podcastDescription.replace("</p>", " ");
-                            podcastDescription = podcastDescription.replace("<a", " ");
-                            podcastDescription = podcastDescription.replace("&amp", " ");
-                            podcastDescription = podcastDescription.replace("href=", " ");
-                            podcastDescription = podcastDescription.replace("<em>", " ");
-                            podcastDescription = podcastDescription.replace("</em>", " ");
-                            podcastDescription = podcastDescription.replace("</a>", " ");
-                            podcastDescription = podcastDescription.replace("<h2", " ");
-                            podcastDescription = podcastDescription.replace("id=", " ");
-                            podcastDescription = podcastDescription.replace("</h2>", " ");
-                            podcastDescription = podcastDescription.replace("</p>", " ");
-                            podcastDescription = podcastDescription.replace("<br>", " ");
-                            podcastDescription = podcastDescription.replace("<div>", " ");
-                            podcastDescription = podcastDescription.replace("</div>", " ");
-                            podcastDescription = podcastDescription.replace("<ul>", " ");
-                            podcastDescription = podcastDescription.replace("<li>", " ");
-                            podcastDescription = podcastDescription.replace("</li>", " ");
-                            podcastDescription = podcastDescription.replace("<strong>", " ");
-                            podcastDescription = podcastDescription.replace("</strong>", " ");
-                            podcastDescription = podcastDescription.replace("<sup>", " ");
-                            podcastDescription = podcastDescription.replace("</sup>", " ");
-                            podcastDescription = podcastDescription.replace("<br><br>", " ");
-                            podcastDescription = podcastDescription.replace("<br>", " ");
 
 
                             //length

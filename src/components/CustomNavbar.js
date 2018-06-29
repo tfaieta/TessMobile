@@ -67,7 +67,7 @@ export default class CustomNavbar extends Component {
                             })
                         }}>
                             <Icon style={{
-                                fontSize: width/20.55,
+                                fontSize: width/18,
                                 backgroundColor: 'transparent',
                                 color: '#506dcf',
                             }} name="microphone"/>
@@ -85,7 +85,7 @@ export default class CustomNavbar extends Component {
 
                         }}>
                             <Icon style={{
-                                fontSize: width/20.55,
+                                fontSize: width/18,
                                 backgroundColor: 'transparent',
                                 color: '#506dcf',
                                 marginHorizontal: width/41.1,
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     text: {
-        fontSize: width/29.36,
+        fontSize: width/27,
         color: '#3e4164',
         backgroundColor: 'transparent',
         fontStyle: 'normal',

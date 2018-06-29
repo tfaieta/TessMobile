@@ -6,6 +6,7 @@ import firebase from 'firebase';
 import ListItemUsers from "./ListItemUsers";
 import Icon from 'react-native-vector-icons/Ionicons';
 import Carousel from 'react-native-looped-carousel';
+var Analytics = require('react-native-firebase-analytics');
 
 var {height, width} = Dimensions.get('window');
 
@@ -161,6 +162,11 @@ class Browse extends Component{
 
 
     pressDiscover = () =>{
+        const {currentUser} = firebase.auth();
+        Analytics.logEvent('goToDiscover', {
+            'user_id': currentUser.uid
+        });
+
         this.props.navigator.push({
             screen: 'Discover',
             title: 'Discover'
@@ -168,6 +174,11 @@ class Browse extends Component{
     };
 
     pressCategories = () =>{
+        const {currentUser} = firebase.auth();
+        Analytics.logEvent('goToCategories', {
+            'user_id': currentUser.uid
+        });
+
         this.props.navigator.push({
             screen: 'Categories',
             title: 'Categories'
@@ -175,6 +186,11 @@ class Browse extends Component{
     };
 
     pressCharts = () =>{
+        const {currentUser} = firebase.auth();
+        Analytics.logEvent('goToCharts', {
+            'user_id': currentUser.uid
+        });
+
         this.props.navigator.push({
             screen: 'TopCharts',
             title: 'Charts'
@@ -186,6 +202,12 @@ class Browse extends Component{
         if(this.state.podImage != ''){
             return(
                 <TouchableWithoutFeedback onPress={() => {
+
+                    const {currentUser} = firebase.auth();
+                    Analytics.logEvent('openPOTW', {
+                        'user_id': currentUser.uid
+                    });
+
                     let rss = false;
                     if(this.state.podcastOftheWeekRSS){
                         rss = true;
@@ -198,9 +220,9 @@ class Browse extends Component{
                         passProps: {navigator, rss},
                     })
                 }}>
-                    <View style = {{backgroundColor:'transparent', alignSelf: 'flex-end', height: 65, width: 65, borderTopRightRadius: 15, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)', overflow: 'hidden'}}>
+                    <View style = {{backgroundColor:'transparent', alignSelf: 'flex-end', height: width/5.77, width: width/5.77, borderTopRightRadius: 15, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)', overflow: 'hidden'}}>
                     <Image
-                        style={{width: 65, height: 65, alignSelf: 'flex-end', opacity: 1,}}
+                        style={{width: width/5.77, height: width/5.77, alignSelf: 'flex-end', opacity: 1,}}
                         source={{uri: this.state.podImage}}
                     />
                     </View>
@@ -209,11 +231,11 @@ class Browse extends Component{
         }
         else{
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'flex-end', height: 65, width: 65, borderTopRightRadius: 15, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)'}}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'flex-end', height: width/5.77, width: width/5.77, borderTopRightRadius: 15, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)'}}>
                     <Icon style={{
                         textAlign: 'center',
-                        fontSize: 35,
-                        marginTop: 15,
+                        fontSize: width/10.71,
+                        marginTop: height/44.47,
                         color: 'white',
                     }} name="md-person">
                     </Icon>
@@ -396,8 +418,8 @@ class Browse extends Component{
                     {/* Podcast of the Week */}
                     <Text style = {styles.titleHeader}>Podcast of the Week</Text>
 
-                    <View style={{flex:1, flexDirection: 'row', backgroundColor: '#fff', marginTop: 5, marginHorizontal: width/31.25, borderTopLeftRadius: 15, borderTopRightRadius: 15}}>
-                        <View style={{flex:6}}>
+                    <View style={{flex:1, flexDirection: 'row', backgroundColor: '#fff', marginTop: height/133.4, marginHorizontal: width/31.25, borderTopLeftRadius: 15, borderTopRightRadius: 15}}>
+                        <View style={{flex: 6}}>
                             <Text style = {styles.titleWeek}>{this.state.podcastOfTheWeekTitle}</Text>
                         </View>
 
@@ -497,7 +519,7 @@ const styles = StyleSheet.create({
 
     titleWeek: {
         color: '#3e4164',
-        flex:1,
+        flex: 1,
         textAlign: 'left',
         marginVertical: height/44.47,
         marginLeft: width/25,
@@ -509,7 +531,7 @@ const styles = StyleSheet.create({
 
     bar: {
         backgroundColor: '#fff',
-        flex:1,
+        flex: 1,
         flexDirection:'row',
         paddingVertical: height/30,
         marginVertical: 0

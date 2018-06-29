@@ -6,7 +6,7 @@ import {
     Modal,
     TouchableOpacity,
     TextInput,
-    ScrollView
+    ScrollView, Dimensions
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import SettingsList from 'react-native-settings-list';
@@ -17,6 +17,9 @@ import RNFetchBlob from 'react-native-fetch-blob';
 import ImagePicker from 'react-native-image-crop-picker';
 import Variables from './Variables';
 import DropdownAlert from 'react-native-dropdownalert';
+
+var {height, width} = Dimensions.get('window');
+
 
 
 class Settings extends Component {
@@ -49,8 +52,30 @@ class Settings extends Component {
             username: '',
             bio: '',
             category: '',
-            image: ''
+            image: '',
+            notificationsOn: false,
         };
+
+        let notificationsOn = true;
+        const {currentUser} = firebase.auth();
+        firebase.database().ref(`users/${currentUser.uid}/notificationsOn`).once("value", function (snapshot) {
+            if(snapshot.val()){
+                if(snapshot.val() == true){
+                    notificationsOn = true;
+                }
+                else{
+                    notificationsOn = false;
+                }
+            }
+            else{
+                notificationsOn = true
+            }
+        });
+
+        this.timeout = setTimeout(() => {
+            this.setState({notificationsOn: notificationsOn});
+        }, 1000)
+
     }
 
 
@@ -144,57 +169,78 @@ class Settings extends Component {
     render() {
 
         return (
-            <View style={{backgroundColor:'#fff',flex:1,}}>
+            <View style={{backgroundColor:'#fff',flex: 1,}}>
 
 
-                <View style={{backgroundColor:'#f5f4f9',flex:1}}>
+                <View style={{backgroundColor:'#f5f4f9',flex: 1}}>
                     <SettingsList borderColor='#3e416440' defaultItemSize={50}>
                         <SettingsList.Item
                             hasNavArrow={false}
                             title='Account'
-                            titleStyle={{color:'#506dcf', marginBottom:10, fontWeight:'500', fontFamily: 'Montserrat-Regular'}}
+                            titleStyle={{color:'#506dcf', marginBottom: height/66.7, fontWeight:'500', fontFamily: 'Montserrat-Regular'}}
                             itemWidth={50}
                             borderHide={'Both'}
                         />
                         <SettingsList.Item
                             icon={
-                                <Icon style={{color: '#506dcf', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-image">
+                                <Icon style={{color: '#506dcf', textAlign:'center', marginRight: width/37.5, marginLeft: width/37.5, marginTop: height/33.35, fontSize: width/12.5, }} name="md-image">
                                 </Icon>
                             }
                             hasNavArrow={true}
                             itemWidth={70}
-                            titleStyle={{color:'#3e4164', fontSize: 16, fontFamily: 'Montserrat-Regular'}}
+                            titleStyle={{color:'#3e4164', fontSize: width/23.44, fontFamily: 'Montserrat-Regular'}}
                             title='Change Profile Image'
                             onPress={this._handleButtonPressChangeImage}
                         />
                         <SettingsList.Item
                             icon={
-                                <Icon style={{color: '#506dcf', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-person">
+                                <Icon style={{color: '#506dcf', textAlign:'center', marginRight: width/37.5, marginLeft: width/37.5, marginTop: height/33.35, fontSize: width/12.5, }} name="md-person">
                                 </Icon>
                             }
                             hasNavArrow={true}
                             itemWidth={70}
-                            titleStyle={{color:'#3e4164', fontSize: 16, fontFamily: 'Montserrat-Regular'}}
+                            titleStyle={{color:'#3e4164', fontSize: width/23.44, fontFamily: 'Montserrat-Regular'}}
                             title='Change Username'
                             onPress={this._handleButtonPressChangeUsername}
                         />
                         <SettingsList.Item
                             icon={
-                                <Icon style={{color: '#506dcf', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-browsers">
+                                <Icon style={{color: '#506dcf', textAlign:'center', marginRight: width/37.5 ,marginLeft: width/37.5, marginTop: height/33.35, fontSize: width/12.5, }} name="md-browsers">
                                 </Icon>
                             }
-                            title='Change Bio'
+                            title='Edit Bio'
                             itemWidth={70}
-                            titleStyle={{color:'#3e4164', fontSize: 16, fontFamily: 'Montserrat-Regular'}}
+                            titleStyle={{color:'#3e4164', fontSize: width/23.44, fontFamily: 'Montserrat-Regular'}}
                             hasNavArrow={true}
                             onPress={this._handleButtonPressChangeBio}
                         />
 
-                        <SettingsList.Header headerStyle={{marginTop: -5}}/>
+
+                        <SettingsList.Header headerStyle={{marginTop: -(height/133.4)}}/>
+                        <SettingsList.Item
+                            icon={
+                                <Icon style={{color: '#506dcf', textAlign:'center', marginRight: width/37.5, marginLeft: width/37.5, marginTop: height/33.35, fontSize: width/12.5, }} name="md-notifications">
+                                </Icon>
+                            }
+                            title='Notifications'
+                            itemWidth={70}
+                            titleStyle={{color:'#3e4164', fontSize: width/23.44, fontFamily: 'Montserrat-Regular'}}
+                            hasNavArrow={false}
+                            hasSwitch={true}
+                            switchState={this.state.notificationsOn}
+                            switchOnValueChange={(value) => {
+                                this.setState({notificationsOn: value});
+                                const {currentUser} = firebase.auth();
+                                firebase.database().ref(`users/${currentUser.uid}/notificationsOn`).set(value);
+                            }}
+                        />
+
+
+                        <SettingsList.Header headerStyle={{marginTop: -(height/133.4)}}/>
                         <SettingsList.Item
                             hasNavArrow={true}
                             title='Log Out'
-                            titleStyle={{color:'#506dcf', marginBottom:10, fontWeight:'bold',fontFamily: 'Montserrat-Regular'}}
+                            titleStyle={{color:'#506dcf', marginBottom: width/37.5, fontWeight:'bold',fontFamily: 'Montserrat-Regular'}}
                             itemWidth={70}
                             borderHide={'Both'}
                             onPress={this._handleButtonPressLogOut}
@@ -309,7 +355,7 @@ class Settings extends Component {
                 >
 
                     <View style={styles.container}>
-                        <View style ={{marginTop: 100}}>
+                        <View style ={{marginTop: height/6.67}}>
 
                             <TouchableOpacity style={styles.buttonStyle} onPress={() => {
 
@@ -449,11 +495,11 @@ class Settings extends Component {
 
 const styles = StyleSheet.create({
     imageStyle:{
-        marginLeft:15,
-        marginRight:20,
+        marginLeft: width/25,
+        marginRight: width/18.75,
         alignSelf:'center',
-        width:20,
-        height:24,
+        width: 20,
+        height: 24,
         justifyContent:'center'
     },
     container:{
@@ -461,67 +507,67 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     buttonStyle:{
-        paddingTop:10,
-        paddingVertical: 10,
-        marginHorizontal: 40,
-        marginVertical: 4,
+        paddingTop: height/66.7,
+        paddingVertical: height/66.7,
+        marginHorizontal: width/9.38,
+        marginVertical: height/166.75,
         backgroundColor: '#fff',
         alignItems: 'center',
     },
 
     buttonStyleCancel:{
-        paddingTop:5,
-        paddingVertical: 10,
-        marginBottom:20,
-        marginHorizontal: 40,
-        marginVertical: 4,
+        paddingTop: height/166.75,
+        paddingVertical: height/66.7,
+        marginBottom: height/33.35,
+        marginHorizontal: width/9.38,
+        marginVertical: height/166.75,
         backgroundColor: '#fff',
         alignItems: 'center',
     },
     textStyle:{
-        marginTop: 10,
+        marginTop: height/66.7,
         color: '#506dcf',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: 18,
+        fontSize: width/20.83,
     },
     textStyleCancel:{
-        marginTop: 10,
+        marginTop: height/66.7,
         color: '#d15564',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: 18,
+        fontSize: width/20.83,
     },
 
     inputStyle:{
-        marginHorizontal: 15,
-        marginTop: 80,
-        height: 20,
+        marginHorizontal: width/25,
+        marginTop: height/8.34,
+        height: height/33.35,
         backgroundColor: '#fff',
-        marginBottom: 10,
+        marginBottom: height/66.7,
         color: '#3e4164',
-        paddingHorizontal: 10,
-        fontSize: 18,
+        paddingHorizontal: width/37.5,
+        fontSize: width/20.83,
     },
     input2: {
-        marginHorizontal: 15,
-        marginTop: 80,
-        height: 100,
+        marginHorizontal: width/25,
+        marginTop: height/8.34,
+        height: height/6.67,
         backgroundColor: '#fff',
-        marginBottom: 10,
+        marginBottom: height/66.7,
         color: '#3e4164',
-        paddingHorizontal: 10,
-        fontSize: 18,
+        paddingHorizontal: width/37.5,
+        fontSize: width/20.83,
     },
 
     header: {
-        marginTop:25,
-        marginLeft: -35,
+        marginTop: height/26.68,
+        marginLeft: -(width/10.71),
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 16,
+        fontSize: width/23.44,
         backgroundColor: 'transparent',
 
     }

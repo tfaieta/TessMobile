@@ -3,20 +3,17 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableOpacity,
-    ScrollView,
     ListView,
     TextInput,
     KeyboardAvoidingView,
-    Dimensions, ActivityIndicator,
+    Dimensions, ActivityIndicator, Linking
 } from 'react-native';
 import Variables from "./Variables";
 import firebase from 'firebase';
-import Icon from 'react-native-vector-icons/Ionicons';
-
-import { Navigation } from 'react-native-navigation';
 import ListItemComment from "./ListItemComment";
 var Analytics = require('react-native-firebase-analytics');
+import HTML from 'react-native-render-html';
+
 
 var {height, width} = Dimensions.get('window');
 
@@ -37,6 +34,7 @@ static navigatorStyle = {
     componentWillUnmount(){
         clearInterval(this.interval);
         clearTimeout(this.timeout);
+        clearTimeout(this.timeout2);
     }
 
 
@@ -47,7 +45,8 @@ static navigatorStyle = {
             comment: '',
             commentsLoading: true,
             dataSource: dataSource.cloneWithRows(Variables.state.comments),
-            description: ''
+            description: '',
+            time: '',
         };
 
         firebase.database().ref(`podcasts/${Variables.state.podcastID}/comments`).on("value", function (snap) {
@@ -68,45 +67,27 @@ static navigatorStyle = {
                     }
                 });
             });
-            setTimeout(() => {
+            this.timeout2 = setTimeout(() => {
                 this.setState({dataSource: dataSource.cloneWithRows(Variables.state.comments)})},500);
 
         }, 1000);
 
 
-        // clean up description
         let desc = Variables.state.podcastDescription;
-        for(let i = (desc.length/2); i > 0; i--){
-            desc = desc.replace("<p>", " ");
-            desc = desc.replace("</p>", " ");
-            desc = desc.replace("<a", " ");
-            desc = desc.replace("&amp", " ");
-            desc = desc.replace("href=", " ");
-            desc = desc.replace("<em>", " ");
-            desc = desc.replace("</em>", " ");
-            desc = desc.replace("</a>", " ");
-            desc = desc.replace("<h2", " ");
-            desc = desc.replace("id=", " ");
-            desc = desc.replace("</h2>", " ");
-            desc = desc.replace("</p>", " ");
-            desc = desc.replace("<br>", " ");
-            desc = desc.replace("<div>", " ");
-            desc = desc.replace("</div>", " ");
-            desc = desc.replace("<ul>", " ");
-            desc = desc.replace("<li>", " ");
-            desc = desc.replace("</li>", " ");
-            desc = desc.replace("<strong>", " ");
-            desc = desc.replace("</strong>", " ");
-            desc = desc.replace("<sup>", " ");
-            desc = desc.replace("</sup>", " ");
-            desc = desc.replace("<br><br>", " ");
-            desc = desc.replace("<br>", " ");
-            desc = desc.replace("&nbsp", " ");
-            desc = desc.replace(`target="_blank">`, " ");
-        }
+
+        let timeElapsed = '';
+        let timeNow = new Date().getTime();
+        firebase.database().ref(`podcasts/${Variables.state.podcastID}/time`).once("value", function (snapshot) {
+            if(snapshot.val()){
+                timeElapsed = snapshot.val();
+            }
+        });
 
         this.timeout = setTimeout(() => {
-            this.setState({commentsLoading: false, description: desc})
+            this.setState({commentsLoading: false, description: desc});
+            if(timeElapsed != ''){
+                this.setState({time: timeNow-timeElapsed});
+            }
         }, 3000);
 
     }
@@ -123,19 +104,7 @@ static navigatorStyle = {
 
     renderPodcastInfo(){
         if(Variables.state.podcastsPlays == 1){
-            if(Variables.state.likers.length > 1){
-                return(
-                        <View style={{flexDirection: 'row'}}>
-                            <View style={{flex:1}}>
-                                <Text style={styles.textLike}>{Variables.state.likers.length} likes</Text>
-                            </View>
-                            <View style={{flex:1}}>
-                                <Text style={styles.textLike}>{Variables.state.podcastsPlays} listen</Text>
-                            </View>
-                        </View>
-                )
-            }
-            else{
+            if(Variables.state.likers.length == 1){
                 return(
                         <View style={{flexDirection: 'row'}}>
                             <View style={{flex:1}}>
@@ -147,13 +116,25 @@ static navigatorStyle = {
                         </View>
                 )
             }
-        }
-        else{
-            if(Variables.state.likers.length > 1){
+            else{
                 return(
                         <View style={{flexDirection: 'row'}}>
                             <View style={{flex:1}}>
                                 <Text style={styles.textLike}>{Variables.state.likers.length} likes</Text>
+                            </View>
+                            <View style={{flex:1}}>
+                                <Text style={styles.textLike}>{Variables.state.podcastsPlays} listen</Text>
+                            </View>
+                        </View>
+                )
+            }
+        }
+        else{
+            if(Variables.state.likers.length == 1){
+                return(
+                        <View style={{flexDirection: 'row'}}>
+                            <View style={{flex:1}}>
+                                <Text style={styles.textLike}>{Variables.state.likers.length} like</Text>
                             </View>
                             <View style={{flex:1}}>
                                 <Text style={styles.textLike}>{Variables.state.podcastsPlays} listens</Text>
@@ -165,7 +146,7 @@ static navigatorStyle = {
                 return(
                         <View style={{flexDirection: 'row'}}>
                             <View style={{flex:1}}>
-                                <Text style={styles.textLike}>{Variables.state.likers.length} like</Text>
+                                <Text style={styles.textLike}>{Variables.state.likers.length} likes</Text>
                             </View>
                             <View style={{flex:1}}>
                                 <Text style={styles.textLike}>{Variables.state.podcastsPlays} listens</Text>
@@ -180,14 +161,14 @@ static navigatorStyle = {
         if(this.state.commentsLoading){
             return(
                 <View style={styles.container}>
-                    <ActivityIndicator style={{paddingVertical: height/15, alignSelf:'center'}} color='#3e4164' size ="large" />
+                    <ActivityIndicator style={{paddingVertical: height/10, alignSelf:'center'}} color='#3e4164' size ="large" />
                 </View>
             )
         }
         else{
             if(Variables.state.comments.length > 0){
                 return(
-                    <View style={{height: height/2.4}}>
+                    <View style={{flex: 1}}>
 
                         <ListView
                             ref={ ( ref ) => this.scrollView = ref }
@@ -200,7 +181,7 @@ static navigatorStyle = {
                                 }
                             }}
                         />
-                        <View style={{height: 1.5, marginHorizontal: 20, backgroundColor: '#2A2A3060',}} />
+                        <View style={{height: 1.5, marginHorizontal: width/18.75, backgroundColor: '#2A2A3020',}} />
 
                     </View>
 
@@ -208,7 +189,9 @@ static navigatorStyle = {
             }
             else{
                 return(
-                    <Text style={styles.textEmpty}>Be the first to comment!</Text>
+                    <View style={{flex: 1}}>
+                        <Text style={styles.textEmpty}>Be the first to comment!</Text>
+                    </View>
                 )
             }
         }
@@ -227,8 +210,62 @@ static navigatorStyle = {
         }
         else{
             return(
-                <Text style={styles.textDescription}>{this.state.description}</Text>
+                <HTML html={this.state.description}
+                      containerStyle={{backgroundColor: 'transparent', marginTop: height/66.7, marginHorizontal: width/18.75, paddingBottom: height/33.35,}}
+                      baseFontStyle={{fontSize: width/27, color: '#656575', fontFamily: 'Montserrat-SemiBold'}}
+                      onLinkPress={(evt, href) => {
+                          Linking.canOpenURL(href).then(supported => {
+                              if (supported) {
+                                  Linking.openURL(href);
+                              } else {
+                                  console.warn("Don't know how to open URI: " + href);
+                              }
+                          });
+                      }}
+                />
             )
+        }
+    };
+
+
+    renderTime = () => {
+        if(this.state.time != ''){
+            if(((this.state.time/1000)/86400).toFixed(0) >= 2 ){
+                return(
+                    <Text style={styles.titleTime}>added {((this.state.time/1000)/86400).toFixed(0)} days ago</Text>
+                )
+            }
+            if(((this.state.time/1000)/86400).toFixed(0) > 1 ){
+                return(
+                    <Text style={styles.titleTime}>added {((this.state.time/1000)/86400).toFixed(0)} day ago</Text>
+                )
+            }
+            else if(((this.state.time/1000)/3600).toFixed(0) >= 2 ){
+                return(
+                    <Text style={styles.titleTime}>added {((this.state.time/1000)/3600).toFixed(0)} hours ago</Text>
+                )
+            }
+            else if(((this.state.time/1000)/3600).toFixed(0) > 1 ){
+                return(
+                    <Text style={styles.titleTime}>added {((this.state.time/1000)/3600).toFixed(0)} hour ago</Text>
+                )
+            }
+            else if(((this.state.time/1000)/60).toFixed(0) >= 2 ){
+                return(
+                    <Text style={styles.titleTime}>added {((this.state.time/1000)/60).toFixed(0)} minutes ago</Text>
+                )
+            }
+            else if(((this.state.time/1000)/60).toFixed(0) > 1 ){
+                return(
+                    <Text style={styles.titleTime}>added {((this.state.time/1000)/60).toFixed(0)} minute ago</Text>
+                )
+            }
+            else{
+                return(
+                    <Text style={styles.titleTime}>added {((this.state.time/1000)).toFixed(0)} seconds ago</Text>
+                )
+            }
+
         }
     };
 
@@ -238,46 +275,16 @@ static navigatorStyle = {
 
         return(
             <View style={styles.container}>
-            <View>
+                <KeyboardAvoidingView behavior={"padding"} style={{flex: 1}}>
 
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15}}>
-                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
-                        <TouchableOpacity onPress={() => {
-                            Navigation.dismissModal();
-                        }}>
-                            <Icon style={{
-                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#007aff',
-                            }} name="ios-arrow-back">
-                            </Icon>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={styles.header}>Info</Text>
-                    </View>
+                    <Text style={styles.title2}>Episode Info</Text>
 
-                    <View>
-                    </View>
-
-                </View>
-
-
-
-                <View style={{height: 1.5, marginHorizontal: 20, backgroundColor: '#2A2A3060',}} />
-                <ScrollView style={styles.descriptionBox}>
                     {this.renderDescription()}
-                </ScrollView>
-
-                {this.renderPodcastInfo()}
-
-                <Text style={styles.title2}>Comments</Text>
-                <View style={{height: 1.5, marginHorizontal: 20, backgroundColor: '#2A2A3060',}} />
-
-                {this.renderComments()}
+                    {this.renderTime()}
 
 
-            </View>
-
-                <KeyboardAvoidingView  behavior='padding' style={styles.commentContainer}>
+                    <Text style={styles.title2}>Comments</Text>
+                    <View style={styles.commentContainer}>
                     <TextInput
                         ref='input'
                         style ={styles.input}
@@ -323,24 +330,21 @@ static navigatorStyle = {
                                 });
 
                                 this.setState({comment: ''});
-
                             }
-
-
 
                         }}
                     />
-                </KeyboardAvoidingView>
+                    </View>
 
+                    {this.renderComments()}
+                    <View style={{paddingBottom: height/3.34}} />
+
+                </KeyboardAvoidingView>
 
             </View>
 
 
         )
-
-
-
-
 
 
     }
@@ -361,21 +365,18 @@ const styles = StyleSheet.create({
     commentContainer:{
         flex: 1,
         backgroundColor: '#fff',
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0,
         borderWidth: 2,
         borderColor: '#656575',
         borderRadius: 10,
         marginHorizontal: width/12.5,
+        marginVertical: height/66.7
     },
 
     header: {
         marginTop: height/26.68,
         marginLeft: -(width/15),
         color: '#3e4164',
-        textAlign: 'center',
+        textAlign: 'left',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Bold',
         fontSize: width/23.44,
@@ -383,29 +384,29 @@ const styles = StyleSheet.create({
 
     },
 
-
     title2:{
         color: '#3e4164',
-        textAlign: 'center',
+        textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Bold',
-        fontSize: width/23.44,
+        fontSize: width/20,
         backgroundColor: 'transparent',
-        marginTop: height/33.35,
+        marginLeft: height/33.35,
+        marginTop: height/28,
         marginBottom: height/66.7
     },
 
     textDescription:{
         color: '#656575',
         flexDirection: 'column',
-        textAlign: 'center',
+        textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: width/23.44,
+        fontSize: width/27,
         backgroundColor: 'transparent',
-        marginBottom: height/33.35,
+        marginBottom: height/60,
         marginHorizontal: width/18.75,
         paddingBottom: height/33.35,
     },
@@ -436,7 +437,7 @@ const styles = StyleSheet.create({
         marginTop: height/66.7,
         marginHorizontal: width/18.75,
     },
-    textComment:{
+    titleTime:{
         color: '#656575',
         flexDirection: 'column',
         textAlign: 'center',
@@ -448,19 +449,8 @@ const styles = StyleSheet.create({
         marginVertical: height/133.4,
         marginHorizontal: width/75,
     },
-    textCommentName:{
-        color: '#3e4164',
-        flexDirection: 'column',
-        textAlign: 'center',
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'Montserrat-SemiBold',
-        fontSize: width/26.79,
-        backgroundColor: 'transparent',
-        marginVertical: height/133.4,
-        marginHorizontal: width/75,
-    },
     descriptionBox:{
+        flex: 1,
         backgroundColor: '#fff',
         marginHorizontal: width/37.5,
         paddingVertical: height/60,
