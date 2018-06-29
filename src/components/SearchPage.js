@@ -7,6 +7,7 @@ import Variables from "./Variables";
 import firebase from 'firebase';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
 import ListItem from "./ListItem";
+import ListItemFollowed from "./ListItemFollowed"
 
 var {height, width} = Dimensions.get('window');
 
@@ -24,25 +25,34 @@ static navigatorStyle = {
         Variables.state.mySearches = [];
         const refMy = firebase.database().ref(`podcasts/`);
 
-
         refMy.once("value", function (snapshot) {
             Variables.state.mySearches = [];
             snapshot.forEach(function (data) {
 
                 if(data.val().podcastTitle.toLowerCase().includes(Variables.state.searchWord.toLowerCase())) {
                     Variables.state.mySearches.push(data.val());
+                    console.warn(data.val())
                 }
-                else {
-                    firebase.database().ref(`/users/${data.val().podcastArtist}/username`).orderByChild("username").on("value", function(snap) {
-                        if(snap.val()){
-                            if(snap.val().username.toLowerCase().includes(Variables.state.searchWord.toLowerCase())){
-                                Variables.state.mySearches.push(data.val())
+            })
+        });
+
+        const refArtist = firebase.database().ref(`users/`);
+
+        refArtist.once("value", function (snapshot) {
+            Variables.state.mySearchesPodcast = [];
+            snapshot.forEach(function (data) {
+                if (data.val()) {
+                    firebase.database().ref(`/users/${data.key}/username`).orderByChild("username").once("value", function (snap) {
+                        if (snap.val()) {
+                            if (snap.val().username.toLowerCase().includes(Variables.state.searchWord.toLowerCase())) {
+                                Variables.state.mySearchesPodcast.push(data.key);
+                                console.warn(data.key)
                             }
                         }
                     });
                 }
             })
-        });
+        })
     }
 
     componentWillUnmount(){
@@ -54,7 +64,7 @@ static navigatorStyle = {
     searchActivate = () => {
         Variables.state.searchWord = this.state.search;
         this.props.navigator.push({
-            screen: 'Search',
+            screen: 'SearchPage',
             animated: true,
             animationType: 'fade',
         });
@@ -67,16 +77,26 @@ static navigatorStyle = {
             dataSource: dataSource.cloneWithRows(Variables.state.mySearches),
             search: Variables.state.searchWord,
             searchFinished: false,
+            podcastSource: dataSource.cloneWithRows(Variables.state.mySearchesPodcast)
         };
-        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches)})}, 1000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches), searchFinished: true})}, 3500);
+
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches),
+            podcastSource: dataSource.cloneWithRows(Variables.state.mySearchesPodcast), searchFinished: true})}, 5000);
     }
 
-    _renderResults =(mySearches) => {
+    _renderResults =(mySearches, mySearchesPodcast) => {
         if(this.state.searchFinished){
-            if(mySearches > 0){
+            if(mySearches > 0 || mySearchesPodcast > 0){
                 return(
                     <View style={{flex:1}}>
+                        <Text>Podcasts</Text>
+                        <ListView
+                            enableEmptySections
+                            dataSource={this.state.podcastSource}
+                            renderRow={this.renderRowPodcast}
+                            renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
+                        />
+                        <Text>Episodes</Text>
                         <ListView
                             enableEmptySections
                             dataSource={this.state.dataSource}
@@ -103,8 +123,6 @@ static navigatorStyle = {
         }
     };
 
-    // Here we have to make a function on press to bring up and alert with a text box then on that press
-    // write it to the database
     podcastRequest = () => {
           return (
               <TouchableOpacity style={styles.bar} onPress={this.goToPage}>
@@ -123,6 +141,10 @@ static navigatorStyle = {
 
     renderRow = (rowData) => {
         return <ListItem podcast={rowData} navigator={this.props.navigator} />;
+    };
+
+    renderRowPodcast = (rowData) => {
+        return <ListItemFollowed podcast={rowData} navigator={this.props.navigator} />;
     };
 
     Back= () => {
@@ -170,7 +192,7 @@ static navigatorStyle = {
                 </View>
 
                 <ScrollView>
-                    {this._renderResults(Variables.state.mySearches.length)}
+                    {this._renderResults(Variables.state.mySearches.length, Variables.state.mySearchesPodcast.length)}
                     <View style={{paddingBottom: height/133.4}}>
                     </View>
                     {this.podcastRequest()}
