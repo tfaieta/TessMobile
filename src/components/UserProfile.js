@@ -21,6 +21,7 @@ import firebase from 'firebase';
 
 import { Navigation } from 'react-native-navigation';
 import ListItemUsers from "./ListItemUsers";
+var Analytics = require('react-native-firebase-analytics');
 
 var {height, width} = Dimensions.get('window');
 
@@ -48,6 +49,10 @@ static navigatorStyle = {
     componentWillMount(){
 
         const {currentUser} = firebase.auth();
+        Analytics.logEvent('openUserProfile', {
+            'user_id': currentUser.uid
+        });
+        
         const storageRef = firebase.storage().ref(`/users/${Variables.state.browsingArtist}/image-profile-uploaded`);
         const refFol = firebase.database().ref(`users/${Variables.state.browsingArtist}/followers`);
         const refFollowing = firebase.database().ref(`users/${Variables.state.browsingArtist}/following`);

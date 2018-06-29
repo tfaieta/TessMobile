@@ -169,7 +169,7 @@ class PlayerBottom extends Component {
         else{
             if(this.state.highlight){
                 return(
-                    <View style={{marginTop: 5, marginBottom: -25}}>
+                    <View style={{marginTop: height/133.4, marginBottom: -(height/26.68)}}>
                         <View style={{flexDirection: 'row',}}>
                             {this._renderCurrentTimeHighlight(this.state.highlightTime[0])}
                             {this._renderCurrentTimeHighlightEnd(this.state.highlightTime[1])}
@@ -253,9 +253,9 @@ class PlayerBottom extends Component {
                         <View style={{backgroundColor:'rgba(130,131,147,0.4)', height: width/8.3, width: width/8.3, borderRadius:4, borderWidth:1, borderColor:'rgba(320,320,320,1)'}}>
                             <Icon style={{
                                 textAlign: 'center',
-                                fontSize: 24,
+                                fontSize: width/15.63,
                                 color: 'white',
-                                marginTop: 10
+                                marginTop: height/66.7
                             }} name="md-person">
                             </Icon>
                         </View>
@@ -293,7 +293,7 @@ class PlayerBottom extends Component {
                                 marginRight: 0,
                                 marginLeft: 0,
                                 paddingTop: 0,
-                                paddingRight:5,
+                                paddingRight: width/75,
                                 fontSize: width/12.5,
                                 color: '#00000090',
                             }} name="md-pause">
@@ -309,7 +309,7 @@ class PlayerBottom extends Component {
                                 marginRight: 0,
                                 marginLeft: 0,
                                 paddingTop: 0,
-                                paddingRight:5,
+                                paddingRight: width/75,
                                 fontSize: width/12.5,
                                 color: '#00000090',
                             }} name="md-play">
@@ -388,6 +388,10 @@ class PlayerBottom extends Component {
 
 
     ExpandPlayer = () => {
+        const {currentUser} = firebase.auth();
+        Analytics.logEvent('openPlayer', {
+            'user_id': currentUser.uid
+        });
         this.setModalVisible(true)
     };
 
@@ -404,7 +408,7 @@ class PlayerBottom extends Component {
 
             if(buffering){
                 return(
-                    <ActivityIndicator style={{paddingVertical: 10, alignSelf:'center'}} color='#2A2A30' size ="large" />
+                    <ActivityIndicator style={{paddingVertical: height/66.7, alignSelf:'center'}} color='#2A2A30' size ="large" />
                 )
             }
             else{
@@ -617,7 +621,7 @@ class PlayerBottom extends Component {
             else{
                 return(
                     <TouchableOpacity>
-                        <Icon style={{textAlign:'center', fontSize: 28,color:'#BBBCCD' }} name="md-add" onPress={()=>{
+                        <Icon style={{textAlign:'center', fontSize: width/13.39, color:'#BBBCCD' }} name="md-add" onPress={()=>{
                             const {currentUser} = firebase.auth();
                             const podcastTitle = Variables.state.podcastTitle;
                             const podcastDescription = Variables.state.podcastDescription;
@@ -1128,7 +1132,7 @@ class PlayerBottom extends Component {
 
         if(this.state.highlight){
             return(
-                <TouchableOpacity style = {{marginTop: height/28, marginBottom: height/28, marginHorizontal: width/4.17, borderRadius: 7, backgroundColor: '#3e4164', padding: 5}} onPress={() => {
+                <TouchableOpacity style = {{marginTop: height/28, marginBottom: height/28, marginHorizontal: width/4.17, borderRadius: 7, backgroundColor: '#3e4164', padding: width/75}} onPress={() => {
                     this.setState({highlight: false});
                     const highlightTime = this.state.highlightTime;
                     const podcastID = Variables.state.podcastID;
@@ -1149,7 +1153,7 @@ class PlayerBottom extends Component {
         }
         else{
             return(
-                <TouchableOpacity style = {{marginTop: height/28, marginBottom: height/28, marginHorizontal: width/4.17, borderRadius: 7, backgroundColor: '#506dcf', padding: 5}} onPress={() => {
+                <TouchableOpacity style = {{marginTop: height/28, marginBottom: height/28, marginHorizontal: width/4.17, borderRadius: 7, backgroundColor: '#506dcf', padding: width/75}} onPress={() => {
                     this.setState({highlight: true, highlightTime: [Variables.state.currentTime, Variables.state.currentTime + 15]});
 
                     const {currentUser} = firebase.auth();
@@ -1218,6 +1222,13 @@ class PlayerBottom extends Component {
             }
             else if (!Variables.state.liked){
 
+                Analytics.logEvent('like', {
+                    'episodeID': Variables.state.podcastID,
+                    'epispdeTitle': Variables.state.podcastTitle,
+                    'episodeArtist': Variables.state.podcastArtist,
+                    'user_id': user
+                });
+
                 firebase.database().ref(`podcasts/${Variables.state.podcastID}/likes`).child(user).update({user});
                 firebase.database().ref(`users/${currentUser.uid}/activity`).push({action: 'like', id: Variables.state.podcastID, user: currentUser.uid, time: firebase.database.ServerValue.TIMESTAMP});
 
@@ -1285,7 +1296,11 @@ class PlayerBottom extends Component {
 
 
     onSwipeUp(gestureState) {
-        this.setModalVisible(true)
+        this.setModalVisible(true);
+        const {currentUser} = firebase.auth();
+        Analytics.logEvent('openPlayer', {
+            'user_id': currentUser.uid
+        });
     }
 
     onSwipeDown(gestureState) {
@@ -1339,7 +1354,7 @@ class PlayerBottom extends Component {
                         </View>
 
 
-                        <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom: height/66.7, height: width/2.68, width: width/2.68, borderRadius:4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)',  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
+                        <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom: height/66.7, height: width/2.68, width: width/2.68, borderRadius:4, borderWidth: 8, borderColor:'rgba(320,320,320,0.8)',  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
                             <Icon style={{
                                 textAlign: 'center',
                                 fontSize: height/7.41,
@@ -1373,12 +1388,12 @@ class PlayerBottom extends Component {
 
                         <View style = {{flexDirection: 'row'}}>
 
-                            <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex:1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
+                            <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex: 1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
                                 <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="ios-arrow-down">
                                 </Icon>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={this.goToMyQueue} style={{alignItems:'flex-end', flex:1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
+                            <TouchableOpacity onPress={this.goToMyQueue} style={{alignItems:'flex-end', flex: 1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
                                 <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="md-list-box">
                                 </Icon>
                             </TouchableOpacity>
@@ -1389,7 +1404,7 @@ class PlayerBottom extends Component {
                         {this._renderPodcastImageBig(Variables.state.userProfileImage)}
 
 
-                        <View style={{marginVertical: height/28, flex:1}}>
+                        <View style={{marginVertical: height/28, flex: 1}}>
                             {this._renderPodcastTitle(Variables.state.isPlaying)}
                             <View style={{alignSelf: 'center'}}>
                                 {this._renderPodcastArtist(Variables.state.isPlaying)}
@@ -1445,7 +1460,7 @@ class PlayerBottom extends Component {
                                 {this._renderPodcastSpeed(Variables.state.podcastSpeed)}
                             </View>
 
-                            <View style={{alignItems: 'center', flex:1}}>
+                            <View style={{alignItems: 'center', flex: 1}}>
 
                                 <TouchableOpacity onPress={this.openPlayerOptions} style={{alignItems:'center', flex: 1}}>
                                     <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="ios-more">
@@ -1536,7 +1551,6 @@ class PlayerBottom extends Component {
 
                         </View>
 
-
                         <View style={styles.centerContainerPlayer}>
 
                             <View style={styles.leftContainer}>
@@ -1575,8 +1589,8 @@ class PlayerBottom extends Component {
 
                         </View>
 
-                        <PlayerInfo navigator={this.props.navigator}/>
 
+                        <PlayerInfo navigator={this.props.navigator}/>
 
                     </ScrollView>
                 </View>

@@ -45,7 +45,8 @@ static navigatorStyle = {
             comment: '',
             commentsLoading: true,
             dataSource: dataSource.cloneWithRows(Variables.state.comments),
-            description: ''
+            description: '',
+            time: '',
         };
 
         firebase.database().ref(`podcasts/${Variables.state.podcastID}/comments`).on("value", function (snap) {
@@ -72,12 +73,18 @@ static navigatorStyle = {
         }, 1000);
 
 
-        // clean up description
         let desc = Variables.state.podcastDescription;
 
+        let timeElapsed = '';
+        let timeNow = new Date().getTime();
+        firebase.database().ref(`podcasts/${Variables.state.podcastID}/time`).once("value", function (snapshot) {
+            if(snapshot.val()){
+                timeElapsed = snapshot.val();
+            }
+        });
 
         this.timeout = setTimeout(() => {
-            this.setState({commentsLoading: false, description: desc})
+            this.setState({commentsLoading: false, description: desc, time: timeNow-timeElapsed});
         }, 3000);
 
     }
@@ -218,23 +225,67 @@ static navigatorStyle = {
     };
 
 
+    renderTime = () => {
+        if(this.state.time != ''){
+            if(((this.state.time/1000)/86400).toFixed(0) >= 2 ){
+                return(
+                    <Text style={styles.titleTime}>added {((this.state.time/1000)/86400).toFixed(0)} days ago</Text>
+                )
+            }
+            if(((this.state.time/1000)/86400).toFixed(0) > 1 ){
+                return(
+                    <Text style={styles.titleTime}>added {((this.state.time/1000)/86400).toFixed(0)} day ago</Text>
+                )
+            }
+            else if(((this.state.time/1000)/3600).toFixed(0) >= 2 ){
+                return(
+                    <Text style={styles.titleTime}>added {((this.state.time/1000)/3600).toFixed(0)} hours ago</Text>
+                )
+            }
+            else if(((this.state.time/1000)/3600).toFixed(0) > 1 ){
+                return(
+                    <Text style={styles.titleTime}>added {((this.state.time/1000)/3600).toFixed(0)} hour ago</Text>
+                )
+            }
+            else if(((this.state.time/1000)/60).toFixed(0) >= 2 ){
+                return(
+                    <Text style={styles.titleTime}>added {((this.state.time/1000)/60).toFixed(0)} minutes ago</Text>
+                )
+            }
+            else if(((this.state.time/1000)/60).toFixed(0) > 1 ){
+                return(
+                    <Text style={styles.titleTime}>added {((this.state.time/1000)/60).toFixed(0)} minute ago</Text>
+                )
+            }
+            else{
+                return(
+                    <Text style={styles.titleTime}>added {((this.state.time/1000)).toFixed(0)} seconds ago</Text>
+                )
+            }
+
+        }
+    };
+
+
     render(){
 
 
         return(
             <View style={styles.container}>
-            <View>
+                <KeyboardAvoidingView behavior={"padding"} style={{flex: 1}}>
 
-                {this.renderPodcastInfo()}
-                <Text style={styles.title2}>Episode Info</Text>
+                    <View style={{marginVertical: height/90}}>
+                    {this.renderPodcastInfo()}
+                    </View>
+
+                    <Text style={styles.title2}>Episode Info</Text>
+
+                    {this.renderDescription()}
+                    {this.renderTime()}
 
 
-                {this.renderDescription()}
-
-
-                <Text style={styles.title2}>Comments</Text>
-
-                <KeyboardAvoidingView  behavior='padding' style={styles.commentContainer}>
+                    <Text style={styles.title2}>Comments</Text>
+                    <View style={styles.commentContainer}>
                     <TextInput
                         ref='input'
                         style ={styles.input}
@@ -284,21 +335,17 @@ static navigatorStyle = {
 
                         }}
                     />
+                    </View>
+
+                    {this.renderComments()}
+                    <View style={{paddingBottom: height/3.34}} />
+
                 </KeyboardAvoidingView>
-
-                {this.renderComments()}
-
-
-            </View>
-
 
             </View>
 
 
         )
-
-
-
 
 
     }
@@ -323,6 +370,7 @@ const styles = StyleSheet.create({
         borderColor: '#656575',
         borderRadius: 10,
         marginHorizontal: width/12.5,
+        marginVertical: height/66.7
     },
 
     header: {
@@ -390,20 +438,8 @@ const styles = StyleSheet.create({
         marginTop: height/66.7,
         marginHorizontal: width/18.75,
     },
-    textComment:{
+    titleTime:{
         color: '#656575',
-        flexDirection: 'column',
-        textAlign: 'center',
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'Montserrat-SemiBold',
-        fontSize: width/26.79,
-        backgroundColor: 'transparent',
-        marginVertical: height/133.4,
-        marginHorizontal: width/75,
-    },
-    textCommentName:{
-        color: '#3e4164',
         flexDirection: 'column',
         textAlign: 'center',
         opacity: 1,
