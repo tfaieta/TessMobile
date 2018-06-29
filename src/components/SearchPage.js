@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, ListView, TouchableOpacity, ActivityIndicator, ScrollView, Dimensions} from 'react-native';
+import Divider from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { SearchBar } from 'react-native-elements';
 import PlayerBottom from './PlayerBottom';
@@ -31,7 +32,6 @@ static navigatorStyle = {
 
                 if(data.val().podcastTitle.toLowerCase().includes(Variables.state.searchWord.toLowerCase())) {
                     Variables.state.mySearches.push(data.val());
-                    console.warn(data.val())
                 }
             })
         });
@@ -46,7 +46,6 @@ static navigatorStyle = {
                         if (snap.val()) {
                             if (snap.val().username.toLowerCase().includes(Variables.state.searchWord.toLowerCase())) {
                                 Variables.state.mySearchesPodcast.push(data.key);
-                                console.warn(data.key)
                             }
                         }
                     });
@@ -89,14 +88,18 @@ static navigatorStyle = {
             if(mySearches > 0 || mySearchesPodcast > 0){
                 return(
                     <View style={{flex:1}}>
-                        <Text>Podcasts</Text>
+                        <View style={styles.separatorBar}>
+                            <Text style={styles.separators}>Podcasts</Text>
+                        </View>
                         <ListView
                             enableEmptySections
                             dataSource={this.state.podcastSource}
                             renderRow={this.renderRowPodcast}
                             renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
                         />
-                        <Text>Episodes</Text>
+                        <View style={styles.separatorBar}>
+                            <Text style={styles.separators}>Episodes</Text>
+                        </View>
                         <ListView
                             enableEmptySections
                             dataSource={this.state.dataSource}
@@ -117,7 +120,7 @@ static navigatorStyle = {
         else{
             return(
                 <View>
-                    <ActivityIndicator style={{paddingVertical: 20, alignSelf:'center'}} color='#3e4164' size ="large"/>
+                    <ActivityIndicator style={{paddingVertical: height/33.35, alignSelf:'center'}} color='#3e4164' size ="large"/>
                 </View>
             )
         }
@@ -177,7 +180,7 @@ static navigatorStyle = {
                         round
                         noIcon={true}
                         inputStyle={{backgroundColor: '#fff', color: '#2A2A30', marginHorizontal: width/50,
-                            fontFamily: 'Montserrat-SemiBold', fontStyle: 'normal', paddingBottom: height/51.31}}
+                            fontFamily: 'Montserrat-SemiBold', fontStyle: 'normal', paddingBottom: height/80.31}}
                         containerStyle= {styles.containerSearch}
                         placeholder={this.state.search}
                         placeholderTextColor = '#2A2A30'
@@ -388,14 +391,27 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-SemiBold',
         fontSize: height/45.35,
     },
+    separators: {
+        color: '#3e4164',
+        flex:1,
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-Bold',
+        fontSize: height/36.35,
+    },
     bar: {
         flex: 1,
         height: height/14,
         width: width,
         backgroundColor: '#fff',
     },
-
-
+    separatorBar: {
+        flex: 1,
+        height: height/12,
+        width: width,
+        backgroundColor: '#fff',
+        marginTop: height/33.35
+    },
 });
 
 export default SearchPage;
