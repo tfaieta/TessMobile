@@ -154,8 +154,8 @@ static navigatorStyle = {
                         lightTheme
                         round
                         noIcon={true}
-                        inputStyle={{backgroundColor: '#fff', color: '#2A2A30', marginHorizontal: width/40, paddingBottom: height/45.58,
-                            fontFamily: 'Montserrat-SemiBold', fontStyle: 'normal' }}
+                        inputStyle={{backgroundColor: '#fff', color: '#2A2A30', marginHorizontal: width/50,
+                            fontFamily: 'Montserrat-SemiBold', fontStyle: 'normal', paddingBottom: height/51.31}}
                         containerStyle= {styles.containerSearch}
                         placeholder={this.state.search}
                         placeholderTextColor = '#2A2A30'

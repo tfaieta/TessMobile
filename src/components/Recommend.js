@@ -128,6 +128,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-Semibold',
         color: '#3e4164',
         paddingBottom: height/40,
+        marginHorizontal: height/33.35
     },
 
 
