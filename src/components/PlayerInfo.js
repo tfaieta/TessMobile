@@ -84,7 +84,10 @@ static navigatorStyle = {
         });
 
         this.timeout = setTimeout(() => {
-            this.setState({commentsLoading: false, description: desc, time: timeNow-timeElapsed});
+            this.setState({commentsLoading: false, description: desc});
+            if(timeElapsed != ''){
+                this.setState({time: timeNow-timeElapsed});
+            }
         }, 3000);
 
     }
@@ -273,10 +276,6 @@ static navigatorStyle = {
         return(
             <View style={styles.container}>
                 <KeyboardAvoidingView behavior={"padding"} style={{flex: 1}}>
-
-                    <View style={{marginVertical: height/90}}>
-                    {this.renderPodcastInfo()}
-                    </View>
 
                     <Text style={styles.title2}>Episode Info</Text>
 

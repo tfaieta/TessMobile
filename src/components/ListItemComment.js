@@ -30,6 +30,8 @@ class ListItemComment extends Component {
 
     componentWillUnmount(){
         clearTimeout(this.timeout);
+        clearTimeout(this.timeout2);
+        clearTimeout(this.timeout3);
     }
 
 
@@ -55,12 +57,12 @@ class ListItemComment extends Component {
             }
         });
 
-        setTimeout(() => {
+        this.timeout2 = setTimeout(() => {
             this.setState({username: profileName});
             this.setState({comment: comment});
         }, 250);
 
-        setTimeout(() => {
+        this.timeout3 = setTimeout(() => {
             this.setState({username: profileName})
         }, 500);
 

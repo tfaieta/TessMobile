@@ -1341,12 +1341,12 @@ class PlayerBottom extends Component {
 
                         <View style = {{flexDirection: 'row'}}>
 
-                            <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex:1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
-                                <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="ios-arrow-down">
+                            <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex: 1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
+                                <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="ios-close">
                                 </Icon>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={this.goToMyQueue} style={{alignItems:'flex-end', flex:1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
+                            <TouchableOpacity onPress={this.goToMyQueue} style={{alignItems:'flex-end', flex: 1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
                                 <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="md-list-box">
                                 </Icon>
                             </TouchableOpacity>
@@ -1380,7 +1380,14 @@ class PlayerBottom extends Component {
             return(
                 <View style = {styles.containerOutsideModal}>
                     <ScrollView
-                        style={styles.containerModal}>
+                        style={styles.containerModal}
+                        ref={ref => this.scroll = ref}
+                        onScrollEndDrag={event => {
+                            if(event.nativeEvent.contentOffset.y < -100){
+                                this.Close();
+                            }
+                        }}
+                    >
 
                         <StatusBar
                             hidden={true}
@@ -1389,7 +1396,7 @@ class PlayerBottom extends Component {
                         <View style = {{flexDirection: 'row'}}>
 
                             <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex: 1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
-                                <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="ios-arrow-down">
+                                <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="ios-close">
                                 </Icon>
                             </TouchableOpacity>
 
@@ -1456,7 +1463,7 @@ class PlayerBottom extends Component {
 
                         <View style={{flexDirection: 'row', flex: 1, marginTop: 0}}>
 
-                            <View style={{alignItems:'flex-start', flex:1}}>
+                            <View style={{alignItems:'flex-start', flex: 1}}>
                                 {this._renderPodcastSpeed(Variables.state.podcastSpeed)}
                             </View>
 
@@ -1486,8 +1493,9 @@ class PlayerBottom extends Component {
             return(
                 <View style = {styles.containerOutsideModal}>
                     <ScrollView
-                        onScroll={(event) => {
-                            if(event.nativeEvent.contentOffset.y < -10){
+                        ref={ref => this.scroll = ref}
+                        onScrollEndDrag={event => {
+                            if(event.nativeEvent.contentOffset.y < -100){
                                 this.Close();
                             }
                         }}
@@ -1499,12 +1507,12 @@ class PlayerBottom extends Component {
 
                         <View style = {{flexDirection: 'row'}}>
 
-                            <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex:1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
-                                <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="ios-arrow-down">
+                            <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex: 1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
+                                <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="ios-close">
                                 </Icon>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={this.goToMyQueue} style={{alignItems:'flex-end', flex:1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
+                            <TouchableOpacity onPress={this.goToMyQueue} style={{alignItems:'flex-end', flex: 1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
                                 <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="md-list-box">
                                 </Icon>
                             </TouchableOpacity>
@@ -1531,7 +1539,7 @@ class PlayerBottom extends Component {
 
                             <View style={styles.leftContainerP}>
                                 <TouchableOpacity onPress={this.scrubBackward}>
-                                    <Icon style={{flex:1, textAlign:'center', fontSize: height/25, color:'#2A2A30' }} name="ios-rewind">
+                                    <Icon style={{flex: 1, textAlign:'center', fontSize: height/25, color:'#2A2A30' }} name="ios-rewind">
                                     </Icon>
                                 </TouchableOpacity>
                             </View>
@@ -1544,7 +1552,7 @@ class PlayerBottom extends Component {
 
                             <View style={styles.rightContainerP}>
                                 <TouchableOpacity onPress={this.scrubForward}>
-                                    <Icon style={{flex:1, textAlign:'center', fontSize: height/25,color:'#2A2A30' }} name="ios-fastforward">
+                                    <Icon style={{flex: 1, textAlign:'center', fontSize: height/25,color:'#2A2A30' }} name="ios-fastforward">
                                     </Icon>
                                 </TouchableOpacity>
                             </View>
@@ -1569,7 +1577,7 @@ class PlayerBottom extends Component {
 
                         <View style={{flexDirection: 'row', flex: 1, marginTop: 0}}>
 
-                            <View style={{alignItems:'flex-start', flex:1}}>
+                            <View style={{alignItems:'flex-start', flex: 1}}>
                                 {this._renderPodcastSpeed(Variables.state.podcastSpeed)}
                             </View>
 
@@ -1589,8 +1597,20 @@ class PlayerBottom extends Component {
 
                         </View>
 
+                        <View style={{marginVertical: height/90}}>
+                            {this.renderPodcastInfo()}
+                        </View>
 
+                        <TouchableOpacity onPress={() => {
+                            this.scroll.scrollTo({x: 0, y: height-100, animated: true});
+                        }}>
+                            <View style={{marginTop: height/44.47}}>
+                                <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#506dcf', }} name="ios-arrow-down">
+                                </Icon>
+                            </View>
+                        </TouchableOpacity>
                         <PlayerInfo navigator={this.props.navigator}/>
+
 
                     </ScrollView>
                 </View>
@@ -1599,6 +1619,60 @@ class PlayerBottom extends Component {
 
     }
 
+    renderPodcastInfo(){
+        if(Variables.state.podcastsPlays == 1){
+            if(Variables.state.likers.length == 1){
+                return(
+                    <View style={{flexDirection: 'row'}}>
+                        <View style={{flex:1}}>
+                            <Text style={styles.textLike}>{Variables.state.likers.length} like</Text>
+                        </View>
+                        <View style={{flex:1}}>
+                            <Text style={styles.textLike}>{Variables.state.podcastsPlays} listen</Text>
+                        </View>
+                    </View>
+                )
+            }
+            else{
+                return(
+                    <View style={{flexDirection: 'row'}}>
+                        <View style={{flex:1}}>
+                            <Text style={styles.textLike}>{Variables.state.likers.length} likes</Text>
+                        </View>
+                        <View style={{flex:1}}>
+                            <Text style={styles.textLike}>{Variables.state.podcastsPlays} listen</Text>
+                        </View>
+                    </View>
+                )
+            }
+        }
+        else{
+            if(Variables.state.likers.length == 1){
+                return(
+                    <View style={{flexDirection: 'row'}}>
+                        <View style={{flex:1}}>
+                            <Text style={styles.textLike}>{Variables.state.likers.length} like</Text>
+                        </View>
+                        <View style={{flex:1}}>
+                            <Text style={styles.textLike}>{Variables.state.podcastsPlays} listens</Text>
+                        </View>
+                    </View>
+                )
+            }
+            else{
+                return(
+                    <View style={{flexDirection: 'row'}}>
+                        <View style={{flex:1}}>
+                            <Text style={styles.textLike}>{Variables.state.likers.length} likes</Text>
+                        </View>
+                        <View style={{flex:1}}>
+                            <Text style={styles.textLike}>{Variables.state.podcastsPlays} listens</Text>
+                        </View>
+                    </View>
+                )
+            }
+        }
+    }
 
     render() {
         const config = {
@@ -1865,7 +1939,18 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Montserrat-SemiBold',
     },
-
+    textLike:{
+        color: '#506dcf',
+        flexDirection: 'column',
+        textAlign: 'center',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily:  'Montserrat-Bold',
+        fontSize: width/26.79,
+        backgroundColor: 'transparent',
+        marginTop: height/66.7,
+        marginHorizontal: width/18.75,
+    },
     middleContainer: {
         flex: 1,
         justifyContent: 'center',
