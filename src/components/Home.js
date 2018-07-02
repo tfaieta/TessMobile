@@ -19,7 +19,7 @@ class Home extends Component{
     componentDidMount(){
 
         // Uncomment when testing feeds
-        // this.rssSingleFetch("", 4);
+        // this.rssSingleFetch("http://atp.fm/episodes?format=rss", 300);
 
         if (Platform.OS === 'android') {
             Linking.getInitialURL().then((url) => {
