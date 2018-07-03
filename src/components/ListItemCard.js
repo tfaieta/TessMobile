@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image, AsyncStorage, Dimensions, TouchableHighlight } from 'react-native';
+import { Text, View, TouchableOpacity, Image, AsyncStorage, Dimensions, TouchableHighlight, Linking } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from 'firebase';
 import Variables from "./Variables";
+import HTML from 'react-native-render-html';
 var Analytics = require('react-native-firebase-analytics');
 
 var {height, width} = Dimensions.get('window');
-
-
 
 // A single episode on home feed
 
@@ -36,6 +35,7 @@ class ListItemCard extends Component {
         const { id } = this.props.podcast;
         const {currentUser} = firebase.auth();
 
+
         let profileName = '';
         firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").once("value", function (snap) {
             if (snap.val()) {
@@ -54,33 +54,6 @@ class ListItemCard extends Component {
 
         // clean up description
         let desc = podcastDescription;
-        desc = desc.replace("<p>", " ");
-        desc = desc.replace("</p>", " ");
-        desc = desc.replace("<a", " ");
-        desc = desc.replace("&amp", " ");
-        desc = desc.replace("href=", " ");
-        desc = desc.replace("<em>", " ");
-        desc = desc.replace("</em>", " ");
-        desc = desc.replace("</a>", " ");
-        desc = desc.replace("<h2", " ");
-        desc = desc.replace("id=", " ");
-        desc = desc.replace("</h2>", " ");
-        desc = desc.replace("</p>", " ");
-        desc = desc.replace("<br>", " ");
-        desc = desc.replace("<div>", " ");
-        desc = desc.replace("</div>", " ");
-        desc = desc.replace("<ul>", " ");
-        desc = desc.replace("<li>", " ");
-        desc = desc.replace("</li>", " ");
-        desc = desc.replace("<strong>", " ");
-        desc = desc.replace("</strong>", " ");
-        desc = desc.replace("<sup>", " ");
-        desc = desc.replace("</sup>", " ");
-        desc = desc.replace("<br><br>", " ");
-        desc = desc.replace("<br>", " ");
-        desc = desc.replace("&nbsp", " ");
-        desc = desc.replace(`target="_blank">`, " ");
-
 
         // get time elapsed
         let timeElapsed = '';
@@ -542,6 +515,8 @@ class ListItemCard extends Component {
 
     }
 
+
+
     renderCard = () => {
         if(this.state.loading){
             return (
@@ -655,7 +630,20 @@ class ListItemCard extends Component {
                                         </View>
 
                                         <View style = {{alignSelf: 'center', flex: 1,}}>
-                                            <Text style={styles.artistTitle}>{this.state.description}</Text>
+                                            <HTML
+                                                html={this.state.description}
+                                                containerStyle={styles.artistTitle}
+                                                baseFontStyle={{
+                                                    fontStyle: 'normal',
+                                                    fontFamily: 'Montserrat-SemiBold',
+                                                    fontSize: width/31.25,
+                                                    color: '#828393',
+                                                    textAlign: 'left'
+                                                }}
+                                                decodeEntities={false}
+                                                textSelectable={true}
+                                                ignoredTags={['img']}
+                                            />
                                         </View>
                                     </View>
                                 </View>
@@ -703,13 +691,8 @@ const styles = {
         backgroundColor: 'transparent'
     },
     artistTitle: {
-        color: '#828393',
-        textAlign: 'left',
         paddingLeft: width/20,
         opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'Montserrat-SemiBold',
-        fontSize: width/31.25,
         backgroundColor: 'transparent',
     },
     bottomTitle: {

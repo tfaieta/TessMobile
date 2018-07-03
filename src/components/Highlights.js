@@ -11,8 +11,6 @@ if(Platform.OS === 'ios'){
     topMargin = height/10.26
 }
 
-
-
 // displays collection of highlights (in library)
 
 

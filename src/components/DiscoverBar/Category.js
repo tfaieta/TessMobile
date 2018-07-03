@@ -153,6 +153,7 @@ class Category extends Component{
             pods.push('TED Talks');
             pods.push('The Art of Charm | High Performance Techniques| Cognitive Development | Relationship Advice | Mastery of Human Dynamics');
             pods.push('The Creative Exchange');
+            pods.push('The Mixology Talk Podcast: Better Bartending and Making Great Drinks');
         }
         else if(category == 'Storytelling' || category == 'History'){
 

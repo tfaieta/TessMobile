@@ -301,7 +301,6 @@ class Notifications extends Component{
         setTimeout(function() {
             FCM.isDirectChannelEstablished().then(d => console.log(d));
         }, 1000);
-
     }
 
 
@@ -333,7 +332,6 @@ class Notifications extends Component{
                 wake_screen: true,
             });
         }
-
     }
 
 
@@ -522,7 +520,6 @@ class Notifications extends Component{
                 </View>
             );
         }
-
     };
 
     renderList = () => {
@@ -542,7 +539,6 @@ class Notifications extends Component{
                 </View>
             )
         }
-
     };
 
     render() {
@@ -568,9 +564,7 @@ class Notifications extends Component{
                             onRefresh={this._onRefresh.bind(this)}
                         />
                     }>
-
                         {this.renderList()}
-
                         <View style = {{paddingBottom: height/11.12}} />
                     </ScrollView>
 

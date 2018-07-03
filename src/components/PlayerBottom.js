@@ -15,8 +15,6 @@ import PlayerInfo from "./PlayerInfo";
 var {height, width} = Dimensions.get('window');
 
 
-
-
 // Not the actual Player, cosmetic features & controls
 
 class PlayerBottom extends Component {
