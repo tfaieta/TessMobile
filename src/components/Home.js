@@ -503,6 +503,8 @@ class Home extends Component{
     constructor(props) {
         super(props);
 
+        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+
         this.props.navigator.setStyle({
             statusBarHidden: false,
             statusBarTextColorScheme: 'light',
@@ -534,6 +536,16 @@ class Home extends Component{
 
     }
 
+    onNavigatorEvent(event) {
+        if (event.id === 'bottomTabSelected') {
+            console.log('Tab selected!');
+        }
+        if (event.id === 'bottomTabReselected') {
+            console.log('Tab reselected!');
+            this.refs._scrollView.scrollTo({x: 0, y: height/-22.23, animated: true});
+            console.log(height);
+        }
+    }
     
     rssFetch(){
         firebase.database().ref(`feedFetcher`).once("value", function (snapshot) {
@@ -1031,6 +1043,7 @@ class Home extends Component{
                     <View
                         style={styles.container}>
                         <ScrollView
+                            ref='_scrollView'
                             refreshControl={
                                 <RefreshControl
                                     refreshing={this.state.refreshing}
@@ -1064,6 +1077,7 @@ class Home extends Component{
                 <View
                     style={styles.container}>
                     <ScrollView
+                        ref='_scrollView'
                         refreshControl={
                             <RefreshControl
                                 refreshing={this.state.refreshing}
