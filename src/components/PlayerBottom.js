@@ -1340,7 +1340,7 @@ class PlayerBottom extends Component {
                         <View style = {{flexDirection: 'row'}}>
 
                             <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex: 1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
-                                <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="ios-close">
+                                <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="ios-arrow-down">
                                 </Icon>
                             </TouchableOpacity>
 
@@ -1394,7 +1394,7 @@ class PlayerBottom extends Component {
                         <View style = {{flexDirection: 'row'}}>
 
                             <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex: 1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
-                                <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="ios-close">
+                                <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="ios-arrow-down">
                                 </Icon>
                             </TouchableOpacity>
 
@@ -1506,7 +1506,7 @@ class PlayerBottom extends Component {
                         <View style = {{flexDirection: 'row'}}>
 
                             <TouchableOpacity onPress={this.Close} style={{alignItems:'flex-start', flex: 1, marginVertical: height/66.7, marginHorizontal: width/18.75}}>
-                                <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="ios-close">
+                                <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#BBBCCD' }} name="ios-arrow-down">
                                 </Icon>
                             </TouchableOpacity>
 
@@ -1603,7 +1603,7 @@ class PlayerBottom extends Component {
                             this.scroll.scrollTo({x: 0, y: height-100, animated: true});
                         }}>
                             <View style={{marginTop: height/44.47}}>
-                                <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#506dcf', }} name="ios-arrow-down">
+                                <Icon style={{textAlign:'center', fontSize: width/10.71, color:'#506dcf', }} name="md-chatboxes">
                                 </Icon>
                             </View>
                         </TouchableOpacity>
