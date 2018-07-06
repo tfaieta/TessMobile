@@ -12,8 +12,6 @@ if(Platform.OS === 'ios'){
     topMargin = height/10.26
 }
 
-
-
 // Discover page, from Browse
 
 class Discover extends Component{
@@ -40,7 +38,6 @@ class Discover extends Component{
             drawUnderNavBar: Platform.OS === 'ios',
             navBarTranslucent: Platform.OS === 'ios',
             navBarNoBorder: true,
-
         });
 
 
@@ -81,7 +78,6 @@ class Discover extends Component{
 
         this.timeout2 = setTimeout(() => {this.setState({dataSourceFresh: dataSource.cloneWithRows(fresh.reverse()), dataSourceSmall: dataSource.cloneWithRows(small.reverse()), })},3000);
     }
-
 
 
     componentWillUnmount(){

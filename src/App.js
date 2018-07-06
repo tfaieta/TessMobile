@@ -77,6 +77,7 @@ import Discover from "./components/Discover";
 import Media from "./components/Media";
 import Hub from "./components/Hub";
 import Podcasts from "./components/Podcasts";
+import Browser from "./components/Browser";
 
 
 const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
@@ -86,6 +87,7 @@ Navigation.registerComponent('Startup', () => StartUp, store, Provider);
 Navigation.registerComponent('Login', () => Login, store, Provider);
 Navigation.registerComponent('CreateAccount', () => CreateAccount, store, Provider);
 Navigation.registerComponent('Recommend', () => Recommend, store, Provider);
+Navigation.registerComponent('Browser', () => Browser, store, Provider);
 
 Navigation.registerComponent('CustomNavbar', () => CustomNavbar, store, Provider);
 Navigation.registerComponent('DiscoverNavBar', () => DiscoverNavBar, store, Provider);

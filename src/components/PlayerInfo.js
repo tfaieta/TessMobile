@@ -199,7 +199,6 @@ static navigatorStyle = {
 
     }
 
-
     renderDescription = () => {
         if(this.state.commentsLoading != ''){
             return(
@@ -213,6 +212,7 @@ static navigatorStyle = {
                 <HTML html={this.state.description}
                       containerStyle={{backgroundColor: 'transparent', marginTop: height/66.7, marginHorizontal: width/18.75, paddingBottom: height/33.35,}}
                       baseFontStyle={{fontSize: width/27, color: '#656575', fontFamily: 'Montserrat-SemiBold'}}
+                      textSelectable={true}
                       onLinkPress={(evt, href) => {
                           Linking.canOpenURL(href).then(supported => {
                               if (supported) {

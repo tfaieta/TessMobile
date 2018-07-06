@@ -5,6 +5,7 @@ import PlayerBottom from './PlayerBottom';
 import Variables from "./Variables";
 import firebase from 'firebase';
 import Player from "./Player";
+import Browser from "./Browser";
 import ListItemCard from "./ListItemCard";
 var Analytics = require('react-native-firebase-analytics');
 
@@ -1005,7 +1006,6 @@ class Home extends Component{
 
     }
 
-
     renderRSSFetcher(){
         const {currentUser} = firebase.auth();
 
@@ -1019,8 +1019,6 @@ class Home extends Component{
             )
         }
     }
-
-
 
     renderRowCard = (podcast) => {
         return <ListItemCard podcast={podcast} navigator={this.props.navigator}/>

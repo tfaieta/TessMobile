@@ -515,6 +515,17 @@ class ListItemCard extends Component {
 
     }
 
+    link = (href) => {
+        Variables.state.url = href;
+
+        this.props.navigator.push({
+            screen: 'Browser',
+            animated: true,
+            animationType: 'fade',
+            title: 'Link'
+        });
+    };
+
 
 
     renderCard = () => {
@@ -634,15 +645,23 @@ class ListItemCard extends Component {
                                                 html={this.state.description}
                                                 containerStyle={styles.artistTitle}
                                                 baseFontStyle={{
-                                                    fontStyle: 'normal',
-                                                    fontFamily: 'Montserrat-SemiBold',
+                                                fontFamily: 'Montserrat-SemiBold',
                                                     fontSize: width/31.25,
                                                     color: '#828393',
                                                     textAlign: 'left'
                                                 }}
-                                                decodeEntities={false}
+                                                decodeEntities={true}
                                                 textSelectable={true}
                                                 ignoredTags={['img']}
+                                                onLinkPress={(evt, href) => {
+                                                    Linking.canOpenURL(href).then(supported => {
+                                                        if (supported) {
+                                                            {this.link(href)}
+                                                        } else {
+                                                            console.warn("Don't know how to open URI: " + href);
+                                                        }
+                                                    });
+                                                }}
                                             />
                                         </View>
                                     </View>
