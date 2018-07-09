@@ -1,0 +1,33 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+
+target 'tess' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for tess
+  pod 'Firebase'
+  pod 'Firebase/Core'
+  pod 'Firebase/Auth'
+  pod 'Fabric', '~> 1.7.6'
+  pod 'Crashlytics', '~> 3.10.1'
+  pod 'Firebase/Performance'
+  pod 'Firebase/Messaging'
+  pod 'Firebase/DynamicLinks'
+
+  
+
+
+  target 'tess-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'tessTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
+

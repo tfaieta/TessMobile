@@ -1,0 +1,28 @@
+{
+  "name": "react-native-firebase-analytics",
+  "version": "4.0.2",
+  "summary": "React Native component for Firebase Analytics for IOS and Android",
+  "homepage": "https://github.com/evollu/react-native-firebase-analytics",
+  "license": "MIT",
+  "authors": {
+    "{\"name\"=>\"Libin Lu\"}": {
+      "name": "Libin Lu"
+    }
+  },
+  "platforms": {
+    "ios": "7.0"
+  },
+  "source": {
+    "git": "https://github.com/evollu/react-native-firebase-analytics.git",
+    "tag": "v4.0.2"
+  },
+  "source_files": "ios/*.{h,m}",
+  "dependencies": {
+    "React": [
+
+    ],
+    "Firebase/Core": [
+
+    ]
+  }
+}

@@ -25,18 +25,35 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>tess</string>
 				<string>fb820280631481558</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLIconFile</key>
+			<string>/Users/nickruspantini/TessMobile/tessLogoIcon.jpg</string>
+			<key>CFBundleURLName</key>
+			<string>Bundle ID</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>org.reactjs.native.example.tess</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>11</string>
+	<string>22</string>
 	<key>FacebookAppID</key>
 	<string>820280631481558</string>
 	<key>FacebookDisplayName</key>
 	<string>Tess</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<true/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>mailto</string>
+		<string>whatsapp</string>
 		<string>fbapi</string>
 		<string>fb-messenger-api</string>
 		<string>fbauth2</string>
@@ -58,15 +75,18 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Tess will need to use your camera so that you can take a profile image.</string>
+	<string>Tess will need to use your camera to take pictures.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Tess uses your microphone to create a podcast.</string>
+	<string>Tess will need to use your microphone to record.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Tess will need to use your photo library so that you can upload an profile image.</string>
+	<string>Tess will need to use your photo library to upload a profile image.</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Montserrat-Bold.ttf</string>
+		<string>Montserrat-SemiBold.ttf</string>
+		<string>Montserrat-Regular.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>
 		<string>FontAwesome.ttf</string>

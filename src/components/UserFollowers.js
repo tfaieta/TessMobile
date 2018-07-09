@@ -13,6 +13,14 @@ import ListItemFollowed from "./ListItemFollowed";
 
 
 class UserFollowers extends Component{
+
+static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true,
+        statusBarTextColorScheme: 'dark',
+        statusBarColor: '#fff',
+    };
+
     componentWillMount(){
         Variables.state.userFollowers = [];
 
@@ -78,9 +86,10 @@ class UserFollowers extends Component{
 
 
 
-    renderRow(podcast){
-        return <ListItemFollowed podcast={podcast} />;
-    }
+    renderRow = (podcast) => {
+        const {navigator} = this.props;
+        return <ListItemFollowed podcast={podcast} navigator={navigator}/>;
+    };
 
 
     _pressBack = () => {
@@ -102,12 +111,12 @@ class UserFollowers extends Component{
                 style={styles.container}>
 
 
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, borderWidth: 2,borderBottomColor: 'rgba(187,188,205,0.3)', borderTopColor: '#fff', borderLeftColor: '#fff', borderRightColor: '#fff'}}>
+                <View style={{backgroundColor: '#fff', flexDirection: 'row', paddingVertical:5, paddingBottom: 15, borderWidth: 2,borderBottomColor: 'rgba(187,188,205,0.3)', borderTopColor: '#fff', borderLeftColor: '#fff', borderRightColor: '#fff'}}>
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
-                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#9496A3'
-                            }} name="md-arrow-round-back">
+                                textAlign:'left',marginLeft: 10, fontSize: 35,color: '#007aff'
+                            }} name="ios-arrow-back">
                             </Icon>
                         </TouchableOpacity>
                     </View>
@@ -147,7 +156,7 @@ class UserFollowers extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: 'transparent',
+        backgroundColor: '#f5f4f9',
     },
     container2: {
         paddingHorizontal: 0,
@@ -161,30 +170,6 @@ const styles = StyleSheet.create({
         borderRadius: 0,
         borderStyle: 'solid',
         flexDirection: 'row',
-    },
-
-    title: {
-        color: '#804cc8',
-        marginTop: 70,
-        flex:1,
-        textAlign: 'center',
-        opacity: 2,
-        fontStyle: 'normal',
-        fontFamily: 'Futura',
-        fontSize: 25,
-        backgroundColor: 'transparent'
-    },
-    title2: {
-        color:  '#2A2A30',
-        marginTop: 20,
-        flex:1,
-        textAlign: 'left',
-        paddingLeft: 0,
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W3',
-        fontSize: 18,
-        backgroundColor: 'transparent'
     },
 
     contentTitle: {
@@ -229,16 +214,15 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        marginTop:25,
-        marginLeft: -35,
-        color: '#2A2A30',
+        marginTop: 25,
+        marginLeft: -12,
+        color: '#3e4164',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 18,
         backgroundColor: 'transparent',
-
-    }
+    },
 
 });
 

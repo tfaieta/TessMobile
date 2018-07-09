@@ -1,11 +1,14 @@
 #import "AppDelegate.h"
 #import <React/RCTBundleURLProvider.h>
+#import <React/RCTLinkingManager.h>
 
 // **********************************************
 // *** DON'T MISS: THE NEXT LINE IS IMPORTANT ***
 // **********************************************
 #import "RCCManager.h"
 #import <BuddyBuildSDK/BuddyBuildSDK.h>
+#import "RNFIRMessaging.h"
+@import Firebase;
 
 
 // IMPORTANT: if you're getting an Xcode error that RCCManager.h isn't found, you've probably ran "npm install"
@@ -15,9 +18,29 @@
 
 @implementation AppDelegate
 
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+  return [RCTLinkingManager application:application openURL:url
+                      sourceApplication:sourceApplication annotation:annotation];
+}
+
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
+ restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
+{
+  return [RCTLinkingManager application:application
+                   continueUserActivity:userActivity
+                     restorationHandler:restorationHandler];
+}
+
+
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [BuddyBuildSDK setup];
+    [FIRApp configure];
+    [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
 
   NSURL *jsCodeLocation;
 #ifdef DEBUG
@@ -33,6 +56,7 @@
   // **********************************************
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   self.window.backgroundColor = [UIColor whiteColor];
+  
   [[RCCManager sharedInstance] initBridgeWithBundleURL:jsCodeLocation launchOptions:launchOptions];
 
   /*
@@ -46,10 +70,44 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  */
+   
+  // Place this code after "[self.window makeKeyAndVisible]" and before "return YES;"
+  UIView* launchScreenView = [[[NSBundle mainBundle] loadNibNamed:@"LaunchScreen" owner:self options:nil] objectAtIndex:0];
+  launchScreenView.frame = self.window.bounds;
+  rootView.loadingView = launchScreenView;
+ 
+   
+   */
   
 
   return YES;
 }
+
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler
+ {
+     [RNFIRMessaging willPresentNotification:notification withCompletionHandler:completionHandler];
+   }
+
+ #if defined(__IPHONE_11_0)
+ - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler
+ {
+     [RNFIRMessaging didReceiveNotificationResponse:response withCompletionHandler:completionHandler];
+   }
+ #else
+ - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void(^)())completionHandler
+ {
+     [RNFIRMessaging didReceiveNotificationResponse:response withCompletionHandler:completionHandler];
+   }
+ #endif
+
+ //You can skip this method if you don't want to use local notification
+ -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+     [RNFIRMessaging didReceiveLocalNotification:notification];
+   }
+
+ - (void)application:(UIApplication *)application didReceiveRemoteNotification:(nonnull NSDictionary *)userInfo fetchCompletionHandler:(nonnull void (^)(UIBackgroundFetchResult))completionHandler{
+     [RNFIRMessaging didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
+   }
 
 @end

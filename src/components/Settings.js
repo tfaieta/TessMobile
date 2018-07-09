@@ -6,7 +6,7 @@ import {
     Modal,
     TouchableOpacity,
     TextInput,
-    ScrollView
+    ScrollView, Dimensions
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import SettingsList from 'react-native-settings-list';
@@ -18,12 +18,33 @@ import ImagePicker from 'react-native-image-crop-picker';
 import Variables from './Variables';
 import DropdownAlert from 'react-native-dropdownalert';
 
+var {height, width} = Dimensions.get('window');
+
+
 
 class Settings extends Component {
 
+    static navigatorStyle = {
+        statusBarHidden: false,
+        statusBarTextColorScheme: 'light',
+        navBarHidden: false,
+        navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
+        navBarTextFontSize: 18, // change the font size of the title
+        navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
+        drawUnderTabBar: false,
+        navBarHideOnScroll: true,
+        navBarBackgroundColor: '#fff',
+        topBarElevationShadowEnabled: true,
+        topBarShadowColor: '#000',
+        topBarShadowOpacity: 0.1,
+        topBarShadowOffset: 3,
+        topBarShadowRadius: 5,
+        statusBarColor: '#fff',
+    };
 
     constructor(){
         super();
+
         this.state = {
             modalVisible: false,
             bioModalVisible: false,
@@ -31,8 +52,30 @@ class Settings extends Component {
             username: '',
             bio: '',
             category: '',
-            image: ''
+            image: '',
+            notificationsOn: false,
         };
+
+        let notificationsOn = true;
+        const {currentUser} = firebase.auth();
+        firebase.database().ref(`users/${currentUser.uid}/notificationsOn`).once("value", function (snapshot) {
+            if(snapshot.val()){
+                if(snapshot.val() == true){
+                    notificationsOn = true;
+                }
+                else{
+                    notificationsOn = false;
+                }
+            }
+            else{
+                notificationsOn = true
+            }
+        });
+
+        this.timeout = setTimeout(() => {
+            this.setState({notificationsOn: notificationsOn});
+        }, 1000)
+
     }
 
 
@@ -126,75 +169,78 @@ class Settings extends Component {
     render() {
 
         return (
-            <View style={{backgroundColor:'#fff',flex:1, paddingBottom: 118}}>
-
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 6}, shadowOpacity: 0.2, shadowRadius: 10}}>
-                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
-                        <TouchableOpacity onPress={this._pressBack}>
-                            <Icon style={{
-                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#9496A3'
-                            }} name="md-arrow-round-back">
-                            </Icon>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={styles.header}>Settings</Text>
-                    </View>
-
-                    <View>
-                    </View>
-
-                </View>
+            <View style={{backgroundColor:'#fff',flex: 1,}}>
 
 
-                <View style={{backgroundColor:'#f6f6f6',flex:1}}>
-                    <SettingsList borderColor='#d6d5d9' defaultItemSize={50}>
+                <View style={{backgroundColor:'#f5f4f9',flex: 1}}>
+                    <SettingsList borderColor='#3e416440' defaultItemSize={50}>
                         <SettingsList.Item
                             hasNavArrow={false}
                             title='Account'
-                            titleStyle={{color:'#5757FF', marginBottom:10, fontWeight:'500', fontFamily: 'Hiragino Sans'}}
+                            titleStyle={{color:'#506dcf', marginBottom: height/66.7, fontWeight:'500', fontFamily: 'Montserrat-Regular'}}
                             itemWidth={50}
                             borderHide={'Both'}
                         />
                         <SettingsList.Item
                             icon={
-                                <Icon style={{color: '#5757FF', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-image">
+                                <Icon style={{color: '#506dcf', textAlign:'center', marginRight: width/37.5, marginLeft: width/37.5, marginTop: height/33.35, fontSize: width/12.5, }} name="md-image">
                                 </Icon>
                             }
                             hasNavArrow={true}
                             itemWidth={70}
-                            titleStyle={{color:'black', fontSize: 16, fontFamily: 'Hiragino Sans'}}
+                            titleStyle={{color:'#3e4164', fontSize: width/23.44, fontFamily: 'Montserrat-Regular'}}
                             title='Change Profile Image'
                             onPress={this._handleButtonPressChangeImage}
                         />
                         <SettingsList.Item
                             icon={
-                                <Icon style={{color: '#5757FF', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-person">
+                                <Icon style={{color: '#506dcf', textAlign:'center', marginRight: width/37.5, marginLeft: width/37.5, marginTop: height/33.35, fontSize: width/12.5, }} name="md-person">
                                 </Icon>
                             }
                             hasNavArrow={true}
                             itemWidth={70}
-                            titleStyle={{color:'black', fontSize: 16, fontFamily: 'Hiragino Sans'}}
+                            titleStyle={{color:'#3e4164', fontSize: width/23.44, fontFamily: 'Montserrat-Regular'}}
                             title='Change Username'
                             onPress={this._handleButtonPressChangeUsername}
                         />
                         <SettingsList.Item
                             icon={
-                                <Icon style={{color: '#5757FF', textAlign:'center', marginRight:10,marginLeft: 10, marginTop: 20, fontSize: 30, }} name="md-browsers">
+                                <Icon style={{color: '#506dcf', textAlign:'center', marginRight: width/37.5 ,marginLeft: width/37.5, marginTop: height/33.35, fontSize: width/12.5, }} name="md-browsers">
                                 </Icon>
                             }
-                            title='Change Bio'
+                            title='Edit Bio'
                             itemWidth={70}
-                            titleStyle={{color:'black', fontSize: 16, fontFamily: 'Hiragino Sans'}}
+                            titleStyle={{color:'#3e4164', fontSize: width/23.44, fontFamily: 'Montserrat-Regular'}}
                             hasNavArrow={true}
                             onPress={this._handleButtonPressChangeBio}
                         />
 
-                        <SettingsList.Header headerStyle={{marginTop: -5}}/>
+
+                        <SettingsList.Header headerStyle={{marginTop: -(height/133.4)}}/>
+                        <SettingsList.Item
+                            icon={
+                                <Icon style={{color: '#506dcf', textAlign:'center', marginRight: width/37.5, marginLeft: width/37.5, marginTop: height/33.35, fontSize: width/12.5, }} name="md-notifications">
+                                </Icon>
+                            }
+                            title='Notifications'
+                            itemWidth={70}
+                            titleStyle={{color:'#3e4164', fontSize: width/23.44, fontFamily: 'Montserrat-Regular'}}
+                            hasNavArrow={false}
+                            hasSwitch={true}
+                            switchState={this.state.notificationsOn}
+                            switchOnValueChange={(value) => {
+                                this.setState({notificationsOn: value});
+                                const {currentUser} = firebase.auth();
+                                firebase.database().ref(`users/${currentUser.uid}/notificationsOn`).set(value);
+                            }}
+                        />
+
+
+                        <SettingsList.Header headerStyle={{marginTop: -(height/133.4)}}/>
                         <SettingsList.Item
                             hasNavArrow={true}
                             title='Log Out'
-                            titleStyle={{color:'#5757FF', marginBottom:10, fontWeight:'bold',fontFamily: 'Hiragino Sans' }}
+                            titleStyle={{color:'#506dcf', marginBottom: width/37.5, fontWeight:'bold',fontFamily: 'Montserrat-Regular'}}
                             itemWidth={70}
                             borderHide={'Both'}
                             onPress={this._handleButtonPressLogOut}
@@ -222,7 +268,7 @@ class Settings extends Component {
                                 value={this.state.username}
                                 maxLength={20}
                                 placeholder = "New Username"
-                                placeholderTextColor='#2A2A30'
+                                placeholderTextColor='#3e4164'
                                 onChangeText={text => this.setState({username: text})}
                                 onSubmitEditing={this.changeUsername}
                            />
@@ -264,7 +310,7 @@ class Settings extends Component {
                                 autoCorrect={false}
                                 value={this.state.bio}
                                 placeholder = "New Bio"
-                                placeholderTextColor='#2A2A30'
+                                placeholderTextColor='#3e4164'
                                 onChangeText={text => this.setState({bio: text})}
                                 multiline={true}
                                 maxLength={500}
@@ -309,7 +355,7 @@ class Settings extends Component {
                 >
 
                     <View style={styles.container}>
-                        <View style ={{marginTop: 100}}>
+                        <View style ={{marginTop: height/6.67}}>
 
                             <TouchableOpacity style={styles.buttonStyle} onPress={() => {
 
@@ -449,11 +495,11 @@ class Settings extends Component {
 
 const styles = StyleSheet.create({
     imageStyle:{
-        marginLeft:15,
-        marginRight:20,
+        marginLeft: width/25,
+        marginRight: width/18.75,
         alignSelf:'center',
-        width:20,
-        height:24,
+        width: 20,
+        height: 24,
         justifyContent:'center'
     },
     container:{
@@ -461,73 +507,67 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     buttonStyle:{
-        paddingTop:10,
-        paddingVertical: 10,
-        marginHorizontal: 15,
-        marginVertical: 4,
-        borderWidth: 4,
-        borderRadius: 10,
-        borderColor: '#856cff',
+        paddingTop: height/66.7,
+        paddingVertical: height/66.7,
+        marginHorizontal: width/9.38,
+        marginVertical: height/166.75,
         backgroundColor: '#fff',
         alignItems: 'center',
     },
 
     buttonStyleCancel:{
-        paddingTop:10,
-        paddingVertical: 10,
-        marginBottom:20,
-        marginHorizontal: 15,
-        marginVertical: 4,
-        borderWidth: 4,
-        borderRadius: 10,
-        borderColor: '#ee617c',
+        paddingTop: height/166.75,
+        paddingVertical: height/66.7,
+        marginBottom: height/33.35,
+        marginHorizontal: width/9.38,
+        marginVertical: height/166.75,
         backgroundColor: '#fff',
         alignItems: 'center',
     },
     textStyle:{
-        marginTop: 10,
-        color: '#856cff',
+        marginTop: height/66.7,
+        color: '#506dcf',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 25,
+        fontFamily: 'Montserrat-Regular',
+        fontSize: width/20.83,
     },
     textStyleCancel:{
-        marginTop: 10,
-        color: '#ee617c',
+        marginTop: height/66.7,
+        color: '#d15564',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 25,
+        fontFamily: 'Montserrat-Regular',
+        fontSize: width/20.83,
     },
 
     inputStyle:{
-        marginHorizontal: 15,
-        marginTop: 50,
-        height: 40,
+        marginHorizontal: width/25,
+        marginTop: height/8.34,
+        height: height/33.35,
         backgroundColor: '#fff',
-        marginBottom: 40,
-        color: '#2A2A30',
-        paddingHorizontal: 10,
-        fontSize: 20,
+        marginBottom: height/66.7,
+        color: '#3e4164',
+        paddingHorizontal: width/37.5,
+        fontSize: width/20.83,
     },
     input2: {
-        marginHorizontal: 15,
-        marginTop: 50,
-        height: 100,
+        marginHorizontal: width/25,
+        marginTop: height/8.34,
+        height: height/6.67,
         backgroundColor: '#fff',
-        marginBottom: 40,
-        color: '#2A2A30',
-        paddingHorizontal: 10,
-        fontSize: 20,
+        marginBottom: height/66.7,
+        color: '#3e4164',
+        paddingHorizontal: width/37.5,
+        fontSize: width/20.83,
     },
 
     header: {
-        marginTop:25,
-        marginLeft: -35,
+        marginTop: height/26.68,
+        marginLeft: -(width/10.71),
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/23.44,
         backgroundColor: 'transparent',
 
     }

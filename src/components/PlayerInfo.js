@@ -3,29 +3,51 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableOpacity,
-    ScrollView,
     ListView,
     TextInput,
     KeyboardAvoidingView,
-    Dimensions,
+    Dimensions, ActivityIndicator, Linking
 } from 'react-native';
 import Variables from "./Variables";
 import firebase from 'firebase';
-import Icon from 'react-native-vector-icons/Ionicons';
-
-import { Navigation } from 'react-native-navigation';
 import ListItemComment from "./ListItemComment";
-
-
+var Analytics = require('react-native-firebase-analytics');
+import HTML from 'react-native-render-html';
 
 
 var {height, width} = Dimensions.get('window');
 
 
+
+
 class PlayerInfo extends Component {
 
-    componentWillMount(){
+static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true,
+        statusBarTextColorScheme: 'dark',
+        statusBarColor: '#fff',
+    };
+
+
+
+    componentWillUnmount(){
+        clearInterval(this.interval);
+        clearTimeout(this.timeout);
+        clearTimeout(this.timeout2);
+    }
+
+
+    constructor(props){
+        super(props);
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.state ={
+            comment: '',
+            commentsLoading: true,
+            dataSource: dataSource.cloneWithRows(Variables.state.comments),
+            description: '',
+            time: '',
+        };
 
         firebase.database().ref(`podcasts/${Variables.state.podcastID}/comments`).on("value", function (snap) {
             Variables.state.comments = [];
@@ -36,22 +58,6 @@ class PlayerInfo extends Component {
             });
         });
 
-    }
-
-
-    componentWillUnmount(){
-        clearInterval(this.interval);
-    }
-
-
-    constructor(props){
-        super(props);
-        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
-        this.state ={
-            comment: '',
-            dataSource: dataSource.cloneWithRows(Variables.state.comments),
-        };
-
         this.interval = setInterval(() => {
             firebase.database().ref(`podcasts/${Variables.state.podcastID}/comments`).on("value", function (snap) {
                 Variables.state.comments = [];
@@ -61,10 +67,28 @@ class PlayerInfo extends Component {
                     }
                 });
             });
-            setTimeout(() => {
+            this.timeout2 = setTimeout(() => {
                 this.setState({dataSource: dataSource.cloneWithRows(Variables.state.comments)})},500);
 
-        }, 1000)
+        }, 1000);
+
+
+        let desc = Variables.state.podcastDescription;
+
+        let timeElapsed = '';
+        let timeNow = new Date().getTime();
+        firebase.database().ref(`podcasts/${Variables.state.podcastID}/time`).once("value", function (snapshot) {
+            if(snapshot.val()){
+                timeElapsed = snapshot.val();
+            }
+        });
+
+        this.timeout = setTimeout(() => {
+            this.setState({commentsLoading: false, description: desc});
+            if(timeElapsed != ''){
+                this.setState({time: timeNow-timeElapsed});
+            }
+        }, 3000);
 
     }
 
@@ -72,7 +96,7 @@ class PlayerInfo extends Component {
     renderRow = (rowData) => {
 
         return(
-            <ListItemComment rowData = {rowData} />
+            <ListItemComment rowData = {rowData} navigator = {this.props.navigator}/>
         )
 
     };
@@ -80,14 +104,14 @@ class PlayerInfo extends Component {
 
     renderPodcastInfo(){
         if(Variables.state.podcastsPlays == 1){
-            if(Variables.state.likers.length > 1){
+            if(Variables.state.likers.length == 1){
                 return(
                         <View style={{flexDirection: 'row'}}>
                             <View style={{flex:1}}>
-                                <Text style={styles.textLike}>{Variables.state.likers.length} likes</Text>
+                                <Text style={styles.textLike}>{Variables.state.likers.length} like</Text>
                             </View>
                             <View style={{flex:1}}>
-                                <Text style={styles.textLike}>{Variables.state.podcastsPlays} play</Text>
+                                <Text style={styles.textLike}>{Variables.state.podcastsPlays} listen</Text>
                             </View>
                         </View>
                 )
@@ -96,24 +120,24 @@ class PlayerInfo extends Component {
                 return(
                         <View style={{flexDirection: 'row'}}>
                             <View style={{flex:1}}>
-                                <Text style={styles.textLike}>{Variables.state.likers.length} like</Text>
+                                <Text style={styles.textLike}>{Variables.state.likers.length} likes</Text>
                             </View>
                             <View style={{flex:1}}>
-                                <Text style={styles.textLike}>{Variables.state.podcastsPlays} play</Text>
+                                <Text style={styles.textLike}>{Variables.state.podcastsPlays} listen</Text>
                             </View>
                         </View>
                 )
             }
         }
         else{
-            if(Variables.state.likers.length > 1){
+            if(Variables.state.likers.length == 1){
                 return(
                         <View style={{flexDirection: 'row'}}>
                             <View style={{flex:1}}>
-                                <Text style={styles.textLike}>{Variables.state.likers.length} likes</Text>
+                                <Text style={styles.textLike}>{Variables.state.likers.length} like</Text>
                             </View>
                             <View style={{flex:1}}>
-                                <Text style={styles.textLike}>{Variables.state.podcastsPlays} plays</Text>
+                                <Text style={styles.textLike}>{Variables.state.podcastsPlays} listens</Text>
                             </View>
                         </View>
                 )
@@ -122,10 +146,10 @@ class PlayerInfo extends Component {
                 return(
                         <View style={{flexDirection: 'row'}}>
                             <View style={{flex:1}}>
-                                <Text style={styles.textLike}>{Variables.state.likers.length} like</Text>
+                                <Text style={styles.textLike}>{Variables.state.likers.length} likes</Text>
                             </View>
                             <View style={{flex:1}}>
-                                <Text style={styles.textLike}>{Variables.state.podcastsPlays} plays</Text>
+                                <Text style={styles.textLike}>{Variables.state.podcastsPlays} listens</Text>
                             </View>
                         </View>
                 )
@@ -134,35 +158,116 @@ class PlayerInfo extends Component {
     }
 
     renderComments(){
-        if(Variables.state.comments.length > 0){
+        if(this.state.commentsLoading){
             return(
-                <View style={{height: height/2.4}}>
-
-                    <ListView
-                        ref={ ( ref ) => this.scrollView = ref }
-                        enableEmptySections
-                        dataSource={this.state.dataSource}
-                        renderRow={this.renderRow}
-                        onContentSizeChange={ () => {
-                            if(Variables.state.comments.length > 4){
-                                this.scrollView.scrollToEnd( { animated: true } )
-                            }
-                        }}
-                    />
-                    <View style={{height: 1.5, marginHorizontal: 20, backgroundColor: '#2A2A3060',}} />
-
+                <View style={styles.container}>
+                    <ActivityIndicator style={{paddingVertical: height/10, alignSelf:'center'}} color='#3e4164' size ="large" />
                 </View>
+            )
+        }
+        else{
+            if(Variables.state.comments.length > 0){
+                return(
+                    <View style={{flex: 1}}>
 
+                        <ListView
+                            ref={ ( ref ) => this.scrollView = ref }
+                            enableEmptySections
+                            dataSource={this.state.dataSource}
+                            renderRow={this.renderRow}
+                            onContentSizeChange={ () => {
+                                if(Variables.state.comments.length > 4){
+                                    this.scrollView.scrollToEnd( { animated: true } )
+                                }
+                            }}
+                        />
+                        <View style={{height: 1.5, marginHorizontal: width/18.75, backgroundColor: '#2A2A3020',}} />
+
+                    </View>
+
+                )
+            }
+            else{
+                return(
+                    <View style={{flex: 1}}>
+                        <Text style={styles.textEmpty}>Be the first to comment!</Text>
+                    </View>
+                )
+            }
+        }
+
+
+    }
+
+    renderDescription = () => {
+        if(this.state.commentsLoading != ''){
+            return(
+                <View style={styles.container}>
+                    <ActivityIndicator style={{paddingVertical: height/15, alignSelf:'center'}} color='#3e4164' size ="large" />
+                </View>
             )
         }
         else{
             return(
-                <Text style={styles.textEmpty}>Be the first to comment!</Text>
-                )
+                <HTML html={this.state.description}
+                      containerStyle={{backgroundColor: 'transparent', marginTop: height/66.7, marginHorizontal: width/18.75, paddingBottom: height/33.35,}}
+                      baseFontStyle={{fontSize: width/27, color: '#656575', fontFamily: 'Montserrat-SemiBold'}}
+                      textSelectable={true}
+                      onLinkPress={(evt, href) => {
+                          Linking.canOpenURL(href).then(supported => {
+                              if (supported) {
+                                  Linking.openURL(href);
+                              } else {
+                                  console.warn("Don't know how to open URI: " + href);
+                              }
+                          });
+                      }}
+                />
+            )
         }
+    };
 
-    }
 
+    renderTime = () => {
+        if(this.state.time != ''){
+            if(((this.state.time/1000)/86400).toFixed(0) >= 2 ){
+                return(
+                    <Text style={styles.titleTime}>added {((this.state.time/1000)/86400).toFixed(0)} days ago</Text>
+                )
+            }
+            if(((this.state.time/1000)/86400).toFixed(0) > 1 ){
+                return(
+                    <Text style={styles.titleTime}>added {((this.state.time/1000)/86400).toFixed(0)} day ago</Text>
+                )
+            }
+            else if(((this.state.time/1000)/3600).toFixed(0) >= 2 ){
+                return(
+                    <Text style={styles.titleTime}>added {((this.state.time/1000)/3600).toFixed(0)} hours ago</Text>
+                )
+            }
+            else if(((this.state.time/1000)/3600).toFixed(0) > 1 ){
+                return(
+                    <Text style={styles.titleTime}>added {((this.state.time/1000)/3600).toFixed(0)} hour ago</Text>
+                )
+            }
+            else if(((this.state.time/1000)/60).toFixed(0) >= 2 ){
+                return(
+                    <Text style={styles.titleTime}>added {((this.state.time/1000)/60).toFixed(0)} minutes ago</Text>
+                )
+            }
+            else if(((this.state.time/1000)/60).toFixed(0) > 1 ){
+                return(
+                    <Text style={styles.titleTime}>added {((this.state.time/1000)/60).toFixed(0)} minute ago</Text>
+                )
+            }
+            else{
+                return(
+                    <Text style={styles.titleTime}>added {((this.state.time/1000)).toFixed(0)} seconds ago</Text>
+                )
+            }
+
+        }
+    };
 
 
     render(){
@@ -170,46 +275,16 @@ class PlayerInfo extends Component {
 
         return(
             <View style={styles.container}>
-            <View>
+                <KeyboardAvoidingView behavior={"padding"} style={{flex: 1}}>
 
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15}}>
-                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
-                        <TouchableOpacity onPress={() => {
-                            Navigation.dismissModal();
-                        }}>
-                            <Icon style={{
-                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#9496A3'
-                            }} name="md-arrow-round-back">
-                            </Icon>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={styles.header}>Info</Text>
-                    </View>
+                    <Text style={styles.title2}>Episode Info</Text>
 
-                    <View>
-                    </View>
-
-                </View>
+                    {this.renderDescription()}
+                    {this.renderTime()}
 
 
-
-                <View style={{height: 1.5, marginHorizontal: 20, backgroundColor: '#2A2A3060',}} />
-                <ScrollView style={styles.descriptionBox}>
-                    <Text style={styles.textDescription}>{Variables.state.podcastDescription}</Text>
-                </ScrollView>
-
-                {this.renderPodcastInfo()}
-
-                <Text style={styles.title2}>Comments</Text>
-                <View style={{height: 1.5, marginHorizontal: 20, backgroundColor: '#2A2A3060',}} />
-
-                {this.renderComments()}
-
-
-            </View>
-
-                <KeyboardAvoidingView  behavior='padding' style={styles.commentContainer}>
+                    <Text style={styles.title2}>Comments</Text>
+                    <View style={styles.commentContainer}>
                     <TextInput
                         ref='input'
                         style ={styles.input}
@@ -220,6 +295,7 @@ class PlayerInfo extends Component {
                         value={this.state.comment}
                         onChangeText={text => this.setState({comment: text})}
                         maxLength={500}
+                        underlineColorAndroid = 'transparent'
                         onSubmitEditing={(event) => {
                             if(this.state.comment != ''){
 
@@ -234,25 +310,42 @@ class PlayerInfo extends Component {
 
                                 });
 
+                                firebase.database().ref(`users/${currentUser.uid}/activity`).push({action: 'comment', id: Variables.state.podcastID, user: currentUser.uid, time: firebase.database.ServerValue.TIMESTAMP});
+                                var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
+                                ref.once("value", function(snapshot) {
+                                    if(snapshot.val()){
+                                        if(snapshot.val().comments){
+                                            ref.update({comments: snapshot.val().comments + 1})
+                                        }
+                                        else{
+                                            ref.update({comments: 1})
+                                        }
+                                    }
+                                    else{
+                                        ref.update({comments: 1})
+                                    }
+                                });
+
+                                Analytics.logEvent('writeComment', {
+                                    'user_id': user
+                                });
+
                                 this.setState({comment: ''});
-
                             }
-
-
 
                         }}
                     />
-                </KeyboardAvoidingView>
+                    </View>
 
+                    {this.renderComments()}
+                    <View style={{paddingBottom: height/3.34}} />
+
+                </KeyboardAvoidingView>
 
             </View>
 
 
         )
-
-
-
-
 
 
     }
@@ -273,63 +366,50 @@ const styles = StyleSheet.create({
     commentContainer:{
         flex: 1,
         backgroundColor: '#fff',
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0,
         borderWidth: 2,
         borderColor: '#656575',
         borderRadius: 10,
-        marginHorizontal: 30,
+        marginHorizontal: width/12.5,
+        marginVertical: height/66.7
     },
 
     header: {
-        marginTop:25,
-        marginLeft: -35,
-        color: '#2A2A30',
-        textAlign: 'center',
+        marginTop: height/26.68,
+        marginLeft: -(width/15),
+        color: '#3e4164',
+        textAlign: 'left',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
+        fontFamily: 'Montserrat-Bold',
+        fontSize: width/23.44,
         backgroundColor: 'transparent',
 
-    },
-
-    title:{
-        color: '#2A2A30',
-        textAlign: 'center',
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
-        backgroundColor: 'transparent',
-        marginTop: 30,
-        marginBottom: 10
     },
 
     title2:{
-        color: '#2A2A30',
-        textAlign: 'center',
+        color: '#3e4164',
+        textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
+        fontFamily: 'Montserrat-Bold',
+        fontSize: width/20,
         backgroundColor: 'transparent',
-        marginTop: 20,
-        marginBottom: 10
+        marginLeft: height/33.35,
+        marginTop: height/28,
+        marginBottom: height/66.7
     },
 
     textDescription:{
         color: '#656575',
         flexDirection: 'column',
-        textAlign: 'center',
+        textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/27,
         backgroundColor: 'transparent',
-        marginBottom: 20,
-        marginHorizontal: 20,
+        marginBottom: height/60,
+        marginHorizontal: width/18.75,
+        paddingBottom: height/33.35,
     },
 
     textEmpty:{
@@ -338,66 +418,55 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
+        fontFamily:  'Montserrat-SemiBold',
+        fontSize: width/23.44,
         backgroundColor: 'transparent',
-        marginBottom: 20,
-        marginHorizontal: 20,
-        marginTop: 10
+        marginBottom: height/33.35,
+        marginHorizontal: width/18.75,
+        marginTop: height/66.7,
     },
 
     textLike:{
-        color: '#5757FF',
+        color: '#506dcf',
         flexDirection: 'column',
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 14,
+        fontFamily:  'Montserrat-Bold',
+        fontSize: width/26.79,
         backgroundColor: 'transparent',
-        marginTop: 10,
-        marginHorizontal: 20,
+        marginTop: height/66.7,
+        marginHorizontal: width/18.75,
     },
-    textComment:{
+    titleTime:{
         color: '#656575',
         flexDirection: 'column',
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 14,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/26.79,
         backgroundColor: 'transparent',
-        marginVertical: 5,
-        marginHorizontal: 5,
-    },
-    textCommentName:{
-        color: '#2A2A30',
-        flexDirection: 'column',
-        textAlign: 'center',
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 14,
-        backgroundColor: 'transparent',
-        marginVertical: 5,
-        marginHorizontal: 5,
+        marginVertical: height/133.4,
+        marginHorizontal: width/75,
     },
     descriptionBox:{
+        flex: 1,
         backgroundColor: '#fff',
-        marginHorizontal: 10,
-        paddingVertical: 30,
-        height: 175,
+        marginHorizontal: width/37.5,
+        paddingVertical: height/60,
+        height: height/3.81,
     },
 
     input: {
-        height: 40,
+        height: height/16.68,
         backgroundColor: 'transparent',
         fontStyle: 'normal',
         textAlign: 'center',
-        fontFamily: 'HiraginoSans-W6',
-        color: '#2A2A30',
-        paddingHorizontal: 10,
-        fontSize: 16,
+        fontFamily: 'Montserrat-SemiBold',
+        color: '#3e4164',
+        paddingHorizontal: width/37.5,
+        fontSize: width/23.44,
     },
 
 });

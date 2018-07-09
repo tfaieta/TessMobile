@@ -6,45 +6,59 @@ import com.facebook.react.ReactApplication;
 import com.zmxv.RNSound.RNSoundPackage;
 import com.rnim.rn.audio.ReactNativeAudioPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.tanguyantoine.react.MusicControl;
+import com.RNFetchBlob.RNFetchBlobPackage;
+import com.reactnativenavigation.NavigationApplication;
+import com.brentvatne.react.ReactVideoPackage;
+import cl.json.RNSharePackage;
+import cl.json.ShareApplication;
+import com.evollu.react.fa.FIRAnalyticsPackage;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class MainApplication extends Application implements ReactApplication {
-
-  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
-    @Override
-    public boolean getUseDeveloperSupport() {
-      return BuildConfig.DEBUG;
-    }
-
-    @Override
-    protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            new RNSoundPackage(),
-            new ReactNativeAudioPackage(),
-            new VectorIconsPackage(),
-            new FBSDKPackage(),
-            new LinearGradientPackage()
-      );
-    }
-  };
+public class MainApplication extends NavigationApplication implements ShareApplication  {
 
   @Override
-  public ReactNativeHost getReactNativeHost() {
-    return mReactNativeHost;
+  public boolean isDebug() {
+    // Make sure you are using BuildConfig from your own application
+    return BuildConfig.DEBUG;
+  }
+
+  protected List<ReactPackage> getPackages() {
+    return Arrays.<ReactPackage>asList(
+        new MainReactPackage(),
+        new RNSoundPackage(),
+        new ReactNativeAudioPackage(),
+        new VectorIconsPackage(),
+        new LinearGradientPackage(),
+        new MusicControl(),
+        new RNFetchBlobPackage(),
+        new ReactVideoPackage(),
+        new RNSharePackage(),
+        new FIRAnalyticsPackage()
+    );
+  }
+
+
+  @Override
+  public String getFileProviderAuthority() {
+    return "com.tess.provider";
   }
 
   @Override
-  public void onCreate() {
-    super.onCreate();
-    SoLoader.init(this, /* native exopackage */ false);
+  public List<ReactPackage> createAdditionalReactPackages() {
+    return getPackages();
   }
+
+  @Override
+  public String getJSMainModuleName() {
+    return "index.android";
+  }
+
 }

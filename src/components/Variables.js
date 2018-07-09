@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
 import {podFile, podTime} from './Record';
-import firebase from 'firebase';
-import {
-    Player,
-} from 'react-native-audio-toolkit';
 import MusicControl from 'react-native-music-control';
-
-
-export var podcastPlayer = new Player(podFile, {continuesToPlayInBackground : true});
-podcastPlayer.prepare();
+import firebase from 'firebase';
 
 
 
@@ -19,10 +12,13 @@ class Variables extends Component{
 
 
     static state = {
+
+        // global variables
         isPlaying: false,
         podProgress: 0,
         uploadProgress: 0,
         interval: null,
+        forgot: 'Forgot',
         podcastTitle: '',
         podcastDescription: '',
         podcastCategory: '',
@@ -46,30 +42,57 @@ class Variables extends Component{
         liked: false,
         favorited: false,
         rss: false,
+        showAlert: false,
         usersFollowed: [],
         favPodcasts: [],
         myPodcasts: [],
         userPodcasts: [],
         currCategory: [],
         mySearches: [],
+        mySearchesPodcast: [],
         likers: [],
         comments: [],
+        url: '',
         followedContent: [],
         newPodcasts: [],
         newPodcastsArtsts: [],
         myFollowers: [],
         userFollowers: [],
         myFollowing: [],
+        myTracking: [],  // holds my tracked podcasts
         userFollowing: [],
+        userTracking: [],  // holds user's tracked podcasts
         newFollowedContent: [],
         homeFollowedContent: [],
         selectedByTess: [],
         fromTess : [],
         topCharts: [],
-        recentlyPlayed: [],
-        myQueue: [],
+        recentlyPlayed: [], // my recently played
+        userRecentlyPlayed: [], // user recently played
+        myQueue: [],    // stores episodes for queue
+        playlists: [],  // stores all playlists
+        widgets: [],    // stores the titles of widgets for home page, in correct order
+        tracking: false, // bool of whether user is tracking certain podcast
+        myPlayTime: 0, // my seconds listened
+        myTrackingAmount: 0, // number of my tracks
+        myHighlightsAmount: 0, // number of my highlights
+        myLikesAmount: 0,  // number of my likes
+        myCommentsAmount: 0, // number of my comments
+        mySharesAmount: 0,  // number of my shares
+        userPlayTime: 0, // user seconds listened
+        userTrackingAmount: 0, // number of user tracks
+        userHighlightsAmount: 0, // number of user highlights
+        userLikesAmount: 0,  // number of user likes
+        userCommentsAmount: 0, // number of user comments
+        userSharesAmount: 0, // number of user shares
+        highlight: false, // whether item playing is a highlight or not
+        highlightStart: 0,  // start time for current highlight
+        highlightEnd: 0,  // end time for current highlight
+        catchUp: [],    // stores episodes needed to catch up (obtained from tracking)
+        catchUpLength: [],    // stores number of episodes needed to catch up (obtained from tracking)
 
 
+        // player variables
         podcastURL: '',
         podcastSpeed: 1.0,
         duration: 0,
@@ -130,8 +153,6 @@ class Variables extends Component{
         Variables.state.paused = true;
 
     };
-
-
 
 
 }

@@ -3,7 +3,8 @@ import { Text, View, LayoutAnimation, TouchableOpacity, Image } from 'react-nati
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import Variables from "./Variables";
-
+import { Navigation } from 'react-native-navigation';
+var Analytics = require('react-native-firebase-analytics');
 
 
 // A single podcast on the queue list
@@ -101,7 +102,7 @@ class ListItemQueue extends Component {
 
         const {podcastArtist} = this.props.podcast;
 
-        let profileName = 'loading';
+        let profileName = '';
         firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
             if (snap.val()) {
                 profileName = snap.val().username;
@@ -125,9 +126,21 @@ class ListItemQueue extends Component {
 
 
 
+
         return (
 
             <TouchableOpacity onPress={() =>  {
+                Variables.state.highlight = false;
+
+                Analytics.logEvent('play', {
+                    'episodeID': id,
+                    'epispdeTitle': podcastTitle,
+                    'episodeArtist': podcastArtist,
+                    'user_id': user
+                });
+
+
+                firebase.database().ref(`users/${currentUser.uid}/tracking/${podcastArtist}/episodes/${id}`).remove();
 
                 if(rss){
 
@@ -366,9 +379,32 @@ class ListItemQueue extends Component {
                 }
 
 
+                Navigation.dismissModal({
+                    animationType: 'slide-down'
+                });
 
 
-            }}>
+
+
+            }}  onLongPress={() => {
+                const {currentUser} = firebase.auth();
+                const {podcast} = this.props;
+                const rowData = podcast;
+
+                const {navigator} = this.props;
+
+                this.props.navigator.showLightBox({
+                    screen: "PodcastOptions",
+                    passProps: {rowData, navigator},
+                    style: {
+                        backgroundBlur: "dark",
+                        backgroundColor: '#3e416430',
+                        tapBackgroundToDismiss: true,
+                        width: 100,
+                        height: 200
+                    },
+                });
+            }} >
                 <View style={styles.container}>
 
                     {this._renderProfileImage()}
@@ -417,13 +453,13 @@ class ListItemQueue extends Component {
 
 const styles = {
     title: {
-        color: '#2A2A30',
+        color: '#3e4164',
         marginTop: 0,
         flex:1,
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 15,
         backgroundColor: 'transparent',
         marginHorizontal: 20,
@@ -436,7 +472,7 @@ const styles = {
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'Montserrat-Regular',
         fontSize: 15,
         backgroundColor: 'transparent',
         marginLeft: 20,

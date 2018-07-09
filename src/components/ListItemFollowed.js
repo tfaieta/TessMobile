@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image} from 'react-native';
+import { Text, View, TouchableOpacity, Image, Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import Variables from "./Variables";
-import { Navigation } from 'react-native-navigation';
 
+var {height, width} = Dimensions.get('window');
+
+
+// A single user item on a following or followed list
 
 class ListItemFollowed extends Component {
 
@@ -16,7 +19,7 @@ class ListItemFollowed extends Component {
 
             firebase.database().ref(`users/${podcastArtist}/profileImage`).once("value", function (snapshot) {
                 if(snapshot.val()){
-                    profileImage = snapshot.val().profileImage
+                    profileImage = snapshot.val().profileImage;
                     rss = true;
                 }
                 else{
@@ -29,7 +32,7 @@ class ListItemFollowed extends Component {
                     });
                 }
             });
-            this.timeout = setTimeout(() => {this.setState({profileImage: profileImage, rss: rss})},1200);
+            this.timeout = setTimeout(() => {this.setState({profileImage: profileImage, rss: rss})},1400);
             this.timeout2 = setTimeout(() => {this.setState({profileImage: profileImage, rss: rss})},3400);
 
     }
@@ -44,10 +47,28 @@ class ListItemFollowed extends Component {
     constructor(state) {
         super(state);
         this.state ={
+            loading: true,
             profileName: '',
             profileImage: '',
             rss: false,
         };
+
+
+        const podcastArtist = this.props.podcast;
+
+        let profileName = '';
+        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").once("value", function (snap) {
+            if (snap.val()) {
+                profileName = snap.val().username;
+            }
+
+        });
+
+        setTimeout(() =>{
+            this.setState({profileName: profileName, loading: false})
+        },1400);
+
+
     }
 
 
@@ -56,12 +77,12 @@ class ListItemFollowed extends Component {
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginBottom:10, marginLeft: 10, alignSelf: 'center', height: 70, width: 70, borderRadius:4, borderWidth:5, borderColor:'rgba(320,320,320,0.8)',  }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginBottom: width/37.5, marginLeft: width/37.5, alignSelf: 'center', height: width/7.5, width: width/7.5, borderRadius: 4, borderWidth: 5, borderColor:'rgba(320,320,320,0.8)',  }}>
                     <Icon style={{
                         textAlign: 'center',
-                        fontSize: 45,
+                        fontSize: width/10.71,
                         color: 'white',
-                        marginTop: 10
+                        marginTop: width/187.5
                     }} name="md-person">
                     </Icon>
                 </View>
@@ -69,9 +90,9 @@ class ListItemFollowed extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom:10, marginLeft: 10, height: 70, width: 70, }}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom: width/37.5, marginLeft: width/37.5, height: width/7.5, width: width/7.5, }}>
                     <Image
-                        style={{width: 70, height: 70, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
+                        style={{width: width/7.5, height: width/7.5, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -79,96 +100,81 @@ class ListItemFollowed extends Component {
         }
     }
 
+    renderItem = () => {
+        if(this.state.loading){
+
+            return (
+
+                <View>
+                    <View style={styles.container}>
+
+                        <View style={{backgroundColor:'rgba(130,131,147,0.2)', marginBottom: width/37.5, marginLeft: width/37.5, alignSelf: 'center', height: width/7.5, width: width/7.5, borderRadius: 4, borderWidth: 5, borderColor:'rgba(320,320,320,0.8)',  }}>
+                            <Icon style={{
+                                textAlign: 'center',
+                                fontSize: width/10.71,
+                                color: 'white',
+                                marginTop: width/187.5
+                            }} name="md-person">
+                            </Icon>
+                        </View>
+
+                        <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center'}}>
+                            <View style={{backgroundColor: '#82839320', paddingVertical: height/95.3, marginVertical: height/300, marginHorizontal: width/30, paddingHorizontal: width/4, borderRadius: width/18.75}}/>
+                        </View>
+
+                    </View>
+                </View>
+            )
+        }
+        else{
+            const podcastArtist = this.props.podcast;
+
+            return (
+
+                <TouchableOpacity underlayColor='#5757FF' onPress={ () =>{
+                    const {navigator} = this.props;
+                    Variables.state.browsingArtist = podcastArtist;
+                    const {rss} = this.state;
+                    this.props.navigator.push({
+                        screen: "UserProfile",
+                        title: this.state.profileName,
+                        passProps: {navigator, rss},
+                    });
+                }}>
+                    <View style={styles.container}>
+
+                        {this._renderProfileImage()}
+                        <View style={styles.middleContainer}>
+                            <Text style={styles.title}>{this.state.profileName}</Text>
+                        </View>
 
 
+                    </View>
+                </TouchableOpacity>
+            )
+        }
+
+    };
 
 
 
     render() {
 
-        const podcastArtist = this.props.podcast;
-
-        let profileName = 'loading';
-        setTimeout(() =>{
-            this.setState({profileName: profileName})
-        },200);
-        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
-            if (snap.val()) {
-                profileName = snap.val().username;
-            }
-
-        });
-
-
-
-        return (
-
-            <TouchableOpacity underlayColor='#5757FF' onPress={ () =>{
-                Variables.state.browsingArtist = podcastArtist;
-                if(this.state.rss){
-                    Variables.state.rss = true;
-                }
-                else{
-                    Variables.state.rss = false;
-                }
-                Navigation.showModal({
-                    screen: "UserProfile",
-                    title: "Modal",
-                    passProps: {},
-                    navigatorStyle: {},
-                    navigatorButtons: {},
-                    animationType: 'slide-up'
-                });
-            }}>
-                <View style={styles.container2}>
-
-
-                    {this._renderProfileImage()}
-
-
-                    <View style={styles.middleContainer}>
-                        <Text style={styles.title2}>{this.state.profileName}</Text>
-                    </View>
-
-
-                </View>
-            </TouchableOpacity>
+        return(
+            <View>
+                {this.renderItem()}
+            </View>
         )
 
     }
 
-
 }
 
 const styles = {
-    title: {
-        color: '#2A2A30',
-        marginTop: 0,
-        flex:1,
-        textAlign: 'center',
-        paddingLeft: 0,
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 20,
-        backgroundColor: 'transparent'
-    },
-    artistTitle: {
-        color: '#828393',
-        marginTop: 0,
-        flex:1,
-        textAlign: 'center',
-        paddingLeft: 2,
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 15,
-        backgroundColor: 'transparent'
-    },
     container: {
         paddingHorizontal: 0,
-        paddingVertical: 0,
-        marginVertical: 0,
+        paddingVertical: 10,
+        marginVertical: 1,
         marginHorizontal: 0,
         backgroundColor: '#FFF',
         opacity: 1,
@@ -178,39 +184,17 @@ const styles = {
         borderStyle: 'solid',
         flexDirection: 'row',
     },
-    container2: {
-        marginVertical: 5,
-        backgroundColor: 'transparent',
-        opacity: 1,
-        flexDirection: 'row'
-    },
-    title2: {
-        color: '#2A2A30',
+    title: {
+        color: '#3e4164',
         flex:1,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        marginTop: 25,
-        marginLeft: 20,
-        fontSize: 16,
+        fontFamily: 'Montserrat-SemiBold',
+        marginTop: height/44.47,
+        marginLeft: width/18.75,
+        fontSize: width/26.79,
         backgroundColor: 'transparent'
-    },
-    centerContainer: {
-        flexDirection: 'row'
-    },
-    leftContainer: {
-        flex: 1,
-        paddingLeft: 2,
-        justifyContent: 'center',
-        alignItems:'flex-start',
-    },
-    rightContainer: {
-        flex: 1,
-        paddingRight: 2,
-        justifyContent: 'center',
-        alignItems: 'flex-end',
-
     },
     middleContainer: {
         flex: 1,

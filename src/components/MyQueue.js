@@ -3,11 +3,17 @@ import { Text, View, StyleSheet, TouchableOpacity, ScrollView, ListView} from 'r
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from "./Variables";
 import firebase from 'firebase';
-import ListItem from "./ListItem";
 import ListItemQueue from "./ListItemQueue";
 
 
 class MyQueue extends Component{
+
+static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true,
+        statusBarTextColorScheme: 'dark',
+        statusBarColor: '#fff',
+    };
 
     componentWillMount(){
         const {currentUser} = firebase.auth();
@@ -29,7 +35,8 @@ class MyQueue extends Component{
 
 
     componentWillUnmount(){
-        clearInterval(this.interval);
+        clearTimeout(this.timeout);
+        this.setState({refreshing: false, loading: false})
     }
 
 
@@ -40,7 +47,7 @@ class MyQueue extends Component{
             dataSource: dataSource.cloneWithRows(Variables.state.myQueue),
         };
 
-        this.interval = setInterval(() => {
+        this.timeout = setTimeout(() => {
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myQueue)})
         },1000);
 
@@ -61,7 +68,7 @@ class MyQueue extends Component{
 
     render() {
         return (
-            <View style = {{backgroundColor: '#414149', flex:1}}>
+            <View style = {{backgroundColor: 'transparent', flex:1}}>
             <View
                 style={styles.container}>
 
@@ -70,8 +77,8 @@ class MyQueue extends Component{
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
-                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#9496A3'
-                            }} name="md-arrow-round-back">
+                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#007aff',
+                            }} name="ios-arrow-back">
                             </Icon>
                         </TouchableOpacity>
                     </View>
@@ -125,14 +132,14 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        color: '#2A2A30',
+        color: '#3e4164',
         marginTop:10,
         marginLeft: 20,
         flex:1,
         textAlign: 'left',
         opacity: 2,
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 20,
         backgroundColor: 'transparent'
     },
@@ -148,10 +155,10 @@ const styles = StyleSheet.create({
     header: {
         marginTop:25,
         marginLeft: -35,
-        color: '#2A2A30',
+        color: '#3e4164',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-SemiBold',
         fontSize: 16,
         backgroundColor: 'transparent',
 
