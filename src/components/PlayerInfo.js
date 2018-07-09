@@ -295,6 +295,7 @@ static navigatorStyle = {
                         value={this.state.comment}
                         onChangeText={text => this.setState({comment: text})}
                         maxLength={500}
+                        underlineColorAndroid = 'transparent'
                         onSubmitEditing={(event) => {
                             if(this.state.comment != ''){
 

@@ -26,7 +26,9 @@ class Recommend extends Component{
 
     pushRecommend = (input) => {
         const user = firebase.auth().currentUser.uid;
-        firebase.database().ref(`recommendedPods/${this.state.input}`).update({user});
+
+        let recommendation = this.state.input.toString().replace(".", " ");
+        firebase.database().ref(`recommendedPods/${recommendation}`).update({user});
 
         this.setState({
             buttonTitle: "Success",

@@ -73,6 +73,7 @@ exports.notificationNewEp = functions.database.ref(`/podcasts/{podcastKey}`)
             };
 
             let podArtist = podcastArtist.toString().replace(/\s/g, "_");
+            podArtist = podArtist.toString().replace(':', "_");
 
             const topic = ("/topics/" + podArtist);
             console.log(topic);

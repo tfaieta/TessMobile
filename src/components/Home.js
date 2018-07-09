@@ -504,8 +504,6 @@ class Home extends Component{
     constructor(props) {
         super(props);
 
-        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-
         this.props.navigator.setStyle({
             statusBarHidden: false,
             statusBarTextColorScheme: 'light',
@@ -525,6 +523,7 @@ class Home extends Component{
             topBarShadowRadius: 5,
             statusBarColor: '#fff',
         });
+
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
