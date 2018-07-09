@@ -4,9 +4,6 @@ import Variables from './Variables';
 import Video from 'react-native-video';
 import firebase from 'firebase';
 
-
-
-
 // Actual Player (not cosmetic)
 
 class Player extends Component{

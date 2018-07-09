@@ -4,7 +4,8 @@
 
     It is used in:
     TopCharts.js,
-    Categories.js.
+    Categories.js,
+    Browser.js
  */
 
 

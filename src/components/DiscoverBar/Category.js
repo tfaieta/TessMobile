@@ -61,6 +61,7 @@ class Category extends Component{
             pods.push('Innovation Hub');
             pods.push('In the Dark');
             pods.push("The Stranger, Seattle's Only Newspaper: Dan Savage");
+            pods.push('The Daily Show With Trevor Noah: Ears Edition');
         }
         else if(category == 'Fitness' || category == 'Health' || category == 'Fitness & Nutrition'){
 
@@ -85,6 +86,7 @@ class Category extends Component{
             pods.push('The Lively Show');
             pods.push('American Innovations');
             pods.push('Love + Radio');
+            pods.push('Couples Therapy with Candice and Casey');
         }
         else if(category == 'Religion & Spirituality'){
 
@@ -113,12 +115,15 @@ class Category extends Component{
             pods.push('Welcome to Night Vale');
             pods.push('Last Podcast On The Left');
             pods.push('My Dad Wrote A Porno');
+            pods.push('The Daily Show With Trevor Noah: Ears Edition');
 
         }
         else if(category == 'Lifestyle' || category == 'Design' || category == 'Self-Help'){
 
             pods.push('Design Matters with Debbie Millman');
             pods.push('The Unbeatable Mind Podcast with Mark Divine');
+            pods.push('The Colin and Samir Podcast');
+            pods.push('The Ground Up Show');
 
         }
         else if(category == 'Science & Nature' || category == 'Science & Medicine' || category == 'Social Sciences'){
@@ -147,7 +152,8 @@ class Category extends Component{
             pods.push('RadiusBombcom - Quick Talk Podcast');
             pods.push('TED Talks');
             pods.push('The Art of Charm | High Performance Techniques| Cognitive Development | Relationship Advice | Mastery of Human Dynamics');
-
+            pods.push('The Creative Exchange');
+            pods.push('The Mixology Talk Podcast: Better Bartending and Making Great Drinks');
         }
         else if(category == 'Storytelling' || category == 'History'){
 
@@ -170,6 +176,10 @@ class Category extends Component{
 
             pods.push('Fresh Air');
             pods.push('You Must Remember This');
+            pods.push('The Colin and Samir Podcast');
+            pods.push('Couples Therapy with Candice and Casey');
+            pods.push('Curious with Josh Peck');
+            pods.push('The Creative Exchange')
 
         }
         else if(category == 'Music'){
@@ -205,7 +215,8 @@ class Category extends Component{
             pods.push('The Indie Hackers Podcast');
             pods.push('Y Combinator');
             pods.push('The Pitch');
-
+            pods.push('Accidental Tech Podcast');
+            pods.push('This Week in Startups - Audio');
         }
 
         setTimeout(() =>{

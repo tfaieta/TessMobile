@@ -31,117 +31,121 @@ class Notifications extends Component{
 
     async componentDidMount(){
 
+        if (Platform.OS === 'ios') {
         // request permission for notifications
-        try {
-            let result = await FCM.requestPermissions({
-                badge: true,
-                sound: true,
-                alert: true
-            });
-        } catch (e) {
-            console.error(e);
+                try {
+                    let result = await FCM.requestPermissions({
+                        badge: true,
+                        sound: true,
+                        alert: true
+                    });
+                } catch (e) {
+                    console.error(e);
+                }
+
+
+                // check if user is subscribed to notifications, if so add listeners
+                const {currentUser} = firebase.auth();
+                firebase.database().ref(`users/${currentUser.uid}/notificationsOn`).once("value", function (snapshot) {
+                    if(snapshot.val()){
+                        if(snapshot.val() == true){
+                            console.log("Notifications on");
+                            //add listeners for incoming notifications
+                            this.registerAppListener(this.props.navigation);
+
+                            //get initial notifications when booting up
+                            FCM.getInitialNotification().then(notif => {
+                                if(notif){
+                                    console.log(notif)
+                                }
+                            });
+
+                            //topic for custom messages
+                            FCM.subscribeToTopic(`custom`);
+
+                            //topic for podcast of the week
+                            FCM.subscribeToTopic(`POTW`);
+
+                            //topics for tracking
+                            firebase.database().ref(`users/${currentUser.uid}/tracking`).once('value', function (snapshot) {
+                                snapshot.forEach(function (data) {
+                                    if(data.val()){
+                                        let topic = data.key.replace(/\s/g, "_");
+                                        console.log("Subscribed to: " + topic);
+                                        FCM.subscribeToTopic(`/topics/${topic}`);
+                                    }
+                                })
+                            });
+
+                            //give firebase the user's token
+                            FCM.getFCMToken().then(token => {
+                                console.log("My TOKEN: ", token);
+                                this.setState({ token: token || "" });
+                                firebase.database().ref(`users/${currentUser.uid}/`).update({token});
+                            });
+
+                            if (Platform.OS === "ios") {
+                                FCM.getAPNSToken().then(token => {
+                                    console.log("APNS TOKEN (getFCMToken)", token);
+                                });
+                            }
+                        }
+                        else if(snapshot.val() == false){
+                            console.warn("Not subscribed to notifications");
+                            console.log("Not subscribed to notifications");
+                        }
+                    }
+                    else if(snapshot.val() == false){
+                        console.warn("Not subscribed to notifications");
+                        console.log("Not subscribed to notifications");
+                    }
+                    else{
+                        console.log("Notifications on");
+                        //add listeners for incoming notifications
+                        this.registerAppListener(this.props.navigation);
+
+                        //get initial notifications when booting up
+                        FCM.getInitialNotification().then(notif => {
+                            if(notif){
+                                console.log(notif)
+                            }
+                        });
+
+                        //topic for custom messages
+                        FCM.subscribeToTopic(`custom`);
+
+                        //topic for podcast of the week
+                        FCM.subscribeToTopic(`POTW`);
+
+                        //topics for tracking
+                        firebase.database().ref(`users/${currentUser.uid}/tracking`).once('value', function (snapshot) {
+                            snapshot.forEach(function (data) {
+                                if(data.val()){
+                                    let topic = data.key.replace(/\s/g, "_");
+                                    console.log("Subscribed to: " + topic);
+                                    FCM.subscribeToTopic(`/topics/${topic}`);
+                                }
+                            })
+                        });
+
+                        //give firebase the user's token
+                        FCM.getFCMToken().then(token => {
+                            console.log("My TOKEN: ", token);
+                            this.setState({ token: token || "" });
+                            firebase.database().ref(`users/${currentUser.uid}/`).update({token});
+                        });
+
+                        if (Platform.OS === "ios") {
+                            FCM.getAPNSToken().then(token => {
+                                console.log("APNS TOKEN (getFCMToken)", token);
+                            });
+                        }
+                    }
+
+                }.bind(this));
+
         }
 
-
-        // check if user is subscribed to notifications, if so add listeners
-        const {currentUser} = firebase.auth();
-        firebase.database().ref(`users/${currentUser.uid}/notificationsOn`).once("value", function (snapshot) {
-            if(snapshot.val()){
-                if(snapshot.val() == true){
-                    console.log("Notifications on");
-                    //add listeners for incoming notifications
-                    this.registerAppListener(this.props.navigation);
-
-                    //get initial notifications when booting up
-                    FCM.getInitialNotification().then(notif => {
-                        if(notif){
-                            console.log(notif)
-                        }
-                    });
-
-                    //topic for custom messages
-                    FCM.subscribeToTopic(`custom`);
-
-                    //topic for podcast of the week
-                    FCM.subscribeToTopic(`POTW`);
-
-                    //topics for tracking
-                    firebase.database().ref(`users/${currentUser.uid}/tracking`).once('value', function (snapshot) {
-                        snapshot.forEach(function (data) {
-                            if(data.val()){
-                                let topic = data.key.replace(/\s/g, "_");
-                                console.log("Subscribed to: " + topic);
-                                FCM.subscribeToTopic(`/topics/${topic}`);
-                            }
-                        })
-                    });
-
-                    //give firebase the user's token
-                    FCM.getFCMToken().then(token => {
-                        console.log("My TOKEN: ", token);
-                        this.setState({ token: token || "" });
-                        firebase.database().ref(`users/${currentUser.uid}/`).update({token});
-                    });
-
-                    if (Platform.OS === "ios") {
-                        FCM.getAPNSToken().then(token => {
-                            console.log("APNS TOKEN (getFCMToken)", token);
-                        });
-                    }
-                }
-                else if(snapshot.val() == false){
-                    console.warn("Not subscribed to notifications");
-                    console.log("Not subscribed to notifications");
-                }
-            }
-            else if(snapshot.val() == false){
-                console.warn("Not subscribed to notifications");
-                console.log("Not subscribed to notifications");
-            }
-            else{
-                console.log("Notifications on");
-                //add listeners for incoming notifications
-                this.registerAppListener(this.props.navigation);
-
-                //get initial notifications when booting up
-                FCM.getInitialNotification().then(notif => {
-                    if(notif){
-                        console.log(notif)
-                    }
-                });
-
-                //topic for custom messages
-                FCM.subscribeToTopic(`custom`);
-
-                //topic for podcast of the week
-                FCM.subscribeToTopic(`POTW`);
-
-                //topics for tracking
-                firebase.database().ref(`users/${currentUser.uid}/tracking`).once('value', function (snapshot) {
-                    snapshot.forEach(function (data) {
-                        if(data.val()){
-                            let topic = data.key.replace(/\s/g, "_");
-                            console.log("Subscribed to: " + topic);
-                            FCM.subscribeToTopic(`/topics/${topic}`);
-                        }
-                    })
-                });
-
-                //give firebase the user's token
-                FCM.getFCMToken().then(token => {
-                    console.log("My TOKEN: ", token);
-                    this.setState({ token: token || "" });
-                    firebase.database().ref(`users/${currentUser.uid}/`).update({token});
-                });
-
-                if (Platform.OS === "ios") {
-                    FCM.getAPNSToken().then(token => {
-                        console.log("APNS TOKEN (getFCMToken)", token);
-                    });
-                }
-            }
-
-        }.bind(this));
 
     }
 
@@ -301,7 +305,6 @@ class Notifications extends Component{
         setTimeout(function() {
             FCM.isDirectChannelEstablished().then(d => console.log(d));
         }, 1000);
-
     }
 
 
@@ -333,7 +336,6 @@ class Notifications extends Component{
                 wake_screen: true,
             });
         }
-
     }
 
 
@@ -522,7 +524,6 @@ class Notifications extends Component{
                 </View>
             );
         }
-
     };
 
     renderList = () => {
@@ -542,7 +543,6 @@ class Notifications extends Component{
                 </View>
             )
         }
-
     };
 
     render() {
@@ -568,9 +568,7 @@ class Notifications extends Component{
                             onRefresh={this._onRefresh.bind(this)}
                         />
                     }>
-
                         {this.renderList()}
-
                         <View style = {{paddingBottom: height/11.12}} />
                     </ScrollView>
 

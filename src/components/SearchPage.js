@@ -80,7 +80,7 @@ static navigatorStyle = {
         };
 
         this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.mySearches),
-            podcastSource: dataSource.cloneWithRows(Variables.state.mySearchesPodcast), searchFinished: true})}, 5000);
+            podcastSource: dataSource.cloneWithRows(Variables.state.mySearchesPodcast), searchFinished: true})}, 7000);
     }
 
     _renderResults =(mySearches, mySearchesPodcast) => {

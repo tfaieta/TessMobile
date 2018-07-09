@@ -6,12 +6,9 @@ import Variables from "./Variables";
 import firebase from 'firebase';
 import ListItemUsers from "./ListItemUsers";
 
-
-
 // 4th tab, library page
 
 class Library extends Component{
-
 
     componentWillMount(){
         const {currentUser} = firebase.auth();
@@ -30,7 +27,6 @@ class Library extends Component{
                 });
             })
         });
-
 
         firebase.database().ref(`users/${currentUser.uid}/queue`).on("value", function (snapshot) {
             Variables.state.myQueue = [];
@@ -217,17 +213,7 @@ class Library extends Component{
         else{
             return(
                 <View style={{paddingBottom: 20}}>
-                <Icon style={{
-                    fontSize: 25,
-                    backgroundColor: 'transparent',
-                    color: '#3e4164',
-                    textAlign: 'center',
-                    marginHorizontal: 15,
-                }} name="md-sad">
-                    <Text style = {styles.titleUpNext}>  Queue is empty...</Text>
-                </Icon>
                 </View>
-
             )
         }
     };
@@ -250,8 +236,6 @@ class Library extends Component{
                         />}
                 >
 
-
-
                     <TouchableOpacity style = {{backgroundColor: '#3e4164', borderTopLeftRadius: 7, borderTopRightRadius: 7, marginTop: 15, marginHorizontal: 10,  shadowColor: 'black', shadowRadius: 4, shadowOpacity: 0.4  }} onPress={() => {
                         this.props.navigator.showModal({
                             screen: 'CatchUp',
@@ -259,7 +243,6 @@ class Library extends Component{
                     }}>
                         {this.renderCatchUp(Variables.state.catchUp)}
                     </TouchableOpacity>
-
 
                     <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 15, marginVertical: 1}} onPress={this.GoToPodcasts} >
                         <Text style = {styles.title}>   Podcasts</Text>
@@ -274,7 +257,6 @@ class Library extends Component{
                         </View>
                     </TouchableOpacity>
 
-
                     <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 15, marginVertical: 1}} onPress={this.GoToPlaylists}>
                         <Text style = {styles.title}>   Playlists</Text>
                         <View style={{alignSelf:'flex-end'}}>
@@ -287,7 +269,6 @@ class Library extends Component{
                             </Icon>
                         </View>
                     </TouchableOpacity>
-
 
                     <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 15, marginVertical: 1}} onPress={this.GoToFavs} >
                         <Text style = {styles.title}>   Favorites</Text>
@@ -302,7 +283,6 @@ class Library extends Component{
                         </View>
                     </TouchableOpacity>
 
-
                     <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 15, marginVertical: 1}} onPress={this.GoToHighlights}>
                         <Text style = {styles.title}>   Highlights</Text>
                         <View style={{alignSelf:'flex-end'}}>
@@ -316,7 +296,6 @@ class Library extends Component{
                         </View>
                     </TouchableOpacity>
 
-
                     <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 15, marginVertical: 1}} onPress={this.GoToRecentlyPlayed}>
                         <Text style = {styles.title}>   History</Text>
                         <View style={{alignSelf:'flex-end'}}>
@@ -329,8 +308,6 @@ class Library extends Component{
                             </Icon>
                         </View>
                     </TouchableOpacity>
-
-
 
                     <View style={{flex:1, flexDirection: 'row', backgroundColor: '#fff', marginTop: 10, marginHorizontal: 10, borderTopLeftRadius: 7, borderTopRightRadius: 7}}>
                         <View style={{flex:1}}>
@@ -349,18 +326,12 @@ class Library extends Component{
                         {this.renderUpNext(Variables.state.myQueue)}
                     </View>
 
-
                     <View style={{paddingBottom: 60}}/>
                 </ScrollView>
-
-
 
                 <PlayerBottom navigator={this.props.navigator}/>
 
             </View>
-
-
-
 
         );
     }

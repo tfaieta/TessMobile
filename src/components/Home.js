@@ -5,6 +5,7 @@ import PlayerBottom from './PlayerBottom';
 import Variables from "./Variables";
 import firebase from 'firebase';
 import Player from "./Player";
+import Browser from "./Browser";
 import ListItemCard from "./ListItemCard";
 var Analytics = require('react-native-firebase-analytics');
 
@@ -19,7 +20,7 @@ class Home extends Component{
     componentDidMount(){
 
         // Uncomment when testing feeds
-        // this.rssSingleFetch("", 4);
+        // this.rssSingleFetch("http://mixologytalk.libsyn.com/rss", 4);
 
         if (Platform.OS === 'android') {
             Linking.getInitialURL().then((url) => {
@@ -523,6 +524,7 @@ class Home extends Component{
             statusBarColor: '#fff',
         });
 
+
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             loading: true,
@@ -534,6 +536,16 @@ class Home extends Component{
 
     }
 
+    onNavigatorEvent(event) {
+        if (event.id === 'bottomTabSelected') {
+            console.log('Tab selected!');
+        }
+        if (event.id === 'bottomTabReselected') {
+            console.log('Tab reselected!');
+            this.refs._scrollView.scrollTo({x: 0, y: height/-22.23, animated: true});
+            console.log(height);
+        }
+    }
     
     rssFetch(){
         firebase.database().ref(`feedFetcher`).once("value", function (snapshot) {
@@ -993,7 +1005,6 @@ class Home extends Component{
 
     }
 
-
     renderRSSFetcher(){
         const {currentUser} = firebase.auth();
 
@@ -1007,8 +1018,6 @@ class Home extends Component{
             )
         }
     }
-
-
 
     renderRowCard = (podcast) => {
         return <ListItemCard podcast={podcast} navigator={this.props.navigator}/>
@@ -1031,6 +1040,7 @@ class Home extends Component{
                     <View
                         style={styles.container}>
                         <ScrollView
+                            ref='_scrollView'
                             refreshControl={
                                 <RefreshControl
                                     refreshing={this.state.refreshing}
@@ -1064,6 +1074,7 @@ class Home extends Component{
                 <View
                     style={styles.container}>
                     <ScrollView
+                        ref='_scrollView'
                         refreshControl={
                             <RefreshControl
                                 refreshing={this.state.refreshing}

@@ -8,8 +8,6 @@ import firebase from 'firebase';
 var Analytics = require('react-native-firebase-analytics');
 
 
-
-
 // used as a lightbox to create highlight
 
 class Highlight extends Component{
