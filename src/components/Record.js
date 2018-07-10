@@ -285,22 +285,24 @@ class Record extends Component{
 
     async _pause() {
         if (!this.state.recording) {
-            console.warn('Can\'t pause, not recording!');
-            return;
+                console.warn('Can\'t pause, not recording!');
+                return;
         }
+        else if (Platform.OS === 'android') {
+            this._done()
+        }
+        else{
+            this.setState({stoppedRecording: true, recording: false});
 
-        this.setState({stoppedRecording: true, recording: false});
 
-        try {
-            const filePath = await AudioRecorder.pauseRecording();
+            try {
+                const filePath = await AudioRecorder.pauseRecording();
 
-
-            if (Platform.OS === 'android') {
-                this._finishRecording(true, filePath);
+            } catch (error) {
+                console.error(error);
             }
-        } catch (error) {
-            console.error(error);
         }
+
     }
 
     async _stop() {

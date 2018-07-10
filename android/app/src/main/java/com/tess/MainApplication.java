@@ -18,6 +18,7 @@ import com.brentvatne.react.ReactVideoPackage;
 import cl.json.RNSharePackage;
 import cl.json.ShareApplication;
 import com.evollu.react.fa.FIRAnalyticsPackage;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,7 +42,8 @@ public class MainApplication extends NavigationApplication implements ShareAppli
         new RNFetchBlobPackage(),
         new ReactVideoPackage(),
         new RNSharePackage(),
-        new FIRAnalyticsPackage()
+        new FIRAnalyticsPackage(),
+        new PickerPackage()
     );
   }
 
