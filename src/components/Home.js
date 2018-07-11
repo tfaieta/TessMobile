@@ -511,7 +511,7 @@ class Home extends Component{
             drawUnderTabBar: false,
             navBarCustomView: 'CustomNavbar',
             navBarCustomViewInitialProps: {
-                navigator: this.props.navigator
+                navigator: this.props.navigator,
             },
             navBarHideOnScroll: true,
             navBarButtonColor: '#007aff',
@@ -524,7 +524,6 @@ class Home extends Component{
             statusBarColor: '#fff',
         });
 
-
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             loading: true,
@@ -534,19 +533,20 @@ class Home extends Component{
         this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent),})},1500);
         this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), loading: false})},3000);
 
+        // TODO: Make sure to look over this once everything is updated to RN84+
+        // this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+
     }
 
     onNavigatorEvent(event) {
         if (event.id === 'bottomTabSelected') {
-            console.log('Tab selected!');
+            this.refs._scrollView.scrollTo({x: 0, y: height/-22.23, animated: true});
         }
         if (event.id === 'bottomTabReselected') {
-            console.log('Tab reselected!');
             this.refs._scrollView.scrollTo({x: 0, y: height/-22.23, animated: true});
-            console.log(height);
         }
     }
-    
+
     rssFetch(){
         firebase.database().ref(`feedFetcher`).once("value", function (snapshot) {
             let data = snapshot.val() + ".";
@@ -1059,7 +1059,6 @@ class Home extends Component{
                             {this.renderRSSFetcher()}
 
                             <View style={{paddingBottom: height/33.35}} />
-
                         </ScrollView>
                         <Player/>
                         <PlayerBottom navigator={this.props.navigator}/>

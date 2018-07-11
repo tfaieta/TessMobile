@@ -1152,7 +1152,7 @@ class PlayerBottom extends Component {
         else{
             return(
                 <TouchableOpacity style = {{marginTop: height/28, marginBottom: height/28, marginHorizontal: width/4.17, borderRadius: 7, backgroundColor: '#506dcf', padding: width/75}} onPress={() => {
-                    this.setState({highlight: true, highlightTime: [Variables.state.currentTime, Variables.state.currentTime + 15]});
+                    this.setState({highlight: true, highlightTime: [Variables.state.currentTime, Variables.state.currentTime + 500]});
 
                     const {currentUser} = firebase.auth();
                     const user = currentUser.uid;
