@@ -148,22 +148,43 @@ class Record extends Component{
 
 
     _renderButtonRecord(onPress, active) {
-        if(active){
-            return (
-                <TouchableOpacity style={styles.button} onPress={onPress}>
-                    <Image style={styles.iconText} onPress={this.recordSound} source={require('tess/src/images/record-icon-pause.png')}>
-                    </Image>
-                </TouchableOpacity>
-            );
+        if(Platform.OS === 'ios'){
+            if(active){
+                return (
+                    <TouchableOpacity style={styles.button} onPress={onPress}>
+                        <Image style={styles.iconText} onPress={this.recordSound} source={require('tess/src/images/record-icon-pause.png')}>
+                        </Image>
+                    </TouchableOpacity>
+                );
+            }
+            else{
+                return (
+                    <TouchableOpacity style={styles.button} onPress={onPress}>
+                        <Image style={styles.iconText} onPress={this.recordSound} source={require('tess/src/images/record-icon.png')}>
+                        </Image>
+                    </TouchableOpacity>
+                );
+            }
         }
-        else{
-            return (
-                <TouchableOpacity style={styles.button} onPress={onPress}>
-                    <Image style={styles.iconText} onPress={this.recordSound} source={require('tess/src/images/record-icon.png')}>
-                    </Image>
-                </TouchableOpacity>
-            );
+        else if (Platform.OS === 'android'){
+            if(active){
+                return (
+                    <View style={styles.button}>
+                        <Image style={styles.iconText} onPress={this.recordSound} tintColor="#d15564" source={require('tess/src/images/record-icon.png')}>
+                        </Image>
+                    </View>
+                );
+            }
+            else{
+                return (
+                    <TouchableOpacity style={styles.button} onPress={onPress}>
+                        <Image style={styles.iconText} onPress={this.recordSound} source={require('tess/src/images/record-icon.png')}>
+                        </Image>
+                    </TouchableOpacity>
+                );
+            }
         }
+
 
     }
 
@@ -477,18 +498,18 @@ class Record extends Component{
                 {this._renderLevel(this.state.level)}
 
 
-                <View style={{flexDirection: 'row', paddingVertical:5}}>
+                <View style={{flexDirection: 'row', paddingVertical:height/133.4}}>
 
-                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
+                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: height/33.35}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
-                                textAlign:'left',marginLeft: 10, fontSize: 28,color:'#fff'
+                                textAlign:'left',marginLeft: width/37.5, fontSize: width/13.39,color:'#fff'
                             }} name="md-arrow-round-back">
                             </Icon>
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{flex:1, marginRight: 10, alignItems: 'flex-end', justifyContent: 'center', marginTop: 25}}>
+                    <View style={{flex:1, marginRight: width/37.5, alignItems: 'flex-end', justifyContent: 'center', marginTop: height/26.68}}>
                         {this._renderNext()}
                     </View>
 
@@ -571,12 +592,12 @@ const styles = StyleSheet.create({
     },
     iconText: {
         marginTop: height/13.34,
-        width: width/2.55,
+        width: width/2.70,
         height: height/4.42
     },
     activeIconText: {
         marginTop: height/13.34,
-        width: width/2.55,
+        width: width/2.70,
         height: height/4.42,
         tintColor: '#d15564'
     },
