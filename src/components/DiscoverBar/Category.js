@@ -50,6 +50,7 @@ class Category extends Component{
 
         if(category == 'News' || category == 'News & Politics' || category == 'Government & Organization'){
 
+            pods.push('This American Life');
             pods.push('The Daily');
             pods.push('The Ezra Klein Show');
             pods.push('The Tom Woods Show');
@@ -62,6 +63,7 @@ class Category extends Component{
             pods.push('In the Dark');
             pods.push("The Stranger, Seattle's Only Newspaper: Dan Savage");
             pods.push('The Daily Show With Trevor Noah: Ears Edition');
+            pods.push('Throwing Shade');
         }
         else if(category == 'Fitness' || category == 'Health' || category == 'Fitness & Nutrition'){
 
@@ -116,7 +118,10 @@ class Category extends Component{
             pods.push('Last Podcast On The Left');
             pods.push('My Dad Wrote A Porno');
             pods.push('The Daily Show With Trevor Noah: Ears Edition');
-
+            pods.push('Potterless');
+            pods.push('Shmanners');
+            pods.push('Throwing Shade');
+            pods.push('TigerBelly');
         }
         else if(category == 'Lifestyle' || category == 'Design' || category == 'Self-Help'){
 
@@ -179,7 +184,8 @@ class Category extends Component{
             pods.push('The Colin and Samir Podcast');
             pods.push('Couples Therapy with Candice and Casey');
             pods.push('Curious with Josh Peck');
-            pods.push('The Creative Exchange')
+            pods.push('The Creative Exchange');
+            pods.push('Fantastic Geeks (and where to find them)');
 
         }
         else if(category == 'Music'){
@@ -200,6 +206,8 @@ class Category extends Component{
         }
         else if(category == 'Gaming' || category == 'Games & Hobbies'){
 
+            pods.push('Painkiller Already');
+            pods.push('Ask Me Another')
 
         }
         else if(category == 'Business' || category == 'Careers' || category == 'Management & Marketing'){

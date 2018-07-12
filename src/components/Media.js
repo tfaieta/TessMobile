@@ -64,6 +64,7 @@ static navigatorStyle = {
             data.push('TED Radio Hour');
             data.push('Invisibilia');
             data.push('Fresh Air');
+            data.push('Ask Me Another');
         }
         else if(this.props.title == 'Crooked'){
             data.push('Pod Save America');

@@ -72,7 +72,7 @@
 		ED5FFEF71FC0E82600488D5D /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED5FFEF31FC0E7D800488D5D /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ED5FFEFA1FC0E82A00488D5D /* QBImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED5FFEF51FC0E7DF00488D5D /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ED99474920B1F5AF0095DDE1 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED5A76AF20B1EDBE00E81699 /* libBVLinearGradient.a */; };
-		EDB7935120E16A4000DC7AAC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EDB7935020E16A4000DC7AAC /* GoogleService-Info.plist */; };
+		EDABB25720F32517003015C8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EDABB25620F32517003015C8 /* GoogleService-Info.plist */; };
 		EDB7935320E16AAC00DC7AAC /* tessLogoIcon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = EDB7935220E16AAC00DC7AAC /* tessLogoIcon.jpg */; };
 		EDBAF62E1EFB059800783B86 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDBAF62A1EFB059800783B86 /* Bolts.framework */; };
 		EDD89204209A3AE1006E0ADF /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDD89203209A3AE1006E0ADF /* Social.framework */; };
@@ -465,7 +465,7 @@
 		ED5A774120B1F33600E81699 /* RNFIRAnalytics.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFIRAnalytics.xcodeproj; path = "../node_modules/react-native-firebase-analytics/ios/RNFIRAnalytics.xcodeproj"; sourceTree = "<group>"; };
 		ED5FFEF31FC0E7D800488D5D /* RSKImageCropper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED5FFEF51FC0E7DF00488D5D /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EDB7935020E16A4000DC7AAC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EDABB25620F32517003015C8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EDB7935220E16AAC00DC7AAC /* tessLogoIcon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = tessLogoIcon.jpg; path = ../tessLogoIcon.jpg; sourceTree = "<group>"; };
 		EDBAF62A1EFB059800783B86 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		EDD89203209A3AE1006E0ADF /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
@@ -576,7 +576,7 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				EDB7935020E16A4000DC7AAC /* GoogleService-Info.plist */,
+				EDABB25620F32517003015C8 /* GoogleService-Info.plist */,
 			);
 			name = tess;
 			sourceTree = "<group>";
@@ -1005,7 +1005,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = T7ND4PW9WS;
+						DevelopmentTeam = SU7SD7P8R8;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
@@ -1448,9 +1448,9 @@
 				6CC13E3E2057494D882611A3 /* Foundation.ttf in Resources */,
 				B4DD47A4442E4760ABD3C488 /* Ionicons.ttf in Resources */,
 				F350963F63FC4DA8B45AD7E9 /* MaterialCommunityIcons.ttf in Resources */,
+				EDABB25720F32517003015C8 /* GoogleService-Info.plist in Resources */,
 				180745686169408EB349F86A /* MaterialIcons.ttf in Resources */,
 				EBD71E8384754E3B973F97D0 /* Octicons.ttf in Resources */,
-				EDB7935120E16A4000DC7AAC /* GoogleService-Info.plist in Resources */,
 				C3A628948A284C6C88A8790A /* SimpleLineIcons.ttf in Resources */,
 				BA533A666B784445A01BBAFB /* Zocial.ttf in Resources */,
 				CD1912E7F99643629E3441B7 /* Montserrat-Regular.ttf in Resources */,
@@ -1716,7 +1716,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = T7ND4PW9WS;
+				DEVELOPMENT_TEAM = SU7SD7P8R8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1738,7 +1738,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.tess;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tesstechnologies.tess;
 				PRODUCT_NAME = tess;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1759,7 +1759,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = T7ND4PW9WS;
+				DEVELOPMENT_TEAM = SU7SD7P8R8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1781,7 +1781,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.tess;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tesstechnologies.tess;
 				PRODUCT_NAME = tess;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
