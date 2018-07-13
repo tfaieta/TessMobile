@@ -592,12 +592,12 @@ const styles = StyleSheet.create({
     },
     iconText: {
         marginTop: height/13.34,
-        width: width/2.70,
+        width: width/2.55,
         height: height/4.42
     },
     activeIconText: {
         marginTop: height/13.34,
-        width: width/2.70,
+        width: width/2.55,
         height: height/4.42,
         tintColor: '#d15564'
     },

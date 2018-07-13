@@ -71,8 +71,10 @@ class ListItemFollowed extends Component {
         let title = '';
         if(action == 'like' || action == 'comment'){
             firebase.database().ref(`podcasts/${id}`).once("value", function (snapshot) {
-                if(snapshot.val().podcastTitle){
-                    title = snapshot.val().podcastTitle;
+                if(snapshot.val()){
+                    if(snapshot.val().podcastTitle){
+                        title = snapshot.val().podcastTitle;
+                    }
                 }
             })
         }
@@ -80,6 +82,23 @@ class ListItemFollowed extends Component {
             firebase.database().ref(`users/${id}/username`).once("value", function (snapshot) {
                 if(snapshot.val()){
                     title = snapshot.val().username;
+                }
+            })
+        }
+        else if(action == 'highlight'){
+            const userID = id.split('~')[0];
+            const highlightID = id.split('~')[1];
+            firebase.database().ref(`users/${userID}/highlights/${highlightID}`).once('value', function (data) {
+                if(data.val()){
+                    if(data.val().podcastID){
+                        firebase.database().ref(`podcasts/${data.val().podcastID}`).once('value', function (snap) {
+                            if(snap.val()){
+                                if(snap.val().podcastTitle){
+                                    title = snap.val().podcastTitle;
+                                }
+                            }
+                        })
+                    }
                 }
             })
         }
@@ -245,7 +264,7 @@ class ListItemFollowed extends Component {
                                 }
                             });
 
-                            firebase.database().ref(`podcasts/${value}/likes`).on("value", function (snap) {
+                            firebase.database().ref(`podcasts/${id}/likes`).on("value", function (snap) {
                                 Variables.state.likers = [];
                                 Variables.state.liked = false;
                                 snap.forEach(function (data) {
@@ -259,7 +278,7 @@ class ListItemFollowed extends Component {
                             });
 
 
-                            firebase.database().ref(`podcasts/${value}/plays`).on("value", function (snap) {
+                            firebase.database().ref(`podcasts/${id}/plays`).on("value", function (snap) {
                                 Variables.state.podcastsPlays = 0;
                                 snap.forEach(function (data) {
                                     if (data.val()) {
@@ -283,7 +302,7 @@ class ListItemFollowed extends Component {
                             });
 
 
-                            firebase.storage().ref(`/users/${snapshot.val().podcastArtist}/${value}`).getDownloadURL().catch(() => {console.warn("file not found")})
+                            firebase.storage().ref(`/users/${snapshot.val().podcastArtist}/${id}`).getDownloadURL().catch(() => {console.warn("file not found")})
                                 .then(function(url) {
                                     Variables.pause();
                                     Variables.setPodcastFile(url);
@@ -292,7 +311,7 @@ class ListItemFollowed extends Component {
                                     Variables.state.podcastArtist = snapshot.val().podcastArtist;
                                     Variables.state.podcastCategory = snapshot.val().podcastCategory;
                                     Variables.state.podcastDescription = snapshot.val().podcastDescription;
-                                    Variables.state.podcastID = value;
+                                    Variables.state.podcastID = id;
                                     Variables.state.favorited = false;
                                     Variables.state.userProfileImage = '';
                                     Variables.state.isPlaying = true;
@@ -314,7 +333,7 @@ class ListItemFollowed extends Component {
 
                             firebase.database().ref(`users/${currentUser.uid}/favorites`).on("value", function (snap) {
                                 snap.forEach(function (data) {
-                                    if(data.key == value){
+                                    if(data.key == id){
                                         Variables.state.favorited = true;
                                     }
                                 })
@@ -338,6 +357,146 @@ class ListItemFollowed extends Component {
                 title: this.state.title,
                 passProps: {navigator, rss},
             });
+        }
+        else if(action == 'highlight'){
+            const {id} = this.props;
+            const userID = id.split('~')[0];
+            const highlightID = id.split('~')[1];
+
+            setTimeout(() => {
+                firebase.database().ref(`users/${userID}/highlights/${highlightID}`).once("value", function (snap) {
+
+                    if(snap.val()){
+                        firebase.database().ref(`podcasts/${snap.val().podcastID}`).once("value", function (snapshot) {
+
+                            if(snapshot.val().rss){
+
+                                const {podcastArtist} = snapshot.val();
+                                const {podcastTitle} = snapshot.val();
+                                const {podcastURL} = snapshot.val();
+                                const {title} = snap.val();
+                                const {podcastCategory} = snapshot.val();
+                                const {id} = snapshot.val();
+                                const {description} = snap.val();
+                                const {key} = snap.val();
+                                const {startTime} = snap.val();
+                                const {endTime} = snap.val();
+
+
+                                Variables.state.highlightStart = startTime;
+                                Variables.state.highlightEnd = endTime;
+                                Variables.state.seekTo = startTime;
+                                Variables.state.currentTime = startTime;
+
+                                AsyncStorage.setItem("currentPodcast", id);
+                                AsyncStorage.setItem("currentTime", startTime.toString());
+
+                                Variables.pause();
+                                Variables.setPodcastFile(podcastURL);
+                                Variables.state.isPlaying = false;
+                                Variables.state.highlight = true;
+                                Variables.state.rss = true;
+                                Variables.state.podcastURL = podcastURL;
+                                Variables.state.podcastArtist = podcastArtist;
+                                Variables.state.podcastTitle = title;
+                                Variables.state.podcastID = id;
+                                Variables.state.podcastCategory = podcastCategory;
+                                Variables.state.podcastDescription = description;
+                                Variables.state.favorited = false;
+                                Variables.play();
+                                Variables.state.isPlaying = true;
+
+
+                                Variables.state.userProfileImage = '';
+                                firebase.database().ref(`users/${podcastArtist}/profileImage`).once("value", function (snapshot) {
+                                    if (snapshot.val()) {
+                                        Variables.state.userProfileImage = snapshot.val().profileImage
+                                    }
+                                });
+
+                                firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
+                                    if (snap.val()) {
+                                        Variables.state.currentUsername = snap.val().username;
+                                    }
+                                    else {
+                                        Variables.state.currentUsername = podcastArtist;
+                                    }
+                                });
+
+                            }
+                            else if(snapshot.val()){
+
+                                const {podcastArtist} = snapshot.val();
+                                const {podcastTitle} = snapshot.val();
+                                const {title} = snap.val();
+                                const {podcastCategory} = snapshot.val();
+                                const {id} = snapshot.val();
+                                const {description} = snap.val();
+                                const {key} = snap.val();
+                                const {startTime} = snap.val();
+                                const {endTime} = snap.val();
+
+                                Variables.state.highlightStart = startTime;
+                                Variables.state.highlightEnd = endTime;
+                                Variables.state.seekTo = startTime;
+                                Variables.state.currentTime = startTime;
+
+                                AsyncStorage.setItem("currentPodcast", id);
+                                AsyncStorage.setItem("currentTime", startTime.toString());
+
+                                firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL().catch(() => {
+                                    console.warn("file not found")
+                                })
+                                    .then(function (url) {
+
+                                        Variables.pause();
+                                        Variables.setPodcastFile(url);
+                                        Variables.state.highlight = true;
+                                        Variables.state.rss = false;
+                                        Variables.state.podcastURL = url;
+                                        Variables.state.podcastArtist = podcastArtist;
+                                        Variables.state.podcastTitle = title;
+                                        Variables.state.podcastID = id;
+                                        Variables.state.podcastCategory = podcastCategory;
+                                        Variables.state.podcastDescription = description;
+                                        Variables.state.favorited = false;
+                                        Variables.play();
+                                        Variables.state.isPlaying = true;
+
+                                    });
+
+
+                                Variables.state.userProfileImage = '';
+                                const storageRef = firebase.storage().ref(`/users/${podcastArtist}/image-profile-uploaded`);
+                                if (storageRef.child('image-profile-uploaded')) {
+                                    storageRef.getDownloadURL()
+                                        .then(function (url) {
+                                            if (url) {
+                                                Variables.state.userProfileImage = url;
+                                            }
+                                        }).catch(function (error) {
+                                        //
+                                    });
+                                }
+
+                                firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
+                                    if (snap.val()) {
+                                        Variables.state.currentUsername = (snap.val().username + ' • ' + podcastTitle).slice(0, 35) + '...';
+                                    }
+                                    else {
+                                        Variables.state.currentUsername = podcastArtist;
+                                    }
+                                });
+
+                            }
+
+                        });
+                    }
+
+
+                })
+
+            }, 500);
         }
 
     };
@@ -365,6 +524,11 @@ class ListItemFollowed extends Component {
             else if(action == 'track'){
                 return(
                     <Text style={styles.title}><Text style={styles.titleBold} onPress={this.messagePressUser}>{this.state.profileName}</Text> tracked <Text onPress={() => {this.messagePressUserTarget(action)}} style={styles.title}>{this.state.title}</Text></Text>
+                )
+            }
+            else if(action == 'highlight'){
+                return(
+                    <Text style={styles.title}><Text style={styles.titleBold} onPress={this.messagePressUser}>{this.state.profileName}</Text> created <Text onPress={() => {this.messagePressUserTarget(action)}} style={styles.title}>a highlight from {this.state.title}</Text></Text>
                 )
             }
         }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet,StatusBar, ScrollView, Modal, TouchableOpacity, Alert, Dimensions, Image, ActivityIndicator, AsyncStorage} from 'react-native';
+import { Text, View, StyleSheet,StatusBar, ScrollView, Modal, TouchableOpacity, Alert, Dimensions, Image, ActivityIndicator, AsyncStorage, TouchableHighlight} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Variables from './Variables';
 import Slider from 'react-native-slider';
@@ -459,7 +459,7 @@ class PlayerBottom extends Component {
 
             if (profileImage == ''){
                 return(
-                    <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom: 10, height: 140, width: 140, borderRadius:4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)',  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
+                    <TouchableHighlight underlayColor="#fff" onPress={this.onProfilePress} style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom: 10, height: 140, width: 140, borderRadius:4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)',  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
                         <Icon style={{
                             textAlign: 'center',
                             fontSize: height/7.41,
@@ -467,17 +467,17 @@ class PlayerBottom extends Component {
                             marginTop: 20,
                         }} name="md-person">
                         </Icon>
-                    </View>
+                    </TouchableHighlight>
                 )
             }
             else{
                 return(
-                    <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom: 10, height: height/4.75, width: height/4.75,  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
+                    <TouchableHighlight underlayColor="#fff" onPress={this.onProfilePress} style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom: 10, height: height/4.75, width: height/4.75,  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
                         <Image
                             style={{width: height/4.75, height:height/4.75,  alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
                             source={{uri: profileImage}}
                         />
-                    </View>
+                    </TouchableHighlight>
                 )
             }
 
@@ -1622,9 +1622,9 @@ class PlayerBottom extends Component {
             if(Variables.state.likers.length == 1){
                 return(
                     <View style={{flexDirection: 'row'}}>
-                        <View style={{flex:1}}>
+                        <TouchableHighlight underlayColor='#fff' onPress={this.pressLike} style={{flex:1}}>
                             <Text style={styles.textLike}>{Variables.state.likers.length} like</Text>
-                        </View>
+                        </TouchableHighlight>
                         <View style={{flex:1}}>
                             <Text style={styles.textLike}>{Variables.state.podcastsPlays} listen</Text>
                         </View>
@@ -1634,9 +1634,9 @@ class PlayerBottom extends Component {
             else{
                 return(
                     <View style={{flexDirection: 'row'}}>
-                        <View style={{flex:1}}>
+                        <TouchableHighlight underlayColor='#fff' onPress={this.pressLike} style={{flex:1}}>
                             <Text style={styles.textLike}>{Variables.state.likers.length} likes</Text>
-                        </View>
+                        </TouchableHighlight>
                         <View style={{flex:1}}>
                             <Text style={styles.textLike}>{Variables.state.podcastsPlays} listen</Text>
                         </View>
@@ -1648,9 +1648,9 @@ class PlayerBottom extends Component {
             if(Variables.state.likers.length == 1){
                 return(
                     <View style={{flexDirection: 'row'}}>
-                        <View style={{flex:1}}>
+                        <TouchableHighlight underlayColor='#fff' onPress={this.pressLike} style={{flex:1}}>
                             <Text style={styles.textLike}>{Variables.state.likers.length} like</Text>
-                        </View>
+                        </TouchableHighlight>
                         <View style={{flex:1}}>
                             <Text style={styles.textLike}>{Variables.state.podcastsPlays} listens</Text>
                         </View>
@@ -1660,9 +1660,9 @@ class PlayerBottom extends Component {
             else{
                 return(
                     <View style={{flexDirection: 'row'}}>
-                        <View style={{flex:1}}>
+                        <TouchableHighlight underlayColor='#fff' onPress={this.pressLike} style={{flex:1}}>
                             <Text style={styles.textLike}>{Variables.state.likers.length} likes</Text>
-                        </View>
+                        </TouchableHighlight>
                         <View style={{flex:1}}>
                             <Text style={styles.textLike}>{Variables.state.podcastsPlays} listens</Text>
                         </View>
