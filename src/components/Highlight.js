@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, TextInput, Dimensions} from 'react-native';
 import Variables from './Variables';
 
 import { Navigation } from 'react-native-navigation';
@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 var Analytics = require('react-native-firebase-analytics');
 
+var {height, width} = Dimensions.get('window');
 
 // used as a lightbox to create highlight
 
@@ -18,7 +19,7 @@ class Highlight extends Component{
         const {highlightTime} = this.props;
         const {podcastID} = this.props;
         this.state = {
-            highlightName: '',
+            highlightName: 'Highlight from ' + Variables.state.podcastTitle,
             description: '',
             podcastID: podcastID,
             startTime: highlightTime[0],
@@ -36,14 +37,14 @@ class Highlight extends Component{
     render() {
         return (
             <View>
-                <View style={{borderRadius: 20, backgroundColor: '#fff', marginHorizontal: 20, borderWidth: 0.1,}}>
+                <View style={{borderRadius: width/18.75, backgroundColor: '#fff', marginHorizontal: width, borderWidth: 0.1,}}>
                 <TouchableOpacity onPress={this.done}>
                     <Icon style={{
-                        fontSize: 28,
+                        fontSize: width/13.39,
                         alignSelf: 'flex-end',
                         backgroundColor: 'transparent',
                         color: '#79797990',
-                        marginHorizontal: 10,
+                        marginHorizontal: width/37.5,
                     }} name="ios-close">
                     </Icon>
                 </TouchableOpacity>
@@ -87,11 +88,11 @@ class Highlight extends Component{
 
 
 
-                <TouchableOpacity style={{marginTop: 50, marginVertical: 10, marginHorizontal: 90, borderRadius: 7, backgroundColor: '#506dcf', padding: 8, paddingHorizontal: 25}} onPress={this.done}>
+                <TouchableOpacity style={{marginTop: height/13.34, marginVertical: height/66.7, marginHorizontal: width/4.17, borderRadius: 7, backgroundColor: '#506dcf', padding: width/46.88, paddingHorizontal: height/15}} onPress={this.done}>
                     <Text style= {styles.textButton}>Make Edits</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{marginVertical: 10, marginBottom: 50, marginHorizontal: 90, borderRadius: 7, backgroundColor: '#3e4164', padding: 8, paddingHorizontal: 25}} onPress={()=>{
+                <TouchableOpacity style={{marginVertical: height/66.7, marginBottom: height/13.34, marginHorizontal: width/4.17, borderRadius: 7, backgroundColor: '#3e4164', padding: width/46.88, paddingHorizontal: width/15}} onPress={()=>{
 
                     const title = this.state.highlightName;
                     const description = this.state.description;
@@ -108,6 +109,7 @@ class Highlight extends Component{
                             key = snap.key;
 
                             ref.update({key});
+                            firebase.database().ref(`users/${currentUser.uid}/activity`).push({action: 'highlight', id: currentUser.uid + '~' + key, user: currentUser.uid, time: firebase.database.ServerValue.TIMESTAMP});
                         });
 
                         var ref = firebase.database().ref(`users/${firebase.auth().currentUser.uid}/stats`);
@@ -150,45 +152,45 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#fff',
-        padding: 40,
-        borderRadius: 20,
+        padding: width/9.38,
+        borderRadius: width/18.75,
         borderWidth: 0.1,
         borderColor: 'black',
-        marginHorizontal: 20
+        marginHorizontal: width/18.75
     },
     textTitle:{
         color: '#52525e',
-        fontSize: 24,
-        marginBottom: 10,
+        fontSize: width/15.63,
+        marginBottom: height/66.7,
         backgroundColor: 'transparent',
         fontFamily: 'Montserrat-Regular',
         textAlign: 'center'
     },
     textButton:{
         color: '#fff',
-        fontSize: 16,
+        fontSize: width/23.44,
         backgroundColor: 'transparent',
         fontFamily: 'Montserrat-Regular',
         textAlign: 'center'
     },
     textHeader:{
         color: '#2A2A30',
-        fontSize: 14,
+        fontSize: width/26.79,
         backgroundColor: 'transparent',
         fontFamily: 'Montserrat-SemiBold',
         textAlign: 'left',
-        marginTop: 25,
-        marginHorizontal: 15,
+        marginTop: height/26.68,
+        marginHorizontal: width/44.47,
     },
 
     input: {
-        height: 40,
+        height: height/16.68,
         backgroundColor: 'transparent',
         color: '#3e4164',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
-        fontSize: 18,
-        marginHorizontal: 15,
+        fontSize: width/20.83,
+        marginHorizontal: width/25,
     },
 
 });
