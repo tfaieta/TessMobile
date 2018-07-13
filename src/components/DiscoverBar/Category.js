@@ -122,6 +122,7 @@ class Category extends Component{
             pods.push('Shmanners');
             pods.push('Throwing Shade');
             pods.push('TigerBelly');
+            pods.push('The World of Phil Hendrie');
         }
         else if(category == 'Lifestyle' || category == 'Design' || category == 'Self-Help'){
 
@@ -168,7 +169,7 @@ class Category extends Component{
             pods.push('Dirty John');
             pods.push('Crimetown');
             pods.push('Criminal');
-
+            pods.push('Lum and Abner – Retro Radio Podcast');
         }
         else if(category == 'Sports' || category == 'Sports & Recreation'){
 
@@ -208,7 +209,6 @@ class Category extends Component{
 
             pods.push('Painkiller Already');
             pods.push('Ask Me Another')
-
         }
         else if(category == 'Business' || category == 'Careers' || category == 'Management & Marketing'){
 

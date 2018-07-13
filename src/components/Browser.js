@@ -7,6 +7,7 @@ import {
     Platform,
 } from 'react-native'
 import Variables from "./Variables";
+import PlayerBottom from "./PlayerBottom";
 
 var {height} = Dimensions.get('window');
 
@@ -44,6 +45,7 @@ export default class Browser extends Component {
                     }}
                     style={{flex: 1}}
                 />
+                <PlayerBottom navigator={this.props.navigator}/>
             </View>
         )
     }

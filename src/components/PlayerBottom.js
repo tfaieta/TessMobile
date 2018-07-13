@@ -46,6 +46,7 @@ class PlayerBottom extends Component {
     };
 
     componentDidMount() {
+
         MusicControl.enableBackgroundMode(true);
 
         MusicControl.handleAudioInterruptions(true);

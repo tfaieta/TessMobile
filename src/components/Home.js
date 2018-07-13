@@ -20,7 +20,7 @@ class Home extends Component{
     componentDidMount(){
 
         // Uncomment when testing feeds
-        //this.rssSingleFetch("https://www.npr.org/rss/podcast.php?id=510299", 10);
+        // this.rssSingleFetch("http://feeds.feedburner.com/theworldofphilhendriepodcast", 5);
 
         if (Platform.OS === 'android') {
             Linking.getInitialURL().then((url) => {
