@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, ListView, View, Text, TouchableOpacity, Dimensions, Platform} from 'react-native';
+import { StyleSheet, ScrollView, ListView, View, Text, TouchableOpacity, Dimensions, Platform, ActivityIndicator} from 'react-native';
 import PlayerBottom from '../PlayerBottom';
 import Variables from "../Variables";
 import firebase from 'firebase';
@@ -59,7 +59,7 @@ class TopCharts extends Component{
             navBarTextFontFamily: 'Montserrat-Bold', // Changes the title font
             navBarHideOnScroll: false,
             navBarBackgroundColor: '#fff',
-            topBarElevationShadowEnabled: true,
+            topBarElevationShadowEnabled: Platform.OS === 'ios' ,
             topBarShadowOpacity: 0,
             topBarShadowOffset: 0,
             topBarShadowRadius: 0,
@@ -188,11 +188,14 @@ class TopCharts extends Component{
         }
         else{
             return(
-                <View/>
+                <View style={styles.container}>
+                    <ActivityIndicator style={{paddingVertical: height/33.35, alignSelf:'center'}} color='#3e4164' size ="large" />
+                </View>
             )
         }
-
     };
+
+
     render() {
         return (
             <View style={styles.container}>
