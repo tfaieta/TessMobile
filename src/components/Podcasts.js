@@ -52,7 +52,7 @@ class Podcasts extends Component{
             sortedData.forEach(function (data) {
                 Variables.state.usersFollowed.push(data.id)
             })
-        }, 1500)
+        }, 3500)
 
     }
 
@@ -91,7 +91,7 @@ class Podcasts extends Component{
             refreshing: false
         };
 
-        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed.reverse()), length: Variables.state.usersFollowed.length})},2000);
+        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.usersFollowed.reverse()), length: Variables.state.usersFollowed.length})},4000);
     }
 
     state={

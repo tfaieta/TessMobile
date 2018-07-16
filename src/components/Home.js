@@ -498,6 +498,8 @@ class Home extends Component{
 
         clearTimeout(this.timeout1);
         clearTimeout(this.timeout2);
+        clearTimeout(this.timeout3);
+        clearTimeout(this.timeout4);
     }
 
 
@@ -530,8 +532,10 @@ class Home extends Component{
             dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent),
             refreshing: false,
         };
-        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent),})},1500);
+        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), loading: false})},1500);
         this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), loading: false})},3000);
+        this.timeout3 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), loading: false})},5000);
+        this.timeout4 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), loading: false})},8000);
 
         // TODO: Make sure to look over this once everything is updated to RN84+
         // this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));

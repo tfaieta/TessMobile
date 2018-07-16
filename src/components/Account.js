@@ -18,7 +18,6 @@ import { connect } from 'react-redux';
 import { podcastFetch } from "../actions/PodcastActions"
 import PlayerBottom from './PlayerBottom';
 import firebase from 'firebase';
-import Variables from './Variables';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
 
 import { Navigation } from 'react-native-navigation';
@@ -40,13 +39,9 @@ class Account extends Component {
 
 
     componentWillMount(){
-        Variables.state.myPodcasts = [];
-        Variables.state.myFollowers = [];
-        Variables.state.myFollowing = [];
-        Variables.state.myTracking = [];
-        Variables.state.profileImage = '';
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         const {currentUser} = firebase.auth();
-        const refMy = firebase.database().ref(`podcasts/`);
+        const refMy = firebase.database().ref(`users/${currentUser.uid}/podcasts`);
         const storageRef = firebase.storage().ref(`/users/${currentUser.uid}/image-profile-uploaded`);
         const refFol = firebase.database().ref(`users/${currentUser.uid}/followers`);
         const refFollowing = firebase.database().ref(`users/${currentUser.uid}/following`);
@@ -54,158 +49,183 @@ class Account extends Component {
 
 
         refMy.on("value", function (snapshot) {
-            Variables.state.myPodcasts = [];
             snapshot.forEach(function (data) {
-                if(currentUser.uid == data.val().podcastArtist) {
-                    Variables.state.myPodcasts.push(data.val());
-                }
-            });
-            Variables.state.myPodcasts.reverse();
-        });
+                firebase.database().ref(`podcasts/${data.key}`).once('value', function (snap) {
+                    if(snap.val()){
+                        this.state.myPodcasts.push(snap.val());
+                    }
+                }.bind(this));
+            }.bind(this));
+        }.bind(this));
 
         refFol.on("value", function (snapshot) {
-            Variables.state.myFollowers = [];
             snapshot.forEach(function (data) {
-                Variables.state.myFollowers.push(data.key);
-            })
-        });
+                this.state.myFollowers.push(data.key);
+            }.bind(this))
+        }.bind(this));
 
         refFollowing.on("value", function (snapshot) {
-            Variables.state.myFollowing = [];
             snapshot.forEach(function (data) {
-                Variables.state.myFollowing.push(data.key);
-            })
-        });
+                this.state.myFollowing.push(data.key);
+            }.bind(this))
+        }.bind(this));
 
         refTracking.on("value", function (snapshot) {
-            Variables.state.myTracking = [];
             snapshot.forEach(function (data) {
-                Variables.state.myTracking.push(data.key);
-            })
-        });
+                this.state.myTrackingList.push(data.key);
+            }.bind(this))
+        }.bind(this));
 
         firebase.database().ref(`/users/${currentUser.uid}/username`).orderByChild("username").on("value", function(snap) {
             if(snap.val()){
-                Variables.state.username = snap.val().username;
-
+                this.setState({
+                    username: snap.val().username
+                });
             }
             else {
-                Variables.state.username = "None";
+                this.setState({
+                    username: ""
+                });
             }
-        });
+        }.bind(this));
 
         firebase.database().ref(`/users/${currentUser.uid}/bio`).orderByChild("bio").on("value", function(snap) {
             if(snap.val()){
-                Variables.state.bio = snap.val().bio;
+                this.setState({
+                    bio: snap.val().bio
+                });
 
             }
             else {
-                Variables.state.bio = "Tell others about yourself"
+                this.setState({
+                    bio: "Tell others about yourself"
+                });
             }
-        });
+        }.bind(this));
 
-        Variables.state.myPlayTime = 0;
+
         firebase.database().ref(`/users/${currentUser.uid}/stats`).orderByChild("playTime").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().playTime){
-                    Variables.state.myPlayTime = snap.val().playTime;
+                    this.setState({
+                        playTime: snap.val().playTime
+                    });
 
                 }
                 else {
-                    Variables.state.myPlayTime = 0;
+                    this.setState({
+                        playTime: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
-        Variables.state.myHighlightsAmount = 0;
+
         firebase.database().ref(`/users/${currentUser.uid}/stats`).orderByChild("highlights").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().highlights){
-                    Variables.state.myHighlightsAmount = snap.val().highlights;
+                    this.setState({
+                        myHighlights: snap.val().highlights
+                    });
 
                 }
                 else {
-                    Variables.state.myHighlightsAmount = 0;
+                    this.setState({
+                        myHighlights: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
-        Variables.state.myCommentsAmount = 0;
+
         firebase.database().ref(`/users/${currentUser.uid}/stats`).orderByChild("comments").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().comments){
-                    Variables.state.myCommentsAmount = snap.val().comments;
+                    this.setState({
+                        myComments: snap.val().comments
+                    });
 
                 }
                 else {
-                    Variables.state.myCommentsAmount = 0;
+                    this.setState({
+                        myComments: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
-        Variables.state.myLikesAmount = 0;
+
         firebase.database().ref(`/users/${currentUser.uid}/stats`).orderByChild("likes").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().likes){
-                    Variables.state.myLikesAmount = snap.val().likes;
+                    this.setState({
+                        myLikes: snap.val().likes
+                    });
 
                 }
                 else {
-                    Variables.state.myLikesAmount = 0;
+                    this.setState({
+                        myLikes: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
-        Variables.state.myTrackingAmount = 0;
+
         firebase.database().ref(`/users/${currentUser.uid}/stats`).orderByChild("tracking").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().tracking){
-                    Variables.state.myTrackingAmount = snap.val().tracking;
+                    this.setState({
+                        myTracking: snap.val().tracking
+                    });
 
                 }
                 else {
-                    Variables.state.myTrackingAmount = 0;
+                    this.setState({
+                        myTracking: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
-        Variables.state.mySharesAmount = 0;
+
         firebase.database().ref(`/users/${currentUser.uid}/stats`).orderByChild("shares").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().shares){
-                    Variables.state.mySharesAmount = snap.val().shares;
+                    this.setState({
+                        myShares: snap.val().shares
+                    });
 
                 }
                 else {
-                    Variables.state.mySharesAmount = 0;
+                    this.setState({
+                        myShares: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
         storageRef.getDownloadURL()
             .then(function(url) {
 
-                Variables.state.profileImage = url;
+                this.setState({
+                    profileImage: url
+                });
 
             }).catch(function(error) {
             //
-        });
+        }.bind(this));
 
 
         firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).limitToLast(10).once("value", function (snapshot) {
-            Variables.state.recentlyPlayed = [];
             snapshot.forEach(function (snap) {
                 firebase.database().ref(`podcasts/${snap.val().id}`).once("value", function (data) {
                     if(data.val()){
-                        Variables.state.recentlyPlayed.push(data.val())
+                        this.state.recentlyPlayed = [data.val(), ...this.state.recentlyPlayed];
                     }
-                })
-            });
-
-            setTimeout(()=>{
-                Variables.state.recentlyPlayed.reverse();
-            }, 500);
-        });
+                }.bind(this))
+            }.bind(this));
+        }.bind(this));
 
 
     }
@@ -214,6 +234,9 @@ class Account extends Component {
 
     componentWillUnmount(){
         clearTimeout(this.timeout);
+        clearTimeout(this.timeout2);
+        clearTimeout(this.timeout3);
+        clearTimeout(this.timeout4);
     }
 
 
@@ -240,7 +263,12 @@ class Account extends Component {
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts),
+            dataSource: dataSource.cloneWithRows([]),
+            myPodcasts: [],
+            recentlyPlayed: [],
+            myFollowers: [],
+            myFollowing: [],
+            myTrackingList: [],
             loading: true,
             refreshing: false,
             username: '' ,
@@ -249,14 +277,49 @@ class Account extends Component {
             category: '',
             playTime: 0,
             myComments: 0,
-            myTracking: 0,
             myHighlights: 0,
+            myTracking: 0,
             myLikes: 0,
             myShares: 0,
-            dataSourceRecent: dataSource.cloneWithRows(Variables.state.recentlyPlayed)
+            dataSourceRecent: dataSource.cloneWithRows([])
         };
-        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username, profileImage: Variables.state.profileImage, playTime: Variables.state.myPlayTime, myComments: Variables.state.myCommentsAmount, myTracking: Variables.state.myTrackingAmount, myLikes: Variables.state.myLikesAmount, myHighlights: Variables.state.myHighlightsAmount, myShares: Variables.state.mySharesAmount, dataSourceRecent: dataSource.cloneWithRows(Variables.state.recentlyPlayed)})},1000);
-        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username, profileImage: Variables.state.profileImage, playTime: Variables.state.myPlayTime, myComments: Variables.state.myCommentsAmount, myTracking: Variables.state.myTrackingAmount, myLikes: Variables.state.myLikesAmount, myHighlights: Variables.state.myHighlightsAmount, myShares: Variables.state.mySharesAmount, dataSourceRecent: dataSource.cloneWithRows(Variables.state.recentlyPlayed), loading: false})},2500);
+
+        const {currentUser} = firebase.auth();
+        const storageRef = firebase.storage().ref(`/users/${currentUser.uid}/image-profile-uploaded`);
+        let image = '';
+        storageRef.getDownloadURL()
+            .then(function(url) {
+
+                image = url;
+                this.setState({
+                    profileImage: url
+                });
+                console.warn(p);
+
+            }).catch(function(error) {
+            //
+        }.bind(this));
+
+        this.timeout = setTimeout(() => {
+            this.setState({
+                dataSource: dataSource.cloneWithRows(this.state.myPodcasts), dataSourceRecent: dataSource.cloneWithRows(this.state.recentlyPlayed), profileImage: image, loading: false
+            })
+        }, 1500);
+        this.timeout2 = setTimeout(() => {
+            this.setState({
+                dataSource: dataSource.cloneWithRows(this.state.myPodcasts), dataSourceRecent: dataSource.cloneWithRows(this.state.recentlyPlayed), profileImage: image
+            })
+        }, 3000);
+        this.timeout3 = setTimeout(() => {
+            this.setState({
+                dataSource: dataSource.cloneWithRows(this.state.myPodcasts), dataSourceRecent: dataSource.cloneWithRows(this.state.recentlyPlayed), profileImage: image
+            })
+        }, 5000);
+        this.timeout4 = setTimeout(() => {
+            this.setState({
+                dataSource: dataSource.cloneWithRows(this.state.myPodcasts), dataSourceRecent: dataSource.cloneWithRows(this.state.recentlyPlayed), profileImage: image
+            })
+        }, 8000);
     }
 
 
@@ -265,13 +328,8 @@ class Account extends Component {
         this.setState({
             refreshing: true
         });
-        Variables.state.myPodcasts = [];
-        Variables.state.myFollowers = [];
-        Variables.state.myFollowing = [];
-        Variables.state.myTracking = [];
-        Variables.state.profileImage = '';
         const {currentUser} = firebase.auth();
-        const refMy = firebase.database().ref(`podcasts/`);
+        const refMy = firebase.database().ref(`users/${currentUser.uid}/podcasts`);
         const storageRef = firebase.storage().ref(`/users/${currentUser.uid}/image-profile-uploaded`);
         const refFol = firebase.database().ref(`users/${currentUser.uid}/followers`);
         const refFollowing = firebase.database().ref(`users/${currentUser.uid}/following`);
@@ -279,163 +337,190 @@ class Account extends Component {
 
 
         refMy.on("value", function (snapshot) {
-            Variables.state.myPodcasts = [];
             snapshot.forEach(function (data) {
-                if(currentUser.uid == data.val().podcastArtist) {
-                    Variables.state.myPodcasts.push(data.val());
-                }
-            });
-            Variables.state.myPodcasts.reverse();
-        });
+                firebase.database().ref(`podcasts/${data.key}`).once('value', function (snap) {
+                    if(snap.val()){
+                        this.state.myPodcasts.push(snap.val());
+                    }
+                }.bind(this));
+            }.bind(this));
+        }.bind(this));
 
         refFol.on("value", function (snapshot) {
-            Variables.state.myFollowers = [];
             snapshot.forEach(function (data) {
-                Variables.state.myFollowers.push(data.key);
-            })
-        });
+                this.state.myFollowers.push(data.key);
+            }.bind(this))
+        }.bind(this));
 
         refFollowing.on("value", function (snapshot) {
-            Variables.state.myFollowing = [];
             snapshot.forEach(function (data) {
-                Variables.state.myFollowing.push(data.key);
-            })
-        });
+                this.state.myFollowing.push(data.key);
+            }.bind(this))
+        }.bind(this));
 
         refTracking.on("value", function (snapshot) {
-            Variables.state.myTracking = [];
             snapshot.forEach(function (data) {
-                Variables.state.myTracking.push(data.key);
-            })
-        });
+                this.state.myTrackingList.push(data.key);
+            }.bind(this))
+        }.bind(this));
 
         firebase.database().ref(`/users/${currentUser.uid}/username`).orderByChild("username").on("value", function(snap) {
             if(snap.val()){
-                Variables.state.username = snap.val().username;
-
+                this.setState({
+                    username: snap.val().username
+                });
             }
             else {
-                Variables.state.username = "None";
+                this.setState({
+                    username: ""
+                });
             }
-        });
+        }.bind(this));
 
         firebase.database().ref(`/users/${currentUser.uid}/bio`).orderByChild("bio").on("value", function(snap) {
             if(snap.val()){
-                Variables.state.bio = snap.val().bio;
+                this.setState({
+                    bio: snap.val().bio
+                });
 
             }
             else {
-                Variables.state.bio = "Tell others about yourself"
+                this.setState({
+                    bio: "Tell others about yourself"
+                });
             }
-        });
+        }.bind(this));
 
-        Variables.state.myPlayTime = 0;
+
         firebase.database().ref(`/users/${currentUser.uid}/stats`).orderByChild("playTime").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().playTime){
-                    Variables.state.myPlayTime = snap.val().playTime;
+                    this.setState({
+                        playTime: snap.val().playTime
+                    });
 
                 }
                 else {
-                    Variables.state.myPlayTime = 0;
+                    this.setState({
+                        playTime: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
-        Variables.state.myHighlightsAmount = 0;
+
         firebase.database().ref(`/users/${currentUser.uid}/stats`).orderByChild("highlights").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().highlights){
-                    Variables.state.myHighlightsAmount = snap.val().highlights;
+                    this.setState({
+                        myHighlights: snap.val().highlights
+                    });
 
                 }
                 else {
-                    Variables.state.myHighlightsAmount = 0;
+                    this.setState({
+                        myHighlights: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
-        Variables.state.myCommentsAmount = 0;
+
         firebase.database().ref(`/users/${currentUser.uid}/stats`).orderByChild("comments").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().comments){
-                    Variables.state.myCommentsAmount = snap.val().comments;
+                    this.setState({
+                        myComments: snap.val().comments
+                    });
 
                 }
                 else {
-                    Variables.state.myCommentsAmount = 0;
+                    this.setState({
+                        myComments: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
-        Variables.state.myLikesAmount = 0;
+
         firebase.database().ref(`/users/${currentUser.uid}/stats`).orderByChild("likes").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().likes){
-                    Variables.state.myLikesAmount = snap.val().likes;
+                    this.setState({
+                        myLikes: snap.val().likes
+                    });
 
                 }
                 else {
-                    Variables.state.myLikesAmount = 0;
+                    this.setState({
+                        myLikes: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
-        Variables.state.myTrackingAmount = 0;
+
         firebase.database().ref(`/users/${currentUser.uid}/stats`).orderByChild("tracking").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().tracking){
-                    Variables.state.myTrackingAmount = snap.val().tracking;
+                    this.setState({
+                        myTracking: snap.val().tracking
+                    });
 
                 }
                 else {
-                    Variables.state.myTrackingAmount = 0;
+                    this.setState({
+                        myTracking: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
-        Variables.state.mySharesAmount = 0;
+
         firebase.database().ref(`/users/${currentUser.uid}/stats`).orderByChild("shares").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().shares){
-                    Variables.state.mySharesAmount = snap.val().shares;
+                    this.setState({
+                        myShares: snap.val().shares
+                    });
 
                 }
                 else {
-                    Variables.state.mySharesAmount = 0;
+                    this.setState({
+                        myShares: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
         storageRef.getDownloadURL()
             .then(function(url) {
 
-                Variables.state.profileImage = url;
+                this.setState({
+                    profileImage: url
+                });
 
             }).catch(function(error) {
             //
-        });
+        }.bind(this));
 
 
         firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).limitToLast(10).once("value", function (snapshot) {
-            Variables.state.recentlyPlayed = [];
             snapshot.forEach(function (snap) {
                 firebase.database().ref(`podcasts/${snap.val().id}`).once("value", function (data) {
                     if(data.val()){
-                        Variables.state.recentlyPlayed.push(data.val())
+                        this.state.recentlyPlayed = [data.val(), ...this.state.recentlyPlayed];
                     }
-                })
+                }.bind(this))
+            }.bind(this));
+        }.bind(this));
+
+
+        this.timeout = setTimeout(() => {
+            this.setState({
+                refreshing: false
             });
-
-            setTimeout(()=>{
-                Variables.state.recentlyPlayed.reverse();
-            }, 500);
-        });
-
-        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
-
-        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username, profileImage: Variables.state.profileImage, playTime: Variables.state.myPlayTime, myComments: Variables.state.myCommentsAmount, myTracking: Variables.state.myTrackingAmount, myLikes: Variables.state.myLikesAmount, myHighlights: Variables.state.myHighlightsAmount, myShares: Variables.state.mySharesAmount, dataSourceRecent: dataSource.cloneWithRows(Variables.state.recentlyPlayed), loading: false, refreshing: false})},1000);
-        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts), username: Variables.state.username, profileImage: Variables.state.profileImage, playTime: Variables.state.myPlayTime, myComments: Variables.state.myCommentsAmount, myTracking: Variables.state.myTrackingAmount, myLikes: Variables.state.myLikesAmount, myHighlights: Variables.state.myHighlightsAmount, myShares: Variables.state.mySharesAmount, dataSourceRecent: dataSource.cloneWithRows(Variables.state.recentlyPlayed), loading: false, refreshing: false})},3000);
+        },1000);
 
 
     }
@@ -454,7 +539,7 @@ class Account extends Component {
     _renderBio() {
 
         return(
-            <Text style={styles.titleBio} >{Variables.state.bio}</Text>
+            <Text style={styles.titleBio} >{this.state.bio}</Text>
         )
 
     }
@@ -503,7 +588,7 @@ class Account extends Component {
     };
 
     onTrackingPress = () =>{
-        const list = Variables.state.myTracking;
+        const list = this.state.myTrackingList;
         this.props.navigator.push({
             screen: "Tracking",
             title: "Tracking",
@@ -551,7 +636,7 @@ class Account extends Component {
                 {text: 'Yes', onPress: () => {
 
                     firebase.storage().ref(`/users/${user}/${title}`).delete();
-                    firebase.database().ref(`/podcasts`).on("value", function (snapshot) {
+                    firebase.database().ref(`/podcasts`).once("value", function (snapshot) {
                         snapshot.forEach(function (data) {
                             if(data.val().podcastTitle == title && data.val().podcastArtist == user){
                                 data.val().delete();
@@ -3044,10 +3129,10 @@ class Account extends Component {
     }
 
     renderContent(){
-        if(Variables.state.myPodcasts.length > 0){
+        if(this.state.myPodcasts.length > 0){
             return(
                 <View style={{backgroundColor: '#fff', marginVertical: 15, marginHorizontal: 7, borderRadius: 10}}>
-                    <Text style={styles.myContentTitle}>{Variables.state.myPodcasts.length} episodes</Text>
+                    <Text style={styles.myContentTitle}>{this.state.myPodcasts.length} episodes</Text>
                     <ListView
                         enableEmptySections
                         horizontal={true}
@@ -3103,7 +3188,7 @@ class Account extends Component {
                                 <Text style = {styles.title}>Edit Profile</Text>
                             </TouchableOpacity>
 
-                            {this._renderProfileNumbers(Variables.state.myTracking.length, Variables.state.myFollowers.length, Variables.state.myFollowing.length)}
+                            {this._renderProfileNumbers(this.state.myTrackingList.length, this.state.myFollowers.length, this.state.myFollowing.length)}
 
                         </View>
 
@@ -3114,7 +3199,7 @@ class Account extends Component {
 
                         {this.renderAchievements()}
 
-                        {this.renderRecent(Variables.state.recentlyPlayed)}
+                        {this.renderRecent(this.state.recentlyPlayed)}
 
 
 

@@ -25,7 +25,9 @@ class Favorites extends Component{
                 if(data.val()){
                     if(data.val().id){
                         firebase.database().ref(`podcasts/${data.val().id}`).once("value", function (snap) {
-                            Variables.state.favPodcasts.push(snap.val())
+                            if(snap.val()){
+                                Variables.state.favPodcasts.push(snap.val())
+                            }
                         })
                     }
                     else{

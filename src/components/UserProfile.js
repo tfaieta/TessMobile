@@ -52,7 +52,7 @@ static navigatorStyle = {
         Analytics.logEvent('openUserProfile', {
             'user_id': currentUser.uid
         });
-        
+
         const storageRef = firebase.storage().ref(`/users/${Variables.state.browsingArtist}/image-profile-uploaded`);
         const refFol = firebase.database().ref(`users/${Variables.state.browsingArtist}/followers`);
         const refFollowing = firebase.database().ref(`users/${Variables.state.browsingArtist}/following`);
@@ -109,14 +109,6 @@ static navigatorStyle = {
             }
         });
 
-        firebase.database().ref(`/users/${Variables.state.browsingArtist}/favCategory`).orderByChild("favCategory").on("value", function(snap) {
-            if(snap.val()){
-                Variables.state.currentFavCategory = snap.val().favCategory;
-            }
-            else {
-                Variables.state.currentFavCategory = "Too hard to choose"
-            }
-        });
 
         firebase.database().ref(`/users/${Variables.state.browsingArtist}/bio`).orderByChild("bio").on("value", function(snap) {
             if(snap.val()){
@@ -256,6 +248,8 @@ static navigatorStyle = {
     componentWillUnmount(){
         clearTimeout(this.timeout);
         clearTimeout(this.timeout2);
+        clearTimeout(this.timeout3);
+        clearTimeout(this.timeout4);
     }
 
 
@@ -296,7 +290,7 @@ static navigatorStyle = {
             dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
         };
         this.timeout = setTimeout(() =>{
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts), loading: false,
                 username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
                 following: Variables.state.following,
                 tracking: tracking,
@@ -308,7 +302,7 @@ static navigatorStyle = {
                 userShares: Variables.state.userSharesAmount,
                 dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
             })
-        },1000);
+        },1500);
         this.timeout2 = setTimeout(() =>{
             this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
                 username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
@@ -322,7 +316,35 @@ static navigatorStyle = {
                 userShares: Variables.state.userSharesAmount,
                 dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
             })
-        },2500);
+        },3000);
+        this.timeout3 = setTimeout(() =>{
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
+                username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
+                following: Variables.state.following,
+                tracking: tracking,
+                playTime: Variables.state.userPlayTime,
+                userComments: Variables.state.userCommentsAmount,
+                userTracking: Variables.state.userTrackingAmount,
+                userHighlights: Variables.state.userHighlightsAmount,
+                userLikes: Variables.state.userLikesAmount,
+                userShares: Variables.state.userSharesAmount,
+                dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
+            })
+        },5000);
+        this.timeout4 = setTimeout(() =>{
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
+                username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
+                following: Variables.state.following,
+                tracking: tracking,
+                playTime: Variables.state.userPlayTime,
+                userComments: Variables.state.userCommentsAmount,
+                userTracking: Variables.state.userTrackingAmount,
+                userHighlights: Variables.state.userHighlightsAmount,
+                userLikes: Variables.state.userLikesAmount,
+                userShares: Variables.state.userSharesAmount,
+                dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
+            })
+        },8000);
 
 
         const {currentUser} = firebase.auth();

@@ -28,6 +28,8 @@ class Recommend extends Component{
         const user = firebase.auth().currentUser.uid;
 
         let recommendation = this.state.input.toString().replace(".", " ");
+        recommendation = recommendation.toString().replace(".", " ");
+        recommendation = recommendation.toString().replace(".", " ");
         firebase.database().ref(`recommendedPods/${recommendation}`).update({user});
 
         this.setState({
