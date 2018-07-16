@@ -75,6 +75,7 @@ class Category extends Component{
         else if(category == 'Society & Culture' || category == 'Philosophy'){
 
             pods.push('Oprah’s SuperSoul Conversations');
+            pods.push('Philosophize This!');
             pods.push('Atlanta Monster');
             pods.push('Hello Internet');
             pods.push('Nancy');
@@ -123,6 +124,7 @@ class Category extends Component{
             pods.push('Throwing Shade');
             pods.push('TigerBelly');
             pods.push('The World of Phil Hendrie');
+            pods.push('Welcome to Night Vale');
         }
         else if(category == 'Lifestyle' || category == 'Design' || category == 'Self-Help'){
 
@@ -140,6 +142,7 @@ class Category extends Component{
             pods.push('Sword and Scale');
             pods.push('Why We Do What We Do');
             pods.push('Waking Up with Sam Harris');
+            pods.push("The Struggling Archaeologist's Guide to Getting Dirty");
 
         }
         else if(category == 'Travel' || category == 'Places & Travel'){
@@ -160,6 +163,7 @@ class Category extends Component{
             pods.push('The Art of Charm | High Performance Techniques| Cognitive Development | Relationship Advice | Mastery of Human Dynamics');
             pods.push('The Creative Exchange');
             pods.push('The Mixology Talk Podcast: Better Bartending and Making Great Drinks');
+            pods.push("The Struggling Archaeologist's Guide to Getting Dirty");
         }
         else if(category == 'Storytelling' || category == 'History'){
 
@@ -187,6 +191,7 @@ class Category extends Component{
             pods.push('Curious with Josh Peck');
             pods.push('The Creative Exchange');
             pods.push('Fantastic Geeks (and where to find them)');
+            pods.push('The Inner Tube: Answering Your Content Creation Questions!');
 
         }
         else if(category == 'Music'){
