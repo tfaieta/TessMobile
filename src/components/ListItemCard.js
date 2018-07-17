@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image, AsyncStorage, Dimensions, TouchableHighlight, Linking } from 'react-native';
+import { Text, View, TouchableOpacity, Image, AsyncStorage, Dimensions, TouchableHighlight, Linking, Platform} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from 'firebase';
 import Variables from "./Variables";
@@ -654,13 +654,26 @@ class ListItemCard extends Component {
                                                 textSelectable={true}
                                                 ignoredTags={['img']}
                                                 onLinkPress={(evt, href) => {
-                                                    Linking.canOpenURL(href).then(supported => {
-                                                        if (supported) {
-                                                            {this.link(href)}
-                                                        } else {
-                                                            console.warn("Don't know how to open URI: " + href);
-                                                        }
-                                                    });
+                                                    if (Platform.OS === 'android') {
+                                                        Linking.canOpenURL(href).then(supported => {
+                                                            if (supported) {
+                                                                Linking.openURL(href);
+                                                            } else {
+                                                                console.warn("Don't know how to open URI: " + href);
+                                                            }
+                                                        });
+                                                    }
+                                                    else {
+                                                        Linking.canOpenURL(href).then(supported => {
+                                                            if (supported) {
+                                                                {
+                                                                    this.link(href)
+                                                                }
+                                                            } else {
+                                                                console.warn("Don't know how to open URI: " + href);
+                                                            }
+                                                        });
+                                                    }
                                                 }}
                                             />
                                         </View>

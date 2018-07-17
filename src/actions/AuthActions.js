@@ -71,7 +71,6 @@ export const loginUser = ({email, password}) => {
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then(user => {
                 loginUserSuccess(dispatch, user);
-
                 Navigation.startTabBasedApp({
                                 tabs: [
                                     {
@@ -148,7 +147,8 @@ export const loginUser = ({email, password}) => {
                                      tabBarButtonColor: '#b1b3c8',
                                      tabBarSelectedButtonColor: '#506dcf',
                                 },
-                                passProps: {},
+                                passProps: {
+                                },
                                 animationType: 'slide-down'
                             });
             })
@@ -159,7 +159,7 @@ export const loginUser = ({email, password}) => {
     };
 };
 
-export const createUser = ({email, password, username}) => {
+export const createUser = ({email, password, username, loading}) => {
     return (dispatch) => {
         dispatch({ type: USER_CREATE});
 
@@ -174,6 +174,9 @@ export const createUser = ({email, password, username}) => {
 
 
                 loginUserSuccess(dispatch, user);
+
+                // W/O this the ActivityIndicator won't show on CreateAccount.js
+                this.props.loading = false;
                 firebase.auth().signInWithEmailAndPassword(email, password);
 
                 firebase.auth().currentUser.sendEmailVerification().then(function() {
@@ -269,7 +272,6 @@ export const createUser = ({email, password, username}) => {
                                     passProps: {},
                                     animationType: 'slide-down'
                                 });
-
                 });
             })
 

@@ -32,6 +32,7 @@
 		6CC13E3E2057494D882611A3 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F8D6968440B4FE4AE96FD8E /* Foundation.ttf */; };
 		779B258E83770AADFFB71653 /* Pods_tessTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07B2DBF84DE5975A9D18F9E5 /* Pods_tessTests.framework */; };
 		88FAE9D8EA8E4E8A9513F071 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5BC1429D1C34ED7A8AE0469 /* Montserrat-SemiBold.ttf */; };
+		8B7DC6CB20FE6AE700516023 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B32FBC420FE68B60038D414 /* libRCTActionSheet.a */; };
 		8BF1624C20D06AD600D31B75 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8BF1624B20D06AC300D31B75 /* Montserrat-Bold.ttf */; };
 		8DCB9EC6117A42BAF5E8F491 /* Pods_tess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3B6FBD51140F53D39E9AD0C /* Pods_tess.framework */; };
 		A51A1B7CA9DB4DC585A292BB /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE039E46CE1E446CBC86FCC0 /* FontAwesome.ttf */; };
@@ -149,6 +150,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 3D3CD9181DE5FBD800167DC4;
 			remoteInfo = "jschelpers-tvOS";
+		};
+		8B32FBC320FE68B60038D414 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B32FBBA20FE68B50038D414 /* RCTActionSheet.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RCTActionSheet;
 		};
 		ED37695020CF0562007CCBEC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -421,6 +429,7 @@
 		651BE46606D34404A2985A7B /* Pods-tess.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tess.release.xcconfig"; path = "Pods/Target Support Files/Pods-tess/Pods-tess.release.xcconfig"; sourceTree = "<group>"; };
 		6F704CBC7ABC6D6CE075D077 /* Pods-tess-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tess-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tess-tvOSTests/Pods-tess-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		87CE0BE24CA0CC33E2BDA999 /* Pods-tessTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tessTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tessTests/Pods-tessTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8B32FBBA20FE68B50038D414 /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
 		8BF1624B20D06AC300D31B75 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-Bold.ttf"; path = "../../Downloads/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		8D2228639A3AAACA3D466601 /* Pods_tess_tvOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tess_tvOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E5EACCC43F44B219FC9ED9F /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
@@ -489,6 +498,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B7DC6CB20FE6AE700516023 /* libRCTActionSheet.a in Frameworks */,
 				ED37695620CF056B007CCBEC /* libRNFIRMessaging.a in Frameworks */,
 				ED99474920B1F5AF0095DDE1 /* libBVLinearGradient.a in Frameworks */,
 				ED5A774720B1F33F00E81699 /* libRNFIRAnalytics.a in Frameworks */,
@@ -635,6 +645,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				8B32FBBA20FE68B50038D414 /* RCTActionSheet.xcodeproj */,
 				ED37692A20CF0562007CCBEC /* RNFIRMessaging.xcodeproj */,
 				ED5A774120B1F33600E81699 /* RNFIRAnalytics.xcodeproj */,
 				ED5A772220B1EF1800E81699 /* RCTSettings.xcodeproj */,
@@ -686,6 +697,14 @@
 				00E356EE1AD99517003FC87E /* tessTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* tess-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* tess-tvOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8B32FBBB20FE68B50038D414 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8B32FBC420FE68B60038D414 /* libRCTActionSheet.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1052,6 +1071,10 @@
 					ProjectRef = ED5A76B020B1EDCC00E81699 /* MusicControl.xcodeproj */;
 				},
 				{
+					ProductGroup = 8B32FBBB20FE68B50038D414 /* Products */;
+					ProjectRef = 8B32FBBA20FE68B50038D414 /* RCTActionSheet.xcodeproj */;
+				},
+				{
 					ProductGroup = ED5A76FF20B1EEB500E81699 /* Products */;
 					ProjectRef = ED5A76FE20B1EEB500E81699 /* RCTAnimation.xcodeproj */;
 				},
@@ -1197,6 +1220,13 @@
 			fileType = archive.ar;
 			path = libjschelpers.a;
 			remoteRef = 3DAD3EAE1DF850E9000B6D8A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B32FBC420FE68B60038D414 /* libRCTActionSheet.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTActionSheet.a;
+			remoteRef = 8B32FBC320FE68B60038D414 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		ED37695120CF0562007CCBEC /* libRNFIRMessaging.a */ = {

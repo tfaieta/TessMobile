@@ -9,7 +9,8 @@ import {
     Clipboard,
     Platform,
     AlertIOS,
-    ToastAndroid
+    ToastAndroid,
+    ActionSheetIOS,
 } from 'react-native';
 import firebase from 'firebase';
 import Variables from "./Variables";
@@ -127,6 +128,8 @@ class PodcastOptions extends Component {
             url: `tess://listen/${id}`,
             subject: "Share Link" //  for email
         };
+
+        const linkToString = shareOptionsHighlight.url;
 
 
         if(rowData.highlight){
@@ -380,7 +383,7 @@ class PodcastOptions extends Component {
                                                 'episodeID': id,
                                                 'user_id': user
                                             });
-                                            Share.open(shareOptionsHighlight)
+                                            Share.open(shareOptionsHighlight);
                                         },300);
                                     }}>More</Button>
                         </ShareSheet>
@@ -1423,7 +1426,6 @@ class PodcastOptions extends Component {
                                 <View style = {{width: width - 40, height: 1, backgroundColor: '#fff', marginHorizontal: 20, alignSelf: 'center'}}/>
 
                                 <TouchableOpacity style={{flexDirection: 'row', alignSelf: 'center'}} onPress={() => {
-
 
                                     /*
                                     firebase.database().ref(`users/${currentUser.uid}/favorites/${podcastTitle}`).remove();
