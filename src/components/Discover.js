@@ -76,13 +76,16 @@ class Discover extends Component{
         });
 
 
-        this.timeout2 = setTimeout(() => {this.setState({dataSourceFresh: dataSource.cloneWithRows(fresh.reverse()), dataSourceSmall: dataSource.cloneWithRows(small.reverse()), })},3000);
+        this.timeout1 = setTimeout(() => {this.setState({dataSourceFresh: dataSource.cloneWithRows(fresh.reverse()), dataSourceSmall: dataSource.cloneWithRows(small.reverse()), })}, 500);
+        this.timeout2 = setTimeout(() => {this.setState({dataSourceFresh: dataSource.cloneWithRows(fresh.reverse()), dataSourceSmall: dataSource.cloneWithRows(small.reverse()), })}, 2000);
+        this.timeout3 = setTimeout(() => {this.setState({dataSourceFresh: dataSource.cloneWithRows(fresh.reverse()), dataSourceSmall: dataSource.cloneWithRows(small.reverse()), })}, 5000);
     }
 
 
     componentWillUnmount(){
         clearTimeout(this.timeout1);
         clearTimeout(this.timeout2);
+        clearTimeout(this.timeout3);
     }
 
 
@@ -238,20 +241,20 @@ class Discover extends Component{
                     </Carousel>
 
                     <Text style = {styles.titleHeader}>Fresh & New</Text>
-                    <View style={{backgroundColor: 'transparent', marginBottom: 20,}}>
+                    <View style={{backgroundColor: 'transparent', marginBottom: 20}}>
                         <ListView
-                            horizontal={true}
                             enableEmptySections
+                            horizontal={true}
                             dataSource={this.state.dataSourceFresh}
                             renderRow={this.renderRow}
                         />
                     </View>
 
                     <Text style = {styles.titleHeader}>Noteworthy Small Creators</Text>
-                    <View style={{backgroundColor: 'transparent', marginBottom: height/33.35,}}>
+                    <View style={{backgroundColor: 'transparent', marginBottom: height/33.35}}>
                         <ListView
-                            horizontal={true}
                             enableEmptySections
+                            horizontal={true}
                             dataSource={this.state.dataSourceSmall}
                             renderRow={this.renderRow}
                         />

@@ -86,16 +86,16 @@ class CreateAccount extends Component {
 
     renderButton() {
         if (this.props.loading) {
-            return(
-            <View style={{paddingTop: 33.35}} >
-                <ActivityIndicator color='#fff' size ="large" />
-            </View>
+            return (
+                <View style={{paddingTop: height / 22.23}}>
+                    <ActivityIndicator color='#fff' size="large"/>
+                </View>
             )
         }
-        return(
+        return (
             <TouchableOpacity onPress={this.onButtonPress.bind(this)} style={styles.buttonContainer}>
                 <Text style={styles.textStyle}>
-                Sign Up
+                    Sign Up
                 </Text>
             </TouchableOpacity>
         );
@@ -341,9 +341,9 @@ const styles = {
 };
 
 const mapStateToProps = ({ auth }) => {
-    const { email, password, username, error } = auth;
+    const { email, password, username, error, loading } = auth;
 
-    return { email, password, username, error};
+    return { email, password, username, error, loading};
 };
 
 export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser, createUser, usernameChanged })(CreateAccount);

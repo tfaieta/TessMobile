@@ -51,7 +51,7 @@ class RecordFirstPage extends Component{
         };
 
 
-        this.interval = setInterval(() => {
+        this.timeout = setTimeout(() => {
             RNFetchBlob.fs.stat(podFile)
                 .then((stats) => {
                     if(stats.size > 0){
@@ -70,7 +70,7 @@ class RecordFirstPage extends Component{
     }
 
     componentWillUnmount(){
-        clearInterval(this.interval);
+        clearInterval(this.timeout);
     }
 
 

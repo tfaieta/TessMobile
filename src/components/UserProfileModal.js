@@ -243,6 +243,8 @@ class UserProfileModal extends Component {
     componentWillUnmount(){
         clearTimeout(this.timeout);
         clearTimeout(this.timeout2);
+        clearTimeout(this.timeout3);
+        clearTimeout(this.timeout4);
     }
 
 
@@ -310,6 +312,34 @@ class UserProfileModal extends Component {
                 dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
             })
         },3000);
+        this.timeout3 = setTimeout(() =>{
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
+                username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
+                following: Variables.state.following,
+                tracking: tracking,
+                playTime: Variables.state.userPlayTime,
+                userComments: Variables.state.userCommentsAmount,
+                userTracking: Variables.state.userTrackingAmount,
+                userHighlights: Variables.state.userHighlightsAmount,
+                userLikes: Variables.state.userLikesAmount,
+                userShares: Variables.state.userSharesAmount,
+                dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
+            })
+        },5000);
+        this.timeout4 = setTimeout(() =>{
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
+                username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
+                following: Variables.state.following,
+                tracking: tracking,
+                playTime: Variables.state.userPlayTime,
+                userComments: Variables.state.userCommentsAmount,
+                userTracking: Variables.state.userTrackingAmount,
+                userHighlights: Variables.state.userHighlightsAmount,
+                userLikes: Variables.state.userLikesAmount,
+                userShares: Variables.state.userSharesAmount,
+                dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
+            })
+        },8000);
 
         const {currentUser} = firebase.auth();
         let tracking = false;

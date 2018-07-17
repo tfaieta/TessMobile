@@ -20,15 +20,15 @@ class Home extends Component{
     componentDidMount(){
 
         // Uncomment when testing feeds
-        //this.rssSingleFetch("https://www.npr.org/rss/podcast.php?id=510299", 10);
+        // this.rssSingleFetch("", 5);
 
         if (Platform.OS === 'android') {
+            Linking.addEventListener('url', this.handleOpenURL);
             Linking.getInitialURL().then((url) => {
                  if (url) {
                     this.navigate(url);
                  }
             }).catch(err => console.warn('An error occurred', err));
-            Linking.addEventListener('url', this.handleOpenURL);
         } else {
             Linking.addEventListener('url', this.handleOpenURL);
             Linking.getInitialURL().then((url) => {
@@ -77,6 +77,7 @@ class Home extends Component{
         console.warn("starting");
         console.warn("url: " + url);
         const { navigator } = this.props;
+
         const route = url.replace(/.*?:\/\//g, '');
         const id = route.match(/\/([^\/]+)\/?$/)[1];
         const routeName = route.split('/')[0];
@@ -489,6 +490,8 @@ class Home extends Component{
             }, 3000);
 
         }
+
+
     };
 
 
@@ -498,6 +501,8 @@ class Home extends Component{
 
         clearTimeout(this.timeout1);
         clearTimeout(this.timeout2);
+        clearTimeout(this.timeout3);
+        clearTimeout(this.timeout4);
     }
 
 
@@ -530,8 +535,10 @@ class Home extends Component{
             dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent),
             refreshing: false,
         };
-        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent),})},1500);
+        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), loading: false})},1500);
         this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), loading: false})},3000);
+        this.timeout3 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), loading: false})},5000);
+        this.timeout4 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), loading: false})},8000);
 
         // TODO: Make sure to look over this once everything is updated to RN84+
         // this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
