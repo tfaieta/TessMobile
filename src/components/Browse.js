@@ -45,7 +45,7 @@ class Browse extends Component{
             podcastOfTheWeekID: '',
             podcastOftheWeekRSS: false,
             podImage: '',
-            dataSource: dataSource.cloneWithRows(Variables.state.selectedByTess),
+            dataSource: dataSource.cloneWithRows([]),
             url: '',
             refreshing: false,
             size: {width: width, height: height/2.15}
@@ -71,7 +71,7 @@ class Browse extends Component{
                     snap.forEach(function (data) {
                         firebase.database().ref(`podcasts/${data.val().id}`).once("value", function (podcast) {
                             if(podcast.val()){
-                                podOfTheWeek.push(podcast.val());
+                                podOfTheWeek = [podcast.val(), ...podOfTheWeek]
                             }
                         })
                     })
@@ -132,7 +132,7 @@ class Browse extends Component{
                     snap.forEach(function (data) {
                         firebase.database().ref(`podcasts/${data.val().id}`).once("value", function (podcast) {
                             if(podcast.val()){
-                                podOfTheWeek.push(podcast.val());
+                                podOfTheWeek = [podcast.val(), ...podOfTheWeek]
                             }
                         })
                     })

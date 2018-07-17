@@ -73,7 +73,7 @@ class Activity extends Component{
                     if(data.val()){
                         data.forEach(function (dataAgain) {
                             activity.push(dataAgain.val());
-                            for(let i = activity.length-1; i > 0 && Object.keys(activity[i].time) > Object.keys(activity[i-1].time); i--){
+                            for(let i = activity.length-1; i > 0 && activity[i].time > activity[i-1].time; i--){
                                 let temp = activity[i-1];
                                 activity[i-1] = activity[i];
                                 activity[i] = temp;
@@ -84,7 +84,7 @@ class Activity extends Component{
             })
         });
 
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(activity.reverse()), loading: false, refreshing: false })},4000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(activity), loading: false, refreshing: false })},4000);
 
 
     }

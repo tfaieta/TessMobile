@@ -17,6 +17,7 @@
     <application
       android:name=".MainApplication"
       android:allowBackup="true"
+      android:largeHeap="true"
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
       android:theme="@style/AppTheme">
@@ -45,16 +46,18 @@
               <action android:name="android.intent.action.VIEW" />
               <category android:name="android.intent.category.DEFAULT" />
               <category android:name="android.intent.category.BROWSABLE" />
-              <data android:scheme="tess"
-                  android:host="listen"
+              <data android:scheme="https"
+                  android:host="tessopen.page.link"
+                  android:pathPrefix="/listen"
                   />
           </intent-filter>
           <intent-filter>
               <action android:name="android.intent.action.VIEW" />
               <category android:name="android.intent.category.DEFAULT" />
               <category android:name="android.intent.category.BROWSABLE" />
-              <data android:scheme="tess"
-                  android:host="highlight"
+              <data android:scheme="https"
+                  android:host="tessopen.page.link"
+                  android:pathPrefix="/highlight"
                   />
           </intent-filter>
       </activity>

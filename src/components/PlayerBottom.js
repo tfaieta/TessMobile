@@ -42,7 +42,8 @@ class PlayerBottom extends Component {
         buffering: Variables.state.buffering,
         speed: Variables.state.podcastSpeed,
         highlight: false,
-        highlightTime: [0, 1]
+        highlightTime: [0, 1],
+        scrollEnabled: true
     };
 
     componentDidMount() {
@@ -159,7 +160,17 @@ class PlayerBottom extends Component {
                     minimumValue={Variables.state.highlightStart}
                     maximumValue= { Math.abs( Variables.state.highlightEnd)}
                     value={ currentTime }
-                    onValueChange={currentTime => Variables.state.seekTo = currentTime}
+                    onValueChange={currentTime => {
+                        Variables.state.seekTo = currentTime;
+                        this.setState({
+                            scrollEnabled: false
+                        })
+                    }}
+                    onSlidingComplete={()=>{
+                        this.setState({
+                            scrollEnabled: true
+                        })
+                    }}
                 />
             )
 
@@ -232,7 +243,17 @@ class PlayerBottom extends Component {
                         minimumValue={0}
                         maximumValue= { Math.abs( Variables.state.duration)}
                         value={ currentTime }
-                        onValueChange={currentTime => Variables.state.seekTo = currentTime}
+                        onValueChange={currentTime => {
+                            Variables.state.seekTo = currentTime;
+                            this.setState({
+                                scrollEnabled: false
+                            })
+                        }}
+                        onSlidingComplete={()=>{
+                            this.setState({
+                                scrollEnabled: true
+                            })
+                        }}
                     />
 
                 )
@@ -1330,8 +1351,15 @@ class PlayerBottom extends Component {
         if(Variables.state.podcastTitle == ''){
             return(
                 <View style = {styles.containerOutsideModal}>
-                    <View
-                        style={styles.containerModal}>
+                    <ScrollView
+                        scrollEnabled={this.state.scrollEnabled}
+                        style={styles.containerModal}
+                        ref={ref => this.scroll = ref}
+                        onScrollEndDrag={event => {
+                            if(event.nativeEvent.contentOffset.y < -100){
+                                this.Close();
+                            }
+                        }}>
 
                         <StatusBar
                             hidden={true}
@@ -1368,7 +1396,7 @@ class PlayerBottom extends Component {
                         </View>
 
 
-                    </View>
+                    </ScrollView>
                 </View>
 
 
@@ -1378,6 +1406,7 @@ class PlayerBottom extends Component {
             return(
                 <View style = {styles.containerOutsideModal}>
                     <ScrollView
+                        scrollEnabled={this.state.scrollEnabled}
                         style={styles.containerModal}
                         ref={ref => this.scroll = ref}
                         onScrollEndDrag={event => {
@@ -1491,6 +1520,7 @@ class PlayerBottom extends Component {
             return(
                 <View style = {styles.containerOutsideModal}>
                     <ScrollView
+                        scrollEnabled={this.state.scrollEnabled}
                         ref={ref => this.scroll = ref}
                         onScrollEndDrag={event => {
                             if(event.nativeEvent.contentOffset.y < -100){
