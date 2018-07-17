@@ -125,6 +125,8 @@ class Category extends Component{
             pods.push('TigerBelly');
             pods.push('The World of Phil Hendrie');
             pods.push('Welcome to Night Vale');
+            pods.push('The Adventure Zone');
+
         }
         else if(category == 'Lifestyle' || category == 'Design' || category == 'Self-Help'){
 
