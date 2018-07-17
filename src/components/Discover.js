@@ -76,13 +76,16 @@ class Discover extends Component{
         });
 
 
-        this.timeout2 = setTimeout(() => {this.setState({dataSourceFresh: dataSource.cloneWithRows(fresh.reverse()), dataSourceSmall: dataSource.cloneWithRows(small.reverse()), })}, 500);
+        this.timeout1 = setTimeout(() => {this.setState({dataSourceFresh: dataSource.cloneWithRows(fresh.reverse()), dataSourceSmall: dataSource.cloneWithRows(small.reverse()), })}, 500);
+        this.timeout2 = setTimeout(() => {this.setState({dataSourceFresh: dataSource.cloneWithRows(fresh.reverse()), dataSourceSmall: dataSource.cloneWithRows(small.reverse()), })}, 2000);
+        this.timeout3 = setTimeout(() => {this.setState({dataSourceFresh: dataSource.cloneWithRows(fresh.reverse()), dataSourceSmall: dataSource.cloneWithRows(small.reverse()), })}, 5000);
     }
 
 
     componentWillUnmount(){
         clearTimeout(this.timeout1);
         clearTimeout(this.timeout2);
+        clearTimeout(this.timeout3);
     }
 
 
