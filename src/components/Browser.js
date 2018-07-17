@@ -5,16 +5,20 @@ import {
     WebView,
     Dimensions,
     Platform,
+    ActivityIndicator,
+    Text
 } from 'react-native'
 import Variables from "./Variables";
 import PlayerBottom from "./PlayerBottom";
 
-var {height} = Dimensions.get('window');
+var {height, width} = Dimensions.get('window');
 
 export default class Browser extends Component {
 
     constructor(props) {
         super(props);
+
+        this.state = { visible: true };
 
         this.props.navigator.setStyle({
             statusBarHidden: false,
@@ -36,6 +40,10 @@ export default class Browser extends Component {
         });
     }
 
+    hideSpinner() {
+        this.setState({ visible: false });
+    }
+
     render() {
         return (
             <View style={{ flex: 1 }}>
@@ -44,7 +52,15 @@ export default class Browser extends Component {
                         uri: Variables.state.url
                     }}
                     style={{flex: 1}}
+                    onLoad={() => this.hideSpinner()}
                 />
+                {this.state.visible && (
+                    <ActivityIndicator
+                        style={{ position: "absolute", top: height / 2, alignSelf: 'center' }}
+                        color='#3e4164'
+                        size ="large"
+                    />
+                )}
                 <PlayerBottom navigator={this.props.navigator}/>
             </View>
         )
