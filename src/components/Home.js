@@ -23,12 +23,12 @@ class Home extends Component{
         //this.rssSingleFetch("https://www.npr.org/rss/podcast.php?id=510299", 10);
 
         if (Platform.OS === 'android') {
+            Linking.addEventListener('url', this.handleOpenURL);
             Linking.getInitialURL().then((url) => {
                  if (url) {
                     this.navigate(url);
                  }
             }).catch(err => console.warn('An error occurred', err));
-            Linking.addEventListener('url', this.handleOpenURL);
         } else {
             Linking.addEventListener('url', this.handleOpenURL);
             Linking.getInitialURL().then((url) => {
@@ -77,6 +77,7 @@ class Home extends Component{
         console.warn("starting");
         console.warn("url: " + url);
         const { navigator } = this.props;
+
         const route = url.replace(/.*?:\/\//g, '');
         const id = route.match(/\/([^\/]+)\/?$/)[1];
         const routeName = route.split('/')[0];
@@ -489,6 +490,8 @@ class Home extends Component{
             }, 3000);
 
         }
+
+
     };
 
 
