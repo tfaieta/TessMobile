@@ -19,12 +19,7 @@ import Share, {ShareSheet, Button} from 'react-native-share';
 var Analytics = require('react-native-firebase-analytics');
 import { Navigation } from 'react-native-navigation';
 
-
 var {height, width} = Dimensions.get('window');
-
-
-
-
 
 // options popup from player options
 
