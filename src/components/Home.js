@@ -20,7 +20,7 @@ class Home extends Component{
     componentDidMount(){
 
         // Uncomment when testing feeds
-        // this.rssSingleFetch("", 5);
+        // this.rssSingleFetch("http://podcast.frazlcast.com/rss", 5);
 
         if (Platform.OS === 'android') {
             Linking.addEventListener('url', this.handleOpenURL);

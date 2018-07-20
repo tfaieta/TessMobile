@@ -215,7 +215,8 @@ class Category extends Component{
         else if(category == 'Gaming' || category == 'Games & Hobbies'){
 
             pods.push('Painkiller Already');
-            pods.push('Ask Me Another')
+            pods.push('Ask Me Another');
+            pods.push('FrazlCast - A World of Warcraft Podcast');
         }
         else if(category == 'Business' || category == 'Careers' || category == 'Management & Marketing'){
 
