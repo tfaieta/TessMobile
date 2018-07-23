@@ -65,6 +65,7 @@ static navigatorStyle = {
             data.push('Invisibilia');
             data.push('Fresh Air');
             data.push('Ask Me Another');
+            data.push('Wow in the World');
         }
         else if(this.props.title == 'Crooked'){
             data.push('Pod Save America');
