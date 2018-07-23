@@ -250,7 +250,7 @@ class Discover extends Component{
                         />
                     </View>
 
-                    <Text style = {styles.titleHeader}>Noteworthy Small Creators</Text>
+                    <Text style = {styles.titleHeader}>Created on Tess</Text>
                     <View style={{backgroundColor: 'transparent', marginBottom: height/33.35}}>
                         <ListView
                             enableEmptySections

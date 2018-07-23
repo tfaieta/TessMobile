@@ -324,31 +324,6 @@ class Browse extends Component{
                             <TouchableWithoutFeedback onPress={() => {
                                 const {navigator} = this.props;
                                 const rss = true;
-                                Variables.state.browsingArtist = 'Green Light Sports Podcast';
-                                navigator.push({
-                                    screen: 'UserProfile',
-                                    title: "Green Light Sports Podcast",
-                                    passProps: {navigator, rss},
-                                })
-                            }}>
-                            <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: width/75}}>
-                                <View style={styles.featuredArt}>
-                                    <Image
-                                        style={{width: width/1.10, height: height/3.70, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
-                                        source={require('tess/src/images/podArtGLS.png')}
-                                    />
-                                </View>
-                                <Text style={styles.text1}>Green Light Sports</Text>
-                                <Text style={styles.text2}>by Tess Media</Text>
-                            </View>
-                            </TouchableWithoutFeedback>
-                        </View>
-
-                        {/* Fourth Item in Carousel */}
-                        <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
-                            <TouchableWithoutFeedback onPress={() => {
-                                const {navigator} = this.props;
-                                const rss = true;
                                 Variables.state.browsingArtist = 'Best of Gainesville Weekly Minipod';
                                 navigator.push({
                                     screen: 'UserProfile',
