@@ -83,7 +83,7 @@ export default class Login extends Component{
                         style={{height: height, width: width}}>
 
                     <View level={10}>
-                        <Icon style={{textAlign:'center', marginTop: height/4, fontSize: height/8.33, color:'#fff', backgroundColor: 'transparent'}} name="headphones">
+                        <Icon style={{textAlign:'center', marginTop: height/4, fontSize: height/8.33, color:'#fff', }} name="headphones">
                         </Icon>
                     </View>
                     <View level={10}>
@@ -99,13 +99,13 @@ export default class Login extends Component{
                         start={{x: 0.0, y: 0.0}} end={{x: 0, y: 1}}
                         style={{height: height, width: width}}>
                         <View style = {{flexDirection: 'row', alignSelf: 'center'}} level={10}>
-                            <Icon style={{textAlign:'center', marginHorizontal: width/75,  marginTop: height/4, fontSize: height/10, color:'#fff', backgroundColor: 'transparent' }} name="facebook">
+                            <Icon style={{textAlign:'center', marginHorizontal: width/75,  marginTop: height/4, fontSize: height/10, color:'#fff',  }} name="facebook">
                             </Icon>
-                            <Icon style={{textAlign:'center', marginHorizontal: width/75,  marginTop: height/4, fontSize: height/10, color:'#fff', backgroundColor: 'transparent' }} name="twitter">
+                            <Icon style={{textAlign:'center', marginHorizontal: width/75,  marginTop: height/4, fontSize: height/10, color:'#fff',  }} name="twitter">
                             </Icon>
-                            <Icon style={{textAlign:'center', marginHorizontal: width/75,  marginTop: height/4, fontSize: height/10, color:'#fff', backgroundColor: 'transparent' }} name="message">
+                            <Icon style={{textAlign:'center', marginHorizontal: width/75,  marginTop: height/4, fontSize: height/10, color:'#fff',  }} name="message">
                             </Icon>
-                            <Icon style={{textAlign:'center', marginHorizontal: width/75,  marginTop: height/4, fontSize: height/10, color:'#fff', backgroundColor: 'transparent' }} name="email">
+                            <Icon style={{textAlign:'center', marginHorizontal: width/75,  marginTop: height/4, fontSize: height/10, color:'#fff',  }} name="email">
                             </Icon>
                         </View>
                         <View level={10}>
@@ -121,7 +121,7 @@ export default class Login extends Component{
                         start={{x: 0.0, y: 0.0}} end={{x: 0, y: 1}}
                         style={{height: height, width: width}}>
                     <View level={10}>
-                        <Icon style={{textAlign:'center',  marginTop: height/4, fontSize: height/8.33, color:'#fff', backgroundColor: 'transparent' }} name="chart-line">
+                        <Icon style={{textAlign:'center',  marginTop: height/4, fontSize: height/8.33, color:'#fff',  }} name="chart-line">
                         </Icon>
                     </View>
                     <View level={10}>
@@ -136,7 +136,7 @@ export default class Login extends Component{
                         start={{x: 0.0, y: 0.0}} end={{x: 0, y: 1}}
                         style={{height: height, width: width}}>
                     <View level = {9}>
-                        <Icon style={{textAlign:'center', marginTop: height/4, fontSize: height/8.33, color:'#fff', backgroundColor: 'transparent' }} name="microphone">
+                        <Icon style={{textAlign:'center', marginTop: height/4, fontSize: height/8.33, color:'#fff',  }} name="microphone">
                         </Icon>
                     </View>
                     <View level = {-9}>
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
         marginRight: width/12.5,
         marginHorizontal: -400,
         marginTop: height/11.12,
-        backgroundColor: 'transparent'
+        
     },
     smallText1: {
         color: '#3e4164',
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
         marginLeft: width/12.5,
         marginRight: width/12.5,
         marginTop: width/33.35,
-        backgroundColor: 'transparent'
+        
     },
     smallText: {
         color: '#fff',
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Montserrat-Regular',
         marginHorizontal: width/12.5,
-        backgroundColor: 'transparent'
+        
     },
     smallTextBold: {
         color: '#fff',
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Montserrat-Regular',
         marginHorizontal: width/12.5,
-        backgroundColor: 'transparent'
+        
     },
 
 

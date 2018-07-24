@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         marginTop: 80,
         marginBottom: 15,
-        backgroundColor: 'transparent',
+        
     },
 
 });

@@ -113,8 +113,8 @@ class Discover extends Component{
                     >
 
                         {/* Gimlet */}
-                        <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
-                            <TouchableWithoutFeedback style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
+                        <View style={[this.state.size]}>
+                            <TouchableWithoutFeedback style={{borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
                                 const {navigator} = this.props;
                                 let title = 'Gimlet Media';
                                 navigator.push({
@@ -133,8 +133,8 @@ class Discover extends Component{
                         </View>
 
                         {/* NPR */}
-                        <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
-                            <TouchableWithoutFeedback style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
+                        <View style={[this.state.size]}>
+                            <TouchableWithoutFeedback style={{borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
                                 const {navigator} = this.props;
                                 let title = 'NPR';
                                 navigator.push({
@@ -153,8 +153,8 @@ class Discover extends Component{
                         </View>
 
                         {/* Crooked */}
-                        <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
-                            <TouchableWithoutFeedback style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
+                        <View style={[this.state.size]}>
+                            <TouchableWithoutFeedback style={{borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
                                 const {navigator} = this.props;
                                 let title = 'Crooked';
                                 navigator.push({
@@ -175,8 +175,8 @@ class Discover extends Component{
 
 
                         {/* Midroll */}
-                        <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
-                            <TouchableWithoutFeedback style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
+                        <View style={[this.state.size]}>
+                            <TouchableWithoutFeedback style={{borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
                                 const {navigator} = this.props;
                                 let title = 'Midroll';
                                 navigator.push({
@@ -197,8 +197,8 @@ class Discover extends Component{
 
 
                         {/* Wondery */}
-                        <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
-                            <TouchableWithoutFeedback style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
+                        <View style={[this.state.size]}>
+                            <TouchableWithoutFeedback style={{borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
                                 const {navigator} = this.props;
                                 let title = 'Wondery';
                                 navigator.push({
@@ -207,7 +207,7 @@ class Discover extends Component{
                                     passProps: {title, navigator},
                                 })
                             }}>
-                                <View style = {{ backgroundColor: 'transparent', width: width/1.15, height: width/1.97, marginLeft: width/25, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                                <View style = {{backgroundColor: 'transparent', width: width/1.15, height: width/1.97, marginLeft: width/25, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
                                     <Image
                                         style={{width: width/1.15, height: width/1.97, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
                                         source={require('tess/src/images/WonderyMedia.png')}
@@ -219,8 +219,8 @@ class Discover extends Component{
 
 
                         {/* Tess Media */}
-                        <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
-                            <TouchableWithoutFeedback style={{backgroundColor: 'transparent', borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
+                        <View style={[this.state.size]}>
+                            <TouchableWithoutFeedback style={{borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
                                 const {navigator} = this.props;
                                 let title = 'Tess Media';
                                 navigator.push({
@@ -241,7 +241,7 @@ class Discover extends Component{
                     </Carousel>
 
                     <Text style = {styles.titleHeader}>Fresh & New</Text>
-                    <View style={{backgroundColor: 'transparent', marginBottom: 20}}>
+                    <View style={{marginBottom: 20}}>
                         <ListView
                             enableEmptySections
                             horizontal={true}
@@ -251,7 +251,7 @@ class Discover extends Component{
                     </View>
 
                     <Text style = {styles.titleHeader}>Created on Tess</Text>
-                    <View style={{backgroundColor: 'transparent', marginBottom: height/33.35}}>
+                    <View style={{marginBottom: height/33.35}}>
                         <ListView
                             enableEmptySections
                             horizontal={true}
@@ -288,7 +288,6 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/18.75,
-        backgroundColor: 'transparent',
     },
 
     titleHeader: {
@@ -300,7 +299,6 @@ const styles = StyleSheet.create({
         marginTop: height/44.47,
         marginBottom: height/66.7,
         marginLeft: width/25,
-        backgroundColor: 'transparent',
     },
 
     wrapper: {

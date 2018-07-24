@@ -669,7 +669,7 @@ const styles = {
         marginLeft: width/18.75,
         marginRight: width/37.5,
         fontSize: width/26.79,
-        backgroundColor: 'transparent'
+        
     },
     titleBold: {
         color: '#3e4164',
@@ -680,7 +680,7 @@ const styles = {
         marginLeft: width/18.75,
         marginRight: width/37.5,
         fontSize: width/23.44,
-        backgroundColor: 'transparent'
+        
     },
     middleContainer: {
         flex: 1,

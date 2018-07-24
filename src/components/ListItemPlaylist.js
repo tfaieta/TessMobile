@@ -78,7 +78,7 @@ class ListItemPlaylist extends Component {
                         }}  style={{alignSelf:'flex-end', flexDirection:'row', marginTop: height/222.33}}>
                             <Icon style={{
                                 fontSize: width/17,
-                                backgroundColor: 'transparent',
+                                
                                 marginTop: height/66.7,
                                 color: '#506dcf',
                                 marginLeft: width/37.5,
@@ -115,7 +115,7 @@ const styles = {
         fontSize: width/20.83,
         marginTop: height/33.35,
         paddingLeft: width/18.75,
-        backgroundColor: 'transparent',
+        
     },
     smallTitle: {
         color: '#3e4164',
@@ -125,7 +125,7 @@ const styles = {
         fontSize: width/26.79,
         marginTop: height/33.35,
         paddingLeft: width/18.75,
-        backgroundColor: 'transparent',
+        
     },
 };
 

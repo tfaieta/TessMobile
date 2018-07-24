@@ -411,7 +411,7 @@ class ListItemUsers extends Component {
                 return(
                     <Icon style={{
                         fontSize: 14,
-                        backgroundColor: 'transparent',
+                        
                         color: '#000',
                         marginHorizontal: 5,
                     }} name="md-time">
@@ -431,7 +431,7 @@ class ListItemUsers extends Component {
                     return (
                         <Icon style={{
                             fontSize: 14,
-                            backgroundColor: 'transparent',
+                            
                             color: '#000',
                             marginLeft: 10,
                         }} name="md-time">
@@ -448,7 +448,7 @@ class ListItemUsers extends Component {
                         return (
                             <Icon style={{
                                 fontSize: 14,
-                                backgroundColor: 'transparent',
+                                
                                 color: '#000',
                                 marginLeft: 10,
                             }} name="md-time">
@@ -462,7 +462,7 @@ class ListItemUsers extends Component {
                         return (
                             <Icon style={{
                                 fontSize: 14,
-                                backgroundColor: 'transparent',
+                                
                                 color: '#000',
                                 marginLeft: 10,
                             }} name="md-time">
@@ -480,7 +480,7 @@ class ListItemUsers extends Component {
                         return (
                             <Icon style={{
                                 fontSize: 14,
-                                backgroundColor: 'transparent',
+                                
                                 color: '#000',
                                 marginLeft: 10,
                             }} name="md-time">
@@ -494,7 +494,7 @@ class ListItemUsers extends Component {
                         return (
                             <Icon style={{
                                 fontSize: 14,
-                                backgroundColor: 'transparent',
+                                
                                 color: '#000',
                                 marginLeft: 10,
                             }} name="md-time">
@@ -601,7 +601,7 @@ const styles = {
         fontFamily: 'Montserrat-Bold',
         fontSize: 14,
         marginLeft: 10,
-        backgroundColor: 'transparent'
+        
     },
     artistTitle: {
         color: '#828393',
@@ -613,7 +613,7 @@ const styles = {
         paddingVertical: 1,
         marginLeft: 10,
         fontSize: 12,
-        backgroundColor: 'transparent',
+        
     },
     numTitle: {
         color: '#828393',
@@ -625,7 +625,7 @@ const styles = {
         paddingVertical: 1,
         marginLeft: 10,
         fontSize: 14,
-        backgroundColor: 'transparent',
+        
     },
     container: {
         flex: 1,

@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/18.75,
-        backgroundColor: 'transparent',
+        
     },
     titleHeader: {
         flex: 1,
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
         marginTop: height/44.47,
         marginBottom: height/66.7,
         marginLeft: width/25,
-        backgroundColor: 'transparent',
+        
     },
     wrapper: {
     },

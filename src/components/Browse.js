@@ -270,7 +270,7 @@ class Browse extends Component{
                         onAnimateNextPage={(p) => console.log(p)}
                     >
                         {/* First Item in Carousel */}
-                        <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
+                        <View style={[this.state.size]}>
                             <TouchableWithoutFeedback onPress={() => {
                                 const {navigator} = this.props;
                                 const rss = true;
@@ -295,7 +295,7 @@ class Browse extends Component{
                         </View>
 
                         {/* Second Item in Carousel */}
-                        <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
+                        <View style={[this.state.size]}>
                             <TouchableWithoutFeedback onPress={() => {
                                 const {navigator} = this.props;
                                 const rss = true;
@@ -320,7 +320,7 @@ class Browse extends Component{
                         </View>
 
                         {/* Third Item in Carousel */}
-                        <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
+                        <View style={[this.state.size]}>
                             <TouchableWithoutFeedback onPress={() => {
                                 const {navigator} = this.props;
                                 const rss = true;
@@ -353,7 +353,6 @@ class Browse extends Component{
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: width/17,
-                                backgroundColor: 'transparent',
                                 color: '#3e416460',
                                 marginHorizontal: width/25,
                             }} name="ios-arrow-forward">
@@ -367,7 +366,6 @@ class Browse extends Component{
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: width/17,
-                                backgroundColor: 'transparent',
                                 color: '#3e416460',
                                 marginHorizontal: width/25,
                             }} name="ios-arrow-forward">
@@ -381,7 +379,6 @@ class Browse extends Component{
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: width/17,
-                                backgroundColor: 'transparent',
                                 color: '#3e416460',
                                 marginHorizontal: width/25,
                             }} name="ios-arrow-forward">
@@ -448,7 +445,6 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/18.75,
-        backgroundColor: 'transparent',
     },
 
     titleHeader: {
@@ -460,7 +456,6 @@ const styles = StyleSheet.create({
         marginTop: height/33.35,
         marginBottom: height/66.7,
         marginLeft: width/25,
-        backgroundColor: 'transparent',
     },
 
     wrapper: {
@@ -479,7 +474,6 @@ const styles = StyleSheet.create({
         marginTop: height/66.7,
         marginLeft: width/18.75,
         fontSize: width/23.48,
-        backgroundColor: 'transparent',
     },
     text2: {
         color: '#3e4164',
@@ -488,7 +482,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-SemiBold',
         marginLeft: width/18.75,
         fontSize: width/26.79,
-        backgroundColor: 'transparent',
         marginBottom: height/55.58,
     },
 
@@ -501,7 +494,6 @@ const styles = StyleSheet.create({
         marginRight: width/15,
         fontFamily: 'Montserrat-Bold',
         fontSize: width/18.75,
-        backgroundColor: 'transparent',
     },
 
     bar: {

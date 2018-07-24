@@ -1678,7 +1678,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: height/41.69,
-        backgroundColor: 'transparent',
+        
         marginVertical: height/33.35,
     },
     textTitle:{
@@ -1688,7 +1688,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: height/51.3,
-        backgroundColor: 'transparent',
+        
         marginVertical: 5,
         marginHorizontal: 20,
     },
@@ -1699,7 +1699,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: height/51.3,
-        backgroundColor: 'transparent',
+        
         marginBottom: 20,
         marginHorizontal: 20,
     },

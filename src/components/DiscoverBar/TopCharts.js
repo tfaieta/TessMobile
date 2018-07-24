@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/20.83,
-        backgroundColor: 'transparent',
+        
     },
 
     titleActive: {
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/20.83,
-        backgroundColor: 'transparent',
+        
     },
 
     box: {
