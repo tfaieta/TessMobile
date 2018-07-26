@@ -104,8 +104,8 @@ class PlayerOptions extends Component {
 
         let shareOptions = {
             title: Variables.state.podcastTitle,
-            message: '',
-            url: Variables.state.podcastTitle + ' - ' + Variables.state.currentUsername + "\n\nListen on Tess!\n" + `https://tessopen.page.link/listen?${Variables.state.podcastID}`,
+            message: Variables.state.podcastTitle + ' - ' + Variables.state.currentUsername + "\n\nListen on Tess!\n",
+            url: `https://tessopen.page.link/listen?${Variables.state.podcastID}`,
             subject: Variables.state.podcastTitle + ' - ' + Variables.state.currentUsername //  for email
         };
 
@@ -596,8 +596,14 @@ class PlayerOptions extends Component {
                                                 'episodeID': Variables.state.podcastID,
                                                 'user_id': user
                                             });
-                                            Share.open(shareOptions)
-                                        },300);
+                                            Share.open(shareOptions).then((res) =>
+                                                {
+                                                    console.log(res)
+                                                }).catch((err) =>
+                                                {
+                                                    console.log(err)
+                                                });
+                                            },300);
                                     }}>More</Button>
                         </ShareSheet>
 
@@ -898,7 +904,13 @@ class PlayerOptions extends Component {
                                                 'episodeID': Variables.state.podcastID,
                                                 'user_id': user
                                             });
-                                            Share.open(shareOptions)
+                                            Share.open(shareOptions).then((res) =>
+                                                {
+                                                    console.log(res)
+                                                }).catch((err) =>
+                                                {
+                                                    console.log(err)
+                                                });
                                         },300);
                                     }}>More</Button>
                         </ShareSheet>
@@ -1208,7 +1220,13 @@ class PlayerOptions extends Component {
                                                         'episodeID': Variables.state.podcastID,
                                                         'user_id': user
                                                     });
-                                                    Share.open(shareOptions)
+                                                    Share.open(shareOptions).then((res) =>
+                                                    {
+                                                        console.log(res)
+                                                    }).catch((err) =>
+                                                    {
+                                                        console.log(err)
+                                                    });
                                                 },300);
                                             }}>More</Button>
                                 </ShareSheet>
@@ -1520,7 +1538,13 @@ class PlayerOptions extends Component {
                                                         'episodeID': Variables.state.podcastID,
                                                         'user_id': user
                                                     });
-                                                    Share.open(shareOptions)
+                                                    Share.open(shareOptions).then((res) =>
+                                                    {
+                                                        console.log(res)
+                                                    }).catch((err) =>
+                                                    {
+                                                        console.log(err)
+                                                    });
                                                 },300);
                                             }}>More</Button>
                                 </ShareSheet>
@@ -1654,7 +1678,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: height/41.69,
-        backgroundColor: 'transparent',
+        
         marginVertical: height/33.35,
     },
     textTitle:{
@@ -1664,7 +1688,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: height/51.3,
-        backgroundColor: 'transparent',
+        
         marginVertical: 5,
         marginHorizontal: 20,
     },
@@ -1675,7 +1699,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: height/51.3,
-        backgroundColor: 'transparent',
+        
         marginBottom: 20,
         marginHorizontal: 20,
     },

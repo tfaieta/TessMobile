@@ -249,7 +249,7 @@ class Library extends Component{
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: 22,
-                                backgroundColor: 'transparent',
+                                
                                 color: '#3e416460',
                                 marginHorizontal: 15,
                             }} name="ios-arrow-forward">
@@ -262,7 +262,7 @@ class Library extends Component{
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: 22,
-                                backgroundColor: 'transparent',
+                                
                                 color: '#3e416460',
                                 marginHorizontal: 15,
                             }} name="ios-arrow-forward">
@@ -275,7 +275,7 @@ class Library extends Component{
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: 22,
-                                backgroundColor: 'transparent',
+                                
                                 color: '#3e416460',
                                 marginHorizontal: 15,
                             }} name="ios-arrow-forward">
@@ -288,7 +288,7 @@ class Library extends Component{
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: 22,
-                                backgroundColor: 'transparent',
+                                
                                 color: '#3e416460',
                                 marginHorizontal: 15,
                             }} name="ios-arrow-forward">
@@ -301,7 +301,7 @@ class Library extends Component{
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: 22,
-                                backgroundColor: 'transparent',
+                                
                                 color: '#3e416460',
                                 marginHorizontal: 15,
                             }} name="ios-arrow-forward">
@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f4f9',
     },
     container2:{
-        backgroundColor: 'transparent',
+        
         marginBottom: 10,
     },
     title: {
@@ -353,7 +353,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 20,
-        backgroundColor: 'transparent',
+        
     },
 
     titleNext: {
@@ -366,7 +366,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 16,
-        backgroundColor: 'transparent',
+        
     },
 
     titleEdit: {
@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 14,
-        backgroundColor: 'transparent',
+        
     },
 
     titleTop: {
@@ -389,7 +389,7 @@ const styles = StyleSheet.create({
         marginVertical: 25,
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 18,
-        backgroundColor: 'transparent',
+        
     },
 
     titleUpNext: {
@@ -399,7 +399,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 18,
-        backgroundColor: 'transparent',
+        
     },
 
 

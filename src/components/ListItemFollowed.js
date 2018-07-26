@@ -194,7 +194,7 @@ const styles = {
         marginTop: height/44.47,
         marginLeft: width/18.75,
         fontSize: width/26.79,
-        backgroundColor: 'transparent'
+        
     },
     middleContainer: {
         flex: 1,

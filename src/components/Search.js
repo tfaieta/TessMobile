@@ -55,7 +55,7 @@ class Search extends Component{
                         <View>
                             <Icon style={{
                                 fontSize: width/22.83,
-                                backgroundColor: 'transparent',
+                                
                                 color: '#506dcf',
                                 marginHorizontal: width/41.1,
                                 marginBottom: height/85,
@@ -91,7 +91,7 @@ class Search extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: 'transparent',
+        
     },
 
     title: {
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: height/44.47,
-        backgroundColor: 'transparent',
+        
         marginHorizontal: height/33.35,
 
     },
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
 
     containerMain:{
         flex: 1,
-        backgroundColor: 'transparent',
+        
     },
 
     contentTitle: {
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
         fontSize: height/33.35,
-        backgroundColor: 'transparent'
+        
     },
     titleOther: {
         color: '#2A2A30',
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: height/44.47,
-        backgroundColor: 'transparent',
+        
         marginHorizontal: height/33.35,
 
     },
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
         fontSize: height/44.47,
-        backgroundColor: 'transparent',
+        
         marginLeft: height/33.35,
     },
 
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
         fontSize: height/37.06,
-        backgroundColor: 'transparent',
+        
 
     },
 
