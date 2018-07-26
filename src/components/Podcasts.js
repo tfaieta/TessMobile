@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        backgroundColor: 'transparent',
+        
         color: '#506dcf',
         textAlign: 'center',
         fontStyle: 'normal',

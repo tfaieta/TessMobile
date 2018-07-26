@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 20,
-        backgroundColor: 'transparent',
+        
     },
 
     titleHeader: {
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 10,
         marginLeft: 15,
-        backgroundColor: 'transparent',
+        
     },
 
     wrapper: {
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginLeft: 20,
         fontSize: 16,
-        backgroundColor: 'transparent',
+        
     },
     text2: {
         color: '#3e4164',
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-SemiBold',
         marginLeft: 20,
         fontSize: 14,
-        backgroundColor: 'transparent',
+        
         marginBottom: 12,
     },
 
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
         marginRight: 25,
         fontFamily: 'Montserrat-Bold',
         fontSize: 20,
-        backgroundColor: 'transparent',
+        
     },
 
 });

@@ -42,7 +42,7 @@ class Highlight extends Component{
                     <Icon style={{
                         fontSize: width/13.39,
                         alignSelf: 'flex-end',
-                        backgroundColor: 'transparent',
+                        
                         color: '#79797990',
                         marginHorizontal: width/37.5,
                     }} name="ios-close">
@@ -162,21 +162,21 @@ const styles = StyleSheet.create({
         color: '#52525e',
         fontSize: width/15.63,
         marginBottom: height/66.7,
-        backgroundColor: 'transparent',
+        
         fontFamily: 'Montserrat-Regular',
         textAlign: 'center'
     },
     textButton:{
         color: '#fff',
         fontSize: width/23.44,
-        backgroundColor: 'transparent',
+        
         fontFamily: 'Montserrat-Regular',
         textAlign: 'center'
     },
     textHeader:{
         color: '#2A2A30',
         fontSize: width/26.79,
-        backgroundColor: 'transparent',
+        
         fontFamily: 'Montserrat-SemiBold',
         textAlign: 'left',
         marginTop: height/26.68,
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
 
     input: {
         height: height/16.68,
-        backgroundColor: 'transparent',
+        
         color: '#3e4164',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',

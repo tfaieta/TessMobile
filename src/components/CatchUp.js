@@ -63,7 +63,7 @@ class CatchUp extends Component{
 
     render() {
         return (
-            <View style = {{backgroundColor: 'transparent', flex:1}}>
+            <View style = {{ flex:1}}>
                 <View
                     style={styles.container}>
 
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 20,
-        backgroundColor: 'transparent'
+        
     },
 
     header: {
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 16,
-        backgroundColor: 'transparent',
+        
 
     }
 

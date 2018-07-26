@@ -160,11 +160,9 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/23.44,
-        backgroundColor: 'transparent',
     },
 
     text: {
-        backgroundColor: 'transparent',
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',

@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
 
     containerMain:{
         flex: 1,
-        backgroundColor: 'transparent',
+        
     },
 
     contentTitle: {
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Hiragino Sans',
         fontSize: 20,
-        backgroundColor: 'transparent'
+        
     },
     title: {
         color: '#2A2A30',
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
         fontSize: 15,
-        backgroundColor: 'transparent',
+        
         marginHorizontal: 20,
 
     },
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Hiragino Sans',
         fontSize: 15,
-        backgroundColor: 'transparent',
+        
         marginLeft: 20,
     },
 
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Hiragino Sans',
         fontSize: 18,
-        backgroundColor: 'transparent',
+        
 
     },
 

@@ -68,7 +68,7 @@ class Queue extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: 'transparent',
+        
     },
 
     title: {
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Hiragino Sans',
         fontSize: 20,
-        backgroundColor: 'transparent'
+        
     },
 
     contentTitle: {
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
         fontSize: 16,
-        backgroundColor: 'transparent',
+        
 
     }
 

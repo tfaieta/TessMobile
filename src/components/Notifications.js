@@ -465,7 +465,7 @@ class Notifications extends Component{
                         <View style={{alignSelf:'center'}}>
                             <Icon style={{
                                 fontSize: width/18.75,
-                                backgroundColor: 'transparent',
+                                
                                 color: '#79797970',
                                 marginHorizontal: width/25,
                             }} name="bell-o">
@@ -509,7 +509,7 @@ class Notifications extends Component{
                         <View style={{alignSelf:'center'}}>
                             <Icon style={{
                                 fontSize: width/18.75,
-                                backgroundColor: 'transparent',
+                                
                                 color: '#79797970',
                                 marginHorizontal: width/25,
                             }} name="bell-o">
@@ -594,7 +594,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/20.83,
-        backgroundColor: 'transparent',
+        
     },
     titleTime: {
         color: '#797979',
@@ -606,7 +606,7 @@ const styles = StyleSheet.create({
         marginRight: width/37.5,
         fontSize: width/26.79,
         marginVertical: height/133.4,
-        backgroundColor: 'transparent'
+        
     },
     titleBody: {
         flex: 1,
@@ -615,12 +615,12 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/26.79,
-        backgroundColor: 'transparent',
+        
         justifyContent: 'center'
     },
 
     titleTop: {
-        backgroundColor: 'transparent',
+        
         color: '#506dcf',
         textAlign: 'center',
         fontStyle: 'normal',

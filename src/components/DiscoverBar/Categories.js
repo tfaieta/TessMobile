@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     container:{
         paddingTop: topMargin,
         flex: 1,
-        backgroundColor: 'transparent',
+        
 
     },
 

@@ -915,7 +915,7 @@ class PlayerBottom extends Component {
                         fontSize: width/23.44,
                         marginBottom: height/33.35,
                         flexDirection: 'row',
-                        backgroundColor: 'transparent',
+                        
                         marginLeft:  (((this.state.highlightTime[1] + this.state.highlightTime[0] / 2) * (width / Math.abs(Variables.state.duration))) / 2 - (width/20)) - ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
                         fontFamily: 'Montserrat-Regular',
                     }}
@@ -931,7 +931,7 @@ class PlayerBottom extends Component {
                         fontSize: width/23.44,
                         marginBottom: height/33.35,
                         flexDirection: 'row',
-                        backgroundColor: 'transparent',
+                        
                         marginLeft:  (((this.state.highlightTime[1] + this.state.highlightTime[0] / 2) * (width / Math.abs(Variables.state.duration))) / 2 - (width/20)) - ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
                         fontFamily: 'Montserrat-Regular',
                     }}
@@ -951,7 +951,7 @@ class PlayerBottom extends Component {
                         fontSize: width/23.44,
                         marginBottom: height/33.35,
                         flexDirection: 'row',
-                        backgroundColor: 'transparent',
+                        
                         marginLeft:  (((this.state.highlightTime[1] + this.state.highlightTime[0] / 2) * (width / Math.abs(Variables.state.duration))) / 2 - (width/20)) - ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
                         fontFamily: 'Montserrat-Regular',
                     }}
@@ -967,7 +967,7 @@ class PlayerBottom extends Component {
                         fontSize: width/23.44,
                         marginBottom: height/33.35,
                         flexDirection: 'row',
-                        backgroundColor: 'transparent',
+                        
                         marginLeft:  (((this.state.highlightTime[1] + this.state.highlightTime[0] / 2) * (width / Math.abs(Variables.state.duration))) / 2 - (width/20)) - ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
                         fontFamily: 'Montserrat-Regular',
                     }}
@@ -987,7 +987,7 @@ class PlayerBottom extends Component {
                         fontSize: width/23.44,
                         marginBottom: height/33.35,
                         flexDirection: 'row',
-                        backgroundColor: 'transparent',
+                        
                         marginLeft:  (((this.state.highlightTime[1] + this.state.highlightTime[0] / 2) * (width / Math.abs(Variables.state.duration))) / 2 - (width/20)) - ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
                         fontFamily: 'Montserrat-Regular',
                     }}
@@ -1003,7 +1003,7 @@ class PlayerBottom extends Component {
                         fontSize: width/23.44,
                         marginBottom: height/33.35,
                         flexDirection: 'row',
-                        backgroundColor: 'transparent',
+                        
                         marginLeft:  (((this.state.highlightTime[1] + this.state.highlightTime[0] / 2) * (width / Math.abs(Variables.state.duration))) / 2 - (width/20)) - ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
                         fontFamily: 'Montserrat-Regular',
                     }}
@@ -1046,7 +1046,7 @@ class PlayerBottom extends Component {
                         fontSize: width/23.44,
                         marginBottom: height/33.35,
                         flexDirection: 'row',
-                        backgroundColor: 'transparent',
+                        
                         marginLeft: ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
                         fontFamily: 'Montserrat-Regular',
                     }}
@@ -1062,7 +1062,7 @@ class PlayerBottom extends Component {
                         fontSize: width/23.44,
                         marginBottom: height/33.35,
                         flexDirection: 'row',
-                        backgroundColor: 'transparent',
+                        
                         marginLeft:  ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
                         fontFamily: 'Montserrat-Regular',
                     }}
@@ -1082,7 +1082,7 @@ class PlayerBottom extends Component {
                         fontSize: width/23.44,
                         marginBottom: height/33.35,
                         flexDirection: 'row',
-                        backgroundColor: 'transparent',
+                        
                         marginLeft: ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
                         fontFamily: 'Montserrat-Regular',
                     }}
@@ -1098,7 +1098,7 @@ class PlayerBottom extends Component {
                         fontSize: width/23.44,
                         marginBottom: height/33.35,
                         flexDirection: 'row',
-                        backgroundColor: 'transparent',
+                        
                         marginLeft:  ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
                         fontFamily: 'Montserrat-Regular',
                     }}
@@ -1118,7 +1118,7 @@ class PlayerBottom extends Component {
                         fontSize: width/23.44,
                         marginBottom: height/33.35,
                         flexDirection: 'row',
-                        backgroundColor: 'transparent',
+                        
                         marginLeft: ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
                         fontFamily: 'Montserrat-Regular',
                     }}
@@ -1134,7 +1134,7 @@ class PlayerBottom extends Component {
                         fontSize: width/23.44,
                         marginBottom: height/33.35,
                         flexDirection: 'row',
-                        backgroundColor: 'transparent',
+                        
                         marginLeft:  ((this.state.highlightTime[1] - this.state.highlightTime[0]) / Math.abs(Variables.state.duration)) * (width/5),
                         fontFamily: 'Montserrat-Regular',
                     }}
@@ -1786,7 +1786,7 @@ const styles = StyleSheet.create({
     playingText:{
         color: '#3e4164',
         flexDirection: 'row',
-        backgroundColor: 'transparent',
+        
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/31.25,
@@ -1796,7 +1796,7 @@ const styles = StyleSheet.create({
     playingText2:{
         color: '#00000090',
         flexDirection: 'row',
-        backgroundColor: 'transparent',
+        
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
         fontSize: width/34,
@@ -1869,13 +1869,13 @@ const styles = StyleSheet.create({
     containerModal:{
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: 'transparent',
+        
         borderColor: 'transparent',
     },
 
     containerOutsideModal:{
         flex: 1,
-        backgroundColor: 'transparent',
+        
     },
 
 
@@ -1891,7 +1891,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
         fontSize: width/15,
-        backgroundColor: 'transparent',
+        
         paddingBottom: height/66.7
     },
     title2: {
@@ -1907,7 +1907,7 @@ const styles = StyleSheet.create({
         marginTop: height/133.4,
         marginHorizontal: width/37.5,
         flexDirection: 'row',
-        backgroundColor: 'transparent',
+        
         alignSelf: 'center',
         textAlign: 'center',
         fontFamily: 'Montserrat-SemiBold',
@@ -1920,7 +1920,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/27,
-        backgroundColor: 'transparent',
+        
         marginBottom: height/60,
         marginHorizontal: width/18.75,
         paddingBottom: height/33.35,
@@ -1932,7 +1932,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Bold',
         fontSize: width/20,
-        backgroundColor: 'transparent',
+        
         marginLeft: height/33.35,
         marginTop: height/28,
         marginBottom: height/66.7
@@ -1943,7 +1943,7 @@ const styles = StyleSheet.create({
         fontSize: width/26.79,
         marginBottom: height/133.4,
         flexDirection: 'row',
-        backgroundColor: 'transparent',
+        
         alignSelf: 'center',
         textAlign: 'center',
         fontFamily: 'Montserrat-SemiBold',
@@ -1953,7 +1953,7 @@ const styles = StyleSheet.create({
         fontSize: width/23.44,
         marginTop: height/133.4,
         flexDirection: 'row',
-        backgroundColor: 'transparent',
+        
         marginHorizontal: width/25,
         fontFamily: 'Montserrat-Regular',
     },
@@ -1963,7 +1963,7 @@ const styles = StyleSheet.create({
         fontSize: width/26.79,
         marginBottom: height/33.35,
         flexDirection: 'row',
-        backgroundColor: 'transparent',
+        
         alignSelf: 'center',
         textAlign: 'center',
         fontFamily: 'Montserrat-SemiBold',
@@ -1976,7 +1976,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily:  'Montserrat-Bold',
         fontSize: width/26.79,
-        backgroundColor: 'transparent',
+        
         marginTop: height/66.7,
         marginHorizontal: width/18.75,
     },
@@ -1988,14 +1988,14 @@ const styles = StyleSheet.create({
     podcastTextLikes:{
         color: '#BBBCCD',
         fontSize: width/23.44,
-        backgroundColor: 'transparent',
+        
         textAlign: 'center',
         fontFamily: 'Montserrat-Regular',
     },
     podcastTextLikesActive:{
         color: '#BBBCCD',
         fontSize: width/23.44,
-        backgroundColor: 'transparent',
+        
         textAlign: 'center',
         fontFamily: 'Montserrat-Regular',
     },
@@ -2004,7 +2004,7 @@ const styles = StyleSheet.create({
         fontSize: width/25,
         marginHorizontal: width/37.5,
         flexDirection: 'row',
-        backgroundColor: 'transparent',
+        
         alignSelf: 'center',
         fontFamily: 'Montserrat-Regular',
         marginTop: height/111.17,
@@ -2014,7 +2014,7 @@ const styles = StyleSheet.create({
         fontSize: width/18.75,
         marginHorizontal: width/12.5,
         marginTop: height/133.4,
-        backgroundColor: 'transparent',
+        
         textAlign: 'center'
     },
 
@@ -2022,7 +2022,7 @@ const styles = StyleSheet.create({
         color:'#828393',
         fontSize: width/26.79,
         flexDirection: 'row',
-        backgroundColor: 'transparent',
+        
         alignSelf: 'center',
         fontFamily: 'Montserrat-Regular',
         marginTop: height/111.17,
@@ -2043,7 +2043,7 @@ const styles = StyleSheet.create({
         color:'#fff',
         fontSize: width/23.44,
         flexDirection: 'row',
-        backgroundColor: 'transparent',
+        
         alignSelf: 'center',
         fontFamily: 'Montserrat-Regular',
     }

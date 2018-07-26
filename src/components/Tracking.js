@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 18,
-        backgroundColor: 'transparent',
+        
     },
 
 });
