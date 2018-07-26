@@ -70,7 +70,7 @@ class PlaylistList extends Component{
 
     render() {
         return (
-            <View style = {{ flex:1}}>
+            <View style = {{backgroundColor: 'transparent', flex:1}}>
                 <View
                     style={styles.container}>
 
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 20,
-        
+        backgroundColor: 'transparent'
     },
 
     contentTitle: {
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 16,
-        
+        backgroundColor: 'transparent',
 
     }
 

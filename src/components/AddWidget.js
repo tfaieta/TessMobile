@@ -388,7 +388,7 @@ class AddWidget extends Component{
                     <View style={{alignSelf:'flex-end', flexDirection:'row',}}>
                         <Icon style={{
                             fontSize: 26,
-                            
+                            backgroundColor: 'transparent',
                             color: '#eaeaea',
                             marginLeft: 10,
                             marginRight: 15,
@@ -419,7 +419,7 @@ class AddWidget extends Component{
                     <View style={{alignSelf:'center', flexDirection:'row',}}>
                         <Icon style={{
                             fontSize: 26,
-                            
+                            backgroundColor: 'transparent',
                             color: '#d15564',
                             marginLeft: 10,
                             marginRight: 15,
@@ -455,7 +455,7 @@ class AddWidget extends Component{
                                 textAlign: 'center',
                                 marginTop: 30,
                                 fontSize: 30,
-                                
+                                backgroundColor: 'transparent',
                                 color: '#FFF'
                             }} name="ios-flash">
                             </Icon>
@@ -475,7 +475,7 @@ class AddWidget extends Component{
                                 textAlign: 'center',
                                 marginTop: 30,
                                 fontSize: 30,
-                                
+                                backgroundColor: 'transparent',
                                 color: '#FFF'
                             }} name="md-globe">
                             </Icon>
@@ -495,7 +495,7 @@ class AddWidget extends Component{
                                 textAlign: 'center',
                                 marginTop: 30,
                                 fontSize: 30,
-                                
+                                backgroundColor: 'transparent',
                                 color: '#FFF'
                             }} name="md-phone-portrait">
                             </Icon>
@@ -515,7 +515,7 @@ class AddWidget extends Component{
                                 textAlign: 'center',
                                 marginTop: 30,
                                 fontSize: 30,
-                                
+                                backgroundColor: 'transparent',
                                 color: '#FFF'
                             }} name="md-plane">
                             </Icon>
@@ -605,7 +605,7 @@ class AddWidget extends Component{
                                 <View style={{alignSelf:'center', flexDirection:'row',}}>
                                     <Icon style={{
                                         fontSize: 26,
-                                        
+                                        backgroundColor: 'transparent',
                                         color: '#506dcf',
                                         marginLeft: 10,
                                         marginRight: 15,
@@ -659,7 +659,7 @@ class AddWidget extends Component{
                                 <View style={{alignSelf:'center', flexDirection:'row',}}>
                                     <Icon style={{
                                         fontSize: 26,
-                                        
+                                        backgroundColor: 'transparent',
                                         color: '#828393',
                                         marginLeft: 10,
                                         marginRight: 15,
@@ -730,7 +730,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         marginTop: 20,
         paddingBottom: 10,
-        
+        backgroundColor: 'transparent',
     },
 
     title: {
@@ -740,7 +740,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 16,
         paddingLeft: 20,
-        
+        backgroundColor: 'transparent',
     },
 
     catTitle: {
@@ -748,7 +748,7 @@ const styles = StyleSheet.create({
         color: 'white',
         marginTop: 5,
         textAlign: 'center',
-        
+        backgroundColor: 'transparent',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
     },
@@ -762,7 +762,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         marginLeft: 10,
         marginTop: 10,
-        
+        backgroundColor: 'transparent'
     },
     artistTitle: {
         color: '#828393',
@@ -771,7 +771,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 12,
-        
+        backgroundColor: 'transparent',
         marginHorizontal: 20
     },
 

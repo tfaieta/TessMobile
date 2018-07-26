@@ -3240,7 +3240,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/22,
-        
+        backgroundColor: 'transparent'
     },
 
     titleBio: {
@@ -3253,7 +3253,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-Regular',
         fontSize: width/25,
         marginHorizontal: width/18.75,
-        
+        backgroundColor: 'transparent',
     },
     titleSmall: {
         color: '#3e4164',
@@ -3263,7 +3263,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/26,
-        
+        backgroundColor: 'transparent',
         marginHorizontal: width/75,
     },
 
@@ -3276,7 +3276,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/25,
-        
+        backgroundColor: 'transparent',
         marginHorizontal: width/18.75,
 
     },
@@ -3289,7 +3289,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/22,
-        
+        backgroundColor: 'transparent',
         marginHorizontal: width/75,
 
     },
@@ -3301,7 +3301,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/22,
-        
+        backgroundColor: 'transparent',
         marginHorizontal: width/75,
 
     },
@@ -3313,7 +3313,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/22,
-        
+        backgroundColor: 'transparent',
         marginHorizontal: width/75,
 
     },
@@ -3327,7 +3327,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/38,
-        
+        backgroundColor: 'transparent'
     },
     smallTitleLight: {
         color: '#2A2A3030',
@@ -3338,7 +3338,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/38,
-        
+        backgroundColor: 'transparent'
     },
     smallTitleNum: {
         color: '#506dcf',
@@ -3349,7 +3349,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/30,
-        
+        backgroundColor: 'transparent'
     },
     stats: {
         color: '#3e4164',
@@ -3360,7 +3360,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/23.44,
-        
+        backgroundColor: 'transparent'
     },
     artistTitle: {
         color: '#828393',
@@ -3371,7 +3371,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
         fontSize: width/25,
-        
+        backgroundColor: 'transparent',
         marginLeft: width/18.75,
     },
     containerList: {

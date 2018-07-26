@@ -151,7 +151,7 @@ const styles = {
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/20.75,
-        
+        backgroundColor: 'transparent',
         marginHorizontal: width/18.75,
         marginTop: height/133.4,
 
@@ -163,7 +163,7 @@ const styles = {
         textAlign: 'center',
         opacity: 1,
         fontSize: width/18.75,
-        
+        backgroundColor: 'transparent',
         marginLeft: width/25,
 
     },

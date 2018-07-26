@@ -503,7 +503,6 @@ class Record extends Component{
                     <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: height/33.35}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
-                                backgroundColor: 'transparent',
                                 textAlign:'left',marginLeft: width/37.5, fontSize: width/13.39,color:'#fff'
                             }} name="md-arrow-round-back">
                             </Icon>
@@ -541,10 +540,12 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         paddingTop: height/66.7,
+        backgroundColor: 'transparent',
     },
     container2:{
         flex: 1,
         alignItems: 'center',
+        backgroundColor: 'transparent',
         marginTop: -(height/6.67),
     },
     title: {
@@ -556,6 +557,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily:  'Montserrat-Bold',
         fontSize: width/15,
+        backgroundColor: 'transparent'
     },
     controls: {
         justifyContent: 'center',
@@ -566,7 +568,6 @@ const styles = StyleSheet.create({
         fontSize: width/12.5,
         fontFamily: 'Montserrat-Bold',
         color: "#FFF",
-        backgroundColor: 'transparent'
     },
     button: {
         padding: width/18.75,

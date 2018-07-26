@@ -120,7 +120,7 @@ class NewPodcasts extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        
+        backgroundColor: 'transparent',
         marginTop: 0,
     },
 
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Futura',
         fontSize: 25,
-        
+        backgroundColor: 'transparent'
     },
 
 });

@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Bold',
         fontSize: width/26.79,
-        
+        backgroundColor: 'transparent',
     },
 
 });

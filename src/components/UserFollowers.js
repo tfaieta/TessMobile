@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         marginVertical: 0,
         marginHorizontal: 0,
-        
+        backgroundColor: 'transparent',
         opacity: 1,
         borderColor: '#FFF',
         borderWidth: 0.5,
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Futura',
         fontSize: 15,
-        
+        backgroundColor: 'transparent'
     },
     centerContainer: {
         flexDirection: 'row'
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 18,
-        
+        backgroundColor: 'transparent',
     },
 
 });

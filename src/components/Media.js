@@ -65,7 +65,6 @@ static navigatorStyle = {
             data.push('Invisibilia');
             data.push('Fresh Air');
             data.push('Ask Me Another');
-            data.push('Wow in the World');
         }
         else if(this.props.title == 'Crooked'){
             data.push('Pod Save America');
@@ -156,7 +155,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/18.75,
-        
+        backgroundColor: 'transparent',
     },
     titleHeader: {
         flex: 1,
@@ -167,7 +166,7 @@ const styles = StyleSheet.create({
         marginTop: height/44.47,
         marginBottom: height/66.7,
         marginLeft: width/25,
-        
+        backgroundColor: 'transparent',
     },
     wrapper: {
     },

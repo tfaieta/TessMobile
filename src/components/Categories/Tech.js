@@ -122,7 +122,7 @@ class Tech extends Component{
 const styles = StyleSheet.create({
     containerMain:{
         flex: 1,
-        
+        backgroundColor: 'transparent',
     },
 
     titleMain: {
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Futura',
         fontSize: 25,
-        
+        backgroundColor: 'transparent'
     },
 
     contentTitle: {
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
         fontSize: 16,
-        
+        backgroundColor: 'transparent',
 
     },
 
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
         fontSize: 15,
-        
+        backgroundColor: 'transparent',
         marginHorizontal: 20,
 
     },
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Hiragino Sans',
         fontSize: 15,
-        
+        backgroundColor: 'transparent',
         marginLeft: 20,
     },
     container: {

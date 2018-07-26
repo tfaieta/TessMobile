@@ -151,9 +151,9 @@ class ListItemCard extends Component {
                 </View>
             )
         }
-        else {
-            return (
-                <View style={{alignSelf: 'center', height: (height/5), width: (height/5)}}>
+        else{
+            return(
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', height: (height/5), width: (height/5)}}>
                     <Image
                         style={{width: (height/5), height: (height/5), alignSelf: 'center', opacity: 1, borderRadius: 4}}
                         source={{uri: this.state.profileImage}}
@@ -720,10 +720,12 @@ const styles = {
         fontSize: width/26.79,
         marginLeft: width/33.5,
         marginTop: height/66.7,
+        backgroundColor: 'transparent'
     },
     artistTitle: {
         paddingLeft: width/20,
         opacity: 1,
+        backgroundColor: 'transparent',
     },
     bottomTitle: {
         color: '#828393',
@@ -732,12 +734,14 @@ const styles = {
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/31.25,
+        backgroundColor: 'transparent',
     },
     whiteTitle: {
         color: '#3e4164',
         textAlign: 'center',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/27,
+        backgroundColor: 'transparent',
     },
     titleCard: {
         color: '#3e4164',
@@ -748,6 +752,7 @@ const styles = {
         fontSize: width/26.79,
         marginLeft: width/33.5,
         marginTop: height/66.7,
+        backgroundColor: 'transparent'
     },
     numLeftText: {
         color: '#fff',
@@ -756,6 +761,7 @@ const styles = {
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/23.44,
         marginTop: height/83.38,
+        backgroundColor: 'transparent'
     },
 };
 

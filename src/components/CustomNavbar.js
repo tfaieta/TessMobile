@@ -32,7 +32,7 @@ export default class CustomNavbar extends Component {
                     <View style={{}}>
                         <Icon style={{
                             fontSize: width/22.83,
-                            
+                            backgroundColor: 'transparent',
                             color: '#506dcf',
                             marginHorizontal: width/41.1,
                         }} name="search"/>
@@ -68,7 +68,7 @@ export default class CustomNavbar extends Component {
                         }}>
                             <Icon style={{
                                 fontSize: width/18,
-                                
+                                backgroundColor: 'transparent',
                                 color: '#506dcf',
                             }} name="microphone"/>
                         </TouchableOpacity>
@@ -86,7 +86,7 @@ export default class CustomNavbar extends Component {
                         }}>
                             <Icon style={{
                                 fontSize: width/18,
-                                
+                                backgroundColor: 'transparent',
                                 color: '#506dcf',
                                 marginHorizontal: width/41.1,
                             }} name="user-circle"/>
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: width/27,
         color: '#3e4164',
-        
+        backgroundColor: 'transparent',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
     }

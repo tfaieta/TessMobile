@@ -63,7 +63,7 @@ class Recommend extends Component{
                         <View>
                             <Icon style={{
                                 fontSize: width/22.83,
-                                
+                                backgroundColor: 'transparent',
                                 color: '#506dcf',
                                 marginHorizontal: width/41.1,
                                 marginBottom: height/85,
@@ -101,7 +101,7 @@ class Recommend extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        
+        backgroundColor: 'transparent',
     },
     backColor:{
         backgroundColor:  '#fff',

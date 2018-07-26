@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: height/30.79,
         color: '#3e4164',
-        
+        backgroundColor: 'transparent',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Bold',
         textAlign: 'center'

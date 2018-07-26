@@ -70,8 +70,6 @@ class Category extends Component{
             pods.push('Trail Runner Nation');
             pods.push('Ben Greenfield Fitness: Diet, Fat Loss and Performance');
             pods.push('The Rich Roll Podcast');
-            pods.push('The Bearded Vegans');
-            pods.push('Vegan Warrior Princesses Attack!');
 
         }
         else if(category == 'Society & Culture' || category == 'Philosophy'){
@@ -168,7 +166,6 @@ class Category extends Component{
             pods.push('The Creative Exchange');
             pods.push('The Mixology Talk Podcast: Better Bartending and Making Great Drinks');
             pods.push("The Struggling Archaeologist's Guide to Getting Dirty");
-            pods.push('Wow in the World');
         }
         else if(category == 'Storytelling' || category == 'History'){
 
@@ -197,7 +194,6 @@ class Category extends Component{
             pods.push('The Creative Exchange');
             pods.push('Fantastic Geeks (and where to find them)');
             pods.push('The Inner Tube: Answering Your Content Creation Questions!');
-            pods.push('La Corneta');
 
         }
         else if(category == 'Music'){
@@ -219,9 +215,7 @@ class Category extends Component{
         else if(category == 'Gaming' || category == 'Games & Hobbies'){
 
             pods.push('Painkiller Already');
-            pods.push('Ask Me Another');
-            pods.push('FrazlCast - A World of Warcraft Podcast');
-            pods.push('Frazley Report - Your World of Warcraft News');
+            pods.push('Ask Me Another')
         }
         else if(category == 'Business' || category == 'Careers' || category == 'Management & Marketing'){
 

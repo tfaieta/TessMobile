@@ -248,6 +248,7 @@ const styles = {
         color: 'rgba(300,10,10,1)',
         marginTop: height/133.4,
         marginBottom: height/133.4,
+        backgroundColor: 'transparent'
     },
 
     container: {
@@ -258,6 +259,7 @@ const styles = {
     inputEmail: {
         height: height/16.67,
         width: width/1.37,
+        backgroundColor: 'transparent',
         marginTop: height/66.7,
         marginBottom: height/133.4,
         color: 'rgba(300,300,300,0.9)',
@@ -271,6 +273,7 @@ const styles = {
     inputPassword: {
         height: height/16.67,
         width: width/2.05,
+        backgroundColor: 'transparent',
         marginTop: height/66.7,
         marginBottom: height/133.4,
         color: 'rgba(300,300,300,0.9)',
@@ -360,6 +363,7 @@ const styles = {
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Bold',
         fontSize: width/28,
+        backgroundColor: 'transparent'
     },
     logo: {
         width: height/4.87,

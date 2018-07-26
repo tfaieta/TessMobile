@@ -1130,7 +1130,7 @@ const styles = StyleSheet.create({
         fontSize: width/23.44,
         marginTop: height/66.7,
         paddingLeft: width/18.75,
-        
+        backgroundColor: 'transparent',
     },
     titleTop: {
         color: '#3e4164',
@@ -1139,7 +1139,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/18.75,
         marginHorizontal: width/18.75,
-        
+        backgroundColor: 'transparent',
     },
 
 
@@ -1152,7 +1152,7 @@ const styles = StyleSheet.create({
         marginTop: height/66.7,
         paddingBottom: height/66.7,
         paddingLeft: width/18.75,
-        
+        backgroundColor: 'transparent',
         marginRight: width/33.5
     },
 
@@ -1165,7 +1165,7 @@ const styles = StyleSheet.create({
         fontSize: width/23.44,
         marginTop: height/26.68,
         marginHorizontal: width/18.75,
-        
+        backgroundColor: 'transparent',
     },
 
     titleFetch: {
@@ -1177,7 +1177,7 @@ const styles = StyleSheet.create({
         marginTop: height/133.4,
         marginBottom: height/44.47,
         marginHorizontal: width/18.75,
-        
+        backgroundColor: 'transparent',
     },
 
 

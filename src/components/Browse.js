@@ -270,7 +270,7 @@ class Browse extends Component{
                         onAnimateNextPage={(p) => console.log(p)}
                     >
                         {/* First Item in Carousel */}
-                        <View style={[this.state.size]}>
+                        <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
                             <TouchableWithoutFeedback onPress={() => {
                                 const {navigator} = this.props;
                                 const rss = true;
@@ -295,7 +295,7 @@ class Browse extends Component{
                         </View>
 
                         {/* Second Item in Carousel */}
-                        <View style={[this.state.size]}>
+                        <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
                             <TouchableWithoutFeedback onPress={() => {
                                 const {navigator} = this.props;
                                 const rss = true;
@@ -320,7 +320,32 @@ class Browse extends Component{
                         </View>
 
                         {/* Third Item in Carousel */}
-                        <View style={[this.state.size]}>
+                        <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
+                            <TouchableWithoutFeedback onPress={() => {
+                                const {navigator} = this.props;
+                                const rss = true;
+                                Variables.state.browsingArtist = 'Green Light Sports Podcast';
+                                navigator.push({
+                                    screen: 'UserProfile',
+                                    title: "Green Light Sports Podcast",
+                                    passProps: {navigator, rss},
+                                })
+                            }}>
+                            <View style={{backgroundColor: '#fff', borderRadius: 12, marginHorizontal: width/75}}>
+                                <View style={styles.featuredArt}>
+                                    <Image
+                                        style={{width: width/1.10, height: height/3.70, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
+                                        source={require('tess/src/images/podArtGLS.png')}
+                                    />
+                                </View>
+                                <Text style={styles.text1}>Green Light Sports</Text>
+                                <Text style={styles.text2}>by Tess Media</Text>
+                            </View>
+                            </TouchableWithoutFeedback>
+                        </View>
+
+                        {/* Fourth Item in Carousel */}
+                        <View style={[{ backgroundColor: 'transparent' }, this.state.size]}>
                             <TouchableWithoutFeedback onPress={() => {
                                 const {navigator} = this.props;
                                 const rss = true;
@@ -353,6 +378,7 @@ class Browse extends Component{
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: width/17,
+                                backgroundColor: 'transparent',
                                 color: '#3e416460',
                                 marginHorizontal: width/25,
                             }} name="ios-arrow-forward">
@@ -366,6 +392,7 @@ class Browse extends Component{
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: width/17,
+                                backgroundColor: 'transparent',
                                 color: '#3e416460',
                                 marginHorizontal: width/25,
                             }} name="ios-arrow-forward">
@@ -379,6 +406,7 @@ class Browse extends Component{
                         <View style={{alignSelf:'flex-end'}}>
                             <Icon style={{
                                 fontSize: width/17,
+                                backgroundColor: 'transparent',
                                 color: '#3e416460',
                                 marginHorizontal: width/25,
                             }} name="ios-arrow-forward">
@@ -445,6 +473,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/18.75,
+        backgroundColor: 'transparent',
     },
 
     titleHeader: {
@@ -456,6 +485,7 @@ const styles = StyleSheet.create({
         marginTop: height/33.35,
         marginBottom: height/66.7,
         marginLeft: width/25,
+        backgroundColor: 'transparent',
     },
 
     wrapper: {
@@ -474,6 +504,7 @@ const styles = StyleSheet.create({
         marginTop: height/66.7,
         marginLeft: width/18.75,
         fontSize: width/23.48,
+        backgroundColor: 'transparent',
     },
     text2: {
         color: '#3e4164',
@@ -482,6 +513,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-SemiBold',
         marginLeft: width/18.75,
         fontSize: width/26.79,
+        backgroundColor: 'transparent',
         marginBottom: height/55.58,
     },
 
@@ -494,6 +526,7 @@ const styles = StyleSheet.create({
         marginRight: width/15,
         fontFamily: 'Montserrat-Bold',
         fontSize: width/18.75,
+        backgroundColor: 'transparent',
     },
 
     bar: {

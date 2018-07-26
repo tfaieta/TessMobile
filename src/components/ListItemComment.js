@@ -208,7 +208,7 @@ const styles = {
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Regular',
         fontSize: width/26.79,
-        
+        backgroundColor: 'transparent',
         marginTop: height/66.7
     },
     textCommentName:{
@@ -219,7 +219,7 @@ const styles = {
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/26.79,
-        
+        backgroundColor: 'transparent',
         marginHorizontal: width/75,
         marginTop: height/66.7
     },

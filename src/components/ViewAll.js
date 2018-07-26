@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f4f9',
     },
     title: {
-        
+        backgroundColor: 'transparent',
         color: '#506dcf',
         textAlign: 'center',
         fontStyle: 'normal',

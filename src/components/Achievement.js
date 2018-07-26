@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
         color: '#3e4164',
         fontSize: 20,
         marginVertical: 10,
-        
+        backgroundColor: 'transparent',
         fontFamily: 'Montserrat-SemiBold',
         textAlign: 'center'
     },
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
         color: '#506dcf',
         fontSize: 16,
         marginVertical: 10,
-        
+        backgroundColor: 'transparent',
         fontFamily: 'Montserrat-SemiBold',
         textAlign: 'center'
     },
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
         color: '#3e416470',
         fontSize: 16,
         marginTop: 30,
-        
+        backgroundColor: 'transparent',
         fontFamily: 'Montserrat-SemiBold',
         textAlign: 'center'
     }

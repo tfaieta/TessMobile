@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         color: '#2A2A30',
         fontSize: 20,
         marginVertical: 10,
-        
+        backgroundColor: 'transparent',
         fontFamily: 'Montserrat-SemiBold',
         textAlign: 'center'
     },
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
         color: '#828393',
         fontSize: 14,
         marginTop: 30,
-        
+        backgroundColor: 'transparent',
         fontFamily: 'Montserrat-SemiBold',
         textAlign: 'center'
     }

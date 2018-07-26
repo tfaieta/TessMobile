@@ -88,7 +88,7 @@ class ListItemCatchUp extends Component {
                             <Text style={styles.viewAll}>View all</Text>
                             <Icon style={{
                                 fontSize: 18,
-                                
+                                backgroundColor: 'transparent',
                                 marginTop: 20,
                                 color: '#506dcf',
                                 marginHorizontal: 3
@@ -124,7 +124,7 @@ const styles = {
         fontSize: 18,
         marginTop: 20,
         paddingLeft: 20,
-        
+        backgroundColor: 'transparent',
     },
     smallTitle: {
         color: '#3e4164',
@@ -134,7 +134,7 @@ const styles = {
         fontSize: 14,
         marginTop: 20,
         paddingLeft: 20,
-        
+        backgroundColor: 'transparent',
     },
     viewAll: {
         color: '#506dcf',
@@ -145,7 +145,7 @@ const styles = {
         marginTop: 22,
         marginRight: 4,
         paddingBottom: 10,
-        
+        backgroundColor: 'transparent',
     },
 };
 

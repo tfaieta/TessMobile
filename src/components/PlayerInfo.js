@@ -210,7 +210,7 @@ static navigatorStyle = {
         else{
             return(
                 <HTML html={this.state.description}
-                      containerStyle={{ marginTop: height/66.7, marginHorizontal: width/18.75, paddingBottom: height/33.35,}}
+                      containerStyle={{backgroundColor: 'transparent', marginTop: height/66.7, marginHorizontal: width/18.75, paddingBottom: height/33.35,}}
                       baseFontStyle={{fontSize: width/27, color: '#656575', fontFamily: 'Montserrat-SemiBold'}}
                       textSelectable={true}
                       onLinkPress={(evt, href) => {
@@ -381,7 +381,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Bold',
         fontSize: width/23.44,
-        
+        backgroundColor: 'transparent',
 
     },
 
@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Bold',
         fontSize: width/20,
-        
+        backgroundColor: 'transparent',
         marginLeft: height/33.35,
         marginTop: height/28,
         marginBottom: height/66.7
@@ -406,7 +406,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/27,
-        
+        backgroundColor: 'transparent',
         marginBottom: height/60,
         marginHorizontal: width/18.75,
         paddingBottom: height/33.35,
@@ -420,7 +420,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily:  'Montserrat-SemiBold',
         fontSize: width/23.44,
-        
+        backgroundColor: 'transparent',
         marginBottom: height/33.35,
         marginHorizontal: width/18.75,
         marginTop: height/66.7,
@@ -434,7 +434,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily:  'Montserrat-Bold',
         fontSize: width/26.79,
-        
+        backgroundColor: 'transparent',
         marginTop: height/66.7,
         marginHorizontal: width/18.75,
     },
@@ -446,7 +446,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-SemiBold',
         fontSize: width/26.79,
-        
+        backgroundColor: 'transparent',
         marginVertical: height/133.4,
         marginHorizontal: width/75,
     },
@@ -460,7 +460,7 @@ const styles = StyleSheet.create({
 
     input: {
         height: height/16.68,
-        
+        backgroundColor: 'transparent',
         fontStyle: 'normal',
         textAlign: 'center',
         fontFamily: 'Montserrat-SemiBold',
