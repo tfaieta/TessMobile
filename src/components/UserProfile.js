@@ -860,10 +860,9 @@ class UserProfile extends Component {
                 return (
                     <TouchableOpacity onPress={this.pressFollowButton} style={{
                         flex:1,
-                        
-                        paddingVertical: 5,
-                        marginHorizontal: 20,
-                        marginVertical: 15,
+                        paddingVertical: height/133.4,
+                        marginHorizontal: width/18.75,
+                        marginVertical: height/44.47,
                         borderRadius: 10,
                         borderWidth: 1.5,
                         borderColor: '#506dcf',
@@ -876,10 +875,9 @@ class UserProfile extends Component {
                 return (
                     <TouchableOpacity onPress={this.pressFollowButton} style={{
                         flex:1,
-                        
-                        paddingVertical: 5,
-                        marginHorizontal: 20,
-                        marginVertical: 15,
+                        paddingVertical: height/133.4,
+                        marginHorizontal: width/18.75,
+                        marginVertical: height/44.47,
                         borderRadius: 10,
                         borderWidth: 1.5,
                         borderColor: '#3e4164',

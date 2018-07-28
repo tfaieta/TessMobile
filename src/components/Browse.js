@@ -6,6 +6,7 @@ import firebase from 'firebase';
 import ListItemUsers from "./ListItemUsers";
 import Icon from 'react-native-vector-icons/Ionicons';
 import Carousel from 'react-native-looped-carousel';
+import ListItemPodcast from "./ListItemPodcast";
 var Analytics = require('react-native-firebase-analytics');
 
 var {height, width} = Dimensions.get('window');
@@ -38,64 +39,23 @@ class Browse extends Component{
             statusBarColor: '#fff',
         });
 
-
-        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
-            podcastOfTheWeekTitle: '',
             podcastOfTheWeekID: '',
-            podcastOftheWeekRSS: false,
-            podImage: '',
-            dataSource: dataSource.cloneWithRows([]),
             url: '',
             refreshing: false,
             size: {width: width, height: height/2.15}
         };
 
 
-        let podOfTheWeek = [];
         let podID = '';
-        let podUsername = '';
-        let podImage = '';
-        let podRSS = false;
         firebase.database().ref(`podcastOfTheWeek/`).once("value", function (snapshot) {
             if(snapshot.val()){
                 podID = snapshot.val();
-                firebase.database().ref(`users/${snapshot.val()}/username`).once("value", function (name) {
-                    if(name.val()){
-                        if(name.val().username){
-                            podUsername = name.val().username;
-                        }
-                    }
-                });
-                firebase.database().ref(`users/${snapshot.val()}/podcasts`).limitToLast(10).once("value", function (snap) {
-                    snap.forEach(function (data) {
-                        firebase.database().ref(`podcasts/${data.val().id}`).once("value", function (podcast) {
-                            if(podcast.val()){
-                                podOfTheWeek = [podcast.val(), ...podOfTheWeek]
-                            }
-                        })
-                    })
-                });
-                firebase.database().ref(`users/${snapshot.val()}/profileImage`).once("value", function (image) {
-                    if(image.val()){
-                        podImage = image.val().profileImage;
-                        podRSS = true;
-                    }
-                    else{
-                        const storageRef = firebase.storage().ref(`/users/${snapshot.val()}/image-profile-uploaded`);
-                        storageRef.getDownloadURL()
-                            .then(function(url) {
-                                podImage = url;
-                            }).catch(function(error) {
-                            //
-                        });
-                    }
-                })
             }
         });
 
-        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(podOfTheWeek), podcastOfTheWeekTitle: podUsername, podImage: podImage, podcastOfTheWeekID: podID, podcastOftheWeekRSS: podRSS})},3000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(podOfTheWeek), podcastOfTheWeekTitle: podUsername, podImage: podImage, podcastOfTheWeekID: podID, podcastOftheWeekRSS: podRSS})},6000);
+        this.timeout1 = setTimeout(() => {this.setState({podcastOfTheWeekID: podID,})},3000);
+        this.timeout2 = setTimeout(() => {this.setState({podcastOfTheWeekID: podID,})},6000);
     }
 
 
@@ -111,52 +71,15 @@ class Browse extends Component{
             refreshing: true,
         });
 
-        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
-
-        let podOfTheWeek = [];
         let podID = '';
-        let podUsername = '';
-        let podImage = '';
-        let podRSS = false;
         firebase.database().ref(`podcastOfTheWeek/`).once("value", function (snapshot) {
             if(snapshot.val()){
                 podID = snapshot.val();
-                firebase.database().ref(`users/${snapshot.val()}/username`).once("value", function (name) {
-                    if(name.val()){
-                        if(name.val().username){
-                            podUsername = name.val().username;
-                        }
-                    }
-                });
-                firebase.database().ref(`users/${snapshot.val()}/podcasts`).limitToLast(10).once("value", function (snap) {
-                    snap.forEach(function (data) {
-                        firebase.database().ref(`podcasts/${data.val().id}`).once("value", function (podcast) {
-                            if(podcast.val()){
-                                podOfTheWeek = [podcast.val(), ...podOfTheWeek]
-                            }
-                        })
-                    })
-                });
-                firebase.database().ref(`users/${snapshot.val()}/profileImage`).once("value", function (image) {
-                    if(image.val()){
-                        podImage = image.val().profileImage;
-                        podRSS = true;
-                    }
-                    else{
-                        const storageRef = firebase.storage().ref(`/users/${snapshot.val()}/image-profile-uploaded`);
-                        storageRef.getDownloadURL()
-                            .then(function(url) {
-                                podImage = url;
-                            }).catch(function(error) {
-                            //
-                        });
-                    }
-                })
             }
         });
 
-        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(podOfTheWeek), podcastOfTheWeekTitle: podUsername, podImage: podImage, podcastOfTheWeekID: podID, podcastOftheWeekRSS: podRSS, refreshing: false})},3000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(podOfTheWeek), podcastOfTheWeekTitle: podUsername, podImage: podImage, podcastOfTheWeekID: podID, podcastOftheWeekRSS: podRSS})},6000);
+        this.timeout1 = setTimeout(() => {this.setState({podcastOfTheWeekID: podID,  refreshing: false})},3000);
+        this.timeout2 = setTimeout(() => {this.setState({podcastOfTheWeekID: podID })},6000);
 
     };
 
@@ -198,52 +121,13 @@ class Browse extends Component{
     };
 
 
-    renderImage = () => {
-        if(this.state.podImage != ''){
+    renderPOTW(id){
+        if(id != ''){
             return(
-                <TouchableWithoutFeedback onPress={() => {
-
-                    const {currentUser} = firebase.auth();
-                    Analytics.logEvent('openPOTW', {
-                        'user_id': currentUser.uid
-                    });
-
-                    let rss = false;
-                    if(this.state.podcastOftheWeekRSS){
-                        rss = true;
-                    }
-                    const {navigator} = this.props;
-                    Variables.state.browsingArtist = this.state.podcastOfTheWeekID;
-                    navigator.push({
-                        screen: 'UserProfile',
-                        title: this.state.podcastOfTheWeekTitle,
-                        passProps: {navigator, rss},
-                    })
-                }}>
-                    <View style = {{backgroundColor:'transparent', alignSelf: 'flex-end', height: width/5.77, width: width/5.77, borderTopRightRadius: 15, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)', overflow: 'hidden'}}>
-                    <Image
-                        style={{width: width/5.77, height: width/5.77, alignSelf: 'flex-end', opacity: 1,}}
-                        source={{uri: this.state.podImage}}
-                    />
-                    </View>
-                </TouchableWithoutFeedback>
+                <ListItemPodcast podcast={id} navigator={this.props.navigator}/>
             )
         }
-        else{
-            return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'flex-end', height: width/5.77, width: width/5.77, borderTopRightRadius: 15, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)'}}>
-                    <Icon style={{
-                        textAlign: 'center',
-                        fontSize: width/10.71,
-                        marginTop: height/44.47,
-                        color: 'white',
-                    }} name="md-person">
-                    </Icon>
-                </View>
-            )
-        }
-
-    };
+    }
 
 
     renderRow = (rowData) => {
@@ -389,26 +273,10 @@ class Browse extends Component{
 
                     {/* Podcast of the Week */}
                     <Text style = {styles.titleHeader}>Podcast of the Week</Text>
+                    {this.renderPOTW(this.state.podcastOfTheWeekID)}
 
-                    <View style={{flex:1, flexDirection: 'row', backgroundColor: '#fff', marginTop: height/133.4, marginHorizontal: width/31.25, borderTopLeftRadius: 15, borderTopRightRadius: 15}}>
-                        <View style={{flex: 6}}>
-                            <Text style = {styles.titleWeek}>{this.state.podcastOfTheWeekTitle}</Text>
-                        </View>
 
-                        <View style={{flex:1, alignSelf: 'flex-start'}}>
-                            {this.renderImage()}
-                        </View>
-
-                    </View>
-
-                    <View style={{backgroundColor: '#fff', marginHorizontal: width/31.25, marginBottom: height/10, borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}>
-                        <ListView
-                            horizontal={true}
-                            enableEmptySections
-                            dataSource={this.state.dataSource}
-                            renderRow={this.renderRow}
-                        />
-                    </View>
+                    <View style={{paddingBottom: height/9}}/>
 
                 </ScrollView>
 
