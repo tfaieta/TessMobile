@@ -18,17 +18,42 @@ var DomParser = require('react-native-html-parser').DOMParser;
 class Home extends Component{
 
     componentDidMount(){
-
-
-        // check if initialized is true or false or doesn't exist on firebase
-        // check if user is following anyone
-        // if both of those are false, start on board flow
-
+        const {currentUser} = firebase.auth();
 
 
         // Uncomment when testing feeds
         // this.rssSingleFetch("", 5);
 
+
+        // check if initialized is true or false or doesn't exist on firebase
+        // check if user is following anyone
+        // if both of those are false, start onboard flow
+        firebase.database().ref(`users/${currentUser.uid}/onboarded`).once("value", function (snapshot) {
+            if(snapshot.val()){
+                // already onboarded
+                console.warn("No onboard")
+            }
+            else{
+                // not onboarded, but check if user is following anyone
+                firebase.database().ref(`users/${currentUser.uid}/following`).once("value", function (snap) {
+                    if(snap.val()){
+                        // user is following someone, no onboard
+                        console.warn("No onboard")
+                    }
+                    else{
+                        // user is not following anyone, passed both tests, start onboard
+                        console.warn("Yes onboard");
+                        this.props.navigator.push({
+                            screen: 'Onboard',
+                            title: 'Welcome to Tess'
+                        });
+                    }
+                })
+            }
+        });
+
+
+        // check for urls
         if (Platform.OS === 'android') {
             Linking.addEventListener('url', this.handleOpenURL);
             Linking.getInitialURL().then((url) => {
@@ -46,10 +71,8 @@ class Home extends Component{
         }
 
 
-        const {currentUser} = firebase.auth();
-
+        // fetch home feed
         const refFol = firebase.database().ref(`users/${currentUser.uid}/following`);
-
         refFol.once("value", function (snapshot) {
             Variables.state.homeFollowedContent = [];
             snapshot.forEach(function (data) {
