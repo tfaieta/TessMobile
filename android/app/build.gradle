@@ -98,8 +98,8 @@ android {
         applicationId "com.tess"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 5
-        versionName "1.0.4"
+        versionCode 8
+        versionName "1.0.5"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }

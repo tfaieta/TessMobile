@@ -7,7 +7,7 @@ import {
     ScrollView,
     ListView,
     TouchableOpacity,
-    Alert, Image,
+    Image,
     RefreshControl, Dimensions,
     ActivityIndicator, Platform
 } from 'react-native';
@@ -15,7 +15,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { podcastFetchUser } from "../actions/PodcastActions";
 import PlayerBottom from './PlayerBottom';
-import {profileName} from './CreateAccount.js';
 import Variables from './Variables';
 import firebase from 'firebase';
 
@@ -31,12 +30,11 @@ if(Platform.OS === 'ios'){
 }
 
 
-
 // contains a profile that you can view (any profile that is not yours)
 
 class UserProfile extends Component {
 
-static navigatorStyle = {
+    static navigatorStyle = {
         statusBarHidden: false,
         statusBarTextColorScheme: 'light',
         statusBarColor: '#fff',
@@ -46,7 +44,7 @@ static navigatorStyle = {
     };
 
 
-    componentWillMount(){
+    componentDidMount(){
 
         const {currentUser} = firebase.auth();
         Analytics.logEvent('openUserProfile', {
@@ -58,168 +56,189 @@ static navigatorStyle = {
         const refFollowing = firebase.database().ref(`users/${Variables.state.browsingArtist}/following`);
         const refTracking = firebase.database().ref(`users/${Variables.state.browsingArtist}/tracking`);
 
-        Variables.state.userPodcasts = [];
-        Variables.state.onUserProfileImage = '';
-        Variables.state.userFollowers = [];
-        Variables.state.userFollowing = [];
-        Variables.state.userTracking = [];
-
         const {rss} = this.props;
-
 
         const ref = firebase.database().ref(`podcasts/`);
 
+        let userPodcasts = [];
         ref.on("value", function (snapshot) {
             snapshot.forEach(function (data) {
                 if(Variables.state.browsingArtist == data.val().podcastArtist) {
-                    Variables.state.userPodcasts.push(data.val());
+                    userPodcasts.push(data.val());
                 }
             });
-            Variables.state.userPodcasts.reverse();
+            userPodcasts.reverse();
         });
 
         refFol.on("value", function (snapshot) {
-            Variables.state.userFollowers = [];
             snapshot.forEach(function (data) {
-                Variables.state.userFollowers.push(data.key);
-            })
-        });
+                this.state.userFollowers.push(data.key);
+            }.bind(this))
+        }.bind(this));
 
         refFollowing.on("value", function (snapshot) {
-            Variables.state.userFollowing = [];
             snapshot.forEach(function (data) {
-                Variables.state.userFollowing.push(data.key);
-            })
-        });
+                this.state.userFollowing.push(data.key);
+            }.bind(this))
+        }.bind(this));
 
         refTracking.on("value", function (snapshot) {
-            Variables.state.userTracking = [];
             snapshot.forEach(function (data) {
-                Variables.state.userTracking.push(data.key);
-            })
-        });
+                this.state.userTrackingList.push(data.key);
+            }.bind(this))
+        }.bind(this));
 
 
         firebase.database().ref(`/users/${Variables.state.browsingArtist}/username`).orderByChild("username").on("value", function(snap) {
             if(snap.val()){
-                Variables.state.userUsername = snap.val().username;
+                this.setState({
+                    username: snap.val().username
+                });
             }
             else {
-                Variables.state.userUsername = "no username"
+                this.setState({
+                    username: '...'
+                });
             }
-        });
+        }.bind(this));
 
 
         firebase.database().ref(`/users/${Variables.state.browsingArtist}/bio`).orderByChild("bio").on("value", function(snap) {
             if(snap.val()){
-                Variables.state.currentBio = snap.val().bio;
+                this.setState({
+                    bio: snap.val().bio
+                });
             }
             else {
-                Variables.state.currentBio = "Tell others about yourself";
+                this.setState({
+                    bio: "Tell others about yourself"
+                });
             }
-        });
+        }.bind(this));
 
-        Variables.state.userPlayTime = 0;
         firebase.database().ref(`/users/${Variables.state.browsingArtist}/stats`).orderByChild("playTime").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().playTime){
-                    Variables.state.userPlayTime = snap.val().playTime;
+                    this.setState({
+                        playTime: snap.val().playTime
+                    });
 
                 }
                 else {
-                    Variables.state.userPlayTime = 0;
+                    this.setState({
+                        playTime: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
-        Variables.state.userHighlightsAmount = 0;
         firebase.database().ref(`/users/${Variables.state.browsingArtist}/stats`).orderByChild("highlights").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().highlights){
-                    Variables.state.userHighlightsAmount = snap.val().highlights;
+                    this.setState({
+                        userHighlights: snap.val().highlights
+                    });
 
                 }
                 else {
-                    Variables.state.userHighlightsAmount = 0;
+                    this.setState({
+                        userHighlights: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
-        Variables.state.userCommentsAmount = 0;
         firebase.database().ref(`/users/${Variables.state.browsingArtist}/stats`).orderByChild("comments").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().comments){
-                    Variables.state.userCommentsAmount = snap.val().comments;
+                    this.setState({
+                        userComments: snap.val().comments
+                    });
 
                 }
                 else {
-                    Variables.state.userCommentsAmount = 0;
+                    this.setState({
+                        userComments: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
-        Variables.state.userLikesAmount = 0;
         firebase.database().ref(`/users/${Variables.state.browsingArtist}/stats`).orderByChild("likes").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().likes){
-                    Variables.state.userLikesAmount = snap.val().likes;
+                    this.setState({
+                        userLikes: snap.val().likes
+                    });
 
                 }
                 else {
-                    Variables.state.userLikesAmount = 0;
+                    this.setState({
+                        userLikes: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
-        Variables.state.userTrackingAmount = 0;
         firebase.database().ref(`/users/${Variables.state.browsingArtist}/stats`).orderByChild("tracking").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().tracking){
-                    Variables.state.userTrackingAmount = snap.val().tracking;
-
+                    this.setState({
+                        userTracking: snap.val().tracking
+                    });
                 }
                 else {
-                    Variables.state.userTrackingAmount = 0;
+                    this.setState({
+                        userTracking: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
-        Variables.state.userSharesAmount = 0;
         firebase.database().ref(`/users/${Variables.state.browsingArtist}/stats`).orderByChild("shares").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().shares){
-                    Variables.state.userSharesAmount = snap.val().shares;
+                    this.setState({
+                        userShares: snap.val().shares
+                    });
 
                 }
                 else {
-                    Variables.state.userSharesAmount = 0;
+                    this.setState({
+                        userShares: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
         firebase.database().ref(`users/${currentUser.uid}/following/`).orderByChild(Variables.state.browsingArtist).on("value", function (snap){
             if(snap.hasChild(Variables.state.browsingArtist)){
-                Variables.state.following = true;
+                this.setState({
+                    following: true
+                });
             }
             else{
-                Variables.state.following = false;
+                this.setState({
+                    following: false
+                });
             }
-        });
+        }.bind(this));
 
 
+        let image = '';
         if(rss){
             firebase.database().ref(`users/${Variables.state.browsingArtist}/profileImage`).once("value", function (snapshot) {
                 if(snapshot.val()){
-                    Variables.state.onUserProfileImage = snapshot.val().profileImage
+                    image = snapshot.val().profileImage
                 }
-            });
+            }.bind(this));
 
         }
         else{
             storageRef.getDownloadURL()
                 .then(function(url) {
 
-                    Variables.state.onUserProfileImage = url;
+                  image = url;
 
                 }).catch(function(error) {
                 //
@@ -227,20 +246,124 @@ static navigatorStyle = {
 
         }
 
-        Variables.state.userRecentlyPlayed = [];
-        firebase.database().ref(`users/${Variables.state.browsingArtist}/recentlyPlayed`).limitToLast(10).once("value", function (snapshot) {
-            snapshot.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.val().id}`).once("value", function (data) {
-                    if(data.val()){
-                        Variables.state.userRecentlyPlayed.push(data.val())
-                    }
-                })
+        if(!rss){
+            firebase.database().ref(`users/${Variables.state.browsingArtist}/recentlyPlayed`).limitToLast(10).once("value", function (snapshot) {
+                snapshot.forEach(function (snap) {
+                    firebase.database().ref(`podcasts/${snap.val().id}`).once("value", function (data) {
+                        if(data.val()){
+                            this.state.userRecentlyPlayed = [data.val(), ...this.state.userRecentlyPlayed];
+                        }
+                    }.bind(this))
+                }.bind(this));
+            }.bind(this));
+        }
+
+        firebase.database().ref(`users/${currentUser.uid}/tracking/`).orderByChild(Variables.state.browsingArtist).once("value", function (snap){
+            if(snap.hasChild(Variables.state.browsingArtist)){
+                this.setState({
+                    tracking: true
+                });
+            }
+            else{
+                this.setState({
+                    tracking: false
+                });
+            }
+        }.bind(this));
+
+        var dataSource = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.timeout = setTimeout(() =>{
+            this.setState({
+                dataSource: dataSource.cloneWithRows(userPodcasts),
+                dataSourceRecent: dataSource.cloneWithRows(this.state.userRecentlyPlayed),
+                userPodcasts: userPodcasts,
+                profileImage: image
             });
 
-            setTimeout(()=>{
-                Variables.state.userRecentlyPlayed.reverse();
-            }, 500);
-        });
+            if(this.state.username != '' && this.state.bio != ''){
+                this.setState({
+                    loading: false
+                })
+            }
+
+        },1500);
+        this.timeout2 = setTimeout(() =>{
+            this.setState({
+                dataSource: dataSource.cloneWithRows(userPodcasts),
+                dataSourceRecent: dataSource.cloneWithRows(this.state.userRecentlyPlayed),
+                userPodcasts: userPodcasts,
+                profileImage: image
+            });
+
+            if(this.state.username != '' && this.state.bio != ''){
+                this.setState({
+                    loading: false
+                })
+            }
+
+        },3000);
+        this.timeout3 = setTimeout(() =>{
+            this.setState({
+                dataSource: dataSource.cloneWithRows(userPodcasts),
+                dataSourceRecent: dataSource.cloneWithRows(this.state.userRecentlyPlayed),
+                userPodcasts: userPodcasts,
+                profileImage: image
+            });
+
+            if(this.state.username != '' && this.state.bio != ''){
+                this.setState({
+                    loading: false
+                })
+            }
+
+        },4500);
+        this.timeout4 = setTimeout(() =>{
+            this.setState({
+                dataSource: dataSource.cloneWithRows(userPodcasts),
+                dataSourceRecent: dataSource.cloneWithRows(this.state.userRecentlyPlayed),
+                userPodcasts: userPodcasts,
+                profileImage: image
+            });
+
+            if(this.state.username != '' && this.state.bio != ''){
+                this.setState({
+                    loading: false
+                })
+            }
+
+        },6000);
+
+        this.timeout5 = setTimeout(() =>{
+            this.setState({
+                dataSource: dataSource.cloneWithRows(userPodcasts),
+                dataSourceRecent: dataSource.cloneWithRows(this.state.userRecentlyPlayed),
+                userPodcasts: userPodcasts,
+                profileImage: image
+            });
+
+            if(this.state.username != '' && this.state.bio != ''){
+                this.setState({
+                    loading: false
+                })
+            }
+
+        },7500);
+
+        this.timeout6 = setTimeout(() =>{
+            this.setState({
+                dataSource: dataSource.cloneWithRows(userPodcasts),
+                dataSourceRecent: dataSource.cloneWithRows(this.state.userRecentlyPlayed),
+                userPodcasts: userPodcasts,
+                profileImage: image
+            });
+
+            if(this.state.username != '' && this.state.bio != ''){
+                this.setState({
+                    loading: false
+                })
+            }
+
+        },9000);
 
 
     }
@@ -250,6 +373,8 @@ static navigatorStyle = {
         clearTimeout(this.timeout2);
         clearTimeout(this.timeout3);
         clearTimeout(this.timeout4);
+        clearTimeout(this.timeout5);
+        clearTimeout(this.timeout6);
     }
 
 
@@ -275,88 +400,29 @@ static navigatorStyle = {
         });
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
-        this.state = { username: '' , bio: '', profileImage: '',
-            category: '', profileName: profileName, following: false,
+        this.state = {
+            username: '' ,
+            bio: '',
+            profileImage: '',
+            userPodcasts: [],
+            userFollowers: [],
+            userFollowing: [],
+            userTrackingList: [],
             dataSource: dataSource.cloneWithRows([]),
+            dataSourceRecent: dataSource.cloneWithRows([]),
+            userRecentlyPlayed: [],
+            following: false,
+            tracking: false,
             loading: true,
             refreshing: false,
-            tracking: false,
             playTime: 0,
             userComments: 0,
             userTracking: 0,
             userHighlights: 0,
             userLikes: 0,
             userShares: 0,
-            dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
         };
-        this.timeout = setTimeout(() =>{
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts), loading: false,
-                username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
-                following: Variables.state.following,
-                tracking: tracking,
-                playTime: Variables.state.userPlayTime,
-                userComments: Variables.state.userCommentsAmount,
-                userTracking: Variables.state.userTrackingAmount,
-                userHighlights: Variables.state.userHighlightsAmount,
-                userLikes: Variables.state.userLikesAmount,
-                userShares: Variables.state.userSharesAmount,
-                dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
-            })
-        },1500);
-        this.timeout2 = setTimeout(() =>{
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
-                username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
-                following: Variables.state.following,
-                tracking: tracking,
-                playTime: Variables.state.userPlayTime,
-                userComments: Variables.state.userCommentsAmount,
-                userTracking: Variables.state.userTrackingAmount,
-                userHighlights: Variables.state.userHighlightsAmount,
-                userLikes: Variables.state.userLikesAmount,
-                userShares: Variables.state.userSharesAmount,
-                dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
-            })
-        },3000);
-        this.timeout3 = setTimeout(() =>{
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
-                username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
-                following: Variables.state.following,
-                tracking: tracking,
-                playTime: Variables.state.userPlayTime,
-                userComments: Variables.state.userCommentsAmount,
-                userTracking: Variables.state.userTrackingAmount,
-                userHighlights: Variables.state.userHighlightsAmount,
-                userLikes: Variables.state.userLikesAmount,
-                userShares: Variables.state.userSharesAmount,
-                dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
-            })
-        },5000);
-        this.timeout4 = setTimeout(() =>{
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false,
-                username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
-                following: Variables.state.following,
-                tracking: tracking,
-                playTime: Variables.state.userPlayTime,
-                userComments: Variables.state.userCommentsAmount,
-                userTracking: Variables.state.userTrackingAmount,
-                userHighlights: Variables.state.userHighlightsAmount,
-                userLikes: Variables.state.userLikesAmount,
-                userShares: Variables.state.userSharesAmount,
-                dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
-            })
-        },8000);
 
-
-        const {currentUser} = firebase.auth();
-        let tracking = false;
-        firebase.database().ref(`users/${currentUser.uid}/tracking/`).orderByChild(Variables.state.browsingArtist).once("value", function (snap){
-            if(snap.hasChild(Variables.state.browsingArtist)){
-                tracking = true;
-            }
-            else{
-                tracking = false;
-            }
-        });
 
     }
 
@@ -364,197 +430,172 @@ static navigatorStyle = {
     fetchData(){
 
         const {currentUser} = firebase.auth();
+
         const storageRef = firebase.storage().ref(`/users/${Variables.state.browsingArtist}/image-profile-uploaded`);
-        const refFol = firebase.database().ref(`users/${Variables.state.browsingArtist}/followers`);
-        const refFollowing = firebase.database().ref(`users/${Variables.state.browsingArtist}/following`);
-        const refTracking = firebase.database().ref(`users/${Variables.state.browsingArtist}/tracking`);
-
         const {rss} = this.props;
-
-        Variables.state.userPodcasts = [];
-        Variables.state.onUserProfileImage = '';
-        Variables.state.userFollowers = [];
-        Variables.state.userFollowing = [];
-        Variables.state.userTracking = [];
-
 
         const ref = firebase.database().ref(`podcasts/`);
 
+        let userPodcasts = [];
         ref.on("value", function (snapshot) {
             snapshot.forEach(function (data) {
                 if(Variables.state.browsingArtist == data.val().podcastArtist) {
-                    Variables.state.userPodcasts.push(data.val());
+                    userPodcasts.push(data.val());
                 }
             });
-            Variables.state.userPodcasts.reverse();
+            userPodcasts.reverse();
         });
-
-        refFol.on("value", function (snapshot) {
-            Variables.state.userFollowers = [];
-            snapshot.forEach(function (data) {
-                Variables.state.userFollowers.push(data.key);
-            })
-        });
-
-        refFollowing.on("value", function (snapshot) {
-            Variables.state.userFollowing = [];
-            snapshot.forEach(function (data) {
-                Variables.state.userFollowing.push(data.key);
-            })
-        });
-
-        refTracking.on("value", function (snapshot) {
-            Variables.state.userTracking = [];
-            snapshot.forEach(function (data) {
-                Variables.state.userTracking.push(data.key);
-            })
-        });
-
 
         firebase.database().ref(`/users/${Variables.state.browsingArtist}/username`).orderByChild("username").on("value", function(snap) {
             if(snap.val()){
-                Variables.state.userUsername = snap.val().username;
+                this.setState({
+                    username: snap.val().username
+                });
             }
             else {
-                Variables.state.userUsername = "no username"
+                this.setState({
+                    username: '...'
+                });
             }
-        });
+        }.bind(this));
 
-        firebase.database().ref(`/users/${Variables.state.browsingArtist}/favCategory`).orderByChild("favCategory").on("value", function(snap) {
-            if(snap.val()){
-                Variables.state.currentFavCategory = snap.val().favCategory;
-            }
-            else {
-                Variables.state.currentFavCategory = "Too hard to choose"
-            }
-        });
 
         firebase.database().ref(`/users/${Variables.state.browsingArtist}/bio`).orderByChild("bio").on("value", function(snap) {
             if(snap.val()){
-                Variables.state.currentBio = snap.val().bio;
+                this.setState({
+                    bio: snap.val().bio
+                });
             }
             else {
-                Variables.state.currentBio = "Tell others about yourself";
+                this.setState({
+                    bio: "Tell others about yourself"
+                });
             }
-        });
+        }.bind(this));
 
-        Variables.state.userPlayTime = 0;
         firebase.database().ref(`/users/${Variables.state.browsingArtist}/stats`).orderByChild("playTime").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().playTime){
-                    Variables.state.userPlayTime = snap.val().playTime;
+                    this.setState({
+                        userPlayTime: snap.val().playTime
+                    });
 
                 }
                 else {
-                    Variables.state.userPlayTime = 0;
+                    this.setState({
+                        userPlayTime: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
-        Variables.state.userHighlightsAmount = 0;
         firebase.database().ref(`/users/${Variables.state.browsingArtist}/stats`).orderByChild("highlights").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().highlights){
-                    Variables.state.userHighlightsAmount = snap.val().highlights;
+                    this.setState({
+                        userHighlights: snap.val().highlights
+                    });
 
                 }
                 else {
-                    Variables.state.userHighlightsAmount = 0;
+                    this.setState({
+                        userHighlights: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
-        Variables.state.userCommentsAmount = 0;
         firebase.database().ref(`/users/${Variables.state.browsingArtist}/stats`).orderByChild("comments").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().comments){
-                    Variables.state.userCommentsAmount = snap.val().comments;
+                    this.setState({
+                        userComments: snap.val().comments
+                    });
 
                 }
                 else {
-                    Variables.state.userCommentsAmount = 0;
+                    this.setState({
+                        userComments: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
-        Variables.state.userLikesAmount = 0;
         firebase.database().ref(`/users/${Variables.state.browsingArtist}/stats`).orderByChild("likes").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().likes){
-                    Variables.state.userLikesAmount = snap.val().likes;
+                    this.setState({
+                        userLikes: snap.val().likes
+                    });
 
                 }
                 else {
-                    Variables.state.userLikesAmount = 0;
+                    this.setState({
+                        userLikes: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
-        Variables.state.userTrackingAmount = 0;
         firebase.database().ref(`/users/${Variables.state.browsingArtist}/stats`).orderByChild("tracking").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().tracking){
-                    Variables.state.userTrackingAmount = snap.val().tracking;
-
+                    this.setState({
+                        userTracking: snap.val().tracking
+                    });
                 }
                 else {
-                    Variables.state.userTrackingAmount = 0;
+                    this.setState({
+                        userTracking: 0
+                    });
                 }
             }
-        });
+        }.bind(this));
 
-        Variables.state.userSharesAmount = 0;
         firebase.database().ref(`/users/${Variables.state.browsingArtist}/stats`).orderByChild("shares").once("value", function(snap) {
             if(snap.val()){
                 if(snap.val().shares){
-                    Variables.state.userSharesAmount = snap.val().shares;
+                    this.setState({
+                        userShares: snap.val().shares
+                    });
 
                 }
                 else {
-                    Variables.state.userSharesAmount = 0;
+                    this.setState({
+                        userShares: 0
+                    });
                 }
             }
-        });
-
+        }.bind(this));
 
         firebase.database().ref(`users/${currentUser.uid}/following/`).orderByChild(Variables.state.browsingArtist).on("value", function (snap){
             if(snap.hasChild(Variables.state.browsingArtist)){
-                Variables.state.following = true;
+                this.setState({
+                    following: true
+                });
             }
             else{
-                Variables.state.following = false;
+                this.setState({
+                    following: false
+                });
             }
-        });
+        }.bind(this));
 
 
-        let tracking = false;
-        firebase.database().ref(`users/${currentUser.uid}/tracking/`).orderByChild(Variables.state.browsingArtist).once("value", function (snap){
-            if(snap.hasChild(Variables.state.browsingArtist)){
-                tracking = true;
-            }
-            else{
-                tracking = false;
-            }
-        });
-        setTimeout(() =>{
-            this.setState({tracking: tracking})
-        }, 350);
-
-
-
+        let image = '';
         if(rss){
             firebase.database().ref(`users/${Variables.state.browsingArtist}/profileImage`).once("value", function (snapshot) {
                 if(snapshot.val()){
-                    Variables.state.onUserProfileImage = snapshot.val().profileImage
+                    image = snapshot.val().profileImage
                 }
-            });
+            }.bind(this));
 
         }
         else{
             storageRef.getDownloadURL()
                 .then(function(url) {
 
-                    Variables.state.onUserProfileImage = url;
+                    image = url;
 
                 }).catch(function(error) {
                 //
@@ -562,59 +603,146 @@ static navigatorStyle = {
 
         }
 
-        Variables.state.userRecentlyPlayed = [];
-        firebase.database().ref(`users/${Variables.state.browsingArtist}/recentlyPlayed`).limitToLast(10).once("value", function (snapshot) {
-            snapshot.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.val().id}`).once("value", function (data) {
-                    if(data.val()){
-                        Variables.state.userRecentlyPlayed.push(data.val())
-                    }
-                })
+        if(!rss){
+            firebase.database().ref(`users/${Variables.state.browsingArtist}/recentlyPlayed`).limitToLast(10).once("value", function (snapshot) {
+                snapshot.forEach(function (snap) {
+                    firebase.database().ref(`podcasts/${snap.val().id}`).once("value", function (data) {
+                        if(data.val()){
+                            this.state.userRecentlyPlayed = [data.val(), ...this.state.userRecentlyPlayed];
+                        }
+                    }.bind(this))
+                }.bind(this));
+            }.bind(this));
+        }
+
+        firebase.database().ref(`users/${currentUser.uid}/tracking/`).orderByChild(Variables.state.browsingArtist).once("value", function (snap){
+            if(snap.hasChild(Variables.state.browsingArtist)){
+                this.setState({
+                    tracking: true
+                });
+            }
+            else{
+                this.setState({
+                    tracking: false
+                });
+            }
+        }.bind(this));
+
+        var dataSource = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.timeout = setTimeout(() =>{
+            this.setState({
+                dataSource: dataSource.cloneWithRows(userPodcasts),
+                dataSourceRecent: dataSource.cloneWithRows(this.state.userRecentlyPlayed),
+                userPodcasts: userPodcasts,
+                profileImage: image
             });
 
-            setTimeout(()=>{
-                Variables.state.userRecentlyPlayed.reverse();
-            }, 500);
-        });
+            if(this.state.username != '' && this.state.bio != ''){
+                this.setState({
+                    loading: false,
+                    refreshing: false
+                })
+            }
+
+        },1500);
+        this.timeout2 = setTimeout(() =>{
+            this.setState({
+                dataSource: dataSource.cloneWithRows(userPodcasts),
+                dataSourceRecent: dataSource.cloneWithRows(this.state.userRecentlyPlayed),
+                userPodcasts: userPodcasts,
+                profileImage: image
+            });
+
+            if(this.state.username != '' && this.state.bio != ''){
+                this.setState({
+                    loading: false,
+                    refreshing: false
+                })
+            }
+
+        },3000);
+        this.timeout3 = setTimeout(() =>{
+            this.setState({
+                dataSource: dataSource.cloneWithRows(userPodcasts),
+                dataSourceRecent: dataSource.cloneWithRows(this.state.userRecentlyPlayed),
+                userPodcasts: userPodcasts,
+                profileImage: image
+            });
+
+            if(this.state.username != '' && this.state.bio != ''){
+                this.setState({
+                    loading: false,
+                    refreshing: false
+                })
+            }
+
+        },4500);
+        this.timeout4 = setTimeout(() =>{
+            this.setState({
+                dataSource: dataSource.cloneWithRows(userPodcasts),
+                dataSourceRecent: dataSource.cloneWithRows(this.state.userRecentlyPlayed),
+                userPodcasts: userPodcasts,
+                profileImage: image
+            });
+
+            if(this.state.username != '' && this.state.bio != ''){
+                this.setState({
+                    loading: false,
+                    refreshing: false
+                })
+            }
+
+        },6000);
+
+        this.timeout5 = setTimeout(() =>{
+            this.setState({
+                dataSource: dataSource.cloneWithRows(userPodcasts),
+                dataSourceRecent: dataSource.cloneWithRows(this.state.userRecentlyPlayed),
+                userPodcasts: userPodcasts,
+                profileImage: image
+            });
+
+            if(this.state.username != '' && this.state.bio != ''){
+                this.setState({
+                    loading: false,
+                    refreshing: false
+                })
+            }
+
+        },7500);
+
+        this.timeout6 = setTimeout(() =>{
+            this.setState({
+                dataSource: dataSource.cloneWithRows(userPodcasts),
+                dataSourceRecent: dataSource.cloneWithRows(this.state.userRecentlyPlayed),
+                userPodcasts: userPodcasts,
+                profileImage: image
+            });
+
+            if(this.state.username != '' && this.state.bio != ''){
+                this.setState({
+                    loading: false,
+                    refreshing: false
+                })
+            }
+
+        },9000);
 
 
     }
 
 
     _onRefresh() {
-        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
-        this.setState({refreshing: true});
-
+        this.setState({
+            refreshing: true,
+            username: '' ,
+            bio: '',
+            following: false,
+            tracking: false,
+            loading: false,
+            userRecentlyPlayed: []
+        });
         this.fetchData();
-
-        this.timeout = setTimeout(() =>{
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false, refreshing: false,
-                username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
-                following: Variables.state.following,
-                playTime: Variables.state.userPlayTime,
-                userComments: Variables.state.userCommentsAmount,
-                userTracking: Variables.state.userTrackingAmount,
-                userHighlights: Variables.state.userHighlightsAmount,
-                userLikes: Variables.state.userLikesAmount,
-                userShares: Variables.state.userSharesAmount,
-                dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
-            })
-        },1000);
-        this.timeout2 = setTimeout(() =>{
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.userPodcasts),loading:false, refresing: false,
-                username: Variables.state.userUsername, bio: Variables.state.currentBio, profileImage: Variables.state.onUserProfileImage,
-                following: Variables.state.following,
-                playTime: Variables.state.userPlayTime,
-                userComments: Variables.state.userCommentsAmount,
-                userTracking: Variables.state.userTrackingAmount,
-                userHighlights: Variables.state.userHighlightsAmount,
-                userLikes: Variables.state.userLikesAmount,
-                userShares: Variables.state.userSharesAmount,
-                dataSourceRecent: dataSource.cloneWithRows(Variables.state.userRecentlyPlayed),
-            })
-        },3000)
-
-
     }
 
 
@@ -622,7 +750,7 @@ static navigatorStyle = {
     _renderProfileName = () => {
 
         return (
-            <Text style={styles.title2} >{this.state.username}</Text>
+            <Text style={styles.title2}>{this.state.username}</Text>
 
         )
 
@@ -632,7 +760,7 @@ static navigatorStyle = {
     _renderBio = () => {
 
         return(
-            <Text style={styles.titleBio} >{this.state.bio}</Text>
+            <Text style={styles.titleBio}>{this.state.bio}</Text>
         )
 
     };
@@ -682,7 +810,7 @@ static navigatorStyle = {
     };
 
     onTrackingPress = () =>{
-        const list = Variables.state.userTracking;
+        const list = this.state.userTrackingList;
         Navigation.showModal({
             screen: "Tracking",
             title: "Tracking",
@@ -720,6 +848,7 @@ static navigatorStyle = {
             </View>
         )
     }
+
 
 
     _renderFollowButton = () => {
@@ -813,7 +942,7 @@ static navigatorStyle = {
             firebase.database().ref(`users/${currentUser.uid}/following/${Variables.state.browsingArtist}`).remove();
             firebase.database().ref(`users/${Variables.state.browsingArtist}/followers/${currentUser.uid}`).remove();
             this.setState({following: false});
-            Variables.state.following = false;
+            this.state.following = false;
         }
         else if (this.state.following == false){
             const {currentUser} = firebase.auth();
@@ -821,7 +950,7 @@ static navigatorStyle = {
             firebase.database().ref(`users/${Variables.state.browsingArtist}/followers/`).child(currentUser.uid).push(currentUser.uid);
             firebase.database().ref(`users/${currentUser.uid}/activity`).push({action: 'follow', id: Variables.state.browsingArtist, user: currentUser.uid, time: firebase.database.ServerValue.TIMESTAMP});
             this.setState({ following: true});
-            Variables.state.following = true;
+            this.state.following = true;
         }
     };
 
@@ -845,7 +974,7 @@ static navigatorStyle = {
                 }
             });
             this.setState({tracking: false});
-            Variables.state.tracking = false;
+            this.state.tracking = false;
         }
         else if (this.state.tracking == false){
             const {currentUser} = firebase.auth();
@@ -882,7 +1011,7 @@ static navigatorStyle = {
 
             });
             this.setState({tracking: true});
-            Variables.state.tracking = true;
+            this.state.tracking = true;
         }
     };
 
@@ -897,21 +1026,6 @@ static navigatorStyle = {
             animationType: 'fade',
         });
     };
-
-
-    onGarbagePress(){
-        Alert.alert(
-            'Are you sure you want to delete?',
-            '',
-            [
-                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                {text: 'Yes', onPress: () => console.warn('delete')
-                },
-            ],
-            { cancelable: false }
-        )
-    }
-
 
 
 
@@ -3318,9 +3432,9 @@ static navigatorStyle = {
     renderRecent(data){
         if(data.length > 0){
             return(
-                <View style={{backgroundColor: '#fff', marginHorizontal: 8, marginVertical: 15, borderRadius: 10}}>
+                <View style={{backgroundColor: '#fff', marginHorizontal: width/46.88, marginVertical: height/44.47, borderRadius: width/37.5}}>
                     <Text style={styles.myContentTitle}>Recently Listened</Text>
-                    <View style={{flexDirection: 'row', marginTop: 10}}>
+                    <View style={{flexDirection: 'row', marginTop: height/66.7}}>
                         <ListView
                             enableEmptySections
                             horizontal={true}
@@ -3333,7 +3447,7 @@ static navigatorStyle = {
         }
         else{
             return(
-                <View style={{backgroundColor: '#fff', marginHorizontal: 8, marginVertical: 15, borderRadius: 10}}>
+                <View style={{backgroundColor: '#fff', marginHorizontal: width/46.88, marginVertical: height/44.47, borderRadius: width/37.5}}>
                     <Text style={styles.myContentTitle}>Recently Listened</Text>
                     <View>
                         <Text style={styles.titleSmall}>No recent listening activity</Text>
@@ -3344,10 +3458,10 @@ static navigatorStyle = {
     }
 
     renderContent(){
-        if(Variables.state.userPodcasts.length > 0){
+        if(this.state.userPodcasts.length > 0){
             return(
-                <View style={{backgroundColor: '#fff', marginVertical: 15, marginHorizontal: 7, borderRadius: 10}}>
-                    <Text style={styles.myContentTitle}>{Variables.state.userPodcasts.length} episodes</Text>
+                <View style={{backgroundColor: '#fff', marginVertical: height/44.47, marginHorizontal: width/53.57, borderRadius: width/37.5}}>
+                    <Text style={styles.myContentTitle}>{this.state.userPodcasts.length} episodes</Text>
                     <ListView
                         enableEmptySections
                         horizontal={true}
@@ -3368,20 +3482,123 @@ static navigatorStyle = {
     render() {
 
         if(this.state.loading){
-            return(
-                <View style={styles.container}>
-                    <ActivityIndicator style={{paddingVertical: height/33.35, alignSelf:'center'}} color='#3e4164' size ="large" />
-                </View>
-            )
-        }
-        else{
-            var fixedTitle = '';
-            if(this.state.username.toString().length > width/16.3 ){
-                fixedTitle = (this.state.username.slice(0,width/16.3)+"...")
+            const {rss} = this.props;
+
+            if(rss){
+
+                return (
+                    <View
+                        style={styles.container}>
+
+                        <ScrollView>
+
+                            <View>
+                                <ActivityIndicator style={{paddingVertical: height/33.35, alignSelf:'center'}} color='#3e4164' size = "large"/>
+                            </View>
+
+                            <View style={{backgroundColor: '#fff'}}>
+
+                                {this._renderProfileImage()}
+
+                                {this._renderProfileName()}
+
+                                {this._renderBio()}
+
+                                <View style={{flexDirection: 'row', marginTop: height/66.7}}>
+                                    {this._renderFollowButton()}
+                                    {this._renderTrackButton()}
+                                </View>
+
+                                <TouchableOpacity style={{flex: 1, alignSelf: 'center', padding: 10,}} onPress={this.onFollowersPress}>
+                                    <Text style={styles.stats}>Followers</Text>
+                                    <Text style={styles.stats}>{this.state.userFollowers.length}</Text>
+                                </TouchableOpacity>
+
+                            </View>
+
+
+                            <View style={{backgroundColor: '#fff', marginVertical: height/44.47, marginHorizontal: width/53.57, borderRadius: 10}}>
+                                <Text style={styles.myContentTitle}>{this.state.userPodcasts.length} episodes</Text>
+                                <ListView
+                                    enableEmptySections
+                                    horizontal={true}
+                                    dataSource={this.state.dataSource}
+                                    renderRow={this.renderRow}
+                                />
+                            </View>
+
+
+                            <View style={{paddingBottom: height/5.56}}>
+
+                            </View>
+
+
+                        </ScrollView>
+
+
+                        <PlayerBottom/>
+
+                    </View>
+
+
+                );
+
             }
             else{
-                fixedTitle = this.state.username;
+
+                return (
+                    <View
+                        style={styles.container}>
+
+                        <ScrollView>
+
+                            <View>
+                                <ActivityIndicator style={{paddingVertical: height/33.35, alignSelf:'center'}} color='#3e4164' size = "large" />
+                            </View>
+
+                            <View style={{backgroundColor: '#fff'}}>
+
+                                {this._renderProfileImage()}
+
+                                {this._renderProfileName()}
+
+                                {this._renderBio()}
+
+                                <View style={{flexDirection: 'row', marginTop: height/66.7}}>
+                                    {this._renderFollowButton()}
+                                    {this._renderTrackButton()}
+                                </View>
+
+
+                                {this._renderProfileNumbers(this.state.userTrackingList.length, this.state.userFollowers.length, this.state.userFollowing.length)}
+
+                            </View>
+
+                            {this.renderContent()}
+
+                            {this.renderAchievements()}
+
+                            {this.renderRecent(this.state.userRecentlyPlayed)}
+
+
+                            <View style={{paddingBottom: height/5.56}}>
+
+                            </View>
+
+
+                        </ScrollView>
+
+
+                        <PlayerBottom/>
+
+                    </View>
+
+
+                );
+
             }
+        }
+        else{
             const {rss} = this.props;
 
             if(rss){
@@ -3407,23 +3624,21 @@ static navigatorStyle = {
 
                                 {this._renderBio()}
 
-                                <View style={{flexDirection: 'row', marginTop: 10}}>
+                                <View style={{flexDirection: 'row', marginTop: height/66.7}}>
                                     {this._renderFollowButton()}
                                     {this._renderTrackButton()}
                                 </View>
 
-
                                 <TouchableOpacity style={{flex: 1, alignSelf: 'center', padding: 10,}} onPress={this.onFollowersPress}>
                                     <Text style={styles.stats}>Followers</Text>
-                                    <Text style={styles.stats}>{Variables.state.userFollowers.length}</Text>
+                                    <Text style={styles.stats}>{this.state.userFollowers.length}</Text>
                                 </TouchableOpacity>
-
 
                             </View>
 
 
-                            <View style={{backgroundColor: '#fff', marginVertical: 15, marginHorizontal: 7, borderRadius: 10}}>
-                                <Text style={styles.myContentTitle}>{Variables.state.userPodcasts.length} episodes</Text>
+                            <View style={{backgroundColor: '#fff', marginVertical: height/44.47, marginHorizontal: width/53.57, borderRadius: 10}}>
+                                <Text style={styles.myContentTitle}>{this.state.userPodcasts.length} episodes</Text>
                                 <ListView
                                     enableEmptySections
                                     horizontal={true}
@@ -3433,7 +3648,7 @@ static navigatorStyle = {
                             </View>
 
 
-                            <View style={{paddingBottom:120}}>
+                            <View style={{paddingBottom: height/5.56}}>
 
                             </View>
 
@@ -3472,13 +3687,13 @@ static navigatorStyle = {
 
                                 {this._renderBio()}
 
-                                <View style={{flexDirection: 'row', marginTop: 10}}>
+                                <View style={{flexDirection: 'row', marginTop: height/66.7}}>
                                     {this._renderFollowButton()}
                                     {this._renderTrackButton()}
                                 </View>
 
 
-                                {this._renderProfileNumbers(Variables.state.userTracking.length, Variables.state.userFollowers.length, Variables.state.userFollowing.length)}
+                                {this._renderProfileNumbers(this.state.userTrackingList.length, this.state.userFollowers.length, this.state.userFollowing.length)}
 
                             </View>
 
@@ -3486,10 +3701,10 @@ static navigatorStyle = {
 
                             {this.renderAchievements()}
 
-                            {this.renderRecent(Variables.state.userRecentlyPlayed)}
+                            {this.renderRecent(this.state.userRecentlyPlayed)}
 
 
-                            <View style={{paddingBottom:120}}>
+                            <View style={{paddingBottom: height/5.56}}>
 
                             </View>
 

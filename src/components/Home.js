@@ -41,10 +41,10 @@ class Home extends Component{
 
         const {currentUser} = firebase.auth();
 
-        Variables.state.homeFollowedContent = [];
         const refFol = firebase.database().ref(`users/${currentUser.uid}/following`);
 
         refFol.once("value", function (snapshot) {
+            Variables.state.homeFollowedContent = [];
             snapshot.forEach(function (data) {
 
                 firebase.database().ref(`users/${data.key}/podcasts`).limitToLast(3).once("value", function (snap) {
@@ -980,10 +980,10 @@ class Home extends Component{
 
         const {currentUser} = firebase.auth();
 
-        Variables.state.homeFollowedContent = [];
         const refFol = firebase.database().ref(`users/${currentUser.uid}/following`);
 
         refFol.once("value", function (snapshot) {
+            Variables.state.homeFollowedContent = [];
             snapshot.forEach(function (data) {
 
                 firebase.database().ref(`users/${data.key}/podcasts`).limitToLast(3).once("value", function (snap) {
@@ -1007,8 +1007,10 @@ class Home extends Component{
             })
         });
 
-        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), refreshing: false})},2000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), refreshing: false})},3500);
+        this.timeout1 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), refreshing: false})},1500);
+        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), refreshing: false})},3000);
+        this.timeout3 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), refreshing: false})},5000);
+        this.timeout4 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.homeFollowedContent), refreshing: false})},8000);
 
     }
 

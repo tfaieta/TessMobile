@@ -38,7 +38,7 @@ if(Platform.OS === 'ios'){
 class Account extends Component {
 
 
-    componentWillMount(){
+    componentDidMount(){
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         const {currentUser} = firebase.auth();
         const refMy = firebase.database().ref(`users/${currentUser.uid}/podcasts`);
@@ -228,6 +228,63 @@ class Account extends Component {
         }.bind(this));
 
 
+        let image = '';
+        storageRef.getDownloadURL()
+            .then(function(url) {
+
+                image = url;
+                this.setState({
+                    profileImage: url
+                });
+                console.warn(p);
+
+            }).catch(function(error) {
+            //
+        }.bind(this));
+
+        this.timeout = setTimeout(() => {
+            if(this.state.username != '' && this.state.bio != ''){
+                this.setState({
+                    dataSource: dataSource.cloneWithRows(this.state.myPodcasts), dataSourceRecent: dataSource.cloneWithRows(this.state.recentlyPlayed), profileImage: image, loading: false
+                })
+            }
+        }, 1500);
+        this.timeout2 = setTimeout(() => {
+            if(this.state.username != '' && this.state.bio != ''){
+                this.setState({
+                    dataSource: dataSource.cloneWithRows(this.state.myPodcasts), dataSourceRecent: dataSource.cloneWithRows(this.state.recentlyPlayed), profileImage: image, loading: false
+                })
+            }
+        }, 3000);
+        this.timeout3 = setTimeout(() => {
+            if(this.state.username != '' && this.state.bio != ''){
+                this.setState({
+                    dataSource: dataSource.cloneWithRows(this.state.myPodcasts), dataSourceRecent: dataSource.cloneWithRows(this.state.recentlyPlayed), profileImage: image, loading: false
+                })
+            }
+        }, 4500);
+        this.timeout4 = setTimeout(() => {
+            if(this.state.username != '' && this.state.bio != ''){
+                this.setState({
+                    dataSource: dataSource.cloneWithRows(this.state.myPodcasts), dataSourceRecent: dataSource.cloneWithRows(this.state.recentlyPlayed), profileImage: image, loading: false
+                })
+            }
+        }, 6000);
+        this.timeout5 = setTimeout(() => {
+            if(this.state.username != '' && this.state.bio != ''){
+                this.setState({
+                    dataSource: dataSource.cloneWithRows(this.state.myPodcasts), dataSourceRecent: dataSource.cloneWithRows(this.state.recentlyPlayed), profileImage: image, loading: false
+                })
+            }
+        }, 7500);
+        this.timeout6 = setTimeout(() => {
+            if(this.state.username != '' && this.state.bio != ''){
+                this.setState({
+                    dataSource: dataSource.cloneWithRows(this.state.myPodcasts), dataSourceRecent: dataSource.cloneWithRows(this.state.recentlyPlayed), profileImage: image, loading: false
+                })
+            }
+        }, 9000);
+
     }
 
 
@@ -237,6 +294,8 @@ class Account extends Component {
         clearTimeout(this.timeout2);
         clearTimeout(this.timeout3);
         clearTimeout(this.timeout4);
+        clearTimeout(this.timeout5);
+        clearTimeout(this.timeout6);
     }
 
 
@@ -284,85 +343,16 @@ class Account extends Component {
             dataSourceRecent: dataSource.cloneWithRows([])
         };
 
-        const {currentUser} = firebase.auth();
-        const storageRef = firebase.storage().ref(`/users/${currentUser.uid}/image-profile-uploaded`);
-        let image = '';
-        storageRef.getDownloadURL()
-            .then(function(url) {
-
-                image = url;
-                this.setState({
-                    profileImage: url
-                });
-                console.warn(p);
-
-            }).catch(function(error) {
-            //
-        }.bind(this));
-
-        this.timeout = setTimeout(() => {
-            this.setState({
-                dataSource: dataSource.cloneWithRows(this.state.myPodcasts), dataSourceRecent: dataSource.cloneWithRows(this.state.recentlyPlayed), profileImage: image, loading: false
-            })
-        }, 1500);
-        this.timeout2 = setTimeout(() => {
-            this.setState({
-                dataSource: dataSource.cloneWithRows(this.state.myPodcasts), dataSourceRecent: dataSource.cloneWithRows(this.state.recentlyPlayed), profileImage: image
-            })
-        }, 3000);
-        this.timeout3 = setTimeout(() => {
-            this.setState({
-                dataSource: dataSource.cloneWithRows(this.state.myPodcasts), dataSourceRecent: dataSource.cloneWithRows(this.state.recentlyPlayed), profileImage: image
-            })
-        }, 5000);
-        this.timeout4 = setTimeout(() => {
-            this.setState({
-                dataSource: dataSource.cloneWithRows(this.state.myPodcasts), dataSourceRecent: dataSource.cloneWithRows(this.state.recentlyPlayed), profileImage: image
-            })
-        }, 8000);
     }
 
 
 
     _onRefresh() {
         this.setState({
-            refreshing: true
+            refreshing: true,
         });
         const {currentUser} = firebase.auth();
-        const refMy = firebase.database().ref(`users/${currentUser.uid}/podcasts`);
         const storageRef = firebase.storage().ref(`/users/${currentUser.uid}/image-profile-uploaded`);
-        const refFol = firebase.database().ref(`users/${currentUser.uid}/followers`);
-        const refFollowing = firebase.database().ref(`users/${currentUser.uid}/following`);
-        const refTracking = firebase.database().ref(`users/${currentUser.uid}/tracking`);
-
-
-        refMy.on("value", function (snapshot) {
-            snapshot.forEach(function (data) {
-                firebase.database().ref(`podcasts/${data.key}`).once('value', function (snap) {
-                    if(snap.val()){
-                        this.state.myPodcasts.push(snap.val());
-                    }
-                }.bind(this));
-            }.bind(this));
-        }.bind(this));
-
-        refFol.on("value", function (snapshot) {
-            snapshot.forEach(function (data) {
-                this.state.myFollowers.push(data.key);
-            }.bind(this))
-        }.bind(this));
-
-        refFollowing.on("value", function (snapshot) {
-            snapshot.forEach(function (data) {
-                this.state.myFollowing.push(data.key);
-            }.bind(this))
-        }.bind(this));
-
-        refTracking.on("value", function (snapshot) {
-            snapshot.forEach(function (data) {
-                this.state.myTrackingList.push(data.key);
-            }.bind(this))
-        }.bind(this));
 
         firebase.database().ref(`/users/${currentUser.uid}/username`).orderByChild("username").on("value", function(snap) {
             if(snap.val()){
@@ -3153,8 +3143,58 @@ class Account extends Component {
     render() {
         if(this.state.loading){
             return(
-                <View style={styles.container}>
-                    <ActivityIndicator style={{paddingVertical: height/33.35, alignSelf:'center'}} color='#3e4164' size ="large" />
+                <View
+                    style={styles.container}>
+
+                    <StatusBar
+                        barStyle="dark-content"
+                    />
+
+                    <ScrollView>
+
+                        <View>
+                            <ActivityIndicator style={{paddingVertical: height/33.35, alignSelf:'center'}} color='#3e4164' size ="large" />
+                        </View>
+
+                        <View style={{backgroundColor: '#fff'}}>
+
+
+                            {this._renderProfileImage()}
+
+                            {this._renderProfileName()}
+
+                            {this._renderBio()}
+
+                            <TouchableOpacity style={{flex:1, backgroundColor: '#fff', paddingVertical: height/66.7, marginVertical: height/66.7}} onPress={this._pressSettings}>
+                                <Text style = {styles.title}>Edit Profile</Text>
+                            </TouchableOpacity>
+
+                            {this._renderProfileNumbers(this.state.myTrackingList.length, this.state.myFollowers.length, this.state.myFollowing.length)}
+
+                        </View>
+
+
+                        {this.renderContent()}
+
+
+
+                        {this.renderAchievements()}
+
+                        {this.renderRecent(this.state.recentlyPlayed)}
+
+
+
+                        <View style={{paddingBottom: height/5.56}}>
+
+                        </View>
+
+
+                    </ScrollView>
+
+
+
+                    <PlayerBottom navigator={this.props.navigator}/>
+
                 </View>
             )
         }
@@ -3184,7 +3224,7 @@ class Account extends Component {
 
                             {this._renderBio()}
 
-                            <TouchableOpacity style={{flex:1, backgroundColor: '#fff', paddingVertical: 10, marginVertical: 10}} onPress={this._pressSettings}>
+                            <TouchableOpacity style={{flex:1, backgroundColor: '#fff', paddingVertical: height/66.7, marginVertical: height/66.7}} onPress={this._pressSettings}>
                                 <Text style = {styles.title}>Edit Profile</Text>
                             </TouchableOpacity>
 
@@ -3203,7 +3243,7 @@ class Account extends Component {
 
 
 
-                        <View style={{paddingBottom:120}}>
+                        <View style={{paddingBottom: height/5.56}}>
 
                         </View>
 

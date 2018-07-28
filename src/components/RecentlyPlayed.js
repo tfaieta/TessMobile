@@ -22,17 +22,16 @@ class RecentlyPlayed extends Component{
     componentWillMount(){
         const {currentUser} = firebase.auth();
 
-        Variables.state.recentlyPlayed = [];
         firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).limitToLast(25).once("value", function (snapshot) {
             snapshot.forEach(function (snap) {
                 firebase.database().ref(`podcasts/${snap.val().id}`).once("value", function (data) {
                     if(data.val()){
-                        Variables.state.recentlyPlayed.push(data.val())
+                        this.state.recentlyPlayed = [data.val(), ...this.state.recentlyPlayed];
                     }
 
-                })
-            });
-        });
+                }.bind(this))
+            }.bind(this));
+        }.bind(this));
 
     }
 
@@ -65,11 +64,12 @@ class RecentlyPlayed extends Component{
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
+            recentlyPlayed: [],
             dataSource: dataSource.cloneWithRows([]),
             refreshing: false
         };
         this.timeout = setTimeout(() => {
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.recentlyPlayed.reverse())})
+            this.setState({dataSource: dataSource.cloneWithRows(this.state.recentlyPlayed)})
         },2000);
     };
 
@@ -79,22 +79,21 @@ class RecentlyPlayed extends Component{
 
         const {currentUser} = firebase.auth();
 
-        Variables.state.recentlyPlayed = [];
         firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).limitToLast(25).once("value", function (snapshot) {
             snapshot.forEach(function (snap) {
                 firebase.database().ref(`podcasts/${snap.val().id}`).once("value", function (data) {
                     if(data.val()){
-                        Variables.state.recentlyPlayed.push(data.val())
+                        this.state.recentlyPlayed = [data.val(), ...this.state.userRecentlyPlayed];
                     }
 
-                })
-            });
-        });
+                }.bind(this))
+            }.bind(this));
+        }.bind(this));
 
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.timeout = setTimeout(() => {
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.recentlyPlayed.reverse()), refreshing: false})
+            this.setState({dataSource: dataSource.cloneWithRows(this.state.recentlyPlayed), refreshing: false})
         },3000);
     };
 
