@@ -19,6 +19,13 @@ class Home extends Component{
 
     componentDidMount(){
 
+
+        // check if initialized is true or false or doesn't exist on firebase
+        // check if user is following anyone
+        // if both of those are false, start on board flow
+
+
+
         // Uncomment when testing feeds
         // this.rssSingleFetch("", 5);
 
