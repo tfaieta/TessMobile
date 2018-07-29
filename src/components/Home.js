@@ -38,19 +38,20 @@ class Home extends Component{
                 firebase.database().ref(`users/${currentUser.uid}/following`).once("value", function (snap) {
                     if(snap.val()){
                         // user is following someone, no onboard
-                        console.warn("No onboard")
                     }
                     else{
                         // user is not following anyone, passed both tests, start onboard
                         console.warn("Yes onboard");
+                        const {navigator} = this.props;
                         this.props.navigator.push({
                             screen: 'Onboard',
-                            title: 'Welcome to Tess'
+                            title: 'Welcome to Tess',
+                            passprops: {navigator}
                         });
                     }
-                })
+                }.bind(this))
             }
-        });
+        }.bind(this));
 
 
         // check for urls

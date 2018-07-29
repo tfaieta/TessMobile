@@ -1000,7 +1000,7 @@ class PlayerPreview extends Component {
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={this.close}>
-                        <Text style={styles.login}>Login Now</Text>
+                        <Text style={styles.login}>Sign Up Now</Text>
                     </TouchableOpacity>
 
 
