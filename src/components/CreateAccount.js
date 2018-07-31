@@ -111,9 +111,11 @@ class CreateAccount extends Component {
         return (
             <AnimatedLinearGradient
                 style={styles.container}
-                customColor={bgGradient.bg}
-                speed={duration}>
-
+                customColors={bgGradient.bg}
+                speed={duration}
+                points={{start: {x: 0, y: 0}, end: {x: 1, y: 1}}}
+                >
+                
                 <ScrollView   scrollEnabled={false}>
 
                 <View style={styles.spacing}>

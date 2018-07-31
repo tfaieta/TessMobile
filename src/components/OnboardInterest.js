@@ -179,7 +179,7 @@ class OnboardInterest extends Component{
 
         setTimeout(() =>{
             this.setState({dataSource: dataSource.cloneWithRows(pods), loading:false})
-        },3000)
+        }, 4000)
 
     }
 
@@ -194,12 +194,13 @@ class OnboardInterest extends Component{
             let bgGradient = {
                 bg: ['#3023ae', '#c86dd7']
             };
-            let duration = 500;
+            let duration = 2000;
 
             return (
                 <AnimatedLinearGradient
                     style={styles.container}
-                    customColor={bgGradient.bg}
+                    customColors={bgGradient.bg}
+                    points={{start: {x: 0, y: 0}, end: {x: 1, y: 1}}}
                     speed={duration}
                 >
                     <View style={{flex: 1, alignContent: 'center', justifyContent: 'center', }}>
