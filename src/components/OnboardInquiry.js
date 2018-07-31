@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, Dimensions, ScrollView, Platform, TouchableOpacity} from 'react-native';
-import FadeInView from './FadeInView'
+import FadeInView from './FadeInView';
+import Variables from "./Variables";
 var {height, width} = Dimensions.get('window');
 import LinearGradient from 'react-native-linear-gradient';
 import AnimatedLinearGradient from 'react-native-animated-linear-gradient'
@@ -55,7 +56,6 @@ class OnboardInquiry extends Component{
 
 
     render() {
-
         if(this.state.loading){
             let bgGradient = {
                 colors: ['#203a43', '#2b5876', '#4e4376']
@@ -83,12 +83,7 @@ class OnboardInquiry extends Component{
 
                             <View style={{flexDirection: 'row', marginHorizontal: width/20}}>
                                 <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                                    const interest = 'news';
-                                    this.props.navigator.push({
-                                        screen: 'OnboardInterest',
-                                        title: 'News',
-                                        passProps: {interest}
-                                    });
+                                    Variables.state.interest.push('news')
                                 }}>
                                     <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} colors={['#06beb6', '#48b1bf']} style={styles.linearGradient}>
                                         <Text style={styles.text}>news</Text>
@@ -96,12 +91,7 @@ class OnboardInquiry extends Component{
                                 </TouchableOpacity>
 
                                 <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                                    const interest = 'business';
-                                    this.props.navigator.push({
-                                        screen: 'OnboardInterest',
-                                        title: 'Business',
-                                        passProps: {interest}
-                                    });
+                                    Variables.state.interest.push('business')
                                 }}>
                                     <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} colors={['#0f2027', '#2c5364']} style={styles.linearGradient}>
                                         <Text style={styles.text}>business</Text>
@@ -111,12 +101,7 @@ class OnboardInquiry extends Component{
 
                             <View style={{flexDirection: 'row', marginHorizontal: width/20}}>
                                 <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                                    const interest = 'inspo';
-                                    this.props.navigator.push({
-                                        screen: 'OnboardInterest',
-                                        title: 'Inspiration',
-                                        passProps: {interest}
-                                    });
+                                    Variables.state.interest.push('inspo')
                                 }}>
                                     <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} colors={['#f953c6', '#b91d73']} style={styles.linearGradient}>
                                         <Text style={styles.text}>inspo</Text>
@@ -124,12 +109,7 @@ class OnboardInquiry extends Component{
                                 </TouchableOpacity>
 
                                 <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                                    const interest = 'learning';
-                                    this.props.navigator.push({
-                                        screen: 'OnboardInterest',
-                                        title: 'Learning',
-                                        passProps: {interest}
-                                    });
+                                    Variables.state.interest.push('learning')
                                 }}>
                                     <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} colors={['#00b4db', '#0083b0']} style={styles.linearGradient}>
                                         <Text style={styles.text}>learning</Text>
@@ -139,12 +119,7 @@ class OnboardInquiry extends Component{
 
                             <View style={{flexDirection: 'row', marginHorizontal: width/20}}>
                                 <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                                    const interest = 'comedy';
-                                    this.props.navigator.push({
-                                        screen: 'OnboardInterest',
-                                        title: 'Comedy',
-                                        passProps: {interest}
-                                    });
+                                    Variables.state.interest.push('comedy')
                                 }}>
                                     <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} colors={['#11998e', '#38ef7d']} style={styles.linearGradient}>
                                         <Text style={styles.text}>comedy</Text>
@@ -152,12 +127,7 @@ class OnboardInquiry extends Component{
                                 </TouchableOpacity>
 
                                 <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                                    const interest = 'health';
-                                    this.props.navigator.push({
-                                        screen: 'OnboardInterest',
-                                        title: 'Health',
-                                        passProps: {interest}
-                                    });
+                                    Variables.state.interest.push('health')
                                 }}>
                                     <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} colors={['#7f00ff', '#e100ff']} style={styles.linearGradient}>
                                         <Text style={styles.text}>health</Text>
@@ -167,12 +137,7 @@ class OnboardInquiry extends Component{
 
                             <View style={{flexDirection: 'row', marginHorizontal: width/20}}>
                                 <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                                    const interest = 'spiritual';
-                                    this.props.navigator.push({
-                                        screen: 'OnboardInterest',
-                                        title: 'Spiritual',
-                                        passProps: {interest}
-                                    });
+                                    Variables.state.interest.push('spiritual')
                                 }}>
                                     <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} colors={['#396afc', '#2948ff']} style={styles.linearGradient}>
                                         <Text style={styles.text}>spiritual</Text>
@@ -180,12 +145,7 @@ class OnboardInquiry extends Component{
                                 </TouchableOpacity>
 
                                 <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                                    const interest = 'philosophy';
-                                    this.props.navigator.push({
-                                        screen: 'OnboardInterest',
-                                        title: 'Philosophy',
-                                        passProps: {interest}
-                                    });
+                                    Variables.state.interest.push('philosophy')
                                 }}>
                                     <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} colors={['#f2994a', '#f2c94c']} style={styles.linearGradient}>
                                         <Text style={styles.text}>philosophy</Text>
@@ -195,12 +155,7 @@ class OnboardInquiry extends Component{
 
                             <View style={{flexDirection: 'row', marginHorizontal: width/20}}>
                                 <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                                    const interest = 'sports';
-                                    this.props.navigator.push({
-                                        screen: 'OnboardInterest',
-                                        title: 'Sports',
-                                        passProps: {interest}
-                                    });
+                                    Variables.state.interest.push('sports')
                                 }}>
                                     <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} colors={['#41295a', '#2f0743']} style={styles.linearGradient}>
                                         <Text style={styles.text}>sports</Text>
@@ -208,12 +163,7 @@ class OnboardInquiry extends Component{
                                 </TouchableOpacity>
 
                                 <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                                    const interest = 'tech';
-                                    this.props.navigator.push({
-                                        screen: 'OnboardInterest',
-                                        title: 'Tech',
-                                        passProps: {interest}
-                                    });
+                                    Variables.state.interest.push('tech')
                                 }}>
                                     <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} colors={['#00c6ff', '#0072ff']} style={styles.linearGradient}>
                                         <Text style={styles.text}>tech</Text>
@@ -223,12 +173,7 @@ class OnboardInquiry extends Component{
 
                             <View style={{flexDirection: 'row', marginHorizontal: width/20}}>
                                 <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                                    const interest = 'travel';
-                                    this.props.navigator.push({
-                                        screen: 'OnboardInterest',
-                                        title: 'Travel',
-                                        passProps: {interest}
-                                    });
+                                    Variables.state.interest.push('travel')
                                 }}>
                                     <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} colors={['#f2709c', '#ff9472']} style={styles.linearGradient}>
                                         <Text style={styles.text}>travel</Text>
@@ -236,12 +181,7 @@ class OnboardInquiry extends Component{
                                 </TouchableOpacity>
 
                                 <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                                    const interest = 'music';
-                                    this.props.navigator.push({
-                                        screen: 'OnboardInterest',
-                                        title: 'Music',
-                                        passProps: {interest}
-                                    });
+                                    Variables.state.interest.push('music')
                                 }}>
                                     <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} colors={['#606c88', '#0072ff']} style={styles.linearGradient}>
                                         <Text style={styles.text}>music</Text>
@@ -251,12 +191,7 @@ class OnboardInquiry extends Component{
 
                             <View style={{flexDirection: 'row', marginHorizontal: width/20}}>
                                 <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                                    const interest = 'science';
-                                    this.props.navigator.push({
-                                        screen: 'OnboardInterest',
-                                        title: 'Science',
-                                        passProps: {interest}
-                                    });
+                                    Variables.state.interest.push('science')
                                 }}>
                                     <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} colors={['#4e54c8', '#8f94fb']} style={styles.linearGradient}>
                                         <Text style={styles.text}>science</Text>
@@ -264,12 +199,7 @@ class OnboardInquiry extends Component{
                                 </TouchableOpacity>
 
                                 <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                                    const interest = 'gaming';
-                                    this.props.navigator.push({
-                                        screen: 'OnboardInterest',
-                                        title: 'Gaming',
-                                        passProps: {interest}
-                                    });
+                                    Variables.state.interest.push('gaming')
                                 }}>
                                     <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} colors={['#ec008c', '#fc6767']} style={styles.linearGradient}>
                                         <Text style={styles.text}>gaming</Text>
@@ -278,15 +208,12 @@ class OnboardInquiry extends Component{
                             </View>
 
                             <TouchableOpacity onPress={() =>{
-                                // finished, go to home, and mark user as onboarded
-                                const {currentUser} = firebase.auth();
-                                const onboarded = true;
-                                firebase.database().ref(`users/${currentUser.uid}/onboarded`).update({onboarded});
-                                this.props.navigator.popToRoot({
-                                    animated: true,
-                                    animationType: 'fade',
+                                this.props.navigator.push({
+                                        screen: 'OnboardInterest',
+                                        animationType: 'fade',
                                 });
-                            }} >
+                                console.warn(Variables.state.interest)
+                            }}>
                                 <View style={styles.nextContainer}>
                                     <Text style={styles.text}>Next</Text>
                                 </View>
