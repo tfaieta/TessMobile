@@ -14,26 +14,7 @@ class OnboardInterest extends Component{
         super(props);
 
         this.props.navigator.setStyle({
-            statusBarHidden: false,
-            statusBarTextColorScheme: 'light',
-            navBarHidden: false,
-            tabBarHidden: true,
-            navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
-            navBarTextFontSize: 22, // change the font size of the title
-            navBarTextFontFamily: 'Montserrat-Bold', // Changes the title font
-            drawUnderTabBar: false,
-            navBarHideOnScroll: false,
-            navBarBackgroundColor: '#fff',
-            topBarElevationShadowEnabled: false,
-            topBarShadowColor: 'transparent',
-            topBarShadowOpacity: 0.1,
-            topBarShadowOffset: 3,
-            topBarShadowRadius: 5,
-            statusBarColor: '#fff',
-            drawUnderNavBar: Platform.OS === 'ios',
-            navBarTranslucent: Platform.OS === 'ios',
-            navBarNoBorder: true,
-
+            navBarHidden: true,
         });
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
@@ -263,7 +244,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Bold',
-        fontSize: width/23.44,
+        fontSize: width/18,
         backgroundColor: 'transparent'
     },
 });

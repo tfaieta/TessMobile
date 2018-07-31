@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, View,} from 'react-native';
-
-
+import FadeInView from './FadeInView'
 
 // Start of onboard process
 
@@ -48,7 +47,9 @@ class Onboard extends Component{
 
     render() {
         return (
-            <View style={{backgroundColor: '#fff'}} />
+            <View>
+            <FadeInView/>
+            </View>
         );
     }
 
