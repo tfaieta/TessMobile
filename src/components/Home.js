@@ -8,10 +8,10 @@ import Player from "./Player";
 import Browser from "./Browser";
 import ListItemCard from "./ListItemCard";
 var Analytics = require('react-native-firebase-analytics');
-
 var {height, width} = Dimensions.get('window');
-
 var DomParser = require('react-native-html-parser').DOMParser;
+
+
 
 // 1st tab, home page
 
@@ -31,7 +31,6 @@ class Home extends Component{
         firebase.database().ref(`users/${currentUser.uid}/onboarded`).once("value", function (snapshot) {
             if(snapshot.val()){
                 // already onboarded
-                console.warn("No onboard")
             }
             else{
                 // not onboarded, but check if user is following anyone
@@ -41,12 +40,12 @@ class Home extends Component{
                     }
                     else{
                         // user is not following anyone, passed both tests, start onboard
-                        console.warn("Yes onboard");
                         const {navigator} = this.props;
                         this.props.navigator.push({
                             screen: 'Onboard',
                             title: 'Welcome to Tess',
-                            passprops: {navigator}
+                            passprops: {navigator},
+                            animationType: 'fade',
                         });
                     }
                 }.bind(this))

@@ -6,8 +6,10 @@ import PlayerBottom from './PlayerBottom';
 import Variables from "./Variables";
 import firebase from 'firebase';
 import ListItemPodcast from "./ListItemPodcast";
-
 var {height, width} = Dimensions.get('window');
+
+
+// search component for onboard process
 
 class OnboardSearch extends Component{
 
@@ -23,20 +25,23 @@ class OnboardSearch extends Component{
     componentWillMount(){
         const refArtist = firebase.database().ref(`users/`);
 
-        refArtist.once("value", function (snapshot) {
-            Variables.state.mySearchesPodcast = [];
-            snapshot.forEach(function (data) {
-                if (data.val()) {
-                    firebase.database().ref(`/users/${data.key}/username`).orderByChild("username").once("value", function (snap) {
-                        if (snap.val()) {
-                            if (snap.val().username.toLowerCase().includes(Variables.state.searchWord.toLowerCase())) {
-                                Variables.state.mySearchesPodcast.push(data.key);
+        if(Variables.state.searchWord != ''){
+            refArtist.once("value", function (snapshot) {
+                Variables.state.mySearchesPodcast = [];
+                snapshot.forEach(function (data) {
+                    if (data.val()) {
+                        firebase.database().ref(`/users/${data.key}/username`).orderByChild("username").once("value", function (snap) {
+                            if (snap.val()) {
+                                if (snap.val().username.toLowerCase().includes(Variables.state.searchWord.toLowerCase())) {
+                                    Variables.state.mySearchesPodcast.push(data.key);
+                                }
                             }
-                        }
-                    });
-                }
+                        });
+                    }
+                })
             })
-        })
+        }
+
     }
 
     componentWillUnmount(){
@@ -63,37 +68,42 @@ class OnboardSearch extends Component{
             podcastSource: dataSource.cloneWithRows(Variables.state.mySearchesPodcast)
         };
 
-        this.timeout2 = setTimeout(() => {this.setState({
-            podcastSource: dataSource.cloneWithRows(Variables.state.mySearchesPodcast), searchFinished: true})}, 7000);
+        if(Variables.state.searchWord != ''){
+            this.timeout2 = setTimeout(() => {this.setState({
+                podcastSource: dataSource.cloneWithRows(Variables.state.mySearchesPodcast), searchFinished: true})}, 7000);
+        }
+
     }
 
-    _renderResults =(mySearchesPodcast) => {
-        if(this.state.searchFinished){
-            if(mySearchesPodcast > 0){
-                return(
-                    <View style={{flex:1}}>
-                        <ListView
-                            enableEmptySections
-                            dataSource={this.state.podcastSource}
-                            renderRow={this.renderRowPodcast}
-                        />
-                    </View>
-                )
+    _renderResults = (mySearchesPodcast) => {
+        if(Variables.state.searchWord != ''){
+            if(this.state.searchFinished){
+                if(mySearchesPodcast > 0){
+                    return(
+                        <View style={{flex:1}}>
+                            <ListView
+                                enableEmptySections
+                                dataSource={this.state.podcastSource}
+                                renderRow={this.renderRowPodcast}
+                            />
+                        </View>
+                    )
+                }
+                else{
+                    return(
+                        <View>
+                            <Text style={styles.title2}>No Results Found</Text>
+                        </View>
+                    )
+                }
             }
             else{
                 return(
                     <View>
-                        <Text style={styles.title2}>No Results Found</Text>
+                        <ActivityIndicator style={{paddingVertical: height/33.35, alignSelf:'center'}} color='#3e4164' size ="large"/>
                     </View>
                 )
             }
-        }
-        else{
-            return(
-                <View>
-                    <ActivityIndicator style={{paddingVertical: height/33.35, alignSelf:'center'}} color='#3e4164' size ="large"/>
-                </View>
-            )
         }
     };
 
@@ -146,10 +156,10 @@ class OnboardSearch extends Component{
                         lightTheme
                         round
                         noIcon={true}
-                        inputStyle={{backgroundColor: '#fff', color: '#2A2A30', marginHorizontal: width/50,
+                        inputStyle={{backgroundColor: '#f5f4f9', color: '#2A2A30', marginHorizontal: width/50,
                             fontFamily: 'Montserrat-SemiBold', fontStyle: 'normal', paddingBottom: height/80.31}}
                         containerStyle= {styles.containerSearch}
-                        placeholder={this.state.search}
+                        placeholder={'Search...'}
                         placeholderTextColor = '#2A2A30'
                         autoCorrect={false}
                         autoCapitalize="none"
@@ -182,7 +192,7 @@ class OnboardSearch extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-
+        backgroundColor: '#f5f4f9',
     },
     title: {
         color: '#2A2A30',
@@ -196,7 +206,7 @@ const styles = StyleSheet.create({
         marginHorizontal: height/33.35,
     },
     backColor:{
-        backgroundColor:  '#fff',
+        backgroundColor:  '#f5f4f9',
         flexDirection: 'row',
         marginTop: height/33.35,
     },
@@ -204,13 +214,13 @@ const styles = StyleSheet.create({
         marginLeft: height/66.7,
         marginTop: height/33.35,
         width: height/1.942,
-        backgroundColor: '#fff',
-        borderColor:'#fff',
+        backgroundColor: '#f5f4f9',
+        borderColor:'#f5f4f9',
         borderWidth: 1,
         borderTopWidth: 1,
         borderBottomWidth: 1,
-        borderTopColor: '#fff',
-        borderBottomColor: '#fff',
+        borderTopColor: '#f5f4f9',
+        borderBottomColor: '#f5f4f9',
     },
     backButtonContainer:{
         paddingTop: height/23.821,
@@ -226,9 +236,9 @@ const styles = StyleSheet.create({
         paddingVertical: height/66.7,
         marginVertical: 0,
         marginHorizontal: 0,
-        backgroundColor: '#FFF',
+        backgroundColor: '#f5f4f9',
         opacity: 1,
-        borderColor: '#FFF',
+        borderColor: '#f5f4f9',
         borderWidth: height/1334,
         borderRadius: 0,
         borderStyle: 'solid',
@@ -258,7 +268,7 @@ const styles = StyleSheet.create({
         flex: 1,
         height: height/14,
         width: width,
-        backgroundColor: '#fff',
+        backgroundColor: '#f5f4f9',
     },
 });
 

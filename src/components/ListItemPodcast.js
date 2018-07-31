@@ -9,7 +9,7 @@ var {height, width} = Dimensions.get('window');
 
 
 
-// a single podcast on a list, shows podcast with episodes
+// a single podcast on a list, shows podcast with episodes, description and follow button
 
 class ListItemPodcast extends Component{
 
@@ -38,12 +38,14 @@ class ListItemPodcast extends Component{
                 const storageRef = firebase.storage().ref(`/users/${this.props.podcast}/image-profile-uploaded`);
                 storageRef.getDownloadURL()
                     .then(function(url) {
-                        podImage = url;
+                        if(url){
+                            podImage = url;
+                        }
                     }).catch(function(error) {
                     //
                 });
             }
-        });
+        }.bind(this));
 
         let eps = [];
         firebase.database().ref(`users/${this.props.podcast}/podcasts`).limitToLast(10).once("value", function (snap) {

@@ -3,7 +3,7 @@ import { View, StyleSheet, Dimensions, ScrollView, Platform, ListView, Text} fro
 import ListItemPodcast from "./ListItemPodcast";
 var {height, width} = Dimensions.get('window');
 import AnimatedLinearGradient from 'react-native-animated-linear-gradient'
-
+import PlayerBottom from './PlayerBottom';
 
 
 // A single interest from OnboardInquiry
@@ -154,7 +154,6 @@ class OnboardInterest extends Component{
 
             pods.push('The Bill Simmons Podcast');
             pods.push('The Herd with Colin Cowherd');
-            pods.push('Green Light Sports Podcast');
 
         }
         else if(interest == 'music'){
@@ -212,9 +211,9 @@ class OnboardInterest extends Component{
 
         if(this.state.loading){
             let bgGradient = {
-                bg: ['#d15564', '#9a5e9a', '#506dcf']
+                bg: ['#3023ae', '#c86dd7']
             };
-            let duration = 1000;
+            let duration = 500;
 
             return (
                 <AnimatedLinearGradient
@@ -222,7 +221,10 @@ class OnboardInterest extends Component{
                     customColor={bgGradient.bg}
                     speed={duration}
                 >
-                    <Text style={styles.title} >Generating \nRecommendations</Text>
+                    <View style={{flex: 1, alignContent: 'center', justifyContent: 'center', }}>
+                        <Text style={styles.title} >Generating</Text>
+                        <Text style={styles.title} >Recommendations</Text>
+                    </View>
                 </AnimatedLinearGradient>
             );
         }
@@ -231,7 +233,9 @@ class OnboardInterest extends Component{
                 <View
                     style={styles.container}>
 
-                    <ScrollView style={{paddingTop: height/9.53}}>
+                    <ScrollView>
+
+                        <View style={{paddingTop: height/10}} />
                         <ListView
                             enableEmptySections
                             dataSource={this.state.dataSource}
@@ -240,6 +244,7 @@ class OnboardInterest extends Component{
                         <View style = {{paddingBottom: height/7.41}} />
                     </ScrollView>
 
+                    <PlayerBottom navigator={this.props.navigator}/>
                 </View>
 
             );
@@ -252,14 +257,14 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f5f4f9',
-        paddingTop: height/5,
     },
     title: {
-        color: '#3e4164',
+        color: '#fff',
         textAlign: 'center',
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Bold',
         fontSize: width/23.44,
+        backgroundColor: 'transparent'
     },
 });
 
