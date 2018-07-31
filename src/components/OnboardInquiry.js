@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Dimensions, ScrollView, Platform, TouchableOpacity} from 'react-native';
+import { View, StyleSheet, Text, Dimensions, ScrollView, Platform, TouchableOpacity, Animated, Easing} from 'react-native';
 var {height, width} = Dimensions.get('window');
 import LinearGradient from 'react-native-linear-gradient';
 import AnimatedLinearGradient from 'react-native-animated-linear-gradient'
@@ -49,7 +49,7 @@ class OnboardInquiry extends Component{
             this.setState({
                 loading: false
             })
-        }, 2000)
+        }, 3000)
 
     }
 
@@ -58,26 +58,25 @@ class OnboardInquiry extends Component{
 
         if(this.state.loading){
             let bgGradient = {
-                colors: ['#2b5876', '#203a43', '#4e4376']
+                colors: ['#203a43', '#4e4376']
             };
-            let duration = 3000;
+            let duration = 1500;
 
             return (
                 <AnimatedLinearGradient
                     style={styles.container}
-                    customColor={bgGradient.colors}
-                    speed={duration}>
+                    colors={bgGradient.colors}
+                    points={{start: {x: 0.5, y: 0}, end: {x: 0.5, y: 1}}}
+                    >
                     <View style={{flex: 1, alignContent: 'center', justifyContent: 'center', backgroundColor: 'transparent'}}>
                         <Text style={styles.title2}>What kind of podcasts are you interested in?</Text>
                     </View>
                 </AnimatedLinearGradient>
-
             );
         }
         else{
             return (
                 <View style={styles.container}>
-
                     <ScrollView>
                         <Text style={styles.title}>What kind of podcasts are you interested in?</Text>
 
@@ -298,7 +297,7 @@ class OnboardInquiry extends Component{
                                 title: 'Search',
                             });
                         }} >
-                            <Text style={styles.titleSmall} >Search Instead?</Text>
+                            <Text style={styles.titleSmall}>Search Instead?</Text>
                         </TouchableOpacity>
                     </ScrollView>
 

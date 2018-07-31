@@ -92,6 +92,7 @@ class Category extends Component{
             pods.push('American Innovations');
             pods.push('Love + Radio');
             pods.push('Couples Therapy with Candice and Casey');
+            pods.push('Batman');
         }
         else if(category == 'Religion & Spirituality'){
 
