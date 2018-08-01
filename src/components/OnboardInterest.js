@@ -180,7 +180,7 @@ class OnboardInterest extends Component{
 
         setTimeout(() =>{
             this.setState({dataSource: dataSource.cloneWithRows(pods), loading:false})
-        }, 4000)
+        }, 5000)
 
     }
 
@@ -215,7 +215,8 @@ class OnboardInterest extends Component{
             return (
                 <View style={styles.container}>
                     <ScrollView>
-                        <View style={{paddingTop: height/10}} />
+                        <View/>
+                        <Text style={styles.results}>Here are some recommendations!</Text>
                         <ListView
                             enableEmptySections
                             dataSource={this.state.dataSource}
@@ -260,6 +261,16 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-Bold',
         fontSize: width/18,
         backgroundColor: 'transparent'
+    },
+    results: {
+        color: '#3e4164',
+        textAlign: 'center',
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-Bold',
+        fontSize: width/16,
+        marginTop: height/20,
+        marginBottom: height/55,
+        marginHorizontal: height/50
     },
     text: {
         color: '#fff',
