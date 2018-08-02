@@ -53,6 +53,7 @@ class Variables extends Component{
         likers: [],
         comments: [],
         interest: [],
+        unique: [],
         url: '',
         followedContent: [],
         newPodcasts: [],

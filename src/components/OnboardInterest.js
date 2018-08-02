@@ -7,7 +7,6 @@ import AnimatedLinearGradient from 'react-native-animated-linear-gradient'
 import PlayerBottom from './PlayerBottom';
 import firebase from 'firebase';
 
-
 // Interests from OnboardInquiry
 
 class OnboardInterest extends Component{
@@ -273,7 +272,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Montserrat-Bold',
         fontSize: width/16,
-        marginTop: height/20,
+        marginTop: height/30,
         marginBottom: height/55,
         marginHorizontal: height/50
     },

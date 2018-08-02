@@ -36,7 +36,7 @@ class InterestList extends Component{
             <View>
                 <View style={{flexDirection: 'row', marginHorizontal: width/20}}>
                     <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                        Variables.state.interest.push('news')
+                        Variables.state.unique.push('news')
                         this.setState({selectedNews: !this.state.selectedNews})
                     }}>
                         <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 1}} 
@@ -47,8 +47,8 @@ class InterestList extends Component{
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                        Variables.state.interest.push('business')
                         this.setState({selectedBusiness: !this.state.selectedBusiness})
+                        Variables.state.unique.push('business')
                     }}>
                         <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} 
                         colors={this.state.selectedBusiness ?  opaque : ['#0f2027', '#2c5364']} style={styles.linearGradient}>
@@ -59,7 +59,7 @@ class InterestList extends Component{
 
                 <View style={{flexDirection: 'row', marginHorizontal: width/20}}>
                     <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                        Variables.state.interest.push('inspo')
+                        Variables.state.unique.push('inspo')
                         this.setState({selectedInspo: !this.state.selectedInspo})
                     }}>
                         <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} 
@@ -69,7 +69,7 @@ class InterestList extends Component{
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                        Variables.state.interest.push('learning')
+                        Variables.state.unique.push('learning')
                         this.setState({selectedLearning: !this.state.selectedLearning})
                     }}>
                         <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} 
@@ -81,7 +81,7 @@ class InterestList extends Component{
 
                 <View style={{flexDirection: 'row', marginHorizontal: width/20}}>
                     <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                        Variables.state.interest.push('comedy')
+                        Variables.state.unique.push('comedy')
                         this.setState({selectedComedy: !this.state.selectedComedy})
                     }}>
                         <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}}
@@ -91,7 +91,7 @@ class InterestList extends Component{
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                        Variables.state.interest.push('health')
+                        Variables.state.unique.push('health')
                         this.setState({selectedHealth: !this.state.selectedHealth})
                     }}>
                         <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}}
@@ -103,7 +103,7 @@ class InterestList extends Component{
 
                 <View style={{flexDirection: 'row', marginHorizontal: width/20}}>
                     <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                        Variables.state.interest.push('spiritual')
+                        Variables.state.unique.push('spiritual')
                         this.setState({selectedSpiritual: !this.state.selectedSpiritual})
                     }}>
                         <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} 
@@ -113,7 +113,7 @@ class InterestList extends Component{
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                        Variables.state.interest.push('philosophy')
+                        Variables.state.unique.push('philosophy')
                         this.setState({selectedPhilosophy: !this.state.selectedPhilosophy})
                     }}>
                         <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} 
@@ -125,7 +125,7 @@ class InterestList extends Component{
 
                 <View style={{flexDirection: 'row', marginHorizontal: width/20}}>
                     <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                        Variables.state.interest.push('sports')
+                        Variables.state.unique.push('sports')
                         this.setState({selectedSports: !this.state.selectedSports})
                     }}>
                         <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} 
@@ -135,7 +135,7 @@ class InterestList extends Component{
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                        Variables.state.interest.push('tech')
+                        Variables.state.unique.push('tech')
                         this.setState({selectedTech: !this.state.selectedTech})
                     }}>
                         <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} 
@@ -147,7 +147,7 @@ class InterestList extends Component{
 
                 <View style={{flexDirection: 'row', marginHorizontal: width/20}}>
                     <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                        Variables.state.interest.push('travel')
+                        Variables.state.unique.push('travel')
                         this.setState({selectedTravel: !this.state.selectedTravel})
                     }}>
                         <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} 
@@ -157,7 +157,7 @@ class InterestList extends Component{
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                        Variables.state.interest.push('music')
+                        Variables.state.unique.push('music')
                         this.setState({selectedMusic: !this.state.selectedMusic})
                     }}>
                         <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} 
@@ -169,7 +169,7 @@ class InterestList extends Component{
 
                 <View style={{flexDirection: 'row', marginHorizontal: width/20}}>
                     <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                        Variables.state.interest.push('science')
+                        Variables.state.unique.push('science')
                         this.setState({selectedScience: !this.state.selectedScience})
                     }}>
                         <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} 
@@ -179,7 +179,7 @@ class InterestList extends Component{
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                        Variables.state.interest.push('gaming')
+                        Variables.state.unique.push('gaming')
                         this.setState({selectedGaming: !this.state.selectedGaming})
                     }}>
                         <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} 

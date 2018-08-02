@@ -90,7 +90,8 @@ class OnboardInquiry extends Component{
                             <InterestList/>
 
                             <TouchableOpacity onPress={() =>{
-                                if (Variables.state.interest === undefined || Variables.state.interest.length == 0) {
+                                // Check to see if the array is empty, if empty show alert
+                                if (Variables.state.unique === undefined || Variables.state.unique.length == 0) {
                                     if (Platform.OS === 'ios') {
                                         // Use AlertIOS - This will work on IOS
                                         AlertIOS.alert(
@@ -109,6 +110,9 @@ class OnboardInquiry extends Component{
                                     }
                                 }
                                 else {
+                                    // This makes sure that the array doesn't have multiple of the same value
+                                    // Important b/c it'll render the same interest twice in OnboardInterest page
+                                    Variables.state.interest = [ ...new Set(Variables.state.unique) ];
                                     this.props.navigator.push({
                                         screen: 'OnboardInterest',
                                         animationType: 'fade',
