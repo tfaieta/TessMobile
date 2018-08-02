@@ -178,10 +178,13 @@ class OnboardInterest extends Component{
             }
         }
 
-        setTimeout(() =>{
+        this.timeout = setTimeout(() =>{
             this.setState({dataSource: dataSource.cloneWithRows(pods), loading:false})
         }, 5000)
+    }
 
+    componentWillUnmount() {
+        clearTimeout(this.timeout);
     }
 
     renderRow = (rowData) => {

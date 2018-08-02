@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Dimensions, ScrollView, Platform, TouchableOpacity} from 'react-native';
+import { View, StyleSheet, Text, Dimensions, ScrollView, Platform, TouchableOpacity, AlertIOS} from 'react-native';
+import AwesomeAlert from 'react-native-awesome-alerts';
 import FadeInView from './FadeInView';
 import Variables from "./Variables";
 import InterestList from './InterestList';
@@ -46,6 +47,9 @@ class OnboardInquiry extends Component{
 
         this.state = {
             loading: true,
+            showAlert: false,
+            text: '',
+            message: '',
         };
 
         this.timeout = setTimeout(() => {
@@ -86,11 +90,30 @@ class OnboardInquiry extends Component{
                             <InterestList/>
 
                             <TouchableOpacity onPress={() =>{
-                                this.props.navigator.push({
+                                if (Variables.state.interest === undefined || Variables.state.interest.length == 0) {
+                                    if (Platform.OS === 'ios') {
+                                        // Use AlertIOS - This will work on IOS
+                                        AlertIOS.alert(
+                                            'Nothing Selected',
+                                            'Please select an interest',
+                                            { cancelable: true }
+
+                                        );
+                                    } else {
+                                        // Use AwesomeAlert - This will work on Android
+                                        this.setState({
+                                            showAlert: true,
+                                            text: "Nothing Selected",
+                                            message: "Please select an interest"
+                                        })
+                                    }
+                                }
+                                else {
+                                    this.props.navigator.push({
                                         screen: 'OnboardInterest',
                                         animationType: 'fade',
-                                });
-                                console.warn(Variables.state.interest)
+                                    });
+                                }
                             }}>
                                 <View style={styles.nextContainer}>
                                     <Text style={styles.text}>Next</Text>
