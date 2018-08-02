@@ -11,21 +11,21 @@ class InterestList extends Component{
         super(props);
         
         this.state = {
-            selectedNews: false,
-            selectedBusiness: false,
-            selectedInspo: false,
-            selectedLearning: false,
-            selectedComedy: false,
-            selectedHealth: false,
-            selectedSpiritual: false,
-            selectedPhilosophy: false,
-            selectedSports: false,
-            selectedTech: false,
-            selectedTravel: false,
-            selectedMusic: false,
-            selectedScience: false,
-            selectedGaming: false,
-          }
+            selectedNews: Variables.state.selectedNews,
+            selectedBusiness: Variables.state.selectedBusiness,
+            selectedInspo: Variables.state.selectedInspo,
+            selectedLearning: Variables.state.selectedLearning,
+            selectedComedy: Variables.state.selectedComedy,
+            selectedHealth: Variables.state.selectedHealth,
+            selectedSpiritual: Variables.state.selectedSpiritual,
+            selectedPhilosophy: Variables.state.selectedPhilosophy,
+            selectedSports: Variables.state.selectedSports,
+            selectedTech: Variables.state.selectedTech,
+            selectedTravel: Variables.state.selectedTravel,
+            selectedMusic: Variables.state.selectedMusic,
+            selectedScience: Variables.state.selectedScience,
+            selectedGaming: Variables.state.selectedGaming,
+        }
     }
     
     render() {
@@ -35,10 +35,13 @@ class InterestList extends Component{
         return (
             <View>
                 <View style={{flexDirection: 'row', marginHorizontal: width/20}}>
-                    <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                        Variables.state.unique.push('news')
-                        this.setState({selectedNews: !this.state.selectedNews})
-                    }}>
+                    <TouchableOpacity
+                        style={styles.smallContainer} 
+                        onPress={() => {
+                            this.setState({selectedNews: !this.state.selectedNews})        
+                            Variables.state.unique.push('news')    
+                        }}
+                    >
                         <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 1}} 
                         colors={this.state.selectedNews ?  opaque : ['#06beb6', '#48b1bf']} 
                         style={styles.linearGradient}>
@@ -46,10 +49,11 @@ class InterestList extends Component{
                         </LinearGradient>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.smallContainer} onPress={() => {
-                        this.setState({selectedBusiness: !this.state.selectedBusiness})
-                        Variables.state.unique.push('business')
-                    }}>
+                    <TouchableOpacity style={styles.smallContainer} 
+                        onPress={() => {
+                            Variables.state.unique.push('business')
+                            this.setState({selectedBusiness: !this.state.selectedBusiness})
+                        }}>
                         <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 1}} 
                         colors={this.state.selectedBusiness ?  opaque : ['#0f2027', '#2c5364']} style={styles.linearGradient}>
                             <Text style={styles.text}>business</Text>
