@@ -5,6 +5,8 @@ import Variables from "./Variables";
 var {height, width} = Dimensions.get('window');
 import AnimatedLinearGradient from 'react-native-animated-linear-gradient'
 import PlayerBottom from './PlayerBottom';
+import firebase from 'firebase';
+
 
 // Interests from OnboardInquiry
 
