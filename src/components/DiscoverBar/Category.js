@@ -216,6 +216,13 @@ class Category extends Component{
             pods.push('Recode Decode, hosted by Kara Swisher');
             pods.push('Recode Media with Peter Kafka');
             pods.push('Recode Replay');
+            pods.push('Full Stack Radio');
+            pods.push('Hanselminutes - Fresh Talk and Tech for Developers');
+            pods.push('Presentable');
+            pods.push('The Changelog');
+            pods.push('JS Party');
+            pods.push('Practical AI');
+            pods.push('Spotlight');
         }
         else if(category == 'Gaming' || category == 'Games & Hobbies'){
 
@@ -239,6 +246,7 @@ class Category extends Component{
             pods.push('The Pitch');
             pods.push('Accidental Tech Podcast');
             pods.push('This Week in Startups - Audio');
+            pods.push('Founders Talk');
         }
 
         setTimeout(() =>{
