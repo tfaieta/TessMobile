@@ -9,13 +9,15 @@ import firebase from 'firebase';
 // Interests from OnboardInquiry
 
 class OnboardInterest extends Component{
+    
+    static navigatorStyle = {
+        navBarHidden: true,
+        tabBarHidden: true,
+        statusBarColor: 'transparent'
+    }
 
     constructor(props) {
         super(props);
-
-        this.props.navigator.setStyle({
-            navBarHidden: true,
-        });
 
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {

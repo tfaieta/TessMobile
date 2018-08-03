@@ -6,11 +6,18 @@ var {height, width} = Dimensions.get('window');
 import LinearGradient from 'react-native-linear-gradient';
 import AnimatedLinearGradient from 'react-native-animated-linear-gradient'
 import PlayerBottom from './PlayerBottom';
+import firebase from 'firebase';
 
 // From the Animated Gradient to the Inquiry 
 // Uses InterestList component to render all categories
 
 class OnboardInquiry extends Component{
+
+    static navigatorStyle = {
+        navBarHidden: true,
+        tabBarHidden: true,
+        statusBarColor: 'transparent'
+    }
 
     componentWillUnmount(){
         clearTimeout(this.timeout)
@@ -18,29 +25,6 @@ class OnboardInquiry extends Component{
 
     constructor(props) {
         super(props);
-
-        this.props.navigator.setStyle({
-            statusBarHidden: false,
-            statusBarTextColorScheme: 'light',
-            navBarHidden: true,
-            tabBarHidden: true,
-            navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
-            navBarTextFontSize: 22, // change the font size of the title
-            navBarTextFontFamily: 'Montserrat-Bold', // Changes the title font
-            drawUnderTabBar: false,
-            navBarHideOnScroll: false,
-            navBarBackgroundColor: '#fff',
-            topBarElevationShadowEnabled: false,
-            topBarShadowColor: 'transparent',
-            topBarShadowOpacity: 0.1,
-            topBarShadowOffset: 3,
-            topBarShadowRadius: 5,
-            statusBarColor: '#fff',
-            drawUnderNavBar: Platform.OS === 'ios',
-            navBarTranslucent: Platform.OS === 'ios',
-            navBarNoBorder: true,
-
-        });
 
         this.state = {
             loading: true,
@@ -281,10 +265,13 @@ class OnboardInquiry extends Component{
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={() =>{
-                                this.props.navigator.push({
-                                    screen: 'OnboardSearch',
-                                    title: 'Search',
-                                });
+                                const {currentUser} = firebase.auth();
+                                const onboarded = true;
+                                firebase.database().ref(`users/${currentUser.uid}/onboarded`).update({onboarded});
+                                this.props.navigator.popToRoot({
+                                    animated: true,
+                                    animationType: 'fade',
+                                })
                             }} >
                                 <Text style={styles.titleSmall}>Search Instead?</Text>
                             </TouchableOpacity>
