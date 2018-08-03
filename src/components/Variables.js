@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {podFile, podTime} from './Record';
 import MusicControl from 'react-native-music-control';
 import firebase from 'firebase';
 
@@ -29,20 +28,6 @@ class Variables extends Component{
         bio: '',
         profileImage: '',
         onUserProfileImage: '',
-        selectedNews: false,
-        selectedBusiness: false,
-        selectedInspo: false,
-        selectedLearning: false,
-        selectedComedy: false,
-        selectedHealth: false,
-        selectedSpiritual: false,
-        selectedPhilosophy: false,
-        selectedSports: false,
-        selectedTech: false,
-        selectedTravel: false,
-        selectedMusic: false,
-        selectedScience: false,
-        selectedGaming: false,
         userProfileImage: '',
         favCategory: '',
         currentRef: '',
@@ -66,8 +51,6 @@ class Variables extends Component{
         mySearchesPodcast: [],
         likers: [],
         comments: [],
-        interest: [],
-        unique: [],
         url: '',
         followedContent: [],
         newPodcasts: [],
