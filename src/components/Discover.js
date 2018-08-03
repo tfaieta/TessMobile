@@ -63,7 +63,7 @@ class Discover extends Component{
 
 
         let small = [];
-        firebase.database().ref(`podcasts`).limitToLast(500).once("value", function (snapshot) {
+        firebase.database().ref(`podcasts`).limitToLast(1000).once("value", function (snapshot) {
             snapshot.forEach(function (snap) {
                 if(snap.val()){
                     if(snap.val().rss){

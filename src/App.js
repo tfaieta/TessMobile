@@ -65,7 +65,6 @@ import PlayerPreview from "./components/PlayerPreview";
 import Onboard from "./components/Onboard";
 import OnboardInquiry from "./components/OnboardInquiry";
 import OnboardInterest from "./components/OnboardInterest";
-import OnboardSearch from "./components/OnboardSearch";
 
 
 const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
