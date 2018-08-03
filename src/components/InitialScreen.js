@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StatusBar, Dimensions, Image, StyleSheet, Platform} from 'react-native';
+import {View, StatusBar, Dimensions, Image, StyleSheet, Platform, Linking} from 'react-native';
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/Foundation';
 import * as Animatable from 'react-native-animatable';
@@ -39,20 +39,97 @@ export default class InitialScreen extends Component{
     };
 
     componentWillMount(){
-        if (Platform.OS == 'android') {
-            this.timeout = setTimeout(() => {
-                firebase.auth().onAuthStateChanged(this.func);
-            }, 2000)
-        }
-        else {
-            this.timeout = setTimeout(() => {
-                firebase.auth().onAuthStateChanged(this.func);
-            }, 1800)
-        }
+
+        // checks if there is an initial link
+        // if logged in, continues to home
+        // if not logged in, goes to preview player
+
+        Linking.getInitialURL().then((url) => {
+            if (url) {
+                // opened app with url, handle url
+                if (Platform.OS == 'android') {
+                    this.timeout = setTimeout(() => {
+                        firebase.auth().onAuthStateChanged(() => this.handleURL(url));
+                    }, 2000)
+                }
+                else {
+                    this.timeout = setTimeout(() => {
+                        firebase.auth().onAuthStateChanged(() => this.handleURL((url)));
+                    }, 1800)
+                }
+            }
+            else{
+                // continue as normal
+                if (Platform.OS == 'android') {
+                    this.timeout = setTimeout(() => {
+                        firebase.auth().onAuthStateChanged(this.func);
+                    }, 2000)
+                }
+                else {
+                    this.timeout = setTimeout(() => {
+                        firebase.auth().onAuthStateChanged(this.func);
+                    }, 1800)
+                }
+            }
+        }).catch(err => {
+            // if error in reading url, continue as normal
+            console.log(err);
+            if (Platform.OS == 'android') {
+                this.timeout = setTimeout(() => {
+                    firebase.auth().onAuthStateChanged(this.func);
+                }, 2000)
+            }
+            else {
+                this.timeout = setTimeout(() => {
+                    firebase.auth().onAuthStateChanged(this.func);
+                }, 1800)
+            }
+        });
+
+
     }
 
     componentWillUnmount(){
         clearTimeout(this.timeout)
+    }
+
+
+    handleURL(url){
+        const {currentUser} = firebase.auth();
+        if(currentUser){
+            // logged in, continue to home to handle the link
+            if (Platform.OS == 'android') {
+                this.timeout = setTimeout(() => {
+                    firebase.auth().onAuthStateChanged(this.func);
+                }, 2000)
+            }
+            else {
+                this.timeout = setTimeout(() => {
+                    firebase.auth().onAuthStateChanged(this.func);
+                }, 1800)
+            }
+        }
+        else{
+            // not logged in, open preview player
+            if (Platform.OS == 'android') {
+                this.timeout = setTimeout(() => {
+                    this.navigateToPreviewPlayer(url);
+                }, 2000)
+            }
+            else {
+                this.timeout = setTimeout(() => {
+                    this.navigateToPreviewPlayer(url);
+                }, 1800)
+            }
+        }
+    }
+
+    navigateToPreviewPlayer(url){
+        const {navigator} = this.props;
+        Navigation.showModal({
+            screen: 'PlayerPreview',
+            passProps: {url, navigator}
+        });
     }
 
     func(){

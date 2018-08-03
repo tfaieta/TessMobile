@@ -90,9 +90,8 @@ static navigatorStyle = {
         }
         else if(this.props.title == 'Tess Media'){
             data.push('The Best Ideas Podcast');
-            data.push('IDK Podcast');
-            data.push('Green Light Sports Podcast');
             data.push('Best of Gainesville Weekly Minipod');
+            data.push('IDK Podcast');
         }
 
 

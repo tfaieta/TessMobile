@@ -8,11 +8,10 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import MusicControl from 'react-native-music-control';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 var Analytics = require('react-native-firebase-analytics');
-
 import { Navigation } from 'react-native-navigation';
 import PlayerInfo from "./PlayerInfo";
-
 var {height, width} = Dimensions.get('window');
+
 
 
 // Not the actual Player, cosmetic features & controls
@@ -481,12 +480,12 @@ class PlayerBottom extends Component {
 
             if (profileImage == ''){
                 return(
-                    <TouchableHighlight underlayColor="#fff" onPress={this.onProfilePress} style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom: 10, height: 140, width: 140, borderRadius:4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)',  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
+                    <TouchableHighlight underlayColor="#fff" onPress={this.onProfilePress} style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom: height/66.7, height: height/4.75, width: height/4.75, borderRadius: 4, borderWidth: 8, borderColor:'rgba(320,320,320,0.8)',  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
                         <Icon style={{
                             textAlign: 'center',
                             fontSize: height/7.41,
                             color: 'white',
-                            marginTop: 20,
+                            marginTop: height/33.35,
                         }} name="md-person">
                         </Icon>
                     </TouchableHighlight>
@@ -494,7 +493,7 @@ class PlayerBottom extends Component {
             }
             else{
                 return(
-                    <TouchableHighlight underlayColor="#fff" onPress={this.onProfilePress} style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom: 10, height: height/4.75, width: height/4.75,  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
+                    <TouchableHighlight underlayColor="#fff" onPress={this.onProfilePress} style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom: height/66.7, height: height/4.75, width: height/4.75,  shadowOffset:{  width: 0,  height: 10}, shadowOpacity: 0.5, shadowRadius: 10,  }}>
                         <Image
                             style={{width: height/4.75, height:height/4.75,  alignSelf: 'center', opacity: 1, borderRadius: 4, borderWidth: 0.1, borderColor: 'transparent'}}
                             source={{uri: profileImage}}
@@ -533,15 +532,13 @@ class PlayerBottom extends Component {
 
     _renderCategory(){
 
-        if(Variables.state.podcastCategory.length>0){
+        if(Variables.state.podcastCategory.length > 0){
             return(
-                <TouchableOpacity onPress={this.onCategoryPress}>
-                    <Text style={styles.podcastTextCat}>{Variables.state.podcastCategory}</Text>
-                </TouchableOpacity>
+                <View>
+                    <Text onPress={this.onCategoryPress} style={styles.podcastTextCat}>{Variables.state.podcastCategory}</Text>
+                </View>
             )
         }
-
-
 
     }
 
@@ -708,7 +705,6 @@ class PlayerBottom extends Component {
                     <TouchableOpacity onPress = {this.pressLike}>
                         <Icon style={{textAlign: 'center', fontSize: width/12, color: '#506dcf', marginRight: width/12.5}} name="md-happy">
                         </Icon>
-
                     </TouchableOpacity>
                 )
             }

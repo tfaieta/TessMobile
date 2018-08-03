@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {podFile, podTime} from './Record';
 import MusicControl from 'react-native-music-control';
 import firebase from 'firebase';
 

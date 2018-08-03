@@ -82,9 +82,11 @@ class Category extends Component{
             pods.push('Hello Internet');
             pods.push('Nancy');
             pods.push('Revisionist History');
+            pods.push('In Our Time');
             pods.push('Missing Richard Simmons');
             pods.push('On Being with Krista Tippett');
             pods.push('Still Processing');
+            pods.push('The Mission Daily');
             pods.push('Stuff You Should Know');
             pods.push('Freakonomics Radio');
             pods.push('The Best Ideas Podcast');
@@ -92,6 +94,7 @@ class Category extends Component{
             pods.push('American Innovations');
             pods.push('Love + Radio');
             pods.push('Couples Therapy with Candice and Casey');
+            pods.push('Batman');
         }
         else if(category == 'Religion & Spirituality'){
 
@@ -126,7 +129,6 @@ class Category extends Component{
             pods.push('Throwing Shade');
             pods.push('TigerBelly');
             pods.push('The World of Phil Hendrie');
-            pods.push('Welcome to Night Vale');
             pods.push('The Adventure Zone');
 
         }
@@ -152,6 +154,8 @@ class Category extends Component{
         else if(category == 'Travel' || category == 'Places & Travel'){
 
             pods.push('Zero to Travel');
+            pods.push('Travel with Rick Steves');
+            pods.push('The Budget Minded Traveler: Travel | Adventure | Lifestyle');
 
         }
         else if(category == 'Learn Something' || category == 'Education'){
@@ -184,7 +188,8 @@ class Category extends Component{
 
             pods.push('The Bill Simmons Podcast');
             pods.push('The Herd with Colin Cowherd');
-            pods.push('Green Light Sports Podcast');
+            pods.push('Men In Blazers');
+            pods.push('The Steve Austin Show');
 
         }
         else if(category == 'Entertainment' || category == 'TV & Film' || category == 'Arts'){
@@ -204,6 +209,8 @@ class Category extends Component{
 
             pods.push('No Jumper');
             pods.push('Song Exploder');
+            pods.push('CLUBLIFE');
+            pods.push('The Combat Jack Show');
 
         }
         else if(category == 'Tech' || category == 'Technology'){
@@ -215,9 +222,19 @@ class Category extends Component{
             pods.push('Recode Decode, hosted by Kara Swisher');
             pods.push('Recode Media with Peter Kafka');
             pods.push('Recode Replay');
+            pods.push('Full Stack Radio');
+            pods.push('Hanselminutes - Fresh Talk and Tech for Developers');
+            pods.push('Presentable');
+            pods.push('The Changelog');
+            pods.push('JS Party');
+            pods.push('Practical AI');
+            pods.push('Spotlight');
         }
         else if(category == 'Gaming' || category == 'Games & Hobbies'){
 
+            pods.push('Game Scoop!');
+            pods.push('Triforce!');
+            pods.push('The Adventure Zone');
             pods.push('Painkiller Already');
             pods.push('Ask Me Another');
             pods.push('FrazlCast - A World of Warcraft Podcast');
@@ -238,6 +255,7 @@ class Category extends Component{
             pods.push('The Pitch');
             pods.push('Accidental Tech Podcast');
             pods.push('This Week in Startups - Audio');
+            pods.push('Founders Talk');
         }
 
         setTimeout(() =>{
