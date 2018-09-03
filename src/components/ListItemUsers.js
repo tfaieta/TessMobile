@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import { Text, View, LayoutAnimation, TouchableOpacity, Image, AsyncStorage } from 'react-native';
+import { Text, View, LayoutAnimation, Image, AsyncStorage, Dimensions, TouchableHighlight } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
-import {AudioUtils} from 'react-native-audio';
 import Variables from "./Variables";
+var Analytics = require('react-native-firebase-analytics');
 
+
+var {height, width} = Dimensions.get('window');
 
 
 // A single podcast on scrollview slider list (on home page)
-
 
 class ListItemUsers extends Component {
 
@@ -29,7 +30,7 @@ class ListItemUsers extends Component {
                 }
             });
             this.timeout = setTimeout(() => {this.setState({profileImage: profileImage})},1200);
-            this. timeout2 = setTimeout(() => {this.setState({profileImage: profileImage})},3400);
+            this.timeout2 = setTimeout(() => {this.setState({profileImage: profileImage})},3400);
 
         }
         else{
@@ -59,22 +60,76 @@ class ListItemUsers extends Component {
     constructor(state) {
         super(state);
         this.state ={
+            loading: true,
             profileName: '',
-            profileImage: ''
+            profileImage: '',
+            username: '',
+            title: '',
+            duration: ''
         };
+
+        const {podcastTitle} = this.props.podcast;
+        const {podcastArtist} = this.props.podcast;
+        const { id } = this.props.podcast;
+        const {currentUser} = firebase.auth();
+
+        let profileName = '';
+        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").once("value", function (snap) {
+            if (snap.val()) {
+                profileName = snap.val().username;
+            }
+            else {
+                profileName = podcastArtist;
+            }
+        });
+
+        let duration = '';
+        firebase.database().ref(`podcasts/${id}/podcastLength`).once("value", function (snapshot) {
+            if(snapshot.val()){
+                duration = snapshot.val();
+            }
+        });
+
+
+
+        if(this.state.profileName == ''){
+            setTimeout(() =>{
+                this.setState({profileName: profileName})
+            },250);
+        }
+
+        setTimeout(() => {
+            if(podcastTitle.toString().length > 13 ){
+                this.setState({title: (podcastTitle.toString().slice(0,13)+"...")});
+            }
+            else{
+                this.setState({title: podcastTitle});
+            }
+
+            if(profileName.length > 15){
+                this.setState({username: (profileName.slice(0,15)+"...")});
+            }
+            else{
+                this.setState({username: profileName});
+            }
+            this.setState({duration: duration, loading: false})
+        }, 1000);
+
+
     }
+
 
 
     _renderProfileImage(){
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom:20, height: 130, width: 130, borderRadius: 4, borderWidth:8, borderColor:'rgba(320,320,320,0.8)' }}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', alignSelf: 'center', marginBottom: height/66.7, height: height/5.2, width: height/5.2, borderRadius: 4, borderWidth: 8, borderColor:'rgba(320,320,320,0.8)' }}>
                     <Icon style={{
                         textAlign: 'center',
-                        fontSize: 80,
+                        fontSize: height/8.34,
                         color: 'white',
-                        marginTop: 20,
+                        marginTop: height/33.35,
                     }} name="md-person">
                     </Icon>
                 </View>
@@ -82,9 +137,9 @@ class ListItemUsers extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom:20, height: 130, width: 130  }}>
+                <View style={{backgroundColor:'transparent', alignSelf: 'center', marginBottom: height/66.7, height: height/5.2, width: height/5.2  }}>
                     <Image
-                        style={{width: 130, height:130, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4}}
+                        style={{height: height/5.2, width: height/5.2, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 4}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -102,6 +157,19 @@ class ListItemUsers extends Component {
         const {podcastURL} = this.props.podcast;
         const { podcastArtist } = this.props.podcast;
         const { id } = this.props.podcast;
+        Variables.state.highlight = false;
+
+
+        Analytics.logEvent('play', {
+            'episodeID': id,
+            'epispdeTitle': podcastTitle,
+            'episodeArtist': podcastArtist,
+            'user_id': user
+        });
+
+
+        firebase.database().ref(`users/${currentUser.uid}/tracking/${podcastArtist}/episodes/${id}`).remove();
+
 
         if(rss){
 
@@ -194,6 +262,7 @@ class ListItemUsers extends Component {
         else{
             if(id){
                 AsyncStorage.setItem("currentPodcast", id);
+                AsyncStorage.setItem("currentTime", "0");
 
                 firebase.storage().ref(`/users/${podcastArtist}/${id}`).getDownloadURL().catch(() => {console.warn("file not found")})
                     .then(function(url) {
@@ -336,87 +405,227 @@ class ListItemUsers extends Component {
     }
 
 
+    renderSecondaryTitle = () => {
+        if(this.state.duration != ''){
+            if(this.state.duration.toString().includes(':')){
+                return(
+                    <Icon style={{
+                        fontSize: 14,
+                        
+                        color: '#000',
+                        marginHorizontal: 5,
+                    }} name="md-time">
+                        <Text style={styles.numTitle}> {this.state.duration}</Text>
+                    </Icon>
+                )
+            }
+            else{
+                let currentTime = this.state.duration;
+                var num = ((currentTime) % 60).toString();
+                var num2 = ((currentTime) / 60).toString();
+                var minutes = num2.slice(0,1);
+                Number(minutes.slice(0,1));
+
+
+                if (currentTime == -1){
+                    return (
+                        <Icon style={{
+                            fontSize: 14,
+                            
+                            color: '#000',
+                            marginLeft: 10,
+                        }} name="md-time">
+                            <Text style={styles.numTitle}> 0:00</Text>
+                        </Icon>
+                    )
+                }
+                else if(Number(num2) < 10){
+                    var minutes = num2.slice(0,1);
+                    Number(minutes.slice(0,1));
+                    if(Number(num) < 10){
+                        var seconds = num.slice(0,1);
+                        Number(seconds.slice(0,1));
+                        return (
+                            <Icon style={{
+                                fontSize: 14,
+                                
+                                color: '#000',
+                                marginLeft: 10,
+                            }} name="md-time">
+                                <Text style={styles.numTitle}> {minutes}:0{seconds}</Text>
+                            </Icon>
+                        )
+                    }
+                    else{
+                        var seconds = num.slice(0,2);
+                        Number(seconds.slice(0,2));
+                        return (
+                            <Icon style={{
+                                fontSize: 14,
+                                
+                                color: '#000',
+                                marginLeft: 10,
+                            }} name="md-time">
+                                <Text style={styles.numTitle}> {minutes}:{seconds}</Text>
+                            </Icon>
+                        );
+                    }
+                }
+                else{
+                    var minutes = num2.slice(0,2);
+                    Number(minutes.slice(0,2));
+                    if(Number(num) < 10){
+                        var seconds = num.slice(0,1);
+                        Number(seconds.slice(0,1));
+                        return (
+                            <Icon style={{
+                                fontSize: 14,
+                                
+                                color: '#000',
+                                marginLeft: 10,
+                            }} name="md-time">
+                                <Text style={styles.numTitle}> {minutes}:0{seconds}</Text>
+                            </Icon>
+                        )
+                    }
+                    else{
+                        var seconds = num.slice(0,2);
+                        Number(seconds.slice(0,2));
+                        return (
+                            <Icon style={{
+                                fontSize: 14,
+                                
+                                color: '#000',
+                                marginLeft: 10,
+                            }} name="md-time">
+                                <Text style={styles.numTitle}> {minutes}:{seconds}</Text>
+                            </Icon>
+                        );
+                    }
+                }
+            }
+        }
+        else{
+            return(
+                <Text style={styles.artistTitle}>{this.state.username}</Text>
+            )
+        }
+    };
+
+
+
+    renderItem = () => {
+        if(this.state.loading){
+            return (
+
+                <View>
+                    <View style={{padding: 10}}>
+
+                        <View style={{backgroundColor:'rgba(130,131,147,0.2)', alignSelf: 'center', marginBottom: height/66.7, height: height/5.2, width: height/5.2, borderRadius: 4, borderWidth: 8, borderColor:'rgba(320,320,320,0.8)' }}>
+                            <Icon style={{
+                                textAlign: 'center',
+                                fontSize: height/8.34,
+                                color: 'white',
+                                marginTop: height/33.35,
+                            }} name="md-person">
+                            </Icon>
+                        </View>
+
+                        <View style={{backgroundColor: '#82839320', paddingVertical: height/133.4, marginVertical: height/333.5, marginHorizontal: width/37.5, paddingHorizontal: width/9.38, borderRadius: width/18.75}}/>
+                        <View style={{backgroundColor: '#82839320', paddingVertical: height/133.4, marginVertical: height/333.5, marginHorizontal: width/37.5, paddingHorizontal: width/9.38, borderRadius: width/18.75}}/>
+
+                    </View>
+                </View>
+
+            );
+        }
+        else{
+            return (
+
+                <TouchableHighlight underlayColor = '#f5f4f9' onPress={this.onRowPress.bind(this)} onLongPress={() => {
+                    const {currentUser} = firebase.auth();
+                    const {podcast} = this.props;
+                    const rowData = podcast;
+
+                    const {navigator} = this.props;
+
+                    this.props.navigator.showLightBox({
+                        screen: "PodcastOptions",
+                        passProps: {rowData, navigator},
+                        style: {
+                            backgroundBlur: "dark",
+                            backgroundColor: '#3e416430',
+                            tapBackgroundToDismiss: true,
+                            width: 100,
+                            height: 200
+                        },
+                    });
+                }} >
+                    <View style={{padding: 10}}>
+
+                        {this._renderProfileImage()}
+
+                        <Text style={styles.title}>{this.state.title}</Text>
+
+                        {this.renderSecondaryTitle()}
+
+                    </View>
+                </TouchableHighlight>
+
+            );
+        }
+
+    };
+
 
 
     render() {
-        const {podcastTitle} = this.props.podcast;
-        const {podcastArtist} = this.props.podcast;
-        const {currentUser} = firebase.auth();
 
-        let profileName = '';
-        if(this.state.profileName == ''){
-            setTimeout(() =>{
-                this.setState({profileName: profileName})
-            },200);
-        }
-        firebase.database().ref(`/users/${podcastArtist}/username`).orderByChild("username").on("value", function (snap) {
-            if (snap.val()) {
-                profileName = snap.val().username;
-            }
-            else {
-                profileName = podcastArtist;
-            }
-        });
-
-        var fixedTitle = '';
-        if(podcastTitle.toString().length > 13 ){
-            fixedTitle = (podcastTitle.toString().slice(0,13)+"...")
-        }
-        else{
-            fixedTitle = podcastTitle;
-        }
-
-        var fixedUsername = '';
-        if(this.state.profileName.length > 15){
-            fixedUsername =  (profileName.slice(0,15)+"...");
-        }
-        else{
-            fixedUsername = this.state.profileName;
-        }
-
-
-
-        return (
-
-            <TouchableOpacity onPress={this.onRowPress.bind(this)}>
-                <View style={{padding: 10}}>
-
-                    {this._renderProfileImage()}
-
-                <Text style={styles.title}>{fixedTitle}</Text>
-                <Text style={styles.artistTitle}>{fixedUsername}</Text>
-                </View>
-            </TouchableOpacity>
-
-        );
-
+        return(
+            <View>
+                {this.renderItem()}
+            </View>
+        )
 
     }
+
 }
 
 const styles = {
     title: {
-        color: '#2A2A30',
+        color: '#3e4164',
         flex:1,
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-Bold',
         fontSize: 14,
         marginLeft: 10,
-        backgroundColor: 'transparent'
+        
     },
     artistTitle: {
-        color: '#9596A3',
+        color: '#828393',
         flex:1,
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-Regular',
         paddingVertical: 1,
         marginLeft: 10,
         fontSize: 12,
-        backgroundColor: 'transparent',
+        
+    },
+    numTitle: {
+        color: '#828393',
+        flex:1,
+        textAlign: 'center',
+        opacity: 1,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-Regular',
+        paddingVertical: 1,
+        marginLeft: 10,
+        fontSize: 14,
+        
     },
     container: {
         flex: 1,

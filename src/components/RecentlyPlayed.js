@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ScrollView, ListView} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Text, View, StyleSheet, ScrollView, ListView, Platform, Dimensions, RefreshControl} from 'react-native';
 import PlayerBottom from './PlayerBottom';
 import Variables from "./Variables";
 import firebase from 'firebase';
 import ListItem from "./ListItem";
 
+var {height, width} = Dimensions.get('window');
 
+let topMargin = 0;
+if(Platform.OS === 'ios'){
+    topMargin = height/10.26
+}
 
 
 
@@ -18,41 +22,81 @@ class RecentlyPlayed extends Component{
     componentWillMount(){
         const {currentUser} = firebase.auth();
 
-        firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).on("value", function (snapshot) {
-            Variables.state.recentlyPlayed = [];
+        firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).limitToLast(25).once("value", function (snapshot) {
             snapshot.forEach(function (snap) {
-                firebase.database().ref(`podcasts/${snap.val().id}`).on("value", function (data) {
+                firebase.database().ref(`podcasts/${snap.val().id}`).once("value", function (data) {
                     if(data.val()){
-                        Variables.state.recentlyPlayed.push(data.val())
+                        this.state.recentlyPlayed = [data.val(), ...this.state.recentlyPlayed];
                     }
 
-                })
-            });
-            Variables.state.recentlyPlayed.reverse();
-        });
+                }.bind(this))
+            }.bind(this));
+        }.bind(this));
 
     }
 
 
     componentWillUnmount(){
         clearTimeout(this.timeout);
-        clearTimeout(this.timeout2);
     }
 
 
     constructor(props){
         super(props);
+
+        this.props.navigator.setStyle({
+               statusBarHidden: false,
+               statusBarTextColorScheme: 'light',
+               navBarHidden: false,
+               navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
+               navBarTextFontSize: 18, // change the font size of the title
+               navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
+               drawUnderTabBar: false,
+               navBarHideOnScroll: false,
+               navBarBackgroundColor: '#fff',
+               topBarElevationShadowEnabled: false,
+               statusBarColor: '#fff',
+               drawUnderNavBar: Platform.OS === 'ios',
+               navBarTranslucent: Platform.OS === 'ios',
+               navBarNoBorder: true,
+
+         });
+
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithRows(Variables.state.recentlyPlayed),
+            recentlyPlayed: [],
+            dataSource: dataSource.cloneWithRows([]),
+            refreshing: false
         };
         this.timeout = setTimeout(() => {
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.recentlyPlayed)})
-        },1000);
-        this.timeout2 = setTimeout(() => {
-            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.recentlyPlayed)})
-        },2500);
+            this.setState({dataSource: dataSource.cloneWithRows(this.state.recentlyPlayed)})
+        },2000);
     };
+
+
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+
+        const {currentUser} = firebase.auth();
+
+        firebase.database().ref(`users/${currentUser.uid}/recentlyPlayed`).limitToLast(25).once("value", function (snapshot) {
+            snapshot.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.val().id}`).once("value", function (data) {
+                    if(data.val()){
+                        this.state.recentlyPlayed = [data.val(), ...this.state.userRecentlyPlayed];
+                    }
+
+                }.bind(this))
+            }.bind(this));
+        }.bind(this));
+
+
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.timeout = setTimeout(() => {
+            this.setState({dataSource: dataSource.cloneWithRows(this.state.recentlyPlayed), refreshing: false})
+        },3000);
+    };
+
 
     _pressBack = () => {
         this.props.navigator.pop({
@@ -73,26 +117,13 @@ class RecentlyPlayed extends Component{
                 style={styles.container}>
 
 
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, borderWidth: 2, borderBottomColor: 'rgba(187,188,205,0.3)', borderTopColor: '#fff', borderLeftColor: '#fff', borderRightColor: '#fff'}}>
-                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
-                        <TouchableOpacity onPress={this._pressBack}>
-                            <Icon style={{
-                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#9496A3'
-                            }} name="md-arrow-round-back">
-                            </Icon>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={styles.header}>Recently Played</Text>
-                    </View>
-
-                    <View>
-                    </View>
-
-                </View>
-
-
-                <ScrollView>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                        />}
+                >
 
                     <ListView
                         enableEmptySections
@@ -124,41 +155,10 @@ class RecentlyPlayed extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: 'transparent',
+        backgroundColor: '#f5f4f9',
+        marginTop: topMargin,
     },
 
-    title: {
-        color: '#2A2A30',
-        marginTop:10,
-        marginLeft: 20,
-        flex:1,
-        textAlign: 'left',
-        opacity: 2,
-        fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 20,
-        backgroundColor: 'transparent'
-    },
-
-    contentTitle: {
-        color: 'rgba(1,170,170,1)',
-        fontSize: 25,
-        paddingBottom: 20,
-        marginLeft: 20,
-
-    },
-
-    header: {
-        marginTop:25,
-        marginLeft: -35,
-        color: '#2A2A30',
-        textAlign: 'center',
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
-        backgroundColor: 'transparent',
-
-    }
 
 });
 

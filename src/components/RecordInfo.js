@@ -31,6 +31,15 @@ var {height, width} = Dimensions.get('window');
 
 class RecordInfo extends Component{
 
+  static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true,
+        statusBarTextColorScheme: 'light',
+        tabBarHidden: true,
+        statusBarColor: '#3e279b',
+    };
+
+
     constructor(props) {
         super();
 
@@ -42,8 +51,6 @@ class RecordInfo extends Component{
             podcastCategory: Variables.state.podcastCategory,
             podcastArtist: userID
         };
-        Variables.setPodcastFile(podFile);
-        Variables.state.paused=true;
     }
 
     state = {
@@ -56,11 +63,17 @@ class RecordInfo extends Component{
         uploadProgress: 10
     };
 
-    static navigatorStyle = {
-        tabBarHidden: true
-    };
 
     componentWillMount(){
+        Variables.state.podcastURL = podFile;
+        Variables.state.podcastArtist = firebase.auth().currentUser.uid;
+        Variables.state.repeat = true;
+        Variables.state.seekTo = 0;
+        Variables.state.paused = true;
+        Variables.state.userProfileImage = '';
+        Variables.state.podcastCategory = '';
+        Variables.state.podcastDescription = '';
+
         const {currentUser} = firebase.auth();
         let userID = currentUser.uid;
         this.props.podcastUpdate({prop: 'podcastArtist', value: userID});
@@ -85,6 +98,7 @@ class RecordInfo extends Component{
 
 
     componentWillUnmount(){
+        Variables.state.repeat = false;
         clearInterval(this.interval);
     }
 
@@ -109,10 +123,9 @@ class RecordInfo extends Component{
                     this.props.podcastUpdate({prop: 'podcastTitle', value: ''});
                     this.props.podcastUpdate({prop: 'podcastCategory', value: ''});
 
-                    this.props.navigator.resetTo({
-                        screen: 'RecordFirst',
-                        animated: true,
-                        animationType: 'fade',
+                    this.props.navigator.popToRoot({
+                        animated: true, // does the popToRoot have transition animation or does it happen immediately (optional)
+                        animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
                     });
 
 
@@ -142,6 +155,7 @@ class RecordInfo extends Component{
 
     Upload = () => {
 
+        Variables.state.repeat = false;
         Variables.state.paused = true;
         this.setState({
             isPlaying: false
@@ -179,9 +193,10 @@ class RecordInfo extends Component{
             Variables.state.podcastDescription = podcastDescription;
             Variables.state.podcastCategory = podcastCategory;
             Variables.state.podcastArtist = podcastArtist;
+            const podcastLength = Variables.state.duration;
 
             this.setState({loading: true});
-            this.props.podcastCreate({podcastTitle, podcastDescription, podcastCategory, podcastArtist, navigator});
+            this.props.podcastCreate({podcastTitle, podcastDescription, podcastCategory, podcastArtist, podcastLength, navigator});
         }
     };
 
@@ -219,7 +234,7 @@ class RecordInfo extends Component{
                 );
             }
         }
-        else{
+        else if(Number(num2) < 100){
             var minutes = num2.slice(0,2);
             Number(minutes.slice(0,2));
             if(Number(num) < 10){
@@ -237,6 +252,25 @@ class RecordInfo extends Component{
                 );
             }
         }
+        else{
+            var minutes = num2.slice(0,3);
+            Number(minutes.slice(0,3));
+            if(Number(num) < 10){
+                var seconds = num.slice(0,1);
+                Number(seconds.slice(0,1));
+                return (
+                    <Text style={styles.podcastTextNum}>{minutes}:0{seconds}</Text>
+                )
+            }
+            else{
+                var seconds = num.slice(0,2);
+                Number(seconds.slice(0,2));
+                return (
+                    <Text style={styles.podcastTextNum}>{minutes}:{seconds}</Text>
+                );
+            }
+        }
+
 
     }
 
@@ -312,7 +346,7 @@ class RecordInfo extends Component{
             <Slider
                 minimumTrackTintColor='#5757FF'
                 maximumTrackTintColor='#fff'
-                thumbStyle={{width: 20, height: 20, borderRadius: 10, backgroundColor: '#5757FF', borderColor: '#FFF', borderWidth: 2}}
+                thumbStyle={{width: width/18.75, height: width/18.75, borderRadius: width/37.5, backgroundColor: '#5757FF', borderColor: '#FFF', borderWidth: 2}}
                 animateTransitions = {true}
                 style={styles.sliderContainer}
                 step={0}
@@ -331,8 +365,8 @@ class RecordInfo extends Component{
                 <TouchableOpacity onPress={this.pause}>
                 <Icon style={{
                     textAlign: 'right',
-                    fontSize: 35,
-                    marginHorizontal: 10,
+                    fontSize: width/10.71,
+                    marginHorizontal: width/37.5,
                     color: '#fff',
                     backgroundColor: 'transparent',
                 }} name="ios-pause">
@@ -345,8 +379,8 @@ class RecordInfo extends Component{
                 <TouchableOpacity onPress={this.play}>
                 <Icon style={{
                     textAlign: 'right',
-                    fontSize: 35,
-                    marginHorizontal: 10,
+                    fontSize: width/10.71,
+                    marginHorizontal: width/37.5,
                     color: '#fff',
                     backgroundColor: 'transparent',
                 }} name="ios-play">
@@ -363,10 +397,10 @@ class RecordInfo extends Component{
 
             return(
                     <View style={{flex:1, flexDirection:'row'}}>
-                        <View style={{width: (width / 100) * (uploadProgress), alignContent:'flex-start', backgroundColor: '#5757FF', marginVertical: 12}} >
-                            <ActivityIndicator style={{paddingVertical: 10, alignSelf:'center'}} color="#fff" size ="small" />
+                        <View style={{width: (width / 100) * (uploadProgress), alignContent:'flex-start', backgroundColor: '#5757FF', marginVertical: height/55.58}} >
+                            <ActivityIndicator style={{paddingVertical: height/66.7, alignSelf:'center'}} color="#fff" size ="small" />
                         </View>
-                        <View style={{width: (width - (width / 100) * (uploadProgress) ), marginVertical: 12, flex:1, alignContent:'flex-end', backgroundColor: '#929acb70'}}/>
+                        <View style={{width: (width - (width / 100) * (uploadProgress) ), marginVertical: height/55.58, flex:1, alignContent:'flex-end', backgroundColor: '#929acb70'}}/>
                     </View>
             )
         }
@@ -394,11 +428,11 @@ class RecordInfo extends Component{
                 <ScrollView   scrollEnabled={false}>
 
 
-                <View style={{flexDirection: 'row', paddingVertical:5,  }}>
-                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
+                <View style={{flexDirection: 'row', paddingVertical: height/133.4}}>
+                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: height/33.35}}>
                         <TouchableOpacity onPress={this.Cancel}>
                             <Icon style={{
-                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#fff'
+                                textAlign:'left', marginLeft: width/37.5, fontSize: width/12.5, color:'#fff'
                             }} name="md-arrow-round-back">
                             </Icon>
                         </TouchableOpacity>
@@ -414,14 +448,14 @@ class RecordInfo extends Component{
 
 
 
-                    <View style={{flexDirection: 'row', paddingBottom: 30, marginTop: 10  }}>
-                        <View style={{marginTop: 10, alignItems: 'flex-start'}}>
+                    <View style={{flexDirection: 'row', paddingBottom: height/22.23, marginTop: height/66.7}}>
+                        <View style={{marginTop: height/66.7, alignItems: 'flex-start'}}>
                                 {this._renderPlayButton(this.state.isPlaying)}
                         </View>
                         <View style={{justifyContent: 'center', alignItems: 'flex-end',}}>
                             <Text  style={styles.contentTime}>{this._renderCurrentTime(Variables.state.currentTime)}</Text>
                         </View>
-                        <View style={{justifyContent: 'center', alignItems: 'center', marginHorizontal: 15}}>
+                        <View style={{justifyContent: 'center', alignItems: 'center', marginHorizontal: width/25}}>
                             {this._renderSlider(Variables.state.currentTime)}
                         </View>
                         <View style={{justifyContent: 'center', alignItems: 'flex-end',}}>
@@ -444,6 +478,7 @@ class RecordInfo extends Component{
                     value={this.props.podcastTitle}
                     onChangeText={text => this.props.podcastUpdate({prop: 'podcastTitle', value: text})}
                     maxLength={75}
+                    underlineColorAndroid = 'transparent'
                     onSubmitEditing={(event) => {
                         this.refs.input2.focus();
                     }}
@@ -462,6 +497,7 @@ class RecordInfo extends Component{
                     value={this.props.podcastDescription}
                     onChangeText={text => this.props.podcastUpdate({prop: 'podcastDescription', value: text})}
                     multiline={true}
+                    underlineColorAndroid = 'transparent'
                     maxLength={500}
                 />
 
@@ -479,9 +515,9 @@ class RecordInfo extends Component{
                             backgroundColor: 'transparent',
                         }} name="md-folder">
                         </Icon>
-                        <Text style={{ color: '#fff', marginTop: 10, fontSize: 16, marginLeft: 10, fontFamily: 'Hiragino Sans', }}>Categories</Text>
+                        <Text style={{ color: '#fff', marginTop: height/66.7, fontSize: width/23.44, marginLeft: width/37.5, fontFamily: 'Montserrat-Regular', }}>Categories</Text>
                         <Text
-                            style={{ color: '#BBBCCD', marginTop: 10, fontSize: 16, marginLeft: 30, fontFamily: 'Hiragino Sans', }}
+                            style={{ color: '#BBBCCD', marginTop: height/66.7, fontSize: width/23.44, marginLeft: width/12.5, fontFamily: 'Montserrat-Regular', }}
                             onPress={() => {
                                 this.refs.picker1.show();
                             }}
@@ -489,11 +525,11 @@ class RecordInfo extends Component{
                             {this.state.podcastCategory}
                         </Text>
                         <Icon style={{
-                            flex:1,
+                            flex: 1,
                             textAlign: 'right',
-                            fontSize: 18,
-                            marginRight: 10,
-                            marginTop:10,
+                            fontSize: width/20.83,
+                            marginRight: width/37.5,
+                            marginTop: width/37.5,
                             color: '#fff',
                             backgroundColor: 'transparent',
                         }} name="ios-arrow-forward"
@@ -509,11 +545,11 @@ class RecordInfo extends Component{
                     options={options}
                     labels={labels}
                     itemStyle={{
-                        fontSize: 22,
+                        fontSize: width/17.05,
                         color: 'black',
                         textAlign: 'center',
                         fontWeight: 'bold',
-                        fontFamily: 'Hiragino Sans',
+                        fontFamily: 'Montserrat-Regular',
                     }}
                     onSubmit={itemValue => {
                         this.props.podcastUpdate({prop: 'podcastCategory', value: itemValue});
@@ -521,7 +557,7 @@ class RecordInfo extends Component{
                     }}
                     />
 
-                    <View style={{height:1, marginVertical: 15, backgroundColor: '#fff', marginHorizontal:15, borderRadius:10, borderWidth:0.1}}/>
+                    <View style={{height: height/667, marginVertical: height/44.47, backgroundColor: '#fff', marginHorizontal: width/25, borderRadius: 10, borderWidth: 0.1}}/>
 
 
 
@@ -553,84 +589,84 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: 'transparent',
-        paddingTop: 10,
+        paddingTop: height/66.7,
     },
 
     title: {
-        color: '#804cc8',
-        marginTop: 70,
+        color: '#9a5e9a',
+        marginTop: height/9.53,
         flex:1,
         textAlign: 'center',
-        opacity: 2,
+        opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 25,
+        fontFamily: 'Montserrat-Regular',
+        fontSize: width/15,
         backgroundColor: 'transparent'
     },
 
     contentTitle: {
         color: '#FFF',
-        fontSize: 18,
-        marginTop:10,
-        paddingBottom: 10,
+        fontSize: width/20.83,
+        marginTop: height/66.7,
+        paddingBottom: width/37.5,
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
+        fontFamily: 'Montserrat-Regular',
 
     },
 
     contentTime: {
         color: '#FFF',
-        fontSize: 25,
+        fontSize: width/15,
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        marginLeft: 10,
-        marginTop: 10
+        fontFamily: 'Montserrat-Regular',
+        marginLeft: width/37.5,
+        marginTop: height/66.7
 
     },
 
     input: {
-        height: 40,
+        height: height/16.68,
         backgroundColor: 'transparent',
-        marginBottom: 10,
+        marginBottom: height/66.7,
         color: '#FFF',
-        paddingHorizontal: 10,
+        paddingHorizontal: width/37.5,
     },
 
     input2: {
-        height: 120,
+        height: height/5.56,
         backgroundColor: 'transparent',
         marginBottom: 0,
         color:'#FFF',
-        paddingHorizontal: 10,
-        fontSize: 18,
+        paddingHorizontal: width/37.5,
+        fontSize: width/20.83,
     },
 
     buttonPreview: {
         backgroundColor: '#e8952f',
         alignItems: 'center',
-        paddingBottom: 15,
+        paddingBottom: height/44.47,
     },
 
     buttonUpload: {
-        backgroundColor: '#5757FF',
+        backgroundColor: '#506dcf',
         alignItems: 'center',
-        paddingTop: 5,
-        marginHorizontal: 15,
+        paddingTop: height/133.4,
+        marginHorizontal: width/25,
         borderWidth:0.1,
         borderRadius: 10,
-        marginBottom:5
+        marginBottom: height/133.4
     },
 
     buttonCancel: {
-        backgroundColor: '#ee617c',
+        backgroundColor: '#d15564',
         alignItems: 'center',
-        paddingTop: 5,
+        paddingTop: height/133.4,
         marginHorizontal: 15,
         borderWidth:0.1,
         borderRadius: 10,
-        marginBottom: 5
+        marginBottom: height/133.4
     },
 
     buttonContainer: {
@@ -638,51 +674,50 @@ const styles = StyleSheet.create({
     },
 
     timeContainer: {
-        flex:1,
+        flex: 1,
         alignItems: 'center',
     },
 
     progressText: {
         marginTop: 0,
-        fontSize: 15,
-        fontFamily: 'Hiragino Sans',
+        fontSize: width/25,
+        fontFamily: 'Montserrat-Regular',
         color: "#FFF",
     },
 
     header: {
-        marginTop:25,
-        marginLeft: -35,
+        marginTop: width/15,
+        marginLeft: -(width/10.71),
         color: '#fff',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 18,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/20.83,
         backgroundColor: 'transparent',
     },
-
     boxHeader:{
         color: '#fff',
         textAlign: 'left',
-        marginLeft: 15,
+        marginLeft: width/25,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 12,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/31.25,
         backgroundColor: 'transparent',
     },
     sliderContainer: {
         width: width/1.8,
-        height: 50,
-        marginTop:4,
+        height: height/13.34,
+        marginTop: height/166.75,
         alignSelf: 'center'
     },
     podcastTextNum:{
         color: '#fff',
-        fontSize: 12,
-        marginTop: 5,
+        fontSize: width/31.25,
+        marginTop: height/133.4,
         flexDirection: 'row',
         backgroundColor: 'transparent',
-        marginHorizontal: 10,
-        fontFamily: 'HiraginoSans-W6',
+        marginHorizontal: width/37.5,
+        fontFamily: 'Montserrat-SemiBold',
     },
 
 });

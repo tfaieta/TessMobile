@@ -16,6 +16,26 @@ class MyContent extends Component{
 
     constructor(props){
         super(props);
+
+
+        this.props.navigator.setStyle({
+            statusBarHidden: false,
+            statusBarTextColorScheme: 'light',
+            navBarHidden: false,
+            navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
+            navBarTextFontSize: 18, // change the font size of the title
+            navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
+            drawUnderTabBar: false,
+            navBarHideOnScroll: true,
+            navBarBackgroundColor: '#fff',
+            topBarElevationShadowEnabled: true,
+            topBarShadowColor: '#000',
+            topBarShadowOpacity: 0.1,
+            topBarShadowOffset: 3,
+            topBarShadowRadius: 5,
+            statusBarColor: '#fff',
+        });
+
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.myPodcasts),
@@ -58,25 +78,6 @@ class MyContent extends Component{
             <View
                 style={styles.containerMain}>
 
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, borderWidth: 2, borderBottomColor: 'rgba(187,188,205,0.3)', borderTopColor: '#fff', borderLeftColor: '#fff', borderRightColor: '#fff'}}>
-                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
-                        <TouchableOpacity onPress={this._pressBack}>
-                            <Icon style={{
-                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#9496A3'
-                            }} name="md-arrow-round-back">
-                            </Icon>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={styles.header}>My Content</Text>
-                    </View>
-
-                    <View>
-                    </View>
-
-                </View>
-
-
 
 
                 <ScrollView>
@@ -111,7 +112,7 @@ class MyContent extends Component{
 const styles = StyleSheet.create({
     containerMain:{
         flex: 1,
-        backgroundColor: 'transparent',
+        
     },
 
     titleMain: {
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Futura',
         fontSize: 25,
-        backgroundColor: 'transparent'
+        
     },
 
     contentTitle: {
@@ -142,7 +143,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
         fontSize: 16,
-        backgroundColor: 'transparent',
+        
 
     },
 
@@ -155,7 +156,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
         fontSize: 15,
-        backgroundColor: 'transparent',
+        
         marginHorizontal: 20,
 
     },
@@ -168,7 +169,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'Hiragino Sans',
         fontSize: 15,
-        backgroundColor: 'transparent',
+        
         marginLeft: 20,
     },
     container: {

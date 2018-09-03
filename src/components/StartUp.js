@@ -1,25 +1,30 @@
-/**
- * Created by nickruspantini on 6/6/17.
- */
 import React, {Component} from 'react';
-import {StyleSheet, View, Image, Text, TouchableOpacity, Dimensions, StatusBar} from 'react-native';
+import {StyleSheet, View, Image, Text, Dimensions, StatusBar, Animated} from 'react-native';
 import AppIntro from 'react-native-app-intro';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from "react-native-linear-gradient/index.android";
 
-
-
-
-
-
 // start up page for tess -> takes users to login or create account
-
-
 
 var {height, width} = Dimensions.get('window');
 
 
-export  default class Login extends Component{
+export default class Login extends Component{
+
+    componentWillMount() {
+        this.animatedValue = new Animated.Value();
+    }
+    componentDidMount() {
+        Animated.timing(this.animatedValue, {
+            toValue: 150,
+            duration: 1500
+        }).start();
+    }
+
+    static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true
+    };
 
     _handleButtonPressLogin = () => {
         this.props.navigator.push({
@@ -27,180 +32,128 @@ export  default class Login extends Component{
             animated: true,
             animationType: 'fade',
         });
+
     };
 
-
-
-
     render() {
+
+        const interpolateColor = this.animatedValue.interpolate({
+            inputRange: [0, 150],
+            outputRange: ['#d15564', '#3e4264']
+        });
+
         return (
-            <View >
+            <View style ={{backgroundColor: 'white'}}>
                 <StatusBar hidden={true} />
 
-            <View >
             <AppIntro
-                horizontal={false}
-                    showsButtons={false}
-                    autoplay={true}
-                    autoplayTimeout={5}
-                    loop={false}
-                    showsPagination={false}
-                      showDoneButton={false}
-                      showDots={true}
-                      showSkipButton={false}
-                    dotColor='#838394'
-                    activeDotColor='#fff'
+                onSkipBtnClick={this._handleButtonPressLogin}
+                onDoneBtnClick={this._handleButtonPressLogin}
+                doneBtnLabel={"Start"}
+                dotColor={'#3e4164'}
+                activeDotColor={'#E5F3F3'}
+                rightTextColor={'#3e4164'}
+                leftTextColor={'#3e4164'}
             >
 
-                <View style={styles.slide1} level = {width/30}>
+                <View style={styles.slide1}>
                     <LinearGradient
+                        colors={['#E5F3F3', '#F7FBFC', 'white' ]}
+                        start={{x: 2.0, y: 2.0}} end={{x: 0, y: 1}}
+                        style={{height: height, width: width}}>
+                        <Image
+                            style={{width: height/4.2, height: height/3.5, borderColor: '#b9bad1', alignSelf: 'center', opacity: 1, marginTop: height / 6,}}
+                            source={require('tess/src/images/tessLogoVertical.png')}
+                        />
+                    <View style={styles.textContainer}>
+                        <View style={{marginLeft: width/37.5}}>
+                        <Text style={styles.textforSlide1}>A new way to share, create, and listen to podcasts</Text>
+                        </View>
+                        <View style={{marginLeft: width/37.5}}>
+                        <Text level = {20} style={styles.smallText1}>Swipe to take a look!</Text>
+                        </View>
+                    </View>
+                    </LinearGradient>
+                </View>
 
-                        colors={['#5555ff', '#9687ff' ]}
+                <View style={styles.slide2}>
+                    <LinearGradient
+                        colors={['#d15564', '#9a5e9a', '#506dcf' ]}
                         start={{x: 0.0, y: 0.0}} end={{x: 0, y: 1}}
                         style={{height: height, width: width}}>
 
-                        <Image
-                            style={{width: height/4.45, height: height/3.97, borderColor: '#b9bad1', alignSelf: 'center', opacity: 1, marginTop: height / 6,}}
-                            source={require('tess/src/images/White_Logo.png')}
-                        />
-
-                    <View style={styles.textContainer}>
-                        <View style={{marginLeft:10}} >
-                        <Text style={styles.textforSlide1}>Let Your Voice Be Heard</Text>
-                        </View>
-                        <View style={{marginLeft:10}} >
-                        <Text style={styles.smallText1}>LET'S GET STARTED!</Text>
-                        </View>
+                    <View level={10}>
+                        <Icon style={{textAlign:'center', marginTop: height/4, fontSize: height/8.33, color:'#fff', }} name="headphones">
+                        </Icon>
                     </View>
-
+                    <View level={10}>
+                        <Text level = {20} style={styles.smallText}>A redefined listening experience supplied with <Text style={styles.smallTextBold}>social</Text> features and limitless <Text style={styles.smallTextBold}>customizability</Text></Text>
+                    </View>
 
                     </LinearGradient>
                 </View>
 
-
-
-                <View style={styles.slide2} level = {width/30}>
-
-                    <Image
-                        style={{width: width, height: height, borderColor: '#b9bad1', alignSelf: 'center', opacity: 1}}
-                        source={require('tess/src/images/woman-listening-music.png')}
-                    >
-
-                    <View level = {20}>
-                        <Icon style={{textAlign:'center', marginTop: height/4, fontSize: 80,color:'#fff', backgroundColor: 'transparent'}} name="md-microphone">
-                        </Icon>
-                    </View>
-                    <View level={-20}>
-                    <Text style={styles.smallText}>Tess is a podcast platform</Text>
-                    </View>
-
-                    </Image>
-                </View>
-
-
-                <View style={styles.slide3} level = {width/30}>
-
-                    <Image
-                        style={{width: width, height: height, borderColor: '#ffffff70', alignSelf: 'center', opacity: 1}}
-                        source={require('tess/src/images/woman-listening2.png')}
-                    >
-
-                    <View level = {20}>
-                        <Icon style={{textAlign:'center',  marginTop: height/4, fontSize: 80,color:'#fff', backgroundColor: 'transparent' }} name="md-headset">
-                        </Icon>
-                    </View>
-                    <View level = {-20}>
-                    <Text style={styles.smallText}>A place to easily listen to and create podcasts</Text>
-                    </View>
-
-                    </Image>
+                <View style={styles.slide3}>
+                    <LinearGradient
+                        colors={['#d15564', '#9a5e9a', '#506dcf' ]}
+                        start={{x: 0.0, y: 0.0}} end={{x: 0, y: 1}}
+                        style={{height: height, width: width}}>
+                        <View style = {{flexDirection: 'row', alignSelf: 'center'}} level={10}>
+                            <Icon style={{textAlign:'center', marginHorizontal: width/75,  marginTop: height/4, fontSize: height/10, color:'#fff',  }} name="facebook">
+                            </Icon>
+                            <Icon style={{textAlign:'center', marginHorizontal: width/75,  marginTop: height/4, fontSize: height/10, color:'#fff',  }} name="twitter">
+                            </Icon>
+                            <Icon style={{textAlign:'center', marginHorizontal: width/75,  marginTop: height/4, fontSize: height/10, color:'#fff',  }} name="message">
+                            </Icon>
+                            <Icon style={{textAlign:'center', marginHorizontal: width/75,  marginTop: height/4, fontSize: height/10, color:'#fff',  }} name="email">
+                            </Icon>
+                        </View>
+                        <View level={10}>
+                            <Text style={styles.smallText}>Conveniently share snippets of episodes using the <Text style={styles.smallTextBold}>highlight</Text> tool</Text>
+                        </View>
+                    </LinearGradient>
 
                 </View>
 
-
-                <View style={styles.slide4} level = {width/30}>
-
-                    <Image
-                        style={{width: width, height: height, borderColor: '#ffffff70', alignSelf: 'center', opacity: 1}}
-                        source={require('tess/src/images/man-recording.png')}
-                    >
-
-
-                    <View level = {20}>
-                        <Icon style={{textAlign:'center', marginTop: height/4, fontSize: 80,color:'#fff', backgroundColor: 'transparent' }} name="ios-radio-button-on">
+                <View style={styles.slide3}>
+                    <LinearGradient
+                        colors={['#d15564', '#9a5e9a', '#506dcf' ]}
+                        start={{x: 0.0, y: 0.0}} end={{x: 0, y: 1}}
+                        style={{height: height, width: width}}>
+                    <View level={10}>
+                        <Icon style={{textAlign:'center',  marginTop: height/4, fontSize: height/8.33, color:'#fff',  }} name="chart-line">
                         </Icon>
                     </View>
-                    <View level = {-20}>
-                    <Text style={styles.smallText}>Record with the touch of a button anywhere, anytime</Text>
+                    <View level={10}>
+                        <Text style={styles.smallText}>Packed with <Text style={styles.smallTextBold}>analytics</Text> so that you can track your listening journey</Text>
                     </View>
-
-                    </Image>
-
+                    </LinearGradient>
                 </View>
 
-
-
-
-
+                <View style={styles.slide4}>
+                    <LinearGradient
+                        colors={['#d15564', '#9a5e9a', '#506dcf' ]}
+                        start={{x: 0.0, y: 0.0}} end={{x: 0, y: 1}}
+                        style={{height: height, width: width}}>
+                    <View level = {9}>
+                        <Icon style={{textAlign:'center', marginTop: height/4, fontSize: height/8.33, color:'#fff',  }} name="microphone">
+                        </Icon>
+                    </View>
+                    <View level = {-9}>
+                        <Text style={styles.smallText}><Text style={styles.smallTextBold}>Record and create</Text> a podcast with the touch of a button anywhere, anytime</Text>
+                    </View>
+                    </LinearGradient>
+                </View>
 
             </AppIntro>
-                </View>
-
-
-
-                <View style={{flex:1, flexDirection: 'row', alignItems: 'flex-end'}}>
-
-                    <View style={{flex:1, marginRight: 20 , marginBottom: 60 , flexDirection: 'column', alignItems: 'flex-end'}}>
-                        <TouchableOpacity onPress={this._handleButtonPressLogin} style = {{ width: 75, height: 75, backgroundColor: '#ffffff50',borderRadius: 40, borderColor:  'rgba(151,135,255,0)', borderWidth: 2.5, alignItems: 'center'}}>
-                            <Image
-                                style={styles.logo}
-                                source={require('tess/src/images/Circle-button.png')}
-                            />
-                        </TouchableOpacity>
-                    </View>
-
-
-                </View>
-
-
             </View>
         );
     }
 }
 
-
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
-
-    linearGradient: {
-        width: 315,
-        height: 310,
-        alignSelf: 'flex-end',
-        backgroundColor: 'transparent'
-    },
     textContainer: {
         flex: 1,
-    },
-    logo: {
-        marginRight:10,
-        marginTop: 11,
-        width: 49,
-        height: 49,
-        position: 'absolute',
-    },
-    title: {
-        color: '#ffffff',
-        marginTop: -10,
-        width: 200,
-        textAlign: 'center',
-        opacity: 2,
-        fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 25,
-        backgroundColor: 'transparent'
     },
 
     slide1: {
@@ -225,34 +178,44 @@ const styles = StyleSheet.create({
     },
 
     textforSlide1: {
-        color: '#fff',
-        fontSize: height/14.5,
+        color: '#3e4164',
+        fontSize: height/20,
         textAlign: 'left',
-        fontFamily: 'AvenirNext-Bold',
-        marginLeft: 30,
-        marginRight: 30,
+        fontFamily: 'Montserrat-SemiBold',
+        marginLeft: width/12.5,
+        marginRight: width/12.5,
         marginHorizontal: -400,
-        marginTop: 60,
-        backgroundColor: 'transparent'
+        marginTop: height/11.12,
+        
     },
     smallText1: {
-        color: '#fff',
-        fontSize: height/55.58,
+        color: '#3e4164',
+        fontSize: height/40,
         textAlign: 'left',
-        fontFamily: 'Avenir-Light',
-        marginLeft: 30,
-        marginRight: 30,
-        marginTop: 20,
-        backgroundColor: 'transparent'
+        fontFamily: 'Montserrat-Regular',
+        marginLeft: width/12.5,
+        marginRight: width/12.5,
+        marginTop: width/33.35,
+        
     },
     smallText: {
         color: '#fff',
-        fontSize: 18,
-        marginTop: 10,
+        fontSize: width/20.8,
+        marginTop: height/66.7,
         textAlign: 'center',
-        fontFamily: 'HiraginoSans-W3',
-        marginHorizontal: 30,
-        backgroundColor: 'transparent'
+        fontFamily: 'Montserrat-Regular',
+        marginHorizontal: width/12.5,
+        
+    },
+    smallTextBold: {
+        color: '#fff',
+        fontSize: width/16.75,
+        fontWeight: 'bold',
+        marginTop: height/66.7,
+        textAlign: 'center',
+        fontFamily: 'Montserrat-Regular',
+        marginHorizontal: width/12.5,
+        
     },
 
 

@@ -1,12 +1,22 @@
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, ListView,  RefreshControl, View} from 'react-native';
+import { StyleSheet, ScrollView, ListView, View, Text, TouchableOpacity, Dimensions, Platform, ActivityIndicator} from 'react-native';
+import PlayerBottom from '../PlayerBottom';
 import Variables from "../Variables";
 import firebase from 'firebase';
-import ListItem from "../ListItem";
+import ListItemChart from "../ListItemChart";
+import ListItemChartPodcast from "../ListItemChartPodcast";
+
+var {height, width} = Dimensions.get('window');
+
+let topMargin = 0;
+if(Platform.OS === 'ios'){
+    topMargin = height/8
+}
 
 
 
-// popular tab on discover page
+
+// Charts page on discover (browse) page
 
 class TopCharts extends Component{
 
@@ -15,10 +25,9 @@ class TopCharts extends Component{
         Variables.state.topCharts = [];
         const ref = firebase.database().ref(`podcasts/`);
 
-        ref.limitToLast(400).once("value", function (snapshot) {
+        ref.limitToLast(500).once("value", function (snapshot) {
 
             snapshot.forEach(function (data) {
-
                 if(data.child("plays").numChildren() > 0){
                     Variables.state.topCharts.push(data.val());
                     for(let i = Variables.state.topCharts.length-1; i > 0 && Object.keys(Variables.state.topCharts[i].plays).length > Object.keys(Variables.state.topCharts[i-1].plays).length; i--){
@@ -27,110 +36,183 @@ class TopCharts extends Component{
                         Variables.state.topCharts[i] = temp;
                     }
                 }
-
             })
-
         });
-
-
-
     }
+
+
+    componentWillUnmount(){
+        clearTimeout(this.timeout1);
+        clearTimeout(this.timeout2);
+    }
+
 
     constructor(props){
         super(props);
+
+        this.props.navigator.setStyle({
+            statusBarHidden: false,
+            statusBarTextColorScheme: 'light',
+            navBarHidden: false,
+            navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
+            navBarTextFontSize: height/30.79, // change the font size of the title
+            navBarTextFontFamily: 'Montserrat-Bold', // Changes the title font
+            navBarHideOnScroll: false,
+            navBarBackgroundColor: '#fff',
+            topBarElevationShadowEnabled: Platform.OS === 'ios' ,
+            topBarShadowOpacity: 0,
+            topBarShadowOffset: 0,
+            topBarShadowRadius: 0,
+            statusBarColor: '#fff',
+            drawUnderNavBar: Platform.OS === 'ios',
+            navBarTranslucent: Platform.OS === 'ios',
+            navBarNoBorder: true,
+
+        });
+
+
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithRows([]),
-            refreshing: false
+            dataSourceEps: dataSource.cloneWithRows([]),
+            dataSourcePods: dataSource.cloneWithRows([]),
+            refreshing: false,
+            episodesActive: true,
+            podcastsActive: false,
         };
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},1000);
 
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},3000);
+        let topPods = [];
+        setTimeout(() => {
 
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},5000);
+            Variables.state.topCharts.forEach(function (data) {
 
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},7000);
-    }
-
-
-
-    fetchData(){
-
-        Variables.state.topCharts = [];
-        const ref = firebase.database().ref(`podcasts/`);
-
-        ref.limitToLast(400).once("value", function (snapshot) {
-
-            snapshot.forEach(function (data) {
-
-                if(data.child("plays").numChildren() > 0){
-                    Variables.state.topCharts.push(data.val());
-                    for(let i = Variables.state.topCharts.length-1; i > 0 && Object.keys(Variables.state.topCharts[i].plays).length > Object.keys(Variables.state.topCharts[i-1].plays).length; i--){
-                        let temp = Variables.state.topCharts[i-1];
-                        Variables.state.topCharts[i-1] = Variables.state.topCharts[i];
-                        Variables.state.topCharts[i] = temp;
-                    }
+                if(!topPods.includes(data.podcastArtist)){
+                    topPods.push(data.podcastArtist)
                 }
 
             })
 
-        });
+        },3000);
 
 
+        this.timeout1 = setTimeout(() => {this.setState({dataSourceEps: dataSource.cloneWithRows(Variables.state.topCharts), })},2000);
+        this.timeout2 = setTimeout(() => {this.setState({dataSourceEps: dataSource.cloneWithRows(Variables.state.topCharts), dataSourcePods: dataSource.cloneWithRows(topPods), })},4000);
     }
 
 
-    _onRefresh() {
-        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
-        this.setState({refreshing: true});
-        this.setState({dataSource: dataSource.cloneWithRows([])});
+    renderRowEps = (rowData, sectionID, rowID) => {
+        let id = parseInt(rowID) + 1;
+        return <ListItemChart podcast={rowData} index={id} navigator={this.props.navigator} />;
+    };
 
-        this.fetchData();
+    renderRowPods = (rowData, sectionID, rowID) => {
+        let id = parseInt(rowID) + 1;
+        return <ListItemChartPodcast podcast={rowData} index={id} navigator={this.props.navigator} />;
+    };
 
-        this.setState({
-            refreshing: false,
-        });
+    renderTitleEps = () => {
+        if(this.state.episodesActive){
+            return(
+                <View style = {{flex: 1, alignSelf: 'flex-start', marginLeft: width/23.44, marginRight: width/46.88,}}>
+                    <TouchableOpacity style = {styles.boxActive}>
+                        <Text style = {styles.titleActive}>Top Episodes</Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+        else{
+            return(
+                <View style = {{flex: 1, alignSelf: 'flex-start', marginLeft: width/23.44, marginRight: width/46.88,}}>
+                    <TouchableOpacity style = {styles.box} onPress={() => {
+                        this.setState({episodesActive: true, podcastsActive: false})
+                    }}>
+                        <Text style = {styles.title}>Top Episodes</Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+    };
 
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},1000);
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},3000);
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},5000);
-        setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.topCharts)})},7000);
+    renderTitlePods = () => {
+        if(this.state.podcastsActive){
+            return(
+                <View style = {{flex: 1, alignSelf: 'flex-end', marginLeft: width/46.88, marginRight: width/23.44,}}>
+                    <TouchableOpacity style = {styles.boxActive}>
+                        <Text style = {styles.titleActive}>Top Podcasts</Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+        else{
+            return(
+                <View style = {{flex: 1, alignSelf: 'flex-end', marginLeft: width/46.88, marginRight: width/23.44,}}>
+                    <TouchableOpacity style = {styles.box} onPress={() => {
+                        this.setState({episodesActive: false, podcastsActive: true})
+                    }}>
+                        <Text style = {styles.title}>Top Podcasts</Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+    };
 
+    renderDataEps = (active) => {
 
-    }
+        if(active){
+            return(
+                <ListView
+                    enableEmptySections
+                    dataSource={this.state.dataSourceEps}
+                    renderRow={this.renderRowEps}
+                    scrollRenderAheadDistance={400}
+                />
+            )
+        }
+        else {
+            return(
+                <View/>
+            )
+        }
+    };
 
+    renderDataPods = (active) => {
 
-
-    renderRow = (podcast) => {
-        return <ListItem podcast={podcast} navigator={this.props.navigator} />;
+        if(active){
+            return(
+                <ListView
+                    enableEmptySections
+                    dataSource={this.state.dataSourcePods}
+                    renderRow={this.renderRowPods}
+                    scrollRenderAheadDistance={400}
+                />
+            )
+        }
+        else{
+            return(
+                <View style={styles.container}>
+                    <ActivityIndicator style={{paddingVertical: height/33.35, alignSelf:'center'}} color='#3e4164' size ="large" />
+                </View>
+            )
+        }
     };
 
 
     render() {
         return (
-            <ScrollView
-                refreshControl={
-                    <RefreshControl
-                        refreshing={this.state.refreshing}
-                        onRefresh={this._onRefresh.bind(this)}
-                    />
-                }
-            >
+            <View style={styles.container}>
 
-                <View style={{flex:1}}>
-                    <ListView
-                        enableEmptySections
-                        dataSource={this.state.dataSource}
-                        renderRow={this.renderRow}
-                    />
+                <View style = {{paddingBottom: height/44.47, flexDirection: 'row', backgroundColor: '#fff'}}>
+                    {this.renderTitleEps()}
+                    {this.renderTitlePods()}
                 </View>
 
-                <View style={{paddingBottom: 120}}/>
+                <ScrollView>
+                    {this.renderDataEps(this.state.episodesActive)}
+                    {this.renderDataPods(this.state.podcastsActive)}
+                    <View style={{paddingBottom: height/11.12}}/>
+                </ScrollView>
 
-            </ScrollView>
-
-
-
+                <PlayerBottom navigator={this.props.navigator}/>
+            </View>
 
         );
     }
@@ -139,21 +221,33 @@ class TopCharts extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: 'transparent',
-        marginTop: 0,
+        backgroundColor: '#f5f4f9',
+        marginTop: topMargin,
+        height: height/1.154,
     },
 
     title: {
-        color: '#2A2A30',
-        marginTop:10,
-        marginLeft: 20,
-        flex:1,
-        textAlign: 'left',
-        opacity: 2,
-        fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 20,
-        backgroundColor: 'transparent'
+        color: '#3e4164',
+        textAlign: 'center',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/20.83,
+        
+    },
+
+    titleActive: {
+        color: '#fff',
+        textAlign: 'center',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/20.83,
+        
+    },
+
+    box: {
+        backgroundColor: '#f5f4f9', borderRadius: 12, padding: 15,
+    },
+
+    boxActive: {
+        backgroundColor: '#3e4164', borderRadius: 12, padding: 15,
     },
 
 });

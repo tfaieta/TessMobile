@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image, Alert} from 'react-native';
+import { Text, View, TouchableOpacity, Image, Alert, Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import Variables from "./Variables";
 import { Navigation } from 'react-native-navigation';
 
+var {height, width} = Dimensions.get('window');
+
+
+
+// individual list item for a comment
 
 class ListItemComment extends Component {
 
@@ -25,6 +30,8 @@ class ListItemComment extends Component {
 
     componentWillUnmount(){
         clearTimeout(this.timeout);
+        clearTimeout(this.timeout2);
+        clearTimeout(this.timeout3);
     }
 
 
@@ -32,8 +39,33 @@ class ListItemComment extends Component {
         super(state);
         this.state ={
             profileName: '',
-            profileImage: ''
+            profileImage: '',
+            username: '',
+            comment: ''
         };
+
+        const {user} = this.props.rowData;
+        const {comment} = this.props.rowData;
+
+        let profileName = '';
+        firebase.database().ref(`/users/${user}/username`).orderByChild("username").on("value", function (snap) {
+            if (snap.val()) {
+                profileName = snap.val().username;
+            }
+            else {
+                profileName = user;
+            }
+        });
+
+        this.timeout2 = setTimeout(() => {
+            this.setState({username: profileName});
+            this.setState({comment: comment});
+        }, 250);
+
+        this.timeout3 = setTimeout(() => {
+            this.setState({username: profileName})
+        }, 500);
+
     }
 
 
@@ -42,11 +74,11 @@ class ListItemComment extends Component {
 
         if (this.state.profileImage == ''){
             return(
-                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginTop:5, marginRight: 5,  height: 30, width: 30, borderRadius: 10, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)', shadowOffset:{  width: 0,  height: 2}, shadowOpacity: 0.5, shadowRadius: 2}}>
+                <View style={{backgroundColor:'rgba(130,131,147,0.4)', marginTop: height/133.4, marginRight: width/75,  height: width/12.5, width: width/12.5, borderRadius: 10, borderWidth: 0.1, borderColor:'rgba(320,320,320,0.8)', shadowOffset:{  width: 0,  height: 2}, shadowOpacity: 0.5, shadowRadius: 2}}>
                     <Icon style={{
                         textAlign: 'center',
-                        fontSize: 18,
-                        marginTop: 6,
+                        fontSize: width/20.83,
+                        marginTop: height/111.17,
                         color: 'white',
                     }} name="md-person">
                     </Icon>
@@ -55,9 +87,9 @@ class ListItemComment extends Component {
         }
         else{
             return(
-                <View style={{backgroundColor:'transparent', marginTop:5, marginRight: 5, height: 30, width: 30}}>
+                <View style={{backgroundColor:'transparent', marginTop: height/133.4, marginRight: width/75, height: width/12.5, width: width/12.5}}>
                     <Image
-                        style={{width: 30, height: 30, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
+                        style={{width: width/12.5, height: width/12.5, position: 'absolute', alignSelf: 'center', opacity: 1, borderRadius: 10, borderWidth: 0.1, borderColor: 'transparent'}}
                         source={{uri: this.state.profileImage}}
                     />
                 </View>
@@ -68,34 +100,12 @@ class ListItemComment extends Component {
 
 
 
-
-
     render() {
 
         const {user} = this.props.rowData;
-        const {comment} = this.props.rowData;
-        const {id} = this.props.rowData;
-
-
-        let profileName = 'loading';
-        firebase.database().ref(`/users/${user}/username`).orderByChild("username").on("value", function (snap) {
-            if (snap.val()) {
-                profileName = snap.val().username;
-            }
-            else {
-                profileName = user;
-            }
-        });
-
-
-
         const {currentUser} = firebase.auth();
-        const me = currentUser.uid;
 
-
-
-
-        if(user == me || Variables.state.podcastArtist == me){
+        if(user == currentUser.uid || Variables.state.podcastArtist == currentUser.uid){
 
             return (
                 <View>
@@ -110,16 +120,18 @@ class ListItemComment extends Component {
                             passProps: {navigator},
                         });
 
-                    }} style={{flexDirection: 'row', alignSelf: 'flex-start', marginHorizontal: 10, marginVertical: 10}}>
+                    }} style={{flexDirection: 'row', alignSelf: 'flex-start', marginHorizontal: width/37.5, marginVertical: height/66.7}}>
 
                         {this._renderProfileImage()}
 
-                        <Text style={styles.textCommentName}>{profileName}:</Text>
-                        <View style = {{marginHorizontal: 10, flex:1}}>
-                        <Text style={styles.textComment}>{comment}</Text>
+                        <Text style={styles.textCommentName}>{this.state.username}:</Text>
+                        <View style = {{marginHorizontal: width/37.5, flex:1}}>
+                        <Text style={styles.textComment}>{this.state.comment}</Text>
                         </View>
 
                         <Icon onPress={() => {
+
+                            const {id} = this.props.rowData;
 
                             Alert.alert(
                                 'Are you sure you want to delete?',
@@ -138,10 +150,10 @@ class ListItemComment extends Component {
 
                         }} style={{
                             textAlign: 'right',
-                            fontSize: 20,
-                            marginRight: 5,
-                            marginLeft: 5,
-                            marginTop: 7,
+                            fontSize: width/18.75,
+                            marginRight: width/75,
+                            marginLeft: width/75,
+                            marginTop: height/95.29,
                             color: '#656575'
                         }} name="md-close-circle">
                         </Icon>
@@ -160,19 +172,19 @@ class ListItemComment extends Component {
                         const {navigator} = this.props;
                         Variables.state.browsingArtist = user;
                         Navigation.showModal({
-                            screen: 'UserProfileModal',
+                            screen: 'UserProfile',
                             animated: true,
                             animationType: 'fade',
                             passProps: {navigator},
                         });
 
-                    }} style={{flexDirection: 'row', alignSelf: 'flex-start', marginHorizontal: 10, marginVertical: 10}}>
+                    }} style={{flexDirection: 'row', alignSelf: 'flex-start', marginHorizontal: width/37.5, marginVertical: height/66.7}}>
 
                         {this._renderProfileImage()}
 
-                        <Text style={styles.textCommentName}>{profileName}:</Text>
-                        <View style = {{marginHorizontal: 10, flex:1}}>
-                        <Text style={styles.textComment}>{comment}</Text>
+                        <Text style={styles.textCommentName}>{this.state.username}:</Text>
+                        <View style = {{marginHorizontal: width/37.5, flex:1}}>
+                        <Text style={styles.textComment}>{this.state.comment}</Text>
                         </View>
 
                     </TouchableOpacity>
@@ -194,22 +206,22 @@ const styles = {
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 14,
-        backgroundColor: 'transparent',
-        marginTop: 10
+        fontFamily: 'Montserrat-Regular',
+        fontSize: width/26.79,
+        
+        marginTop: height/66.7
     },
     textCommentName:{
-        color: '#2A2A30',
+        color: '#3e4164',
         flexDirection: 'column',
         textAlign: 'left',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 14,
-        backgroundColor: 'transparent',
-        marginHorizontal: 5,
-        marginTop: 10
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/26.79,
+        
+        marginHorizontal: width/75,
+        marginTop: height/66.7
     },
 };
 

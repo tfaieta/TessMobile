@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, StatusBar, Animated, Easing, Image, Platform, Alert, Dimensions} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity,  Animated, Easing, Image, Platform, Alert, Dimensions, PermissionsAndroid} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Sound from 'react-native-sound';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
 import LinearGradient from "react-native-linear-gradient/index.android";
 import Variables from "./Variables";
-
 
 
 
@@ -41,9 +40,14 @@ class Record extends Component{
 
     }
 
-    static navigatorStyle = {
-        tabBarHidden: true,
-    };
+
+      static navigatorStyle = {
+            statusBarHidden: false,
+            navBarHidden: true,
+            statusBarTextColorScheme: 'light',
+            tabBarHidden: true,
+            statusBarColor: '#3e279b',
+      };
 
 
     state = {
@@ -123,7 +127,7 @@ class Record extends Component{
 
         const rationale = {
             'title': 'Microphone Permission',
-            'message': 'Tess needs access to your microphone so you can record audio.'
+            'message': 'Tess needs access to your microphone to record.'
         };
 
         return PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO, rationale)
@@ -144,22 +148,43 @@ class Record extends Component{
 
 
     _renderButtonRecord(onPress, active) {
-        if(active){
-            return (
-                <TouchableOpacity style={styles.button} onPress={onPress}>
-                    <Image style={styles.iconText} onPress={this.recordSound} source={require('tess/src/images/record-icon-pause.png')}>
-                    </Image>
-                </TouchableOpacity>
-            );
+        if(Platform.OS === 'ios'){
+            if(active){
+                return (
+                    <TouchableOpacity style={styles.button} onPress={onPress}>
+                        <Image style={styles.iconText} onPress={this.recordSound} source={require('tess/src/images/record-icon-pause.png')}>
+                        </Image>
+                    </TouchableOpacity>
+                );
+            }
+            else{
+                return (
+                    <TouchableOpacity style={styles.button} onPress={onPress}>
+                        <Image style={styles.iconText} onPress={this.recordSound} source={require('tess/src/images/record-icon.png')}>
+                        </Image>
+                    </TouchableOpacity>
+                );
+            }
         }
-        else{
-            return (
-                <TouchableOpacity style={styles.button} onPress={onPress}>
-                    <Image style={styles.iconText} onPress={this.recordSound} source={require('tess/src/images/record-icon.png')}>
-                    </Image>
-                </TouchableOpacity>
-            );
+        else if (Platform.OS === 'android'){
+            if(active){
+                return (
+                    <View style={styles.button}>
+                        <Image style={styles.iconText} onPress={this.recordSound} tintColor="#d15564" source={require('tess/src/images/record-icon.png')}>
+                        </Image>
+                    </View>
+                );
+            }
+            else{
+                return (
+                    <TouchableOpacity style={styles.button} onPress={onPress}>
+                        <Image style={styles.iconText} onPress={this.recordSound} source={require('tess/src/images/record-icon.png')}>
+                        </Image>
+                    </TouchableOpacity>
+                );
+            }
         }
+
 
     }
 
@@ -425,10 +450,9 @@ class Record extends Component{
                         this.prepareRecordingPath(this.state.audioPath);
 
 
-                        this.props.navigator.resetTo({
-                            screen: 'RecordFirst',
-                            animated: true,
-                            animationType: 'fade',
+                        this.props.navigator.popToRoot({
+                            animated: true, // does the popToRoot have transition animation or does it happen immediately (optional)
+                            animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
                         });
 
                     }
@@ -444,17 +468,14 @@ class Record extends Component{
             this.setState({stoppedRecording: true, recording: false});
 
 
-            this.props.navigator.resetTo({
-                screen: 'RecordFirst',
-                animated: true,
-                animationType: 'fade',
+            this.props.navigator.popToRoot({
+                animated: true, // does the popToRoot have transition animation or does it happen immediately (optional)
+                animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
             });
 
 
 
-
         }
-
 
 
 
@@ -477,18 +498,19 @@ class Record extends Component{
                 {this._renderLevel(this.state.level)}
 
 
-                <View style={{flexDirection: 'row', paddingVertical:5}}>
+                <View style={{flexDirection: 'row', paddingVertical:height/133.4}}>
 
-                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
+                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: height/33.35}}>
                         <TouchableOpacity onPress={this._pressBack}>
                             <Icon style={{
-                                textAlign:'left',marginLeft: 10, fontSize: 28,color:'#fff'
+                                backgroundColor: 'transparent',
+                                textAlign:'left',marginLeft: width/37.5, fontSize: width/13.39,color:'#fff'
                             }} name="md-arrow-round-back">
                             </Icon>
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{flex:1, marginRight: 10, alignItems: 'flex-end', justifyContent: 'center', marginTop: 25}}>
+                    <View style={{flex:1, marginRight: width/37.5, alignItems: 'flex-end', justifyContent: 'center', marginTop: height/26.68}}>
                         {this._renderNext()}
                     </View>
 
@@ -518,97 +540,65 @@ class Record extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        paddingTop: 10,
-        backgroundColor: 'transparent',
+        paddingTop: height/66.7,
     },
     container2:{
         flex: 1,
         alignItems: 'center',
-        backgroundColor: 'transparent',
-        marginTop: -100,
+        marginTop: -(height/6.67),
     },
-
     title: {
         color: 'rgba(1,170,170,1)',
-        marginTop: 70,
-        flex:1,
-        textAlign: 'center',
-        opacity: 2,
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 25,
-        backgroundColor: 'transparent'
-    },
-    title2: {
-        color: '#804cc8',
-        marginTop:60,
-        flex:1,
-        textAlign: 'center',
-        opacity: 2,
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 25,
-        backgroundColor: 'transparent'
-    },
-    title3: {
-        color: '#804cc8',
-        marginTop:-80,
-        flex:1,
+        marginTop: height/9.53,
+        flex: 1,
         textAlign: 'center',
         opacity: 1,
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 20,
-        backgroundColor: 'transparent'
-    },
-    title4: {
-        color: '#FFF',
-        textAlign: 'center',
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 22,
+        fontFamily:  'Montserrat-Bold',
+        fontSize: width/15,
     },
     controls: {
         justifyContent: 'center',
         alignItems: 'center',
     },
     progressText: {
-        paddingTop: 50,
-        fontSize: 30,
-        fontFamily: 'Futura',
+        paddingTop: height/13.34,
+        fontSize: width/12.5,
+        fontFamily: 'Montserrat-Bold',
         color: "#FFF",
+        backgroundColor: 'transparent'
     },
     button: {
-        padding: 20,
+        padding: width/18.75,
     },
     disabledButtonText: {
-        color: '#ee617c'
+        color: '#d15564'
     },
     buttonText: {
-        marginTop:60,
-        fontSize: 30,
-        padding: 8,
-        paddingHorizontal: 50,
+        marginTop: height/11.12,
+        fontSize: width/12.5,
+        padding: width/46.88,
+        paddingHorizontal: width/7.5,
         color: "#FFF",
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
+        fontFamily: 'Montserrat-Bold',
     },
     activeButtonText: {
-        fontSize: 25,
-        color: '#ee617c',
+        fontSize: width/15,
+        color: '#d15564',
 
-        backgroundColor: '#8a66c8'
+        backgroundColor: '#9a5e9a'
     },
     iconText: {
-        marginTop: 50,
-        width: 147,
-        height: 151
+        marginTop: height/13.34,
+        width: width/2.55,
+        height: height/4.42
     },
     activeIconText: {
-        marginTop: 50,
-        width: 147,
-        height: 151,
-        tintColor: '#ee617c'
+        marginTop: height/13.34,
+        width: width/2.55,
+        height: height/4.42,
+        tintColor: '#d15564'
     },
     leftContainer: {
         justifyContent: 'center',
@@ -616,17 +606,17 @@ const styles = StyleSheet.create({
     },
     centerContainer: {
         flexDirection: 'row',
-        marginTop: 35,
-        paddingBottom: 20
+        marginTop: height/19.06,
+        paddingBottom: height/33.35
     },
 
     header: {
-        marginTop:25,
+        marginTop: width/15,
         color: '#fff',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 18,
+        fontFamily: 'Montserrat-Bold',
+        fontSize: width/20.83,
         backgroundColor: 'transparent',
     },
 
@@ -634,8 +624,8 @@ const styles = StyleSheet.create({
         color: '#fff',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
+        fontFamily:  'Montserrat-Bold',
+        fontSize: width/23.44,
         backgroundColor: 'transparent',
     },
 
@@ -643,15 +633,15 @@ const styles = StyleSheet.create({
         color: 'rgba(350,350,350,0.4)',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
+        fontFamily:  'Montserrat-Bold',
+        fontSize: width/23.44,
         backgroundColor: 'transparent',
     },
 
     slideView: {
         backgroundColor: 'white',
-        width: 20,
-        height: 20,
+        width: width/18.75,
+        height: height/33.35,
     }
 
 });

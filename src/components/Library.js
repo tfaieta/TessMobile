@@ -1,46 +1,223 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity, StatusBar} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, ScrollView, StatusBar, ListView, RefreshControl} from 'react-native';
 import PlayerBottom from './PlayerBottom';
+import Icon from 'react-native-vector-icons/Ionicons';
+import Variables from "./Variables";
+import firebase from 'firebase';
+import ListItemUsers from "./ListItemUsers";
 
-
+// 4th tab, library page
 
 class Library extends Component{
+
+    componentWillMount(){
+        const {currentUser} = firebase.auth();
+
+        firebase.database().ref(`users/${currentUser.uid}/tracking`).once("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+                firebase.database().ref(`users/${data.key}/podcasts`).once("value", function (ep) {
+                    ep.forEach(function (episode) {
+                        if(episode.val().id > data.val().lastEpisode){
+                            const id = episode.val().id;
+                            console.warn("added " + episode.val().id + " to tracking");
+                            firebase.database().ref(`users/${currentUser.uid}/tracking/${data.key}/episodes/${id}`).update({id});
+                            firebase.database().ref(`users/${currentUser.uid}/tracking/${data.key}`).update({lastEpisode: id});
+                        }
+                    })
+                });
+            })
+        });
+
+        firebase.database().ref(`users/${currentUser.uid}/queue`).on("value", function (snapshot) {
+            Variables.state.myQueue = [];
+            snapshot.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.val().id}`).on("value", function (data) {
+                    if(data.val()){
+                        Variables.state.myQueue.push(data.val())
+                    }
+
+                })
+            });
+        });
+
+
+        firebase.database().ref(`users/${currentUser.uid}/tracking`).on("value", function (snapshot) {
+            Variables.state.catchUp = [];
+            snapshot.forEach(function (snap) {
+                firebase.database().ref(`users/${currentUser.uid}/tracking/${snap.val().podcastArtist}/episodes`).on("value", function (snapAgain) {
+                    snapAgain.forEach(function (episode) {
+                        firebase.database().ref(`podcasts/${episode.val().id}`).on("value", function (snapOnceMore) {
+                            Variables.state.catchUp.push(snapOnceMore.val())
+                        })
+                    })
+                })
+            })
+        })
+
+
+    }
+
+
+    componentWillUnmount(){
+        clearTimeout(this.timeout);
+    }
+
+
+    constructor(props){
+        super(props);
+
+        this.props.navigator.setStyle({
+            statusBarHidden: false,
+            statusBarTextColorScheme: 'light',
+            navBarHidden: false,
+            drawUnderTabBar: false,
+            navBarCustomView: 'CustomNavbar',
+            navBarCustomViewInitialProps: {
+                navigator: this.props.navigator
+            },
+            navBarHideOnScroll: false,
+            navBarBackgroundColor: '#fff',
+            topBarElevationShadowEnabled: true,
+            topBarShadowColor: '#000',
+            topBarShadowOpacity: 0.1,
+            topBarShadowOffset: 3,
+            topBarShadowRadius: 5,
+            statusBarColor: '#fff',
+        });
+
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.state = {
+            dataSource: dataSource.cloneWithRows(Variables.state.myQueue),
+            dataCatchUp: dataSource.cloneWithRows(Variables.state.catchUp),
+            refreshing: false,
+        };
+
+        this.timeout = setTimeout(() => {
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myQueue), dataCatchUp: dataSource.cloneWithRows(Variables.state.catchUp)})
+        },1500);
+
+    };
+
+
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+        const {currentUser} = firebase.auth();
+
+
+        firebase.database().ref(`users/${currentUser.uid}/queue`).on("value", function (snapshot) {
+            Variables.state.myQueue = [];
+            snapshot.forEach(function (snap) {
+                firebase.database().ref(`podcasts/${snap.val().id}`).on("value", function (data) {
+                    if(data.val()){
+                        Variables.state.myQueue.push(data.val())
+                    }
+
+                })
+            });
+        });
+
+
+        firebase.database().ref(`users/${currentUser.uid}/tracking`).once("value", function (snapshot) {
+            Variables.state.catchUp = [];
+            snapshot.forEach(function (snap) {
+                firebase.database().ref(`users/${currentUser.uid}/tracking/${snap.val().podcastArtist}/episodes`).once("value", function (snapAgain) {
+                    snapAgain.forEach(function (episode) {
+                        firebase.database().ref(`podcasts/${episode.val().id}`).once("value", function (snapOnceMore) {
+                            Variables.state.catchUp.push(snapOnceMore.val())
+                        })
+                    })
+                })
+            })
+        });
+
+
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.timeout = setTimeout(() => {
+            this.setState({dataSource: dataSource.cloneWithRows(Variables.state.myQueue), dataCatchUp: dataSource.cloneWithRows(Variables.state.catchUp), refreshing: false})
+        },1500);
+
+    };
+
+
+    renderRow = (rowData) => {
+        return <ListItemUsers podcast={rowData} navigator={this.props.navigator} />;
+    };
 
     GoToRecentlyPlayed = () => {
         this.props.navigator.push({
             screen: 'RecentlyPlayed',
-            animated: true,
-            animationType: 'fade',
+            title: 'History',
+        });
+    };
+
+    GoToPlaylists = () => {
+        this.props.navigator.push({
+            screen: 'Playlists',
+            title: 'Playlists',
         });
     };
 
     GoToFavs = () => {
         this.props.navigator.push({
             screen: 'Favorites',
-            animated: true,
-            animationType: 'fade',
+            title: 'Favorites'
         });
     };
 
-    GoToFollowedContent = () => {
+    GoToPodcasts = () => {
         this.props.navigator.push({
-            screen: 'Followed',
-            animated: true,
-            animationType: 'fade',
+            screen: 'Podcasts',
+            title: 'Podcasts'
         });
     };
 
-    GoToMyContent = () => {
+    GoToHighlights = () => {
         this.props.navigator.push({
-            screen: 'MyContent',
-            animated: true,
-            animationType: 'fade',
+            screen: 'Highlights',
+            title: 'Highlights'
         });
     };
 
-    constructor(props) {
-        super(props);
-    }
+
+
+    renderCatchUp = (data) => {
+        if(data.length == 1){
+            return(
+                <Text style = {styles.titleTop}>{data.length} New Episode</Text>
+            )
+        }
+        else if (data.length > 1){
+            return(
+                <Text style = {styles.titleTop}>{data.length} New Episodes</Text>
+            )
+        }
+        else{
+            return(
+                <Text style = {styles.titleTop}>All Caught Up!</Text>
+            )
+        }
+    };
+
+
+    renderUpNext = (data) => {
+        if(data.length > 0){
+            return(
+                <ListView
+                    horizontal={true}
+                    enableEmptySections
+                    dataSource={this.state.dataSource}
+                    renderRow={this.renderRow}
+                />
+            )
+        }
+        else{
+            return(
+                <View style={{paddingBottom: 20}}>
+                </View>
+            )
+        }
+    };
+
 
     render() {
         return (
@@ -51,51 +228,110 @@ class Library extends Component{
                     barStyle="dark-content"
                 />
 
-
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 6}, shadowOpacity: 0.2, shadowRadius: 10}}>
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center', marginTop:5}}>
-                        <Text style={styles.header}>Library</Text>
-                    </View>
-                </View>
-
-
-                <Image
-                    style={{width: 260, height:260, alignSelf: 'center', marginTop: 100}}
-                    source={require('tess/src/images/library-nav.png')}
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                        />}
                 >
 
+                    <TouchableOpacity style = {{backgroundColor: '#3e4164', borderTopLeftRadius: 7, borderTopRightRadius: 7, marginTop: 15, marginHorizontal: 10,  shadowColor: 'black', shadowRadius: 4, shadowOpacity: 0.4  }} onPress={() => {
+                        this.props.navigator.showModal({
+                            screen: 'CatchUp',
+                        });
+                    }}>
+                        {this.renderCatchUp(Variables.state.catchUp)}
+                    </TouchableOpacity>
 
-                    <View style={{flexDirection: 'column'}}>
-                    <View style={{flexDirection: 'row'}}>
-                        <TouchableOpacity onPress={this.GoToFavs} style={{flex:1, width: 260, height:130, alignSelf: 'flex-start'}}>
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 15, marginVertical: 1}} onPress={this.GoToPodcasts} >
+                        <Text style = {styles.title}>   Podcasts</Text>
+                        <View style={{alignSelf:'flex-end'}}>
+                            <Icon style={{
+                                fontSize: 22,
+                                
+                                color: '#3e416460',
+                                marginHorizontal: 15,
+                            }} name="ios-arrow-forward">
+                            </Icon>
+                        </View>
+                    </TouchableOpacity>
 
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={this.GoToRecentlyPlayed} style={{flex:1, width: 260, height:130, alignSelf: 'flex-start'}}>
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 15, marginVertical: 1}} onPress={this.GoToPlaylists}>
+                        <Text style = {styles.title}>   Playlists</Text>
+                        <View style={{alignSelf:'flex-end'}}>
+                            <Icon style={{
+                                fontSize: 22,
+                                
+                                color: '#3e416460',
+                                marginHorizontal: 15,
+                            }} name="ios-arrow-forward">
+                            </Icon>
+                        </View>
+                    </TouchableOpacity>
 
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 15, marginVertical: 1}} onPress={this.GoToFavs} >
+                        <Text style = {styles.title}>   Favorites</Text>
+                        <View style={{alignSelf:'flex-end'}}>
+                            <Icon style={{
+                                fontSize: 22,
+                                
+                                color: '#3e416460',
+                                marginHorizontal: 15,
+                            }} name="ios-arrow-forward">
+                            </Icon>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 15, marginVertical: 1}} onPress={this.GoToHighlights}>
+                        <Text style = {styles.title}>   Highlights</Text>
+                        <View style={{alignSelf:'flex-end'}}>
+                            <Icon style={{
+                                fontSize: 22,
+                                
+                                color: '#3e416460',
+                                marginHorizontal: 15,
+                            }} name="ios-arrow-forward">
+                            </Icon>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{flex:1, backgroundColor: '#fff', flexDirection:'row', paddingVertical: 15, marginVertical: 1}} onPress={this.GoToRecentlyPlayed}>
+                        <Text style = {styles.title}>   History</Text>
+                        <View style={{alignSelf:'flex-end'}}>
+                            <Icon style={{
+                                fontSize: 22,
+                                
+                                color: '#3e416460',
+                                marginHorizontal: 15,
+                            }} name="ios-arrow-forward">
+                            </Icon>
+                        </View>
+                    </TouchableOpacity>
+
+                    <View style={{flex:1, flexDirection: 'row', backgroundColor: '#fff', marginTop: 10, marginHorizontal: 10, borderTopLeftRadius: 7, borderTopRightRadius: 7}}>
+                        <View style={{flex:1}}>
+                            <Text style = {styles.titleNext}>Up Next</Text>
+                        </View>
+                        <TouchableOpacity style={{flex:1, alignSelf: 'flex-end'}} onPress={() => {
+                            this.props.navigator.showModal({
+                                screen: 'MyQueue',
+                            });
+                        }}>
+                            <Text style = {styles.titleEdit}>Edit</Text>
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{flexDirection: 'row'}}>
-                        <TouchableOpacity onPress={this.GoToFollowedContent}  style={{flex:1, width: 260, height:130, alignSelf: 'flex-start'}}>
-
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={this.GoToMyContent} style={{flex:1, width: 260, height:130, alignSelf: 'flex-start'}}>
-
-                        </TouchableOpacity>
-                    </View>
+                    <View style={{backgroundColor: '#fff', marginHorizontal: 10, marginBottom: 10, borderBottomLeftRadius: 7, borderBottomRightRadius: 7}}>
+                        {this.renderUpNext(Variables.state.myQueue)}
                     </View>
 
-
-
-                </Image>
-
+                    <View style={{paddingBottom: 60}}/>
+                </ScrollView>
 
                 <PlayerBottom navigator={this.props.navigator}/>
 
             </View>
-
-
-
 
         );
     }
@@ -104,64 +340,70 @@ class Library extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#f5f4f9',
+    },
+    container2:{
+        
+        marginBottom: 10,
+    },
+    title: {
+        flex:1,
+        color: '#3e4164',
+        textAlign: 'left',
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 20,
+        
     },
 
-    title: {
-        color: '#804cc8',
-        marginTop: 70,
+    titleNext: {
+        color: '#3e4164',
+        flex:1,
+        textAlign: 'left',
+        marginVertical: 10,
+        marginTop: 10,
+        marginHorizontal: 15,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 16,
+        
+    },
+
+    titleEdit: {
+        color: '#3e4164',
+        flex:1,
+        textAlign: 'right',
+        marginVertical: 10,
+        marginHorizontal: 10,
+        marginTop: 16,
+        fontStyle: 'normal',
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 14,
+        
+    },
+
+    titleTop: {
+        color: '#fff',
         flex:1,
         textAlign: 'center',
-        opacity: 2,
-        fontStyle: 'normal',
-        fontFamily: 'Futura',
-        fontSize: 25,
-        backgroundColor: 'transparent'
+        marginVertical: 25,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 18,
+        
     },
 
-
-    contentTitle: {
-        color: '#FFF',
-        fontSize: 25,
-        paddingBottom: 20,
+    titleUpNext: {
+        color: '#3e4164',
+        flex:1,
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'Futura',
-
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 18,
+        
     },
 
-    buttonPreview: {
-        backgroundColor: '#804cc8',
-        alignItems: 'center',
-        paddingBottom: 15,
-    },
 
-    buttonUpload: {
-        backgroundColor: '#804cc8',
-        alignItems: 'center',
-        paddingTop: 15,
-    },
 
-    buttonCancel: {
-        backgroundColor: '#804cc8',
-        alignItems: 'center',
-        paddingTop: 15,
-    },
-
-    buttonContainer: {
-        marginTop: 50,
-    },
-
-    header: {
-        marginTop:25,
-        color: '#2A2A30',
-        textAlign: 'center',
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
-        backgroundColor: 'transparent',
-
-    }
 });
 
 export default Library;

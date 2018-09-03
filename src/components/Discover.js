@@ -1,36 +1,97 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
-import { View, StyleSheet,StatusBar} from 'react-native';
-import ScrollableTabView, {DefaultTabBar, } from 'react-native-scrollable-tab-view';
-import TopCharts from './DiscoverBar/TopCharts';
-import NewPodcasts from './DiscoverBar/NewPodcasts';
-import Categories from './DiscoverBar/Categories';
-import Following from './DiscoverBar/Following';
-import { SearchBar } from 'react-native-elements'
-import {volume} from './Home';
+import { View, StyleSheet, Text,ScrollView, Image, ListView, Dimensions, TouchableWithoutFeedback, Platform} from 'react-native';
 import PlayerBottom from './PlayerBottom';
-import { connect } from 'react-redux';
-import Variables from "./Variables";
+import firebase from 'firebase';
+import ListItemUsers from "./ListItemUsers";
+import Carousel from 'react-native-looped-carousel';
 
+var {height, width} = Dimensions.get('window');
 
+let topMargin = 0;
+if(Platform.OS === 'ios'){
+    topMargin = height/10.26
+}
+
+// Discover page, from Browse
 
 class Discover extends Component{
 
-    static state = { search: ''};
-
-    searchActivate = () => {
-        Variables.state.searchWord = this.state.search;
-        this.props.navigator.push({
-            screen: 'Search',
-            animated: true,
-            animationType: 'fade',
-        });
-    };
-
     constructor(props) {
         super(props);
-        this.state = { volume }
+
+        this.props.navigator.setStyle({
+            statusBarHidden: false,
+            statusBarTextColorScheme: 'light',
+            navBarHidden: false,
+            navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
+            navBarTextFontSize: height/30.79, // change the font size of the title
+            navBarTextFontFamily: 'Montserrat-Bold', // Changes the title font
+            drawUnderTabBar: false,
+            navBarHideOnScroll: false,
+            navBarBackgroundColor: '#fff',
+            topBarElevationShadowEnabled: false,
+            topBarShadowColor: 'transparent',
+            topBarShadowOpacity: 0.1,
+            topBarShadowOffset: 3,
+            topBarShadowRadius: 5,
+            statusBarColor: '#fff',
+            drawUnderNavBar: Platform.OS === 'ios',
+            navBarTranslucent: Platform.OS === 'ios',
+            navBarNoBorder: true,
+        });
+
+
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.state = {
+            dataSourceFresh: dataSource.cloneWithRows([]),
+            dataSourceSmall: dataSource.cloneWithRows([]),
+            url: '',
+            refreshing: false,
+            size: {width: width, height: height/3}
+        };
+
+        let fresh = [];
+        firebase.database().ref(`podcasts`).limitToLast(50).once("value", function (snapshot) {
+            snapshot.forEach(function (snap) {
+                if(snap.val()){
+                    if(snap.val().rss){
+                        fresh.push(snap.val())
+                    }
+                }
+            });
+        });
+
+
+        let small = [];
+        firebase.database().ref(`podcasts`).limitToLast(1000).once("value", function (snapshot) {
+            snapshot.forEach(function (snap) {
+                if(snap.val()){
+                    if(snap.val().rss){
+                    }
+                    else{
+                        small.push(snap.val())
+                    }
+                }
+            });
+        });
+
+
+        this.timeout1 = setTimeout(() => {this.setState({dataSourceFresh: dataSource.cloneWithRows(fresh.reverse()), dataSourceSmall: dataSource.cloneWithRows(small.reverse()), })}, 500);
+        this.timeout2 = setTimeout(() => {this.setState({dataSourceFresh: dataSource.cloneWithRows(fresh.reverse()), dataSourceSmall: dataSource.cloneWithRows(small.reverse()), })}, 2000);
+        this.timeout3 = setTimeout(() => {this.setState({dataSourceFresh: dataSource.cloneWithRows(fresh.reverse()), dataSourceSmall: dataSource.cloneWithRows(small.reverse()), })}, 5000);
     }
+
+
+    componentWillUnmount(){
+        clearTimeout(this.timeout1);
+        clearTimeout(this.timeout2);
+        clearTimeout(this.timeout3);
+    }
+
+
+    renderRow = (rowData) => {
+        return <ListItemUsers podcast={rowData} navigator={this.props.navigator} />;
+    };
 
 
 
@@ -38,57 +99,170 @@ class Discover extends Component{
         return (
             <View style={styles.container}>
 
+                <ScrollView>
 
-                <StatusBar
-                    barStyle="dark-content"
-                />
+                    <Text style = {styles.titleHeader}>Featured Providers</Text>
 
-                <View style={styles.backColor}>
+                    <Carousel
+                        delay={5000}
+                        style={this.state.size}
+                        autoplay
+                        chosenBulletStyle={{backgroundColor: '#3e4164',}}
+                        bulletStyle={{backgroundColor:   '#f5f4f9', borderWidth: 1.2, borderColor: '#3e4164',}}
+                        onAnimateNextPage={(p) => console.log(p)}
+                    >
+
+                        {/* Gimlet */}
+                        <View style={[this.state.size]}>
+                            <TouchableWithoutFeedback style={{borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
+                                const {navigator} = this.props;
+                                let title = 'Gimlet Media';
+                                navigator.push({
+                                    screen: 'Media',
+                                    title: "Gimlet Media",
+                                    passProps: {title, navigator},
+                                })
+                            }}>
+                                <View style = {{ backgroundColor: 'transparent', width: width/1.15, height: width/1.97, marginLeft: width/25, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                                    <Image
+                                        style={{width: width/1.15, height: width/1.97, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
+                                        source={require('tess/src/images/podArtGimlet.png')}
+                                    />
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View>
+
+                        {/* NPR */}
+                        <View style={[this.state.size]}>
+                            <TouchableWithoutFeedback style={{borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
+                                const {navigator} = this.props;
+                                let title = 'NPR';
+                                navigator.push({
+                                    screen: 'Media',
+                                    title: "NPR",
+                                    passProps: {title, navigator},
+                                })
+                            }}>
+                                <View style = {{ backgroundColor: 'transparent', width: width/1.15, height: width/1.97, marginLeft: width/25, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                                    <Image
+                                        style={{width: width/1.15, height: width/1.97, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
+                                        source={require('tess/src/images/podArtNPR.png')}
+                                    />
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View>
+
+                        {/* Crooked */}
+                        <View style={[this.state.size]}>
+                            <TouchableWithoutFeedback style={{borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
+                                const {navigator} = this.props;
+                                let title = 'Crooked';
+                                navigator.push({
+                                    screen: 'Media',
+                                    title: "Crooked",
+                                    passProps: {title, navigator},
+                                })
+                            }}>
+                                <View style = {{ backgroundColor: 'transparent', width: width/1.15, height: width/1.97, marginLeft: width/25, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                                    <Image
+                                        style={{width: width/1.15, height: width/1.97, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
+                                        source={require('tess/src/images/CrookedMedia.png')}
+                                    />
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View>
 
 
-                    <SearchBar
-                        lightTheme
-                        round
-                        inputStyle={{backgroundColor: '#fff', color: '#2A2A30', marginLeft: 20}}
-                        containerStyle= {styles.containerSearch}
-                        placeholder='Search...'
-                        placeholderTextColor = '#2A2A30'
-                        icon = {{ color: '#5757FF', name: 'search', paddingRight: 20 }}
-                        clearIcon = {{ color: '#9496A3', name: 'close' }}
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        value={this.state.search}
-                        onChangeText={search => this.setState({ search })}
-                        returnKeyType='search'
-                        onSubmitEditing={this.searchActivate}
-                    />
-                </View>
+
+                        {/* Midroll */}
+                        <View style={[this.state.size]}>
+                            <TouchableWithoutFeedback style={{borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
+                                const {navigator} = this.props;
+                                let title = 'Midroll';
+                                navigator.push({
+                                    screen: 'Media',
+                                    title: "Midroll",
+                                    passProps: {title, navigator},
+                                })
+                            }}>
+                                <View style = {{ backgroundColor: 'transparent', width: width/1.15, height: width/1.97, marginLeft: width/25, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                                    <Image
+                                        style={{width: width/1.15, height: width/1.97, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
+                                        source={require('tess/src/images/MidrollMedia.png')}
+                                    />
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View>
 
 
 
-
-                <ScrollableTabView
-                    tabBarUnderlineStyle = {styles.underline}
-                    tabBarActiveTextColor = '#5757FF'
-                    tabBarInactiveTextColor = '#6a6b78'
-                    tabBarBackgroundColor = '#fff'
-                    style={{marginTop: 0}}
-                    tabBarTextStyle={styles.tabStyle}
-                    renderTabBar={() => <DefaultTabBar />}>
-
-                    <Categories tabLabel="Categories" navigator={this.props.navigator} />
-                    <TopCharts tabLabel="Popular" navigator={this.props.navigator} />
-                    <NewPodcasts tabLabel="New" navigator={this.props.navigator} />
-                    <Following tabLabel="Following" navigator={this.props.navigator}/>
-
-                </ScrollableTabView>
-
-
-
-
-
+                        {/* Wondery */}
+                        <View style={[this.state.size]}>
+                            <TouchableWithoutFeedback style={{borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
+                                const {navigator} = this.props;
+                                let title = 'Wondery';
+                                navigator.push({
+                                    screen: 'Media',
+                                    title: "Wondery",
+                                    passProps: {title, navigator},
+                                })
+                            }}>
+                                <View style = {{backgroundColor: 'transparent', width: width/1.15, height: width/1.97, marginLeft: width/25, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                                    <Image
+                                        style={{width: width/1.15, height: width/1.97, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
+                                        source={require('tess/src/images/WonderyMedia.png')}
+                                    />
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View>
 
 
+
+                        {/* Tess Media */}
+                        <View style={[this.state.size]}>
+                            <TouchableWithoutFeedback style={{borderRadius: 12, marginHorizontal: width/25}} onPress={() => {
+                                const {navigator} = this.props;
+                                let title = 'Tess Media';
+                                navigator.push({
+                                    screen: 'Media',
+                                    title: "Tess Media",
+                                    passProps: {title, navigator},
+                                })
+                            }}>
+                                <View style = {{ backgroundColor: 'transparent', width: width/1.15, height: width/1.97, marginLeft: width/25, alignSelf: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 2, borderRadius: 8}}>
+                                    <Image
+                                        style={{width: width/1.15, height: width/1.97, alignSelf: 'center', opacity: 1, borderRadius: 8,}}
+                                        source={require('tess/src/images/TessMedia.png')}
+                                    />
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View>
+
+                    </Carousel>
+
+                    <Text style = {styles.titleHeader}>Fresh & New</Text>
+                    <View style={{marginBottom: 20}}>
+                        <ListView
+                            enableEmptySections
+                            horizontal={true}
+                            dataSource={this.state.dataSourceFresh}
+                            renderRow={this.renderRow}
+                        />
+                    </View>
+
+                    <Text style = {styles.titleHeader}>Created on Tess</Text>
+                    <View style={{marginBottom: height/33.35}}>
+                        <ListView
+                            enableEmptySections
+                            horizontal={true}
+                            dataSource={this.state.dataSourceSmall}
+                            renderRow={this.renderRow}
+                        />
+                    </View>
+
+                    <View style={{paddingBottom: height/11.12}} />
+
+                </ScrollView>
 
                 <PlayerBottom navigator={this.props.navigator}/>
 
@@ -103,57 +277,40 @@ class Discover extends Component{
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#f5f4f9',
+        paddingTop: topMargin,
     },
-    container2:{
-        flex: 1,
-        backgroundColor: '#fff' ,
-        marginTop: -90,
 
-    },
-    underline:{
-        backgroundColor: '#5757FF',
-    },
-    containerSearch:{
-        marginTop: 20,
-        backgroundColor: '#fff',
-        borderColor:'#fff',
-        borderWidth: 1,
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
-        borderTopColor: '#fff',
-        borderBottomColor: '#fff',
-    },
-    backColor:{
-        backgroundColor:  '#fff',
-    },
     title: {
-        color: '#804cc8',
-        marginTop: 70,
-        flex:1,
-        textAlign: 'center',
-        opacity: 2,
+        flex: 1,
+        color: '#3e4164',
+        textAlign: 'left',
         fontStyle: 'normal',
-        fontFamily: 'Futura',
-        fontSize: 25,
-        backgroundColor: 'transparent'
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/18.75,
     },
 
-    tabStyle: {
-        textAlign: 'center',
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 13,
-        backgroundColor: 'transparent',
-    }
+    titleHeader: {
+        flex: 1,
+        color: '#3e4164',
+        textAlign: 'left',
+        fontFamily: 'Montserrat-Bold',
+        fontSize: width/18.75,
+        marginTop: height/44.47,
+        marginBottom: height/66.7,
+        marginLeft: width/25,
+    },
+
+    wrapper: {
+    },
+
+    slide: {
+        backgroundColor: 'blue'
+
+    },
+
 
 });
 
-const mapStateToProps = state => {
-    const podcast = _.map(state.podcast, (val, uid) => {
-        return { ...val, uid };
-    });
-    return {podcast};
-};
 
-export default connect(mapStateToProps) (Discover);
+export default Discover;

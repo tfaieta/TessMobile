@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
-import { View, StyleSheet, ListView, TouchableOpacity, Text, Alert, ScrollView} from 'react-native';
+import { View, StyleSheet, ListView, Alert, ScrollView, Text, Dimensions, Platform, RefreshControl} from 'react-native';
 import PlayerBottom from './PlayerBottom';
-import { connect } from 'react-redux';
-import { podcastFetchFavs } from "../actions/PodcastActions"
 import firebase from 'firebase';
 import Variables from "./Variables";
-import Icon from 'react-native-vector-icons/Ionicons';
 import ListItem from "./ListItem";
 
+var {height, width} = Dimensions.get('window');
+
+let topMargin = 0;
+if(Platform.OS === 'ios'){
+    topMargin = height/10.26
+}
 
 
 class Favorites extends Component{
@@ -18,15 +20,19 @@ class Favorites extends Component{
         const { currentUser } = firebase.auth();
         const refFav = firebase.database().ref(`users/${currentUser.uid}/favorites`);
 
-        refFav.orderByChild('favorites').on("value", function (snapshot) {
+        refFav.orderByChild('favorites').once("value", function (snapshot) {
             snapshot.forEach(function (data) {
-                if(data.val().id){
-                    firebase.database().ref(`podcasts/${data.val().id}`).on("value", function (snap) {
-                        Variables.state.favPodcasts.push(snap.val())
-                    })
-                }
-                else{
-                    Variables.state.favPodcasts.push(data.val());
+                if(data.val()){
+                    if(data.val().id){
+                        firebase.database().ref(`podcasts/${data.val().id}`).once("value", function (snap) {
+                            if(snap.val()){
+                                Variables.state.favPodcasts.push(snap.val())
+                            }
+                        })
+                    }
+                    else{
+                        Variables.state.favPodcasts.push(data.val());
+                    }
                 }
             })
         });
@@ -35,21 +41,66 @@ class Favorites extends Component{
 
     componentWillUnmount(){
         clearTimeout(this.timeout);
-        clearTimeout(this.timeout2);
     }
 
     constructor(props){
         super(props);
+
+         this.props.navigator.setStyle({
+               statusBarHidden: false,
+               statusBarTextColorScheme: 'light',
+               navBarHidden: false,
+               navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
+               navBarTextFontSize: 18, // change the font size of the title
+               navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
+               drawUnderTabBar: false,
+               navBarHideOnScroll: false,
+               navBarBackgroundColor: '#fff',
+               topBarElevationShadowEnabled: false,
+               statusBarColor: '#fff',
+               drawUnderNavBar: Platform.OS === 'ios',
+               navBarTranslucent: Platform.OS === 'ios',
+               navBarNoBorder: true,
+
+         });
+
         var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts),
             loading: true,
-            favorite: true
+            refreshing: false,
+            favorite: true,
+            length: 0
         };
-        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts)})},1000);
-        this.timeout2 = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts)})},3000);
+        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts.reverse()), length: Variables.state.favPodcasts.length})},2000);
     }
 
+
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+
+        Variables.state.favPodcasts = [];
+        const { currentUser } = firebase.auth();
+        const refFav = firebase.database().ref(`users/${currentUser.uid}/favorites`);
+
+        refFav.orderByChild('favorites').once("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+                if(data.val()){
+                    if(data.val().id){
+                        firebase.database().ref(`podcasts/${data.val().id}`).once("value", function (snap) {
+                            Variables.state.favPodcasts.push(snap.val())
+                        })
+                    }
+                    else{
+                        Variables.state.favPodcasts.push(data.val());
+                    }
+                }
+            })
+        });
+
+        var dataSource= new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+        this.timeout = setTimeout(() => {this.setState({dataSource: dataSource.cloneWithRows(Variables.state.favPodcasts.reverse()), length: Variables.state.favPodcasts.length, refreshing: false})}, 3000);
+    };
 
 
     _pressBack = () => {
@@ -88,27 +139,16 @@ class Favorites extends Component{
             <View
                 style={styles.containerMain}>
 
-                <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, borderWidth: 2, borderBottomColor: 'rgba(187,188,205,0.3)', borderTopColor: '#fff', borderLeftColor: '#fff', borderRightColor: '#fff'}}>
-                    <View style={{alignItems: 'flex-start', justifyContent: 'center', marginTop: 20}}>
-                        <TouchableOpacity onPress={this._pressBack}>
-                            <Icon style={{
-                                textAlign:'left',marginLeft: 10, fontSize: 30,color:'#9496A3'
-                            }} name="md-arrow-round-back">
-                            </Icon>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={styles.header}>Favorites</Text>
-                    </View>
 
-                    <View>
-                    </View>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                        />}
+                >
 
-                </View>
-
-
-
-                <ScrollView>
+                    <Text style={styles.title}>{this.state.length} Episodes</Text>
 
                     <ListView
                         enableEmptySections
@@ -117,17 +157,14 @@ class Favorites extends Component{
                     />
 
 
-                    <View style={{paddingBottom:120}}>
+                    <View style={{paddingBottom: height/5.56}}>
 
                     </View>
 
                 </ScrollView>
 
 
-
-
                 <PlayerBottom navigator={this.props.navigator}/>
-
 
             </View>
 
@@ -141,127 +178,22 @@ class Favorites extends Component{
 const styles = StyleSheet.create({
     containerMain:{
         flex: 1,
-        backgroundColor: 'transparent',
+        backgroundColor: '#f5f4f9',
+        marginTop: topMargin,
     },
 
-    contentTitle: {
-        color: 'rgba(1,170,170,1)',
-        fontSize: 25,
-        paddingBottom: 20,
-        marginLeft: 20,
-
-    },
-
-    container2: {
-        flex: 1,
-        paddingHorizontal: 0,
-        paddingVertical: 10,
-        marginVertical: 0,
-        marginHorizontal: 0,
-        backgroundColor: '#FFF',
-        opacity: 1,
-        borderColor: '#FFF',
-        borderWidth: 0.5,
-        borderRadius: 0,
-        borderStyle: 'solid',
-        flexDirection: 'row',
-    },
-
-    title2: {
-        color: '#2A2A30',
-        flex:1,
-        marginTop:20,
-        textAlign: 'center',
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 20,
-        backgroundColor: 'transparent'
-    },
     title: {
-        color: '#2A2A30',
-        marginTop: 0,
-        flex:1,
-        textAlign: 'left',
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 15,
-        backgroundColor: 'transparent',
-        marginHorizontal: 20,
-
-    },
-    artistTitle: {
-        color: '#828393',
-        marginTop: 0,
-        flex:1,
-        textAlign: 'left',
-        opacity: 1,
-        fontStyle: 'normal',
-        fontFamily: 'Hiragino Sans',
-        fontSize: 15,
-        backgroundColor: 'transparent',
-        marginLeft: 20,
-    },
-
-    header: {
-        marginTop:25,
-        marginLeft: -35,
-        color: '#2A2A30',
+        
+        color: '#506dcf',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
-        backgroundColor: 'transparent',
-
-    },
-
-    container: {
-        paddingHorizontal: 0,
-        paddingVertical: 10,
-        marginVertical: 0,
-        marginHorizontal: 0,
-        backgroundColor: '#FFF',
-        opacity: 1,
-        borderColor: '#FFF',
-        borderWidth: 0.5,
-        borderRadius: 0,
-        borderStyle: 'solid',
-        flexDirection: 'row',
-    },
-
-    centerContainer: {
-        flexDirection: 'row'
-    },
-    leftContainer: {
-        flex: 7,
-        paddingLeft: 2,
-        justifyContent: 'center',
-        alignItems:'flex-start',
-    },
-    rightContainer: {
-        flex: 1,
-        paddingRight: 2,
-        justifyContent: 'center',
-        alignItems: 'flex-end',
-
-    },
-    middleContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 3,
-        marginHorizontal: -100,
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/20.83,
+        paddingVertical: height/66.7,
+        marginBottom: height/667,
     },
 
 });
 
 
-const mapStateToProps = state => {
-    const podcast = _.map(state.podcast, (val, uid) => {
-        return { ...val, uid };
-    });
-    return {podcast};
-};
-
-export default connect(mapStateToProps, { podcastFetchFavs })(Favorites);
+export default Favorites;

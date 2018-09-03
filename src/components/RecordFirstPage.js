@@ -8,42 +8,72 @@ import RNFetchBlob from 'react-native-fetch-blob';
 
 
 
-
-
-// Initial Record Page (Tab)
+// Initial Record Page
 
 let podFile = AudioUtils.DocumentDirectoryPath + '/test.aac';
 
 var {height, width} = Dimensions.get('window');
 
+
+
+
 class RecordFirstPage extends Component{
 
     static navigatorStyle = {
-        tabBarHidden: false
+        statusBarHidden: false,
+        statusBarTextColorScheme: 'light',
+        navBarHidden: false,
     };
+
 
     constructor(props) {
         super(props);
+
+        this.props.navigator.setStyle({
+            statusBarHidden: false,
+            statusBarTextColorScheme: 'light',
+            navBarHidden: false,
+            navBarTextColor: '#3e4164', // change the text color of the title (remembered across pushes)
+            navBarTextFontSize: 18, // change the font size of the title
+            navBarTextFontFamily: 'Montserrat-SemiBold', // Changes the title font
+            drawUnderTabBar: false,
+            navBarBackgroundColor: '#fff',
+            topBarElevationShadowEnabled: true,
+            topBarShadowColor: '#000',
+            topBarShadowOpacity: 0.1,
+            topBarShadowOffset: 3,
+            topBarShadowRadius: 5,
+            statusBarColor: '#fff',
+        });
+
         this.state={
             fileExists: false
         };
 
+
+        this.timeout = setTimeout(() => {
+            RNFetchBlob.fs.stat(podFile)
+                .then((stats) => {
+                    if(stats.size > 0){
+                        this.setState({
+                            fileExists: true
+                        })
+                    }
+                    else{
+                        this.setState({
+                            fileExists: false
+                        })
+                    }
+                });
+        } , 1000)
+
+    }
+
+    componentWillUnmount(){
+        clearInterval(this.timeout);
     }
 
 
-
-    info = () =>{
-        Navigation.showLightBox({
-            screen: 'InfoDiagram',
-            style: {
-                tapBackgroundToDismiss: true,
-                backgroundColor: "#53249080",
-                backgroundBlur: "light",
-            }
-
-        })
-
-    };
 
     recordNewPodcast =() => {
 
@@ -68,25 +98,11 @@ class RecordFirstPage extends Component{
 
     _renderPrevPodcast = () => {
 
-        RNFetchBlob.fs.stat(podFile)
-            .then((stats) => {
-                if(stats.size > 0){
-                this.setState({
-                    fileExists: true
-                })
-                }
-                else{
-                    this.setState({
-                        fileExists: false
-                    })
-                }
-            });
-
         if(this.state.fileExists){
             return(
                 <TouchableOpacity style = {{marginTop: height/16.675}} onPress={this.prevPodcast}>
                     <Icon style={{
-                        textAlign:'center',fontSize: 45,color:'#5757FF'
+                        textAlign:'center',fontSize:  width/8.33, color:'#506dcf'
                     }} name="md-undo">
                     </Icon>
                     <Text style= {styles.text} >Last recorded podcast</Text>
@@ -95,48 +111,37 @@ class RecordFirstPage extends Component{
         }
     };
 
+    _pressBack = () => {
+        Navigation.dismissModal({
+
+        })
+    };
+
+
 
     render() {
 
-            return (
-                <View
-                    style={styles.container}>
+        return (
+            <View
+                style={styles.container}>
+
+                <TouchableOpacity style = {{marginTop: height / 7}} onPress={this.recordNewPodcast}>
+                    <Icon style={{
+                        textAlign:'center',fontSize: width/8.33, color:'#506dcf'
+                    }} name="md-add">
+                    </Icon>
+                    <Text style= {styles.text} >Record a New Podcast</Text>
+                </TouchableOpacity>
+
+                {this._renderPrevPodcast()}
 
 
-                        <View style={{flexDirection: 'row', paddingVertical:5, paddingBottom: 15, shadowOffset:{  width: 0,  height: 6}, shadowOpacity: 0.2, shadowRadius: 10}}>
-                            <View style={{flex:1,justifyContent: 'center', alignItems: 'center', marginTop:5}}>
-                                <Text style={styles.header}>Create a Podcast</Text>
-                            </View>
-                        </View>
+                <PlayerBottom navigator={this.props.navigator}/>
 
-                        <TouchableOpacity style = {{marginTop: height / 9}} onPress={this.recordNewPodcast}>
-                            <Icon style={{
-                                textAlign:'center',fontSize: 45,color:'#5757FF'
-                            }} name="md-add">
-                            </Icon>
-                            <Text style= {styles.text} >Record a New Podcast</Text>
-                        </TouchableOpacity>
-
-                        {this._renderPrevPodcast()}
-
-                        <TouchableOpacity style = {{marginTop: height/16.675}} onPress={this.info} >
-                            <Icon style={{
-                                textAlign: 'center',
-                                fontSize: 45,
-                                color: '#5757FF'
-                            }} name="md-help-circle">
-                            </Icon>
-                            <Text style= {styles.text}>Help</Text>
-                        </TouchableOpacity>
+            </View>
 
 
-
-                    <PlayerBottom navigator={this.props.navigator}/>
-
-                </View>
-
-
-            );
+        );
 
     }
 }
@@ -148,24 +153,22 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        marginTop:25,
+        marginTop: height/26.68,
+        marginLeft: -(width/31.25),
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W6',
-        fontSize: 16,
-        backgroundColor: 'transparent',
-
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: width/23.44,
     },
 
     text: {
-        backgroundColor: 'transparent',
         color: '#2A2A30',
         textAlign: 'center',
         fontStyle: 'normal',
-        fontFamily: 'HiraginoSans-W3',
-        fontSize: 18,
-        paddingVertical: 15,
+        fontFamily: 'Montserrat-Regular',
+        fontSize: width/20.83,
+        paddingVertical: height/44.47,
     },
 
 

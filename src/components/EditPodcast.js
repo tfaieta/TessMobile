@@ -20,6 +20,13 @@ const options = ['News', 'Fitness', 'Gaming', 'Society & Culture', 'Sports', 'En
 
 
 class EditPodcast extends Component {
+
+  static navigatorStyle = {
+        statusBarHidden: false,
+        navBarHidden: true,
+        statusBarTextColorScheme: 'light'
+    };
+
     componentWillMount(){
         const rowData = this.props.rowData;
         this.setState({title: rowData.podcastTitle, description: rowData.podcastDescription, category: rowData.podcastCategory})
@@ -90,7 +97,7 @@ class EditPodcast extends Component {
                             marginLeft: 10,
                             marginTop:10,
                             color: '#fff',
-                            backgroundColor: 'transparent',
+                            
                         }} name="md-folder">
                         </Icon>
                         <Text style={{ color: '#fff', marginTop: 10, fontSize: 16, marginLeft: 10, fontFamily: 'Hiragino Sans', }}>Categories</Text>
@@ -109,7 +116,7 @@ class EditPodcast extends Component {
                             marginRight: 10,
                             marginTop:10,
                             color: '#fff',
-                            backgroundColor: 'transparent',
+                            
                         }} name="ios-arrow-forward"
                               onPress={() => {
                                   this.refs.picker1.show();
@@ -194,7 +201,7 @@ const styles = StyleSheet.create({
 
     container:{
         flex: 1,
-        backgroundColor: "#565556",
+        backgroundColor: '#51515f',
     },
     textStyle:{
         color: '#fff',
@@ -203,7 +210,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
         fontSize: 18,
-        backgroundColor: 'transparent',
+        
         marginTop: 30,
     },
     textTitle:{
@@ -214,7 +221,7 @@ const styles = StyleSheet.create({
         fontFamily: 'HiraginoSans-W3',
         fontSize: 14,
         marginTop: 40,
-        backgroundColor: 'transparent',
+        
         marginVertical: 5,
         marginHorizontal: 20,
     },
@@ -225,13 +232,13 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontFamily: 'HiraginoSans-W6',
         fontSize: 14,
-        backgroundColor: 'transparent',
+        
         marginBottom: 20,
         marginHorizontal: 20,
     },
     input: {
         height: 60,
-        backgroundColor: 'transparent',
+        
         fontSize: 15,
         marginHorizontal: 20,
         color: '#FFF',
@@ -240,7 +247,7 @@ const styles = StyleSheet.create({
 
     input2: {
         height: 120,
-        backgroundColor: 'transparent',
+        
         color:'#FFF',
         paddingHorizontal: 10,
         marginHorizontal: 20,
