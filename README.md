@@ -1,3 +1,3 @@
-# tess
+For more information on how to contribute join the discord! 
 
-tess is an app
+https://discord.gg/JuucUTc
